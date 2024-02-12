@@ -3681,8 +3681,6 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
-		F460391C2B7A67BE00D4FE12 /* Comment+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F460391B2B7A67BE00D4FE12 /* Comment+Lookup.swift */; };
-		F460391D2B7A67BE00D4FE12 /* Comment+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F460391B2B7A67BE00D4FE12 /* Comment+Lookup.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
 		F465462D2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */; };
 		F46546312AF2F8D30017E3D1 /* DomainsStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */; };
@@ -9048,7 +9046,6 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
-		F460391B2B7A67BE00D4FE12 /* Comment+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Comment+Lookup.swift"; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
 		F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsStateViewModel.swift; sourceTree = "<group>"; };
@@ -17569,7 +17566,6 @@
 			children = (
 				98AA6D1026B8CE7200920C8B /* Comment+CoreDataClass.swift */,
 				9815D0B226B49A0600DF7226 /* Comment+CoreDataProperties.swift */,
-				F460391B2B7A67BE00D4FE12 /* Comment+Lookup.swift */,
 			);
 			path = Comment;
 			sourceTree = "<group>";
@@ -21780,7 +21776,6 @@
 				F4FE743429C3767300AC2729 /* AddressTableViewCell+ViewModel.swift in Sources */,
 				027AC51D227896540033E56E /* DomainCreditEligibilityChecker.swift in Sources */,
 				83FEFC7611FF6C5A0078B462 /* SiteSettingsViewController.m in Sources */,
-				F460391C2B7A67BE00D4FE12 /* Comment+Lookup.swift in Sources */,
 				B56994451B7A7EF200FF26FA /* WPStyleGuide+Comments.swift in Sources */,
 				8B05D29123A9417E0063B9AA /* WPMediaEditor.swift in Sources */,
 				987E79CB261F8858000192B7 /* UserProfileSheetViewController.swift in Sources */,
@@ -24777,7 +24772,6 @@
 				B0DE91B62AF9778200D51A02 /* DomainSetupNoticeView.swift in Sources */,
 				FABB22F52602FC2C00C8785C /* FilterTabBar.swift in Sources */,
 				FABB22F72602FC2C00C8785C /* EditComment.swift in Sources */,
-				F460391D2B7A67BE00D4FE12 /* Comment+Lookup.swift in Sources */,
 				FABB22F82602FC2C00C8785C /* UnknownEditorViewController.swift in Sources */,
 				FABB22F92602FC2C00C8785C /* AccountToAccount22to23.swift in Sources */,
 				FABB22FB2602FC2C00C8785C /* ReaderFollowAction.swift in Sources */,
