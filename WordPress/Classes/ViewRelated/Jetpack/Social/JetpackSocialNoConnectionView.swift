@@ -2,13 +2,13 @@ import SwiftUI
 
 struct JetpackSocialNoConnectionView: View {
 
-    @StateObject private var viewModel: JetpackSocialNoConnectionViewModel
+    private let viewModel: JetpackSocialNoConnectionViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12.0) {
             HStack(spacing: -5.0) {
                 ForEach(viewModel.icons, id: \.self) { icon in
-                    iconImage(icon)
+                    iconImage(image: icon.image, url: icon.url)
                 }
             }
             .accessibilityElement()
@@ -39,13 +39,14 @@ struct JetpackSocialNoConnectionView: View {
         .background(Color(viewModel.preferredBackgroundColor))
     }
 
-    func iconImage(_ image: UIImage) -> some View {
-        Image(uiImage: image)
-            .resizable()
-            .frame(width: 32.0, height: 32.0)
-            .background(Color(viewModel.preferredBackgroundColor))
-            .clipShape(Circle())
-            .overlay(Circle().stroke(Color(viewModel.preferredBackgroundColor), lineWidth: 2.0))
+    func iconImage(image: UIImage, url: URL?) -> some View {
+        AsyncImage(url: url) { image in
+            image
+                .icon(backgroundColor: viewModel.preferredBackgroundColor)
+        } placeholder: {
+            Image(uiImage: image)
+                .icon(backgroundColor: viewModel.preferredBackgroundColor)
+        }
     }
 }
 
@@ -60,16 +61,35 @@ extension JetpackSocialNoConnectionView {
     }
 }
 
+// MARK: - Image Extension
+
+private extension Image {
+    func icon(backgroundColor: UIColor) -> some View {
+        self
+            .resizable()
+            .frame(width: 32.0, height: 32.0)
+            .background(Color(backgroundColor))
+            .clipShape(Circle())
+            .overlay(Circle().stroke(Color(backgroundColor), lineWidth: 2.0))
+    }
+}
+
 // MARK: - View model
 
-class JetpackSocialNoConnectionViewModel: ObservableObject {
+struct JetpackSocialNoConnectionViewModel {
+
+    struct IconInfo: Hashable {
+        let image: UIImage
+        let url: URL?
+    }
+
     let padding: EdgeInsets
     let hideNotNow: Bool
     let preferredBackgroundColor: UIColor
     let bodyTextColor: UIColor
     let onConnectTap: (() -> Void)?
     let onNotNowTap: (() -> Void)?
-    @MainActor @Published var icons: [UIImage] = [UIImage()]
+    let icons: [IconInfo]
 
     init(services: [PublicizeService] = [],
          padding: EdgeInsets = Constants.defaultPadding,
@@ -84,37 +104,16 @@ class JetpackSocialNoConnectionViewModel: ObservableObject {
         self.bodyTextColor = bodyTextColor
         self.onConnectTap = onConnectTap
         self.onNotNowTap = onNotNowTap
-        updateIcons(services)
-    }
 
-    private func updateIcons(_ services: [PublicizeService]) {
-        var icons: [UIImage] = []
-        var downloadTasks: [(url: URL, index: Int)] = []
-        for (index, service) in services.enumerated() {
+        var images = [IconInfo]()
+        for service in services {
             let icon = WPStyleGuide.socialIcon(for: service.serviceID as NSString)
-            icons.append(icon)
-
-            if service.name == .unknown {
-                guard let iconUrl = URL(string: service.icon) else {
-                    continue
-                }
-                downloadTasks.append((url: iconUrl, index: index))
-            }
+            let url: URL? = service.name == .unknown ? URL(string: service.icon) : nil
+            images.append(IconInfo(image: icon, url: url))
         }
-
-        DispatchQueue.main.async {
-            self.icons = icons
-
-            for task in downloadTasks {
-                let (url, index) = task
-                Task { @MainActor in
-                    if let image = try? await ImageDownloader.shared.image(from: url) {
-                        self.icons[index] = image
-                    }
-                }
-            }
-        }
+        self.icons = images
     }
+
 }
 
 // MARK: - Constants

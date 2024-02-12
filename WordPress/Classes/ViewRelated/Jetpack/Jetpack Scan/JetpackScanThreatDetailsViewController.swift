@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import WordPressUI
 
 protocol JetpackScanThreatDetailsViewControllerDelegate: AnyObject {
     func willFixThreat(_ threat: JetpackScanThreat, controller: JetpackScanThreatDetailsViewController)

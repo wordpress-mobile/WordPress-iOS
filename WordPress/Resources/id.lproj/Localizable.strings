@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ hari";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ pengikut";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ level";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ dari %2$@ digunakan di situs Anda";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per tahur";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ kuadriliun";
@@ -483,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Tambahkan ke Akhir";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Tambah Topik";
-
 /* No comment provided by engineer. */
 "Add URL" = "Tambahkan URL";
 
@@ -494,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Tambahkan Foto Profil";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Tambahkan Topik";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Tambah domain";
@@ -510,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Tambahkan shortcode…";
 
-/* No Tags View Button Label */
-"Add a site" = "Tambahkan situs";
-
-/* No Topics View Button Label */
-"Add a topic" = "Tambahkan topik";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Tambahkan gambar akun.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Tambahkan teks alt";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Tambahkan topik yang mana saja";
 
 /* No comment provided by engineer. */
 "Add audio" = "Tambahkan audio";
@@ -1104,14 +1083,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Pengaturan blok";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blokir situs ini";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Blok tidak dikelompokkan";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Situs yang diblokir";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Pengguna diblokir";
@@ -1515,9 +1488,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Pilih video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Pilih topik Anda";
-
 /* Register Domain - Address information field City */
 "City" = "Kota";
 
@@ -1890,9 +1860,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Tidak dapat mengaktifkan notifikasi";
 
-/* Title of a prompt. */
-"Could not follow site" = "Tidak dapat mengikuti situs";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Tidak dapat mengikuti situs pada lokasi yang ditentukan.";
 
@@ -1916,9 +1883,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Tidak dapat mengalihkan Dilihat: postID tidak ditemukan.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Tidak dapat berhenti mengikuti situs";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Tidak dapat membatalkan mengikuti situs pada alamat yang ditetapkan.";
@@ -2317,17 +2281,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Temukan";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Temukan Situs";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Temukan dan ikuti blog yang Anda suka";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Temukan dan ikuti situs yang menginspirasi Anda.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Jelajahi topik-topik lainnya";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2368,7 +2326,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Belum memiliki akun? _Daftar_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2674,7 +2633,6 @@
 "Empty URL" = "URL Kosong";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktifkan";
 
@@ -2698,9 +2656,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Aktifkan pemberitahuan dalam aplikasi";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Aktifkan pemberitahuan situs?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Aktifkan statistik situs untuk melihat detail informasi tentang lalu lintas kunjungan, suka, komentar, dan pelanggan Anda.";
@@ -2729,9 +2684,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Masukkan kata sandi";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Masukkan URL situs yang akan diikuti";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2995,9 +2947,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Mengambil data pos...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Mengambil situs...";
 
 /* Label for the posting activity legend. */
@@ -3023,9 +2973,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Televisi";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Penyaring";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Saring berdasarkan tipe aktivitas";
@@ -3066,8 +3013,7 @@
 "Fixing Threats" = "Memperbaiki Ancaman";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Ikuti";
 
 /* Button title. Follow the comments on a post. */
@@ -3075,9 +3021,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Ikuti Percakapan";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Ikuti situs";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Ikuti topik";
@@ -3089,15 +3032,8 @@
 "Follow your favorite sites and discover new blogs." = "Ikuti situs favorit Anda dan temukan blog-blog baru.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Situs yang Diikuti";
-
-/* Followed Topics Title */
-"Followed Topics" = "Topik-Topik Diikuti";
-
-/* User followed a site. */
-"Followed site" = "Situs diikuti";
 
 /* Label for list of followers.
    User role badge */
@@ -3108,13 +3044,8 @@
    Label for number of followers. */
 "Followers" = "Pengikut";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Mengikuti";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Mengikuti %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Mengikuti topik baru...";
@@ -3127,9 +3058,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Mengikuti blog.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Ikuti tag.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Ukuran Font";
@@ -3278,9 +3206,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Buka yang Diikuti";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Buka Pembaca";
@@ -3960,7 +3885,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Suka";
 
@@ -3972,9 +3896,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Menyukai Komentar.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Melampaui Batas. Anda dapat coba lagi semenit kemudian. Mencoba sebelum semenit akan menambah waktu Anda harus menunggu sebelum ban dicabut. Jika Anda merasa ini sebuah kesalahan, silahkan kontak support.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Bagan Garis yang menggambarkan Tayangan untuk wawasan.";
@@ -4083,9 +4004,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Memuat editor blok.";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Memuat nama pengguna";
 
 /* Loading tags
    Loading tags.
@@ -4198,9 +4116,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Kelola Wawasan";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Kelola Situs";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Kelola situs";
@@ -4379,9 +4294,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Pilihan dukungan lainnya";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Waktu yang Paling Disukai";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Pindah %@";
@@ -4570,9 +4482,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Langkah Berikutnya";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Bulan selanjutnya";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Pemberitahuan selanjutnya";
 
@@ -4624,9 +4533,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Tidak ada aplikasi yang dapat menangani permintaan ini. Harap instal Perambah web.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Tidak ada situs WordPress.com tersedia";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Tidak ada alamat yang cocok dengan pencarian Anda";
 
@@ -4670,9 +4576,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Tidak ada ancaman yang telah diperbaiki";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Tidak ada situs yang diikuti";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Belum ada pengikut";
@@ -4721,9 +4624,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Tidak perlu lagi menunggu. Kami akan memberi tahu Anda jika situs telah berhasil dipulihkan.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Tidak ada topik baru untuk diikuti";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Belum ada notifikasi.";
 
@@ -4754,9 +4654,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "Pratinjau tidak tersedia";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Tidak ada alamat situs utama";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Belum ada petunjuk";
 
@@ -4768,12 +4665,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Tidak ada pos yang disimpan";
-
-/* A message title */
-"No sites found" = "Tidak ada situs yang ditemukan";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Tidak ada situs yang cocok dengan %@ dalam bahasa Anda.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Tidak ada tag yang cocok dengan pencarian Anda";
@@ -4948,9 +4839,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Setelah Anda terbiasa dengan nama blok yang berbeda, Anda dapat menambahkan blok dengan mengetikkan garis miring diikuti dengan nama blok — misalnya, \/image atau \/heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Setelah membuat situs WordPress.com, Anda dapat me-reblog konten yang disukai ke situs Anda sendiri.";
 
 /* No comment provided by engineer. */
 "One" = "Satu";
@@ -5520,9 +5408,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Pratinjau situs Anda untuk mengetahui tampilan situs yang akan dilihat oleh pengunjung.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Bulan sebelumnya ";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Pemberitahuan sebelumnya";
 
@@ -5562,9 +5447,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Masalah pemuatan konten";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Masalah saat memuat situs";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Terjadi masalah saat membuka audio";
@@ -5702,9 +5584,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Beberapa Minggu Terakhir";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Postingan terbaru dari blog dan situs yang Anda ikuti akan muncul di sini.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Penerima";
@@ -5912,9 +5791,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Atur ulang penyaringan Rentang Tanggal";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Atur ulang penyaring";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset kata sandi";
@@ -6388,7 +6264,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Pengaturan";
@@ -6524,9 +6399,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Menampilkan konten pos";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Menampilkan pos situs.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Mendaftar";
 
@@ -6581,8 +6453,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Topik situs";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL Situs";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6614,16 +6485,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Judul situs berhasil diubah";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Situs";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Situs (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Rekomendasi situs";
 
 /* Image size option title. */
 "Size" = "Ukuran";
@@ -7155,9 +7016,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Sepertinya koneksi internet-nya terputus.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Item tidak bisa ditambahkan ke Pustaka Media.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Berbagai macam situs yang dapat dibuat";
 
@@ -7197,9 +7055,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server memberi respon kosong. Biasanya ini berarti Anda perlu meningkatkan batas memori situs Anda.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Situs %@ tidak akan muncul lagi di pembaca Anda. Ketuk untuk mengurungkan.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Alamat situs harus lebih pendek dari 64 karakter.";
 
@@ -7215,9 +7070,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Situs tidak dapat diekspor.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Situs dalam daftar ini belum memposting sesuatu.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Slug adalah versi judul pos yang ramah URL.";
@@ -7428,9 +7280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Pos ini tidak ada dalam Kesukaan Saya";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Situs ini belum memposting sesuatu. Coba kembali lagi nanti.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Akun pengguna ini tidak dapat ditutup jika ada proses penagihan balik yang belum terselesaikan.";
 
@@ -7576,12 +7425,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Topik tidak ditemukan untuk ID:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Topik";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Topik (%lu)";
-
 /* Label for total followers */
 "Total" = "Total";
 
@@ -7664,9 +7507,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Coba sekarang";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Coba pilih %@ untuk menambahkan topik yang Anda sukai.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Coba Editor Blok yang baru";
 
@@ -7679,23 +7519,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Matikan prompt";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Nonaktifkan pemberitahuan situs";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Aktifkan pemberitahuan";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Aktifkan pemberitahuan push";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Aktifkan pemberitahuan situs";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Menonaktifkan pemberitahuan situs";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Mengaktifkan pemberitahuan situs";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Dengan menonaktifkannya, semua pemberitahuan dari aplikasi ini, apa pun jenisnya, akan dimatikan.";
@@ -7742,9 +7570,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Tidak Dapat Menyinkronisasi";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Tidak dapat memblokir situs";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Tidak dapat membuat tautan undangan baru.";
 
@@ -7762,9 +7587,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Tidak dapat mengikuti percakapan";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Tidak dapat mengikuti situs";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Tidak dapat memuat halaman sekarang.";
@@ -7811,23 +7633,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Tidak dapat berbagi tautan";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Tidak dapat menonaktifkan pemberitahuan situs";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Tidak dapat mengaktifkan pemberitahuan situs";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Tidak dapat berhenti mengikuti situs";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Tidak dapat memperbarui pengaturan beranda";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Tidak dapat memperbarui harga paket. Terdapat masalah dengan blog yang diberikan.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Gagal mengunggah 1 pos konsep";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Gagal mengunggah 1 pos";
@@ -7880,24 +7690,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Urungkan";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Batal Mengikuti";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Batal Mengikuti %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Berhenti Mengikuti Percakapan";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Berhenti ikuti percakapan";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Berhenti mengikuti situs";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Batal mengikuti situs";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Berhenti mengikuti blog.";
@@ -8267,6 +8064,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Menunggu Google untuk menyelesaikan…";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "Menunggu koneksi";
+
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
 "Waiting for security key" = "Menunggu kunci keamanan";
@@ -8533,9 +8333,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Selamat Datang di Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Selamat datang di Reader. Temukan jutaan blog di ujung jari Anda.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Selamat Datang di WordPress";
 
@@ -8617,9 +8414,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Ketika sebuah komentar memuat kata-kata ini di dalam konten, nama, URL, email, atau IP-nya, maka akan ditandai sebagai spam. Anda dapat memasukkan kata parsial, sehingga \"press\" akan cocok dengan \"WordPress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Saat Anda mengikuti situs, Anda akan melihat kontennya di sini.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Saat Anda membuat perubahan di penyunting, Anda dapat melihat riwayatnya di sini";
@@ -8802,9 +8596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Anda akan mengubah nama pengguna Anda, yang saat ini adalah %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Anda sudah mengikuti situs ini.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Anda mengubah nama pengguna menjadi %@. Mengubah nama pengguna juga akan memengaruhi profil Gravatar dan alamat profil IntenseDebate.\nKonfirmasikan nama pengguna Anda untuk melanjutkan.";
 
@@ -8828,12 +8619,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Anda dapat mengedit blok ini menggunakan editor versi web.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Anda dapat mengikuti pos pada situs tertentu dengan mengikutinya.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Anda dapat mengikuti post dengan subjek tertentu dengan menambahkan topik.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Anda dapat membatalkan pengaturan tersebut untuk pos individual.";
@@ -9128,18 +8913,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Kualitas Gambar";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Pengoptimalan gambar mengecilkan gambar agar bisa diunggah lebih cepat.\n\nPilihan ini diaktifkan sesuai dengan pengaturan asal, tetapi Anda dapat mengubahnya di pengaturan aplikasi kapan saja.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Teruskan pengoptimalan gambar?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Tidak, matikan";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Ya, biarkan";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
@@ -9451,6 +9224,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "Analitik";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Pengaturan Asal Pengguna Boolean";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Pengaturan Asal Pengguna Boolean";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Bendera Fitur";
 
@@ -9502,9 +9281,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Tutup";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Cari domain";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Dapatkan Domain";
@@ -9764,6 +9540,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/alamat-situs-saya (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Apakah Anda menyukai aplikasi seluler Jetpack?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Kurang suka";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Feedback dari Anda sangat berharga";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Sangat baik";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Terima kasih sudah membantu kami meningkatkan aplikasi ini.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback terkirim";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Ada hal lain yang ingin Anda bagikan dengan kami?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Lain kali";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Bantu kami lebih baik lagi";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Ya";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Untuk mengambil foto atau video agar dapat digunakan di artikel Anda.";
@@ -10317,6 +10123,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Pemeliharaan";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Pemantauan Situs";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Sosial";
 
@@ -10377,6 +10186,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalisasikan beranda";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Bagikan situs";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Ubah ikon situs";
 
@@ -10388,6 +10200,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Kunjungi situs";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "Tidak ada entri log dalam rentang waktu ini";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "Terjadi error";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Coba lagi";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
@@ -10494,6 +10315,27 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "nomor telepon";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "Tanggal Akhir";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Tingkat Keparahan";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Tanggal Mulai";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Cacat";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Error Fatal";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "Pengguna";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Peringatan";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
@@ -10586,9 +10428,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Pratinjau";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publikasikan sekarang";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Coba ulang";
@@ -10717,6 +10556,30 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Lainnya";
 
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "Blog %@ tidak akan muncul lagi di pembaca Anda. Ketuk untuk mengurungkan.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ pos • %2$@ pelanggan";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Menampilkan pos blog.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Masalah saat memuat blog";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Mengambil blog...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Tidak ditemukan blog yang cocok dengan %@ dalam bahasa Anda.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Tidak ditemukan blog";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ pelanggan";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
 
@@ -10754,15 +10617,171 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Pos yang Disimpan";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "Anda sudah berlangganan blog ini.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Edit";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Saring berdasarkan blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Saring berdasarkan tag";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Berlangganan blog di Discover dan Anda akan melihat pos terbarunya di sini. Atau, cari blog yang sudah Anda sukai.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Cari blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Tidak ada langganan blog";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Berlangganan tag dan Anda akan dapat melihat pos terbaik dari tag tersebut di sini.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Berlangganan tag";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Tag yang diusulkan";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Tidak ada tag";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Berlangganan tag baru...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Tag yang diusulkan";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Mengambil blog...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blog";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Tag";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d Blog";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d Blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Tag";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d Tag";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Tag";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Disukai";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Daftar";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Disimpan";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Langganan";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Pencarian";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Pengaturan Pembaca";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Temukan Blog";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Berlangganan blog di Discover dan Anda akan melihat pos terbarunya di sini. Atau, cari blog yang sudah Anda sukai.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Tidak ada langganan blog";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "Blog dalam daftar ini belum memposkan sesuatu. Coba lagi nanti.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "Blog dalam daftar ini belum memposkan sesuatu akhir-akhir ini.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Kelola Blog";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Pos terbaru dari blog dan situs langganan Anda akan muncul di sini.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Lihat Langganan";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Anda dapat berlangganan pos di blog tertentu dengan berlangganan blog tersebut.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Tambahkan blog";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Tidak dapat memblokir blog";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Telah memblokir blog";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Telah berlangganan blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Tidak dapat berhenti berlangganan blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Tidak dapat berhenti berlangganan blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Telah berhenti berlangganan blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Tidak dapat menonaktifkan pemberitahuan blog";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Telah menonaktifkan pemberitahuan blog";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Tidak dapat mengaktifkan pemberitahuan blog";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Aktifkan pemberitahuan blog?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Telah mengaktifkan pemberitahuan blog";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "situs ini";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "blog ini";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Tidak dapat berlangganan blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Telah berlangganan %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Tidak dapat berhenti berlangganan blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Telah berhenti berlangganan blog";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "pembaca.pemberitahuan.pengguna.blokir.gagal";
@@ -10800,8 +10819,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Membuka detail situs untuk pos.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Blokir blog ini";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blokir pengguna ini";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Nonaktifkan pemberitahuan blog";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Aktifkan pemberitahuan blog";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Buang Pos yang Disimpan";
@@ -10812,8 +10840,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Simpan";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ pos • %2$@ pengikut";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Berlangganan blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Berhenti berlangganan blog";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Kelola Blog";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Setelah membuat blog WordPress.com, Anda dapat me-reblog konten yang disukai ke blog Anda sendiri.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Tidak ada blog WordPress.com yang tersedia";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blog";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Berlangganan tag baru...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Berlangganan tag";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Tidak ada tag baru untuk dijadikan langganan";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Pilih tag Anda";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Berlangganan tag.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Berlangganan";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "URL Blog";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Masukkan URL blog untuk dijadikan langganan";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Telah berlangganan";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Blog untuk dijadikan langganan";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Tambahkan Tag";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Tambahkan Tag";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Tambahkan tag apa pun";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Tambahkan Tag";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Temukan tag selengkapnya";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Berhenti berlangganan %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Berhenti berlangganan";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Kembali";
@@ -10995,6 +11089,52 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Entri Log";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Disimpan dalam cache";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "File";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "Host HTTP";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Jenis";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Baris";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Nama";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Pengarah";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Waktu Permintaan";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "URL Permintaan";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Ukuran Tanggapan";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Stempel waktu";
+
+/* Title for metrics screen.
+   Title for web server log screen. */
+"siteMonitoring.metrics" = "Metrik";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "Log PHP";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privasi";
 
@@ -11057,6 +11197,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Fitur berbagi otomatis ke Twitter tidak lagi tersedia karena adanya perubahan ketentuan dan harga dari Twitter.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Lalu lintas";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "7 hari terakhir";
@@ -11165,6 +11308,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Cari foto gratis untuk ditambahkan ke Pustaka Media Anda!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Kirim";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Dalam percakapan ini";
@@ -11334,6 +11480,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Tutup";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "Tanggal Akhir";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Jenis permintaan";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Tanggal Mulai";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Pos Sepanjang Waktu & Penayangan Terbanyak";
 
@@ -11486,6 +11644,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Maaf, situs ini tidak didukung oleh aplikasi WordPress";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Batas tercapai. Anda dapat mencoba lagi setelah 1 menit. Mencoba lagi sebelum waktu yang ditentukan hanya akan menambah waktu tunggu sebelum pemblokiran dicabut. Jika Anda merasa bahwa ini adalah kesalahan, hubungi pusat bantuan kami.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Selamat datang di aplikasi Jetpack. Anda dapat menghapus instalan aplikasi WordPress.";

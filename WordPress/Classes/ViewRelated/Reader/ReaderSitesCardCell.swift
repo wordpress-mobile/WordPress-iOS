@@ -40,7 +40,11 @@ class ReaderSitesCardCell: ReaderTopicsTableCardCell {
     }
 
     private enum Constants {
-        static let title = NSLocalizedString("Sites to follow", comment: "A suggestion of topics the user might ")
+        static let title = NSLocalizedString(
+            "reader.suggested.blogs.title",
+            value: "Blogs to subscribe to",
+            comment: "A suggestion of topics the user might want to subscribe to"
+        )
     }
 }
 

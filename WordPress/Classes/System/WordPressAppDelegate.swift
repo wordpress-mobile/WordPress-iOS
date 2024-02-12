@@ -7,6 +7,7 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticAbout
 import UIDeviceIdentifier
+import WordPressUI
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -131,6 +132,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
+        configureWordPressKit()
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
@@ -516,7 +518,14 @@ extension WordPressAppDelegate {
 
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
-            Environment.replaceEnvironment(wordPressComApiBase: url)
+            AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
+        }
+    }
+
+    private func configureWordPressKit() {
+        if FeatureFlag.useURLSession.enabled {
+            WordPressComRestApi.useURLSession = true
+            WordPressOrgXMLRPCApi.useURLSession = true
         }
     }
 }

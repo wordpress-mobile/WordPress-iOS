@@ -3,12 +3,21 @@ class ReaderReblogPresenter {
     private let postService: PostService
 
     private struct NoSitesConfiguration {
-        static let noSitesTitle = NSLocalizedString("No available WordPress.com sites",
-                                                    comment: "A short message that informs the user no WordPress.com sites could be found.")
-        static let noSitesSubtitle = NSLocalizedString("Once you create a WordPress.com site, you can reblog content that you like to your own site.",
-                                                       comment: "A subtitle with more detailed info for the user when no WordPress.com sites could be found.")
-        static let manageSitesLabel = NSLocalizedString("Manage Sites",
-                                                        comment: "Button title. Tapping lets the user manage the sites they follow.")
+        static let noSitesTitle = NSLocalizedString(
+            "reader.reblog.no.blogs.title",
+            value: "No available WordPress.com blogs",
+            comment: "A short message that informs the user no WordPress.com blogs could be found."
+        )
+        static let noSitesSubtitle = NSLocalizedString(
+            "reader.reblog.no.blogs.subtitle",
+            value: "Once you create a WordPress.com blog, you can reblog content that you like to your own blog.",
+            comment: "A subtitle with more detailed info for the user when no WordPress.com blogs could be found."
+        )
+        static let manageSitesLabel = NSLocalizedString(
+            "reader.reblog.manage.blogs",
+            value: "Manage Blogs",
+            comment: "Button title. Tapping lets the user manage the blogs they follow."
+        )
         static let backButtonTitle = NSLocalizedString("Back",
                                                        comment: "Back button title.")
     }

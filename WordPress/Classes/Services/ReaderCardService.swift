@@ -52,6 +52,12 @@ class ReaderCardService {
                                     }
 
                                     cards.enumerated().forEach { index, remoteCard in
+                                        if isFirstPage && index == 0 && remoteCard.type == .interests {
+                                            // Removes displaying the tags recommendation card
+                                            // first in the Discover feed
+                                            return
+                                        }
+
                                         let card = ReaderCard(context: context, from: remoteCard)
 
                                         // Assign each interest an endpoint

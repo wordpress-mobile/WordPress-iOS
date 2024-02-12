@@ -158,6 +158,7 @@ final class BlogDashboardDynamicCardCoordinatorTests: XCTestCase {
             id: id,
             title: "Domain Management",
             featuredImage: "https://wordpress.com",
+            featuredImageSize: .init(width: 2, height: 1),
             url: url,
             action: "Read more",
             order: .top,

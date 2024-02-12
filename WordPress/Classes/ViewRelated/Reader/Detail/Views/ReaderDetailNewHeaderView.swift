@@ -223,8 +223,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 ///
 struct ReaderDetailNewHeaderView: View {
 
-    @SwiftUI.Environment(\.layoutDirection) var direction
-    @SwiftUI.Environment(\.colorScheme) var colorScheme
+    @Environment(\.layoutDirection) var direction
+    @Environment(\.colorScheme) var colorScheme
 
     @ObservedObject var viewModel: ReaderDetailHeaderViewModel
 

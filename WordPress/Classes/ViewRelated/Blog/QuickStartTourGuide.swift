@@ -42,6 +42,13 @@ open class QuickStartTourGuide: NSObject {
         return tourState.tour.mustBeShownInBlogDetails
     }
 
+    private var shouldAutoComplete: Bool {
+        guard let element = currentElement() else {
+            return false
+        }
+        return element.autoCompleteDelay != .never
+    }
+
     @objc static let shared = QuickStartTourGuide()
 
     private override init() {}
@@ -292,7 +299,7 @@ open class QuickStartTourGuide: NSObject {
         }
         if element != currentElement {
             let blogDetailEvents: [QuickStartTourElement] = [.blogDetailNavigation, .checklist, .themes, .viewSite, .sharing, .siteMenu]
-            let readerElements: [QuickStartTourElement] = [.readerTab, .readerDiscoverSettings]
+            let readerElements: [QuickStartTourElement] = [.readerTab, .readerDiscoverSubscriptions]
 
             if blogDetailEvents.contains(element) {
                 endCurrentTour()
@@ -442,6 +449,15 @@ private extension QuickStartTourGuide {
             showStepNotice(waypoint.description)
         }
 
+        if shouldAutoComplete {
+            let element = waypoint.element
+            DispatchQueue.main.asyncAfter(deadline: .now() + element.autoCompleteDelay) {
+                if element == self.currentElement() {
+                    self.visited(element)
+                }
+            }
+        }
+
         let userInfo: [String: Any] = [
             QuickStartTourGuide.notificationElementKey: waypoint.element,
             QuickStartTourGuide.notificationDescriptionKey: waypoint.description
@@ -526,4 +542,19 @@ private struct TourState {
     var tour: QuickStartTour
     var blog: Blog
     var step: Int
+}
+
+extension QuickStartTourElement {
+
+    /// The delay to wait before auto completing the tour step. A value of `.never` means it will
+    /// not auto complete.
+    var autoCompleteDelay: DispatchTimeInterval {
+        switch self {
+        case .readerDiscoverSubscriptions:
+            return .seconds(5)
+        default:
+            return .never
+        }
+    }
+
 }

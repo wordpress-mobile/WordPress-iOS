@@ -6,12 +6,12 @@ enum FeatureFlag: Int, CaseIterable {
     case jetpackDisconnect
     case debugMenu
     case siteIconCreator
-    case statsNewInsights
     case betaSiteDesigns
     case commentModerationUpdate
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
+    case useURLSession
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -28,8 +28,6 @@ enum FeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting]
         case .siteIconCreator:
             return BuildConfiguration.current != .appStore
-        case .statsNewInsights:
-            return AppConfiguration.statsRevampV2Enabled
         case .betaSiteDesigns:
             return false
         case .commentModerationUpdate:
@@ -40,6 +38,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
+        case .useURLSession:
+            return BuildConfiguration.current != .appStore
         }
     }
 
@@ -70,8 +70,6 @@ extension FeatureFlag {
             return "Debug menu"
         case .siteIconCreator:
             return "Site Icon Creator"
-        case .statsNewInsights:
-            return "New Cards for Stats Insights"
         case .betaSiteDesigns:
             return "Fetch Beta Site Designs"
         case .commentModerationUpdate:
@@ -82,6 +80,8 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
+        case .useURLSession:
+            return "Use URLSession in WordPressKit (instead of Alamofire)"
         }
     }
 }

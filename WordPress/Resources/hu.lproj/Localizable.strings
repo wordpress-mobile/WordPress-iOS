@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: hu */
 
 /* Empty Post Title */
@@ -188,7 +188,8 @@
    Dismiss a view. Verb */
 "Dismiss" = "Elutasítás";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -271,8 +272,7 @@
 "Featured Image did not load" = "A kiemelt képet nem lehet betölteni";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Követés";
 
 /* Blog Followers
@@ -280,9 +280,7 @@
    Label for number of followers. */
 "Followers" = "Követők";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Követve";
 
 /* Alerts the user that wpcom account information is being retrieved. */
@@ -350,9 +348,6 @@
    Menu title to show the prompts feature introduction modal.
    Read more button title shown in alert announcing new Create Button feature. */
 "Learn more" = "Tovább";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Elértük a probálkozási korlátot. Próbáljuk újra 1 perc múlva. Ha az idő letelte előtt próbálkozunk, az csak a kitiltás idejét fogja növelni. Ha, úgy gondolod, hogy hiba történt, fordulj a Segítő csapatunkhoz.";
 
 /* Loading tags
    Loading tags.
@@ -698,7 +693,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Beállítások";
@@ -721,16 +715,11 @@
    Title for screen that show site title editor */
 "Site Title" = "Honlap neve";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Webhely címe";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "A honlap címnek legalább 4 karakternek kell lennie!";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Webhelyek";
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
@@ -855,9 +844,6 @@
    Notifications Today Section Header */
 "Today" = "Ma";
 
-/* Topics Filter Tab Title */
-"Topics" = "Témák";
-
 /* Retries an Action
    Retry
    Try Again. Action
@@ -970,9 +956,6 @@
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
 "Yesterday" = "Tegnap";
-
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Már követjük ezt az oldalt.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Ez az e-mail cím nem használható. Ugyanis, ennél a szolgáltatónál fennakadnak az általunk külödött levelek. Válasszunk másik e-mail szolgáltatót.";

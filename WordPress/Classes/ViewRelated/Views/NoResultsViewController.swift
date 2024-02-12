@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import Reachability
+import WordPressUI
 
 @objc protocol NoResultsViewControllerDelegate {
     @objc optional func actionButtonPressed()
@@ -27,7 +28,7 @@ import Reachability
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleTextView: UITextView!
     @IBOutlet weak var subtitleImageView: UIImageView!
-    @IBOutlet weak var actionButton: UIButton!
+    @IBOutlet weak var actionButton: FancyButton!
     @IBOutlet weak var accessoryView: UIView!
     @IBOutlet weak var accessoryStackView: UIStackView!
     @IBOutlet weak var labelStackView: UIStackView!

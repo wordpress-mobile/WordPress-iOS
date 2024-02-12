@@ -1,5 +1,6 @@
 import UIKit
 import WordPressKit
+import WordPressUI
 
 protocol BloggingRemindersFlowDelegate: AnyObject {
     func didSetUpBloggingReminders()

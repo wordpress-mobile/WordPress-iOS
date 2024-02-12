@@ -3,13 +3,18 @@ import UIKit
 class ReaderTabView: UIView {
 
     private let mainStackView: UIStackView
-    private let buttonsStackView: UIStackView
-    private let tabBar: FilterTabBar
-    private let filterButton: PostMetaButton
-    private let resetFilterButton: UIButton
-    private let horizontalDivider: UIView
+    private var mainStackViewTopAnchor: NSLayoutConstraint?
     private let containerView: UIView
-    private var loadingView: UIView?
+    private let buttonContainer: UIView
+    private lazy var navigationMenu: UIView = {
+        if !viewModel.itemsLoaded {
+            viewModel.fetchReaderMenu()
+        }
+        let view = UIView.embedSwiftUIView(ReaderNavigationMenu(viewModel: viewModel))
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    private var isMenuHidden = false
 
     private let viewModel: ReaderTabViewModel
 
@@ -17,39 +22,44 @@ class ReaderTabView: UIView {
     private var previouslySelectedIndex: Int = 0
 
     private var discoverIndex: Int? {
-        return tabBar.items.firstIndex(where: { ($0 as? ReaderTabItem)?.content.topicType == .discover })
+        return viewModel.tabItems.firstIndex(where: { $0.content.topicType == .discover })
     }
 
     private var p2Index: Int? {
-        return tabBar.items.firstIndex(where: { (($0 as? ReaderTabItem)?.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
+        return viewModel.tabItems.firstIndex(where: { ($0.content.topic as? ReaderTeamTopic)?.organizationID == SiteOrganizationType.p2.rawValue })
     }
 
     init(viewModel: ReaderTabViewModel) {
         mainStackView = UIStackView()
-        buttonsStackView = UIStackView()
-        tabBar = FilterTabBar()
-        filterButton = PostMetaButton(type: .custom)
-        resetFilterButton = UIButton(type: .custom)
-        horizontalDivider = UIView()
         containerView = UIView()
+        buttonContainer = UIView()
 
         self.viewModel = viewModel
 
         super.init(frame: .zero)
 
         viewModel.didSelectIndex = { [weak self] index in
-            self?.tabBar.setSelectedIndex(index)
-            self?.toggleButtonsView()
+            guard let self else {
+                return
+            }
+
+            if let existingFilter = filteredTabs.first(where: { $0.index == index }) {
+                if previouslySelectedIndex == discoverIndex {
+                    addContentToContainerView(index: index)
+                }
+                viewModel.setFilterContent(topic: existingFilter.topic)
+            } else {
+                addContentToContainerView(index: index)
+            }
+            previouslySelectedIndex = index
         }
 
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
-            self?.tabBar.items = tabItems
-            self?.tabBar.setSelectedIndex(index)
-            self?.configureTabBarElements()
-            self?.addContentToContainerView()
+            self?.addContentToContainerView(index: index)
         }
 
         setupViewElements()
+        viewModel.fetchReaderMenu()
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
@@ -65,81 +75,24 @@ class ReaderTabView: UIView {
 
 extension ReaderTabView {
 
-    /// Call this method to set the title of the filter button
-    private func setFilterButtonTitle(_ title: String) {
-        WPStyleGuide.applyReaderFilterButtonTitle(filterButton, title: title)
+    private func setupViewElements() {
+        backgroundColor = UIColor(light: .white, dark: .black)
+        setupButtonContainer()
+        setupMainStackView()
+        activateConstraints()
     }
 
-    private func setupViewElements() {
-        backgroundColor = .filterBarBackground
-        setupMainStackView()
-        setupTabBar()
-        setupButtonsView()
-        setupFilterButton()
-        setupResetFilterButton()
-        setupHorizontalDivider(horizontalDivider)
-        activateConstraints()
+    private func setupButtonContainer() {
+        buttonContainer.translatesAutoresizingMaskIntoConstraints = false
+        buttonContainer.addSubview(navigationMenu)
     }
 
     private func setupMainStackView() {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.axis = .vertical
+        addSubview(buttonContainer)
         addSubview(mainStackView)
-        mainStackView.addArrangedSubview(tabBar)
-        mainStackView.addArrangedSubview(buttonsStackView)
-        mainStackView.addArrangedSubview(horizontalDivider)
         mainStackView.addArrangedSubview(containerView)
-    }
-
-    private func setupTabBar() {
-        tabBar.tabBarHeight = Appearance.barHeight
-        WPStyleGuide.configureFilterTabBar(tabBar)
-        tabBar.addTarget(self, action: #selector(selectedTabDidChange(_:)), for: .valueChanged)
-        viewModel.fetchReaderMenu()
-    }
-
-    private func configureTabBarElements() {
-        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
-            return
-        }
-
-        previouslySelectedIndex = tabBar.selectedIndex
-        buttonsStackView.isHidden = tabItem.shouldHideButtonsView
-        horizontalDivider.isHidden = tabItem.shouldHideButtonsView
-    }
-
-    private func setupButtonsView() {
-        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
-        buttonsStackView.isLayoutMarginsRelativeArrangement = true
-        buttonsStackView.axis = .horizontal
-        buttonsStackView.alignment = .fill
-        buttonsStackView.addArrangedSubview(filterButton)
-        buttonsStackView.addArrangedSubview(resetFilterButton)
-        buttonsStackView.isHidden = true
-    }
-
-    private func setupFilterButton() {
-        filterButton.translatesAutoresizingMaskIntoConstraints = false
-        filterButton.contentEdgeInsets = Appearance.filterButtonInsets
-        filterButton.imageEdgeInsets = Appearance.filterButtonimageInsets
-        filterButton.titleEdgeInsets = Appearance.filterButtonTitleInsets
-        filterButton.contentHorizontalAlignment = .leading
-
-        filterButton.titleLabel?.font = Appearance.filterButtonFont
-        WPStyleGuide.applyReaderFilterButtonStyle(filterButton)
-        setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
-        filterButton.addTarget(self, action: #selector(didTapFilterButton), for: .touchUpInside)
-        filterButton.accessibilityIdentifier = Accessibility.filterButtonIdentifier
-    }
-
-    private func setupResetFilterButton() {
-        resetFilterButton.translatesAutoresizingMaskIntoConstraints = false
-        resetFilterButton.contentEdgeInsets = Appearance.resetButtonInsets
-        WPStyleGuide.applyReaderResetFilterButtonStyle(resetFilterButton)
-        resetFilterButton.addTarget(self, action: #selector(didTapResetFilterButton), for: .touchUpInside)
-        resetFilterButton.isHidden = true
-        resetFilterButton.accessibilityIdentifier = Accessibility.resetButtonIdentifier
-        resetFilterButton.accessibilityLabel = Accessibility.resetFilterButtonLabel
     }
 
     private func setupHorizontalDivider(_ divider: UIView) {
@@ -147,10 +100,14 @@ extension ReaderTabView {
         divider.backgroundColor = Appearance.dividerColor
     }
 
-    private func addContentToContainerView() {
+    private func addContentToContainerView(index: Int) {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildContentViewController(at: tabBar.selectedIndex) else {
+            let childController = viewModel.makeChildContentViewController(at: index) else {
                 return
+        }
+
+        if let childController = childController as? ReaderStreamViewController {
+            childController.navigationMenuDelegate = self
         }
 
         containerView.translatesAutoresizingMaskIntoConstraints = false
@@ -169,12 +126,20 @@ extension ReaderTabView {
     }
 
     private func activateConstraints() {
-        pinSubviewToAllEdges(mainStackView)
+        mainStackViewTopAnchor = mainStackView.topAnchor.constraint(equalTo: buttonContainer.bottomAnchor)
+        guard let mainStackViewTopAnchor else { return }
         NSLayoutConstraint.activate([
-            buttonsStackView.heightAnchor.constraint(equalToConstant: Appearance.barHeight),
-            resetFilterButton.widthAnchor.constraint(equalToConstant: Appearance.resetButtonWidth),
-            horizontalDivider.heightAnchor.constraint(equalToConstant: Appearance.dividerWidth),
-            horizontalDivider.widthAnchor.constraint(equalTo: mainStackView.widthAnchor)
+            navigationMenu.leadingAnchor.constraint(equalTo: buttonContainer.leadingAnchor, constant: 12.0),
+            navigationMenu.trailingAnchor.constraint(equalTo: buttonContainer.trailingAnchor, constant: -16.0),
+            navigationMenu.topAnchor.constraint(equalTo: buttonContainer.topAnchor, constant: 8.0),
+            navigationMenu.bottomAnchor.constraint(equalTo: buttonContainer.bottomAnchor, constant: -8.0),
+            buttonContainer.topAnchor.constraint(equalTo: safeTopAnchor),
+            buttonContainer.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            buttonContainer.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackViewTopAnchor,
+            mainStackView.trailingAnchor.constraint(equalTo: safeTrailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: safeLeadingAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: safeBottomAnchor),
         ])
     }
 
@@ -183,81 +148,27 @@ extension ReaderTabView {
             return
         }
 
-        let selectedIndex = self.tabBar.selectedIndex
+        let selectedIndex = viewModel.selectedIndex
 
         // Remove any filters for selected index, then add new filter to array.
         self.filteredTabs.removeAll(where: { $0.index == selectedIndex })
         self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
+    }
 
-        self.resetFilterButton.isHidden = false
-        self.setFilterButtonTitle(selectedTopic.title)
+    private func updateMenuDisplay(hidden: Bool) {
+        guard isMenuHidden != hidden else { return }
+
+        isMenuHidden = hidden
+        mainStackViewTopAnchor?.constant = hidden ? -buttonContainer.frame.height : 0
+        UIView.animate(withDuration: Appearance.hideShowBarDuration) {
+            self.layoutIfNeeded()
+        }
     }
 }
 
 // MARK: - Actions
 
 private extension ReaderTabView {
-
-    /// Tab bar
-    @objc func selectedTabDidChange(_ tabBar: FilterTabBar) {
-
-        // If the tab was previously filtered, refilter it.
-        // Otherwise reset the filter.
-        if let existingFilter = filteredTabs.first(where: { $0.index == tabBar.selectedIndex }) {
-
-            if previouslySelectedIndex == discoverIndex {
-                // Reset the container view to show a feed's content.
-                addContentToContainerView()
-            }
-
-            viewModel.setFilterContent(topic: existingFilter.topic)
-
-            resetFilterButton.isHidden = false
-            setFilterButtonTitle(existingFilter.topic.title)
-        } else {
-            addContentToContainerView()
-        }
-
-        previouslySelectedIndex = tabBar.selectedIndex
-
-        viewModel.showTab(at: tabBar.selectedIndex)
-        toggleButtonsView()
-    }
-
-    func toggleButtonsView() {
-        guard let tabItems = tabBar.items as? [ReaderTabItem] else {
-            return
-        }
-        // hide/show buttons depending on the selected tab. Do not execute the animation if not necessary.
-        guard buttonsStackView.isHidden != tabItems[tabBar.selectedIndex].shouldHideButtonsView else {
-            return
-        }
-        let shouldHideButtons = tabItems[self.tabBar.selectedIndex].shouldHideButtonsView
-        self.buttonsStackView.isHidden = shouldHideButtons
-        self.horizontalDivider.isHidden = shouldHideButtons
-    }
-
-    /// Filter button
-    @objc func didTapFilterButton() {
-        /// Present from the image view to align to the left hand side
-        viewModel.presentFilter(from: filterButton.imageView ?? filterButton) { [weak self] selectedTopic in
-            guard let self = self else {
-                return
-            }
-            self.applyFilter(for: selectedTopic)
-        }
-    }
-
-    /// Reset filter button
-    @objc func didTapResetFilterButton() {
-        filteredTabs.removeAll(where: { $0.index == tabBar.selectedIndex })
-        setFilterButtonTitle(Appearance.defaultFilterButtonTitle)
-        resetFilterButton.isHidden = true
-        guard let tabItem = tabBar.currentlySelectedItem as? ReaderTabItem else {
-            return
-        }
-        viewModel.resetFilter(selectedItem: tabItem)
-    }
 
     @objc func topicUnfollowed(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo,
@@ -267,11 +178,6 @@ private extension ReaderTabView {
         }
 
         filteredTabs.removeAll(where: { $0 == existingFilter })
-
-        if existingFilter.index == tabBar.selectedIndex {
-            didTapResetFilterButton()
-        }
-
     }
 
     @objc func siteFollowed(_ notification: Foundation.Notification) {
@@ -295,27 +201,52 @@ private extension ReaderTabView {
 
     enum Appearance {
         static let barHeight: CGFloat = 48
-
-        static let defaultFilterButtonTitle = NSLocalizedString("Filter", comment: "Title of the filter button in the Reader")
-        static let filterButtonFont = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .regular)
-        static let filterButtonInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        static let filterButtonimageInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
-        static let filterButtonTitleInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
-
-        static let resetButtonWidth: CGFloat = 32
-        static let resetButtonInsets = UIEdgeInsets(top: 1, left: -4, bottom: -1, right: 4)
-
-        static let dividerWidth: CGFloat = .hairlineBorderWidth
         static let dividerColor: UIColor = .divider
+        static let hideShowBarDuration: CGFloat = 0.2
     }
 }
 
-// MARK: - Accessibility
+// MARK: - ReaderNavigationMenuDelegate
 
-extension ReaderTabView {
-    private enum Accessibility {
-        static let filterButtonIdentifier = "ReaderFilterButton"
-        static let resetButtonIdentifier = "ReaderResetButton"
-        static let resetFilterButtonLabel = NSLocalizedString("Reset filter", comment: "Accessibility label for the reset filter button in the reader.")
+extension ReaderTabView: ReaderNavigationMenuDelegate {
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint) {
+        let isContentOffsetNearTop = scrollView.contentOffset.y < scrollView.frame.height / 2
+        let isUserScrollingDown = velocity.y < -400
+        let isUserScrollingUp = velocity.y > 400
+
+        if !isMenuHidden && !isContentOffsetNearTop && isUserScrollingDown {
+            updateMenuDisplay(hidden: true)
+        }
+
+        if isMenuHidden && isUserScrollingUp {
+            updateMenuDisplay(hidden: false)
+        }
+
+        // Accounts for a user scrolling slowly enough to not trigger displaying the menu near the top of the content
+        if isMenuHidden && isContentOffsetNearTop && velocity.y > 0 {
+            updateMenuDisplay(hidden: false)
+        }
+
     }
+
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let isTargetContentNearTop = targetContentOffset.pointee.y < scrollView.frame.height / 2
+
+        // Accounts for the case where a user quickly swipes the scroll view without holding their
+        // finger on it.
+        // Note: velocity here is opposite of the velocity in `scrollViewDidScroll`. Positive values
+        // are scrolling down. The scale is also much different.
+        if !isMenuHidden && !isTargetContentNearTop && velocity.y > 0.5 {
+            updateMenuDisplay(hidden: true)
+        }
+    }
+
+    func didTapDiscoverBlogs() {
+        guard let discoverIndex else {
+            return
+        }
+        viewModel.showTab(at: discoverIndex)
+    }
+
 }

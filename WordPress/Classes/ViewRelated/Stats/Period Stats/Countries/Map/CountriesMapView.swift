@@ -1,5 +1,6 @@
 import FSInteractiveMap
 import WordPressShared
+import WordPressUI
 
 class CountriesMapView: UIView, NibLoadable {
     private var map = FSInteractiveMapView(frame: CGRect(x: 0, y: 0, width: 335, height: 224))

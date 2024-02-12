@@ -276,6 +276,7 @@ private extension ReaderPostCardCell {
         postTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         postTitleLabel.font = .preferredFont(forTextStyle: .title3).semibold()
         postTitleLabel.numberOfLines = 2
+        postTitleLabel.setContentCompressionResistancePriority(.defaultHigh + 2, for: .vertical)
         contentStackView.addArrangedSubview(postTitleLabel)
     }
 
@@ -283,6 +284,7 @@ private extension ReaderPostCardCell {
         postSummaryLabel.translatesAutoresizingMaskIntoConstraints = false
         postSummaryLabel.font = .preferredFont(forTextStyle: .footnote)
         postSummaryLabel.numberOfLines = 3
+        postSummaryLabel.setContentCompressionResistancePriority(.defaultHigh + 1, for: .vertical)
         contentStackView.addArrangedSubview(postSummaryLabel)
     }
 

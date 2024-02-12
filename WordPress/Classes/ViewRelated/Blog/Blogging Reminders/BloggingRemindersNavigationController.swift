@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol ChildDrawerPositionable {
     var preferredDrawerPosition: DrawerPosition { get }

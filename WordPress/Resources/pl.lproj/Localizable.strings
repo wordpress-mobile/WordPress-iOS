@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-25 07:12:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: pl */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -28,9 +28,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dni";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ śledzących";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ poziomów";
@@ -40,9 +37,6 @@
 
 /* Accessibility label for value in millions. Ex: 66.6 million. */
 "%@ million" = "%@ million";
-
-/* Plan yearly price */
-"%@ per year" = "%@ rocznie";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ biliard";
@@ -159,26 +153,14 @@
 /* No comment provided by engineer. */
 "Add To End" = "Dodaj na końcu";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Dodaj temat";
-
 /* The title on the add category screen */
 "Add a Category" = "Dodaj kategorię";
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Dodaj zdjęcie profilowe";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Dodaj temat";
-
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Dodaj domenę";
-
-/* No Tags View Button Label */
-"Add a site" = "Utwórz witrynę";
-
-/* No Topics View Button Label */
-"Add a topic" = "Dodaj temat";
 
 /* Add self-hosted site button */
 "Add self-hosted site" = "Dodaj stronę z własnym hostingiem";
@@ -360,9 +342,6 @@
 
 /* No comment provided by engineer. */
 "Block settings" = "Ustawienia bloku";
-
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Zablokuj witrynę";
 
 /* Blocklist Title
    Settings: Comments Blocklist */
@@ -719,9 +698,6 @@
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Nie można było sprawdzić zakupów.";
 
-/* Title of a prompt. */
-"Could not follow site" = "Nie można było utworzyć witryny";
-
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Nie udało się włączyć obserwowania: brak atrybutu blogURL";
 
@@ -911,7 +887,8 @@
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domeny";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1129,9 +1106,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Pobieranie wpisów…";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Pobieranie witryn…";
 
 /* Label for list of file downloads. */
@@ -1142,9 +1117,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film i telewizja";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtruj";
 
 /* Finance site intent topic */
 "Finance" = "Finanse";
@@ -1167,18 +1139,13 @@
 "Fitness & Exercise" = "Fitness i ćwiczenia";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Obserwuj";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Obserwuj konwersację";
 
-/* Verb. An option to follow a site. */
-"Follow site" = "Obserwuj witrynę";
-
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Obserwowane witryny";
 
@@ -1187,13 +1154,8 @@
    Label for number of followers. */
 "Followers" = "Obserwujący";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Obserwujesz";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Śledź tag.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Wielkość liter";
@@ -1559,12 +1521,8 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Polubienia";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Przekroczono limit. Możesz spróbować ponownie za minutę. Próba przed upływem czasu tylko zwiększy czas oczekiwania. Jeżeli uważasz że jest błąd, skontaktuj się ze wsparciem technicznym.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1656,9 +1614,6 @@
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Zarządzaj";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Zarządzaj witrynami";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Zarządzanie witryny";
@@ -2156,9 +2111,6 @@
 /* No comment provided by engineer. */
 "Preview post" = "Podgląd wpisu";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Poprzedni miesiąc";
-
 /* Label for the privacy setting
    Privacy settings section header */
 "Privacy" = "Prywatność";
@@ -2333,9 +2285,6 @@
 /* Settings: Comments Approval settings */
 "Require users to log in" = "Wymagaj od użytkowników zalogowania się";
 
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Resetuj filtr";
-
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Resetuj hasło";
 
@@ -2485,7 +2434,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Ustawienia";
@@ -2566,8 +2514,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for screen that show site title editor */
 "Site Title" = "Tytuł witryny";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Adres URL witryny";
 
 /* Accessibility label of the site address field shown when adding a self-hosted site. */
@@ -2584,13 +2531,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Tytuł witryny został zmieniony";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Witryny";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Witryny (%lu)";
 
 /* Button that allows the user to skip the prompt and be brought to the app
    Continue without making a selection
@@ -2859,9 +2799,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* A description informing the user in order to proceed with this feature we will need camera permissions, and how to enable it. */
 "This app needs permission to access the Camera to scan login codes, tap on the Open Settings button to enable it." = "Aplikacja potrzebuje pozwolenia na dostęp do aparatu w celu skanowania kodów logowania. Dotknij przycisku Otwórz ustawienia, aby go włączyć.";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Ta witryna jeszcze niczego nie opublikowała. Spróbuj ponownie później.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Powyższy element zostanie dodany gdy ktoś udostępni przy pomocy przycisku udostępniania w serwisie Twitter";
@@ -2902,9 +2839,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
-
-/* Topics Filter Tab Title */
-"Topics" = "Tematy";
 
 /* Insights 'Total Followers' header */
 "Total Followers" = "Całkowita liczba obserwujących";
@@ -2985,12 +2919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label for underline button on formatting toolbar.
    Discoverability title for underline formatting keyboard shortcut. */
 "Underline" = "Podkreślenie";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Przestań obserwować";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Przestań obserwować %@";
 
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Przestań obserwować konwersację";
@@ -3232,9 +3160,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Opens the What's New / Feature Announcement modal */
 "What's New in WordPress" = "Co nowego w WordPressie";
 
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Jeśli zaczniesz śledzić witryny, zobaczysz ich treść tutaj.";
-
 /* Help text when editing email address */
 "Will not be publicly displayed." = "Nie zostanie publicznie wyświetlony.";
 
@@ -3300,12 +3225,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
 "Yesterday" = "Wczoraj";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Można obserwować wpisy na konkretnej witrynie, dodając znacznik.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Można obserwować wpisy lub określony temat, dodając znacznik.";
 
 /* A text for subtitle label on Login epilogue screen */
 "You can switch sites at any time." = "Można przełączyć się pomiędzy witrynami w dowolnym momencie.";

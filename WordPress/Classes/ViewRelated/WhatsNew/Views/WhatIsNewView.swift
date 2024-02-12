@@ -1,3 +1,4 @@
+import WordPressUI
 
 /// Labels and button titles
 struct WhatIsNewViewTitles {

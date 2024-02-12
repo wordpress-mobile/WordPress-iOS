@@ -5,6 +5,7 @@ import CocoaLumberjack
 import WordPressShared
 import wpxmlrpc
 import WordPressFlux
+import WordPressUI
 
 class AbstractPostListViewController: UIViewController,
                                       WPContentSyncHelperDelegate,

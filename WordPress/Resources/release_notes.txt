@@ -1,16 +1,1 @@
-* [*] Block Editor: Fix missing custom color indicator for custom gradients [https://github.com/WordPress/gutenberg/pull/57605]
-* [**] Block Editor: Display a notice when a network connection is unavailable [https://github.com/WordPress/gutenberg/pull/56934]
-* [**] Block Editor: Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
-* [**] Image block media uploads display a custom error message when there is no internet connection [https://github.com/wordpress-mobile/WordPress-iOS/pull/22282]
-* [**] Improve media previews on long-press: load higher-resolution thumbnails and increase the preview size, add support for GIFs and video playback, enable for documents and other files [#22274]
-* [*] Add prefetching to Site Media details screen [#22292]
-* [*] Allow trashing draft and scheduled posts with no confirmation [#22337]
-* [*] Add "Share" action to the site context menu [#22298]
-* [*] Update the post "Publish" context action for Contributors to  "Submit for Review" instead of "Publish" [#22358]
-* [**] Add a pre-publishing sheet to the "Publish" flow invoked from the post context menu as a replacement for a simple confirmation sheet [#22358]
-* [**] Block Editor: Media uploads that failed due to lack of internet connectivity automatically retry once a connection is re-established [https://github.com/wordpress-mobile/WordPress-iOS/pull/22238]
-* [**] Block Editor: Manually retrying a single failed media upload will retry all failed media uploads in a post [https://github.com/wordpress-mobile/WordPress-iOS/pull/22240]
-* [*] [internal] Drop iOS 14 Support: Remove deprecated UIDocumentPickerViewController API [#22286]
-* [***] [internal] Refactor WP.com sign in API requests [#22421]
-* [*] Add In-App Feedback Prompt. [#22050]
-
+We fixed an issue that made images and other media “blink” while being uploaded. Presto, no more disappearing act.

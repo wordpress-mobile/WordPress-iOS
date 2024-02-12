@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -37,18 +37,12 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dní";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ odberateľov";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ úrovní";
 
 /* Number of Links */
 "%@ links" = "%@ odkazov";
-
-/* Plan yearly price */
-"%@ per year" = "%@ ročne";
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ bol znova pripojený.";
@@ -493,9 +487,6 @@
 /* Jetpack Settings: Block malicious login attempts */
 "Block malicious login attempts" = "Zablokovať škodlivé pokusy o prihlásenie";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blokovať túto webovú stránku";
-
 /* Blocklist Title
    Settings: Comments Blocklist */
 "Blocklist" = "Blacklist";
@@ -882,9 +873,6 @@
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Nepodarilo sa zistiť nákupy na webe.";
 
-/* Title of a prompt. */
-"Could not follow site" = "Nepodarilo sa sledovať webovú stránku";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Nepodarilo sa sledovať webovú stránku na určenej adrese.";
 
@@ -896,9 +884,6 @@
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Nebolo možné stlačiť Sledovať: chýbajúca URL adresa blogu ";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Nepodarilo sa prestať sledovať webovú stránku.";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Nepodarilo sa zrušiť sledovanie webovej stránky na určenej adrese.";
@@ -1094,9 +1079,6 @@
 /* Explanatory text for the user. The `%@` is a placeholder for the name of a third-party sharing service. */
 "Disconnecting this account means published posts will no longer be automatically shared to %@" = "Odpojenie tohto účtu znamená, že zverejnené články viac nebudú automaticky zdieľané s %@";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Objavte webové stránky";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Diskusia";
@@ -1121,7 +1103,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Ešte nemáš účet? _Zaregistruj sa_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1228,12 +1211,8 @@
 "Empty URL" = "Prázdny URL odkaz";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Povoliť";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Povoliť upozornenia stránky?";
 
 /* Enter a custom value */
 "Enter a custom value" = "Zadať vlastnú hodnotu";
@@ -1244,9 +1223,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Vložte heslo";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Zadajte URL adresu webu pre sledovanie";
 
 /* Instructional text shown when requesting the user's password for login. */
 "Enter the password for your WordPress.com account." = "Zadajte heslo pre svoj účet WordPress.com.";
@@ -1392,9 +1368,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Načítavajú sa články...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Stránka sa načítava...";
 
 /* Label for the file name for a media asset (image / video) */
@@ -1403,32 +1377,18 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Typ súboru";
 
-/* Title of the filter button in the Reader */
-"Filter" = "Filter";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
 "First Name" = "Krstné meno";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Odoberať";
 
-/* Verb. An option to follow a site. */
-"Follow site" = "Sledovať webovú stránku";
-
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Stránky, ktoré sledujete";
-
-/* Followed Topics Title */
-"Followed Topics" = "Sledované témy";
-
-/* User followed a site. */
-"Followed site" = "Sledované";
 
 /* Label for list of followers.
    User role badge */
@@ -1439,9 +1399,7 @@
    Label for number of followers. */
 "Followers" = "Odberatelia";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Nasledujúce";
 
 /* Filters Follows Notifications */
@@ -1489,9 +1447,6 @@
 
 /* Cancel */
 "Give Up" = "Vzdať sa";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Prejsť na nasledujúce";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Prejsť na čítačku";
@@ -1819,7 +1774,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
 
@@ -1831,9 +1785,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Komentár sa páči.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Prekročili ste limit. Môžete to skúsiť znova o 1 minútu. Ak to skúsite skôr, iba to zvýši čas, ktorý musíte čakať pred zrušením zákazu. Ak ide o chybu, kontaktujte podporu.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1897,9 +1848,6 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Načítava sa vysielanie...";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Načítavanie užívateľských mien";
 
 /* Loading tags
    Loading tags.
@@ -1978,9 +1926,6 @@
    Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Spravovať pripojenie";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Spravovať weby";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Spravovať stránku";
@@ -2223,9 +2168,6 @@
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "Nenašlo sa spojenie pre %@";
 
-/* Title for the no followed sites result screen */
-"No followed sites" = "Žiadne sledované webové stránky";
-
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Zatiaľ žiadny nasledovatelia ";
 
@@ -2270,12 +2212,6 @@
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Žiadne uložené články";
-
-/* A message title */
-"No sites found" = "Neboli nájdené žiadne webové stránky";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Neboli nájdené žiadne webové stránky zodpovedajúce %@ vo vašom jazyku.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Žiadne značky nezodpovedajú vyhľadávaniu";
@@ -2718,9 +2654,6 @@
    Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
 "Private" = "Súkromné";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problém s načítavaním stránok";
-
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "Proces odstráni všetky údaje WordPress.com z tohto zariadenia a zmaže všetky uložené koncepty. Neprídete o nič, čo ste už uložili na blogu WordPress.com.";
 
@@ -2809,9 +2742,6 @@
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Posledné týždne";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Tu sa zobrazia najnovšie články z blogov a webových stránok, ktoré sledujete.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Príjemca";
@@ -2929,9 +2859,6 @@
 
 /* Title of secondary button on alert prompting verify their accounts while attempting to publish */
 "Resend" = "Znovu odoslať";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Resetovať filtre";
 
 /* Screen title. Resize and crop an image. */
 "Resize & Crop" = "Upraviť veľkosť a orezať";
@@ -3154,7 +3081,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Nastavenia";
@@ -3282,10 +3208,6 @@
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Stránka nebola nájdená";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Webové stránky";
 
 /* Image size option title. */
 "Size" = "Veľkosť";
@@ -3582,9 +3504,6 @@
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internetové pripojenie vyzerá nedostupné.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Položku sa nepodarilo pridať do Knižnice médií.";
-
 /* Footer Text displayed in Blog Language Settings View */
 "The language in which this site is primarily written." = "Jazyk v ktorom je tento web primárne napísaný.";
 
@@ -3600,9 +3519,6 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Server vrátil prázdnu odpoveď. Obvykle to znamená, že potrebujete zvýšiť obmedzenie pamäte pre vašu webovú stránku.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Webová stránka %@ sa už vo vašej čítačke neobjaví. Ťuknutím zrušte.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Adresa webovej stránky musí byť kratšia ako 64 znakov.";
 
@@ -3614,9 +3530,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Webová stránka sa nedá exportovať.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Webové stránky na tomto zozname v poslednom čase nič nepublikovali.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Slug je verzia nadpisu článku, ktorá je v URL za lomítkom.";
@@ -3751,9 +3664,6 @@
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Článok sa nenachádza medzi \"Páči sa mi to\" ";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Na tejto webovej stránke sa zatiaľ nič nepublikovalo. Skúste to neskôr.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Toto bude zahrnuté v tweetoch, ktoré budú ľudia zdieľať pomocou Twitter tlačidla.";
@@ -3886,12 +3796,6 @@
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Skúste s adresou webovej stránky";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Vypnúť upozornenia stránky";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Zapnúť upozornenia stránky";
-
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -3944,9 +3848,6 @@
 "Unable to update homepage settings" = "Nie je možné aktualizovať nastavenia domovskej stránky";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Nepodarilo sa nahrať 1 koncept príspevku";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nepodarilo sa nahrať 1 článok";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -3984,16 +3885,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "Zrušiť";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Zrušiť sledovanie";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Zrušiť sledovanie webovej stránky";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Sledovanie webovej stránky zrušené";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Prestať sledovať tento blog.";
@@ -4306,9 +4197,6 @@
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokiaľ komentár obsahuje akékoľvek z týchto slov vo svojom obsahu, mene, URL, e-mailu, alebo IP, bude označený ako spam. Môžete taktiež zadať časti slov, takže napríklad podmienke \"press\" bude odpovedať \"WordPress\".";
 
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Keď sledujete webové stránky, ich obsah uvidíte tu.";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "V prípade, že spravíte zmeny na webovej stránke, uvidíte ich v histórii aktivít.";
 
@@ -4417,9 +4305,6 @@
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
 "Yesterday" = "Včera";
-
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Už sledujete túto webovú stránku.";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "Momentálne nahrávate súbory. Prosím počkajte pokiaľ sa proces dokončí.";

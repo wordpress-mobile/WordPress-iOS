@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -19,18 +19,12 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dias";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ seguidores";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ níveis";
 
 /* Number of Links */
 "%@ links" = "%@ ligações";
-
-/* Plan yearly price */
-"%@ per year" = "%@ por ano";
 
 /* The number of connected accounts on a third party sharing service connected to the user's blog. The '%d' is a placeholder for the number of accounts. */
 "%d accounts" = "%d contas";
@@ -149,9 +143,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Adicionar uma foto de perfil";
-
-/* No Tags View Button Label */
-"Add a site" = "Adicionar site";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Adicione texto alternativo (alt)";
@@ -662,14 +653,8 @@
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Não foi possível verificar compras no site.";
 
-/* Title of a prompt. */
-"Could not follow site" = "Não foi possível seguir o site";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Não foi possível seguir o site no endereço especificado.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Não foi possível deixar de seguir o site";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Não foi possível deixar de seguir o site no endereço especificado. ";
@@ -855,7 +840,8 @@
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Domínios";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -948,9 +934,6 @@
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Insira a senha";
 
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Insira o URL de um site para seguir ";
-
 /* Instructional text shown when requesting the user's password for login. */
 "Enter the password for your WordPress.com account." = "Insira a senha da sua conta WordPress.com.";
 
@@ -1028,9 +1011,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "A obter conteúdos...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "A obter sites...";
 
 /* Label for the file name for a media asset (image / video) */
@@ -1045,20 +1026,12 @@
 "First Name" = "Nome";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Seguir";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Sites seguidos";
-
-/* Followed Topics Title */
-"Followed Topics" = "Tópicos seguidos";
-
-/* User followed a site. */
-"Followed site" = "Site seguido";
 
 /* Label for list of followers.
    User role badge */
@@ -1069,9 +1042,7 @@
    Label for number of followers. */
 "Followers" = "Seguidores";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "A seguir";
 
 /* Filters Follows Notifications */
@@ -1351,7 +1322,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Gostos";
 
@@ -1363,9 +1333,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Gosta do comentário.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limite atingido. Pode tentar novamente dentro de 1 minuto. Se tentar novamente antes o tempo de espera vai aumentar. Se acha que está a ver esta mensagem por engano, por favor contacte o suporte.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1480,9 +1447,6 @@
    Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Gerir ligação";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Gerir sites";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Gerir site";
@@ -2084,9 +2048,6 @@
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Semanas recentes";
 
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Mostrar artigos relacionados";
-
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Destinatário";
 
@@ -2301,7 +2262,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Opções";
@@ -2373,8 +2333,7 @@
    Title for screen that show site title editor */
 "Site Title" = "Título do site";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL do site";
 
 /* No comment provided by engineer. */
@@ -2388,10 +2347,6 @@
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site não encontrado";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Sites";
 
 /* Image size option title. */
 "Size" = "Tamanho";
@@ -2603,9 +2558,6 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "O servidor devolveu uma resposta em branco. Isto geralmente significa que é preciso aumentar o limite de memória no seu site.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "O site %@ não aparecerá mais no seu leitor. Toque para anular.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "O endereço do site deve ter menos de 64 caracteres.";
 
@@ -2617,9 +2569,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Não foi possível exportar o site.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Os sites nesta lista não publicaram nada recentemente.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "O URL personalizado para o título do artigo.";
@@ -2683,9 +2632,6 @@
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este item multimédia foi eliminado.";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Este site ainda não publicou nada. Por favor volte mais tarde.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "É incluido no tweet quando os seus artigos são partilhados com o botão do Twitter.";
@@ -2737,9 +2683,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Tópico";
-
-/* Topics Filter Tab Title */
-"Topics" = "Tópicos";
 
 /* Label for total followers */
 "Total" = "Total";
@@ -2853,13 +2796,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "Anular";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Deixar de seguir";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Deixou de seguir o site";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Mostrar";
@@ -3145,9 +3081,6 @@
 /* Comments Yesterday Section Header
    Notifications Yesterday Section Header */
 "Yesterday" = "Ontem";
-
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Já está a seguir este site.";
 
 /* This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete. */
 "You are currently uploading media. Please wait until this completes." = "Está a carregar multimédia. Por favor aguarde até estar concluído.";

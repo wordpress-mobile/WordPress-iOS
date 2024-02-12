@@ -3,7 +3,7 @@ import SwiftUI
 struct StoreSandboxSecretScreen: View {
     private static let storeSandboxSecretKey = "store_sandbox"
 
-    @SwiftUI.Environment(\.presentationMode) var presentationMode
+    @Environment(\.presentationMode) var presentationMode
     @State private var secret: String
     private let cookieJar: CookieJar
 

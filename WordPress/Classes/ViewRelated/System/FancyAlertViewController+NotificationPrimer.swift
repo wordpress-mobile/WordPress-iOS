@@ -1,3 +1,5 @@
+import WordPressUI
+
 extension FancyAlertViewController {
     private struct Strings {
         static let firstAlertTitleText = NSLocalizedString("Stay in the loop", comment: "Title of the first alert preparing users to grant permission for us to send them push notifications.")

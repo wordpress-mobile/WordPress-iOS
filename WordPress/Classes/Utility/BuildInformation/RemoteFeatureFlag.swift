@@ -26,6 +26,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case wordPressSotWCard
     case inAppRating
     case statsTrafficTab
+    case siteMonitoring
 
     var defaultValue: Bool {
         switch self {
@@ -76,6 +77,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .inAppRating:
             return false
         case .statsTrafficTab:
+            return false
+        case .siteMonitoring:
             return false
         }
     }
@@ -131,6 +134,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "in_app_rating_and_feedback"
         case .statsTrafficTab:
             return "stats_traffic_tab"
+        case .siteMonitoring:
+            return "site_monitoring"
         }
     }
 
@@ -184,6 +189,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "In-App Rating and Feedback"
         case .statsTrafficTab:
             return "Stats Traffic Tab"
+        case .siteMonitoring:
+            return "Site Monitoring"
         }
     }
 

@@ -259,7 +259,7 @@ NSErrorDomain const MediaServiceErrorDomain = @"MediaServiceErrorDomain";
                     overallSuccess();
                 } else if (failure && failedOperations == totalOperations.unsignedIntegerValue) {
                     NSError *error = [NSError errorWithDomain:WordPressComRestApiErrorDomain
-                                                         code:WordPressComRestApiErrorUnknown
+                                                         code:WordPressComRestApiErrorCodeUnknown
                                                      userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"An error occurred when attempting to attach uploaded media to the post.", @"Error recorded when all of the media associated with a post fail to be attached to the post on the server.")}];
                     failure(error);
                 }

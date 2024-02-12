@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-08 17:56:46+0000 */
+/* Translation-Revision-Date: 2024-02-09 00:31:50+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ zile";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ urmăritori";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ nivele";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ din %2$@ folosiți pe site-ul tău";
-
-/* Plan yearly price */
-"%@ per year" = "%@ pe an";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ cvadrilioane";
@@ -483,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Adaugă la sfârșit";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Adaugă un subiect";
-
 /* No comment provided by engineer. */
 "Add URL" = "Adaugă URL";
 
@@ -494,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Adaugă o fotografie de profil";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Adaugă un subiect";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Adaugă un domeniu";
@@ -510,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Adaugă un scurtcod...";
 
-/* No Tags View Button Label */
-"Add a site" = "Adaugă un site";
-
-/* No Topics View Button Label */
-"Add a topic" = "Adaugă un subiect";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Adaugă o imagine pentru cont.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Adaugă text alternativ";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Adaugă orice subiect";
 
 /* No comment provided by engineer. */
 "Add audio" = "Adaugă audio";
@@ -1110,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Setări blocuri";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blochează acest site";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Bloc negrupat";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Site-ul este blocat";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Utilizatorul este blocat";
@@ -1521,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Alege videoul";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Alege subiecte";
-
 /* Register Domain - Address information field City */
 "City" = "Localitate";
 
@@ -1896,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Nu am putut activa notificările";
 
-/* Title of a prompt. */
-"Could not follow site" = "Nu am putut urmări site-ul";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Nu am putut urmări site-ul la adresa specificată.";
 
@@ -1922,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Nu am putut comuta la Văzut: lipsește postID.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Nu am putut anula urmărirea site-ului";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Nu am putut să anulez urmărirea site-ului la adresa specificată.";
@@ -2323,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Descoperă";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Descoperă site-uri";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Descoperă și urmărește blogurile care îți plac";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Descoperă și urmărește site-urile care te inspiră.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Găsește mai multe subiecte";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2374,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Nu ai un cont? _Sign up_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2680,7 +2639,6 @@
 "Empty URL" = "URL gol";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Activează";
 
@@ -2704,9 +2662,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Activează notificările în aplicație";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Activezi notificările pe site?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Activează statistici site pentru a vedea informații detaliate despre trafic, aprecieri, comentarii și abonați.";
@@ -2735,9 +2690,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Introdu parola";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Introdu URL-ul unui site pentru a-l urmări";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -3001,9 +2953,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Extrag articolele...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Aduc site-uri...";
 
 /* Label for the posting activity legend. */
@@ -3029,9 +2979,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film și televiziune";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtrează";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filtrează după tipul de activitate";
@@ -3072,8 +3019,7 @@
 "Fixing Threats" = "Înlătur amenințările...";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Urmărire";
 
 /* Button title. Follow the comments on a post. */
@@ -3081,9 +3027,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Urmărește conversația";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Urmărește site-ul";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Urmărește subiecte";
@@ -3095,15 +3038,8 @@
 "Follow your favorite sites and discover new blogs." = "Urmărește-ți site-urile preferate și descoperi bloguri noi.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Site-uri urmărite";
-
-/* Followed Topics Title */
-"Followed Topics" = "Subiect urmărit";
-
-/* User followed a site. */
-"Followed site" = "Urmăresc site-ul";
 
 /* Label for list of followers.
    User role badge */
@@ -3114,13 +3050,8 @@
    Label for number of followers. */
 "Followers" = "Urmăritori";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Urmăresc";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Urmăresc %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Urmăresc subiecte noi...";
@@ -3133,9 +3064,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Urmărește blogul.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Urmărește eticheta.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Dimensiune font";
@@ -3284,9 +3212,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Du-te la urmărire";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Du-te la Cititor";
@@ -3957,7 +3882,7 @@
    Like a post.
    Likes a Comment
    Text for the 'like' button. Tapping marks a post in the reader as 'liked'. */
-"Like" = "Apreciere";
+"Like" = "Apreciază";
 
 /* A comment is marked as liked */
 "Liked" = "Plăcut";
@@ -3966,7 +3891,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Plăcute";
 
@@ -3978,9 +3902,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Apreciază comentariul.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "S-a atins limita. Poți încerca din nou peste un minut. A încerca înainte de acesta nu va face decât să mărească timpul pe care trebuie să-l aștepți ca blocajul să fie ridicat. Dacă crezi că aceasta este o eroare, contactează suportul.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Diagramă cu linii care prezintă vizualizările în perspective.";
@@ -4089,9 +4010,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Încarc editorul de blocuri.";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Încarc nume de utilizatori";
 
 /* Loading tags
    Loading tags.
@@ -4204,9 +4122,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Administrează Perspective";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Administrează site-urile";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Administrează site-ul";
@@ -4385,9 +4300,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Mai multe opțiuni de suport";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Cea mai populară oră";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Mută %@";
@@ -4576,9 +4488,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Pașii următori";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Luna viitoare";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Notificare următoare";
 
@@ -4630,9 +4539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Nicio aplicație nu poate gestiona această cerere. Te rog instalează un navigator web.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Indisponibilă pentru site-urile WordPress.com";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Nu se potrivește nicio adresă disponibilă cu căutarea ta";
 
@@ -4676,9 +4582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Nicio amenințare înlăturată";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Niciun site urmărit";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Niciun urmăritor până acum";
@@ -4727,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Nu trebuie să aștepți aici. Te vom anunța când site-ul a fost restaurat în totalitate.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Nu sunt subiecte noi de urmărit";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Nicio notificare până acum";
 
@@ -4760,9 +4660,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "Nu este disponibilă nicio previzualizare";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Nu am găsit nicio adresă principală pentru site";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Niciun îndemn încă";
 
@@ -4774,12 +4671,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Nu ai salvat niciun articol";
-
-/* A message title */
-"No sites found" = "Nu am găsit niciun site";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Nu am găsit niciun site care să se potrivească cu %@ în limba ta.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Nu s-a potrivit nicio etichetă cu căutarea ta";
@@ -4954,9 +4845,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "După ce te familiarizezi cu numele blocurilor, poți adăuga un bloc tastând mai întâi un slash (o bară oblică) și apoi numele blocului - de exemplu, \/imagine sau \/subtitlu.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "După ce ai creat un site WordPress.com, poți republica un conținut care îți place pe propriul site.";
 
 /* No comment provided by engineer. */
 "One" = "Una";
@@ -5526,9 +5414,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Previzualizează site-ul pentru a vedea cum apare pentru vizitatori.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Luna trecută";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Notificare anterioară";
 
@@ -5568,9 +5453,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problemă la încărcarea conținutului";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problemă la încărcarea site-urilor";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problemă la deschiderea fișierul audio";
@@ -5708,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Ultimele săptămâni";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Aici vor apărea articole recente din blogurile și site-urile pe care le urmărești.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Destinatar";
@@ -5918,9 +5797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Resetează filtrul pentru interval de timp";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Resetează filtrul";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Resetează-ți parola";
@@ -6394,7 +6270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Setări";
@@ -6530,9 +6405,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Arată conținutul articolului";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Arată articolele site-ului.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Înregistrare";
 
@@ -6587,8 +6459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Subiect site";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "URL site";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6620,16 +6491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Titlul site-ului a fost modificat cu succes";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Site-uri";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Site-uri (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Site-uri de urmărit";
 
 /* Image size option title. */
 "Size" = "Mărime";
@@ -7161,9 +7022,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Conexiunea la internet pare să fie decuplată.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Elementul nu a putut fi adăugat în biblioteca Media.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Tipurile de site care pot fi create";
 
@@ -7203,9 +7061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Serverul a returnat un răspuns gol. De obicei, asta înseamnă că trebuie să mărești limita de memorie pentru site-ul tău.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Site-ul %@ nu va mai apare în Cititor. Atinge pentru a reveni.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Adresa site-ului trebuie să aibă maxim 64 de caractere.";
 
@@ -7221,9 +7076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Site-ul nu a putut fi exportat.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Site-urile din această listă nu au publicat nimic recent.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Descriptorul este versiunea prietenoasă a URL-ului pentru titlul articolului.";
@@ -7434,9 +7286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Acest articol nu este în Aprecierile mele";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Acest site nu a publicat nimic până acum. Încearcă din nou mai târziu.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Acest cont de utilizator nu poate fi închis dacă există restituiri nerezolvate.";
 
@@ -7582,12 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Subiect negăsit pentru ID-ul:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Subiecte";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Subiecte (%lu)";
-
 /* Label for total followers */
 "Total" = "Total";
 
@@ -7673,9 +7516,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Încearcă-l acum";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Încearcă să selectezi %@ ca să adaugi subiectele care îți plac.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Încearcă noul Editor de blocuri";
 
@@ -7688,23 +7528,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Oprește îndemnurile";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Dezactivează notificările pe site";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Activează notificările";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Activează notificările imediate";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Activează notificările pe site";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Notificările pe site sunt dezactivate";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Notificările pe site sunt activate";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Oprirea comutatorului va dezactiva toate notificările din această aplicație, indiferent de tip.";
@@ -7751,9 +7579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Nu mă pot sincroniza";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Nu pot bloca site-ul";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Nu pot să creez legături noi la invitații.";
 
@@ -7771,9 +7596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Nu pot să urmăresc conversația";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Nu pot să urmăresc site-ul";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Nu pot să încarc pagini chiar acum.";
@@ -7820,23 +7642,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Nu pot să partajez legătura";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Nu pot să dezactivez notificările pe site";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Nu pot să activez notificările pe site";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Nu pot să anulez urmărirea site-ului.";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Nu pot să actualizez setările primei pagini";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Nu pot actualiza prețurile planurilor. Există o problemă cu blogul dat.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Nu pot încărca o ciornă de articol";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Nu pot încărca un articol";
@@ -7889,24 +7699,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Anulează";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Anulează urmărirea";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Anulează urmărirea %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Anulează urmărirea conversației";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Anulează urmărirea conversației";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Anulează urmărirea site-ului";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Nu urmăresc site-ul";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Anulează urmărirea blogului.";
@@ -8276,6 +8073,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Aștept să finalizeze Google...";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "Aștept conexiunea";
+
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
 "Waiting for security key" = "Aștept cheia de securitate";
@@ -8542,9 +8342,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Bine ai venit la Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Bine ai venit la Cititor. Descoperi milioane de bloguri la îndemână.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Bun venit la WordPress";
 
@@ -8626,9 +8423,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Când un comentariu conține oricare dintre cuvintele astea în conținutul lui, în nume, URL, email sau IP, el va fi marcat ca spam. Poți introduce fragmente de cuvinte, așa încât \"press\" va fi potrivit și pentru \"WordPress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Când urmărești site-uri, vei vedea conținutul lor aici.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Când faci modificări în editor, vei putea vedea istoricul aici";
@@ -8811,9 +8605,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Ești pe cale să-ți schimbi numele de utilizator, acum este %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Deja urmărești acest site.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Îți schimbi numele de utilizator în %@. Schimbarea numelui de utilizator îți va afecta și profilul Gravatar și adresele profilului IntenseDebate.\nPentru a continua, confirmă noul nume de utilizator.";
 
@@ -8837,12 +8628,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Poți să editezi acest bloc folosind versiunea web a editorului.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Poți urmări articolele de pe un anumit site urmărindu-l.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Poți urmări articole despre un anumit subiect prin adăugarea unei subiect.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Poți suprascrie aceste setări pentru articole indiviluale.";
@@ -9137,18 +8922,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Calitate imagini";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Optimizarea imaginilor micșorează imaginile pentru o încărcare mai rapidă.\n\nAceastă opțiune este activată implicit, dar poți să o modifici oricând în setările aplicației.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Continui optimizarea imaginilor?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Nu, oprește";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Da, lasă în continuare";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
@@ -9466,6 +9239,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "Analytics";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Valori implicite booleene pentru utilizator";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Valori implicite booleene pentru utilizator";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Comutări funcționalități";
 
@@ -9517,9 +9296,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ascunde asta";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Caută un domeniu";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Ia domeniul";
@@ -9779,6 +9555,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Îți place aplicația Jetpack pentru mobil?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Nu prea";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Părerea ta contează";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Este importantă";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Îți mulțumim că ne-ai ajutat să îmbunătățim aplicația.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Am trimis impresiile";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Vrei să ne dai mai multe informații?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Nu acum";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Ajută-ne să îmbunătățim";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Sigur";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Să faci poze sau videouri pe care să le folosești în articolele tale.";
@@ -10332,6 +10138,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Mentenanță";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Monitorizare site";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Social";
 
@@ -10392,6 +10201,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Personalizează prima pagină";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Partajează site-ul";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Schimbă iconul site-ului";
 
@@ -10403,6 +10215,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Vizitează site-ul";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "Nu există intrări în jurnal în această perioadă de timp";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "A apărut o eroare";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Reîncearcă";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
@@ -10509,6 +10330,27 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "număr de telefon";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "Dată de încheiere";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Severitate";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Dată de începere";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Învechit";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Eroare fatală";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "Utilizator";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Avertizare";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Planuri";
 
@@ -10601,9 +10443,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Previzualizează";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Publică acum";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Reîncearcă";
@@ -10729,8 +10568,38 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Ești autentificat!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Încearcă să selectezi %@ ca să vezi conținutul la care te-ai abonat și să-ți administrezi abonamentele.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Abonamente";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mai multe";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "Blogul %@ nu va mai apărea în Cititor. Atinge pentru a reveni.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ articole • %2$@ abonați";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Arată articolele blogului.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Problemă la încărcarea blogurilor";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Preiau blogurile...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Nu am găsit niciun blog care să se potrivească cu %@ în limba ta.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Nu am găsit niciun blog";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ abonați";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Vezi articolele de pe site";
@@ -10769,15 +10638,175 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Articol salvat";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "Te-ai abonat deja la acest blog.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Editează";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filtrează după blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filtrează după etichetă";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Abonează-te la bloguri în Descoperă și vei vedea aici ultimele articole publicate pe ele. Sau caută un blog care ți-a plăcut.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Caută un blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Niciun abonament la bloguri";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Abonează-te la o etichetă și vei putea să vezi aici cele mai bune articole cu această etichetă.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Abonează-te la o etichetă";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Etichete sugerate";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Nicio etichetă";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Abonare la etichete noi...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Etichete sugerate";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Preiau blogurile...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Bloguri";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Etichete";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d bloguri";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Etichete";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d etichete";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d etichete";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Etichete";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Apreciate";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Liste";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Salvate";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Abonamente";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Caută";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Setări Cititor";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Descoperă bloguri";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Abonează-te la bloguri în Descoperă și vei vedea aici ultimele articole publicate pe ele. Sau caută un blog care ți-a plăcut.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Niciun abonament la bloguri";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "Acest blog nu a publicat nimic până acum. Încearcă din nou mai târziu.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "Blogurile din această listă nu au publicat nimic recent.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Administrează blogurile";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Aici vor apărea articole recente de pe blogurile și site-urile la care te-ai abonat.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Mergi la Abonamente";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Te poți abona la articolele publicate pe un anumit blog abonându-te la blog.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Adaugă un blog";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Nu pot să blochez blogul";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blog blocat";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Abonat la blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Nu am putut să fac dezabonarea la blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Nu am putut să fac dezabonarea la blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Ești dezabonat la blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Nu pot să dezactivez notificările pe blog";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Notificările pe blog sunt dezactivate";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Nu pot să activez notificările pe blog";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Activezi notificările pe blog?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Notificările pe blog sunt activate";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "acest site";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "acest blog";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Nu pot face abonarea la blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Ești abonat la %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Nu pot face dezabonarea la blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Ești dezabonat la blog";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10815,8 +10844,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Deschide detaliile despre site pentru articol.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Blochează acest blog";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blochează acest utilizator";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Dezactivează notificările pe blog";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Activează notificările pe blog";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Înlătură articolul salvat";
@@ -10827,8 +10865,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Salvează";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ articole • %2$@ urmăritori";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Abonează-te la blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Dezabonează-te la blog";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Administrează blogurile";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "După ce ai creat un blog WordPress.com, poți să republici un conținut care îți place pe propriul blog.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Nu este disponibil niciun blog WordPress.com";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Bloguri";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Abonare la etichete noi...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Abonează-te la etichete";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Nu există etichete noi la care să te abonezi";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Alege etichetele";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Abonează-te la etichetă.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Abonează-te";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "URL blog";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Introdu URL-ul unui blog la care să te abonezi";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Te-ai abonat";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Bloguri la care să te abonezi";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Adaugă o etichetă";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Adaugă etichetă";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Adaugă orice etichetă";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Adaugă o etichetă";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Descoperă mai multe etichete";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Dezabonează-te la %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Dezabonează-te";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Înapoi";
@@ -11010,6 +11114,52 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Intrări jurnal";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "În cache";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "Fișier";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "Gazdă HTTP";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Tip";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Linie";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Nume";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Referent";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Cere ora";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "Cere URL-ul";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Dimensiune răspuns";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Stare";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Datare";
+
+/* Title for metrics screen.
+   Title for web server log screen. */
+"siteMonitoring.metrics" = "Valori metrice";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "Jurnale PHP";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";
 
@@ -11072,6 +11222,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Partajarea automată pe Twitter nu mai este disponibilă deoarece Twitter a făcut modificări la termeni și prețuri.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Trafic";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Ultimele 7 zile";
@@ -11180,6 +11333,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Caută pentru a găsi fotografii gratuite pe care să le adaugi în biblioteca ta Media!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Trimite";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Impresii";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "În această conversație";
@@ -11349,6 +11508,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Refuză";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "Dată de încheiere";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Tip de cerere";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Dată de începere";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Stare";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Total general articole și cele mai multe vizualizări";
 
@@ -11501,6 +11672,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Regret, acest site nu este acceptat de aplicația WordPress";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Ai ajuns la limita maximă. Poți să încerci din nou peste un minut. Dacă încerci mai înainte, vei mări timpul pe care trebuie să-l aștepți ca interdicția să fie ridicată. Dacă crezi că aceasta este o eroare, contactează suportul.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Bine ai venit la aplicația Jetpack. Acum poți să dezinstalezi aplicația WordPress.";

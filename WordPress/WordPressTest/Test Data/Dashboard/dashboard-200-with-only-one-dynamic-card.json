@@ -4,6 +4,10 @@
             "id": "id_12345",
             "title": "Title 12345",
             "featured_image": "https://example.com/image12345",
+            "featured_image_size": {
+                "width": 2,
+                "height": 1
+            },
             "url": "https://example.com/url12345",
             "action": "Action 12345",
             "order": "top",
