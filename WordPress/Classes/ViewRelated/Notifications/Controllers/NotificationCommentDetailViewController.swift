@@ -4,6 +4,8 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Properties
 
+    private var content: Content?
+
     private var notification: Notification {
         didSet {
             title = notification.title
@@ -31,7 +33,13 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     // In this case, use the Post to obtain Comment information.
     private var post: ReaderPost?
 
-    private var commentDetailViewController: CommentDetailViewController?
+    private var commentDetailViewController: CommentDetailViewController? {
+        guard let content, case let .commentDetails(viewController) = content  else {
+            return nil
+        }
+        return viewController
+    }
+
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
     private let managedObjectContext = ContextManager.shared.mainContext
 
@@ -156,21 +164,41 @@ private extension NotificationCommentDetailViewController {
             return
         }
 
-        if commentDetailViewController != nil {
-            commentDetailViewController?.refreshView(comment: comment, notification: notification)
+        // Refresh existing content if possible
+        if let commentDetailViewController {
+            commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
-            let commentDetailViewController = CommentDetailViewController(comment: comment,
-                                                                      notification: notification,
-                                                                      notificationDelegate: notificationDelegate,
-                                                                      managedObjectContext: managedObjectContext)
-
-            commentDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            add(commentDetailViewController)
-            view.pinSubviewToAllEdges(commentDetailViewController.view)
-            self.commentDetailViewController = commentDetailViewController
+            self.content?.viewController.remove()
+            let newContent = makeNewContent(with: comment)
+            let viewController = newContent.viewController
+            viewController.view.translatesAutoresizingMaskIntoConstraints = false
+            self.add(viewController)
+            self.view.pinSubviewToAllEdges(viewController.view)
+            self.content = newContent
         }
 
-        configureNavBarButtons()
+        // Configure navigation bar buttons
+        self.configureNavBarButtons()
+    }
+
+    private func makeNewContent(with comment: Comment) -> Content {
+        if let blog = comment.blog,
+           let blogID = blog.dotComID,
+           let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: blogID, source: .commentNotification),
+           blog.supports(.wpComRESTAPI),
+           !comment.allowsModeration() {
+            readerComments.navigateToCommentID = commentID
+            readerComments.allowsPushingPostDetails = true
+            return .readerComments(readerComments)
+        } else {
+            let viewController = CommentDetailViewController(
+                comment: comment,
+                notification: notification,
+                notificationDelegate: notificationDelegate,
+                managedObjectContext: managedObjectContext
+            )
+            return .commentDetails(viewController)
+        }
     }
 
     func loadComment() {
@@ -324,6 +352,23 @@ private extension NotificationCommentDetailViewController {
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
         static let imageName = "wp-illustration-notifications"
+    }
+
+    // MARK: - Types
+
+    private enum Content {
+
+        case commentDetails(CommentDetailViewController)
+        case readerComments(ReaderCommentsViewController)
+        case other(UIViewController)
+
+        var viewController: UIViewController {
+            switch self {
+            case .commentDetails(let vc): return vc
+            case .readerComments(let vc): return vc
+            case .other(let vc): return vc
+            }
+        }
     }
 
 }
