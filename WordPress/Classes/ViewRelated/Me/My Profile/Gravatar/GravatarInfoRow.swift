@@ -37,7 +37,6 @@ class GravatarInfoCell: WPTableViewCellDefault {
     private var linkTextView: UITextView = {
         let text = UITextView()
         text.translatesAutoresizingMaskIntoConstraints = false
-        text.isUserInteractionEnabled = true
         text.isEditable = false
         text.isScrollEnabled = false
         text.isSelectable = true
