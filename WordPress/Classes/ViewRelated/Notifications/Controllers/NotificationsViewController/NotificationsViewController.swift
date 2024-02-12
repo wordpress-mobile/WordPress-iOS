@@ -7,6 +7,7 @@ import WordPressAuthenticator
 import Gridicons
 import UIKit
 import WordPressUI
+import SwiftUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -331,8 +332,31 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
-        configureCell(cell, at: indexPath)
+        let cell = tableView.dequeueReusableCell(
+            withIdentifier: "NotificationsTableViewCell",
+            for: indexPath
+        )
+
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationsTableViewCell") as? HostingTableViewCell<NotificationsTableViewCellContent>,
+              let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
+            return UITableViewCell()
+        }
+        cell.host(
+            NotificationsTableViewCellContent(
+                style: .regular(
+                    .init(
+                        title: note.renderSubject()?.string ?? "",
+                        description: note.renderSnippet()?.string,
+                        shouldShowIndicator: !note.read,
+                        avatarStyle: .single(note.iconURL!),
+                        actionIconName: nil
+                    )
+                )
+            ),
+            parent: self
+        )
+
+        cell.accessibilityHint = Self.accessibilityHint(for: note)
         return cell
     }
 
@@ -588,13 +612,14 @@ private extension NotificationsViewController {
     func setupTableView() {
         // Register the cells
         tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
-        tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
+        tableView.register(HostingTableViewCell<NotificationsTableViewCellContent>.self, forCellReuseIdentifier: "NotificationsTableViewCell")
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tableView.backgroundColor = .systemBackground
+        tableView.separatorStyle = .none
         view.backgroundColor = .systemBackground
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
