@@ -48,8 +48,8 @@ class GravatarInfoCell: WPTableViewCellDefault {
         return text
     }()
 
-    private var logosView: GravatarInterceptingLogosView = {
-        let view = GravatarInterceptingLogosView(frame: .zero)
+    private var logosView: GravatarIntersectingLogosView = {
+        let view = GravatarIntersectingLogosView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()

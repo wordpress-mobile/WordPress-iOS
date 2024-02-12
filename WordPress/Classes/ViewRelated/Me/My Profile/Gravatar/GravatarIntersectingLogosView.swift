@@ -1,6 +1,6 @@
 import Foundation
 
-class GravatarInterceptingLogosView: UIView {
+class GravatarIntersectingLogosView: UIView {
 
     private enum Constants {
         static let wordpressLogo = UIImage(named: "wordpress-circular")
