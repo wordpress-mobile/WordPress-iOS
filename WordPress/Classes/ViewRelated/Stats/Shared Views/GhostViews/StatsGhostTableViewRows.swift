@@ -1,6 +1,6 @@
 import WordPressUI
 
-protocol StatsRowGhostable: ImmuTableRow {
+protocol StatsRowGhostable: HashableImmuTableRow {
     var statSection: StatSection? { get }
 }
 
@@ -40,7 +40,7 @@ struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
     var statSection: StatSection? = nil
 }
 
-struct StatsGhostTopImmutableRow: StatsRowGhostable, Hashable {
+struct StatsGhostTopImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
     }()
@@ -55,12 +55,6 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable, Hashable {
         return lhs.hideTopBorder == rhs.hideTopBorder &&
             lhs.hideBottomBorder == rhs.hideBottomBorder &&
             lhs.statSection == rhs.statSection
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(hideTopBorder)
-        hasher.combine(hideBottomBorder)
-        hasher.combine(statSection)
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -98,7 +92,7 @@ struct StatsGhostPostingActivitiesImmutableRow: StatsRowGhostable {
     var statSection: StatSection? = nil
 }
 
-struct StatsGhostChartImmutableRow: StatsRowGhostable, Hashable {
+struct StatsGhostChartImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsGhostChartCell.defaultNib, StatsGhostChartCell.self)
     }()
@@ -125,20 +119,6 @@ struct StatsGhostDetailRow: StatsRowGhostable {
             detailCell.isLastRow = isLastRow
             detailCell.enableTopPadding = enableTopPadding
         }
-    }
-
-    // MARK: - Hashable
-
-    static func == (lhs: StatsGhostDetailRow, rhs: StatsGhostDetailRow) -> Bool {
-        return lhs.hideTopBorder == rhs.hideTopBorder &&
-            lhs.isLastRow == rhs.isLastRow &&
-            lhs.enableTopPadding == rhs.enableTopPadding
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(hideTopBorder)
-        hasher.combine(isLastRow)
-        hasher.combine(enableTopPadding)
     }
 }
 

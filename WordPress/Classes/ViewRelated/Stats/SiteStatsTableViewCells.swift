@@ -4,7 +4,7 @@ import DGCharts
 
 // MARK: - Shared Rows
 
-struct OverviewRow: ImmuTableRow, Hashable {
+struct OverviewRow: HashableImmuTableRow {
 
     typealias CellType = OverviewCell
 
@@ -19,19 +19,13 @@ struct OverviewRow: ImmuTableRow, Hashable {
     let period: StatsPeriodUnit?
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
     let chartHighlightIndex: Int?
+    let statSection: StatSection? = nil
 
     // MARK: - Hashable
 
     static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
         return lhs.tabsData == rhs.tabsData &&
-//            lhs.chartData.barChartData.dataSets == rhs.chartData.barChartData.dataSets &&
             lhs.chartHighlightIndex == rhs.chartHighlightIndex
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(tabsData)
-//        hasher.combine(chartData.barChartData.dataSets)
-        hasher.combine(chartHighlightIndex)
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -73,7 +67,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }
 }
 
-struct CellHeaderRow: ImmuTableRow, Hashable {
+struct CellHeaderRow: HashableImmuTableRow {
 
     typealias CellType = StatsCellHeader
 
@@ -81,7 +75,7 @@ struct CellHeaderRow: ImmuTableRow, Hashable {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let statSection: StatSection
+    let statSection: StatSection?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -98,13 +92,9 @@ struct CellHeaderRow: ImmuTableRow, Hashable {
     static func == (lhs: CellHeaderRow, rhs: CellHeaderRow) -> Bool {
         return lhs.statSection == rhs.statSection
     }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(statSection)
-    }
 }
 
-struct TableFooterRow: ImmuTableRow, Hashable {
+struct TableFooterRow: ImmuTableRow {
 
     typealias CellType = StatsTableFooter
 
@@ -118,14 +108,6 @@ struct TableFooterRow: ImmuTableRow, Hashable {
         // No configuration needed.
         // This method is needed to satisfy ImmuTableRow protocol requirements.
     }
-
-    // MARK: - Hashable
-
-    static func == (lhs: TableFooterRow, rhs: TableFooterRow) -> Bool {
-        return true
-    }
-
-    func hash(into hasher: inout Hasher) {}
 }
 
 // MARK: - Insights Rows
@@ -405,7 +387,7 @@ struct AddInsightStatRow: ImmuTableRow {
 
 // MARK: - Period Rows
 
-struct PeriodEmptyCellHeaderRow: ImmuTableRow, Hashable {
+struct PeriodEmptyCellHeaderRow: ImmuTableRow {
 
     typealias CellType = StatsCellHeader
 
@@ -423,17 +405,9 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow, Hashable {
 
         cell.configure()
     }
-
-    // MARK: - Hashable
-
-    static func == (lhs: PeriodEmptyCellHeaderRow, rhs: PeriodEmptyCellHeaderRow) -> Bool {
-        return true
-    }
-
-    func hash(into hasher: inout Hasher) {}
 }
 
-struct TopTotalsPeriodStatsRow: ImmuTableRow, Hashable {
+struct TopTotalsPeriodStatsRow: HashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -461,13 +435,6 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow, Hashable {
             lhs.statSection == rhs.statSection
     }
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(itemSubtitle)
-        hasher.combine(dataSubtitle)
-        hasher.combine(dataRows)
-        hasher.combine(statSection)
-    }
-
     func configureCell(_ cell: UITableViewCell) {
 
         guard let cell = cell as? CellType else {
@@ -486,7 +453,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow, Hashable {
     }
 }
 
-struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow, Hashable {
+struct TopTotalsNoSubtitlesPeriodStatsRow: HashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -506,11 +473,6 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow, Hashable {
             lhs.statSection == rhs.statSection
     }
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(dataRows)
-        hasher.combine(statSection)
-    }
-
     func configureCell(_ cell: UITableViewCell) {
 
         guard let cell = cell as? CellType else {
@@ -521,7 +483,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow, Hashable {
     }
 }
 
-struct CountriesStatsRow: ImmuTableRow, Hashable {
+struct CountriesStatsRow: HashableImmuTableRow {
 
     typealias CellType = CountriesCell
 
@@ -546,13 +508,6 @@ struct CountriesStatsRow: ImmuTableRow, Hashable {
             lhs.dataRows == rhs.dataRows
     }
 
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(dataRows)
-        hasher.combine(itemSubtitle)
-        hasher.combine(dataSubtitle)
-        hasher.combine(statSection)
-    }
-
     func configureCell(_ cell: UITableViewCell) {
 
         guard let cell = cell as? CellType else {
@@ -568,7 +523,7 @@ struct CountriesStatsRow: ImmuTableRow, Hashable {
     }
 }
 
-struct CountriesMapRow: ImmuTableRow, Hashable {
+struct CountriesMapRow: HashableImmuTableRow {
     let action: ImmuTableAction? = nil
     let countriesMap: CountriesMap
     var statSection: StatSection?
@@ -584,11 +539,6 @@ struct CountriesMapRow: ImmuTableRow, Hashable {
     static func == (lhs: CountriesMapRow, rhs: CountriesMapRow) -> Bool {
         return lhs.countriesMap == rhs.countriesMap &&
             lhs.statSection == rhs.statSection
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(countriesMap)
-        hasher.combine(statSection)
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -837,7 +787,7 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
     }
 }
 
-struct StatsErrorRow: ImmuTableRow, Hashable {
+struct StatsErrorRow: HashableImmuTableRow {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
     }()
@@ -854,12 +804,6 @@ struct StatsErrorRow: ImmuTableRow, Hashable {
         return lhs.rowStatus == rhs.rowStatus &&
             lhs.statType == rhs.statType &&
             lhs.statSection == rhs.statSection
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(rowStatus)
-        hasher.combine(statType)
-        hasher.combine(statSection)
     }
 
     func configureCell(_ cell: UITableViewCell) {
