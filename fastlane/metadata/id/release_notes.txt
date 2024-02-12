@@ -1,5 +1,0 @@
-Saat Anda menyunting blok teks di editor, keyboard perangkat Anda tidak akan hilang di tengah penyuntingan. Editor juga akan langsung bergulir ke blok baru ketika Anda menambahkannya. Tulis sebanyak-banyaknya segera.
-
-Tidak dapat login dengan kunci keamanan Anda? Sekarang masalah tersebut sudah teratasi. Kami telah mengaktifkan kembali kunci keamanan untuk autentikasi dua faktor selama login. Hanya Anda yang dapat login ke akun Anda.
-
-Akhirnya, kami mengatasi beberapa masalah langka (dan yang tidak begitu langka) yang menyebabkan crash pada aplikasi. Berbagai masalah ini umumnya terkait dengan penyuntingan tag dan kategori, penggunaan tag duplikat, penghapusan pos, dan penyuntingan pos yang dihapus. Totalitas kerja yang kami nikmati.

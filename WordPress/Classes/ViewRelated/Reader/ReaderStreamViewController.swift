@@ -6,6 +6,7 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 import Combine
+import WordPressUI
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -46,6 +47,8 @@ import Combine
     var tableView: UITableView! {
         return tableViewController.tableView
     }
+
+    weak var navigationMenuDelegate: ReaderNavigationMenuDelegate?
 
     var jetpackBannerView: JetpackBannerView?
 
@@ -1504,6 +1507,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         }
     }
 
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        navigationMenuDelegate?.scrollViewWillEndDragging(scrollView, withVelocity: velocity, targetContentOffset: targetContentOffset)
+    }
+
     // MARK: - Fetched Results Related
 
     func managedObjectContext() -> NSManagedObjectContext {
@@ -1521,6 +1528,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     func tableViewDidChangeContent(_ tableView: UITableView) {
         if content.contentCount == 0 {
             displayNoResultsView()
+        } else {
+            hideResultsStatus()
         }
     }
 
@@ -1851,6 +1860,8 @@ extension ReaderStreamViewController {
         resetNoFollowedSitesViewController()
 
         resultsStatusView.configure(title: title, buttonTitle: buttonTitle, subtitle: subtitle, image: imageName, accessoryView: accessoryView)
+        resultsStatusView.loadViewIfNeeded()
+        resultsStatusView.setupReaderButtonStyles()
     }
 
     private func displayNoResultsForSavedPosts() {
@@ -1901,8 +1912,16 @@ extension ReaderStreamViewController {
         static let loadingStreamTitle = NSLocalizedString("Loading stream...", comment: "A short message to inform the user the requested stream is being loaded.")
         static let loadingErrorTitle = NSLocalizedString("Problem loading content", comment: "Error message title informing the user that reader content could not be loaded.")
         static let loadingErrorMessage = NSLocalizedString("Sorry. The content could not be loaded.", comment: "A short error message letting the user know the requested reader content could not be loaded.")
-        static let manageSitesButtonTitle = NSLocalizedString("Manage Sites", comment: "Button title. Tapping lets the user manage the sites they follow.")
-        static let followingButtonTitle = NSLocalizedString("Go to Following", comment: "Button title. Tapping lets the user view the sites they follow.")
+        static let manageSitesButtonTitle = NSLocalizedString(
+            "reader.no.results.manage.blogs",
+            value: "Manage Blogs",
+            comment: "Button title. Tapping lets the user manage the blogs they follow."
+        )
+        static let followingButtonTitle = NSLocalizedString(
+            "reader.no.results.subscriptions.button",
+            value: "Go to Subscriptions",
+            comment: "Button title. Tapping lets the user view the blogs they're subscribed to."
+        )
         static let noConnectionTitle = NSLocalizedString("Unable to Sync", comment: "Title of error prompt shown when a sync the user initiated fails.")
     }
 
@@ -1921,7 +1940,7 @@ extension ReaderStreamViewController: NoResultsViewControllerDelegate {
         }
 
         if ReaderHelpers.topicIsFollowing(topic) {
-            showManageSites()
+            navigationMenuDelegate?.didTapDiscoverBlogs()
             return
         }
 
@@ -2104,5 +2123,8 @@ extension ReaderStreamViewController: ReaderTopicsChipsDelegate {
 extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         processJetpackBannerVisibility(scrollView)
+
+        let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
+        navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
     }
 }

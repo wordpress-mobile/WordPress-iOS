@@ -534,7 +534,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             // results in an HTTP 403 on the v1.1 endpoint.  If this happens try
             // unfollowing via the less reliable URL method.
             [siteService unfollowSiteWithID:[topic.siteID integerValue] success:successBlock failure:^(NSError *error) {
-                if (error.code == WordPressComRestApiErrorAuthorizationRequired) {
+                if (error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
                     [siteService unfollowSiteAtURL:topic.siteURL success:successBlock failure:failureBlock];
                     return;
                 }

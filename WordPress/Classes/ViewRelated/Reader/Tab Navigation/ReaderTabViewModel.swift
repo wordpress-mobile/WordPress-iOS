@@ -1,19 +1,36 @@
 import WordPressFlux
+import WordPressUI
+import Combine
 
-@objc class ReaderTabViewModel: NSObject {
+@objc class ReaderTabViewModel: NSObject, ObservableObject {
 
     // MARK: - Properties
     /// tab bar items
     private let tabItemsStore: ItemsStore
     private var subscription: Receipt?
+    private let persistentRepository: UserPersistentRepository
     private var onTabBarItemsDidChange: [(([ReaderTabItem], Int) -> Void)] = []
 
-    private var tabItems: [ReaderTabItem] {
-        tabItemsStore.items
+    var tabItems: [ReaderTabItem] = [] {
+        didSet {
+            filterItems = tabItems.filter { !($0.content.topic is ReaderListTopic) }
+            listItems = tabItems.filter { $0.content.topic is ReaderListTopic }
+        }
     }
+
+    @Published var filterItems: [ReaderTabItem] = []
+    @Published var listItems: [ReaderTabItem] = []
+
     /// completion handler for an external call that changes the tab index
     var didSelectIndex: ((Int) -> Void)?
     var selectedIndex = 0
+    var selectedItem: ReaderTabItem? {
+        tabItems[safe: selectedIndex]
+    }
+
+    var lastVisitedIndex: Int {
+        persistentRepository.integer(forKey: Constants.lastVisitedStreamIndexKey)
+    }
 
     /// completion handler for a tap on a tab on the toolbar
     var setContent: ((ReaderContent) -> Void)?
@@ -21,8 +38,13 @@ import WordPressFlux
     /// Creates an instance of ReaderContentViewController that gets installed in the ContentView
     var makeReaderContentViewController: (ReaderContent) -> ReaderContentViewController
 
+    /// if items are loaded
+    var itemsLoaded: Bool {
+        return tabItems.count > 0
+    }
+
     /// Completion handler for selecting a filter from the available filter list
-    var filterTapped: ((UIView, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
+    var filterTapped: ((FilterProvider, UIView?, @escaping (ReaderAbstractTopic?) -> Void) -> Void)?
 
     /// search
     var navigateToSearch: () -> Void
@@ -33,21 +55,62 @@ import WordPressFlux
     /// Settings
     private let settingsPresenter: ScenePresenter
 
+    private var receipts = [Receipt]()
+
+    /// The available filters for the current stream.
+    @Published var streamFilters = [FilterProvider]() {
+        didSet {
+            // clear the receipts each time we replace these with new filters.
+            receipts = []
+
+            // refresh the filter list immediately upon update.
+            streamFilters.forEach { [weak self] filter in
+                filter.refresh()
+
+                // listen to internal filter changes so that we can "force" the view model
+                // to push changes down to the SwiftUI view. This is to ensure that the strings
+                // are up-to-date (e.g., after subscribing to new blogs or tags from the manage flow.)
+                self?.receipts.append(filter.onChange {
+                    self?.objectWillChange.send()
+                })
+            }
+        }
+    }
+
+    /// The active stream filter for the stream.
+    ///
+    /// The `FilterProvider`'s ID is stored to identify where the `ReaderAbstractTopic` is coming from.
+    /// When this property is nil, it means the stream is in an unfiltered state.
+    @Published var activeStreamFilter: (filterID: FilterProvider.ID, topic: ReaderAbstractTopic)?
+
     init(readerContentFactory: @escaping (ReaderContent) -> ReaderContentViewController,
          searchNavigationFactory: @escaping () -> Void,
          tabItemsStore: ItemsStore,
-         settingsPresenter: ScenePresenter) {
+         settingsPresenter: ScenePresenter,
+         persistentRepository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.makeReaderContentViewController = readerContentFactory
         self.navigateToSearch = searchNavigationFactory
         self.tabItemsStore = tabItemsStore
         self.settingsPresenter = settingsPresenter
+        self.persistentRepository = persistentRepository
         super.init()
 
+        // show the last visited index as default.
+        selectedIndex = lastVisitedIndex
+
         subscription = tabItemsStore.onChange { [weak self] in
-            guard let viewModel = self else {
+            guard let self else {
                 return
             }
-            viewModel.onTabBarItemsDidChange.forEach { $0(viewModel.tabItems, viewModel.selectedIndex) }
+            self.tabItems = self.tabItemsStore.items
+            self.reloadStreamFilters()
+
+            // reset if the selectedIndex is out of bounds to avoid showing a blank screen.
+            if self.selectedIndex >= self.tabItems.count {
+                self.selectedIndex = 0
+            }
+
+            self.onTabBarItemsDidChange.forEach { $0(self.tabItemsStore.items, self.selectedIndex) }
         }
         addNotificationsObservers()
         observeNetworkStatus()
@@ -69,6 +132,10 @@ extension ReaderTabViewModel {
 // MARK: - Tab selection
 extension ReaderTabViewModel {
 
+    private enum Constants {
+        static let lastVisitedStreamIndexKey = "readerLastVisitedStreamIndexDefaultsKey"
+    }
+
     func showTab(at index: Int) {
         guard index < tabItems.count else {
             return
@@ -78,6 +145,14 @@ extension ReaderTabViewModel {
         if tabItems[index].content.type == .saved {
             setContent?(tabItems[index].content)
         }
+
+        // reload filters for the new stream.
+        reloadStreamFilters()
+
+        // save the last visited index.
+        persistentRepository.set(index, forKey: Constants.lastVisitedStreamIndexKey)
+
+        didSelectIndex?(index)
     }
 
     /// switch to the tab whose topic matches the given predicate
@@ -91,7 +166,6 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        didSelectIndex?(index)
     }
 
     /// switch to the tab  whose title matches the given predicate
@@ -102,40 +176,87 @@ extension ReaderTabViewModel {
             return
         }
         showTab(at: index)
-        didSelectIndex?(index)
     }
 }
 
 // MARK: - Filter
 extension ReaderTabViewModel {
 
-    func presentFilter(from: UIViewController, sourceView: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
-        let viewController = makeFilterSheetViewController(completion: completion)
+    func reloadStreamFilters() {
+        guard let selectedStream = tabItems[safe: selectedIndex] else {
+            return
+        }
+
+        // always reset active stream filters
+        activeStreamFilter = nil
+
+        // remove stream filters if the current stream does not allow filtering.
+        if selectedStream.shouldHideStreamFilters {
+            streamFilters = []
+            return
+        }
+
+        let siteType: SiteOrganizationType = {
+            if let teamTopic = selectedStream.content.topic as? ReaderTeamTopic {
+                return teamTopic.organizationType
+            }
+            return .none
+        }()
+
+        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
+
+        if !selectedStream.shouldHideTagFilter {
+            filters.append(ReaderTagTopic.filterProvider())
+        }
+
+        streamFilters = filters
+    }
+
+    func presentFilter(filter: FilterProvider,
+                       from: UIViewController,
+                       sourceView: UIView?,
+                       completion: @escaping (ReaderAbstractTopic?) -> Void) {
+        let viewController = makeFilterSheetViewController(filter: filter, completion: completion)
         let bottomSheet = BottomSheetViewController(childViewController: viewController)
         bottomSheet.additionalSafeAreaInsetsRegular = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         bottomSheet.show(from: from, sourceView: sourceView, arrowDirections: .up)
 
-        WPAnalytics.track(.readerFilterSheetDisplayed)
+        WPAnalytics.track(.readerFilterSheetDisplayed, properties: ["source": filter.reuseIdentifier])
     }
 
-    func presentManage(from: UIViewController) {
-        settingsPresenter.present(on: from, animated: true, completion: nil)
-    }
-
-    func presentFilter(from: UIView, completion: @escaping (ReaderAbstractTopic?) -> Void) {
-        filterTapped?(from, { [weak self] topic in
-            if let topic = topic {
-                self?.setFilterContent(topic: topic)
-            }
-            completion(topic)
-        })
-    }
-
-    func resetFilter(selectedItem: FilterTabBarItem) {
-        WPAnalytics.track(.readerFilterSheetCleared)
-        if let content = (selectedItem as? ReaderTabItem)?.content {
-            setContent?(content)
+    func presentManage(filter: FilterProvider, from: UIViewController) {
+        guard let managePresenter = settingsPresenter as? ReaderManageScenePresenter else {
+            settingsPresenter.present(on: from, animated: true, completion: nil)
+            return
         }
+
+        managePresenter.present(on: from, selectedSection: filter.section, animated: true) {
+            // on completion, ensure that the FilterProvider is refreshed so the latest changes
+            // can be reflected on the UI.
+            filter.refresh()
+        }
+    }
+
+    func didTapStreamFilterButton(with filter: FilterProvider) {
+        // TODO: @dvdchr Figure out the source rect.
+        filterTapped?(filter, nil) { [weak self, filterID = filter.id] topic in
+            guard let topic else {
+                return
+            }
+            self?.setFilterContent(topic: topic)
+            self?.activeStreamFilter = (filterID, topic)
+        }
+    }
+
+    // Reset filter
+    func resetStreamFilter() {
+        guard let currentTab = tabItems[safe: selectedIndex] else {
+            return
+        }
+
+        WPAnalytics.track(.readerFilterSheetCleared)
+        activeStreamFilter = nil
+        setContent?(currentTab.content)
     }
 
     func setFilterContent(topic: ReaderAbstractTopic) {
@@ -149,25 +270,11 @@ extension ReaderTabViewModel {
 
 // MARK: - Bottom Sheet
 extension ReaderTabViewModel {
-    private func makeFilterSheetViewController(completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
-        let selectedTab = tabItems[selectedIndex]
-
-        let siteType: SiteOrganizationType = {
-            if let teamTopic = selectedTab.content.topic as? ReaderTeamTopic {
-                return teamTopic.organizationType
-            }
-            return .none
-        }()
-
-        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
-
-        if !selectedTab.shouldHideTagFilter {
-            filters.append(ReaderTagTopic.filterProvider())
+    private func makeFilterSheetViewController(filter: FilterProvider,
+                                               completion: @escaping (ReaderAbstractTopic) -> Void) -> FilterSheetViewController {
+        return FilterSheetViewController(filter: filter, changedFilter: completion) { [weak self] viewController in
+            self?.presentManage(filter: filter, from: viewController)
         }
-
-        return FilterSheetViewController(viewTitle: selectedTab.title,
-                                         filters: filters,
-                                         changedFilter: completion)
     }
 }
 

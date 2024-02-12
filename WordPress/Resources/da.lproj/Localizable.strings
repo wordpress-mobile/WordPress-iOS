@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: da_DK */
 
 /* Age between dates over one day.
@@ -34,9 +34,6 @@
 
 /* The title on the add category screen */
 "Add a Category" = "Tilføj kategori";
-
-/* No Tags View Button Label */
-"Add a site" = "Tilføj et websted";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Tilføj alternativ tekst";
@@ -95,12 +92,6 @@
    Dismiss view
    Previous web page */
 "Back" = "Tilbage";
-
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Bloker dette websted";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Bloker websted";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -258,9 +249,6 @@
 /* Title of an prompt letting the user know there was a problem saving. */
 "Could Not Save Changes" = "Ændringer kunne ikke gemmes";
 
-/* Title of a prompt. */
-"Could not follow site" = "Kunne ikke følge websted";
-
 /* No comment provided by engineer. */
 "Couldn't Connect" = "Kunne ikke forbinde";
 
@@ -370,7 +358,8 @@
    Dismiss a view. Verb */
 "Dismiss" = "Afvis";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -482,16 +471,11 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtype";
 
-/* Title of the filter button in the Reader */
-"Filter" = "Filter";
-
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Følg";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Fulgte websteder";
 
@@ -504,9 +488,7 @@
    Label for number of followers. */
 "Followers" = "Følgere";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Følgere";
 
 /* Next web page */
@@ -625,9 +607,6 @@
 
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Likes på mine indlæg";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Grænse nået. Du kan prøve igen om et minut. Hvis du prøver igen før dette vil du kun øge ventetiden før blokaden er løftet. Hvis du mener, dette er en fejl, så kontakt supporten.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1160,7 +1139,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Indstillinger";
@@ -1192,16 +1170,11 @@
    Title for screen that show site title editor */
 "Site Title" = "Webstedets titel";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Websteds URL";
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "Webstedsadresse skal være mindst 4 tegn.";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Websteder";
 
 /* Image size option title. */
 "Size" = "Størrelse";
@@ -1372,9 +1345,6 @@
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Emne";
 
-/* Topics Filter Tab Title */
-"Topics" = "Emner";
-
 /* Label displaying total number of Email followers. %@ is the total. */
 "Total Email Followers: %@" = "Antal følgere på e-mail: %@";
 
@@ -1412,9 +1382,6 @@
 
 /* Message to show in the post-format cell when the post format is not available */
 "Unavailable" = "Utilgængelig";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Følg ikke";
 
 /* No comment provided by engineer. */
 "Unknown error" = "Ukendt fejl";
@@ -1559,9 +1526,6 @@
    Label for a button that clears all old activity logs
    Yes */
 "Yes" = "Ja";
-
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Du følger allerede det websted.";
 
 /* No comment provided by engineer. */
 "You cannot use that email address to signup. We are having problems with them blocking some of our email. Please use another email provider." = "Du kan ikke bruge den e-mail-adresse ved tilmelding. Vi har problemer med, at de blokerer nogle af vores e-mails. Benyt venligst en anden e-mail-udbyder.";

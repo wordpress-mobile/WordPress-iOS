@@ -1,9 +1,3 @@
-You can now get a WordPress plan with a free domain in the domain dashboard. We also made some improvements to the Site Domains screen so it’s even easier to manage your domains.
-
-When you’re editing text blocks in the editor, your device’s keyboard will no longer disappear mid-edit. The editor will also scroll directly to a new block when you add it. Write away, friend.
-
-Miss logging in with your security keys? Not anymore—we’ve re-enabled security keys for two-factor authentication during login. The only one getting into your account is you.
-
-We updated the colors of the login screen to match both WordPress and Jetpack. After all, teamwork makes the dream work.
-
-Finally, we made assorted code fixes and tackled several rare (and not-so-rare) problems that were causing app crashes. These issues were mostly related to editing tags and categories, using duplicate tags, deleting posts, and editing deleted posts. All in a day’s work.
+* [**] Prevent images from temporarily disappearing when uploading media [https://github.com/WordPress/gutenberg/pull/57869]
+* [*] Site Monitoring: Add Metrics, PHP Logs, and Web Server Logs under Site Monitoring [#22475, #22499, #22504, #22500]
+* [***] Reader: introduced new UI/UX for content navigation and filtering [#22536]

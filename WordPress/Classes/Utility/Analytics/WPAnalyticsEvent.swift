@@ -305,6 +305,10 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
+    // Reader: Navigation menu dropdown
+    case readerDropdownOpened
+    case readerDropdownItemTapped
+
     // App Settings
     case settingsDidChange
 
@@ -320,7 +324,6 @@ import Foundation
     case appSettingsClearSpotlightIndexTapped
     case appSettingsClearSiriSuggestionsTapped
     case appSettingsOpenDeviceSettingsTapped
-    case appSettingsOptimizeImagesPopupTapped
 
     // Notifications
     case notificationsPreviousTapped
@@ -559,6 +562,10 @@ import Foundation
 
     // Widgets
     case widgetsLoadedOnApplicationOpened
+
+    // Site monitoring
+    case siteMonitoringTabShown
+    case siteMonitoringEntryDetailsShown
 
     /// A String that represents the event
     var value: String {
@@ -1094,6 +1101,12 @@ import Foundation
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
 
+        // Reader: Navigation menu dropdown
+        case .readerDropdownOpened:
+            return "reader_dropdown_menu_opened"
+        case .readerDropdownItemTapped:
+            return "reader_dropdown_menu_item_tapped"
+
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
@@ -1111,8 +1124,6 @@ import Foundation
             return "app_settings_max_image_size_changed"
         case .appSettingsImageQualityChanged:
             return "app_settings_image_quality_changed"
-        case .appSettingsOptimizeImagesPopupTapped:
-            return "app_settings_optimize_images_popup_tapped"
 
         // Account Close
         case .accountCloseTapped:
@@ -1526,6 +1537,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Site Monitoring
+        case .siteMonitoringTabShown:
+            return "site_monitoring_tab_shown"
+        case .siteMonitoringEntryDetailsShown:
+            return "site_monitoring_entry_details_shown"
 
         } // END OF SWITCH
     }

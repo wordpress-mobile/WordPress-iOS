@@ -1,4 +1,5 @@
 import Foundation
+import WordPressUI
 
 extension ReaderStreamViewController {
     /// Show ghost card cells at the top of the tableView
@@ -16,6 +17,7 @@ extension ReaderStreamViewController {
             ghostableTableView.centerYAnchor.constraint(equalTo: tableView.centerYAnchor)
         ])
 
+        ghostableTableView.accessibilityIdentifier = "Reader Ghost Loading"
         ghostableTableView.separatorStyle = .none
 
         let postCardTextCellNib = UINib(nibName: "OldReaderPostCardCell", bundle: Bundle.main)

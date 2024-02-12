@@ -1,5 +1,0 @@
-Düzenleyicide metin bloklarını düzenlerken cihazınızın klavyesi artık düzenlemenin ortasında kaybolmaz. Düzenleyici ayrıca yeni bir blok eklediğinizde doğrudan yeni bloka kaydırır. Yaz dostum.
-
-Güvenlik anahtarlarınızla oturum açmayı mı özlediniz? Artık özlemenize gerek yok, oturum açma sırasında iki faktörlü kimlik doğrulama için güvenlik anahtarlarını yeniden etkinleştirdik. Hesabınıza giren tek şey siz olacaksınız.
-
-Son olarak çeşitli kod düzeltmeleri yaptık ve uygulamanın kilitlenmesine neden olan birkaç nadir (ve çok da nadir olmayan) sorunu ele aldık. Bu sorunlar genellikle etiketleri ve kategorileri düzenleme, gönderileri silme ve silinen gönderileri düzenleme ile ilgiliydi. Hepsi bir günlük iş.

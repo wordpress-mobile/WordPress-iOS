@@ -7,6 +7,7 @@ import WordPressShared
 import AlamofireNetworkActivityIndicator
 import AutomatticAbout
 import UIDeviceIdentifier
+import WordPressUI
 
 #if APPCENTER_ENABLED
 import AppCenter
@@ -131,6 +132,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
+        configureWordPressKit()
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
@@ -408,14 +410,8 @@ extension WordPressAppDelegate {
         }
 
         let utility = AppRatingUtility.shared
-        utility.register(section: "notifications", significantEventCount: 5)
-        utility.systemWideSignificantEventCountRequiredForPrompt = 10
+        utility.systemWideSignificantEventCountRequiredForPrompt = 20
         utility.setVersion(version)
-        if AppConfiguration.isWordPress {
-            utility.checkIfAppReviewPromptsHaveBeenDisabled(success: nil, failure: {
-                DDLogError("Was unable to retrieve data about throttling")
-            })
-        }
     }
 
     @objc func configureAppCenterSDK() {
@@ -521,8 +517,15 @@ extension WordPressAppDelegate {
     }
 
     @objc func configureWordPressComApi() {
-        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url") {
-            Environment.replaceEnvironment(wordPressComApiBase: baseUrl)
+        if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
+            AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
+        }
+    }
+
+    private func configureWordPressKit() {
+        if FeatureFlag.useURLSession.enabled {
+            WordPressComRestApi.useURLSession = true
+            WordPressOrgXMLRPCApi.useURLSession = true
         }
     }
 }

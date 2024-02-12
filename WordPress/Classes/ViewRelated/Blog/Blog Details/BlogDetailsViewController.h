@@ -47,8 +47,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsSubsection) {
     BlogDetailsSubsectionMigrationSuccess,
     BlogDetailsSubsectionJetpackBrandingCard,
     BlogDetailsSubsectionBlaze,
+    BlogDetailsSubsectionSiteMonitoring
 };
-
 
 typedef NS_ENUM(NSInteger, QuickStartTitleState) {
     QuickStartTitleStateUndefined = 0,
@@ -69,7 +69,7 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
     QuickStartTourElementSharing = 8,
     QuickStartTourElementConnections = 9,
     QuickStartTourElementReaderTab = 10,
-    QuickStartTourElementReaderDiscoverSettings = 12,
+    QuickStartTourElementReaderDiscoverSubscriptions = 12,
     QuickStartTourElementTourCompleted = 13,
     QuickStartTourElementCongratulations = 14,
     QuickStartTourElementSiteIcon = 15,
@@ -188,5 +188,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)pulledToRefreshWith:(nonnull UIRefreshControl *)refreshControl onCompletion:(nullable void(^)(void))completion;
 
 + (nonnull NSString *)userInfoShowPickerKey;
++ (nonnull NSString *)userInfoSiteMonitoringTabKey;
 
 @end

@@ -1,5 +1,0 @@
-Wanneer je tekstblokken in de editor bewerkt, verdwijnt het toetsenbord van je apparaat niet meer terwijl je bezig bent met bewerken. De editor scrolt ook direct naar een nieuw blok toe wanneer je er een toevoegt. Schrijf maar raak, mijn vriend.
-
-Mis je de mogelijkheid om via beveiligingssleutels in te loggen? Wacht niet langer! We hebben beveiligingssleutels weer ingeschakeld voor tweevoudige verificatie bij inloggen. De enige die je account in kan, ben jij.
-
-Ten slotte hebben we een aantal zeldzame (en minder zeldzame) problemen opgelost die zorgden dat de app crashte. Deze problemen hadden grotendeels te maken met de tags en categorieën bewerken, dubbele tags gebruiken, berichten verwijderen en verwijderde berichten bewerken. Lekker alledaags.

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -16,18 +16,12 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ diwrnod";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ dilynwr";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ lefel";
 
 /* Number of Links */
 "%@ links" = "%@ dolen";
-
-/* Plan yearly price */
-"%@ per year" = "%@ y flwyddyn";
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "Cafodd %@ ei ailgysylltu.";
@@ -703,7 +697,8 @@
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Parthau";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -781,9 +776,6 @@
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Rhowch gyfrinair";
 
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Rhowch URL gwefan i'w dilyn";
-
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Rhowch enw defnyddiwr";
 
@@ -846,9 +838,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Estyn cofnodion...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Estyn gwefannau...";
 
 /* My Profile first name label
@@ -857,20 +847,12 @@
 "First Name" = "Enw Cyntaf";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Dilyn";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Gwefannau Rwy'n eu Dilyn";
-
-/* Followed Topics Title */
-"Followed Topics" = "Pwnc sy'n cael ei ddilyn";
-
-/* User followed a site. */
-"Followed site" = "Gwefan sy'n cael ei dilyn";
 
 /* Label for list of followers.
    User role badge */
@@ -881,9 +863,7 @@
    Label for number of followers. */
 "Followers" = "Dilynwyr";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Yn dilyn";
 
 /* Filters Follows Notifications */
@@ -1074,7 +1054,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Hoffi";
 
@@ -1083,9 +1062,6 @@
 
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Hoffi ar fy nghofnodion";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Wedi cyrraedd y terfyn. Gallwch geisio eto mewn 1 munud. Bydd ceisio eto cyn yn cynyddu amser fydd gennych cyn codi'r gwaharddiad. Os ydych chi'n credu bod hwn yn gamgymeriad, cysylltwch â Cymorth.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1176,9 +1152,6 @@
    Verb. Text label. Tapping displays a screen where the user can configure 'share' buttons for third-party services.
    Verb. Title of the screen for managing sharing buttons and settings related to sharing. */
 "Manage" = "Rheoli";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Rheoli Gwefannau";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Rheoli'r wefan";
@@ -1682,9 +1655,6 @@
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Wythnosau Diweddar";
 
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Bydd cofnodion gan flogiau a gwefannau rydych yn eu dilyn yn ymddangos yma.";
-
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Derbynnydd";
 
@@ -1877,7 +1847,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Gosodiadau";
@@ -1957,10 +1926,6 @@
 
 /* Setting: indicates if New Follows will be notified */
 "Site follows" = "Dilynnwys y wefan";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Gwefannau";
 
 /* Image size option title. */
 "Size" = "Maint";
@@ -2154,9 +2119,6 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Mae'r gweinydd wedi anfon ymateb gwag. Mae hyn yn golygu fel arfer fod angen cynyddu'r terfyn cof ar gyfer eich gwefan.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Ni fydd gwefan %@ bellach y ymddangos yn eich darllennydd. Tapiwch i ddadwneud hyn.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Rhaid i gyfeiriad y wefan fod yn llai na 64 nod.";
 
@@ -2168,9 +2130,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Nid oes modd allforio'r wefan hon.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Nid yw'r gwefannau ar y rhestr wedi cofnodi dim yn ddiweddar.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Fersiwn cyfeillgar URL o deitl cofnod yw'r bonyn.";
@@ -2237,9 +2196,6 @@
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Mae'r eitem cyfrwng hwn wedi ei ddileu.";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Nid yw'r wefan wedi cofnodi dim eto. Dewch nôl cyn bo hir.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Bydd hyn cael ei gynnwys mewn trydar pan fydd pobl yn rhannu gan ddefnyddio'r botwm Twitter.";
@@ -2279,9 +2235,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Pwnc";
-
-/* Topics Filter Tab Title */
-"Topics" = "Pynciau";
 
 /* Label for total followers */
 "Total" = "Cyfanswm";
@@ -2361,13 +2314,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "Dadwneud";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Peidio Dilyn";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Gwefan wedi ei dad-ddilyn";
 
 /* Label for size of media when it's not possible to calculate it.
    Unknown Tag Name */

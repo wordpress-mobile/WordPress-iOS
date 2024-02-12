@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 13:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-05 15:54:13+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ من الأيام";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ متابعين";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ من المستويات";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "تم استخدام %1$@ من %2$@ على موقعك";
-
-/* Plan yearly price */
-"%@ per year" = "%@ سنويًا";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ من الكوادرليونات";
@@ -483,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "إضافة إلى النهاية";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "إضافة موضوع";
-
 /* No comment provided by engineer. */
 "Add URL" = "إضافة رابط";
 
@@ -494,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "إضافة صورة ملف شخصي";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "إضافة موضوع";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "إضافة نطاق";
@@ -510,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "إضافة كود قصير…";
 
-/* No Tags View Button Label */
-"Add a site" = "إضافة موقع";
-
-/* No Topics View Button Label */
-"Add a topic" = "إضافة موضوع";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "أضف صورة الحساب.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "إضافة نص بديل";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "إضافة أي موضوع";
 
 /* No comment provided by engineer. */
 "Add audio" = "إضافة صوت";
@@ -1110,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "إعدادات المكوِّن";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "حظر هذا الموقع";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "تم إلغاء تجميع المكوّنات";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "مستخدم محظور";
@@ -1521,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "اختيار فيديو";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "اختر مواضيعك";
-
 /* Register Domain - Address information field City */
 "City" = "المدينة";
 
@@ -1896,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "يتعذر تمكين التنبيهات";
 
-/* Title of a prompt. */
-"Could not follow site" = "تعذرت متابعة الموقع";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "تعذرت متابعة الموقع على العنوان المحدد.";
 
@@ -1922,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "يتعذر تبديل الحالة المرئية: معرِّف المقالة مفقود.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "تعذر إلغاء متابعة الموقع";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "تعذر إلغاء متابعة الموقع في العنوان المحدد.";
@@ -2323,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "اكتشاف";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "اكتشاف المواقع";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "اكتشف وتابع المدوَّنات التي تحبها";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "استكشف وتابع المواقع التي تُلهمك.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "اكتشاف المزيد من المواضيع";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2374,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "ليس لديك حساب؟ _تسجيل_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2680,7 +2639,6 @@
 "Empty URL" = "عنوان URL فارغ";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "تفعيل";
 
@@ -2704,9 +2662,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "تمكين التنبيهات داخل التطبيق";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "هل ترغب في تمكين التنبيهات في الموقع؟";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "قم بتفعيل إحصاءات الموقع لمراجعة معلوماتك المفصّلة حول حركة المرور ومرات الإعجاب والتعليقات والمشتركين.";
@@ -2735,9 +2690,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "أدخل كلمة المرور";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "أدخل عنوان URL الخاص بموقع ما للمتابعة";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -3001,9 +2953,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "جاري جلب المقالات...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "جاري جلب المواقع...";
 
 /* Label for the posting activity legend. */
@@ -3029,9 +2979,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "الفيلم والتليفزيون";
-
-/* Title of the filter button in the Reader */
-"Filter" = "تصفية";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "تصفية حسب نوع النشاط";
@@ -3072,8 +3019,7 @@
 "Fixing Threats" = "جاري معالجة التهديدات";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "تابع";
 
 /* Button title. Follow the comments on a post. */
@@ -3081,9 +3027,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "متابعة المحادثة";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "متابعة الموقع";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "متابعة المواضيع";
@@ -3095,15 +3038,8 @@
 "Follow your favorite sites and discover new blogs." = "تابع مواقعك المفضَّلة واكتشف مدوّنات جديدة.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "مواقع تمّت متابعتها";
-
-/* Followed Topics Title */
-"Followed Topics" = "مواضيع تمّت متابعتها";
-
-/* User followed a site. */
-"Followed site" = "موقع تتم متابعته";
 
 /* Label for list of followers.
    User role badge */
@@ -3114,13 +3050,8 @@
    Label for number of followers. */
 "Followers" = "المتابعين";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "المتابعة";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "متابعة %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "جاري متابعة مواضيع جديدة...";
@@ -3133,9 +3064,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "يتابع المدونة.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "يتابع الوسم.";
 
 /* No comment provided by engineer. */
 "Font Size" = "حجم الخط";
@@ -3284,9 +3212,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "انتقل إلى التالي";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "الانتقال إلى القارئ";
@@ -3966,7 +3891,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "إعجابات";
 
@@ -3978,9 +3902,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "يبدي إعجابًا بالتعليق.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "تم الوصول إلى الحد المسموح به. يمكنك المحاولة مرة أخرى في غضون دقيقة واحدة. حاول مرة أخرى لأن ذلك سيؤدي إلى زيادة الوقت الذي ينبغي لك انتظاره قبل رفع الحظر. إذا كنت تعتقد أن ذلك خطأ داخلي، فاتصل بالدعم.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "مخطط خطي يصور المشاهدات لمعرفة الرؤى.";
@@ -4089,9 +4010,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "تحميل محرِّر المكوِّن.";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "تحميل أسماء المستخدمين";
 
 /* Loading tags
    Loading tags.
@@ -4204,9 +4122,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "إدارة الرؤية";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "إدارة المواقع";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "إدارة الموقع";
@@ -4385,9 +4300,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "خيارات دعم إضافية";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "الوقت الأكثر شعبية";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "نقل %@";
@@ -4576,9 +4488,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "الخطوات التالية";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "الشهر التالي";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "التنبيه التالي";
 
@@ -4630,9 +4539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "لا يتوفر تطبيق لمعالجة هذا الطلب. يرجى تثبيت متصفح ويب.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "لا تتوافر مواقع WordPress.com";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "لا توجد عناوين متاحة مطابقة لبحثك";
 
@@ -4676,9 +4582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "لا توجد تهديدات معالجة";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "لا توجد مواقع تمت متابعتها";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "ليس هناك متابعون حتى الآن";
@@ -4727,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "لا داعي للانتظار هنا. سنخطرك عندما تتم استعادة موقعك بالكامل.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "لا توجد مواضيع جديدة لمتابعتها";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "لا توجد إشعارات حتى الآن";
 
@@ -4760,9 +4660,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "لا توجد معاينة متاحة";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "لم يتم العثور على عنوان رابط الموقع الأساسي";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "لا توجد مطالبات بعد";
 
@@ -4774,12 +4671,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "لا توجد تدوينات محفوظة";
-
-/* A message title */
-"No sites found" = "لم يتم العثور على أي مواقع";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "لم يتم العثور على أي مواقع تتطابق مع %@ في أي لغة.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "لا توجد وسوم مطابقة لبحثك";
@@ -4954,9 +4845,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "بمجرد التعرف على أسماء المكوِّنات المختلفة، يمكنك إضافة مكوِّن عن طريق كتابة شرطة مائلة للأمام متبوعة باسم المكوِّن — على سبيل المثال، \/image أو \/heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "بمجرد إنشاء موقع WordPress.com، يمكنك إعادة تدوين المحتوى الذي أعجبك على موقعك الخاص.";
 
 /* No comment provided by engineer. */
 "One" = "واحد";
@@ -5526,9 +5414,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "قم بمعاينة موقعك لرؤية ما سيراه الزائرون.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "الشهر السابق";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "التنبيه السابق";
 
@@ -5568,9 +5453,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "مشكلة في تحميل المحتوى";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "مشكلة في التحميل على المواقع";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "ثمَّة مشكلة أثناء فتح ملف الصوت";
@@ -5708,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "الأسابيع الأخيرة";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "ستظهر المنشورات الحديثة من المدونات والمواقع التي تتابعها هنا.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "المستلم";
@@ -5918,9 +5797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "إعادة تعيين عامل تصفية نطاق التاريخ";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "إعادة تعيين التصفية";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "إعادة تعيين كلمة المرور الخاصة بك";
@@ -6394,7 +6270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "إعدادات";
@@ -6530,9 +6405,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "إظهار محتوى المقالة";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "يعرض مقالات الموقع.";
-
 /* View title during the sign up process. */
 "Sign Up" = "تسجيل";
 
@@ -6587,8 +6459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "موضوع الموقع";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "رابط الموقع URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6620,16 +6491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "تم تغيير عنوان الموقع بنجاح";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "المواقع";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "المواقع (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "مواقع لمتابعتها";
 
 /* Image size option title. */
 "Size" = "الحجم";
@@ -7161,9 +7022,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "يبدو أن الاتصال بالإنترنت في وضع دون اتصال.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "تتعذر إضافة العنصر إلى مكتبة الوسائط.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "أنواع المواقع التي يمكن إنشاؤها";
 
@@ -7203,9 +7061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "أرجع الخادم استجابة فارغة. يعني ذلك عادة أنك بحاجة إلى زيادة الحد الأقصى لذاكرة موقعك.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "لن يظهر الموقع %@ في برنامج Reader الخاص بك. انقر للتراجع.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "يجب أن يكون طول عنوان الموقع أقل من 64 حرفًا.";
 
@@ -7221,9 +7076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "تعذر تصدير الموقع.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "لم تنشر المواقع في هذه القائمة أي شيء مؤخرًا.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "الاسم اللطيف هو إصدار عنوان المقالة المألوف لعنوان URL.";
@@ -7434,9 +7286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "هذه المقالة ليست ضمن إعجاباتي";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "لم ينشر هذا الموقع أي شيء بعد. حاول مرة أخرى لاحقًا.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "يتعذر إغلاق حساب المستخدم هذا إذا كانت هناك عمليات رد مبالغ مدفوعة لم يتم حلها.";
 
@@ -7582,12 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "لم يتم العثور على موضوع من المُعرّف:";
 
-/* Topics Filter Tab Title */
-"Topics" = "المواضيع";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "الموضوعات (%lu)";
-
 /* Label for total followers */
 "Total" = "الإجمالي";
 
@@ -7673,9 +7516,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "جرّبه الآن";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "جرب تحديد %@ لإضافات موضوعات تعجبك.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "تجربة محرر المكوِّنات الجديد";
 
@@ -7688,23 +7528,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "إيقاف تشغيل المطالبات";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "إيقاف تشغيل التنبيهات في الموقع";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "تشغيل التنبيهات";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "تشغيل التنبيهات المؤقتة";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "تشغيل التنبيهات في الموقع";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "تم إيقاف تشغيل إشعارات الموقع";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "تم تشغيل إشعارات الموقع";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "سيؤدي إيقاف تشغيل المفتاح إلى تعطيل كل التنبيهات الواردة من هذا التطبيق، بغض النظر عن النوع.";
@@ -7751,9 +7579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "تتعذر المزامنة";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "تعذر إنشاء روابط دعوة جديدة.";
 
@@ -7771,9 +7596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "غير قادر على متابعة المحادثة";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "غير قادر على متابعة الموقع";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "تعذّر تحميل الصفحات في الوقت الحالي.";
@@ -7820,23 +7642,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "تعذرت مشاركة الرابط";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "تعذر إيقاف تشغيل إشعارات الموقع";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "تعذر تشغيل إشعارات الموقع";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "غير قادر على إلغاء متابعة الموقع";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "يتعذر تحديث إعدادات الصفحة الرئيسية";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "تعذر تحديث أسعار الخطة. ثمَّة مشكلة في المدونة المرفقة.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "يتعذر رفع مسودة مقالة واحدة";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "تعذر رفع مقالة واحدة";
@@ -7889,24 +7699,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "تراجع";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "إلغاء المتابعة";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "إلغاء متابعة %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "إلغاء متابعة المحادثة";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "إلغاء متابعة المحادثة";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "إلغاء متابعة الموقع";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "موقع لا تتم متابعته";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "إلغاء متابعة المدونة.";
@@ -8276,6 +8073,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "بانتظار اكتمال Google…";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "انتظار الاتصال";
+
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
 "Waiting for security key" = "انتظار مفتاح الأمان";
@@ -8539,9 +8339,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "مرحبًا بك في Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "مرحبًا بك في القارئ. اكتشف ملايين المدونات في متناول يديك.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "مرحبًا بك في ووردبريس.";
 
@@ -8623,9 +8420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "عندما يحتوي تعليق على أي من هذه الكلمات في محتواه أو اسمه أو عنوان URL أو عنوان البريد الإلكتروني أو بروتوكول IP الخاص به، سيتم وضع علامة عليه باعتباره تعليقًا مزعجًا. يمكنك إدخال كلمات غير مكتملة، لذا ستطابق كلمة \"بريس\" كلمة \"ووردبريس\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "عند متابعة المواقع، سترى محتواها هنا.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "عند إجراء تغييرات على المحرر، فستتمكن من الاطلاع على السجلّ هنا";
@@ -8808,9 +8602,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "أنت على وشك تغيير اسم المستخدم الخاص بك، اسم المستخدم الحالي هو %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "أنت تتابع هذا الموقع بالفعل.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "أنت تقوم بتغيير اسم المستخدم إلى %@. تغيير اسم المستخدم الخاص بك سوف يؤثر على ملف Gravatar الشخصي الخاص بك وكذلك عناوين ملفك على IntenseDebate.\nتأكيد اسم المستخدم الجديد الخاص بك للمتابعة.";
 
@@ -8834,12 +8625,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "يمكنك تحرير هذا المكوِّن باستخدام إصدار ويب المحرِّر.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "يمكنك متابعة المقالات الموجودة على موقع معيَّن عن طريق متابعته.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "يمكنك متابعة مقالات حول موضوع معيَّن عن طريق إضافة موضوع.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "يمكنك تجاوز هذه الإعدادات للمقالات الفردية.";
@@ -9134,18 +8919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "جودة الصورة";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "يؤدي تحسين الصورة إلى تقليل حجم الصور المطلوب رفعها بسرعة.\n\nتم تمكين هذا الخيار افتراضيًا، لكن يمكنك تغييره ضمن إعدادات التطبيق في أي وقت.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "هل تريد الاستمرار في تحسين الصور؟";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "لا، توقف عن الاستخدام";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "نعم، واصل الاستخدام";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ملف صوت";
@@ -9457,6 +9230,9 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "التحليلات";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "الإعدادات الافتراضية للمستخدمين في ما يتعلق بالقيم المنطقية";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "تمييز العلامات";
 
@@ -9508,9 +9284,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "إخفاء هذا";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "البحث عن نطاق";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "الحصول على نطاق";
@@ -9770,6 +9543,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (عنوان URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "هل تستمتع بتطبيق Jetpack للهاتف المحمول؟";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "ليس حقيقيًا";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "ملاحظاتك تهم";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "إنها رائعة";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "شكرًا لمساعدتنا على تحسين التطبيق.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "تم إرسال الملاحظات";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "هل ترغب في مشاركة مزيد من التفاصيل معنا؟";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "ليس الآن";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "مساعدتنا على تحسين الخدمة";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "متأكد";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "لالتقاط صور أو مقاطع فيديو لاستخدامها في مقالاتك.";
@@ -10323,6 +10126,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "صيانة";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "مراقبة الموقع";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "اجتماعي";
 
@@ -10383,6 +10189,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "تخصيص الصفحة الرئيسية";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "مشاركة موقع";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "تغيير أيقونة الموقع";
 
@@ -10394,6 +10203,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "زيارة الموقع";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "لا توجد إدخالات سجل في هذا النطاق الزمني";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "حدث خطأ";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "إعادة المحاولة";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "تجاهل";
@@ -10500,6 +10318,27 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "رقم الهاتف";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "تاريخ الانتهاء";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "خطورة";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "تاريخ البدء";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "مهمَل";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "خطأ جسيم";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "مستخدم";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "تحذير";
+
 /* Title for the plan selection view */
 "planSelection.title" = "الخطط";
 
@@ -10592,9 +10431,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "معاينة";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "النشر الآن";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "إعادة المحاولة";
@@ -10714,6 +10550,30 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "مزيد";
 
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "لن تظهر %@ المدونة في القارئ الخاص بك انقر للتراجع.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ من التدوينات • %2$@ من المشتركين";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "يعرض تدوينات المدونة.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "مشكلة في أثناء تحميل المدونات";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "جارٍ إحضار المدونات...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "لم يتم العثور على تدوينات مطابقة لـ %@ بلغتك.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "لم يتم العثور على أي مدونة";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ من المشتركين";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "لعرض التدوينات الواردة من الموقع";
 
@@ -10737,15 +10597,171 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "تدوينة محفوظة";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "لقد اشتركت في هذه المدونة بالفعل.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "تحرير";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "التصفية حسب المدونة";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "التصفية حسب الوسم";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "اشترك في المدونات ضمن Discover وسترى أحدث تدوينات فيها هنا. أو ابحث عن مدونة تنال إعجابك بالفعل.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "البحث في مدونة";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "لا توجد اشتراكات في المدونة";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "اشترك في وسم وستتمكن من الاطلاع على أفضل التدوينات الواردة منه هنا.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "الاشتراك في وسم";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "الوسوم المقترحة";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "لا توجد وسوم";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "جارٍ الاشتراك في الوسوم الجديدة...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "الوسوم المقترحة";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "جارٍ إحضار المدونات...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "المدونات";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "الوسوم";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "⁦%1$d⁩ من المدونات";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "⁦%1$d⁩ المدونات";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "الوسوم";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "⁦%1$d⁩ من الوسوم";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "الوسوم";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "أعجبني";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "القوائم";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "تم الحفظ";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "الاشتراكات";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "البحث";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "إعدادات القارئ";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "اكتشاف المدونات";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "اشترك في المدونات ضمن \"اكتشاف\" وسترى أحدث تدوينات فيها هنا. أو ابحث عن مدونة تنال إعجابك بالفعل.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "لا توجد اشتراكات في المدونة";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "لم تنشر هذه المدونة أي شيء حتى الآن. حاول مرة أخرى لاحقًا.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "لم تنشر المدونات الموجودة في هذه القائمة أي شيء مؤخرًا.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "إدارة المدونات";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "ستظهر التدوينات الحديثة الواردة من المدونات والمواقع التي تشترك فيها هنا.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "الانتقال إلى الاشتراكات";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "يمكنك الاشتراك في التدوينات على مدونة معيّنة عن طريق الاشتراك فيها.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "إضافة مدونة";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "يتعذر حظر المدونة";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "مدونة محظورة";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "تم الاشتراك في المدونة";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "يتعذر إلغاء الاشتراك من المدونة";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "يتعذر إلغاء الاشتراك من المدونة";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "تم إلغاء الاشتراك من المدونة";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "يتعذر إيقاف تشغيل التنبيهات في المدونة";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "تم إيقاف تشغيل التنبيهات في المدونة";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "يتعذر تشغيل التنبيهات في المدونة";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "هل تريد تمكين التنبيهات في المدونة؟";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "تم تشغيل التنبيهات في المدونة";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "هذا الموقع";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "هذه المدونة";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "يتعذر الاشتراك في المدونة";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "مشترك في %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "يتعذر إلغاء الاشتراك من المدونة";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "إلغاء الاشتراك من المدونة";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10771,8 +10787,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "لفتح تفاصيل التدوينة في الموقع.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "حظر هذه المدونة";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "حظر هذا المستخدم";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "إيقاف تشغيل التنبيهات في المدونة";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "تشغيل التنبيهات في المدونة";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "إزالة التدوينات المحفوظة";
@@ -10780,8 +10805,71 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ من التدوينات • %2$@ من المتابعين";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "الاشتراك في المدونة";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "إلغاء الاشتراك من المدونة";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "إدارة المدونات";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "بمجرد إنشاء مدونة على ووردبريس.كوم، يمكنك إعادة تدوين المحتوى الذي يعجبك على مدونتك الخاصة.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "لا توجد مدونات على ووردبريس.كوم متاحة";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "مدونات";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "جارٍ الاشتراك في الوسوم الجديدة...";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "لا توجد وسوم جديدة للاشتراك فيها";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "اختيار وسومك";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "مرات الاشتراك في الوسم.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "اشترك";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "رابط URL للمدونة";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "إدخال عنوان URL لمدونة مطلوب الاشتراك فيها";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "مشترك";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "المدونات المطلوب الاشتراك فيها";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "إضافة وسم";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "إضافة وسم";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "إضافة أي وسم";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "إضافة وسم";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "اكتشاف مزيد من الوسوم";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "إلغاء الاشتراك من %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "إلغاء الاشتراك";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "رجوع";
@@ -10951,6 +11039,52 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "الوسائط";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "إدخال السجل";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "مخزنة مؤقتًا";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "ملف";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "مضيف HTTP";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "النوع";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "السطر";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "الاسم";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "الموجه";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "وقت الطلب";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "عنوان URL للطلب";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "حجم الاستجابة";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "الحالة";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "الطابع الزمني";
+
+/* Title for metrics screen.
+   Title for web server log screen. */
+"siteMonitoring.metrics" = "المقاييس";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "سجلات PHP";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
 
@@ -11013,6 +11147,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "لا تتوافر ميزة المشاركة التلقائية على تويتر بعد الآن بسبب التغييرات التي أجرتها تويتر في الشروط والأسعار.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "حركة المرور";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "آخر 7 أيام";
@@ -11121,6 +11258,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "ابحث للعثور على صور مجانية لإضافتها إلى مكتبة الوسائط الخاصة بك!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "إرسال";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "ملاحظات";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "في هذه المحادثة";
@@ -11290,6 +11433,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "تجاهُل";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "تاريخ الانتهاء";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "نوع الطلب";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "تاريخ البدء";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "الحالة";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "التدوينات في كل الأوقات ومعظم المشاهدات";
 
@@ -11442,6 +11597,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "عذرًا، هذا الموقع غير مدعوم من تطبيق ووردبريس";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "تم الوصول إلى الحد المسموح به. يمكنك المحاولة مرة أخرى في غضون دقيقة واحدة. ستؤدي المحاولة مرة أخرى قبل ذلك إلى زيادة الوقت الذي عليك انتظاره قبل رفع الحظر. إذا كنت تعتقد أن ذلك خطأ داخلي، فاتصل بالدعم.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "مرحبًا في تطبيق Jetpack. يمكنك إلغاء تثبيت تطبيق ووردبريس.";

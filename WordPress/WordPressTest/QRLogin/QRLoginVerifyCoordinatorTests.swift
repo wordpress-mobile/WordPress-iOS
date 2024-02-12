@@ -403,7 +403,7 @@ private class QRLoginServiceMock: QRLoginService {
             success(true)
 
         case .failure:
-            failure(WordPressComRestApiError.responseSerializationFailed)
+            failure(NSError.testInstance())
         }
     }
 }

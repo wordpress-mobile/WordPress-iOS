@@ -65,9 +65,9 @@ extension WordPressAuthenticationManager {
         return WordPressAuthenticatorConfiguration(wpcomClientId: ApiCredentials.client,
                                                    wpcomSecret: ApiCredentials.secret,
                                                    wpcomScheme: WPComScheme,
-                                                   wpcomTermsOfServiceURL: WPAutomatticTermsOfServiceURL,
-                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseUrl,
-                                                   wpcomAPIBaseURL: Environment.current.wordPressComApiBase,
+                                                   wpcomTermsOfServiceURL: URL(string: WPAutomatticTermsOfServiceURL)!,
+                                                   wpcomBaseURL: WordPressComOAuthClient.WordPressComOAuthDefaultBaseURL,
+                                                   wpcomAPIBaseURL: AppEnvironment.current.wordPressComApiBase,
                                                    googleLoginClientId: ApiCredentials.googleLoginClientId,
                                                    googleLoginServerClientId: ApiCredentials.googleLoginServerClientId,
                                                    googleLoginScheme: ApiCredentials.googleLoginSchemeId,
@@ -373,6 +373,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                     return
                 }
 
+                RootViewCoordinator.shared.isSiteCreationActive = true
                 navigationController.present(wizard, animated: true)
                 SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
             })

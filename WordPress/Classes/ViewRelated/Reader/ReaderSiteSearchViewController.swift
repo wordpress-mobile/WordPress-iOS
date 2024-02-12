@@ -254,11 +254,27 @@ private extension ReaderSiteSearchViewController {
     }
 
     struct StatusText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A brief prompt when the user is searching for sites in the Reader.")
-        static let loadingFailedTitle = NSLocalizedString("Problem loading sites", comment: "Error message title informing the user that a search for sites in the Reader could not be loaded.")
+        static let loadingTitle = NSLocalizedString(
+            "reader.blog.search.loading.title",
+            value: "Fetching blogs...",
+            comment: "A brief prompt when the user is searching for blogs in the Reader."
+        )
+        static let loadingFailedTitle = NSLocalizedString(
+            "reader.blog.search.loading.error",
+            value: "Problem loading blogs",
+            comment: "Error message title informing the user that a search for sites in the Reader could not be loaded."
+        )
         static let loadingFailedMessage = NSLocalizedString("Sorry. Your search results could not be loaded.", comment: "A short error message leting the user know the requested search could not be performed.")
-        static let noResultsTitle = NSLocalizedString("No sites found", comment: "A message title")
-        static let messageFormat = NSLocalizedString("No sites found matching %@ in your language.", comment: "Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase.")
+        static let noResultsTitle = NSLocalizedString(
+            "reader.blog.search.no.results.title",
+            value: "No blogs found",
+            comment: "A message title"
+        )
+        static let messageFormat = NSLocalizedString(
+            "reader.blog.search.no.results.message.format",
+            value: "No blogs found matching %@ in your language.",
+            comment: "Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase."
+        )
     }
 
 }

@@ -1,4 +1,5 @@
 import UIKit
+import WordPressUI
 
 protocol PrepublishingDismissible {
     func handleDismiss()

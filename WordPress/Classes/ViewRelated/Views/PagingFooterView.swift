@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 final class PagingFooterView: UIView {
     enum State {
@@ -52,5 +53,17 @@ final class PagingFooterView: UIView {
     private struct Strings {
         static let errorMessage = NSLocalizedString("general.pagingFooterView.errorMessage", value: "An error occurred", comment: "A generic error message for a footer view in a list with pagination")
         static let retry = NSLocalizedString("general.pagingFooterView.retry", value: "Retry", comment: "A footer retry button")
+    }
+}
+
+struct PagingFooterWrapperView: UIViewRepresentable {
+    let state: PagingFooterView.State
+
+    func makeUIView(context: Context) -> PagingFooterView {
+        PagingFooterView(state: state)
+    }
+
+    func updateUIView(_ uiView: PagingFooterView, context: Context) {
+        // Do nothing
     }
 }

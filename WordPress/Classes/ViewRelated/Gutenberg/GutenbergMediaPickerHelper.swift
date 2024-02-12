@@ -62,10 +62,8 @@ extension GutenbergMediaPickerHelper: ImagePickerControllerDelegate {
             switch mediaType {
             case UTType.image.identifier:
                 if let image = info[.originalImage] as? UIImage {
-                    MediaHelper.advertiseImageOptimization() { [self] in
-                        self.didPickMediaCallback?([image])
-                        self.didPickMediaCallback = nil
-                    }
+                    self.didPickMediaCallback?([image])
+                    self.didPickMediaCallback = nil
                 }
 
             case UTType.movie.identifier:
@@ -103,16 +101,7 @@ extension GutenbergMediaPickerHelper: PHPickerViewControllerDelegate {
             return
         }
 
-        let mediaFilter = picker.configuration.filter
-        if mediaFilter == PHPickerFilter(.all) || mediaFilter == PHPickerFilter(.image) {
-            MediaHelper.advertiseImageOptimization() { [self] in
-                didPickMediaCallback?(results.map(\.itemProvider))
-                didPickMediaCallback = nil
-            }
-        }
-        else {
-            didPickMediaCallback?(results.map(\.itemProvider))
-            didPickMediaCallback = nil
-        }
+        didPickMediaCallback?(results.map(\.itemProvider))
+        didPickMediaCallback = nil
     }
 }

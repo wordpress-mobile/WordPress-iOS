@@ -76,10 +76,6 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         selectionStyle = .none
         backgroundColor = .listForeground
 
-        if !AppConfiguration.statsRevampV2Enabled {
-            addBottomBorder(withColor: .divider)
-        }
-
         viewCountLabel.font = WPStyleGuide.fontForTextStyle(.title1)
         viewCountLabel.textColor = .textSubtle
 

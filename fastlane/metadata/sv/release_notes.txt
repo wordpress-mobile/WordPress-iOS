@@ -1,5 +1,0 @@
-Ditt enhetstangentbord kommer inte längre att försvinna mitt i arbetet när du redigerar textblock i redigeraren. Redigeraren bläddrar dessutom direkt till ett nytt block när du har lagt till det. Skriv på, min vän.
-
-Saknar du att logga in med dina säkerhetsnycklar? Det behöver du inte göra längre – vi har återaktiverat säkerhetsnycklar för tvåfaktorsautentisering vid inloggning. Den enda som kommer in i ditt konto är du.
-
-Slutligen har vi åtgärdat flertalet sällsynta (och inte så sällsynta) problem som gjorde att appen kraschade. Dessa problem var mestadels relaterade till redigering av etiketter och kategorier, användning av duplicerade etiketter, borttagning av inlägg och redigering av borttagna inlägg. Allt på en arbetsdag.

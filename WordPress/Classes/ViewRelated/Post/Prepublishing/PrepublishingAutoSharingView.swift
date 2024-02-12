@@ -4,7 +4,7 @@ struct PrepublishingAutoSharingView: View {
 
     let model: PrepublishingAutoSharingModel
 
-    @SwiftUI.Environment(\.sizeCategory) private var sizeCategory
+    @Environment(\.sizeCategory) private var sizeCategory
 
     @ScaledMetric(relativeTo: .subheadline) private var warningIconLength = 16.0
 

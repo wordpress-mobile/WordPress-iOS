@@ -65,7 +65,7 @@ extension SitePickerViewController {
         }
         let viewController = UIActivityViewController(activityItems: [url], applicationActivities: nil)
         if let popover = viewController.popoverPresentationController {
-            popover.barButtonItem = navigationItem.rightBarButtonItem
+            popover.sourceView = blogDetailHeaderView.titleView.siteSwitcherButton
         }
         present(viewController, animated: true, completion: nil)
         WPAnalytics.trackEvent(.mySiteHeaderShareSiteTapped)
@@ -83,7 +83,7 @@ extension SitePickerViewController {
             return
         }
 
-        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteActionButton,
+        showAddSiteActionSheet(from: blogDetailHeaderView.titleView.siteSwitcherButton,
                                canCreateWPComSite: canCreateWPComSite,
                                canAddSelfHostedSite: canAddSelfHostedSite)
 
