@@ -38,7 +38,7 @@ class GravatarInterceptingLogosView: UIView {
         super.init(frame: frame)
         addSubview(appLogoImageView)
         addSubview(gravatarLogoImageView)
-        gravatarLogoImageView.layer.zPosition = 1
+        bringSubviewToFront(gravatarLogoImageView)
         NSLayoutConstraint.activate([
             appLogoImageView.leadingAnchor.constraint(equalTo: leadingAnchor),
             appLogoImageView.topAnchor.constraint(equalTo: topAnchor),
