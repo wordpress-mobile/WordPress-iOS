@@ -18,50 +18,7 @@ class HostingTableViewCell<Content: View>: UITableViewCell {
             parent.addChild(swiftUICellViewController)
             contentView.addSubview(swiftUICellViewController.view)
             swiftUICellViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addConstraint(
-                NSLayoutConstraint(
-                    item: swiftUICellViewController.view!,
-                    attribute: NSLayoutConstraint.Attribute.leading,
-                    relatedBy: NSLayoutConstraint.Relation.equal,
-                    toItem: contentView,
-                    attribute: NSLayoutConstraint.Attribute.leading,
-                    multiplier: 1.0,
-                    constant: 0.0
-                )
-            )
-            contentView.addConstraint(
-                NSLayoutConstraint(
-                    item: swiftUICellViewController.view!,
-                    attribute: NSLayoutConstraint.Attribute.trailing,
-                    relatedBy: NSLayoutConstraint.Relation.equal,
-                    toItem: contentView,
-                    attribute: NSLayoutConstraint.Attribute.trailing,
-                    multiplier: 1.0,
-                    constant: 0.0
-                )
-            )
-            contentView.addConstraint(
-                NSLayoutConstraint(
-                    item: swiftUICellViewController.view!,
-                    attribute: NSLayoutConstraint.Attribute.top,
-                    relatedBy: NSLayoutConstraint.Relation.equal,
-                    toItem: contentView,
-                    attribute: NSLayoutConstraint.Attribute.top,
-                    multiplier: 1.0,
-                    constant: 0.0
-                )
-            )
-            contentView.addConstraint(
-                NSLayoutConstraint(
-                    item: swiftUICellViewController.view!,
-                    attribute: NSLayoutConstraint.Attribute.bottom,
-                    relatedBy: NSLayoutConstraint.Relation.equal,
-                    toItem: contentView,
-                    attribute: NSLayoutConstraint.Attribute.bottom,
-                    multiplier: 1.0,
-                    constant: 0.0
-                )
-            )
+            contentView.pinSubviewToAllEdges(swiftUICellViewController.view)
 
             swiftUICellViewController.didMove(toParent: parent)
             swiftUICellViewController.view.layoutIfNeeded()
