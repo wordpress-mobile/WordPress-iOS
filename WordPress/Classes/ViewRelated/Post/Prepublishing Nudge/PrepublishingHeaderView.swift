@@ -13,6 +13,7 @@ final class PrepublishingHeaderView: UIView {
 
         blogImageView.layer.masksToBounds = true
         blogImageView.layer.cornerRadius = 6
+        blogImageView.layer.cornerCurve = .continuous
 
         publishingToLabel.text = Strings.publishingTo.uppercased()
         publishingToLabel.font = WPStyleGuide.fontForTextStyle(.caption1)
@@ -23,7 +24,7 @@ final class PrepublishingHeaderView: UIView {
         closeButton.configuration = {
             var configuration = UIButton.Configuration.plain()
             configuration.image = UIImage(systemName: "xmark.circle.fill")
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 10, bottom: 10, trailing: 10)
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 14, trailing: 12)
             configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel, .secondarySystemFill])
                 .applying(UIImage.SymbolConfiguration(font: WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)))
             return configuration
@@ -47,7 +48,7 @@ final class PrepublishingHeaderView: UIView {
         stackView.alignment = .center
         stackView.spacing = 12
         addSubview(stackView)
-        pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(allEdges: 16))
+        pinSubviewToAllEdges(stackView, insets: UIEdgeInsets(top: 16, left: 20, bottom: 12, right: 20))
 
         addSubview(separator)
         separator.translatesAutoresizingMaskIntoConstraints = false

@@ -1,3 +1,6 @@
+import UIKit
+import SwiftUI
+
 /// Encapsulates logic related to Jetpack Social in the pre-publishing sheet.
 ///
 extension PrepublishingViewController {
@@ -109,15 +112,11 @@ private extension PrepublishingViewController {
     func configureAutoSharingView(for cell: UITableViewCell) {
         let viewModel = makeAutoSharingModel()
         let viewToEmbed = UIView.embedSwiftUIView(PrepublishingAutoSharingView(model: viewModel))
-        cell.contentView.addSubview(viewToEmbed)
 
-        // Pin constraints to the cell's layoutMarginsGuide so that the content is properly aligned.
-        NSLayoutConstraint.activate([
-            viewToEmbed.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
-            viewToEmbed.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor),
-            viewToEmbed.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor),
-            viewToEmbed.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor)
-        ])
+        viewToEmbed.translatesAutoresizingMaskIntoConstraints = false
+        cell.selectionStyle = .default
+        cell.contentView.addSubview(viewToEmbed)
+        cell.contentView.pinSubviewToAllEdgeMargins(viewToEmbed)
 
         cell.accessoryType = .disclosureIndicator
 
@@ -134,8 +133,10 @@ private extension PrepublishingViewController {
             return
         }
 
+        viewToEmbed.translatesAutoresizingMaskIntoConstraints = false
+        cell.selectionStyle = .none
         cell.contentView.addSubview(viewToEmbed)
-        cell.contentView.pinSubviewToSafeArea(viewToEmbed)
+        cell.contentView.pinSubviewToAllEdgeMargins(viewToEmbed)
 
         WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed, properties: ["source": Constants.trackingSource])
     }
@@ -143,10 +144,11 @@ private extension PrepublishingViewController {
     func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
         let context = post.managedObjectContext ?? coreDataStack.mainContext
         guard let services = try? PublicizeService.allSupportedServices(in: context) else {
-            return .init()
+            return .init(padding: EdgeInsets(.zero))
         }
 
         return .init(services: services,
+                     padding: EdgeInsets(.zero),
                      preferredBackgroundColor: tableView.backgroundColor,
                      onConnectTap: noConnectionConnectTapped(),
                      onNotNowTap: noConnectionDismissTapped())

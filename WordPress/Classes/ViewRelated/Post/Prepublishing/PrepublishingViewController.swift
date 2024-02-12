@@ -3,18 +3,6 @@ import WordPressAuthenticator
 import Combine
 import WordPressUI
 
-private struct PrepublishingOption {
-    let id: PrepublishingIdentifier
-    let title: String
-    let type: PrepublishingCellType
-}
-
-private enum PrepublishingCellType {
-    case value
-    case textField
-    case customContainer
-}
-
 enum PrepublishingIdentifier {
     case title
     case schedule
@@ -31,9 +19,9 @@ enum PrepublishingIdentifier {
     }
 }
 
-// TODO: private + final
-// TODO: add deselect
-class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+// TODO: Fix insets for "social" and "publish"
+// TODO: Check if deinit works
+final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
@@ -58,7 +46,7 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
     }()
 
     #warning("TODO: remove")
-    private var presentedVC: DrawerPresentationController? {
+    var presentedVC: DrawerPresentationController? {
         return (navigationController as? PrepublishingNavigationController)?.presentedVC
     }
 
@@ -76,6 +64,7 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
 
     private let headerView = PrepublishingHeaderView()
     let tableView = UITableView(frame: .zero, style: .plain)
+    private let footerSeparator = UIView()
 
     // TODO: make private
     let publishButton: NUXButton = {
@@ -143,9 +132,12 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
         publishButton.translatesAutoresizingMaskIntoConstraints = false
         footer.pinSubviewToAllEdges(publishButton, insets: Constants.nuxButtonInsets)
 
+        WPStyleGuide.applyBorderStyle(footerSeparator)
+
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
             tableView,
+            footerSeparator,
             footer
         ])
         stackView.axis = .vertical
@@ -191,12 +183,19 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
+        // TODO: remove/reimplemnet?
         preferredContentSize = tableView.contentSize
+        footerSeparator.isHidden = tableView.contentSize.height < tableView.bounds.height
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.deselectRow(at: indexPath, animated: true)
+        }
 
         // Setting titleField first resonder alongside our transition to avoid layout issues.
         transitionCoordinator?.animateAlongsideTransition(in: nil, animation: { [weak self] _ in
@@ -209,6 +208,7 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+
         let isPresentingAViewController = navigationController?.viewControllers.count ?? 0 > 1
         if isPresentingAViewController {
             navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -222,14 +222,8 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
         let option = options[indexPath.row]
-
         let cell = dequeueCell(for: option.type, indexPath: indexPath)
-
-        cell.preservesSuperviewLayoutMargins = false
-        cell.separatorInset = .zero
-        cell.layoutMargins = Constants.cellMargins
 
         switch option.type {
         case .textField:
@@ -353,11 +347,11 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
     }
 
     private func configureCategoriesCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.categories?.array.map { $0.categoryName }.joined(separator: ",")
+        cell.detailTextLabel?.text = Array(post.categories ?? []).map { $0.categoryName }.joined(separator: ",")
     }
 
     private func didTapCategoriesCell() {
-        let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: post.categories?.array, selectionMode: .post)
+        let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories ?? []), selectionMode: .post)
         categoriesViewController.delegate = self
         categoriesViewController.onCategoriesChanged = { [weak self] in
             self?.presentedVC?.containerViewWillLayoutSubviews()
@@ -519,8 +513,6 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
         static let reuseIdentifier = "wpTableViewCell"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let footerFrame = CGRect(x: 0, y: 0, width: 100, height: 80)
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
@@ -528,6 +520,12 @@ class PrepublishingViewController: UIViewController, UITableViewDataSource, UITa
         static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
+}
+
+// TODO: Remove other ones
+private enum Strings {
+    static let publish = NSLocalizedString("prepublishingSheet.publish", value: "Publish", comment: "Label for a button that publishes the post")
+    static let schedule = NSLocalizedString("prepublishingSheet.schedule", value: "Schedule", comment: "Label for a button that publishes the post")
 }
 
 // TODO: check this
@@ -569,23 +567,16 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     }
 }
 
-#warning("TODO: remove")
-extension Set {
-    var array: [Element] {
-        return Array(self)
-    }
+private struct PrepublishingOption {
+    let id: PrepublishingIdentifier
+    let title: String
+    let type: PrepublishingCellType
 }
 
-#warning("TODO: remove")
-// MARK: - DrawerPresentable
-extension PrepublishingViewController: DrawerPresentable {
-    var allowsUserTransition: Bool {
-        return keyboardShown == false
-    }
-
-    var collapsedHeight: DrawerHeight {
-        return .intrinsicHeight
-    }
+private enum PrepublishingCellType {
+    case value
+    case textField
+    case customContainer
 }
 
 private extension PrepublishingOption {
