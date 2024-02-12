@@ -20,7 +20,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
         static let externalLinkLogo: UIImage? = UIImage(named: "icon-post-actionbar-view")?.withRenderingMode(.alwaysTemplate)
         static let infoText = NSLocalizedString("Gravatar keeps your profile information safe and up to date, automatically syncing any updates made here with your Gravatar profile.", comment: "This text is shown in the profile editing page to let the user know about Gravatar.")
         static let linkText = NSLocalizedString("Learn more on Gravatar.com", comment: "This is a link that takes the user to the external Gravatar website")
-        static let font = TextStyle.caption.uiFont
+        static var font: UIFont { TextStyle.caption.uiFont }
         static let gravatarLink = "https://gravatar.com"
     }
 
@@ -29,6 +29,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = Constants.font
         label.text = Constants.infoText
+        label.adjustsFontForContentSizeCategory = true
         label.numberOfLines = 0
         return label
     }()
@@ -44,6 +45,7 @@ class GravatarInfoCell: WPTableViewCellDefault {
         text.textContainerInset = .zero
         text.textContainer.lineFragmentPadding = 0
         text.textDragInteraction?.isEnabled = false
+        text.adjustsFontForContentSizeCategory = true
         return text
     }()
 
