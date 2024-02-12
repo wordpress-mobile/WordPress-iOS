@@ -336,6 +336,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
+        cell.selectionStyle = .none
         cell.host(
             NotificationsTableViewCellContent(
                 style: .regular(
