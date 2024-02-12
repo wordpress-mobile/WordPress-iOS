@@ -250,12 +250,19 @@ extension PublishingEditor {
         let isTitleDisplayed = prepublishingIdentifiers.contains { $0 == .title }
         let shouldDisplayPortrait = WPDeviceIdentification.isiPhone() && isTitleDisplayed
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: shouldDisplayPortrait)
-        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
-        if let sourceView = prepublishingSourceView {
-            bottomSheet.show(from: self, sourceView: sourceView)
-        } else {
-            bottomSheet.show(from: self.topmostPresentedViewController)
+        if let sheetController = prepublishingNavigationController.sheetPresentationController {
+            if #available(iOS 16, *) {
+                sheetController.detents = [
+                    .custom(resolver: { context in
+                        return 520
+                    }),
+                    .large()
+                ]
+            }
+        } else if let popoverController = prepublishingNavigationController.popoverPresentationController {
+            // TODO: complete on iPad (preferredContentSize)
         }
+        topmostPresentedViewController.present(prepublishingNavigationController, animated: true)
     }
 
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.

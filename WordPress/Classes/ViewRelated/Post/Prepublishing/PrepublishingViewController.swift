@@ -31,7 +31,9 @@ enum PrepublishingIdentifier {
     }
 }
 
-class PrepublishingViewController: UITableViewController {
+// TODO: private + final
+// TODO: add deselect
+class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
@@ -55,6 +57,7 @@ class PrepublishingViewController: UITableViewController {
         return PublishSettingsViewModel(post: post)
     }()
 
+    #warning("TODO: remove")
     private var presentedVC: DrawerPresentationController? {
         return (navigationController as? PrepublishingNavigationController)?.presentedVC
     }
@@ -71,6 +74,10 @@ class PrepublishingViewController: UITableViewController {
 
     private var didTapPublish = false
 
+    private let headerView = PrepublishingHeaderView()
+    let tableView = UITableView(frame: .zero, style: .plain)
+
+    // TODO: make private
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
@@ -124,10 +131,28 @@ class PrepublishingViewController: UITableViewController {
 
         refreshOptions()
 
+        configureHeader()
+        configureTableView()
+        configureKeyboardToggle()
+
         title = ""
 
-        let nib = UINib(nibName: "PrepublishingHeaderView", bundle: nil)
-        tableView.register(nib, forHeaderFooterViewReuseIdentifier: Constants.headerReuseIdentifier)
+        // TODO: cleanup
+        let footer = UIView()
+        footer.addSubview(publishButton)
+        publishButton.translatesAutoresizingMaskIntoConstraints = false
+        footer.pinSubviewToAllEdges(publishButton, insets: Constants.nuxButtonInsets)
+
+        let stackView = UIStackView(arrangedSubviews: [
+            headerView,
+            tableView,
+            footer
+        ])
+        stackView.axis = .vertical
+
+        view.addSubview(stackView)
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(stackView)
 
         setupPublishButton()
         setupFooterSeparator()
@@ -135,7 +160,21 @@ class PrepublishingViewController: UITableViewController {
         updatePublishButtonLabel()
         announcePublishButton()
 
-        configureKeyboardToggle()
+        // TODO: check dark mode
+        view.backgroundColor = .systemBackground
+    }
+
+    private func configureHeader() {
+        headerView.closeButton.addAction(.init(handler: { [weak self] _ in
+            self?.presentingViewController?.dismiss(animated: true)
+        }), for: .touchUpInside)
+        headerView.configure(post.blog)
+    }
+
+    private func configureTableView() {
+        tableView.dataSource = self
+        tableView.delegate = self
+        tableView.rowHeight = UITableView.automaticDimension
     }
 
     /// Toggles `keyboardShown` as the keyboard notifications come in
@@ -176,30 +215,13 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    // MARK: - UITableViewDataSource
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        options.count
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.headerReuseIdentifier) as? PrepublishingHeaderView else {
-            return nil
-        }
-
-        header.delegate = self
-        header.configure(post.blog)
-
-        return header
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return UITableView.automaticDimension
-    }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return options.count
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let option = options[indexPath.row]
 
@@ -258,7 +280,9 @@ class PrepublishingViewController: UITableViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    // MARK: - UITableViewDelegate
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch options[indexPath.row].id {
         case .tags:
             didTapTagCell()
@@ -274,6 +298,12 @@ class PrepublishingViewController: UITableViewController {
             break
         }
     }
+
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        headerView.separator.alpha = max(0, min(1, scrollView.contentOffset.y / 60))
+    }
+
+    // MARK: – Misc
 
     func reloadData() {
         refreshOptions()
@@ -397,13 +427,20 @@ class PrepublishingViewController: UITableViewController {
 
     // MARK: - Publish Button
 
+    // TODO: cleanuo
     private func setupPublishButton() {
-        let footer = UIView(frame: Constants.footerFrame)
+        return ()
+
+        let footer = UIView()
         footer.addSubview(publishButton)
-        footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
         publishButton.translatesAutoresizingMaskIntoConstraints = false
-        tableView.tableFooterView = footer
-        publishButton.addTarget(self, action: #selector(publish(_:)), for: .touchUpInside)
+        footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
+
+        view.addSubview(footer)
+        footer.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(footer, insets: .zero)
+
+        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
         updatePublishButtonLabel()
     }
 
@@ -480,7 +517,6 @@ class PrepublishingViewController: UITableViewController {
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let headerReuseIdentifier = "wpTableViewHeader"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let cellMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
@@ -494,12 +530,7 @@ class PrepublishingViewController: UITableViewController {
     }
 }
 
-extension PrepublishingViewController: PrepublishingHeaderViewDelegate {
-    func closeButtonTapped() {
-        dismiss(animated: true)
-    }
-}
-
+// TODO: check this
 extension PrepublishingViewController: PrepublishingDismissible {
     func handleDismiss() {
         defer { completion(.dismissed) }
@@ -538,12 +569,14 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     }
 }
 
+#warning("TODO: remove")
 extension Set {
     var array: [Element] {
         return Array(self)
     }
 }
 
+#warning("TODO: remove")
 // MARK: - DrawerPresentable
 extension PrepublishingViewController: DrawerPresentable {
     var allowsUserTransition: Bool {
