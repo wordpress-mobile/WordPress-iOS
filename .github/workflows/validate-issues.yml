@@ -6,7 +6,7 @@ on:
 
 jobs:
   check-labels-on-issues:
-    uses: Automattic/dangermattic/.github/workflows/reusable-check-labels-on-issues.yml@trunk
+    uses: Automattic/dangermattic/.github/workflows/reusable-check-labels-on-issues.yml@v1.0.0
     with:
       label-format-list: '[
         "^\[.+\]",
