@@ -332,12 +332,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(
-            withIdentifier: "NotificationsTableViewCell",
-            for: indexPath
-        )
-
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "NotificationsTableViewCell") as? HostingTableViewCell<NotificationsTableViewCellContent>,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationsTableViewCellContent.reuseIdentifier) as? HostingTableViewCell<NotificationsTableViewCellContent>,
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
@@ -612,7 +607,10 @@ private extension NotificationsViewController {
     func setupTableView() {
         // Register the cells
         tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
-        tableView.register(HostingTableViewCell<NotificationsTableViewCellContent>.self, forCellReuseIdentifier: "NotificationsTableViewCell")
+        tableView.register(
+            HostingTableViewCell<NotificationsTableViewCellContent>.self,
+            forCellReuseIdentifier: NotificationsTableViewCellContent.reuseIdentifier
+        )
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"

@@ -2,6 +2,7 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
+    static let reuseIdentifier = String(describing: Self.self)
     enum Style {
         struct Regular {
             let title: String
