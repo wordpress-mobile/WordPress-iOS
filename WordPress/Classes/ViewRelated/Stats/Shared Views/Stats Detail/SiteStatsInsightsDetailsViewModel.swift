@@ -462,7 +462,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 var rows = [ImmuTableRow]()
                 let map = countriesMap(topCountries: periodStore.getTopCountries())
                 if !map.data.isEmpty {
-                    rows.append(CountriesMapRow(countriesMap: map))
+                    rows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
                 }
                 rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                         dataSubtitle: StatSection.periodCountries.dataSubtitle))

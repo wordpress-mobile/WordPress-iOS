@@ -38,8 +38,7 @@ struct OverviewRow: StatsHashableImmuTableRow {
     }
 }
 
-struct ViewsVisitorsRow: ImmuTableRow {
-
+struct ViewsVisitorsRow: HashableImmuTableRow {
     typealias CellType = ViewsVisitorsLineChartCell
 
     static let cell: ImmuTableCell = {
@@ -56,6 +55,14 @@ struct ViewsVisitorsRow: ImmuTableRow {
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
     let xAxisDates: [Date]
+    let statSection: StatSection?
+
+    static func == (lhs: ViewsVisitorsRow, rhs: ViewsVisitorsRow) -> Bool {
+        return lhs.segmentsData == rhs.segmentsData &&
+            lhs.selectedSegment == rhs.selectedSegment &&
+            lhs.xAxisDates == rhs.xAxisDates &&
+            lhs.period == rhs.period
+    }
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -112,8 +119,7 @@ struct TableFooterRow: ImmuTableRow {
 
 // MARK: - Insights Rows
 
-struct GrowAudienceRow: ImmuTableRow {
-
+struct GrowAudienceRow: HashableImmuTableRow {
     typealias CellType = GrowAudienceCell
 
     static let cell: ImmuTableCell = {
@@ -125,6 +131,7 @@ struct GrowAudienceRow: ImmuTableRow {
     let isNudgeCompleted: Bool
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -136,6 +143,12 @@ struct GrowAudienceRow: ImmuTableRow {
                        allTimeViewsCount: allTimeViewsCount,
                        isNudgeCompleted: isNudgeCompleted,
                        insightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    static func == (lhs: GrowAudienceRow, rhs: GrowAudienceRow) -> Bool {
+        return lhs.hintType == rhs.hintType &&
+            lhs.allTimeViewsCount == rhs.allTimeViewsCount &&
+            lhs.isNudgeCompleted == rhs.isNudgeCompleted
     }
 }
 
@@ -161,8 +174,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 }
 
-struct LatestPostSummaryRow: ImmuTableRow {
-
+struct LatestPostSummaryRow: HashableImmuTableRow {
     static var cell: ImmuTableCell {
         return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
     }
@@ -171,6 +183,7 @@ struct LatestPostSummaryRow: ImmuTableRow {
     let chartData: StatsPostDetails?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -180,10 +193,13 @@ struct LatestPostSummaryRow: ImmuTableRow {
 
         cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
     }
+
+    static func == (lhs: LatestPostSummaryRow, rhs: LatestPostSummaryRow) -> Bool {
+        return lhs.summaryData == rhs.summaryData && lhs.chartData == rhs.chartData
+    }
 }
 
-struct PostingActivityRow: ImmuTableRow {
-
+struct PostingActivityRow: HashableImmuTableRow {
     typealias CellType = PostingActivityCell
 
     static let cell: ImmuTableCell = {
@@ -193,6 +209,7 @@ struct PostingActivityRow: ImmuTableRow {
     let monthsData: [[PostingStreakEvent]]
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -202,10 +219,13 @@ struct PostingActivityRow: ImmuTableRow {
 
         cell.configure(withData: monthsData, andDelegate: siteStatsInsightsDelegate)
     }
+
+    static func == (lhs: PostingActivityRow, rhs: PostingActivityRow) -> Bool {
+        return lhs.monthsData == rhs.monthsData
+    }
 }
 
-struct TabbedTotalsStatsRow: ImmuTableRow {
-
+struct TabbedTotalsStatsRow: HashableImmuTableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -213,7 +233,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
     }()
 
     let tabsData: [TabData]
-    let statSection: StatSection
+    let statSection: StatSection?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     let showTotalCount: Bool
@@ -221,7 +241,7 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? CellType, let statSection else {
             return
         }
 
@@ -231,9 +251,15 @@ struct TabbedTotalsStatsRow: ImmuTableRow {
                        siteStatsDetailsDelegate: siteStatsDetailsDelegate,
                        showTotalCount: showTotalCount)
     }
+
+    static func == (lhs: TabbedTotalsStatsRow, rhs: TabbedTotalsStatsRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData &&
+            lhs.statSection == rhs.statSection &&
+            lhs.showTotalCount == rhs.showTotalCount
+    }
 }
 
-struct TopTotalsInsightStatsRow: ImmuTableRow {
+struct TopTotalsInsightStatsRow: HashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -244,13 +270,13 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     let itemSubtitle: String
     let dataSubtitle: String
     let dataRows: [StatsTotalRowData]
-    let statSection: StatSection
+    let statSection: StatSection?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? CellType, let statSection else {
             return
         }
 
@@ -263,10 +289,16 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
+
+    static func == (lhs: TopTotalsInsightStatsRow, rhs: TopTotalsInsightStatsRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.dataRows == rhs.dataRows &&
+            lhs.statSection == rhs.statSection
+    }
 }
 
-struct TwoColumnStatsRow: ImmuTableRow {
-
+struct TwoColumnStatsRow: HashableImmuTableRow {
     typealias CellType = TwoColumnCell
 
     static let cell: ImmuTableCell = {
@@ -274,22 +306,25 @@ struct TwoColumnStatsRow: ImmuTableRow {
     }()
 
     let dataRows: [StatsTwoColumnRowData]
-    let statSection: StatSection
+    let statSection: StatSection?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
 
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? CellType, let statSection else {
             return
         }
 
         cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+
+    static func == (lhs: TwoColumnStatsRow, rhs: TwoColumnStatsRow) -> Bool {
+        return lhs.dataRows == rhs.dataRows && lhs.statSection == rhs.statSection
+    }
 }
 
-struct MostPopularTimeInsightStatsRow: ImmuTableRow {
-
+struct MostPopularTimeInsightStatsRow: HashableImmuTableRow {
     typealias CellType = StatsMostPopularTimeInsightsCell
 
     static let cell: ImmuTableCell = {
@@ -299,6 +334,7 @@ struct MostPopularTimeInsightStatsRow: ImmuTableRow {
     let data: StatsMostPopularTimeData?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else {
@@ -307,10 +343,13 @@ struct MostPopularTimeInsightStatsRow: ImmuTableRow {
 
         cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+
+    static func == (lhs: MostPopularTimeInsightStatsRow, rhs: MostPopularTimeInsightStatsRow) -> Bool {
+        return lhs.data == rhs.data
+    }
 }
 
-struct TotalInsightStatsRow: ImmuTableRow {
-
+struct TotalInsightStatsRow: HashableImmuTableRow {
     typealias CellType = StatsTotalInsightsCell
 
     static let cell: ImmuTableCell = {
@@ -318,25 +357,30 @@ struct TotalInsightStatsRow: ImmuTableRow {
     }()
 
     let dataRow: StatsTotalInsightsData
-    let statSection: StatSection
+    let statSection: StatSection?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? CellType, let statSection else {
             return
         }
 
         cell.configure(dataRow: dataRow, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
     }
+
+    static func == (lhs: TotalInsightStatsRow, rhs: TotalInsightStatsRow) -> Bool {
+        return lhs.dataRow == rhs.dataRow && lhs.statSection == rhs.statSection
+    }
 }
 
 // MARK: - Insights Management
 
-struct AddInsightRow: ImmuTableRow {
+struct AddInsightRow: HashableImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let action: ImmuTableAction?
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
         cell.textLabel?.text = StatSection.insightsAddInsight.title
@@ -344,6 +388,10 @@ struct AddInsightRow: ImmuTableRow {
         cell.accessibilityTraits = .button
         cell.accessibilityLabel = StatSection.insightsAddInsight.title
         cell.accessibilityHint = NSLocalizedString("Tap to add new stats cards.", comment: "Accessibility hint for a button that opens a view that allows to add new stats cards.")
+    }
+
+    static func == (lhs: AddInsightRow, rhs: AddInsightRow) -> Bool {
+        return lhs.statSection == rhs.statSection
     }
 }
 
@@ -817,5 +865,55 @@ struct StatsErrorRow: StatsHashableImmuTableRow {
         if let statSection = statSection {
            cell.statSection = statSection
         }
+    }
+}
+
+extension StatsLastPostInsight: Equatable {
+    public static func == (lhs: StatsLastPostInsight, rhs: StatsLastPostInsight) -> Bool {
+        return lhs.title == rhs.title &&
+               lhs.url == rhs.url &&
+               lhs.publishedDate == rhs.publishedDate &&
+               lhs.likesCount == rhs.likesCount &&
+               lhs.commentsCount == rhs.commentsCount &&
+               lhs.viewsCount == rhs.viewsCount &&
+               lhs.postID == rhs.postID &&
+               lhs.featuredImageURL == rhs.featuredImageURL
+    }
+}
+
+extension StatsPostViews: Equatable {
+    public static func == (lhs: StatsPostViews, rhs: StatsPostViews) -> Bool {
+        return lhs.period == rhs.period &&
+               lhs.date == rhs.date &&
+               lhs.viewsCount == rhs.viewsCount
+    }
+}
+
+extension StatsWeeklyBreakdown: Equatable {
+    public static func == (lhs: StatsWeeklyBreakdown, rhs: StatsWeeklyBreakdown) -> Bool {
+        return lhs.startDay == rhs.startDay &&
+               lhs.endDay == rhs.endDay &&
+               lhs.totalViewsCount == rhs.totalViewsCount &&
+               lhs.averageViewsCount == rhs.averageViewsCount &&
+               lhs.changePercentage == rhs.changePercentage &&
+               lhs.days == rhs.days
+    }
+}
+
+extension StatsPostDetails: Equatable {
+    public static func == (lhs: StatsPostDetails, rhs: StatsPostDetails) -> Bool {
+        return lhs.fetchedDate == rhs.fetchedDate &&
+               lhs.totalViewsCount == rhs.totalViewsCount &&
+               lhs.recentWeeks == rhs.recentWeeks &&
+               lhs.dailyAveragesPerMonth == rhs.dailyAveragesPerMonth &&
+               lhs.monthlyBreakdown == rhs.monthlyBreakdown &&
+               lhs.lastTwoWeeks == rhs.lastTwoWeeks
+    }
+}
+
+extension PostingStreakEvent: Equatable {
+    public static func == (lhs: PostingStreakEvent, rhs: PostingStreakEvent) -> Bool {
+        return lhs.date == rhs.date &&
+               lhs.postCount == rhs.postCount
     }
 }

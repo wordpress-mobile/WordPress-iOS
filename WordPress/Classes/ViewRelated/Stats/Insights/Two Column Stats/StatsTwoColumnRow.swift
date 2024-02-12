@@ -1,6 +1,6 @@
 import UIKit
 
-struct StatsTwoColumnRowData {
+struct StatsTwoColumnRowData: Equatable {
     var leftColumnName: String
     var leftColumnData: String
     var rightColumnName: String

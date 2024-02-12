@@ -103,7 +103,7 @@ class SiteStatsInsightsViewModel: Observable {
 
     func tableViewModel() -> ImmuTable {
 
-        var tableRows = [ImmuTableRow]()
+        var tableRows = [any HashableImmuTableRow]()
 
         if insightsToShow.isEmpty ||
             (fetchingFailed() && !containsCachedData()) {
@@ -145,7 +145,8 @@ class SiteStatsInsightsViewModel: Observable {
                                             return GrowAudienceRow(hintType: nudge,
                                                                    allTimeViewsCount: viewsCount,
                                                                    isNudgeCompleted: isNudgeCompleted,
-                                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                                                                   siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                                                   statSection: InsightType.growAudience.statSection)
                 }, loading: {
                     return StatsGhostGrowAudienceImmutableRow(statSection: InsightType.growAudience.statSection)
                 }, error: {
@@ -158,7 +159,8 @@ class SiteStatsInsightsViewModel: Observable {
                                         block: {
                                             return LatestPostSummaryRow(summaryData: insightsStore.getLastPostInsight(),
                                                                         chartData: insightsStore.getPostStats(),
-                                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+                                                                        siteStatsInsightsDelegate: siteStatsInsightsDelegate,
+                                                                        statSection: .insightsLatestPostSummary)
                 }, loading: {
                     return StatsGhostChartImmutableRow(statSection: .insightsLatestPostSummary)
                 }, error: {
@@ -222,7 +224,8 @@ class SiteStatsInsightsViewModel: Observable {
                                         status: insightsStore.annualAndMostPopularTimeStatus,
                                         block: {
                     return MostPopularTimeInsightStatsRow(data: createMostPopularStatsRowData(),
-                                             siteStatsInsightsDelegate: nil)
+                                                          siteStatsInsightsDelegate: nil,
+                                                          statSection: .insightsMostPopularTime)
                 }, loading: {
                     return StatsGhostTwoColumnImmutableRow(statSection: .insightsMostPopularTime)
                 }, error: {
@@ -324,7 +327,7 @@ class SiteStatsInsightsViewModel: Observable {
 
         tableRows.append(AddInsightRow(action: { [weak self] _ in
             self?.siteStatsInsightsDelegate?.showAddInsight?()
-        }))
+        }, statSection: .insightsAddInsight))
 
         let sections = tableRows.map({ ImmuTableSection(rows: [$0]) })
         return ImmuTable(sections: sections)
@@ -462,7 +465,7 @@ private extension SiteStatsInsightsViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [ImmuTableRow] {
+    func overviewTableRows() -> [any HashableImmuTableRow] {
         let periodDate = self.lastRequestedDate
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
@@ -626,7 +629,7 @@ private extension SiteStatsInsightsViewModel {
     func createPostingActivityRow() -> PostingActivityRow {
         let monthsData = insightsStore.getQuarterlyPostingActivity(from: Date())
 
-        return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        return PostingActivityRow(monthsData: monthsData, siteStatsInsightsDelegate: siteStatsInsightsDelegate, statSection: .insightsPostingActivity)
     }
 
     func createTagsAndCategoriesRows() -> [StatsTotalRowData] {

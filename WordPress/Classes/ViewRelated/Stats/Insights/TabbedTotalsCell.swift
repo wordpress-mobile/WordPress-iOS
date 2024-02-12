@@ -1,6 +1,6 @@
 import UIKit
 
-struct TabData: FilterTabBarItem {
+struct TabData: FilterTabBarItem, Equatable {
     var tabTitle: String
     var itemSubtitle: String
     var dataSubtitle: String
