@@ -1,39 +1,7 @@
 import Foundation
 import WordPressFlux
 
-/// The view model used by Period Stats.
-///
-
-typealias StatsTrafficSnapshot = NSDiffableDataSourceSnapshot<StatsTrafficSection, StatsTrafficRow>
-typealias StatsTrafficDataSource = UITableViewDiffableDataSource<StatsTrafficSection, StatsTrafficRow>
-
-enum StatsTrafficRow: Hashable {
-    case emptyPeriodCellHeader(PeriodEmptyCellHeaderRow)
-    case cellHeader(CellHeaderRow)
-    case topTotals(TopTotalsPeriodStatsRow)
-    case topTotalsNoSubtitles(TopTotalsNoSubtitlesPeriodStatsRow)
-    case countries(CountriesStatsRow)
-    case countriesMap(CountriesMapRow)
-    case overview(OverviewRow)
-    case footer(TableFooterRow)
-    case error(StatsErrorRow)
-    case ghostChart(StatsGhostChartImmutableRow)
-    case ghostTop(StatsGhostTopImmutableRow)
-}
-
-struct StatsTrafficSection: Hashable {
-    let headerText: String?
-    let rows: [StatsTrafficRow]
-    let footerText: String?
-
-    init(headerText: String? = nil, rows: [StatsTrafficRow], footerText: String? = nil) {
-        self.headerText = headerText
-        self.rows = rows
-        self.footerText = footerText
-    }
-}
-
-class SiteStatsPeriodViewModel: Observable {
+final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Properties
 
@@ -111,130 +79,177 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewSnapshot() -> StatsTrafficSnapshot {
+        var snapshot = StatsTrafficSnapshot()
         if !store.containsCachedData && store.fetchingOverviewHasFailed {
-            return ImmuTable.Empty
+            return snapshot
         }
 
-        let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
+        let errorBlock: (StatSection) -> [any HashableImmuTableRow] = { section in
             return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: section)]
         }
-        let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
+        let summaryErrorBlock: AsyncBlock<[any HashableImmuTableRow]> = {
+            return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: .periodOverviewViews)]
         }
-        let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
+        let loadingBlock: (StatSection) -> [any HashableImmuTableRow] = { section in
             return [StatsGhostTopImmutableRow(statSection: section)]
         }
 
-        var sections: [ImmuTableSection] = []
+        let summarySection = StatsTrafficSection(periodType: .summary)
+        let summaryRows = blocks(for: .summary,
+                                 type: .period,
+                                 status: store.summaryStatus,
+                                 checkingCache: { [weak self] in
+            return self?.mostRecentChartData != nil
+        },
+                                 block: { [weak self] in
+            return self?.overviewTableRows() ?? summaryErrorBlock()
+        }, loading: {
+            return [StatsGhostChartImmutableRow(statSection: .periodOverviewViews)]
+        }, error: summaryErrorBlock)
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([summarySection])
+        snapshot.appendItems(summaryRows, toSection: summarySection)
 
-        // TODO: Replace with a new Bar Chart
-        sections.append(.init(rows: blocks(for: .summary,
-                                            type: .period,
-                                            status: store.summaryStatus,
-                                            checkingCache: { [weak self] in
-                                                return self?.mostRecentChartData != nil
-            },
-                                            block: { [weak self] in
-                                                return self?.overviewTableRows() ?? summaryErrorBlock()
-            }, loading: {
-                return [StatsGhostChartImmutableRow()]
-        }, error: summaryErrorBlock)))
+        let topPostsAndPagesSection = StatsTrafficSection(periodType: .topPostsAndPages)
+        let topPostsAndPagesRows = blocks(for: .topPostsAndPages,
+                                          type: .period,
+                                          status: store.topPostsAndPagesStatus,
+                                          block: { [weak self] in
+                                              return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
+                                          }, loading: {
+                                              return loadingBlock(.periodPostsAndPages)
+                                          }, error: {
+                                              return errorBlock(.periodPostsAndPages)
+                                          })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topPostsAndPagesSection])
+        snapshot.appendItems(topPostsAndPagesRows, toSection: topPostsAndPagesSection)
 
-        sections.append(.init(rows: blocks(for: .topPostsAndPages,
-                                            type: .period,
-                                            status: store.topPostsAndPagesStatus,
-                                            block: { [weak self] in
-                                                return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
-            }, loading: {
-                return loadingBlock(.periodPostsAndPages)
-            }, error: {
-                return errorBlock(.periodPostsAndPages)
-        })))
-        sections.append(.init(rows: blocks(for: .topReferrers,
-                                            type: .period,
-                                            status: store.topReferrersStatus,
-                                            block: { [weak self] in
-                                                return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
-            }, loading: {
-                return loadingBlock(.periodReferrers)
-            }, error: {
-                return errorBlock(.periodReferrers)
-        })))
-        sections.append(.init(rows: blocks(for: .topClicks,
-                                            type: .period,
-                                            status: store.topClicksStatus,
-                                            block: { [weak self] in
-                                                return self?.clicksTableRows() ?? errorBlock(.periodClicks)
-            }, loading: {
-                return loadingBlock(.periodClicks)
-            }, error: {
-                return errorBlock(.periodClicks)
-        })))
-        sections.append(.init(rows: blocks(for: .topAuthors,
-                                            type: .period,
-                                            status: store.topAuthorsStatus,
-                                            block: { [weak self] in
-                                                return self?.authorsTableRows() ?? errorBlock(.periodAuthors)
-            }, loading: {
-                return loadingBlock(.periodAuthors)
-            }, error: {
-                return errorBlock(.periodAuthors)
-        })))
-        sections.append(.init(rows: blocks(for: .topCountries,
-                                            type: .period,
-                                            status: store.topCountriesStatus,
-                                            block: { [weak self] in
-                                                return self?.countriesTableRows() ?? errorBlock(.periodCountries)
-            }, loading: {
-                return loadingBlock(.periodCountries)
-            }, error: {
-                return errorBlock(.periodCountries)
-        })))
-        sections.append(.init(rows: blocks(for: .topSearchTerms,
-                                            type: .period,
-                                            status: store.topSearchTermsStatus,
-                                            block: { [weak self] in
-                                                return self?.searchTermsTableRows() ?? errorBlock(.periodSearchTerms)
-            }, loading: {
-                return loadingBlock(.periodSearchTerms)
-            }, error: {
-                return errorBlock(.periodSearchTerms)
-        })))
-        sections.append(.init(rows: blocks(for: .topPublished,
-                                            type: .period,
-                                            status: store.topPublishedStatus,
-                                            block: { [weak self] in
-                                                return self?.publishedTableRows() ?? errorBlock(.periodPublished)
-            }, loading: {
-                return loadingBlock(.periodPublished)
-            }, error: {
-                return errorBlock(.periodPublished)
-        })))
-        sections.append(.init(rows: blocks(for: .topVideos,
-                                            type: .period,
-                                            status: store.topVideosStatus,
-                                            block: { [weak self] in
-                                                return self?.videosTableRows() ?? errorBlock(.periodVideos)
-            }, loading: {
-                return loadingBlock(.periodVideos)
-            }, error: {
-                return errorBlock(.periodVideos)
-        })))
+        let topReferrersSection = StatsTrafficSection(periodType: .topReferrers)
+        let topReferrersRows = blocks(for: .topReferrers,
+                                      type: .period,
+                                      status: store.topReferrersStatus,
+                                      block: { [weak self] in
+                                          return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
+                                      }, loading: {
+                                          return loadingBlock(.periodReferrers)
+                                      }, error: {
+                                          return errorBlock(.periodReferrers)
+                                      })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topReferrersSection])
+        snapshot.appendItems(topReferrersRows, toSection: topReferrersSection)
+
+        let topClicksSection = StatsTrafficSection(periodType: .topClicks)
+        let topClicksRows = blocks(for: .topClicks,
+                                   type: .period,
+                                   status: store.topClicksStatus,
+                                   block: { [weak self] in
+                                       return self?.clicksTableRows() ?? errorBlock(.periodClicks)
+                                   }, loading: {
+                                       return loadingBlock(.periodClicks)
+                                   }, error: {
+                                       return errorBlock(.periodClicks)
+                                   })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topClicksSection])
+        snapshot.appendItems(topClicksRows, toSection: topClicksSection)
+
+        let topAuthorsSection = StatsTrafficSection(periodType: .topAuthors)
+        let topAuthorsRows = blocks(for: .topAuthors,
+                                    type: .period,
+                                    status: store.topAuthorsStatus,
+                                    block: { [weak self] in
+                                        return self?.authorsTableRows() ?? errorBlock(.periodAuthors)
+                                    }, loading: {
+                                        return loadingBlock(.periodAuthors)
+                                    }, error: {
+                                        return errorBlock(.periodAuthors)
+                                    })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topAuthorsSection])
+        snapshot.appendItems(topAuthorsRows, toSection: topAuthorsSection)
+
+        let topCountriesSection = StatsTrafficSection(periodType: .topCountries)
+        let topCountriesRows = blocks(for: .topCountries,
+                                      type: .period,
+                                      status: store.topCountriesStatus,
+                                      block: { [weak self] in
+                                          return self?.countriesTableRows() ?? errorBlock(.periodCountries)
+                                      }, loading: {
+                                          return loadingBlock(.periodCountries)
+                                      }, error: {
+                                          return errorBlock(.periodCountries)
+                                      })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topCountriesSection])
+        snapshot.appendItems(topCountriesRows, toSection: topCountriesSection)
+
+        let topSearchTermsSection = StatsTrafficSection(periodType: .topSearchTerms)
+        let topSearchTermsRows = blocks(for: .topSearchTerms,
+                                        type: .period,
+                                        status: store.topSearchTermsStatus,
+                                        block: { [weak self] in
+                                            return self?.searchTermsTableRows() ?? errorBlock(.periodSearchTerms)
+                                        }, loading: {
+                                            return loadingBlock(.periodSearchTerms)
+                                        }, error: {
+                                            return errorBlock(.periodSearchTerms)
+                                        })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topSearchTermsSection])
+        snapshot.appendItems(topSearchTermsRows, toSection: topSearchTermsSection)
+
+        let topPublishedSection = StatsTrafficSection(periodType: .topPublished)
+        let topPublishedRows = blocks(for: .topPublished,
+                                      type: .period,
+                                      status: store.topPublishedStatus,
+                                      block: { [weak self] in
+                                          return self?.publishedTableRows() ?? errorBlock(.periodPublished)
+                                      }, loading: {
+                                          return loadingBlock(.periodPublished)
+                                      }, error: {
+                                          return errorBlock(.periodPublished)
+                                      })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topPublishedSection])
+        snapshot.appendItems(topPublishedRows, toSection: topPublishedSection)
+
+        let topVideosSection = StatsTrafficSection(periodType: .topVideos)
+        let topVideosRows = blocks(for: .topVideos,
+                                   type: .period,
+                                   status: store.topVideosStatus,
+                                   block: { [weak self] in
+                                       return self?.videosTableRows() ?? errorBlock(.periodVideos)
+                                   }, loading: {
+                                       return loadingBlock(.periodVideos)
+                                   }, error: {
+                                       return errorBlock(.periodVideos)
+                                   })
+            .map { StatsTrafficRow(immuTableRow: $0) }
+        snapshot.appendSections([topVideosSection])
+        snapshot.appendItems(topVideosRows, toSection: topVideosSection)
+
+        // Check for supportsFileDownloads and append if necessary
         if SiteStatsInformation.sharedInstance.supportsFileDownloads {
-            sections.append(.init(rows: blocks(for: .topFileDownloads,
-                                                type: .period,
-                                                status: store.topFileDownloadsStatus,
-                                                block: { [weak self] in
-                                                    return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
-                }, loading: {
-                    return loadingBlock(.periodFileDownloads)
-                }, error: {
-                    return errorBlock(.periodFileDownloads)
-            })))
+            let topFileDownloadsSection = StatsTrafficSection(periodType: .topFileDownloads)
+            let topFileDownloadsRows = blocks(for: .topFileDownloads,
+                                              type: .period,
+                                              status: store.topFileDownloadsStatus,
+                                              block: { [weak self] in
+                                                  return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
+                                              }, loading: {
+                                                  return loadingBlock(.periodFileDownloads)
+                                              }, error: {
+                                                  return errorBlock(.periodFileDownloads)
+                                              })
+                .map { StatsTrafficRow(immuTableRow: $0) }
+            snapshot.appendSections([topFileDownloadsSection])
+            snapshot.appendItems(topFileDownloadsRows, toSection: topFileDownloadsSection)
         }
 
-        return ImmuTable(sections: sections)
+        return snapshot
     }
 
     // MARK: - Refresh Data
@@ -282,8 +297,8 @@ private extension SiteStatsPeriodViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func overviewTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
 
         let periodSummary = store.getSummary()
         let summaryData = periodSummary?.summaryData ?? []
@@ -419,8 +434,8 @@ private extension SiteStatsPeriodViewModel {
             return (currentCount, difference, roundedPercentage)
     }
 
-    func postsAndPagesTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func postsAndPagesTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                  dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                  dataRows: postsAndPagesDataRows(),
@@ -458,8 +473,8 @@ private extension SiteStatsPeriodViewModel {
         }
     }
 
-    func referrersTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func referrersTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
@@ -500,8 +515,8 @@ private extension SiteStatsPeriodViewModel {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
-    func clicksTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func clicksTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                  dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
@@ -525,8 +540,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func authorsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func authorsTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                  dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
@@ -549,8 +564,8 @@ private extension SiteStatsPeriodViewModel {
         }
     }
 
-    func countriesTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func countriesTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         let map = countriesMap()
         let isMapShown = !map.data.isEmpty
         if isMapShown {
@@ -583,8 +598,8 @@ private extension SiteStatsPeriodViewModel {
         })
     }
 
-    func searchTermsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func searchTermsTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                  dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
@@ -618,8 +633,8 @@ private extension SiteStatsPeriodViewModel {
         return mappedSearchTerms
     }
 
-    func publishedTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func publishedTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
                                                             statSection: StatSection.periodPublished,
                                                             siteStatsPeriodDelegate: periodDelegate))
@@ -636,8 +651,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func videosTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func videosTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                  dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
@@ -657,8 +672,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func fileDownloadsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func fileDownloadsTableRows() -> [any HashableImmuTableRow] {
+        var tableRows = [any HashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),
