@@ -84,7 +84,7 @@ fileprivate extension NotificationsTableViewCellContent {
         }
 
         private var textsVStack: some View {
-            VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: Length.Padding.half) {
                 Text(info.title)
                     .style(.bodySmall(.regular))
                     .foregroundStyle(Color.DS.Foreground.primary)
