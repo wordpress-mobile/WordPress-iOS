@@ -1,46 +1,46 @@
 import SwiftUI
 import DesignSystem
 
-extension NotificationsTableViewCell {
-    struct Content: View {
-        enum Style {
-            struct Regular {
-                let title: String
-                let description: String?
-                let shouldShowIndicator: Bool
-                let avatarStyle: AvatarsView.Style
-                let actionIconName: String? // TODO: Will be refactored to contain the action.
-            }
-
-            struct Altered {
-                let text: String
-                let actionTitle: String
-                let action: (() -> Void)?
-            }
-
-            case regular(Regular)
-            case altered(Altered)
+struct NotificationsTableViewCellContent: View {
+    enum Style {
+        struct Regular {
+            let title: String
+            let description: String?
+            let shouldShowIndicator: Bool
+            let avatarStyle: AvatarsView.Style
+            let actionIconName: String? // TODO: Will be refactored to contain the action.
         }
 
-        private let style: Style
-
-        init(style: Style) {
-            self.style = style
+        struct Altered {
+            let text: String
+            let actionTitle: String
+            let action: (() -> Void)?
         }
 
-        var body: some View {
-            switch style {
-            case .regular(let regular):
-                Regular(info: regular)
-            case .altered(let altered):
-                Altered(info: altered)
-            }
+        case regular(Regular)
+        case altered(Altered)
+    }
+
+    private let style: Style
+
+    init(style: Style) {
+        self.style = style
+    }
+
+    var body: some View {
+        switch style {
+        case .regular(let regular):
+            Regular(info: regular)
+                .padding(.bottom, Length.Padding.medium)
+        case .altered(let altered):
+            Altered(info: altered)
+                .padding(.bottom, Length.Padding.medium)
         }
     }
 }
 
 // MARK: - Regular Style
-fileprivate extension NotificationsTableViewCell.Content {
+fileprivate extension NotificationsTableViewCellContent {
     struct Regular: View {
         private let info: Style.Regular
 
@@ -57,6 +57,7 @@ fileprivate extension NotificationsTableViewCell.Content {
                 if let actionIconName = info.actionIconName {
                     actionIcon(withName: actionIconName)
                 }
+                Spacer()
             }
             .padding(.trailing, Length.Padding.double)
         }
@@ -108,7 +109,7 @@ fileprivate extension NotificationsTableViewCell.Content {
 }
 
 // MARK: - Regular Style
-fileprivate extension NotificationsTableViewCell.Content {
+fileprivate extension NotificationsTableViewCellContent {
     struct Altered: View {
         private let info: Style.Altered
 
@@ -148,7 +149,7 @@ fileprivate extension NotificationsTableViewCell.Content {
 #if DEBUG
 #Preview {
     VStack(alignment: .leading, spacing: Length.Padding.medium) {
-        NotificationsTableViewCell.Content(
+        NotificationsTableViewCellContent(
             style: .regular(
                 .init(
                     title: "John Smith liked your comment more than all other comments as asdf",
@@ -162,7 +163,7 @@ fileprivate extension NotificationsTableViewCell.Content {
             )
         )
 
-        NotificationsTableViewCell.Content(
+        NotificationsTableViewCellContent(
             style: .regular(
                 .init(
                     title: "Albert Einstein and Marie Curie liked your comment on Quantum Mechanical solution for Hydrogen",
@@ -176,7 +177,7 @@ fileprivate extension NotificationsTableViewCell.Content {
                 )
             )
         )
-        NotificationsTableViewCell.Content(
+        NotificationsTableViewCellContent(
             style: .regular(
                 .init(
                     title: "New likes on Night Time in Tokyo",
@@ -192,7 +193,7 @@ fileprivate extension NotificationsTableViewCell.Content {
             )
         )
 
-        NotificationsTableViewCell.Content(
+        NotificationsTableViewCellContent(
             style: .altered(
                 .init(
                     text: "Comment has been marked as Spam",
