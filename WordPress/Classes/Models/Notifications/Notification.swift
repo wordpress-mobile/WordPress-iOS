@@ -363,6 +363,21 @@ extension Notification {
         }
         return content.last
     }
+
+    var allAvatarURLs: [URL] {
+        let firstMedias: [AnyObject] = body?.compactMap {
+            let allMedia = $0["media"] as? [AnyObject]
+            return allMedia?.first as? AnyObject
+        } ?? []
+
+        let urlStrings = firstMedias.compactMap {
+            $0["url"] as? String
+        }
+
+        return urlStrings.compactMap {
+            URL(string: $0)
+        }
+    }
 }
 
 // MARK: - Update Helpers
