@@ -88,7 +88,7 @@ final class SiteMonitoringViewModel: ObservableObject {
 private enum Strings {
     static let metrics = NSLocalizedString("siteMonitoring.metrics", value: "Metrics", comment: "Title for metrics screen.")
     static let phpLogs = NSLocalizedString("siteMonitoring.phpLogs", value: "PHP Logs", comment: "Title for PHP logs screen.")
-    static let webServerLogs = NSLocalizedString("siteMonitoring.metrics", value: "Web Server Logs", comment: "Title for web server log screen.")
+    static let webServerLogs = NSLocalizedString("siteMonitoring.webServerLogs", value: "Web Server Logs", comment: "Title for web server log screen.")
 }
 
 extension Date {
