@@ -360,13 +360,11 @@ private extension NotificationCommentDetailViewController {
 
         case commentDetails(CommentDetailViewController)
         case readerComments(ReaderCommentsViewController)
-        case other(UIViewController)
 
         var viewController: UIViewController {
             switch self {
             case .commentDetails(let vc): return vc
             case .readerComments(let vc): return vc
-            case .other(let vc): return vc
             }
         }
     }
