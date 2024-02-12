@@ -249,4 +249,8 @@ extension ReaderTabView: ReaderNavigationMenuDelegate {
         viewModel.showTab(at: discoverIndex)
     }
 
+    func didScrollToTop() {
+        updateMenuDisplay(hidden: false)
+    }
+
 }
