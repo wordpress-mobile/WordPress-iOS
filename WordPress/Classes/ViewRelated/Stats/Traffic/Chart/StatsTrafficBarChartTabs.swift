@@ -1,10 +1,26 @@
 import Foundation
+import WordPressKit
 
-enum StatsTrafficBarChartFilterDimension: Int, CaseIterable {
+enum StatsTrafficBarChartTabs: Int, CaseIterable {
     case views = 0, visitors, likes, comments
+
+    typealias CountKeyPath = KeyPath<StatsSummaryData, Int>
+
+    var count: CountKeyPath {
+        switch self {
+        case .views:
+            return \.viewsCount
+        case .visitors:
+            return \.visitorsCount
+        case .likes:
+            return \.likesCount
+        case .comments:
+            return \.commentsCount
+        }
+    }
 }
 
-extension StatsTrafficBarChartFilterDimension {
+extension StatsTrafficBarChartTabs {
     var accessibleDescription: String {
         switch self {
         case .views:

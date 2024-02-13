@@ -170,8 +170,8 @@
 		014ACD152A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */; };
 		014D7E8F2AA9FBDE00F8C9E3 /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
 		015BA4EB29A788A300920F4B /* StatsTotalInsightsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */; };
-		01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift */; };
-		01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift */; };
+		01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */; };
+		01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */; };
 		01616C8D2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */; };
 		01616C8E2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */; };
 		01616C8F2B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */; };
@@ -5908,7 +5908,7 @@
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebKitViewController+SandboxStore.swift"; sourceTree = "<group>"; };
 		015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCellTests.swift; sourceTree = "<group>"; };
-		01616C862B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartFilterDimension.swift; sourceTree = "<group>"; };
+		01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartTabs.swift; sourceTree = "<group>"; };
 		01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChart.swift; sourceTree = "<group>"; };
 		01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartCell.swift; sourceTree = "<group>"; };
 		01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartView.swift; sourceTree = "<group>"; };
@@ -9887,7 +9887,7 @@
 		01616C852B5AA6E50023C123 /* Chart */ = {
 			isa = PBXGroup;
 			children = (
-				01616C862B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift */,
+				01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */,
 				01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */,
 				01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */,
 				01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */,
@@ -10884,7 +10884,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -19264,13 +19264,13 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
 				17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */,
 				3F3B23C02858A1B300CACE60 /* XCRemoteSwiftPackageReference "test-collector-swift" */,
-				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */,
+				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 			);
@@ -20851,11 +20851,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -21044,13 +21044,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -21691,7 +21691,7 @@
 				FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				43DDFE8C21715ADD008BE72F /* WPTabBarController+QuickStart.swift in Sources */,
-				01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift in Sources */,
+				01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */,
 				74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */,
 				3F8B45AC292C455800730FA4 /* MigrationSuccessCell.swift in Sources */,
 				E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */,
@@ -24888,7 +24888,7 @@
 				FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */,
 				0C700B8A2AE1E1940085C2EE /* PageListItemViewModel.swift in Sources */,
 				8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */,
-				01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartFilterDimension.swift in Sources */,
+				01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */,
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
@@ -30506,7 +30506,7 @@
 				minimumVersion = 0.3.0;
 			};
 		};
-		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */ = {
+		3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -30595,12 +30595,12 @@
 		};
 		3F411B6E28987E3F002513AE /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F44DD57289C379C006334CD /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios.git" */;
+			package = 3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 		3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */ = {

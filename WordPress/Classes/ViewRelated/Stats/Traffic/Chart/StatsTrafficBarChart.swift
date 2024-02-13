@@ -2,20 +2,14 @@ import Foundation
 import DGCharts
 import DesignSystem
 
-final class StatsTrafficBarChart {
-
-    private let rawChartData: StatsSummaryTimeIntervalData
-
-    private(set) var barChartData: [BarChartDataConvertible]
-    private(set) var barChartStyling: [TrafficBarChartStyling]
+struct StatsTrafficBarChart {
+    let barChartData: [BarChartDataConvertible]
+    let barChartStyling: [TrafficBarChartStyling]
 
     init(data: StatsSummaryTimeIntervalData) {
-        rawChartData = data
-
-        let (data, styling) = StatsTrafficBarChartDataTransformer.transform(data: data)
-
-        barChartData = data
-        barChartStyling = styling
+        let transformer = StatsTrafficBarChartDataTransformer(data: data)
+        self.barChartData = transformer.transformToBarChartData()
+        self.barChartStyling = transformer.transformToBarChartStyling()
     }
 }
 
@@ -28,78 +22,56 @@ private struct StatsTrafficBarChartData: BarChartDataConvertible {
 
 // MARK: - StatsTrafficBarChartDataTransformer
 
-private final class StatsTrafficBarChartDataTransformer {
-    private static let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
+private struct StatsTrafficBarChartDataTransformer {
+    private let dataSetValueFormatter = DefaultValueFormatter(decimals: 0)
+    private let data: StatsSummaryTimeIntervalData
 
-    static func transform(data: StatsSummaryTimeIntervalData) -> (barChartData: [BarChartDataConvertible], barChartStyling: [TrafficBarChartStyling]) {
+    init(data: StatsSummaryTimeIntervalData) {
+        self.data = data
+    }
+
+    func transformToBarChartData() -> [BarChartDataConvertible] {
         let summaryData = data.summaryData
 
-        let totalViews = summaryData.compactMap({$0.viewsCount}).reduce(0, +)
-        let totalVisitors = summaryData.compactMap({$0.visitorsCount}).reduce(0, +)
-        let totalLikes = summaryData.compactMap({$0.likesCount}).reduce(0, +)
-        let totalComments = summaryData.compactMap({$0.commentsCount}).reduce(0, +)
+        var tabsDataEntries: [StatsTrafficBarChartTabs.CountKeyPath: [BarChartDataEntry]] = [:]
+        let tabsTotals = StatsTrafficBarChartTabs.allCases.reduce(into: [:]) { totals, tab in
+            totals[tab.count] = summaryData.compactMap { $0[keyPath: tab.count] }.reduce(0, +)
+        }
 
-        var viewEntries: [BarChartDataEntry] = []
-        var visitorEntries: [BarChartDataEntry] = []
-        var likeEntries: [BarChartDataEntry] = []
-        var commentEntries: [BarChartDataEntry] = []
-        var xAxisIndexToDate: [Int: TimeInterval] = [:]
+        let emptyChartBarHeight = StatsTrafficBarChartView.emptyChartBarHeight
 
         for (x, data) in summaryData.enumerated() {
+            for tab in StatsTrafficBarChartTabs.allCases {
+                // If the chart has no data, show "stub" bars
+                let entry = BarChartDataEntry(x: Double(x), y: tabsTotals[tab.count, default: 0] > 0 ? Double(data[keyPath: tab.count]) : emptyChartBarHeight)
+                tabsDataEntries[tab.count, default: []].append(entry)
+            }
+        }
+
+        return StatsTrafficBarChartTabs.allCases.map { tab in
+            let chartData = BarChartData(entries: tabsDataEntries[tab.count, default: []], valueFormatter: dataSetValueFormatter)
+            let statsTafficBarChartData = StatsTrafficBarChartData(accessibilityDescription: tab.accessibleDescription, barChartData: chartData)
+            return statsTafficBarChartData
+        }
+    }
+
+    func transformToBarChartStyling() -> [TrafficBarChartStyling] {
+        var xAxisIndexToDate: [Int: TimeInterval] = [:]
+
+        for (x, data) in data.summaryData.enumerated() {
             let dateInterval = data.periodStartDate.timeIntervalSince1970
             xAxisIndexToDate[x] = dateInterval
-
-            // If the chart has no data, show "stub" bars
-            let emptyChartBarHeight = StatsTrafficBarChartView.emptyChartBarHeight
-            let viewEntry = BarChartDataEntry(x: Double(x), y: totalViews > 0 ? Double(data.viewsCount) : emptyChartBarHeight)
-            let visitorEntry = BarChartDataEntry(x: Double(x), y: totalVisitors > 0 ? Double(data.visitorsCount) : emptyChartBarHeight)
-            let likeEntry = BarChartDataEntry(x: Double(x), y: totalLikes > 0 ? Double(data.likesCount) : emptyChartBarHeight)
-            let commentEntry = BarChartDataEntry(x: Double(x), y: totalComments > 0 ? Double(data.commentsCount) : emptyChartBarHeight)
-
-            viewEntries.append(viewEntry)
-            visitorEntries.append(visitorEntry)
-            likeEntries.append(likeEntry)
-            commentEntries.append(commentEntry)
         }
 
-        let horizontalAxisFormatter = StatsTrafficHorizontalAxisFormatter(period: data.period, xAxisIndexToDate: xAxisIndexToDate)
-
-        var chartData = [BarChartData]()
-
-        let viewsDataSet = BarChartDataSet(entries: viewEntries, valueFormatter: dataSetValueFormatter)
-        let viewsChartData = BarChartData(dataSet: viewsDataSet)
-        chartData.append(viewsChartData)
-
-        let visitorsDataSet = BarChartDataSet(entries: visitorEntries, valueFormatter: dataSetValueFormatter)
-        let visitorsChartData = BarChartData(dataSet: visitorsDataSet)
-        chartData.append(visitorsChartData)
-
-        let likesChartData = BarChartData(entries: likeEntries, valueFormatter: dataSetValueFormatter)
-        chartData.append(likesChartData)
-
-        let commentsChartData = BarChartData(entries: commentEntries, valueFormatter: dataSetValueFormatter)
-        chartData.append(commentsChartData)
-
-        var barChartDataConvertibles: [BarChartDataConvertible] = []
-        var chartStyling: [TrafficBarChartStyling] = []
-        for filterDimension in StatsTrafficBarChartFilterDimension.allCases {
-            let filterIndex = filterDimension.rawValue
-
-            let accessibleDescription = filterDimension.accessibleDescription
-            let data = chartData[filterIndex]
-            let periodChartData = StatsTrafficBarChartData(accessibilityDescription: accessibleDescription, barChartData: data)
-
-            barChartDataConvertibles.append(periodChartData)
-            chartStyling.append(DefaultStatsTrafficBarChartStyling(xAxisValueFormatter: horizontalAxisFormatter))
-        }
-
-        return (barChartDataConvertibles, chartStyling)
+        let formatter = StatsTrafficHorizontalAxisFormatter(period: data.period, xAxisIndexToDate: xAxisIndexToDate)
+        let styling = StatsTrafficBarChartStyle(xAxisValueFormatter: formatter)
+        return Array(repeating: styling, count: StatsTrafficBarChartTabs.allCases.count)
     }
 }
 
 // MARK: - DefaultStatsTrafficBarChartStyling
 
-private struct DefaultStatsTrafficBarChartStyling: TrafficBarChartStyling {
+private struct StatsTrafficBarChartStyle: TrafficBarChartStyling {
     let primaryBarColor: UIColor = UIColor(red: 6/255, green: 116/255, blue: 196/255, alpha: 1.0)
     let labelColor: UIColor = UIColor.DS.Foreground.secondary
     let lineColor: UIColor = UIColor.DS.Foreground.tertiary
