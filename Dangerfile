@@ -12,7 +12,7 @@ podfile_checker.check_podfile_does_not_have_branch_references
 ios_release_checker.check_core_data_model_changed
 ios_release_checker.check_release_notes_and_app_store_strings
 
-# skip remaining checks if we're during the release process
+# skip remaining checks if we're in a release-process PR
 if github.pr_labels.include?('Releases')
   message('This PR has the `Releases` label: some checks will be skipped.')
   return
@@ -26,8 +26,11 @@ view_changes_checker.check
 
 pr_size_checker.check_diff_size(max_size: 500)
 
-# skip remaining checks if we have a Draft PR
-return if github.pr_draft?
+# skip remaining checks if the PR is still a Draft
+if github.pr_draft?
+  message('This PR is still a Draft: some checks will be skipped.')
+  return
+end
 
 labels_checker.check(
   do_not_merge_labels: ['[Status] DO NOT MERGE'],
@@ -35,5 +38,5 @@ labels_checker.check(
   required_labels_error: 'PR requires at least one label.'
 )
 
-# skip check for WIP features unless the PR is against the main branch or release branch
-milestone_checker.check_milestone_due_date(days_before_due: 4) unless github_utils.wip_feature? && !(github_utils.release_branch? || github_utils.main_branch?)
+# runs the milestone check if this is not a WIP feature and the PR is against the main branch or the release branch
+milestone_checker.check_milestone_due_date(days_before_due: 4) if (github_utils.main_branch? || github_utils.release_branch?) && !github_utils.wip_feature?
