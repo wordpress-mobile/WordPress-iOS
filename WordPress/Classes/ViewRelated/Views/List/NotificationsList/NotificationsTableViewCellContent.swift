@@ -14,7 +14,6 @@ struct NotificationsTableViewCellContent: View {
 
         struct Altered {
             let text: String
-            let actionTitle: String
             let action: (() -> Void)?
         }
 
@@ -111,6 +110,16 @@ fileprivate extension NotificationsTableViewCellContent {
 
 // MARK: - Regular Style
 fileprivate extension NotificationsTableViewCellContent {
+    private enum Strings {
+        static let undoButtonText = NSLocalizedString(
+            "Undo",
+            comment: "Revert an operation"
+        )
+        static let undoButtonHint = NSLocalizedString(
+            "Reverts the action performed on this notification.",
+            comment: "Accessibility hint describing what happens if the undo button is tapped."
+        )
+    }
     struct Altered: View {
         private let info: Style.Altered
 
@@ -134,13 +143,15 @@ fileprivate extension NotificationsTableViewCellContent {
                     Button(action: {
                         info.action?()
                     }, label: {
-                        Text(info.actionTitle)
+                        Text(Strings.undoButtonText)
                             .style(.bodySmall(.regular))
                             .foregroundStyle(Color.white)
-                        .padding(.trailing, Length.Padding.medium)
+                            .accessibilityHint(Strings.undoButtonHint)
+                            .padding(.trailing, Length.Padding.medium)
                     })
                 }
             }
+            .frame(height: 60)
             .background(Color.DS.Foreground.error)
         }
     }
@@ -197,7 +208,6 @@ fileprivate extension NotificationsTableViewCellContent {
             style: .altered(
                 .init(
                     text: "Comment has been marked as Spam",
-                    actionTitle: "Undo",
                     action: nil
                 )
             )

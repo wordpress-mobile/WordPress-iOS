@@ -337,20 +337,36 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        cell.host(
-            NotificationsTableViewCellContent(
-                style: .regular(
-                    .init(
-                        title: note.renderSubject()?.string ?? "",
-                        description: note.renderSnippet()?.string,
-                        shouldShowIndicator: !note.read,
-                        avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL!),
-                        actionIconName: nil
+        if let deletionRequest = notificationDeletionRequests[note.objectID] {
+            cell.host(
+                NotificationsTableViewCellContent(
+                    style: .altered(
+                        .init(
+                            text: deletionRequest.kind.legendText,
+                            action: { [weak self] in
+                                self?.cancelDeletionRequestForNoteWithID(note.objectID)
+                            }
+                        )
                     )
-                )
-            ),
-            parent: self
-        )
+                ),
+                parent: self
+            )
+        } else {
+            cell.host(
+                NotificationsTableViewCellContent(
+                    style: .regular(
+                        .init(
+                            title: note.renderSubject()?.string ?? "",
+                            description: note.renderSnippet()?.string,
+                            shouldShowIndicator: !note.read,
+                            avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL!),
+                            actionIconName: nil
+                        )
+                    )
+                ),
+                parent: self
+            )
+        }
 
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         return cell
