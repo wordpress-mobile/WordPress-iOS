@@ -11,8 +11,12 @@ extension PostEditor {
             settingsViewController = PostSettingsViewController(post: post)
         }
         settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
-        settingsViewController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(settingsViewController, animated: true)
+        settingsViewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
+            self?.navigationController?.dismiss(animated: true)
+        }))
+
+        let navigation = UINavigationController(rootViewController: settingsViewController)
+        self.navigationController?.present(navigation, animated: true)
     }
 
     private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
