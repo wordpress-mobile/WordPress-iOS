@@ -78,9 +78,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ days";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ followers";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ levels";
@@ -506,23 +503,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Add a shortcode…";
 
-/* No Tags View Button Label */
-"Add a site" = "Add a site";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Add a Topic";
-
-/* No Topics View Button Label */
-"Add a topic" = "Add a topic";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Add account image.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Add alt text";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Add any topic";
 
 /* No comment provided by engineer. */
 "Add audio" = "Add audio";
@@ -617,9 +602,6 @@
 
 /* No comment provided by engineer. */
 "Add To End" = "Add To End";
-
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Add Topic";
 
 /* No comment provided by engineer. */
 "Add URL" = "Add URL";
@@ -1271,14 +1253,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Block settings";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Block this site";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Block ungrouped";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blocked site";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Blocked user";
@@ -1739,9 +1715,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* No comment provided by engineer. */
 "Choose video" = "Choose video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Choose your topics";
-
 /* Register Domain - Address information field City */
 "City" = "City";
 
@@ -2148,9 +2121,6 @@ Example: Reply to Pamela Nguyen */
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Could not enable notifications";
 
-/* Title of a prompt. */
-"Could not follow site" = "Could not follow site";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Could not follow the site at the address specified.";
 
@@ -2183,9 +2153,6 @@ Example: Reply to Pamela Nguyen */
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Could not toggle Seen: missing postID.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Could not unfollow site";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Could not unfollow the site at the address specified.";
@@ -2554,6 +2521,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "Analytics";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Boolean User Defaults";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Boolean User Defaults";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
 
@@ -2747,12 +2720,6 @@ Example: Reply to Pamela Nguyen */
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Discover and follow sites that inspire you.";
 
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Discover more topics";
-
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Discover Sites";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Discussion";
@@ -2933,7 +2900,8 @@ Example: Reply to Pamela Nguyen */
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Don't have an account? _Sign up_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -3272,9 +3240,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a row displayed on the debug screen used in debug builds of the app */
 "Enable Quick Start for New Site" = "Enable Quick Start for New Site";
 
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Enable site notifications?";
-
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Enable Site Stats";
 
@@ -3312,9 +3277,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Instructional text shown when requesting the user's password for login. */
 "Enter the password for your WordPress.com account." = "Enter the password for your WordPress.com account.";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Enter the URL of a site to follow";
 
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Enter username";
@@ -3587,9 +3549,7 @@ Example: Reply to Pamela Nguyen */
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Fetching posts...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Fetching sites...";
 
 /* Text displayed while fetching themes */
@@ -3618,9 +3578,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filter";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filter by activity type";
@@ -3664,8 +3621,7 @@ Example: Reply to Pamela Nguyen */
 "follow" = "follow";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Follow";
 
 /* Button title. Follow the comments on a post. */
@@ -3673,9 +3629,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Follow conversation";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Follow site";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Follow topics";
@@ -3686,16 +3639,9 @@ Example: Reply to Pamela Nguyen */
 /* Caption displayed in promotional screens shown during the login flow. */
 "Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
 
-/* User followed a site. */
-"Followed site" = "Followed site";
-
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Followed Sites";
-
-/* Followed Topics Title */
-"Followed Topics" = "Followed Topics";
 
 /* Label for list of followers.
    User role badge */
@@ -3706,13 +3652,8 @@ Example: Reply to Pamela Nguyen */
    Label for number of followers. */
 "Followers" = "Followers";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Following";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Following %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Following new topics...";
@@ -3725,9 +3666,6 @@ Example: Reply to Pamela Nguyen */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Follows the blog.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Follows the tag.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
@@ -3903,9 +3841,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Go to Following";
 
 /* Button label for going to settings to approve push notifications
    Opens WPiOS Settings.app Section */
@@ -4943,7 +4878,6 @@ Please install the %3$@ to use the app with this site.";
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
 
@@ -4955,9 +4889,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Likes the Comment.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Line Chart depicting Views for insights.";
@@ -5181,9 +5112,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Manage site";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Manage Sites";
 
 /* No comment provided by engineer. */
 "Manual" = "Manual";
@@ -5588,9 +5516,6 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "More support options" = "More support options";
 
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Most Popular Time";
-
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Move %@";
 
@@ -5702,6 +5627,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Maintenance";
+
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Site Monitoring";
 
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Social";
@@ -5915,9 +5843,6 @@ Please install the %3$@ to use the app with this site.";
 /* A short message that informs the user no sites could be loaded in the share extension. */
 "No available sites" = "No available sites";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "No available WordPress.com sites";
-
 /* No comment provided by engineer. */
 "No blocks found" = "No blocks found";
 
@@ -5961,9 +5886,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "No fixed threats";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "No followed sites";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "No followers yet";
@@ -6021,9 +5943,6 @@ Please install the %3$@ to use the app with this site.";
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "No need to wait around. We'll notify you when your site has been fully restored.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "No new topics to follow";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "No notifications yet";
 
@@ -6069,12 +5988,6 @@ Please install the %3$@ to use the app with this site.";
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "No saved posts";
 
-/* A message title */
-"No sites found" = "No sites found";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "No sites found matching %@ in your language.";
-
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "No tags matching your search";
 
@@ -6093,6 +6006,15 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "No title" = "No title";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "No log entries within this time range";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "An error occurred";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Retry";
 
 /* Disabled
    No alignment for an image (default). Should be the same as in core WP.
@@ -6263,9 +6185,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, /image or /heading." = "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, /image or /heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Once you create a WordPress.com site, you can reblog content that you like to your own site.";
 
 /* No comment provided by engineer. */
 "One" = "One";
@@ -6618,6 +6537,27 @@ Please install the %3$@ to use the app with this site.";
 
 /* Photography site intent topic */
 "Photography" = "Photography";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "End Date";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Severity";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Start Date";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Deprecated";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Fatal Error";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "User";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Warning";
 
 /* Title for selecting a new username in the site creation flow. */
 "Pick username" = "Pick username";
@@ -7177,9 +7117,6 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem loading content";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problem loading sites";
-
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problem opening the audio";
 
@@ -7281,6 +7218,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Try selecting %@ to view subscribed content and manage your subscriptions.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Subscriptions";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "More";
 
@@ -7304,6 +7247,30 @@ Tapping on this row allows the user to edit the sharing message. */
    The menu item to select during a guided tour.
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Reader";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ posts • %2$@ subscribers";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Shows the blog's posts.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Problem loading blogs";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Fetching blogs...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "No blogs found matching %@ in your language.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "No blogs found";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ subscribers";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
@@ -7342,15 +7309,189 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Saved Post";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "You are already subscribed to this blog.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Edit";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filter by blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filter by tag";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Search for a blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "No blog subscriptions";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Subscribe to a tag and you’ll be able to see the best posts from it here.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Subscribe to a tag";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Suggested tags";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "No tags";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Subscribing to new tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Suggested tags";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Fetching blogs...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blogs";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Tags";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d Blogs";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d Blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Tags";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d Tags";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d Tag";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Tags";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtered by %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opens the filter list";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Liked";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Lists";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Reset";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Saved";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Search";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Subscriptions";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Search";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader Settings";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Discover Blogs";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "No blog subscriptions";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "This blog has not posted anything yet. Try back later.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "The blogs in this list have not posted anything recently.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Manage Blogs";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Recent posts from blogs and sites you subscribe to will appear here.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Go to Subscriptions";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "You can subscribe to posts on a specific blog by subscribing to it.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Add a blog";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Unable to block blog";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blocked blog";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Subscribed to blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Could not unsubscribe from blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Could not unsubscribe from blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Unsubscribed from blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Unable to turn off blog notifications";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Turned off blog notifications";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Unable to turn on blog notifications";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Enable blog notifications?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Turned on blog notifications";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "this site";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "this blog";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Unable to subscribe to blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Subscribed to %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Unable to unsubscribe from blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Unsubscribed from blog";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -7388,8 +7529,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Opens the site details for the post.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Block this blog";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Block this user";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Turn off blog notifications";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Turn on blog notifications";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Remove Saved Post";
@@ -7400,8 +7550,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Save";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ posts • %2$@ followers";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Subscribe to blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Unsubscribe from blog";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Manage Blogs";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Once you create a WordPress.com blog, you can reblog content that you like to your own blog.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "No available WordPress.com blogs";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blogs";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Subscribing to new tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Subscribe to tags";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "No new tags to subscribe to";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Choose your tags";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Subscribes to the tag.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Subscribe";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "Blog URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Enter the URL of a blog to subscribe to";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Subscribed";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Blogs to subscribe to";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Add a Tag";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Add Tag";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Add any tag";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Add a Tag";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Discover more tags";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Unsubscribe from %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Unsubscribe";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
@@ -7459,9 +7675,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Settings: Receiving Pingbacks */
 "Receive Pingbacks" = "Receive Pingbacks";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Recent posts from blogs and sites you follow will appear here.";
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Recent Weeks";
@@ -7720,9 +7933,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Reset Date Range filter";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Reset filter";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Reset your password";
@@ -8189,7 +8399,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Settings";
@@ -8346,9 +8555,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Shows the post content";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Shows the site's posts.";
-
 /* Button title. Takes the user the Enter site credentials screen. */
 "Sign in with site credentials" = "Sign in with site credentials";
 
@@ -8433,8 +8639,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Site Topic";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Template site address for the search bar. */
@@ -8515,15 +8720,53 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
 
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Sites";
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Log Entry";
 
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Sites (%lu)";
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Cached";
 
-/* A suggestion of topics the user might  */
-"Sites to follow" = "Sites to follow";
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "File";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP Host";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Kind";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Line";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Name";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Referrer";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Request Time";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "Request URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Response Size";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Timestamp";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "Metrics";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP Logs";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web Server Logs";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
@@ -9412,9 +9655,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "The server returned an empty response. This usually means you need to increase the memory limit for your site.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "The site %@ will no longer appear in your reader. Tap to undo.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "The site address must be shorter than 64 characters.";
 
@@ -9436,9 +9676,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "The sites in this list have not posted anything recently.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "The slug is the URL-friendly version of the post title.";
@@ -9658,9 +9895,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "This post is not in My Likes";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "This site has not posted anything yet. Try back later.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "This user account cannot be closed if there are unresolved chargebacks.";
 
@@ -9812,12 +10046,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Topic not found for id:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Topics";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Topics (%lu)";
-
 /* Label for total followers */
 "Total" = "Total";
 
@@ -9903,9 +10131,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Try it now";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Try selecting %@ to add topics you like.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Try the new Block Editor";
 
@@ -9918,23 +10143,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Turn off prompts";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Turn off site notifications";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Turn on notifications";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Turn on push notifications";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Turn on site notifications";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Turned off site notifications";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Turned on site notifications";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Turning the switch off will disable all notifications from this app, regardless of type.";
@@ -9963,9 +10176,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "Type a URL" = "Type a URL";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Unable to block site";
-
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Unable To Connect";
 
@@ -9989,9 +10199,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Unable to follow conversation";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Unable to follow site";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Unable to load pages right now.";
@@ -10043,15 +10250,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Unable to Sync";
-
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Unable to turn off site notifications";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Unable to turn on site notifications";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Unable to unfollow site";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Unable to update homepage settings";
@@ -10110,24 +10308,11 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Undo action */
 "Undo" = "Undo";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Unfollow";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Unfollow %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Unfollow Conversation";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Unfollow conversation";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Unfollow site";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Unfollowed site";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Unfollows the blog.";
@@ -10762,6 +10947,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dismiss";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "End Date";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Request type";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Start Date";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
+
 /* Title of a button. A call to action to view more stats for this week */
 "Week" = "Week";
 
@@ -10780,9 +10977,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Welcome to Jetpack";
-
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welcome to Reader. Discover millions of blogs at your fingertips.";
 
 /* A message title */
 "Welcome to the Reader" = "Welcome to the Reader";
@@ -10865,9 +11059,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "When you follow sites, you’ll see their content here.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "When you make changes in the editor you'll be able to see the history here";
@@ -11134,6 +11325,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wordpress.prologue.splash.caption" = "Write, edit, and publish
 from anywhere.";
 
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.";
+
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";
 
@@ -11219,9 +11413,6 @@ from anywhere.";
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "You are about to change your username, which is currently %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "You are already following this site.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue.";
 
@@ -11245,12 +11436,6 @@ from anywhere.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "You can follow posts on a specific site by following it.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "You can follow posts on a specific subject by adding a topic.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "You can override these settings for individual posts.";

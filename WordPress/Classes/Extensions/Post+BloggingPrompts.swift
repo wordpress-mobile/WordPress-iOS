@@ -36,9 +36,9 @@ extension Post {
             """
     }
 
-    private enum Strings {
+    enum Strings {
         static let promptTag = "dailyprompt"
-        static let emptyParagraphBlock = """
+        fileprivate static let emptyParagraphBlock = """
         <!-- wp:paragraph -->
         <p></p>
         <!-- /wp:paragraph -->
