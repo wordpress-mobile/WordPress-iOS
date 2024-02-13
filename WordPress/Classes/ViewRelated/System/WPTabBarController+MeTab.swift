@@ -1,5 +1,6 @@
 import Foundation
 import WordPressUI
+import Gravatar
 
 extension WPTabBarController {
 
@@ -41,7 +42,7 @@ extension WPTabBarController {
         guard let userInfo = notification.userInfo,
             let email = userInfo["email"] as? String,
             let image = userInfo["image"] as? UIImage,
-            let url = Gravatar.gravatarUrl(for: email) else {
+            let url = GravatarURL.url(for: email) else {
                 return
         }
 

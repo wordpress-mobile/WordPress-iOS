@@ -79,7 +79,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.3.0)
-  - WordPressUI (1.15.0):
+  - WordPressUI (1.15.1):
     - Gravatar (~> 0.1.0)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -234,7 +234,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: ba69878bfa1368636e92d29fcfb5bd1e0a11a3ef
   WordPressKit: 7e5250e9e28fcdca787f8d313a7dc89a8571d774
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
-  WordPressUI: 01b8d3169ecc7ed240c17555dd4d9a28f0dd04ee
+  WordPressUI: 88c808b8a6ed7002fea945a3af9147a9e093a413
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
