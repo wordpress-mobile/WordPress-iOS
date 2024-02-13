@@ -70,15 +70,14 @@ public class Comment: NSManagedObject {
     /// Convenience method to check if the current user can actually moderate.
     /// `canModerate` is only applicable when the site is dotcom-related (hosted or atomic). For self-hosted sites, default to true.
     @objc func allowsModeration() -> Bool {
-        return false
-//        if let _ = post as? ReaderPost {
-//            return canModerate
-//        }
-//
-//        guard let blog, blog.isHostedAtWPcom || blog.isAtomic() else {
-//            return true
-//        }
-//        return canModerate
+        if let _ = post as? ReaderPost {
+            return canModerate
+        }
+
+        guard let blog, blog.isHostedAtWPcom || blog.isAtomic() else {
+            return true
+        }
+        return canModerate
     }
 
     func canReply() -> Bool {
