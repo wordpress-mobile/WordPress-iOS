@@ -1,23 +1,4 @@
-import UIKit
-
-protocol HashableImmuTableRow: ImmuTableRow, Hashable {
-    var statSection: StatSection? { get }
-}
-
-typealias StatsTrafficSnapshot = NSDiffableDataSourceSnapshot<StatsTrafficSection, StatsTrafficRow>
-typealias StatsTrafficDataSource = UITableViewDiffableDataSource<StatsTrafficSection, StatsTrafficRow>
-
-struct StatsTrafficRow: Hashable {
-    let immuTableRow: any HashableImmuTableRow
-
-    static func == (lhs: StatsTrafficRow, rhs: StatsTrafficRow) -> Bool {
-        lhs.immuTableRow.hashValue == rhs.immuTableRow.hashValue
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(immuTableRow)
-    }
-}
+import Foundation
 
 struct StatsTrafficSection: Hashable {
     let periodType: PeriodType
@@ -27,7 +8,11 @@ struct StatsTrafficSection: Hashable {
     }
 }
 
-extension HashableImmuTableRow {
+protocol StatsHashableImmuTableRow: ImmuTableRow, Hashable {
+    var statSection: StatSection? { get }
+}
+
+extension StatsHashableImmuTableRow {
     /// The diffable data source relies on both the identity and the equality of the items it manages.
     /// The identity is determined by the item's hash, and equality is determined by whether the item's content has changed.
     /// If the content of an item is considered to have changed (even if its hash hasn't), the diffable data source may decide to reload that item.

@@ -4,7 +4,7 @@ import DGCharts
 
 // MARK: - Shared Rows
 
-struct OverviewRow: HashableImmuTableRow {
+struct OverviewRow: StatsHashableImmuTableRow {
 
     typealias CellType = OverviewCell
 
@@ -67,7 +67,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }
 }
 
-struct CellHeaderRow: HashableImmuTableRow {
+struct CellHeaderRow: StatsHashableImmuTableRow {
 
     typealias CellType = StatsCellHeader
 
@@ -407,7 +407,7 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsPeriodStatsRow: HashableImmuTableRow {
+struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -453,7 +453,7 @@ struct TopTotalsPeriodStatsRow: HashableImmuTableRow {
     }
 }
 
-struct TopTotalsNoSubtitlesPeriodStatsRow: HashableImmuTableRow {
+struct TopTotalsNoSubtitlesPeriodStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -483,7 +483,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: HashableImmuTableRow {
     }
 }
 
-struct CountriesStatsRow: HashableImmuTableRow {
+struct CountriesStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = CountriesCell
 
@@ -523,7 +523,7 @@ struct CountriesStatsRow: HashableImmuTableRow {
     }
 }
 
-struct CountriesMapRow: HashableImmuTableRow {
+struct CountriesMapRow: StatsHashableImmuTableRow {
     let action: ImmuTableAction? = nil
     let countriesMap: CountriesMap
     var statSection: StatSection?
@@ -787,7 +787,7 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
     }
 }
 
-struct StatsErrorRow: HashableImmuTableRow {
+struct StatsErrorRow: StatsHashableImmuTableRow {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
     }()

@@ -1,6 +1,6 @@
 import WordPressUI
 
-protocol StatsRowGhostable: HashableImmuTableRow {
+protocol StatsRowGhostable: StatsHashableImmuTableRow {
     var statSection: StatSection? { get }
 }
 

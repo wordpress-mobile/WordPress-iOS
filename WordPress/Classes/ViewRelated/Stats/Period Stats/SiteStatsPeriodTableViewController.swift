@@ -48,24 +48,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
+    private weak var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        let handler = ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
-        tableView.dataSource = dataSource
-        handler.automaticallyReloadTableView = false
-        return handler
-    }()
-
-    private lazy var dataSource: StatsTrafficDataSource = {
-        return StatsTrafficDataSource(tableView: tableView) { tableView, indexPath, item in
-            let row = item.immuTableRow
-            let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
-            row.configureCell(cell)
-            return cell
-        }
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     init() {
@@ -193,9 +181,10 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        dataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
+        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -237,7 +226,7 @@ private extension SiteStatsPeriodTableViewController {
 
 extension SiteStatsPeriodTableViewController: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+        guard tableHandler.diffableDataSource.snapshot().numberOfSections == 0 else {
             return
         }
 

@@ -79,19 +79,19 @@ final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Table Model
 
-    func tableViewSnapshot() -> StatsTrafficSnapshot {
-        var snapshot = StatsTrafficSnapshot()
+    func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
         if !store.containsCachedData && store.fetchingOverviewHasFailed {
             return snapshot
         }
 
-        let errorBlock: (StatSection) -> [any HashableImmuTableRow] = { section in
+        let errorBlock: (StatSection) -> [any StatsHashableImmuTableRow] = { section in
             return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: section)]
         }
-        let summaryErrorBlock: AsyncBlock<[any HashableImmuTableRow]> = {
+        let summaryErrorBlock: AsyncBlock<[any StatsHashableImmuTableRow]> = {
             return [StatsErrorRow(rowStatus: .error, statType: .period, statSection: .periodOverviewViews)]
         }
-        let loadingBlock: (StatSection) -> [any HashableImmuTableRow] = { section in
+        let loadingBlock: (StatSection) -> [any StatsHashableImmuTableRow] = { section in
             return [StatsGhostTopImmutableRow(statSection: section)]
         }
 
@@ -107,7 +107,7 @@ final class SiteStatsPeriodViewModel: Observable {
         }, loading: {
             return [StatsGhostChartImmutableRow(statSection: .periodOverviewViews)]
         }, error: summaryErrorBlock)
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([summarySection])
         snapshot.appendItems(summaryRows, toSection: summarySection)
 
@@ -122,7 +122,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                           }, error: {
                                               return errorBlock(.periodPostsAndPages)
                                           })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topPostsAndPagesSection])
         snapshot.appendItems(topPostsAndPagesRows, toSection: topPostsAndPagesSection)
 
@@ -137,7 +137,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                       }, error: {
                                           return errorBlock(.periodReferrers)
                                       })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topReferrersSection])
         snapshot.appendItems(topReferrersRows, toSection: topReferrersSection)
 
@@ -152,7 +152,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                    }, error: {
                                        return errorBlock(.periodClicks)
                                    })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topClicksSection])
         snapshot.appendItems(topClicksRows, toSection: topClicksSection)
 
@@ -167,7 +167,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                     }, error: {
                                         return errorBlock(.periodAuthors)
                                     })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topAuthorsSection])
         snapshot.appendItems(topAuthorsRows, toSection: topAuthorsSection)
 
@@ -182,7 +182,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                       }, error: {
                                           return errorBlock(.periodCountries)
                                       })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topCountriesSection])
         snapshot.appendItems(topCountriesRows, toSection: topCountriesSection)
 
@@ -197,7 +197,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                         }, error: {
                                             return errorBlock(.periodSearchTerms)
                                         })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topSearchTermsSection])
         snapshot.appendItems(topSearchTermsRows, toSection: topSearchTermsSection)
 
@@ -212,7 +212,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                       }, error: {
                                           return errorBlock(.periodPublished)
                                       })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topPublishedSection])
         snapshot.appendItems(topPublishedRows, toSection: topPublishedSection)
 
@@ -227,7 +227,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                    }, error: {
                                        return errorBlock(.periodVideos)
                                    })
-            .map { StatsTrafficRow(immuTableRow: $0) }
+            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topVideosSection])
         snapshot.appendItems(topVideosRows, toSection: topVideosSection)
 
@@ -244,7 +244,7 @@ final class SiteStatsPeriodViewModel: Observable {
                                               }, error: {
                                                   return errorBlock(.periodFileDownloads)
                                               })
-                .map { StatsTrafficRow(immuTableRow: $0) }
+                .map { AnyHashableImmuTableRow(immuTableRow: $0) }
             snapshot.appendSections([topFileDownloadsSection])
             snapshot.appendItems(topFileDownloadsRows, toSection: topFileDownloadsSection)
         }
@@ -297,8 +297,8 @@ private extension SiteStatsPeriodViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func overviewTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
 
         let periodSummary = store.getSummary()
         let summaryData = periodSummary?.summaryData ?? []
@@ -434,8 +434,8 @@ private extension SiteStatsPeriodViewModel {
             return (currentCount, difference, roundedPercentage)
     }
 
-    func postsAndPagesTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func postsAndPagesTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                  dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                  dataRows: postsAndPagesDataRows(),
@@ -473,8 +473,8 @@ private extension SiteStatsPeriodViewModel {
         }
     }
 
-    func referrersTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func referrersTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
@@ -515,8 +515,8 @@ private extension SiteStatsPeriodViewModel {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
-    func clicksTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func clicksTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                  dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
@@ -540,8 +540,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func authorsTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func authorsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                  dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
@@ -564,8 +564,8 @@ private extension SiteStatsPeriodViewModel {
         }
     }
 
-    func countriesTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func countriesTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         let map = countriesMap()
         let isMapShown = !map.data.isEmpty
         if isMapShown {
@@ -598,8 +598,8 @@ private extension SiteStatsPeriodViewModel {
         })
     }
 
-    func searchTermsTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func searchTermsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                  dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
@@ -633,8 +633,8 @@ private extension SiteStatsPeriodViewModel {
         return mappedSearchTerms
     }
 
-    func publishedTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func publishedTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
                                                             statSection: StatSection.periodPublished,
                                                             siteStatsPeriodDelegate: periodDelegate))
@@ -651,8 +651,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func videosTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func videosTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                  dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
@@ -672,8 +672,8 @@ private extension SiteStatsPeriodViewModel {
             ?? []
     }
 
-    func fileDownloadsTableRows() -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+    func fileDownloadsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),
