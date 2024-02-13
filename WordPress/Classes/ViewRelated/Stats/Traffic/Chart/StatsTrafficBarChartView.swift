@@ -4,9 +4,7 @@ import DesignSystem
 
 // MARK: - StatsTrafficBarChartView
 
-private let BarChartAnalyticsPropertyGranularityKey = "granularity"
-
-class StatsTrafficBarChartView: BarChartView {
+final class StatsTrafficBarChartView: BarChartView {
 
     // MARK: Properties
 
