@@ -143,12 +143,13 @@ private extension PrepublishingViewController {
 
     func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
         let context = post.managedObjectContext ?? coreDataStack.mainContext
+        let insets = EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
         guard let services = try? PublicizeService.allSupportedServices(in: context) else {
-            return .init(padding: EdgeInsets(.zero))
+            return .init(padding: insets)
         }
 
         return .init(services: services,
-                     padding: EdgeInsets(.zero),
+                     padding: insets,
                      preferredBackgroundColor: tableView.backgroundColor,
                      onConnectTap: noConnectionConnectTapped(),
                      onNotNowTap: noConnectionDismissTapped())

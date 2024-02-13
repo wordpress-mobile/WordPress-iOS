@@ -401,22 +401,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     func didTapSchedule(_ indexPath: IndexPath) {
         transitionIfVoiceOverDisabled(to: .hidden)
-        let viewController = PresentableSchedulingViewControllerProvider.viewController(
-            sourceView: tableView.cellForRow(at: indexPath)?.contentView,
-            sourceRect: nil,
-            viewModel: publishSettingsViewModel,
-            updated: { [weak self] date in
-                WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
-                self?.publishSettingsViewModel.setDate(date)
-                self?.reloadData()
-                self?.updatePublishButtonLabel()
-            },
-            onDismiss: { [weak self] in
-                self?.reloadData()
-                self?.transitionIfVoiceOverDisabled(to: .collapsed)
-            }
-        )
-        present(viewController, animated: true)
+
+        let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
+            WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
+            self?.publishSettingsViewModel.setDate(date)
+            self?.reloadData()
+            self?.updatePublishButtonLabel()
+        }
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Publish Button

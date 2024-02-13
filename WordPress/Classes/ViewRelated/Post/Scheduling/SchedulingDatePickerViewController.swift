@@ -2,201 +2,87 @@ import Foundation
 import Gridicons
 import UIKit
 
-protocol DateCoordinatorHandler: AnyObject {
-    var coordinator: DateCoordinator? { get set }
-}
-
-class DateCoordinator {
-
+struct SchedulingDatePickerConfiguration {
     var date: Date?
-    let timeZone: TimeZone
-    let dateFormatter: DateFormatter
-    let dateTimeFormatter: DateFormatter
-    let updated: (Date?) -> Void
-
-    init(date: Date?, timeZone: TimeZone, dateFormatter: DateFormatter, dateTimeFormatter: DateFormatter, updated: @escaping (Date?) -> Void) {
-        self.date = date
-        self.timeZone = timeZone
-        self.dateFormatter = dateFormatter
-        self.dateTimeFormatter = dateTimeFormatter
-        self.updated = updated
-    }
+    var timeZone: TimeZone
+    var dateFormatter: DateFormatter
+    var dateTimeFormatter: DateFormatter
+    var updated: (Date?) -> Void
 }
 
-// MARK: - Date Picker
+final class SchedulingDatePickerViewController: UIViewController {
+    var configuration: SchedulingDatePickerConfiguration?
 
-class SchedulingDatePickerViewController: UIViewController, DatePickerSheet, DateCoordinatorHandler {
-
-    var coordinator: DateCoordinator? = nil
-
-    let chosenValueRow = ChosenValueRow(frame: .zero)
-
-    lazy var datePickerView: UIDatePicker = {
+    private lazy var datePickerView: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .inline
         datePicker.calendar = Calendar.current
-        if let timeZone = coordinator?.timeZone {
+        if let timeZone = configuration?.timeZone {
             datePicker.timeZone = timeZone
         }
-        datePicker.date = coordinator?.date ?? Date()
+        datePicker.date = configuration?.date ?? Date()
         datePicker.translatesAutoresizingMaskIntoConstraints = false
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(sender:)), for: .valueChanged)
-
+        datePicker.tintColor = UIColor.primary
         return datePicker
     }()
-
-    @objc private func datePickerValueChanged(sender: UIDatePicker) {
-        let date = sender.date
-        coordinator?.date = date
-        chosenValueRow.detailLabel.text = coordinator?.dateFormatter.string(from: date)
-    }
-
-    private lazy var closeButton: UIBarButtonItem = {
-        let item = UIBarButtonItem(image: .gridicon(.cross),
-                                   style: .plain,
-                                   target: self,
-                                   action: #selector(closeButtonPressed))
-        item.accessibilityLabel = NSLocalizedString("Close", comment: "Accessibility label for the date picker's close button.")
-        return item
-    }()
-
-    private lazy var publishButton = UIBarButtonItem(title: NSLocalizedString("Publish immediately", comment: "Immediately publish button title"), style: .plain, target: self, action: #selector(SchedulingDatePickerViewController.publishImmediately))
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        chosenValueRow.titleLabel.text = NSLocalizedString("Choose a date", comment: "Label for Publish date picker")
+        title = Strings.title
 
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Label for Done button"), style: .done, target: self, action: #selector(done))
+        datePickerView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(datePickerView)
+        NSLayoutConstraint.activate([
+            datePickerView.topAnchor.constraint(equalTo: view.topAnchor),
+            datePickerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            datePickerView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        view.backgroundColor = .systemBackground
 
-        navigationItem.setRightBarButton(doneButton, animated: false)
-
-        setup(topView: chosenValueRow, pickerView: datePickerView)
-        view.tintColor = .editorPrimary
-
-        setupForAccessibility()
+        updateNavigationItems()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        preferredContentSize = calculatePreferredSize()
+    @objc private func buttonNowTapped() {
+        setDate(nil)
+        navigationController?.popViewController(animated: true)
     }
 
-    private func calculatePreferredSize() -> CGSize {
-        let targetSize = CGSize(width: view.bounds.width,
-          height: UIView.layoutFittingCompressedSize.height)
-        return view.systemLayoutSizeFitting(targetSize)
+    @objc private func datePickerValueChanged(sender: UIDatePicker) {
+        setDate(sender.date)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        (segue.destination as? DateCoordinatorHandler)?.coordinator = coordinator
+    private func setDate(_ date: Date?) {
+        configuration?.date = date
+        configuration?.updated(date)
+        updateNavigationItems()
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        resetNavigationButtons()
-    }
-
-    @objc func closeButtonPressed() {
-        dismiss(animated: true, completion: nil)
-    }
-
-    override func accessibilityPerformEscape() -> Bool {
-        dismiss(animated: true, completion: nil)
-        return true
-    }
-
-    @objc func publishImmediately() {
-        coordinator?.updated(nil)
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
-    @objc func done() {
-        coordinator?.updated(coordinator?.date)
-        navigationController?.dismiss(animated: true, completion: nil)
-    }
-
-    @objc private func resetNavigationButtons() {
-        let includeCloseButton = traitCollection.verticalSizeClass == .compact ||
-            (isVoiceOverOrSwitchControlRunning && navigationController?.modalPresentationStyle != .popover)
-
-        if includeCloseButton {
-            navigationItem.leftBarButtonItems = [closeButton, publishButton]
+    private func updateNavigationItems() {
+        if configuration?.date != nil {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.now, style: .plain, target: self, action: #selector(buttonNowTapped))
         } else {
-            navigationItem.leftBarButtonItems = [publishButton]
+            navigationItem.rightBarButtonItem = nil
         }
     }
 }
 
-// MARK: Accessibility
-
-private extension SchedulingDatePickerViewController {
-    func setupForAccessibility() {
-        let notificationNames = [
-            UIAccessibility.voiceOverStatusDidChangeNotification,
-            UIAccessibility.switchControlStatusDidChangeNotification
-        ]
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(resetNavigationButtons),
-                                               names: notificationNames,
-                                               object: nil)
-    }
-
-    var isVoiceOverOrSwitchControlRunning: Bool {
-        UIAccessibility.isVoiceOverRunning || UIAccessibility.isSwitchControlRunning
+extension SchedulingDatePickerViewController {
+    static func make(viewModel: PublishSettingsViewModel, onDateUpdated: @escaping (Date?) -> Void) -> SchedulingDatePickerViewController {
+        let viewController = SchedulingDatePickerViewController()
+        viewController.configuration = SchedulingDatePickerConfiguration(
+            date: viewModel.date,
+            timeZone: viewModel.timeZone,
+            dateFormatter: viewModel.dateFormatter,
+            dateTimeFormatter: viewModel.dateTimeFormatter,
+            updated: onDateUpdated
+        )
+        return viewController
     }
 }
 
-// MARK: DatePickerSheet Protocol
-protocol DatePickerSheet {
-    func configureStackView(topView: UIView, pickerView: UIView) -> UIView
-}
-
-extension DatePickerSheet {
-    /// Constructs a view with `topView` on top and `pickerView` on bottom
-    /// - Parameter topView: A view to be shown above `pickerView`
-    /// - Parameter pickerView: A view to be shown on the bottom
-    func configureStackView(topView: UIView, pickerView: UIView) -> UIView {
-        pickerView.translatesAutoresizingMaskIntoConstraints = false
-
-        let pickerWrapperView = UIView()
-        pickerWrapperView.addSubview(pickerView)
-
-        let sideConstraints: [NSLayoutConstraint] = [
-            pickerView.leftAnchor.constraint(equalTo: pickerWrapperView.leftAnchor),
-            pickerView.rightAnchor.constraint(equalTo: pickerWrapperView.rightAnchor)
-        ]
-
-        NSLayoutConstraint.activate([
-            pickerView.centerXAnchor.constraint(equalTo: pickerWrapperView.safeCenterXAnchor),
-            pickerView.topAnchor.constraint(equalTo: pickerWrapperView.topAnchor),
-            pickerView.bottomAnchor.constraint(equalTo: pickerWrapperView.bottomAnchor)
-        ])
-
-        NSLayoutConstraint.activate(sideConstraints)
-
-        let stackView = UIStackView(arrangedSubviews: [
-            topView,
-            pickerWrapperView
-        ])
-        stackView.axis = .vertical
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        return stackView
-    }
-}
-
-extension DatePickerSheet where Self: UIViewController {
-    /// Adds `topView` and `pickerView` to view hierarchy + standard styling for the view controller's view
-    /// - Parameter topView: A view to show above `pickerView` (see `ChosenValueRow`)
-    /// - Parameter pickerView: A view to show below the top view
-    func setup(topView: UIView, pickerView: UIView) {
-        WPStyleGuide.configureColors(view: view, tableView: nil)
-
-        let stackView = configureStackView(topView: topView, pickerView: pickerView)
-
-        view.addSubview(stackView)
-
-        view.pinSubviewToSafeArea(stackView)
-    }
+private enum Strings {
+    static let title = NSLocalizedString("publishDatePicker.title", value: "Publish Date", comment: "Post publish date picker")
+    static let now = NSLocalizedString("publishDatePicker.now", value: "Now", comment: "The Now button that clears the date selection")
 }

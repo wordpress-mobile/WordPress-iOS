@@ -170,7 +170,7 @@ private struct DateAndTimeRow: ImmuTableRow {
                     title: NSLocalizedString("Date and Time", comment: "Date and Time"),
                     detail: viewModel.detailString,
                     accessibilityIdentifier: "Date and Time Row",
-                    action: presenter.present(dateTimeCalendarViewController(with: viewModel))
+                    action: presenter.push(dateTimeCalendarViewController(with: viewModel))
                 )
             }
         }
@@ -201,16 +201,11 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     func dateTimeCalendarViewController(with model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
         return { [weak self] _ in
-            return PresentableSchedulingViewControllerProvider.viewController(
-                sourceView: self?.viewController?.tableView,
-                sourceRect: self?.rectForSelectedRow() ?? .zero,
-                viewModel: model,
-                updated: { [weak self] date in
-                    WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
-                    self?.viewModel.setDate(date)
-                    NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
-                },
-                onDismiss: nil)
+            return SchedulingDatePickerViewController.make(viewModel: model) { [weak self] date in
+                WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+                self?.viewModel.setDate(date)
+                NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)
+            }
         }
     }
 
