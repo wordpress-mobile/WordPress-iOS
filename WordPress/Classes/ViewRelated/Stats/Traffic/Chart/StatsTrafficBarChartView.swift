@@ -37,18 +37,18 @@ class StatsTrafficBarChartView: BarChartView {
 
     // MARK: StatsTrafficBarChartView
 
-    init(configuration: StatsTrafficBarChartConfiguration) {
-        self.barChartData = configuration.data
-        self.styling = configuration.styling
+    init(barChartData: BarChartDataConvertible, styling: StatsTrafficBarChartStyling) {
+        self.barChartData = barChartData
+        self.styling = styling
 
         super.init(frame: .zero)
 
         initialize()
     }
 
-    func update(configuration: StatsTrafficBarChartConfiguration) {
-        self.barChartData = configuration.data
-        self.styling = configuration.styling
+    func update(barChartData: BarChartDataConvertible, styling: StatsTrafficBarChartStyling) {
+        self.barChartData = barChartData
+        self.styling = styling
 
         initialize()
     }

@@ -81,11 +81,11 @@ private extension StatsTrafficBarChartCell {
             return
         }
 
-        let configuration = StatsTrafficBarChartConfiguration(data: chartData[filterSelectedIndex],
-                                                              styling: chartStyling[filterSelectedIndex])
+        let chartData = chartData[filterSelectedIndex]
+        let styling = chartStyling[filterSelectedIndex]
 
         if chartView == nil {
-            let chartView = StatsTrafficBarChartView(configuration: configuration)
+            let chartView = StatsTrafficBarChartView(barChartData: chartData, styling: styling)
 
             resetChartContainerView()
             chartView.translatesAutoresizingMaskIntoConstraints = false
@@ -94,7 +94,7 @@ private extension StatsTrafficBarChartCell {
             chartContainerView.pinSubviewToAllEdges(chartView)
             self.chartView = chartView
         } else {
-            self.chartView?.update(configuration: configuration)
+            self.chartView?.update(barChartData: chartData, styling: styling)
         }
     }
 
