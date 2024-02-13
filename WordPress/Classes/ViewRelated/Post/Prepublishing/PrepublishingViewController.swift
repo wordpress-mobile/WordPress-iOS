@@ -39,9 +39,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         options.map { $0.id }
     }
 
-    private lazy var publishSettingsViewModel: PublishSettingsViewModel = {
-        return PublishSettingsViewModel(post: post)
-    }()
+    private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
 
     enum CompletionResult {
         case completed(AbstractPost)
@@ -59,7 +57,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let tableView = UITableView(frame: .zero, style: .plain)
     private let footerSeparator = UIView()
 
-    // TODO: make private
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
@@ -71,6 +68,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
+
+    private var cancellables = Set<AnyCancellable>()
+    @Published private var keyboardShown: Bool = false
 
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
@@ -89,8 +89,24 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         fatalError("init(coder:) has not been implemented")
     }
 
-    private var cancellables = Set<AnyCancellable>()
-    @Published private var keyboardShown: Bool = false
+    func presentAsSheet(from presentingViewController: UIViewController) {
+        let navigationController = UINavigationController(rootViewController: self)
+        if UIDevice.isPad() {
+            navigationController.modalPresentationStyle = .formSheet
+        } else {
+            if let sheetController = navigationController.sheetPresentationController {
+                if #available(iOS 16, *) {
+                    sheetController.detents = [.custom { _ in 520 }, .large()]
+                } else {
+                    sheetController.detents = [.medium(), .large()]
+                }
+                sheetController.prefersGrabberVisible = true
+                sheetController.preferredCornerRadius = 16
+                navigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+            }
+        }
+        presentingViewController.present(navigationController, animated: true)
+    }
 
     func refreshOptions() {
         options = identifiers.compactMap { identifier -> PrepublishingOption? in
@@ -107,6 +123,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             return .init(identifier: identifier)
         }
     }
+
+    // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()

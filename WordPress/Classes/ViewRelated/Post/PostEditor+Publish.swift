@@ -237,7 +237,7 @@ extension PublishingEditor {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
+        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
             switch result {
             case .completed(let post):
                 self?.post = post
@@ -246,28 +246,7 @@ extension PublishingEditor {
                 dismissAction()
             }
         }
-
-        let isTitleDisplayed = prepublishingIdentifiers.contains { $0 == .title }
-        let shouldDisplayPortrait = WPDeviceIdentification.isiPhone() && isTitleDisplayed
-        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: shouldDisplayPortrait)
-
-        // TODO: make it work in other places
-        if UIDevice.isPad() {
-            prepublishingNavigationController.modalPresentationStyle = .formSheet
-        } else {
-            if let sheetController = prepublishingNavigationController.sheetPresentationController {
-                if #available(iOS 16, *) {
-                    sheetController.detents = [
-                        .custom { _ in 520 },
-                        .large()
-                    ]
-                    sheetController.prefersGrabberVisible = true
-                    sheetController.preferredCornerRadius = 16
-                    prepublishingNavigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
-                }
-            }
-        }
-        topmostPresentedViewController.present(prepublishingNavigationController, animated: true)
+        viewController.presentAsSheet(from: topmostPresentedViewController)
     }
 
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
