@@ -19,7 +19,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
     // MARK: - Properties
 
-    private var tabsData = [BarChartTabData]()
+    private var tabsData = [StatsTrafficBarChartTabData]()
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [StatsTrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
@@ -42,7 +42,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
         updateChartView()
     }
 
-    func configure(tabsData: [BarChartTabData],
+    func configure(tabsData: [StatsTrafficBarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
                    barChartStyling: [StatsTrafficBarChartStyling] = [],
                    period: StatsPeriodUnit? = nil) {
@@ -200,7 +200,7 @@ private extension StatsTrafficBarChartCell {
                                                  comment: "Stats views lower than previous year")
     }
 
-    func differenceAttributedString(_ data: BarChartTabData) -> NSAttributedString? {
+    func differenceAttributedString(_ data: StatsTrafficBarChartTabData) -> NSAttributedString? {
         guard let differenceText = differenceText(data) else {
             return .init(string: " ")
         }
@@ -226,7 +226,7 @@ private extension StatsTrafficBarChartCell {
         return attributedString
     }
 
-    func differenceText(_ data: BarChartTabData) -> String? {
+    func differenceText(_ data: StatsTrafficBarChartTabData) -> String? {
         switch data.period {
         case .week:
             if data.difference > 0 {
@@ -253,7 +253,7 @@ private extension StatsTrafficBarChartCell {
         return nil
     }
 
-    func differenceLabel(_ data: BarChartTabData) -> String {
+    func differenceLabel(_ data: StatsTrafficBarChartTabData) -> String {
         // We want to show something like "+10.2K (+5%)" if we have a percentage difference and "1.2K" if we don't.
         //
         // Negative cases automatically appear with a negative sign "-10.2K (-5%)" by using `abbreviatedString()`.
@@ -289,7 +289,7 @@ private extension StatsTrafficBarChartCell {
     }
 }
 
-struct BarChartTabData: FilterTabBarItem {
+struct StatsTrafficBarChartTabData: FilterTabBarItem {
     var tabTitle: String
     var tabData: Int
     var tabDataStub: String?
@@ -297,9 +297,6 @@ struct BarChartTabData: FilterTabBarItem {
     var differencePercent: Int
     var date: Date?
     var period: StatsPeriodUnit?
-    var analyticsStat: WPAnalyticsStat?
-
-    private(set) var accessibilityHint: String?
 
     init(tabTitle: String,
          tabData: Int,
@@ -307,9 +304,8 @@ struct BarChartTabData: FilterTabBarItem {
          difference: Int,
          differencePercent: Int,
          date: Date? = nil,
-         period: StatsPeriodUnit? = nil,
-         analyticsStat: WPAnalyticsStat? = nil,
-         accessibilityHint: String? = nil) {
+         period: StatsPeriodUnit? = nil
+    ) {
         self.tabTitle = tabTitle
         self.tabData = tabData
         self.tabDataStub = tabDataStub
@@ -317,7 +313,6 @@ struct BarChartTabData: FilterTabBarItem {
         self.differencePercent = differencePercent
         self.date = date
         self.period = period
-        self.analyticsStat = analyticsStat
     }
 
     var title: String {

@@ -1,7 +1,7 @@
 import Foundation
 
 struct StatsTrafficBarChartMockData {
-    let tabsData: [BarChartTabData]
+    let tabsData: [StatsTrafficBarChartTabData]
     let summary: StatsSummaryTimeIntervalData
     let period: StatsPeriodUnit
 
@@ -29,44 +29,40 @@ struct StatsTrafficBarChartMockData {
     ]
 
     struct Week {
-        static let barChartTabData1 = BarChartTabData(
+        static let barChartTabData1 = StatsTrafficBarChartTabData(
             tabTitle: "Views",
             tabData: 143,
             difference: -176,
             differencePercent: -55,
             date: Date(timeIntervalSinceReferenceDate: 726969600.0),
-            period: .week,
-            analyticsStat: nil
+            period: .week
         )
 
-        static let barChartTabData2 = BarChartTabData(
+        static let barChartTabData2 = StatsTrafficBarChartTabData(
             tabTitle: "Visitors",
             tabData: 17,
             difference: -14,
             differencePercent: -45,
             date: Date(timeIntervalSinceReferenceDate: 726969600.0),
-            period: .week,
-            analyticsStat: nil
+            period: .week
         )
 
-        static let barChartTabData3 = BarChartTabData(
+        static let barChartTabData3 = StatsTrafficBarChartTabData(
             tabTitle: "Likes",
             tabData: 6,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 726969600.0),
-            period: .week,
-            analyticsStat: nil
+            period: .week
         )
 
-        static let barChartTabData4 = BarChartTabData(
+        static let barChartTabData4 = StatsTrafficBarChartTabData(
             tabTitle: "Comments",
             tabData: 3,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 726969600.0),
-            period: .week,
-            analyticsStat: nil
+            period: .week
         )
 
         static let statsSummaryData = [
@@ -136,44 +132,40 @@ struct StatsTrafficBarChartMockData {
     }
 
     struct Month {
-        static let barChartTabData1 = BarChartTabData(
+        static let barChartTabData1 = StatsTrafficBarChartTabData(
             tabTitle: "Views",
             tabData: 1136,
             difference: 294,
             differencePercent: 35,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData2 = BarChartTabData(
+        static let barChartTabData2 = StatsTrafficBarChartTabData(
             tabTitle: "Visitors",
             tabData: 49,
             difference: 13,
             differencePercent: 36,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData3 = BarChartTabData(
+        static let barChartTabData3 = StatsTrafficBarChartTabData(
             tabTitle: "Likes",
             tabData: 52,
             difference: 36,
             differencePercent: 225,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData4 = BarChartTabData(
+        static let barChartTabData4 = StatsTrafficBarChartTabData(
             tabTitle: "Comments",
             tabData: 28,
             difference: 16,
             differencePercent: 133,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
         static let statsSummaryData = [
@@ -227,191 +219,183 @@ struct StatsTrafficBarChartMockData {
     }
 
     struct Year {
-        static let barChartTabData1 = BarChartTabData(
-                tabTitle: "Views",
-                tabData: 113326,
-                difference: 0,
-                differencePercent: 0,
-                date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-                period: .year,
-                analyticsStat: nil
-            )
+        static let barChartTabData1 = StatsTrafficBarChartTabData(
+            tabTitle: "Views",
+            tabData: 113326,
+            difference: 0,
+            differencePercent: 0,
+            date: Date(timeIntervalSinceReferenceDate: 725760000.0),
+            period: .year
+        )
 
-            static let barChartTabData2 = BarChartTabData(
-                tabTitle: "Visitors",
-                tabData: 43329,
-                difference: -352,
-                differencePercent: -88,
-                date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-                period: .year,
-                analyticsStat: nil
-            )
+        static let barChartTabData2 = StatsTrafficBarChartTabData(
+            tabTitle: "Visitors",
+            tabData: 43329,
+            difference: -352,
+            differencePercent: -88,
+            date: Date(timeIntervalSinceReferenceDate: 725760000.0),
+            period: .year
+        )
 
-            static let barChartTabData3 = BarChartTabData(
-                tabTitle: "Likes",
-                tabData: 5232,
-                difference: -252,
-                differencePercent: -83,
-                date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-                period: .year,
-                analyticsStat: nil
-            )
+        static let barChartTabData3 = StatsTrafficBarChartTabData(
+            tabTitle: "Likes",
+            tabData: 5232,
+            difference: -252,
+            differencePercent: -83,
+            date: Date(timeIntervalSinceReferenceDate: 725760000.0),
+            period: .year
+        )
 
-            static let barChartTabData4 = BarChartTabData(
-                tabTitle: "Comments",
-                tabData: 2538,
-                difference: -527,
-                differencePercent: -95,
-                date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-                period: .year,
-                analyticsStat: nil
-            )
+        static let barChartTabData4 = StatsTrafficBarChartTabData(
+            tabTitle: "Comments",
+            tabData: 2538,
+            difference: -527,
+            differencePercent: -95,
+            date: Date(timeIntervalSinceReferenceDate: 725760000.0),
+            period: .year
+        )
 
         static let statsSummaryData = [
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 696902400.0),
-                    viewsCount: 676,
-                    visitorsCount: 30,
-                    likesCount: 26,
-                    commentsCount: 27
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 699321600.0),
-                    viewsCount: 1194,
-                    visitorsCount: 53,
-                    likesCount: 44,
-                    commentsCount: 102
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 701996400.0),
-                    viewsCount: 1236,
-                    visitorsCount: 39,
-                    likesCount: 21,
-                    commentsCount: 83
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 704588400.0),
-                    viewsCount: 1577,
-                    visitorsCount: 54,
-                    likesCount: 48,
-                    commentsCount: 80
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 707266800.0),
-                    viewsCount: 659,
-                    visitorsCount: 29,
-                    likesCount: 14,
-                    commentsCount: 36
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 709858800.0),
-                    viewsCount: 426,
-                    visitorsCount: 23,
-                    likesCount: 17,
-                    commentsCount: 15
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 712537200.0),
-                    viewsCount: 510,
-                    visitorsCount: 30,
-                    likesCount: 18,
-                    commentsCount: 18
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 715215600.0),
-                    viewsCount: 750,
-                    visitorsCount: 27,
-                    likesCount: 28,
-                    commentsCount: 57
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 717807600.0),
-                    viewsCount: 842,
-                    visitorsCount: 31,
-                    likesCount: 29,
-                    commentsCount: 45
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 720489600.0),
-                    viewsCount: 616,
-                    visitorsCount: 24,
-                    likesCount: 13,
-                    commentsCount: 22
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 723081600.0),
-                    viewsCount: 842,
-                    visitorsCount: 36,
-                    likesCount: 16,
-                    commentsCount: 12
-                ),
-                StatsSummaryData(
-                    period: .month,
-                    periodStartDate: Date(timeIntervalSinceReferenceDate: 725760000.0),
-                    viewsCount: 1136,
-                    visitorsCount: 49,
-                    likesCount: 52,
-                    commentsCount: 28
-                )
-            ]
-
-            static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
+            StatsSummaryData(
                 period: .month,
-                periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
-                summaryData: statsSummaryData
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 696902400.0),
+                viewsCount: 676,
+                visitorsCount: 30,
+                likesCount: 26,
+                commentsCount: 27
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 699321600.0),
+                viewsCount: 1194,
+                visitorsCount: 53,
+                likesCount: 44,
+                commentsCount: 102
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 701996400.0),
+                viewsCount: 1236,
+                visitorsCount: 39,
+                likesCount: 21,
+                commentsCount: 83
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 704588400.0),
+                viewsCount: 1577,
+                visitorsCount: 54,
+                likesCount: 48,
+                commentsCount: 80
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 707266800.0),
+                viewsCount: 659,
+                visitorsCount: 29,
+                likesCount: 14,
+                commentsCount: 36
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 709858800.0),
+                viewsCount: 426,
+                visitorsCount: 23,
+                likesCount: 17,
+                commentsCount: 15
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 712537200.0),
+                viewsCount: 510,
+                visitorsCount: 30,
+                likesCount: 18,
+                commentsCount: 18
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 715215600.0),
+                viewsCount: 750,
+                visitorsCount: 27,
+                likesCount: 28,
+                commentsCount: 57
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 717807600.0),
+                viewsCount: 842,
+                visitorsCount: 31,
+                likesCount: 29,
+                commentsCount: 45
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 720489600.0),
+                viewsCount: 616,
+                visitorsCount: 24,
+                likesCount: 13,
+                commentsCount: 22
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 723081600.0),
+                viewsCount: 842,
+                visitorsCount: 36,
+                likesCount: 16,
+                commentsCount: 12
+            ),
+            StatsSummaryData(
+                period: .month,
+                periodStartDate: Date(timeIntervalSinceReferenceDate: 725760000.0),
+                viewsCount: 1136,
+                visitorsCount: 49,
+                likesCount: 52,
+                commentsCount: 28
             )
+        ]
+
+        static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
+            period: .month,
+            periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
+            summaryData: statsSummaryData
+        )
     }
 
     struct Empty {
-        static let barChartTabData1 = BarChartTabData(
+        static let barChartTabData1 = StatsTrafficBarChartTabData(
             tabTitle: "Views",
             tabData: 0,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData2 = BarChartTabData(
+        static let barChartTabData2 = StatsTrafficBarChartTabData(
             tabTitle: "Visitors",
             tabData: 0,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData3 = BarChartTabData(
+        static let barChartTabData3 = StatsTrafficBarChartTabData(
             tabTitle: "Likes",
             tabData: 0,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
-        static let barChartTabData4 = BarChartTabData(
+        static let barChartTabData4 = StatsTrafficBarChartTabData(
             tabTitle: "Comments",
             tabData: 0,
             difference: 0,
             differencePercent: 0,
             date: Date(timeIntervalSinceReferenceDate: 725760000.0),
-            period: .month,
-            analyticsStat: nil
+            period: .month
         )
 
         static let statsSummaryData = [
