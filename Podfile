@@ -50,8 +50,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 12.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'ce6b99a'
+  # pod 'WordPressKit', '~> 13.0'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'b5c2bd39ec8f478dd53ecb7533ad025aad48f42e'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -141,7 +141,7 @@ abstract_target 'Apps' do
   pod 'NSURL+IDN', '~> 0.4'
 
   # pod 'WordPressAuthenticator', '~> 9.0'
-  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: '2eb1d76a86435401e4c741c23e6accf8608ea'
+  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'fa06fca7178b268d382d91861752b3be0729e8a8'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 

@@ -55,7 +55,7 @@ struct CompliancePopover: View {
         }) {
             ZStack {
                 RoundedRectangle(cornerRadius: Length.Padding.single)
-                    .stroke(Color.DS.divider, lineWidth: Length.Border.thin)
+                    .stroke(Color.DS.Background.tertiary, lineWidth: Length.Border.thin)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }

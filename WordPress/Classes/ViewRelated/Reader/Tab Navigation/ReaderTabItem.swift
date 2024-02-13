@@ -1,22 +1,31 @@
-struct ReaderTabItem: FilterTabBarItem {
+struct ReaderTabItem: FilterTabBarItem, Hashable {
 
-    let shouldHideButtonsView: Bool
+    let id = UUID()
+    let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
 
     let content: ReaderContent
 
     var accessibilityIdentifier: String {
-        return title
+        return "Reader Navigation Menu Item, \(title)"
     }
 
     /// initialize with topic
     init(_ content: ReaderContent) {
         self.content = content
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
-        shouldHideButtonsView = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
         shouldHideSettingsButton = content.type == .selfHostedFollowing
         shouldHideTagFilter = content.topicType == .organization
+    }
+
+    static func == (lhs: ReaderTabItem, rhs: ReaderTabItem) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
     }
 }
 
@@ -44,9 +53,21 @@ extension ReaderTabItem {
     }
 
     private enum Titles {
-        static let followingTitle = NSLocalizedString("Following", comment: "Title of the Following Reader tab")
-        static let likesTitle = NSLocalizedString("Likes", comment: "Title of the Likes Reader tab")
-        static let savedTitle = NSLocalizedString("Saved", comment: "Title of the Saved Reader Tab")
+        static let followingTitle = NSLocalizedString(
+            "reader.navigation.menu.subscriptions",
+            value: "Subscriptions",
+            comment: "Reader navigation menu item for the Subscriptions filter"
+        )
+        static let likesTitle = NSLocalizedString(
+            "reader.navigation.menu.liked",
+            value: "Liked",
+            comment: "Reader navigation menu item for the Liked filter"
+        )
+        static let savedTitle = NSLocalizedString(
+            "reader.navigation.menu.saved",
+            value: "Saved",
+            comment: "Reader navigation menu item for the Saved filter"
+        )
         static let emptyTitle = ""
     }
 }

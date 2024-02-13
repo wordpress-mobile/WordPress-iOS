@@ -11,29 +11,26 @@ class ReaderTabViewController: UIViewController {
         return makeReaderTabView(viewModel)
     }()
 
-    private let settingsButton: SpotlightableButton = SpotlightableButton(type: .custom)
-
     init(viewModel: ReaderTabViewModel, readerTabViewFactory: @escaping (ReaderTabViewModel) -> ReaderTabView) {
         self.viewModel = viewModel
         self.makeReaderTabView = readerTabViewFactory
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-        setupNavigationButtons()
 
         ReaderTabViewController.configureRestoration(on: self)
 
         ReaderCardService().clean()
 
-        viewModel.filterTapped = { [weak self] (fromView, completion) in
+        viewModel.filterTapped = { [weak self] (filter, fromView, completion) in
             guard let self = self else {
                 return
             }
 
-            self.viewModel.presentFilter(from: self, sourceView: fromView, completion: { [weak self] topic in
+            self.viewModel.presentFilter(filter: filter, from: self, sourceView: fromView) { [weak self] topic in
                 self?.dismiss(animated: true, completion: nil)
                 completion(topic)
-            })
+            }
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(defaultAccountDidChange(_:)), name: NSNotification.Name.WPAccountDefaultWordPressComAccountChanged, object: nil)
@@ -64,14 +61,7 @@ class ReaderTabViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if QuickStartTourGuide.shared.isCurrentElement(.readerDiscoverSettings) {
-
-            if viewModel.selectedIndex != ReaderTabConstants.discoverIndex {
-                viewModel.showTab(at: ReaderTabConstants.discoverIndex)
-            }
-
-            settingsButton.shouldShowSpotlight = true
-        }
+        navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -80,27 +70,7 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.stop(.main)
 
         QuickStartTourGuide.shared.endCurrentTour()
-    }
-
-    func setupNavigationButtons() {
-        // Search Button
-        let searchButton = UIBarButtonItem(image: UIImage.gridicon(.search),
-                                           style: .plain,
-                                           target: self,
-                                           action: #selector(didTapSearchButton))
-        searchButton.accessibilityIdentifier = ReaderTabConstants.searchButtonAccessibilityIdentifier
-        searchButton.accessibilityLabel = ReaderTabConstants.searchButtonAccessibilityLabel
-
-        // Settings Button
-        settingsButton.spotlightOffset = ReaderTabConstants.spotlightOffset
-        settingsButton.contentEdgeInsets = ReaderTabConstants.settingsButtonContentEdgeInsets
-        settingsButton.setImage(.gridicon(.readerFollowing), for: .normal)
-        settingsButton.addTarget(self, action: #selector(didTapSettingsButton), for: .touchUpInside)
-        settingsButton.accessibilityIdentifier = ReaderTabConstants.settingsButtonIdentifier
-        settingsButton.accessibilityLabel = ReaderTabConstants.settingsButtonAccessibilityLabel
-        let settingsButton = UIBarButtonItem(customView: settingsButton)
-
-        navigationItem.rightBarButtonItems = [searchButton, settingsButton]
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
     override func loadView() {
@@ -125,17 +95,6 @@ class ReaderTabViewController: UIViewController {
     }
 }
 
-// MARK: - Navigation Buttons
-extension ReaderTabViewController {
-    @objc private func didTapSettingsButton() {
-        viewModel.presentManage(from: self)
-    }
-
-    @objc private func didTapSearchButton() {
-        viewModel.navigateToSearch()
-    }
-}
-
 // MARK: Observing Quick Start
 extension ReaderTabViewController {
     private func startObservingQuickStart() {
@@ -143,10 +102,10 @@ extension ReaderTabViewController {
     }
 
     @objc private func handleQuickStartTourElementChangedNotification(_ notification: Foundation.Notification) {
-        if let info = notification.userInfo,
-           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
-            settingsButton.shouldShowSpotlight = element == .readerDiscoverSettings
-        }
+        // TODO: Revisit Reader spotlight
+//        if let info = notification.userInfo,
+//           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
+//        }
     }
 }
 
@@ -209,7 +168,7 @@ extension ReaderTabViewController {
         static let storyBoardInitError = "Storyboard instantiation not supported"
         static let restorationIdentifier = "WPReaderTabControllerRestorationID"
         static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
-        static let discoverIndex = 1
+        static let discoverIndex = 0
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
     }

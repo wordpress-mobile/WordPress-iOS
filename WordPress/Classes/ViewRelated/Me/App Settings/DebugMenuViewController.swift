@@ -30,6 +30,11 @@ struct DebugMenuView: View {
         } label: {
             DebugMenuRow(systemImage: "flag.fill", color: .pink, title: Strings.featureFlags)
         }
+        NavigationLink() {
+            BooleanUserDefaultsDebugView()
+        } label: {
+            DebugMenuRow(systemImage: "server.rack", color: .gray, title: Strings.booleanUserDefaults)
+        }
     }
 
     @ViewBuilder private var settings: some View {
@@ -218,4 +223,5 @@ private enum Strings {
     static let featureFlags = NSLocalizedString("debugMenu.featureFlags", value: "Feature Flags", comment: "Feature flags menu item")
     static let removeQuickStartRow = NSLocalizedString("debugMenu.removeQuickStart", value: "Remove Current Tour", comment: "Remove current quick start tour menu item")
     static let weeklyRoundup = NSLocalizedString("debugMenu.weeklyRoundup", value: "Weekly Roundup", comment: "Weekly Roundup debug menu item")
+    static let booleanUserDefaults = NSLocalizedString("debugMenu.booleanUserDefaults", value: "Boolean User Defaults", comment: "Boolean User Defaults debug menu item")
 }

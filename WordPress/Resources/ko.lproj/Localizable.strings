@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-23 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ko_KR */
@@ -108,9 +108,6 @@
 
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@일";
-
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ 팔로워";
 
 /* Comments Threading Levels
    Number of Threading Levels */
@@ -480,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "끝에 추가하기";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "토픽 추가하기";
-
 /* No comment provided by engineer. */
 "Add URL" = "URL 추가";
 
@@ -491,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "프로필 사진 추가";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "토픽 추가하기";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "도메인 추가";
@@ -507,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "숏코드 추가…";
 
-/* No Tags View Button Label */
-"Add a site" = "사이트를 추가하세요";
-
-/* No Topics View Button Label */
-"Add a topic" = "주제 추가하기";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "계정 이미지 추가";
 
 /* No comment provided by engineer. */
 "Add alt text" = "대체 텍스트 추가하기";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "모든 토픽 추가하기";
 
 /* No comment provided by engineer. */
 "Add audio" = "오디오 추가하기";
@@ -1107,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "블록 설정";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "이 블로그 차단";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "블록 그룹 해제됨";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "차단한 사이트";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "차단한 사용자";
@@ -1518,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "비디오 고르기";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "주제 선택";
-
 /* Register Domain - Address information field City */
 "City" = "도시";
 
@@ -1893,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "알림을 활성화할 수 없음";
 
-/* Title of a prompt. */
-"Could not follow site" = "사이트를 팔로우할 수 없음";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "지정된 주소에서 사이트를 팔로우할 수 없습니다.";
 
@@ -1919,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "읽음을 전환할 수 없음: postID가 누락되었습니다.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "사이트의 팔로우를 취소할 수 없음";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "지정된 주소의 사이트에 대한 팔로우를 취소할 수 없습니다.";
@@ -2320,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "발견하기";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "디스커버 사이트";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "좋아하는 블로그를 발견하고 팔로우하기";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "회원님께 영감을 주는 사이트를 발견하고 팔로우하세요.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "게시글 더 검색";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2371,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "아직 계정이 없으신가요? _가입_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2701,9 +2663,6 @@
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "앱 내 알림 활성화";
 
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "사이트 알림을 활성화하시겠습니까?";
-
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "트래픽, 좋아요, 댓글, 구독자에 대한 자세한 내용을 참조하려면 사이트 통계를 활성화하세요.";
 
@@ -2731,9 +2690,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "비밀번호 입력";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "팔로우할 사이트 URL 입력";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2997,9 +2953,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "게시물 가져오는 중...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "파일 가져오는 중...";
 
 /* Label for the posting activity legend. */
@@ -3025,9 +2979,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "영화 및 텔레비전";
-
-/* Title of the filter button in the Reader */
-"Filter" = "필터";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "활동 유형으로 필터";
@@ -3068,8 +3019,7 @@
 "Fixing Threats" = "위협 해결 중";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "팔로우";
 
 /* Button title. Follow the comments on a post. */
@@ -3077,9 +3027,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "대화 팔로우";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "사이트 팔로우하기";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "토픽 따르기";
@@ -3091,15 +3038,8 @@
 "Follow your favorite sites and discover new blogs." = "좋아하는 사이트를 팔로우하고 새 블로그를 검색하세요.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "팔로우된 사이트";
-
-/* Followed Topics Title */
-"Followed Topics" = "팔로우한 항목";
-
-/* User followed a site. */
-"Followed site" = "팔로우한 사이트";
 
 /* Label for list of followers.
    User role badge */
@@ -3110,13 +3050,8 @@
    Label for number of followers. */
 "Followers" = "팔로워";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "팔로잉";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "%1$@ 팔로우 중";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "새 게시글 팔로우 중...";
@@ -3129,9 +3064,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "블로그를 팔로우합니다.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "태그를 팔로우합니다.";
 
 /* No comment provided by engineer. */
 "Font Size" = "글꼴 크기";
@@ -3280,9 +3212,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "지메일";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "팔로우 목록으로 이동";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "리더로 이동";
@@ -3962,7 +3891,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "좋아요";
 
@@ -3974,9 +3902,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "댓글 좋아요";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "한계에 이르렀습니다. 1분 후에 다시 할 수 있습니다. 제한이 해제 되기까지 기다리는 시간을 증가시키기 전에 다시 해보세요. 이것이 에러라면 지원 센터에 연락하세요. ";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "인사이트에 대한 조회수를 나타내는 꺾은선형 차트.";
@@ -4198,9 +4123,6 @@
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "인사이트 관리";
 
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "사이트 관리";
-
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "사이트 관리";
 
@@ -4378,9 +4300,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "추가 지원 옵션";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "가장 인기 있는 시간";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "%@ 이동";
@@ -4620,9 +4539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "이 요청을 처리할 수 있는 애플리케이션이 없습니다. 웹 브라우저를 설치하세요.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "이용 가능한 WordPress.com이 없습니다";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "검색 내용과 일치하는 주소가 없습니다";
 
@@ -4666,9 +4582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "해결된 위협 없음";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "팔로우된 사이트 없음";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "아직 팔로워 없음";
@@ -4717,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "기다리시지 않아도 됩니다. 사이트가 완전히 복원되면 알려드립니다.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "팔로우할 새 게시글 없음";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "아직 알림이 없습니다";
 
@@ -4761,12 +4671,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "저장된 글 없음";
-
-/* A message title */
-"No sites found" = "사이트를 찾을 수 없음";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "회원님의 언어로 된 %@와(과) 일치하는 사이트를 찾을 수 없습니다.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "검색과 일치하는 태그 없음";
@@ -4941,9 +4845,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "다양한 블록의 이름에 익숙해지면 슬래시 다음에 블록 이름을 입력하여 블록을 추가할 수 있습니다(예: \/image 또는 \/heading).";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "워드프레스닷컴 사이트를 만든 후 원하는 콘텐츠를 자신의 사이트로 리블로그할 수 있습니다.";
 
 /* No comment provided by engineer. */
 "One" = "1";
@@ -5553,9 +5454,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "콘텐츠 로드 중 문제 발생";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "사이트 로드 중 문제 발생";
-
 /* No comment provided by engineer. */
 "Problem opening the audio" = "오디오 열기 문제";
 
@@ -5692,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "최근 몇 주";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "사용자가 팔로우하는 블로그 및 사이트의 최신 글이 여기에 표시됩니다.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "수신자";
@@ -5902,9 +5797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "날짜 범위 필터 재설정하기";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "필터 재설정하기";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "비밀번호 재설정하기";
@@ -6378,7 +6270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "설정";
@@ -6514,9 +6405,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "글 콘텐츠 보기";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "사이트의 글을 보여 줍니다.";
-
 /* View title during the sign up process. */
 "Sign Up" = "가입하기";
 
@@ -6571,8 +6459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "사이트 주제";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "사이트 URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6604,16 +6491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "사이트 제목을 성공적으로 바꿨습니다";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "사이트";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "사이트 (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "팔로우한 사이트";
 
 /* Image size option title. */
 "Size" = "크기";
@@ -7184,9 +7061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "서버에서 응답이 없습니다. 이는 일반적으로 사이트에 대한 메모리 제한을 늘려야 한다는 뜻입니다.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = " %@ 사이트는 더 이상 뉴스피드에 표시되지 않습니다. 눌러서 취소하세요.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "사이트 주소는 64 글자보다 적어야합니다.";
 
@@ -7202,9 +7076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "사이트를 내보낼 수 없습니다.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "이 목록에 있는 사이트에서 최근 게시된 글이 없습니다.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "슬러그는 글 제목의 URL 친화적인 버전입니다.";
@@ -7415,9 +7286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "이 글은 내 좋아요에 없습니다.";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "이 사이트에 게시된 글이 아직 없습니다. 나중에 다시 시도하세요.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "해결되지 않는 결제 승인 거부가 있는 경우 이 계정을 종료할 수 없습니다.";
 
@@ -7563,12 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "id에 대한 게시글 없음:";
 
-/* Topics Filter Tab Title */
-"Topics" = "토픽";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "토픽 (%lu)";
-
 /* Label for total followers */
 "Total" = "총";
 
@@ -7654,9 +7516,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "지금 사용해 보기";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "원하는 주제를 추가하려면 %@을(를) 선택해 보세요.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "새 블록 편집기 시도";
 
@@ -7669,23 +7528,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "프롬프트 끄기";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "사이트 알림 끄기";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "알림 켜기";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "푸시 알림 켜기";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "사이트 알림 켜기";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "사이트 알림을 껐음";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "사이트 알림을 켰음";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "스위치를 끄기로 전환하면 유형과 관계없이 이 앱의 모든 알림이 비활성화됩니다.";
@@ -7732,9 +7579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "동기화할 수 없음";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "사이트를 차단할 수 없음";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "새 초대 링크를 만들 수 없습니다.";
 
@@ -7752,9 +7596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "대화를 팔로우할 수 없습니다.";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "사이트를 팔로우할 수 없음";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "지금 페이지를 로드할 수 없습니다.";
@@ -7800,15 +7641,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "링크를 공유할 수 없음";
-
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "사이트 알림을 끌 수 없음";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "사이트 알림을 켤 수 없음";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "사이트 팔로우를 취소할 수 없음";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "홈페이지 설정을 업데이트할 수 없습니다.";
@@ -7867,24 +7699,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "실행 취소";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "팔로우 취소";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "%@(을)를 팔로우 취소하기";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "대화 팔로우 취소";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "대화 팔로우 취소";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "사이트 팔로우 취소";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "팔로우 취소한 사이트";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "블로그 팔로우를 취소합니다.";
@@ -8520,9 +8339,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "젯팩 시작";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "리더에 오신 것을 환영합니다. 손끝에서 백만의 블로그를 발견하세요.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "워드프레스에 오신 것을 환영합니다";
 
@@ -8604,9 +8420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "댓글의 내용이나 이름, URL, 이메일, IP에 아래 단어가 들어있으면 스팸으로 처리됩니다. 단어의 일부만 입력해도 됩니다. \"프레스\"라고 입력하면 \"워드프레스\"로 인식될 수 있습니다.";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "사이트를 팔로우하면 여기에 사이트 콘텐츠가 표시됩니다.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "편집기에서 수정한 사항은 여기서 기록을 볼 수 있습니다.";
@@ -8789,9 +8602,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "현재 %1$@인 사용자명을 바꾸려고 합니다. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "이미 해당 사이트를 팔로우하고 있습니다.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "사용자 이름을 %@ (으)로 변경하고 있습니다. 사용자 이름을 변경하면 Gravatar 프로필 및 IntenseDebate 프로필 주소에도 영향을 줍니다.\n계속하려면 새 사용자 이름을 확인하십시오.";
 
@@ -8815,12 +8625,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "편집기의 웹 버전을 사용하여 이 블록을 편집하실 수 있습니다.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "팔로우하여 특정 사이트의 글을 팔로우할 수 있습니다.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "특정 주제에 토픽을 추가하여 글을 따를 수 있습니다.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "개별 글에 대해 이러한 설정을 우선 적용할 수 있습니다.";
@@ -10301,6 +10105,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "유지보수";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "사이트 모니터링";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "소셜";
 
@@ -10366,6 +10173,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "사이트 제목 변경";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "이 시간 범위 내에 로그 항목 없음";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "오류 발생";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "다시 시도";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
@@ -10471,6 +10287,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "전화번호";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "종료 날짜";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "위험도";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "시작 날짜";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "(사용 중지됨)";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "치명적 오류";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "사용자";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "경고";
 
 /* Title for the plan selection view */
 "planSelection.title" = "요금제";
@@ -10692,6 +10529,30 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "더 보기";
 
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "블로그 %@은(는) 더 이상 리더에 표시되지 않습니다. 눌러서 취소하세요.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@개 블로그 글 • %2$@명 구독자";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "블로그의 글을 표시합니다.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "블로그 로드 중 문제 발생";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "블로그 가져오는 중...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "사용자 언어로 된 %@에 일치하는 블로그를 찾을 수 없습니다.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "블로그를 찾을 수 없음";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@명 구독자";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "사이트의 글 미리보기";
 
@@ -10729,15 +10590,171 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "글이 저장됨";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "이 블로그를 이미 구독하고 있습니다.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "편집";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "블로그별 필터링";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "태그별 필터링";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "발견에서 블로그를 구독하면 여기에 최신 글이 표시됩니다. 아니면 이미 좋아하는 블로그를 검색하세요.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "블로그 검색";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "블로그 구독 없음";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "태그를 구독하면 여기에서 인기 글을 확인할 수 있습니다.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "태그 구독";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "제안된 태그";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "태그 없음";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "새 태그 구독 중...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "제안된 태그";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "블로그 가져오는 중...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "블로그";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "태그";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d 블로그";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d 블로그";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "태그";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d 태그";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "태그";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "좋아함";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "목록";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "저장됨";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "구독";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "검색";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "리더 설정";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "블로그 발견";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "발견에서 블로그를 구독하면 여기에 최신 글이 표시됩니다. 아니면 이미 좋아하는 블로그를 검색하세요.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "블로그 구독 없음";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "이 블로그에서 아직 아무 것도 게시하지 않았습니다. 나중에 다시 시도하세요.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "이 목록에 있는 블로그에서 최근 게시된 글이 없습니다.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "블로그 관리";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "사용자가 구독하는 블로그 및 사이트의 최신 글이 여기에 표시됩니다.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "구독으로 이동";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "구독을 통해 특정 블로그의 글을 구독할 수 있습니다.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "블로그 추가";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "블로그를 차단할 수 없음";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "차단된 블로그";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "블로그 구독됨";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "블로그 구독 해지 불가";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "블로그 구독 해지 불가";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "블로그 구독 해지";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "블로그 알림을 끌 수 없음";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "블로그 알림 꺼짐";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "블로그 알림을 켤 수 없음";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "블로그 알림을 활성화하시겠습니까?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "블로그 알림 켜짐";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "이 사이트";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "이 블로그";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "블로그 구독 불가";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "%1$@ 구독됨";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "블로그 구독 해지 불가";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "블로그 구독 해지";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10775,8 +10792,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "글의 사이트 세부 정보가 열립니다.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "이 블로그 차단";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "이 사용자 차단";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "블로그 알림 끄기";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "블로그 알림 켜기";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "저장된 글 제거";
@@ -10787,8 +10813,71 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "저장";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@개 글 • %2$@명 팔로워";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "블로그 구독";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "블로그 구독 해지";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "블로그 관리";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "워드프레스닷컴 블로그를 만든 후 원하는 콘텐츠를 자신의 블로그로 리블로그할 수 있습니다.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "이용 가능한 워드프레스닷컴 블로그 없음";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "블로그";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "새 태그 구독 중...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "태그 구독";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "구독할 새 태그 없음";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "태그 선택";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "태그를 구독합니다.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "구독";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "블로그 URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "구독할 블로그의 URL 입력";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "구독됨";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "구독할 블로그";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "태그 추가";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "태그 추가";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "태그 추가";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "태그 추가";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "추가 태그 검색";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "구독 해지";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "뒤로";
@@ -10966,6 +11055,52 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "미디어";
+
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "로그 항목";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "캐시됨";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "파일";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP 호스트";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "종류";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "라인";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "이름";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "참조자";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "요청 시간";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "요청 URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "응답 크기";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "상태";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "타임스탬프";
+
+/* Title for metrics screen.
+   Title for web server log screen. */
+"siteMonitoring.metrics" = "지표";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP 로그";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
@@ -11312,6 +11447,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "무시";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "종료 날짜";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "요청 유형";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "시작 날짜";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "상태";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "전체 글 개수 및 최고 조회수";
 
@@ -11464,6 +11611,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "죄송합니다. 이 사이트는 워드프레스 앱에서 지원되지 않습니다.";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "제한에 도달했습니다. 1분 후에 다시 시도할 수 있습니다. 그 전에 다시 시도할 경우 제한이 해제될 때까지 기다려야 하는 시간이 늘어납니다. 오류라고 생각되면 지원 팀에 문의하세요.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "젯팩 앱에 오신 것을 환영합니다. 워드프레스 앱을 제거하실 수 있습니다.";

@@ -39,7 +39,10 @@ class StatsWidgetsStoreTests: CoreDataTestCase {
 
         NotificationCenter.default.post(name: .WPAccountDefaultWordPressComAccountChanged, object: nil)
 
-        XCTAssertFalse(statsWidgetsHaveData())
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(50)) {
+            XCTAssertFalse(self.statsWidgetsHaveData())
+        }
+
     }
 }
 

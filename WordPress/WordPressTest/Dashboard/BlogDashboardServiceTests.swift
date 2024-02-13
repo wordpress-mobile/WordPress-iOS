@@ -462,6 +462,7 @@ class BlogDashboardServiceTests: CoreDataTestCase {
                     id: "id_12345",
                     title: "Title 12345",
                     featuredImage: "https://example.com/image12345",
+                    featuredImageSize: .init(width: 2, height: 1),
                     url: "https://example.com/url12345",
                     action: "Action 12345",
                     order: .top,
