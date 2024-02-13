@@ -328,6 +328,7 @@
 		0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */; };
 		088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */; };
 		088CC594282BEC41007B9421 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
+		089D4EBE2B7BBE0D0009CF2F /* notifications-like-multiple-avatar.json in Resources */ = {isa = PBXBuildFile; fileRef = 089D4EBD2B7BBE0D0009CF2F /* notifications-like-multiple-avatar.json */; };
 		08A250F828D9E87600F50420 /* CommentDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */; };
 		08A250F928D9E87600F50420 /* CommentDetailInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */; };
 		08A250FC28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */; };
@@ -6046,6 +6047,7 @@
 		0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLIncrementalFilenameTests.swift; sourceTree = "<group>"; };
 		088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReaderPostCardContentLabel.swift; sourceTree = "<group>"; };
 		088CC593282BEC41007B9421 /* TooltipPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipPresenter.swift; sourceTree = "<group>"; };
+		089D4EBD2B7BBE0D0009CF2F /* notifications-like-multiple-avatar.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "notifications-like-multiple-avatar.json"; sourceTree = "<group>"; };
 		08A250F728D9E87600F50420 /* CommentDetailInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailInfoViewController.swift; sourceTree = "<group>"; };
 		08A250FB28D9F0E200F50420 /* CommentDetailInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailInfoViewModel.swift; sourceTree = "<group>"; };
 		08A2AD781CCED2A800E84454 /* PostTagServiceTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostTagServiceTests.m; sourceTree = "<group>"; };
@@ -15526,6 +15528,7 @@
 		B58CE5DD1DC1284C004AA81D /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				089D4EBD2B7BBE0D0009CF2F /* notifications-like-multiple-avatar.json */,
 				E150275E1E03E51500B847E3 /* notes-action-delete.json */,
 				E150275F1E03E51500B847E3 /* notes-action-push.json */,
 				E15027601E03E51500B847E3 /* notes-action-unsupported.json */,
@@ -19756,6 +19759,7 @@
 				8554088A1A6F107D00DDBD79 /* app-review-prompt-global-disable.json in Resources */,
 				D8A468E02181C6450094B82F /* site-segment.json in Resources */,
 				7E4A772B20F7E5FD001C706D /* activity-log-site-content.json in Resources */,
+				089D4EBE2B7BBE0D0009CF2F /* notifications-like-multiple-avatar.json in Resources */,
 				8BEE845A27B1DC9D0001A93C /* dashboard-200-with-drafts-and-scheduled.json in Resources */,
 				7EF2EEA0210A67B60007A76B /* notifications-unapproved-comment.json in Resources */,
 				175CC1772721814C00622FB4 /* domain-service-updated-domains.json in Resources */,
