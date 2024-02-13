@@ -38,7 +38,7 @@ struct OverviewRow: StatsHashableImmuTableRow {
     }
 }
 
-struct ViewsVisitorsRow: HashableImmuTableRow {
+struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     typealias CellType = ViewsVisitorsLineChartCell
 
     static let cell: ImmuTableCell = {
@@ -119,7 +119,7 @@ struct TableFooterRow: ImmuTableRow {
 
 // MARK: - Insights Rows
 
-struct GrowAudienceRow: HashableImmuTableRow {
+struct GrowAudienceRow: StatsHashableImmuTableRow {
     typealias CellType = GrowAudienceCell
 
     static let cell: ImmuTableCell = {
@@ -174,7 +174,7 @@ struct CustomizeInsightsRow: ImmuTableRow {
 
 }
 
-struct LatestPostSummaryRow: HashableImmuTableRow {
+struct LatestPostSummaryRow: StatsHashableImmuTableRow {
     static var cell: ImmuTableCell {
         return ImmuTableCell.class(StatsLatestPostSummaryInsightsCell.self)
     }
@@ -199,7 +199,7 @@ struct LatestPostSummaryRow: HashableImmuTableRow {
     }
 }
 
-struct PostingActivityRow: HashableImmuTableRow {
+struct PostingActivityRow: StatsHashableImmuTableRow {
     typealias CellType = PostingActivityCell
 
     static let cell: ImmuTableCell = {
@@ -225,7 +225,7 @@ struct PostingActivityRow: HashableImmuTableRow {
     }
 }
 
-struct TabbedTotalsStatsRow: HashableImmuTableRow {
+struct TabbedTotalsStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -259,7 +259,7 @@ struct TabbedTotalsStatsRow: HashableImmuTableRow {
     }
 }
 
-struct TopTotalsInsightStatsRow: HashableImmuTableRow {
+struct TopTotalsInsightStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -298,7 +298,7 @@ struct TopTotalsInsightStatsRow: HashableImmuTableRow {
     }
 }
 
-struct TwoColumnStatsRow: HashableImmuTableRow {
+struct TwoColumnStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TwoColumnCell
 
     static let cell: ImmuTableCell = {
@@ -324,7 +324,7 @@ struct TwoColumnStatsRow: HashableImmuTableRow {
     }
 }
 
-struct MostPopularTimeInsightStatsRow: HashableImmuTableRow {
+struct MostPopularTimeInsightStatsRow: StatsHashableImmuTableRow {
     typealias CellType = StatsMostPopularTimeInsightsCell
 
     static let cell: ImmuTableCell = {
@@ -349,7 +349,7 @@ struct MostPopularTimeInsightStatsRow: HashableImmuTableRow {
     }
 }
 
-struct TotalInsightStatsRow: HashableImmuTableRow {
+struct TotalInsightStatsRow: StatsHashableImmuTableRow {
     typealias CellType = StatsTotalInsightsCell
 
     static let cell: ImmuTableCell = {
@@ -376,7 +376,7 @@ struct TotalInsightStatsRow: HashableImmuTableRow {
 
 // MARK: - Insights Management
 
-struct AddInsightRow: HashableImmuTableRow {
+struct AddInsightRow: StatsHashableImmuTableRow {
     static let cell = ImmuTableCell.class(WPTableViewCellDefault.self)
 
     let action: ImmuTableAction?

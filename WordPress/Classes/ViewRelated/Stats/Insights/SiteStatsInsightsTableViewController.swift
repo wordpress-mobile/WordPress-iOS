@@ -51,21 +51,8 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        let handler = ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
-        handler.automaticallyReloadTableView = false
-        tableView.dataSource = dataSource
-        tableView.delegate = self // TODO
-        return handler
-    }()
-
-    private lazy var dataSource: StatsInsightsDataSource = {
-        return StatsInsightsDataSource(tableView: tableView) { tableView, indexPath, item in
-            let row = item.immuTableRow
-            let cell = tableView.dequeueReusableCell(withIdentifier: row.reusableIdentifier, for: indexPath)
-            row.configureCell(cell)
-            return cell
-        }
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -179,7 +166,7 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        dataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()

@@ -13,8 +13,8 @@ class SiteStatsImmuTableRows {
                                           periodEndDate: Date? = nil,
                                           statsLineChartViewDelegate: StatsLineChartViewDelegate?,
                                           siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
-                                          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [any HashableImmuTableRow] {
-        var tableRows = [any HashableImmuTableRow]()
+                                          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
 
         let viewsData = SiteStatsInsightsViewModel.intervalData(statsSummaryTimeIntervalData, summaryType: .views, periodEndDate: periodEndDate)
         let viewsSegmentData = StatsSegmentedControlData(segmentTitle: StatSection.periodOverviewViews.tabTitle,

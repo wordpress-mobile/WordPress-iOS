@@ -6,21 +6,6 @@ enum StatsSummaryTimeIntervalDataAsAWeek {
     case prevWeek(data: StatsSummaryTimeIntervalData)
 }
 
-typealias StatsInsightsSnapshot = NSDiffableDataSourceSnapshot<StatsInsightsSection, StatsInsightsRow>
-typealias StatsInsightsDataSource = UITableViewDiffableDataSource<StatsInsightsSection, StatsInsightsRow>
-
-struct StatsInsightsRow: Hashable {
-    let immuTableRow: any HashableImmuTableRow
-
-    static func == (lhs: StatsInsightsRow, rhs: StatsInsightsRow) -> Bool {
-        lhs.immuTableRow.hashValue == rhs.immuTableRow.hashValue
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(immuTableRow)
-    }
-}
-
 struct StatsInsightsSection: Hashable {
     let insightType: InsightType?
 
@@ -124,8 +109,8 @@ class SiteStatsInsightsViewModel: Observable {
 
     // MARK: - Table Model
 
-    func tableViewSnapshot() -> StatsInsightsSnapshot {
-        var snapshot = StatsInsightsSnapshot()
+    func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
 
         if insightsToShow.isEmpty ||
             (fetchingFailed() && !containsCachedData()) {
@@ -153,7 +138,7 @@ class SiteStatsInsightsViewModel: Observable {
                 }, error: {
                     return [errorBlock(.insightsViewsVisitors)]
                 })
-                    .map { StatsInsightsRow(immuTableRow: $0) }
+                    .map { AnyHashableImmuTableRow(immuTableRow: $0) }
                 snapshot.appendSections([viewsVisitorsSection])
                 snapshot.appendItems(viewsVisitorsRows, toSection: viewsVisitorsSection)
             case .growAudience:
@@ -163,7 +148,7 @@ class SiteStatsInsightsViewModel: Observable {
                 }
 
                 let growAudienceSection = StatsInsightsSection(insightType: .growAudience)
-                let growAudienceRows: [any HashableImmuTableRow] = blocks(for: .growAudience,
+                let growAudienceRows: [any StatsHashableImmuTableRow] = blocks(for: .growAudience,
                                                                           type: .insights,
                                                                           status: insightsStore.allTimeStatus,
                                                                           block: {
@@ -180,10 +165,10 @@ class SiteStatsInsightsViewModel: Observable {
                     [errorBlock(nil)]
                 })
                 snapshot.appendSections([growAudienceSection])
-                snapshot.appendItems(growAudienceRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: growAudienceSection)
+                snapshot.appendItems(growAudienceRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: growAudienceSection)
             case .latestPostSummary:
                 let latestPostSummarySection = StatsInsightsSection(insightType: .latestPostSummary)
-                let latestPostSummaryRows: [any HashableImmuTableRow] = blocks(for: .latestPostSummary,
+                let latestPostSummaryRows: [any StatsHashableImmuTableRow] = blocks(for: .latestPostSummary,
                                                                                type: .insights,
                                                                                status: insightsStore.lastPostSummaryStatus,
                                                                                block: {
@@ -197,10 +182,10 @@ class SiteStatsInsightsViewModel: Observable {
                     [errorBlock(.insightsLatestPostSummary)]
                 })
                 snapshot.appendSections([latestPostSummarySection])
-                snapshot.appendItems(latestPostSummaryRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: latestPostSummarySection)
+                snapshot.appendItems(latestPostSummaryRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: latestPostSummarySection)
             case .allTimeStats:
                 let allTimeStatsSection = StatsInsightsSection(insightType: .allTimeStats)
-                let allTimeStatsRows: [any HashableImmuTableRow] = blocks(for: .allTimeStats,
+                let allTimeStatsRows: [any StatsHashableImmuTableRow] = blocks(for: .allTimeStats,
                                               type: .insights,
                                               status: insightsStore.allTimeStatus,
                                               block: {
@@ -214,10 +199,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([allTimeStatsSection])
-                snapshot.appendItems(allTimeStatsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: allTimeStatsSection)
+                snapshot.appendItems(allTimeStatsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: allTimeStatsSection)
             case .likesTotals:
                 let likesTotalsSection = StatsInsightsSection(insightType: .likesTotals)
-                let likesTotalsRows: [any HashableImmuTableRow] = blocks(for: .likesTotals,
+                let likesTotalsRows: [any StatsHashableImmuTableRow] = blocks(for: .likesTotals,
                                              type: .period,
                                              status: periodStore.summaryStatus,
                                              checkingCache: { [weak self] in
@@ -232,10 +217,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([likesTotalsSection])
-                snapshot.appendItems(likesTotalsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: likesTotalsSection)
+                snapshot.appendItems(likesTotalsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: likesTotalsSection)
             case .commentsTotals:
                 let commentsTotalsSection = StatsInsightsSection(insightType: .commentsTotals)
-                let commentsTotalsRows: [any HashableImmuTableRow] = blocks(for: .commentsTotals,
+                let commentsTotalsRows: [any StatsHashableImmuTableRow] = blocks(for: .commentsTotals,
                                                 type: .period,
                                                 status: periodStore.summaryStatus,
                                                 checkingCache: { [weak self] in
@@ -250,10 +235,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([commentsTotalsSection])
-                snapshot.appendItems(commentsTotalsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: commentsTotalsSection)
+                snapshot.appendItems(commentsTotalsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: commentsTotalsSection)
             case .followersTotals:
                 let followersTotalsSection = StatsInsightsSection(insightType: .followersTotals)
-                let followersTotalsRows: [any HashableImmuTableRow] = blocks(for: .followersTotals,
+                let followersTotalsRows: [any StatsHashableImmuTableRow] = blocks(for: .followersTotals,
                                                  type: .insights,
                                                  status: insightsStore.followersTotalsStatus,
                                                  block: {
@@ -265,10 +250,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([followersTotalsSection])
-                snapshot.appendItems(followersTotalsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: followersTotalsSection)
+                snapshot.appendItems(followersTotalsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: followersTotalsSection)
             case .mostPopularTime:
                 let mostPopularTimeSection = StatsInsightsSection(insightType: .mostPopularTime)
-                let mostPopularTimeRows: [any HashableImmuTableRow] = blocks(for: .mostPopularTime,
+                let mostPopularTimeRows: [any StatsHashableImmuTableRow] = blocks(for: .mostPopularTime,
                                                  type: .insights,
                                                  status: insightsStore.annualAndMostPopularTimeStatus,
                                                  block: {
@@ -282,10 +267,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([mostPopularTimeSection])
-                snapshot.appendItems(mostPopularTimeRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: mostPopularTimeSection)
+                snapshot.appendItems(mostPopularTimeRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: mostPopularTimeSection)
             case .tagsAndCategories:
                 let tagsAndCategoriesSection = StatsInsightsSection(insightType: .tagsAndCategories)
-                let tagsAndCategoriesRows: [any HashableImmuTableRow] = blocks(for: .tagsAndCategories,
+                let tagsAndCategoriesRows: [any StatsHashableImmuTableRow] = blocks(for: .tagsAndCategories,
                                                    type: .insights,
                                                    status: insightsStore.tagsAndCategoriesStatus,
                                                    block: {
@@ -301,10 +286,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([tagsAndCategoriesSection])
-                snapshot.appendItems(tagsAndCategoriesRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: tagsAndCategoriesSection)
+                snapshot.appendItems(tagsAndCategoriesRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: tagsAndCategoriesSection)
             case .annualSiteStats:
                 let annualSiteStatsSection = StatsInsightsSection(insightType: .annualSiteStats)
-                let annualSiteStatsRows: [any HashableImmuTableRow] = blocks(for: .annualSiteStats,
+                let annualSiteStatsRows: [any StatsHashableImmuTableRow] = blocks(for: .annualSiteStats,
                                                  type: .insights,
                                                  status: insightsStore.annualAndMostPopularTimeStatus,
                                                  block: {
@@ -318,10 +303,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([annualSiteStatsSection])
-                snapshot.appendItems(annualSiteStatsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: annualSiteStatsSection)
+                snapshot.appendItems(annualSiteStatsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: annualSiteStatsSection)
             case .comments:
                 let commentsSection = StatsInsightsSection(insightType: .comments)
-                let commentsRows: [any HashableImmuTableRow] = blocks(for: .comments,
+                let commentsRows: [any StatsHashableImmuTableRow] = blocks(for: .comments,
                                           type: .insights,
                                           status: insightsStore.commentsInsightStatus,
                                           block: {
@@ -333,10 +318,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([commentsSection])
-                snapshot.appendItems(commentsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: commentsSection)
+                snapshot.appendItems(commentsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: commentsSection)
             case .followers:
                 let followersSection = StatsInsightsSection(insightType: .followers)
-                let followersRows: [any HashableImmuTableRow] = blocks(for: .followers,
+                let followersRows: [any StatsHashableImmuTableRow] = blocks(for: .followers,
                                            type: .insights,
                                            status: insightsStore.followersTotalsStatus,
                                            block: {
@@ -348,10 +333,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([followersSection])
-                snapshot.appendItems(followersRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: followersSection)
+                snapshot.appendItems(followersRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: followersSection)
             case .todaysStats:
                 let todaysStatsSection = StatsInsightsSection(insightType: .todaysStats)
-                let todaysStatsRows: [any HashableImmuTableRow] = blocks(for: .todaysStats,
+                let todaysStatsRows: [any StatsHashableImmuTableRow] = blocks(for: .todaysStats,
                                              type: .insights,
                                              status: insightsStore.todaysStatsStatus,
                                              block: {
@@ -365,10 +350,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([todaysStatsSection])
-                snapshot.appendItems(todaysStatsRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: todaysStatsSection)
+                snapshot.appendItems(todaysStatsRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: todaysStatsSection)
             case .postingActivity:
                 let postingActivitySection = StatsInsightsSection(insightType: .postingActivity)
-                let postingActivityRows: [any HashableImmuTableRow] = blocks(for: .postingActivity,
+                let postingActivityRows: [any StatsHashableImmuTableRow] = blocks(for: .postingActivity,
                                                  type: .insights,
                                                  status: insightsStore.postingActivityStatus,
                                                  block: {
@@ -380,10 +365,10 @@ class SiteStatsInsightsViewModel: Observable {
                 })
 
                 snapshot.appendSections([postingActivitySection])
-                snapshot.appendItems(postingActivityRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: postingActivitySection)
+                snapshot.appendItems(postingActivityRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: postingActivitySection)
             case .publicize:
                 let publicizeSection = StatsInsightsSection(insightType: .publicize)
-                let publicizeRows: [any HashableImmuTableRow] = blocks(for: .publicize,
+                let publicizeRows: [any StatsHashableImmuTableRow] = blocks(for: .publicize,
                                            type: .insights,
                                            status: insightsStore.publicizeFollowersStatus,
                                            block: {
@@ -398,7 +383,7 @@ class SiteStatsInsightsViewModel: Observable {
                     [errorBlock(.insightsPublicize)]
                 })
                 snapshot.appendSections([publicizeSection])
-                snapshot.appendItems(publicizeRows.map { StatsInsightsRow(immuTableRow: $0) }, toSection: publicizeSection)
+                snapshot.appendItems(publicizeRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }, toSection: publicizeSection)
             default:
                 break
             }
@@ -409,7 +394,7 @@ class SiteStatsInsightsViewModel: Observable {
             self?.siteStatsInsightsDelegate?.showAddInsight?()
         }, statSection: .insightsAddInsight)
         snapshot.appendSections([addInsightSection])
-        snapshot.appendItems([StatsInsightsRow(immuTableRow: addInsightRow)], toSection: addInsightSection)
+        snapshot.appendItems([AnyHashableImmuTableRow(immuTableRow: addInsightRow)], toSection: addInsightSection)
 
         return snapshot
     }
@@ -546,7 +531,7 @@ private extension SiteStatsInsightsViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [any HashableImmuTableRow] {
+    func overviewTableRows() -> [any StatsHashableImmuTableRow] {
         let periodDate = self.lastRequestedDate
 
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
