@@ -19,8 +19,6 @@ enum PrepublishingIdentifier {
     }
 }
 
-// TODO: Fix insets for "social" and "publish"
-// TODO: Check if deinit works
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
@@ -118,22 +116,15 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         configureHeader()
         configureTableView()
         configureKeyboardToggle()
+        WPStyleGuide.applyBorderStyle(footerSeparator)
 
         title = ""
-
-        // TODO: cleanup
-        let footer = UIView()
-        footer.addSubview(publishButton)
-        publishButton.translatesAutoresizingMaskIntoConstraints = false
-        footer.pinSubviewToAllEdges(publishButton, insets: Constants.nuxButtonInsets)
-
-        WPStyleGuide.applyBorderStyle(footerSeparator)
 
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
             tableView,
             footerSeparator,
-            footer
+            setupPublishButton()
         ])
         stackView.axis = .vertical
 
@@ -141,13 +132,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         stackView.translatesAutoresizingMaskIntoConstraints = false
         view.pinSubviewToSafeArea(stackView)
 
-        setupPublishButton()
-
-        updatePublishButtonLabel()
-        announcePublishButton()
-
-        // TODO: check dark mode
         view.backgroundColor = .systemBackground
+
+        announcePublishButton()
     }
 
     private func configureHeader() {
@@ -161,6 +148,19 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = UITableView.automaticDimension
+    }
+
+    private func setupPublishButton() -> UIView {
+        let footerView = UIView()
+        footerView.addSubview(publishButton)
+        publishButton.translatesAutoresizingMaskIntoConstraints = false
+        footerView.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
+
+        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
+
+        updatePublishButtonLabel()
+
+        return footerView
     }
 
     /// Toggles `keyboardShown` as the keyboard notifications come in
@@ -404,23 +404,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     // MARK: - Publish Button
 
-    // TODO: cleanuo
-    private func setupPublishButton() {
-        return ()
-
-        let footer = UIView()
-        footer.addSubview(publishButton)
-        publishButton.translatesAutoresizingMaskIntoConstraints = false
-        footer.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
-
-        view.addSubview(footer)
-        footer.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(footer, insets: .zero)
-
-        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
-        updatePublishButtonLabel()
-    }
-
     private func updatePublishButtonLabel() {
         publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
     }
@@ -468,7 +451,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }
@@ -528,7 +511,6 @@ private extension PrepublishingOption {
     }
 }
 
-// TODO: Remove other ones
 private enum Strings {
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
