@@ -258,9 +258,7 @@ extension PublishingEditor {
             if let sheetController = prepublishingNavigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
                     sheetController.detents = [
-                        .custom(resolver: { context in
-                            return 520
-                        }),
+                        .custom { _ in 520 },
                         .large()
                     ]
                     sheetController.prefersGrabberVisible = true

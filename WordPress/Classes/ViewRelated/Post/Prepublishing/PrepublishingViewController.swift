@@ -45,11 +45,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         return PublishSettingsViewModel(post: post)
     }()
 
-    #warning("TODO: remove")
-    var presentedVC: DrawerPresentationController? {
-        return (navigationController as? PrepublishingNavigationController)?.presentedVC
-    }
-
     enum CompletionResult {
         case completed(AbstractPost)
         case dismissed
@@ -210,6 +205,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         if isPresentingAViewController {
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
+
+        if isBeingDismissed {
+            print("here")
+            // TODO: Do your stuff here.
+        }
     }
 
     // MARK: - UITableViewDataSource
@@ -313,7 +313,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         cell.textField.adjustsFontForContentSizeCategory = true
         cell.textField.font = .preferredFont(forTextStyle: .body)
         cell.textField.textColor = .text
-        cell.textField.placeholder = Constants.titlePlaceholder
+        cell.textField.placeholder = Strings.postTitle
         cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
         cell.textField.autocorrectionType = .yes
         cell.textField.autocapitalizationType = .sentences
@@ -383,7 +383,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
-        cell.textLabel?.text = Constants.publishDateLabel
+        cell.textLabel?.text = Strings.publishDate
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
         post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
@@ -418,7 +418,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func updatePublishButtonLabel() {
-        publishButton.setTitle(post.isScheduled() ? Constants.scheduleNow : Constants.publishNow, for: .normal)
+        publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
     }
 
     @objc func publish(_ sender: UIButton) {
@@ -461,23 +461,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
     }
 
-    // TODO: cleanup
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
-        static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
-        static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
-        static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
-}
-
-// TODO: Remove other ones
-private enum Strings {
-    static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Label for a button that publishes the post")
-    static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Label for a button that publishes the post")
 }
 
 // TODO: check this
@@ -535,17 +524,29 @@ private extension PrepublishingOption {
     init(identifier: PrepublishingIdentifier) {
         switch identifier {
         case .title:
-            self.init(id: .title, title: PrepublishingViewController.Constants.titlePlaceholder, type: .textField)
+            self.init(id: .title, title: Strings.postTitle, type: .textField)
         case .schedule:
-            self.init(id: .schedule, title: PrepublishingViewController.Constants.publishDateLabel, type: .value)
+            self.init(id: .schedule, title: Strings.publishDate, type: .value)
         case .categories:
-            self.init(id: .categories, title: NSLocalizedString("Categories", comment: "Label for Categories"), type: .value)
+            self.init(id: .categories, title: Strings.categories, type: .value)
         case .visibility:
-            self.init(id: .visibility, title: NSLocalizedString("Visibility", comment: "Label for Visibility"), type: .value)
+            self.init(id: .visibility, title: Strings.visibility, type: .value)
         case .tags:
-            self.init(id: .tags, title: NSLocalizedString("Tags", comment: "Label for Tags"), type: .value)
+            self.init(id: .tags, title: Strings.tags, type: .value)
         case .autoSharing:
-            self.init(id: .autoSharing, title: "Jetpack Social", type: .customContainer)
+            self.init(id: .autoSharing, title: Strings.jetpackSocial, type: .customContainer)
         }
     }
+}
+
+// TODO: Remove other ones
+private enum Strings {
+    static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
+    static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
+    static let publishDate = NSLocalizedString("prepublishing.publishDate", value: "Publish Date", comment: "Label for a cell in the pre-publishing sheet")
+    static let postTitle = NSLocalizedString("prepublishing.postTitle", value: "Title", comment: "Placeholder for a cell in the pre-publishing sheet")
+    static let visibility = NSLocalizedString("prepublishing.visibility", value: "Visibility", comment: "Label for a cell in the pre-publishing sheet")
+    static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
+    static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
+    static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
 }
