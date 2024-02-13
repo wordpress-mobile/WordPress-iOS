@@ -201,14 +201,18 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        let isPresentingAViewController = navigationController?.viewControllers.count ?? 0 > 1
-        if isPresentingAViewController {
+        let isPushingViewController = navigationController?.viewControllers.count ?? 0 > 1
+        if isPushingViewController {
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
 
-        if isBeingDismissed {
-            print("here")
-            // TODO: Do your stuff here.
+        if isBeingDismissed || parent?.isBeingDismissed == true {
+            if !didTapPublish,
+               post.status == .publishPrivate,
+               let originalStatus = post.original?.status {
+                post.status = originalStatus
+            }
+            completion(.dismissed)
         }
     }
 
@@ -466,21 +470,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
-    }
-}
-
-// TODO: check this
-extension PrepublishingViewController: PrepublishingDismissible {
-    func handleDismiss() {
-        defer { completion(.dismissed) }
-        guard
-            !didTapPublish,
-            post.status == .publishPrivate,
-            let originalStatus = post.original?.status else {
-            return
-        }
-
-        post.status = originalStatus
     }
 }
 
