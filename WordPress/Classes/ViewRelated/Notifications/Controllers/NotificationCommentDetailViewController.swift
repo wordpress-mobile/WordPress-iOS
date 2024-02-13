@@ -164,7 +164,8 @@ private extension NotificationCommentDetailViewController {
             return
         }
 
-        // Refresh existing content if possible
+        // Refresh the current content if the underlying view controller supports it
+        // Else, remove the existing child view controller and add a new one.
         if let commentDetailViewController {
             commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
@@ -177,7 +178,6 @@ private extension NotificationCommentDetailViewController {
             self.content = newContent
         }
 
-        // Configure navigation bar buttons
         self.configureNavBarButtons()
     }
 
