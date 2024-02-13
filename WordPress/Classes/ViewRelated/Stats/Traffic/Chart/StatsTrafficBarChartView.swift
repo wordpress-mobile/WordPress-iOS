@@ -29,7 +29,7 @@ class StatsTrafficBarChartView: BarChartView {
 
     /// This influences the visual appearance of the chart to be rendered.
     ///
-    private var styling: TrafficBarChartStyling
+    private var styling: StatsTrafficBarChartStyling
 
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first

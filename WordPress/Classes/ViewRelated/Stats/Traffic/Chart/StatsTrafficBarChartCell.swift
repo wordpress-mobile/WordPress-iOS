@@ -21,7 +21,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
     private var tabsData = [BarChartTabData]()
     private var chartData: [BarChartDataConvertible] = []
-    private var chartStyling: [TrafficBarChartStyling] = []
+    private var chartStyling: [StatsTrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
     private var chartView: StatsTrafficBarChartView?
 
@@ -44,7 +44,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
     func configure(tabsData: [BarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
-                   barChartStyling: [TrafficBarChartStyling] = [],
+                   barChartStyling: [StatsTrafficBarChartStyling] = [],
                    period: StatsPeriodUnit? = nil) {
         self.tabsData = tabsData
         self.chartData = barChartData

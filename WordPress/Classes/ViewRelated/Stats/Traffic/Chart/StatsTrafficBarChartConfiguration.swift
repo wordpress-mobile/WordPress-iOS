@@ -1,8 +1,8 @@
 struct StatsTrafficBarChartConfiguration {
     let data: BarChartDataConvertible
-    let styling: TrafficBarChartStyling
+    let styling: StatsTrafficBarChartStyling
 
-    init(data: BarChartDataConvertible, styling: TrafficBarChartStyling) {
+    init(data: BarChartDataConvertible, styling: StatsTrafficBarChartStyling) {
         self.data = data
         self.styling = styling
     }

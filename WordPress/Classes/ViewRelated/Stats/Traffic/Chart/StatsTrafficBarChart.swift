@@ -4,7 +4,7 @@ import DesignSystem
 
 struct StatsTrafficBarChart {
     let barChartData: [BarChartDataConvertible]
-    let barChartStyling: [TrafficBarChartStyling]
+    let barChartStyling: [StatsTrafficBarChartStyling]
 
     init(data: StatsSummaryTimeIntervalData) {
         let transformer = StatsTrafficBarChartDataTransformer(data: data)
@@ -55,7 +55,7 @@ private struct StatsTrafficBarChartDataTransformer {
         }
     }
 
-    func transformToBarChartStyling() -> [TrafficBarChartStyling] {
+    func transformToBarChartStyling() -> [StatsTrafficBarChartStyling] {
         var xAxisIndexToDate: [Int: TimeInterval] = [:]
 
         for (x, data) in data.summaryData.enumerated() {
@@ -69,15 +69,25 @@ private struct StatsTrafficBarChartDataTransformer {
     }
 }
 
-// MARK: - DefaultStatsTrafficBarChartStyling
+// MARK: - StatsTrafficBarChartStyling
 
-private struct StatsTrafficBarChartStyle: TrafficBarChartStyling {
+protocol StatsTrafficBarChartStyling {
+    var primaryBarColor: UIColor { get }
+    var labelColor: UIColor { get }
+    var lineColor: UIColor { get }
+    var xAxisValueFormatter: AxisValueFormatter { get }
+    var yAxisValueFormatter: AxisValueFormatter { get }
+}
+
+private struct StatsTrafficBarChartStyle: StatsTrafficBarChartStyling {
     let primaryBarColor: UIColor = UIColor(red: 6/255, green: 116/255, blue: 196/255, alpha: 1.0)
     let labelColor: UIColor = UIColor.DS.Foreground.secondary
     let lineColor: UIColor = UIColor.DS.Foreground.tertiary
     let xAxisValueFormatter: AxisValueFormatter
     let yAxisValueFormatter: AxisValueFormatter = StatsTrafficVerticalAxisFormatter()
 }
+
+// MARK: - Axis Formatter
 
 final class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
 
