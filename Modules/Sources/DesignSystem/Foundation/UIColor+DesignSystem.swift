@@ -40,8 +40,6 @@ public extension UIColor {
             private static let wordPress = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.wordPress)
         }
 
-        public static let divider = colorWithModuleBundle(colorName: DesignSystemColorNames.divider)
-
         private static func colorWithModuleBundle(colorName: String) -> UIColor {
             UIColor(named: colorName, in: .module, compatibleWith: .current)!
         }
