@@ -45,10 +45,6 @@ extension PrepublishingViewController {
                                                                                      delegate: self,
                                                                                      coreDataStack: coreDataStack)
 
-        socialAccountsViewController.onContentHeightUpdated = { [weak self] in
-            self?.presentedVC?.containerViewWillLayoutSubviews()
-        }
-
         self.navigationController?.pushViewController(socialAccountsViewController, animated: true)
     }
 }
@@ -191,13 +187,7 @@ private extension PrepublishingViewController {
 
             self.tableView.performBatchUpdates {
                 self.tableView.deleteRows(at: [.init(row: autoSharingRowIndex, section: .zero)], with: .fade)
-            } completion: { _ in
-                self.presentedVC?.transition(to: .collapsed)
-            }
-
-            // when displayed in a popover view (i.e. iPad), updating the content size will resize
-            // the popover window to fit the updated content.
-            self.navigationController?.preferredContentSize = self.tableView.contentSize
+            } completion: { _ in }
         }
     }
 

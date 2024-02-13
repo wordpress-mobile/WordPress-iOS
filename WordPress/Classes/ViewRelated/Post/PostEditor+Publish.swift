@@ -251,23 +251,23 @@ extension PublishingEditor {
         let shouldDisplayPortrait = WPDeviceIdentification.isiPhone() && isTitleDisplayed
         let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: shouldDisplayPortrait)
 
-        // TODO: make it work on iPad
         // TODO: make it work in other places
-        // TODO: compute size dynamically
-        if let sheetController = prepublishingNavigationController.sheetPresentationController {
-            if #available(iOS 16, *) {
-                sheetController.detents = [
-                    .custom(resolver: { context in
-                        return 540
-                    }),
-                    .large()
-                ]
-                sheetController.prefersGrabberVisible = true
-                sheetController.preferredCornerRadius = 16
-                prepublishingNavigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        if UIDevice.isPad() {
+            prepublishingNavigationController.modalPresentationStyle = .formSheet
+        } else {
+            if let sheetController = prepublishingNavigationController.sheetPresentationController {
+                if #available(iOS 16, *) {
+                    sheetController.detents = [
+                        .custom(resolver: { context in
+                            return 520
+                        }),
+                        .large()
+                    ]
+                    sheetController.prefersGrabberVisible = true
+                    sheetController.preferredCornerRadius = 16
+                    prepublishingNavigationController.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+                }
             }
-        } else if let popoverController = prepublishingNavigationController.popoverPresentationController {
-            // TODO: complete on iPad (preferredContentSize)
         }
         topmostPresentedViewController.present(prepublishingNavigationController, animated: true)
     }

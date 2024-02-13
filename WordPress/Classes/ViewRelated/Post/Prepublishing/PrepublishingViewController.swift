@@ -147,7 +147,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         view.pinSubviewToSafeArea(stackView)
 
         setupPublishButton()
-        setupFooterSeparator()
 
         updatePublishButtonLabel()
         announcePublishButton()
@@ -183,8 +182,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
-        // TODO: remove/reimplemnet?
-        preferredContentSize = tableView.contentSize
         footerSeparator.isHidden = tableView.contentSize.height < tableView.bounds.height
     }
 
@@ -339,29 +336,21 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             self?.reloadData()
         }
 
-        tagPickerViewController.onContentViewHeightDetermined = { [weak self] in
-            self?.presentedVC?.containerViewWillLayoutSubviews()
-        }
-
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
     private func configureCategoriesCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = Array(post.categories ?? []).map { $0.categoryName }.joined(separator: ",")
+        cell.detailTextLabel?.text = Array(post.categories ?? [])
+            .map { $0.categoryName }
+            .joined(separator: ",")
     }
 
     private func didTapCategoriesCell() {
         let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories ?? []), selectionMode: .post)
         categoriesViewController.delegate = self
         categoriesViewController.onCategoriesChanged = { [weak self] in
-            self?.presentedVC?.containerViewWillLayoutSubviews()
             self?.tableView.reloadData()
         }
-
-        categoriesViewController.onTableViewHeightDetermined = { [weak self] in
-            self?.presentedVC?.containerViewWillLayoutSubviews()
-        }
-
         navigationController?.pushViewController(categoriesViewController, animated: true)
     }
 
@@ -394,14 +383,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
-        cell.textLabel?.text = post.shouldPublishImmediately() ? Constants.publishDateLabel : Constants.scheduledLabel
+        cell.textLabel?.text = Constants.publishDateLabel
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
         post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        transitionIfVoiceOverDisabled(to: .hidden)
-
         let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.publishSettingsViewModel.setDate(date)
@@ -428,23 +415,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
         updatePublishButtonLabel()
-    }
-
-    private func setupFooterSeparator() {
-        guard let footer = tableView.tableFooterView else {
-            return
-        }
-
-        let separator = UIView()
-        separator.translatesAutoresizingMaskIntoConstraints = false
-        footer.addSubview(separator)
-        NSLayoutConstraint.activate([
-            separator.topAnchor.constraint(equalTo: footer.topAnchor),
-            separator.leftAnchor.constraint(equalTo: footer.leftAnchor),
-            separator.rightAnchor.constraint(equalTo: footer.rightAnchor),
-            separator.heightAnchor.constraint(equalToConstant: 1)
-        ])
-        WPStyleGuide.applyBorderStyle(separator)
     }
 
     private func updatePublishButtonLabel() {
@@ -491,16 +461,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
     }
 
-    /// Only perform a transition if Voice Over is disabled
-    /// This avoids some unresponsiveness
-    private func transitionIfVoiceOverDisabled(to position: DrawerPosition) {
-        guard !UIAccessibility.isVoiceOverRunning else {
-            return
-        }
-
-        presentedVC?.transition(to: position)
-    }
-
+    // TODO: cleanup
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
         static let textFieldReuseIdentifier = "wpTextFieldCell"
@@ -508,7 +469,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         static let publishNow = NSLocalizedString("Publish Now", comment: "Label for a button that publishes the post")
         static let scheduleNow = NSLocalizedString("Schedule Now", comment: "Label for the button that schedules the post")
         static let publishDateLabel = NSLocalizedString("Publish Date", comment: "Label for Publish date")
-        static let scheduledLabel = NSLocalizedString("Scheduled for", comment: "Scheduled for [date]")
         static let titlePlaceholder = NSLocalizedString("Title", comment: "Placeholder for title")
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
@@ -516,8 +476,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
 // TODO: Remove other ones
 private enum Strings {
-    static let publish = NSLocalizedString("prepublishingSheet.publish", value: "Publish", comment: "Label for a button that publishes the post")
-    static let schedule = NSLocalizedString("prepublishingSheet.schedule", value: "Schedule", comment: "Label for a button that publishes the post")
+    static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Label for a button that publishes the post")
+    static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Label for a button that publishes the post")
 }
 
 // TODO: check this
