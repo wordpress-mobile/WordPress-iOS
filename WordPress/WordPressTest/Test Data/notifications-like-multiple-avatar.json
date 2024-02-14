@@ -60,7 +60,42 @@
                     "height": "256",
                     "width": "256",
                     "url": "https:\/\/2.gravatar.com\/avatar\/292929292929"
+                }
+            ],
+            "actions": {
+                "follow": true
+            },
+            "meta": {
+                "links": {
+                    "email": "some@thing.com",
+                    "home": "http:\/\/something.com"
                 },
+                "ids": {
+                    "user": 1919191,
+                    "site": 2929292
+                },
+                "titles": {
+                    "home": "Something"
+                }
+            },
+            "type": "user"
+        },
+        {
+            "text": "XXX",
+            "ranges": [
+                {
+                    "email": "some@thing.com",
+                    "url": "http:\/\/something.com",
+                    "id": 44444,
+                    "site_id": 55555,
+                    "type": "user",
+                    "indices": [
+                        0,
+                        3
+                    ]
+                }
+            ],
+            "media": [
                 {
                     "type": "image",
                     "indices": [
@@ -70,7 +105,42 @@
                     "height": "256",
                     "width": "256",
                     "url": "https:\/\/2.gravatar.com\/avatar\/292929292929"
+                }
+            ],
+            "actions": {
+                "follow": true
+            },
+            "meta": {
+                "links": {
+                    "email": "some@thing.com",
+                    "home": "http:\/\/something.com"
                 },
+                "ids": {
+                    "user": 1919191,
+                    "site": 2929292
+                },
+                "titles": {
+                    "home": "Something"
+                }
+            },
+            "type": "user"
+        },
+        {
+            "text": "XXX",
+            "ranges": [
+                {
+                    "email": "some@thing.com",
+                    "url": "http:\/\/something.com",
+                    "id": 44444,
+                    "site_id": 55555,
+                    "type": "user",
+                    "indices": [
+                        0,
+                        3
+                    ]
+                }
+            ],
+            "media": [
                 {
                     "type": "image",
                     "indices": [
