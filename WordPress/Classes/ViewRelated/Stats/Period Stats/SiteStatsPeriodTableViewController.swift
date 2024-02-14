@@ -115,14 +115,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
 
 }
 
-extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
-    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
-            tableHeaderView?.updateDate(with: intervalDate)
-        }
-    }
-}
-
 // MARK: - Private Extension
 
 private extension SiteStatsPeriodTableViewController {
@@ -141,7 +133,6 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
                                              referrerDelegate: self)
-        viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
     }
@@ -167,7 +158,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 CountriesMapRow.self,
-                OverviewRow.self,
+                StatsTrafficBarChartRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
