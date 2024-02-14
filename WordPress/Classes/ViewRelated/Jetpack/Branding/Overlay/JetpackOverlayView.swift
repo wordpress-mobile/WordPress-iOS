@@ -20,10 +20,10 @@ class JetpackOverlayView: UIView {
     }
 
     /// Sets the animation based on the language orientation
-    private var animation: Animation? {
+    private var animation: LottieAnimation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(Graphics.wpJetpackLogoAnimationLtr) :
-        Animation.named(Graphics.wpJetpackLogoAnimationRtl)
+        LottieAnimation.named(Graphics.wpJetpackLogoAnimationLtr) :
+        LottieAnimation.named(Graphics.wpJetpackLogoAnimationRtl)
     }
 
     private lazy var dismissButton: CircularImageButton = {
@@ -49,8 +49,8 @@ class JetpackOverlayView: UIView {
         return view
     }()
 
-    private lazy var animationView: AnimationView = {
-        let animationView = AnimationView()
+    private lazy var animationView: LottieAnimationView = {
+        let animationView = LottieAnimationView()
         animationView.animation = animation
         animationView.translatesAutoresizingMaskIntoConstraints = false
         return animationView
