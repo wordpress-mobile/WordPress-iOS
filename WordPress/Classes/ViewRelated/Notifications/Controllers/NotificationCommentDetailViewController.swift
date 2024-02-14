@@ -166,7 +166,7 @@ private extension NotificationCommentDetailViewController {
 
         // Refresh the current content if the underlying view controller supports it
         // Else, remove the existing child view controller and add a new one.
-        if let commentDetailViewController {
+        if let commentDetailViewController, comment.allowsModeration() {
             commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
             self.content?.viewController.remove()
