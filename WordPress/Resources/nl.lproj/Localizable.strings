@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-16 10:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-06 15:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dagen";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ volgers";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ niveau's";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ van %2$@ gebruikt op je site";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per jaar";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ biljard";
@@ -480,9 +474,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Toevoegen aan einde";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Onderwerp toevoegen";
-
 /* No comment provided by engineer. */
 "Add URL" = "URL toevoegen";
 
@@ -491,9 +482,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Voeg een profielfoto toe";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Voeg een onderwerp toe";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Voeg een domein toe";
@@ -507,20 +495,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Shortcode toevoegen";
 
-/* No Tags View Button Label */
-"Add a site" = "Voeg een site toe";
-
-/* No Topics View Button Label */
-"Add a topic" = "Voeg een onderwerp toe";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Voeg accountafbeelding toe.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Voeg alt-tekst toe";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Voeg elk onderwerp toe";
 
 /* No comment provided by engineer. */
 "Add audio" = "Audio toevoegen";
@@ -701,6 +680,9 @@
 
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Je kan ook de inhoud naar blokken omzetten.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Als alternatief kan je dit blok ook losmaken en afzonderlijk bewerken door op 'Losmaken' te tikken.";
 
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
 "Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
@@ -1104,14 +1086,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Blok instellingen";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blokkeer deze site";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Blokgroepering ongedaan gemaakt";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Geblokkeerde site";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Geblokkeerde gebruiker";
@@ -1515,9 +1491,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Kies video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Kies je onderwerpen";
-
 /* Register Domain - Address information field City */
 "City" = "Plaats";
 
@@ -1890,9 +1863,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Kon meldingen niet inschakelen";
 
-/* Title of a prompt. */
-"Could not follow site" = "Kon site niet volgen";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Kon de site niet volgen op het opgegeven adres.";
 
@@ -1916,9 +1886,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Kon gezien niet togglen: ontbrekend berichtID.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Kon site niet ontvolgen";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Kon de site niet ontvolgen op het opgegeven adres.";
@@ -2317,17 +2284,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Ontdek";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Ontdek sites";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Ontdek en volg blogs waar je van houdt";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Ontdek en volg sites die je inspireren.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Ontdek meer onderwerpen";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2368,7 +2329,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Heb je geen account? _Aanmelden_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2674,7 +2636,6 @@
 "Empty URL" = "Lege URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Inschakelen";
 
@@ -2698,9 +2659,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "In-app meldingen inschakelen";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Site meldingen inschakelen?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Schakel sitestatistieken in om gedetailleerde informatie over je bezoekers, vind-ik-leuks, reacties en abonnees te bekijken.";
@@ -2729,9 +2687,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Voer wachtwoord in";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Voer de URL in van een site die je wilt volgen";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2995,9 +2950,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Berichten ophalen ...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Sites ophalen...";
 
 /* Label for the posting activity legend. */
@@ -3020,9 +2973,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film & televisie";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filteren";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filter op type activiteit";
@@ -3063,8 +3013,7 @@
 "Fixing Threats" = "Bezig met bedreigingen oplossen";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Volgen";
 
 /* Button title. Follow the comments on a post. */
@@ -3072,9 +3021,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Conversatie volgen";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Volg site";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Volg onderwerpen";
@@ -3086,15 +3032,8 @@
 "Follow your favorite sites and discover new blogs." = "Volg je favoriete sites en ontdek nieuwe blogs.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Gevolgde sites";
-
-/* Followed Topics Title */
-"Followed Topics" = "Gevolgde topics";
-
-/* User followed a site. */
-"Followed site" = "Gevolgde site";
 
 /* Label for list of followers.
    User role badge */
@@ -3105,13 +3044,8 @@
    Label for number of followers. */
 "Followers" = "Volgers";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Volgend";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Volgt %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Volgen van nieuwe onderwerpen...";
@@ -3124,9 +3058,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Wordt gebruikt om de blog te volgen.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Volgt de tag.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Lettertype grootte";
@@ -3275,9 +3206,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Ga naar Volgers";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Ga naar Reader";
@@ -3957,7 +3885,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Vind-ik-leuks";
 
@@ -3969,9 +3896,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Vind de reactie leuk.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limiet bereikt. Je kan het na 1 minuut nogmaals proberen. Als je het eerder probeert dan zul je langer moeten wachten totdat de ban wordt opgeheven. Neem contact op met de helpdesk wanneer je denk dat dit niet klopt.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Lijngrafiek die weergaven weergeeft voor inzichten.";
@@ -4080,9 +4004,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "De blok-editor aan het laden.";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Gebruikersnamen laden";
 
 /* Loading tags
    Loading tags.
@@ -4195,9 +4116,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Insight beheren";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Beheer sites";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Beheer site";
@@ -4376,9 +4294,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Meer ondersteuning opties";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Populairste tijd";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Verplaats %@";
@@ -4567,9 +4482,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Volgende stappen";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Volgende maand";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Volgende notificatie";
 
@@ -4621,9 +4533,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Er is geen toepassing die deze aanvraag kan verwerken. Installeer een webbrowser.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Geen beschikbare WordPress.com sites";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Geen beschikbare adressen komen overeen met je zoekopdracht";
 
@@ -4667,9 +4576,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Geen opgeloste bedreigingen";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Nog geen sites gevolgd";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Nog geen volgers";
@@ -4718,9 +4624,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Je hoeft niet te wachten. We laten het je weten als je site compleet teruggezet is.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Geen nieuwe onderwerpen om te volgen";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Nog geen meldingen";
 
@@ -4751,9 +4654,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "Geen voorbeeld beschikbaar";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Geen primair site adres gevonden";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Er zijn nog geen opdrachten";
 
@@ -4765,12 +4665,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Geen opgeslagen berichten";
-
-/* A message title */
-"No sites found" = "Geen sites gevonden";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Geen sites in jouw taal gevonden voor %@.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Er komen geen tags overeen met je zoekopdracht";
@@ -4945,9 +4839,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Als je eenmaal vertrouwd bent geraakt met de namen van de verschillende blokken, kun je een blok toevoegen door een voorwaartse schuine streep te typen, gevolgd door de bloknaam - bijvoorbeeld, \/afbeelding of \/heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Zodra je een WordPress.com site maakt, kun je inhoud die je leuk vindt rebloggen op je eigen site.";
 
 /* No comment provided by engineer. */
 "One" = "Één";
@@ -5514,9 +5405,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Bekijk een voorbeeld van je site om te zien wat je bezoekers zien.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Vorige maand";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Vorige melding";
 
@@ -5556,9 +5444,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Probleem bij laden inhoud";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Probleem bij laden sites";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Probleem met openen audio";
@@ -5696,9 +5581,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Laatste weken";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Recente berichten uit blogs en sites die je volgt, verschijnen hier.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Ontvanger";
@@ -5906,9 +5788,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Herstel datumbereik filter";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Herstel filter";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Je wachtwoord opnieuw instellen";
@@ -6382,7 +6261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Instellingen";
@@ -6518,9 +6396,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Toont de bericht inhoud";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Toont de berichten van de site.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Aanmelden";
 
@@ -6575,8 +6450,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Site-onderwerp";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Site URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6608,16 +6482,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Site titel is met succes gewijzigd";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Sites";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Sites (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Te volgen sites";
 
 /* Image size option title. */
 "Size" = "Grootte";
@@ -7146,9 +7010,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "De Internet verbinding is offline.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Het item kon niet worden toegevoegd aan de mediabibliotheek.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Soorten sites die gemaakt kunnen worden";
 
@@ -7188,9 +7049,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "De server heeft een lege respons teruggestuurd. Dat betekent meestal dat je de geheugenlimiet voor je site moet verhogen.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "De site %@ verschijnt niet langer in je reader. Tik om ongedaan te maken.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Het site adres moet korter zijn dan 64 karakters.";
 
@@ -7206,9 +7064,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "De site kon niet geëxporteerd worden.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "De sites in deze lijst hebben recent niets geplaatst.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "De 'slug' is de URL-vriendelijke versie van de berichttitel.";
@@ -7419,9 +7274,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Dit bericht staat niet in 'Mijn vind-ik-leuks'";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Deze site heeft nog niets geplaatst. Probeer het later nog eens.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Dit gebruikersaccount kan niet worden gesloten als er onopgeloste terugvorderingen zijn.";
 
@@ -7567,12 +7419,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Onderwerp voor ID niet gevonden:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Onderwerpen";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Onderwerpen (%lu)";
-
 /* Label for total followers */
 "Total" = "Totaal";
 
@@ -7658,9 +7504,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Probeer het nu";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Probeer %@ te selecteren om onderwerpen toe te voegen die je leuk vindt.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Probeer de nieuwe blok-editor";
 
@@ -7673,23 +7516,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Meldingen uitschakelen";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Zet site meldingen uit";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Zet meldingen aan";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Zet berichtgeving aan";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Zet site meldingen aan";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Site meldingen zijn uitgeschakeld";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Site meldingen zijn ingeschakeld";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Als je dit uitschakelt zal je geen meldingen van deze app meer krijgen, ongeacht het soort meldingen.";
@@ -7736,9 +7567,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Kan niet synchroniseren";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Kan site niet blokkeren";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Het is niet mogelijk om nieuwe uitnodigingslinks te maken.";
 
@@ -7756,9 +7584,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Kan gesprek niet volgen";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Kan de site niet volgen";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Pagina's kunnen momenteel niet geladen worden.";
@@ -7805,23 +7630,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Kan de link niet delen";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Kan de site meldingen niet uitschakelen";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Kan de site meldingen niet inschakelen";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Kan de site niet ontvolgen";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Niet mogelijk om homepage-instellingen bij te werken";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Niet mogelijk om prijzen abonnement te updaten. Er is een probleem met het opgegeven blog.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Kon 1 conceptbericht niet uploaden";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Niet kunnen uploaden 1 bericht";
@@ -7874,24 +7687,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Ongedaan maken";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Ontvolg";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Ontvolg %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Conversatie ontvolgen";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Ontvolg conversatie";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Ontvolg site";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Site die niet langer gevolgd wordt";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Wordt gebruikt om te stoppen met het volgen van een blog.";
@@ -8520,9 +8320,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Welkom bij Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Welkom bij Reader. Ontdek miljoenen van blogs aan je vingertoppen.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Welkom bij WordPress";
 
@@ -8604,9 +8401,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Wanneer een reactie een van deze woorden bevat in de inhoud, naam, URL, e-mailadres of IP-adres, wordt het gemarkeerd als spam. Ook delen van woorden worden gevonden, dus \"press\" levert ook \"WordPress\" op als resultaat.";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Als je sites volgt, zie je hun inhoud hier.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Wanneer je wijzigingen maakt in de editor, kun je hier de geschiedenis bekijken";
@@ -8789,9 +8583,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Je staat op het punt je gebruikersnaam te wijzigen, wat op dit moment %1$@. %2$@ is";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Je volgt deze site al.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Je bent je gebruikersnaam aan het wijzigen naar %@. Het wijzigen van je gebruikersnaam heeft ook effect op je Gravatar profiel en IntenseDebate profiel adressen.\nBevestig je nieuwe gebruikersnaam om verder te gaan.";
 
@@ -8815,12 +8606,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Je kunt dit blok bewerken met behulp van de web versie van de editor.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Je kunt berichten op een bepaalde site volgen door deze te volgen.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Je kunt berichten over een bepaald onderwerp volgen door een onderwerp toe te voegen.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Je kunt deze instellingen ongedaan maken voor individuele berichten.";
@@ -9100,18 +8885,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Indicates an image will use maximum quality when uploaded. */
 "appSettings.media.imageQuality.maximum" = "Maximaal";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Afbeeldingoptimalisatie maakt afbeeldingen kleiner, zodat ze sneller geüpload kunnen worden.\n\nThis option is enabled by default, but you can change it in the app settings at any time.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Keep optimizing images?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "No, turn off";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Yes, leave on";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audiobestand";
@@ -9399,6 +9172,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "Analyses";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Standaardwaarden gebruiker boolean";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Standaardwaarden gebruiker boolean";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Functievlaggen";
 
@@ -9420,9 +9199,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Een domein zoeken";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Neem een domein";
@@ -9646,6 +9422,21 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/mijn-site-adres (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Gebruik je de Jetpack mobiele app graag?";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Jouw feedback is belangrijk";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Het is fantastisch";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Bedankt voor je hulp bij het verbeteren van de app.";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Ok";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Voor het maken van foto's of video's die gebruikt kunnen worden in je berichten.";
@@ -10013,6 +9804,9 @@ Example: Reply to Pamela Nguyen */
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Instellingen openen";
 
+/* The name of the action in the context menu for selecting photos from Tenor (free GIF library) */
+"mediaPicker.pickFromFreeGIFLibrary" = "Gratis GIF-bibliotheek";
+
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Kies media";
 
@@ -10184,6 +9978,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Startpagina personaliseren";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Site delen";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Favicon wijzigen";
 
@@ -10192,6 +9989,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Site bekijken";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "Geen logboekinvoer in dit tijdbereik";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "Er is een fout opgetreden";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
@@ -10325,9 +10128,6 @@ Example: Reply to Pamela Nguyen */
 /* Opens a submenu for page attributes. */
 "posts.pageAttributes.actionTitle" = "Pagina-eigenschappen";
 
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Nu publiceren";
-
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Opnieuw proberen";
 
@@ -10409,6 +10209,24 @@ Example: 27 social shares remaining in the next 30 days */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
 
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "De blog %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Geeft de berichten op de blog weer.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Probleem bij laden blogs";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Blogs ophalen ...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Geen blogs in jouw taal gevonden voor %@.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Geen blogs gevonden.";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Bekijkt berichten van de site";
 
@@ -10428,15 +10246,108 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "reader.detail.toolbar.saved.button.a11y.hint" = "Bewaart dit bericht niet meer.";
 
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filteren op blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filteren op tag";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Abonneer je op blogs in Ontdek en je ziet hun nieuwste berichten hier. Of zoek een blog die je al leuk vindt.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Een blog zoeken";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Geen blog-abonnementen";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Abonneer je op een tag en je ziet de beste berichten ervan hier.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Abonneren op een tag";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Abonneren op nieuwe tags ...";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Blogs ophalen ...";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Geliket";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader-instellingen";
 
-/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "deze site";
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Ontdek blogs";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Abonneer je op blogs in Ontdek en je ziet hun nieuwste berichten hier. Of zoek een blog die je al leuk vindt.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Geen blogabonnementen";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "Deze blog heeft nog niets geplaatst. Probeer het later nog eens.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "De blogs in deze lijst hebben recent niets geplaatst.";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Recente berichten uit blogs en sites waarop je geabonneerd bent, verschijnen hier.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Ga naar Abonnementen";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Je kan je abonneren op berichten op een specifieke blog door je op de blog te abonneren.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Een blog toevoegen";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Kan blog niet blokkeren";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blog geblokkeerd";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Kon niet uitschrijven voor blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Kon niet uitschrijven voor blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Uitgeschreven voor blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Blogmeldingen kunnen niet uitgeschakeld worden";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Blogmeldingen zijn uitgeschakeld";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Blogmeldingen kunnen niet ingeschakeld worden";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Blogmeldingen inschakelen?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Blogmeldingen zijn ingeschakeld";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Kan niet abonneren op blog";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Kan niet uitschrijven voor blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Uitgeschreven voor blog";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10462,14 +10373,68 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Opent de sitegegevens voor het bericht.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Deze blog blokkeren";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Deze gebruiker blokkeren";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Blogmeldingen uitschakelen";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Blogmeldingen inschakelen";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Opgeslagen bericht verwijderen";
 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Deze gebruiker rapporteren";
+
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Abonneren op blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Abonnement op blog stopzetten";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Zodra je een WordPress.com-blog aanmaakt, kan je inhoud die je leuk vindt rebloggen op je eigen site.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Geen beschikbare WordPress.com-blogs";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Abonneren op nieuwe tags ...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Abonneren op tags";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Geen nieuwe tags om je op te abonneren";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Abonneert je op de tag.";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "Blog-URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Voer de URL in van een blog waarop je je wilt abonneren";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Voeg een tag toe";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Voeg een tag toe";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Voeg een tag toe";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Abonnement op %@ stopzettten";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Uitschrijven";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Terug";
@@ -10597,6 +10562,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button selection media in media picker */
 "siteMediaPicker.select" = "Selecteer";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Logboekinvoer";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP-host";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Regel";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Verzoek-tijd";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "Verzoek-URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Responsieve grootte";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "Meetwaarden";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP-logboeken";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
 
@@ -10656,6 +10645,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Automatisch delen op Twitter is niet meer beschikbaar omdat Twitter de voorwaarden en prijzen heeft gewijzigd.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Bezoekersaantallen";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Afgelopen 7 dagen";
@@ -10752,6 +10744,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Negeren";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Verzenden";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dit gesprek";
@@ -10903,6 +10898,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Negeren";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Verzoektype";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Alle berichten en meeste weergaven";
 
@@ -11049,6 +11047,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Helaas, deze site wordt niet ondersteund door de WordPress app";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Limiet bereikt. Je kan het over 1 minuut nogmaals proberen. Als je het voor die tijd nog een keer probeert, duurt het alleen maar langer voordat de blokkering is opgeheven. Als je denkt dat dit een fout is, neem dan contact op met ondersteuning.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Welkom bij de Jetpack app. Je kan de WordPress app verwijderen.";

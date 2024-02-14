@@ -1165,18 +1165,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
     NSMutableArray *thirdSectionRows = [NSMutableArray array];
 
     // The 1st section
-    if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog supports:BlogFeatureSiteMonitoring]) {
-        [firstSectionRows addObject:[self siteMonitoringRow]];
-    }
     if ([self.blog supports:BlogFeatureActivity] && ![self.blog isWPForTeams]) {
         [firstSectionRows addObject:[self activityRow]];
     }
     if ([self.blog isBackupsAllowed]) {
         [firstSectionRows addObject:[self backupRow]];
     }
-
     if ([self.blog isScanAllowed]) {
         [firstSectionRows addObject:[self scanRow]];
+    }
+    if ([RemoteFeature enabled:RemoteFeatureFlagSiteMonitoring] && [self.blog supports:BlogFeatureSiteMonitoring]) {
+        [firstSectionRows addObject:[self siteMonitoringRow]];
     }
 
     // The 2nd section

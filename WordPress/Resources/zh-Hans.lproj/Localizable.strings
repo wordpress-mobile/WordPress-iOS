@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-11 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ 天";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ 个关注者";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ 级";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "你的网站已使用%2$@中的%1$@";
-
-/* Plan yearly price */
-"%@ per year" = "每年 %@";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ 千的五次方";
@@ -483,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "添加到结尾";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "添加主题";
-
 /* No comment provided by engineer. */
 "Add URL" = "添加 URL";
 
@@ -494,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "添加个人资料照片";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "添加主题";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "添加域";
@@ -510,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "添加短代码…";
 
-/* No Tags View Button Label */
-"Add a site" = "添加站点";
-
-/* No Topics View Button Label */
-"Add a topic" = "添加主题";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "添加账户图片。";
 
 /* No comment provided by engineer. */
 "Add alt text" = "添加替代文本";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "添加任何主题";
 
 /* No comment provided by engineer. */
 "Add audio" = "添加音频";
@@ -1110,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "区块设置";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "隐藏此站点";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "未分组区块";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "被隐藏的站点";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "已屏蔽用户";
@@ -1521,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "选择视频";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "选择您的兴趣";
-
 /* Register Domain - Address information field City */
 "City" = "城市";
 
@@ -1896,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "无法启用通知";
 
-/* Title of a prompt. */
-"Could not follow site" = "无法关注站点";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "无法关注指定地址的站点。";
 
@@ -1922,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "无法切换“已读”：缺少 postID。";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "无法取消关注站点";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "无法取消关注指定地址的站点。";
@@ -2323,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "发现";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "发现站点";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "发现并关注您喜欢的博客";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "发现并关注能激发您灵感的站点。";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "探索更多兴趣";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2374,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "还没有账户？_注册_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2677,7 +2636,6 @@
 "Empty URL" = "空 URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "启用";
 
@@ -2701,9 +2659,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "启用应用内通知";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "是否启用站点通知？";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "启用站点统计可查看您的浏览量、点赞、评论和订阅者的详细信息。";
@@ -2732,9 +2687,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "输入密码";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "输入要关注的站点 URL";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2998,9 +2950,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "正在获取文章...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "正在获取站点...";
 
 /* Label for the posting activity legend. */
@@ -3026,9 +2976,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "电影与电视";
-
-/* Title of the filter button in the Reader */
-"Filter" = "筛选";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "按活动类型筛选";
@@ -3069,8 +3016,7 @@
 "Fixing Threats" = "修复威胁";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "关注";
 
 /* Button title. Follow the comments on a post. */
@@ -3078,9 +3024,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "关注对话";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "关注站点";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "关注话题";
@@ -3092,15 +3035,8 @@
 "Follow your favorite sites and discover new blogs." = "关注您喜欢的站点，发现新的阅读内容。";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "关注的站点";
-
-/* Followed Topics Title */
-"Followed Topics" = "已关注的主题";
-
-/* User followed a site. */
-"Followed site" = "已关注的站点";
 
 /* Label for list of followers.
    User role badge */
@@ -3111,13 +3047,8 @@
    Label for number of followers. */
 "Followers" = "粉丝";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "关注中";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "关注 %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "以下新话题……";
@@ -3130,9 +3061,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "关注博客。";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "关注标签。";
 
 /* No comment provided by engineer. */
 "Font Size" = "字体大小";
@@ -3281,9 +3209,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "前往关注的站点";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "转到“阅读器”";
@@ -3963,7 +3888,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "赞";
 
@@ -3975,9 +3899,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "给评论点赞。";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "达到上限。请在 1 分钟后重试。在之前重试只会导致限制时间加长。如果你认为出错了，请联系支持。";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "折线图，描述用于数据分析的查看次数。";
@@ -4086,9 +4007,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "正在加载区块编辑器。";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "正在加载用户名";
 
 /* Loading tags
    Loading tags.
@@ -4201,9 +4119,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "管理见解";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "管理站点";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "管理站点";
@@ -4382,9 +4297,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "更多支持选项";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "人气最高的时间";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "移动 %@";
@@ -4573,9 +4485,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "后续步骤";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "下个月";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "下一条通知";
 
@@ -4627,9 +4536,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "没有可以处理此请求的应用程序。请安装 Web 浏览器。";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "无可用的 WordPress.com 站点";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "没有与您的搜索内容相匹配的地址";
 
@@ -4673,9 +4579,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "没有已修复的威胁";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "无关注的站点";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "尚无粉丝";
@@ -4724,9 +4627,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "无需在此等待，我们会在网站完全恢复后通知您。";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "没有新的话题可关注";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "尚无通知";
 
@@ -4757,9 +4657,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "无可用预览";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "找不到主站点地址";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "尚无提示";
 
@@ -4771,12 +4668,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "没有已保存的文章";
-
-/* A message title */
-"No sites found" = "找不到站点";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "未找到与“%@”匹配的您的语言的站点。";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "没有与您的搜索匹配的标签";
@@ -4951,9 +4842,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "熟悉不同区块的名称之后，您可以输入正斜杠，后跟区块名称（例如，\/image 或 \/heading），以此方式来添加区块。";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "创建 WordPress.com 站点后，您可以将喜欢的内容转载到您自己的站点。";
 
 /* No comment provided by engineer. */
 "One" = "一";
@@ -5523,9 +5411,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "预览您的站点，查看访客将看到的内容。";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "上个月";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "上一条通知";
 
@@ -5565,9 +5450,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "内容加载出现问题";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "加载站点时出现问题";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "打开音频时出现问题";
@@ -5705,9 +5587,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "最近几个星期";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "您关注的博客和站点最近所发布的文章将在此处显示。";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "收件人";
@@ -5915,9 +5794,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "重置日期范围过滤器";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "重置过滤器";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "重置密码";
@@ -6391,7 +6267,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "设置";
@@ -6527,9 +6402,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "显示文章内容";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "显示站点的文章。";
-
 /* View title during the sign up process. */
 "Sign Up" = "注册";
 
@@ -6584,8 +6456,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "站点主题";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "站点地址";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6617,16 +6488,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "站点标题已成功更改";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "站点";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "站点 (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "关注的站点";
 
 /* Image size option title. */
 "Size" = "尺寸";
@@ -7158,9 +7019,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "似乎您没有联网。";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "无法将此项目添加到媒体库。";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "可以创建的站点类型";
 
@@ -7200,9 +7058,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "服务器返回空响应。通常，这表明您需要增加站点的内存限制。";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "站点 %@ 将不再显示在您的阅读器中。轻点以撤消。";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "站点地址必须短于64个字符。";
 
@@ -7218,9 +7073,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "该站点无法导出。";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "此列表中的站点最近未发布任何内容。";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Slug 是文章标题的 URL 友好型版本。";
@@ -7431,9 +7283,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "此文章未在“我的赞”中";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "此站点尚未发布任何内容。请稍后重试。";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "这个用户账户在未解决的退款时不能被关闭。";
 
@@ -7579,12 +7428,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "未找到以下 ID 的主题：";
 
-/* Topics Filter Tab Title */
-"Topics" = "话题";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "主题 (%lu)";
-
 /* Label for total followers */
 "Total" = "总计";
 
@@ -7670,9 +7513,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "立即试用";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "尝试选择 %@，添加您喜欢的话题。";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "试试新的区块编辑器";
 
@@ -7685,23 +7525,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "关闭提示";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "关闭站点通知";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "开启通知";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "开启推送通知";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "打开站点通知";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "已关闭站点通知";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "已打开站点通知";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "关闭此开关将停止接收来自此应用的所有类型的通知。";
@@ -7748,9 +7576,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "无法同步";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "无法隐藏此站点";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "无法创建新的邀请链接。";
 
@@ -7768,9 +7593,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "无法关注对话";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "无法关注站点";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "目前无法加载页面。";
@@ -7817,23 +7639,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "无法共享链接";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "无法关闭站点通知";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "无法打开站点通知";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "无法取消关注站点";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "无法更新首页设置";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "无法更新套餐价格。提供的博客存在问题。";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 篇草稿文章上传失败";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "无法上传 1 篇文章";
@@ -7886,24 +7696,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "撤消";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "取消关注";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "取消关注 %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "取消关注对话";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "取消关注对话";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "取消关注站点";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "已取消关注的站点";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "取消关注该博客。";
@@ -8273,6 +8070,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "正在等待 Google 完成…";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "正在等待连接";
+
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
 "Waiting for security key" = "正在等待安全密钥插入";
@@ -8539,9 +8339,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "欢迎使用 Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "欢迎使用阅读器。 动动手指即可发现数百万个博客。";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "欢迎来到 WordPress";
 
@@ -8623,9 +8420,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "如果评论的内容、名称、URL、电子邮件或 IP 中包含其中任意字词，则会被标为垃圾内容。您可以输入单词的一部分，例如“press”将与“WordPress”匹配。";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "当您关注站点时，您将在此处看到它们的内容。";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "当您在编辑器中进行更改时，您可在此处查看历史记录";
@@ -8808,9 +8602,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "您即将更改自己的用户名，当前您的用户名为 %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "您已关注该站点。";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "您正在将用户名更改为%@。 更改用户名也会影响您的Gravatar个人资料和 IntenseDebate 个人资料地址。\n确认您的新用户名以继续。";
 
@@ -8834,12 +8625,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "您可以使用编辑器的 Web 版本编辑此区块。";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "您可以通过关注站点来关注特定站点上的文章。";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "您可以通过添加主题的方式来关注特定主题的文章。";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "您可以为各篇文章覆盖这些设置。";
@@ -9134,18 +8919,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "图像质量";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "优化图像可缩小图像尺寸，以便更快地上传。\n\n默认启用该选项，但是您可以随时在应用程序设置中进行更改。";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "继续优化图像？";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "不，停止优化";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "是，继续优化";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
@@ -9457,6 +9230,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "分析";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "布尔型用户默认值";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "布尔型用户默认值";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "功能标志";
 
@@ -9508,9 +9287,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "隐藏此内容";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "搜索域名";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "获取域名";
@@ -9767,6 +9543,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/我的站点 (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "您喜欢 Jetpack 移动应用程序吗？";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "不太喜欢";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "我们非常重视您的反馈意见";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "很喜欢";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "感谢您帮助我们改进此应用程序。";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "反馈已发送";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "您愿意与我们分享更多详细信息吗？";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "不是现在";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "帮助我们改进";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "确定";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "拍摄要在您的文章内使用的照片或视频。";
@@ -10320,6 +10126,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "维护";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "站点监控";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "社交";
 
@@ -10380,6 +10189,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "对首页进行个性化设置";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "共享站点";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "更改站点图标";
 
@@ -10391,6 +10203,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "查看站点";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "此时间范围内无日志条目";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "出现错误";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "重试";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
@@ -10497,6 +10318,27 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "电话号码";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "结束日期";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "严重性";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "开始日期";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "已弃用";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "致命错误";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "用户";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "警告";
+
 /* Title for the plan selection view */
 "planSelection.title" = "套餐";
 
@@ -10589,9 +10431,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "预览";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "立即发布";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "重试";
@@ -10720,6 +10559,30 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "更多";
 
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "博客 %@ 将不再显示在您的阅读器中。 轻点以撤消。";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ 篇文章 • %2$@ 位订阅者";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "显示博客的文章。";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "加载博客时出现问题";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "正在获取博客…";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "在您的语言中未找到与 %@ 匹配的博客。";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "未找到任何博客";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ 位订阅者";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "查看站点中的文章";
 
@@ -10757,15 +10620,171 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "已保存文章";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "您已订阅此博客。";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "编辑";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "按博客筛选";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "按标签筛选";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "在“发现”中订阅博客，您就能在此处看到他们的最新文章。 或者搜索一个您已点赞过的博客。";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "搜索博客";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "无博客订阅";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "订阅一个标签，您就能在此处看到该标签下的最佳文章。";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "订阅一个标签";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "建议标签";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "无标签";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "正在订阅新标签…";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "建议标签";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "正在获取博客…";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "博客";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "标签";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d 个博客";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d 个博客";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "标签";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d 个标签";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "标签";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "已点赞";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "列表";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "已保存";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "订阅";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "搜索";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "阅读器设置";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "发现博客";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "在“发现”中订阅博客，您就能在此处看到他们的最新文章。 或者搜索一个您已点赞过的博客。";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "无博客订阅";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "此博客尚未发表过任何内容。 请稍后再试。";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "此列表中的博客最近未发布任何内容。";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "管理博客";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "您订阅的博客和站点最近所发布的文章将在此处显示。";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "前往“订阅”";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "您可以通过订阅某个特定博客来订阅该博客上的文章。";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "添加博客";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "无法阻止博客";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "已阻止博客";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "已订阅博客";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "无法退订博客";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "无法退订博客";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "已退订博客";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "无法关闭博客通知";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "已关闭博客通知";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "无法打开博客通知";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "启用博客通知？";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "已打开博客通知";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "此站点";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "此博客";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "无法订阅博客";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "已订阅 %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "无法退订博客";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "已退订博客";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "读者通知用户屏蔽失败";
@@ -10803,8 +10822,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "打开此文章的站点详细信息。";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "阻止此博客";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "屏蔽此用户";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "关闭博客通知";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "开启博客通知";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "删除已保存文章";
@@ -10815,8 +10843,71 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "保存";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ 篇文章 • %2$@ 位粉丝";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "订阅博客";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "退订博客";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "管理博客";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "创建 WordPress.com 博客之后，您可以将喜欢的内容转载到您自己的博客。";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "无可用的 WordPress.com 博客";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "博客";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "正在订阅新标签…";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "订阅标签";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "没有要订阅的新标签";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "选择您的标签";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "订阅该标签。";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "订阅";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "博客 URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "输入要订阅的博客的 URL";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "已订阅";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "要订阅的博客";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "添加标签";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "添加标签";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "添加任意标签";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "添加标签";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "发现更多标签";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "退订";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "返回";
@@ -10998,6 +11089,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "媒体";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "日志条目";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "已缓存";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "文件";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP 主机";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "类别";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "行";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "名称";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "推荐来源";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "请求时间";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "请求 URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "响应式尺寸";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "状态";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "时间戳";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "指标";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP 日志";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
 
@@ -11060,6 +11196,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "流量";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "过去 7 天";
@@ -11168,6 +11307,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "搜索查找要添加到您的媒体库中的免费照片！";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "提交";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "反馈";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "此会话中";
@@ -11337,6 +11482,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "忽略";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "结束日期";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "请求类型";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "开始日期";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "状态";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "历年文章数和浏览次数之最";
 
@@ -11489,6 +11646,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "抱歉，WordPress 应用不支持此站点。";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "到达上限。 您可以在 1 分钟后重试。 提前重试只会增加您在限制取消前必须要等待的时间。 如果您认为有错误，请联系支持人员。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "欢迎使用 Jetpack app。您可以卸载 WordPress 应用。";

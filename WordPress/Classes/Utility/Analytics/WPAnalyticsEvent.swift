@@ -305,6 +305,10 @@ import Foundation
     case readerManageViewDisplayed
     case readerManageViewDismissed
 
+    // Reader: Navigation menu dropdown
+    case readerDropdownOpened
+    case readerDropdownItemTapped
+
     // App Settings
     case settingsDidChange
 
@@ -558,6 +562,10 @@ import Foundation
 
     // Widgets
     case widgetsLoadedOnApplicationOpened
+
+    // Site monitoring
+    case siteMonitoringTabShown
+    case siteMonitoringEntryDetailsShown
 
     /// A String that represents the event
     var value: String {
@@ -1093,6 +1101,12 @@ import Foundation
         case .readerManageViewDismissed:
             return "reader_manage_view_dismissed"
 
+        // Reader: Navigation menu dropdown
+        case .readerDropdownOpened:
+            return "reader_dropdown_menu_opened"
+        case .readerDropdownItemTapped:
+            return "reader_dropdown_menu_item_tapped"
+
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
@@ -1523,6 +1537,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Site Monitoring
+        case .siteMonitoringTabShown:
+            return "site_monitoring_tab_shown"
+        case .siteMonitoringEntryDetailsShown:
+            return "site_monitoring_entry_details_shown"
 
         } // END OF SWITCH
     }

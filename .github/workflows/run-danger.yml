@@ -2,10 +2,12 @@ name: ☢️ Danger
 
 on:
   pull_request:
-    types: [opened, synchronize, edited, review_requested, review_request_removed, labeled, unlabeled, milestoned, demilestoned]
+    types: [opened, reopened, ready_for_review, synchronize, edited, labeled, unlabeled, milestoned, demilestoned]
 
 jobs:
   dangermattic:
-    uses: Automattic/dangermattic/.github/workflows/reusable-run-danger.yml@trunk
+    # runs on draft PRs only for opened / synchronize events
+    if: ${{ (github.event.pull_request.draft == false) || (github.event.pull_request.draft == true && contains(fromJSON('["opened", "synchronize"]'), github.event.action)) }}
+    uses: Automattic/dangermattic/.github/workflows/reusable-run-danger.yml@v1.0.0
     secrets:
       github-token: ${{ secrets.DANGERMATTIC_GITHUB_TOKEN }}

@@ -1,9 +1,0 @@
-Du kan nu skaffa ett WordPress-paket med en gratis domän i domänadminpanelen. Vi har också gjort vissa förbättringar på skärmen Webbplatsdomäner, så nu är det ännu enklare att hantera dina domäner.
-
-Ditt enhetstangentbord kommer inte längre att försvinna mitt i arbetet när du redigerar textblock i redigeraren. Redigeraren bläddrar dessutom direkt till ett nytt block när du har lagt till det. Skriv på, min vän.
-
-Saknar du att logga in med dina säkerhetsnycklar? Det behöver du inte göra längre – vi har återaktiverat säkerhetsnycklar för tvåfaktorsautentisering vid inloggning. Den enda som kommer in i ditt konto är du.
-
-Vi har uppdaterat färgerna på inloggningsskärmen så att de ska matcha både WordPress och Jetpack. Det är ju, när allt kommer omkring, lagarbete som får drömmen att fungera.
-
-Slutligen har vi gjort diverse kodkorrigeringar och åtgärdat flertalet sällsynta (och inte så sällsynta) problem som gjorde att appen kraschade. Dessa problem var mestadels relaterade till redigering av etiketter och kategorier, användning av duplicerade etiketter, borttagning av inlägg och redigering av borttagna inlägg. Allt på en arbetsdag.

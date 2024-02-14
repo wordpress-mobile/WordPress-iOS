@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -55,9 +55,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dager";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ følgere";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ nivåer";
@@ -73,9 +70,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ av %2$@ brukt på ditt nettsted";
-
-/* Plan yearly price */
-"%@ per year" = "%@ per år";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ billiard";
@@ -330,9 +324,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Legg til på slutten";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Legg til emne";
-
 /* No comment provided by engineer. */
 "Add URL" = "Legg til URL";
 
@@ -342,29 +333,17 @@
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Legg til et profilbilde";
 
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Legg til et emne";
-
 /* Title for a button that when tapped starts the add self-hosted site process */
 "Add a self-hosted site" = "Legg til et selvbetjent nettsted";
 
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Legg til en korkode...";
 
-/* No Tags View Button Label */
-"Add a site" = "Legg til et nettsted";
-
-/* No Topics View Button Label */
-"Add a topic" = "Legg til et emne";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Legg til kontobilde.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Legg til alt-tekst";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Legg ethvert emne";
 
 /* No comment provided by engineer. */
 "Add button text" = "Legg til knappetekst";
@@ -775,9 +754,6 @@
 /* No comment provided by engineer. */
 "Block settings" = "Blokkinnstillinger";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blokker dette nettstedet";
-
 /* Blocklist Title
    Settings: Comments Blocklist */
 "Blocklist" = "Blokkeringsliste";
@@ -1042,9 +1018,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Velg video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Velg dine emner";
-
 /* Register Domain - Address information field City */
 "City" = "By\/sted";
 
@@ -1290,9 +1263,6 @@
 /* Message shown when site purchases API failed */
 "Could not check site purchases." = "Kunne ikke sjekke sidekjøp.";
 
-/* Title of a prompt. */
-"Could not follow site" = "Kunne ikke følge nettstedet";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Kunne ikke følge nettstedet på den spesifiserte adressen.";
 
@@ -1304,9 +1274,6 @@
 
 /* An error description explaining that Follow could not be toggled due to a missing blogURL attribute. */
 "Could not toggle Follow: missing blogURL attribute" = "Klarte ikke å følge\/slutte å følge: savner blogURL-attributten";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Kunne ikke slutte å følge nettstedet";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Kunne ikke slutte å følge nettstedet på den spesifiserte adressen.";
@@ -1588,14 +1555,8 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Oppdag";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Oppdag nettsteder";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Oppdag og følg blogger du liker";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Oppdag flere emner";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -1627,7 +1588,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Har du ikke en konto? _Registrer deg_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -1806,15 +1768,11 @@
 "Empty URL" = "Tom URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktiver";
 
 /* Title for the button that will enable the site stats module. */
 "Enable Site Stats" = "Slå på nettstedstatistikk";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Aktivere sidevarslinger?";
 
 /* Text displayed while activating the site stats module. */
 "Enabling Site Stats..." = "Slår på nettstedstatistikk...";
@@ -1834,9 +1792,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Skriv inn passord";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Skriv inn URL-en til siden som skal følges";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2022,9 +1977,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Henter innlegg...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Henter sider...";
 
 /* Label for the posting activity legend. */
@@ -2042,9 +1995,6 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtype";
 
-/* Title of the filter button in the Reader */
-"Filter" = "Filtrer";
-
 /* Title for the find out more button in the What's New page. */
 "Find out more" = "Finn ut mer";
 
@@ -2060,23 +2010,12 @@
 "First Name" = "Fornavn";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Følg";
 
-/* Verb. An option to follow a site. */
-"Follow site" = "Følg nettsted";
-
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Fulgte nettsteder";
-
-/* Followed Topics Title */
-"Followed Topics" = "Fulgte emner";
-
-/* User followed a site. */
-"Followed site" = "Følger side";
 
 /* Label for list of followers.
    User role badge */
@@ -2087,9 +2026,7 @@
    Label for number of followers. */
 "Followers" = "Følgere";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Følger";
 
 /* Filters Follows Notifications */
@@ -2170,9 +2107,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Gå til fulgte";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Gå til Leser";
@@ -2588,7 +2522,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Liker";
 
@@ -2600,9 +2533,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Liker kommentaren.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Grensen er nådd. Du kan prøve igjen om ett minutt. Å prøve igjen før da øker bare tiden du må vente før begrensingen avsluttes. Hvis du tror at dette er en feil, kontakt support.";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -2681,9 +2611,6 @@
 
 /* A short message to inform the user the requested stream is being loaded. */
 "Loading stream..." = "Laster inn strøm...";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Laster inn brukernavn";
 
 /* Loading tags
    Loading tags.
@@ -2777,9 +2704,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Administrer innsikter";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Administrer sider";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Administrer side";
@@ -2903,9 +2827,6 @@
 
 /* Label for the posting activity legend. */
 "More Posts" = "Flere innlegg";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Mest populære tidspunkt";
 
 /* No comment provided by engineer. */
 "Move Image Backward" = "Flytt bilde bakover";
@@ -3115,9 +3036,6 @@
    Text shown when there is no data to display in the stats list view. */
 "No data yet" = "Ingen data ennå.";
 
-/* Title for the no followed sites result screen */
-"No followed sites" = "Ingen fulgte nettsteder";
-
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Ingen følgere ennå";
 
@@ -3182,12 +3100,6 @@
 
 /* Shown when user is searching for specific Menu item options and no items are available, such as posts, pages, etc. */
 "No results. Please try a different search." = "Ingen resultater. Vennligst prøv et annet søk.";
-
-/* A message title */
-"No sites found" = "Ingen nettsteder funnet";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Ingen nettsteder passer med %@ på ditt språk.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Ingen stikkord matcher ditt søk";
@@ -3803,9 +3715,6 @@
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem med å laste innhold";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problem med å laste nettsteder";
-
 /* No comment provided by engineer. */
 "Problem opening the video" = "Problem under åpning av videoen";
 
@@ -3916,9 +3825,6 @@
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "De siste ukene";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Nylige innlegg fra blogger og sider du følger dukker opp her.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Mottaker";
@@ -4380,7 +4286,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Innstillinger";
@@ -4495,9 +4400,6 @@
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Viser innleggets innhold";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Viser nettstedets innlegg";
-
 /* View title during the sign up process. */
 "Sign Up" = "Registrer deg";
 
@@ -4543,8 +4445,7 @@
    Title for screen that show site title editor */
 "Site Title" = "Nettstedstittel";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Nettsteds-URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -4573,13 +4474,6 @@
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Nettstedstittelen ble endret";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Nettsteder";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Nettsteder (%lu)";
 
 /* Image size option title. */
 "Size" = "Størrelse";
@@ -4967,9 +4861,6 @@
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Internettforbindelsen synes å være frakoblet.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Gjenstanden kunne ikke legges til i Mediebiblioteket.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Disse typen nettsteder kan opprettes";
 
@@ -4988,9 +4879,6 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Serveren ga et tomt svar. Dette betyr vanligvis at du må øke mine-grensen («memory limit») på ditt nettsted.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Nettstedet %@ vil ikke dukke opp i din leser lenger. Trykk for å angre.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Nettstedsadressen må være kortere enn 64 tegn.";
 
@@ -5006,9 +4894,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Siden kunne ikke eksporteres.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Sidene på denne listen har ikke lagt ut noe nylig.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Permalenken er den URL-vennlige versjonen av innleggstittelen.";
@@ -5168,9 +5053,6 @@
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Dette innlegger er ikke i Mine likes";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Denne siden har ikke lagt ut noe enda. Kom tilbake senere.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Dette vil inkluderes i tweeter når folk deler ved hjelp av Twitter-knappen.";
@@ -5262,12 +5144,6 @@
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Emne ikke funnet for id:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Emner";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Emner (%lu)";
-
 /* Label for total followers */
 "Total" = "Totalt";
 
@@ -5344,12 +5220,6 @@
 /* When social login fails, this button offers to let them try tp login using a URL */
 "Try with the site address" = "Prøv med nettstedsadressen";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Skru av sidevarslinger";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Skru på sidevarslinger";
-
 /* Title of button that displays the app's Twitter profile */
 "Twitter" = "Twitter";
 
@@ -5414,9 +5284,6 @@
 "Unable to update plan prices. There is a problem with the supplied blog." = "Kunne ikke oppdatere abonnementspriser. Det er et problem med denne bloggen.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "Kunne ikke laste opp 1 kladd";
-
-/* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "Kunne ikke laste opp 1 innlegg";
 
 /* Alert displayed to the user when a single post and multiple files have failed to upload. */
@@ -5460,19 +5327,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "Angre";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Slutt å følge";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Avfølg %@";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Slutt å følge nettstedet";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Sluttet å følge siden";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Avfølger nettstedet.";
@@ -5935,9 +5789,6 @@
 /* Title of Weeks stats filter. */
 "Weeks" = "Uker";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Velkommen til Leser. Oppdag millioner av blogger fra fingertuppene.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Velkommen til WordPress";
 
@@ -6095,9 +5946,6 @@
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du er i ferd med å endre ditt brukernavn, som for tiden er %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Du følger allerede dette nettstedet.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Du endrer ditt brukernavn til %@. Endring av brukernavn vil også påvirke din adressene i Gravatar-profil og IntenseDebate-profil.\nBekreft ditt nye brukernavn for å fortsette.";
 
@@ -6109,12 +5957,6 @@
 
 /* Information shown below the optional password field after new account creation. */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Du kan alltid logge inn med en lenke som den du nettopp brukte, men du kan også sette opp et passord hvis du foretrekker det.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Du kan følge innlegg på et spesifikt nettsted ved å følge det.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Du kan følge innlegg om et spesifikt emne ved å legge til et nøkkelord.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Du kan overstyre disse innstillingene for individuelle innlegg.";

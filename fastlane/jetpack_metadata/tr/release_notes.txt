@@ -1,9 +1,5 @@
-Artık alan adı panosunda ücretsiz bir alan adı içeren WordPress paketi alabilirsiniz. Alan adlarınızı yönetmenin daha da kolay olması için Site Alan Adları ekranına bazı iyileştirmeler yaptık.
+Sayın okuyucu, içeriklerde gezinme ve içerikleri filtreleme için yeni bir genel görünüm ekledik. Artık okuyacak gönderiler ararken en iyisini bulabilir ve gerisini görmezden gelebilirsiniz.
 
-Düzenleyicide metin bloklarını düzenlerken cihazınızın klavyesi artık düzenlemenin ortasında kaybolmaz. Düzenleyici ayrıca yeni bir blok eklediğinizde doğrudan yeni bloka kaydırır. Yaz dostum.
+Görselleri ve diğer ortamları yüklerken bunların yanıp sönmesine sebep olan bir sorunu düzelttik.  Presto'da artık ortadan kaybolmak yok.
 
-Güvenlik anahtarlarınızla oturum açmayı mı özlediniz? Artık özlemenize gerek yok, oturum açma sırasında iki faktörlü kimlik doğrulama için güvenlik anahtarlarını yeniden etkinleştirdik. Hesabınıza yalnızca siz gireceksiniz.
-
-Oturum açma ekranının renklerini hem WordPress hem de Jetpack ile eşleşecek şekilde güncelledik. Sonuçta birlikten kuvvet doğar.
-
-Son olarak çeşitli kod düzeltmeleri yaptık ve uygulamanın kilitlenmesine neden olan birkaç nadir (ve çok da nadir olmayan) sorunu ele aldık. Bu sorunlar genellikle etiketleri ve kategorileri düzenleme, gönderileri silme ve silinen gönderileri düzenleme ile ilgiliydi. Hepsi bir günlük iş.
+Son olarak ölçümler, PHP günlükleri ve web sunucusu günlükleri dahil yeni Site İzleme menü öğeleri ekledik, bu sayede web sitenizi daha yakından takip edebilirsiniz. (Endişelenmeyin, bir yere gittiği yok.)

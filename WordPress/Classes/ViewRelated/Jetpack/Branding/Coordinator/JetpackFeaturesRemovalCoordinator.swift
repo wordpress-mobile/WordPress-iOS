@@ -129,7 +129,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
-            return .two
+            return Self.hasBlog() ? .two : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
@@ -288,12 +288,16 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         presentOverlay(navigationViewController: navigationViewController, in: viewController)
     }
 
-    private static func presentOverlay(navigationViewController: UINavigationController,
-                                       in viewController: UIViewController,
-                                       fullScreen: Bool = false) {
+    static func presentOverlay(navigationViewController: UINavigationController,
+                               in viewController: UIViewController,
+                               fullScreen: Bool = false) {
         let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
 
         viewController.present(navigationViewController, animated: true)
+    }
+
+    private static func hasBlog() -> Bool {
+        Blog.count(in: ContextManager.sharedInstance().mainContext) > 0
     }
 }

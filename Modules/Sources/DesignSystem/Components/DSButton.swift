@@ -1,8 +1,8 @@
 import SwiftUI
 
 public struct DSButton: View {
-    @SwiftUI.Environment(\.isEnabled) private var isEnabled
-    @SwiftUI.Environment(\.colorScheme) private var colorScheme
+    @Environment(\.isEnabled) private var isEnabled
+    @Environment(\.colorScheme) private var colorScheme
     private let title: String
     private let style: DSButtonStyle
     @Binding private var isLoading: Bool
@@ -109,7 +109,7 @@ public struct DSButton: View {
                 .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: Length.Radius.small)
-                .stroke(Color.DS.divider, lineWidth: 1)
+                .stroke(Color.DS.Background.tertiary, lineWidth: 1)
                 .background(Color.clear)
 
         case .tertiary:

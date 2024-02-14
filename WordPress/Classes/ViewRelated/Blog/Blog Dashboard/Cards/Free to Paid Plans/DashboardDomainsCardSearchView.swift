@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct DashboardDomainsCardSearchView: View {
-    @SwiftUI.Environment(\.colorScheme) var colorScheme: ColorScheme
+    @Environment(\.colorScheme) var colorScheme: ColorScheme
 
     var body: some View {
         VStack(alignment: .center) {

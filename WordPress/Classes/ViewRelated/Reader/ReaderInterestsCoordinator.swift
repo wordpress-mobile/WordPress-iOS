@@ -42,7 +42,17 @@ class ReaderSelectInterestsCoordinator {
                 return
             }
 
-            let isFollowingInterests = interests.count > 0
+            let isFollowingInterests = {
+                // New users are automatically subscribed to the 'dailyprompt' tag by default.
+                // Let's ignore this value and keep showing the Select Interests view if the user
+                // is not subscribed to any other tags.
+                if let interest = interests.first,
+                   interests.count == 1 {
+                    return interest.slug != Post.Strings.promptTag
+                }
+                return interests.count > 0
+            }()
+
             completion(isFollowingInterests)
         }
     }

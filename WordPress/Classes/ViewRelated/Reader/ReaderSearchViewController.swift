@@ -17,7 +17,11 @@ import Gridicons
         var title: String {
             switch self {
             case .posts: return NSLocalizedString("Posts", comment: "Title of a Reader tab showing Posts matching a user's search query")
-            case .sites: return NSLocalizedString("Sites", comment: "Title of a Reader tab showing Sites matching a user's search query")
+            case .sites: return NSLocalizedString(
+                "reader.search.tab.blogs",
+                value: "Blogs",
+                comment: "Title of a Reader tab showing Sites matching a user's search query"
+            )
             }
         }
 
@@ -64,6 +68,8 @@ import Gridicons
     }()
 
     fileprivate let sections: [Section] = [ .posts, .sites ]
+
+    var onViewWillDisappear: (() -> Void)?
 
     /// A convenience method for instantiating the controller from the storyboard.
     ///
@@ -133,6 +139,7 @@ import Gridicons
         configureBackgroundTapRecognizer()
         configureForRestoredTopic()
         configureSiteSearchViewController()
+        configureNavigationBar()
     }
 
     open override func didMove(toParent parent: UIViewController?) {
@@ -159,6 +166,7 @@ import Gridicons
 
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+        onViewWillDisappear?()
     }
 
     // MARK: - Analytics
@@ -249,6 +257,16 @@ import Gridicons
         jpSiteSearchController.view.isHidden = true
     }
 
+    private func configureNavigationBar() {
+        guard isModal() else {
+            return
+        }
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done,
+                                                           target: self,
+                                                           action: #selector(doneButtonPressed))
+    }
+
     // MARK: - Actions
 
     @objc func endSearch() {
@@ -321,6 +339,10 @@ import Gridicons
             streamController?.view.isHidden = true
             jpSiteSearchController.view.isHidden = false
         }
+    }
+
+    @objc private func doneButtonPressed() {
+        dismiss(animated: true)
     }
 
     // MARK: - Autocomplete

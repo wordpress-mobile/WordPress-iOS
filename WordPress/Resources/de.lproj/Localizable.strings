@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-08 12:56:59+0000 */
+/* Translation-Revision-Date: 2024-02-12 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -109,9 +109,6 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ Tage";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ Follower";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ Ebenen";
@@ -127,9 +124,6 @@
 
 /* Amount of disk quota being used. First argument is the total percentage being used second argument is total quota allowed in GB.Ex: 33% of 14 GB used on your site. */
 "%@ of %@ used on your site" = "%1$@ von %2$@, die auf deiner Seite verwendet wird";
-
-/* Plan yearly price */
-"%@ per year" = "%@ pro Jahr";
 
 /* Accessibility label for value in quadrillion. Ex: 66.6 quadrillion. */
 "%@ quadrillion" = "%@ Billiarden";
@@ -483,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Am Ende hinzufügen";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Thema hinzufügen";
-
 /* No comment provided by engineer. */
 "Add URL" = "URL hinzufügen";
 
@@ -494,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Profilfoto hinzufügen";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Ein Thema hinzufügen";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Domain hinzufügen";
@@ -510,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Füge einen Shortcode hinzu ...";
 
-/* No Tags View Button Label */
-"Add a site" = "Füge eine Website hinzu";
-
-/* No Topics View Button Label */
-"Add a topic" = "Thema hinzufügen";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Füge ein Kontobild hinzu.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Alt-Text hinzufügen";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Beliebiges Thema hinzufügen";
 
 /* No comment provided by engineer. */
 "Add audio" = "Audio hinzufügen";
@@ -1110,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Blockeinstellungen";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Diese Website blockieren";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Gruppierung des Blocks aufgehoben";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blockierte Website";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Blockierter Benutzer";
@@ -1521,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Video auswählen";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Wähle deine Themen";
-
 /* Register Domain - Address information field City */
 "City" = "Ort";
 
@@ -1896,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Benachrichtigungen konnten nicht aktiviert werden";
 
-/* Title of a prompt. */
-"Could not follow site" = "Konnte Website nicht abonnieren";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Konnte Website an der angegebenen Adresse nicht abonnieren.";
 
@@ -1922,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "„Gesehen“ konnte nicht umgeschaltet werden: postID fehlt.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Konnte Abo für Website nicht beenden";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Konnte Website-Abo für die Website an der angegeben Adresse nicht beenden.";
@@ -2323,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Discover";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Websites entdecken";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Entdecke Beiträge, die dir gefallen, und folge ihnen";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Entdecke und folge Websites, die dich inspirieren.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Weitere Themen entdecken";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2374,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Du hast noch kein Konto? _Registrieren_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2680,7 +2639,6 @@
 "Empty URL" = "Leere URL";
 
 /* Button title for the enable site notifications action.
-   Button title to enable notifications for new comments
    Title of button to enable publicize. */
 "Enable" = "Aktivieren";
 
@@ -2704,9 +2662,6 @@
 
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Benachrichtigungen in der App aktivieren";
-
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Website-Benachrichtigungen aktivieren?";
 
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Aktiviere die Website-Statistiken, um ausführliche Informationen zu deinem Traffic, deinen Likes, Kommentaren und Abonnenten anzuzeigen.";
@@ -2735,9 +2690,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Passwort eingeben";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Gib die URL einer Website ein, der du folgen möchtest.";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -3001,9 +2953,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Lade Beiträge ...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Seiten werden geladen ...";
 
 /* Label for the posting activity legend. */
@@ -3029,9 +2979,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film und Fernsehen";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtern";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Nach Aktivitätstyp filtern";
@@ -3072,8 +3019,7 @@
 "Fixing Threats" = "Bedrohungen werden behoben";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Folgen";
 
 /* Button title. Follow the comments on a post. */
@@ -3081,9 +3027,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Unterhaltung folgen";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Website folgen";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Themen folgen";
@@ -3095,15 +3038,8 @@
 "Follow your favorite sites and discover new blogs." = "Folge deinen Lieblingswebsites und entdecke neue Blogs.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Abonnierte Websites";
-
-/* Followed Topics Title */
-"Followed Topics" = "Themen, denen du folgst";
-
-/* User followed a site. */
-"Followed site" = "Website, der du folgst";
 
 /* Label for list of followers.
    User role badge */
@@ -3114,13 +3050,8 @@
    Label for number of followers. */
 "Followers" = "Follower";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Folgen";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Du folgst %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Du folgst neuen Themen …";
@@ -3133,9 +3064,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Hiermit folgst du dem Blog.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Folgt dem Schlagwort.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Schriftgröße";
@@ -3284,9 +3212,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Zu „Du folgst“ wechseln";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Reader aufrufen";
@@ -3966,7 +3891,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
 
@@ -3978,9 +3902,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Kennzeichnet den Kommentar mit „Gefällt mir“.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Limit erreicht. Du kannst es noch einmal in 1 Minute probieren. Wenn Du es vorher weiter versuchst wird sich die Zeit bis zur Aufhebung der Sperre nur weiter erhöhen. Wenn Du glaubst, es handelt sich um einen Fehler, kontaktiere bitte den Support.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Liniendiagramm zur Darstellung der Aufrufe für Einsichten.";
@@ -4089,9 +4010,6 @@
 
 /* Loading message shown while the Unsupported Block Editor is loading. */
 "Loading the block editor." = "Der Block-Editors wird geladen.";
-
-/* Shown while the app waits for the username suggestions web service to return during the site creation process. */
-"Loading usernames" = "Benutzernamen werden geladen";
 
 /* Loading tags
    Loading tags.
@@ -4204,9 +4122,6 @@
 
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Einsichten verwalten";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Verwalte Websites";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Site verwalten";
@@ -4385,9 +4300,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Weitere Support-Optionen";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Beliebteste Zeit";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "%@ verschieben";
@@ -4576,9 +4488,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the Quick Start dashboard card. */
 "Next Steps" = "Nächste Schritte";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Next month" = "Nächster Monat";
-
 /* Accessibility label for the next notification button */
 "Next notification" = "Nächste Benachrichtigung";
 
@@ -4630,9 +4539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Diese Anfrage kann von keiner Anwendung verarbeitet werden. Installiere bitte einen Webbrowser.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Keine verfügbaren Websites bei WordPress.com";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Keine Adressen verfügbar, die deiner Suche entsprechen";
 
@@ -4676,9 +4582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Keine behobenen Bedrohungen";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Keine abonnierten Websites";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Noch keine Follower";
@@ -4727,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Du brauchst nicht zu warten. Wir benachrichtigen dich, wenn deine Website vollständig wiederhergestellt wurde.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Keine neuen Themen, denen du folgen könntest";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Es gibt noch keine Benachrichtigungen";
 
@@ -4760,9 +4660,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No preview available" = "Keine Vorschau verfügbar";
 
-/* String to display in place of the site address, in case it was not retrieved from the backend. */
-"No primary site address found" = "Es wurde keine Adresse für eine Haupt-Website gefunden";
-
 /* Title displayed when there are no blogging prompts to display. */
 "No prompts yet" = "Bisher keine Themenvorschläge";
 
@@ -4774,12 +4671,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Keine gespeicherten Beiträge";
-
-/* A message title */
-"No sites found" = "Keine Websites gefunden";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Keine Websites in deiner Sprache gefunden, die %@ entsprechen.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Keine Schlagwörter entsprechen deiner Suche";
@@ -4954,9 +4845,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Wenn du mit den Bezeichnungen der verschiedenen Blöcke vertraut bist, kannst du Blöcke auch so hinzufügen: Gib einen Schrägstrich gefolgt vom Namen des Blocks ein, z. B. \/image oder \/heading.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "Sobald du eine Website bei WordPress.com erstellt hast, kannst du Inhalte, die dir gefallen, auf deiner eigenen Website rebloggen.";
 
 /* No comment provided by engineer. */
 "One" = "Eins";
@@ -5526,9 +5414,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Description of a Quick Start Tour */
 "Preview your site to see what your visitors will see." = "Zeige eine Vorschau deiner Website an, um zu sehen, wie sie deinen Besuchern angezeigt wird.";
 
-/* Accessibility label for the button which shows the previous month in the monthly calendar view */
-"Previous month" = "Vorheriger Monat";
-
 /* Accessibility label for the previous notification button */
 "Previous notification" = "Vorherige Benachrichtigung";
 
@@ -5568,9 +5453,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Beim Laden des Inhalts ist ein Problem aufgetreten";
-
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problem beim Laden von Websites";
 
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Problem beim Öffnen der Audiodatei";
@@ -5708,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Letzte Wochen";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Neueste Beiträge von Blogs und Websites, denen du folgst, siehst du hier.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Empfänger";
@@ -5918,9 +5797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Datumsbereich-Filter zurücksetzen";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Filter zurücksetzen";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Dein Passwort zurücksetzen";
@@ -6394,7 +6270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Einstellungen";
@@ -6530,9 +6405,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Zeigt den Inhalt des Beitrags an";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Die Beiträge der Website anzeigen.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Registrieren";
 
@@ -6587,8 +6459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Website-Thema";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Webseiten-URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6620,16 +6491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Website-Titel erfolgreich geändert";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Websites";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Websites (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Websites, denen du folgen möchtest";
 
 /* Image size option title. */
 "Size" = "Größe";
@@ -7161,9 +7022,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
 "The internet connection appears to be offline." = "Die Internetverbindung scheint gerade offline zu sein.";
 
-/* Message shown when an asset failed to load while trying to add it to the Media library. */
-"The item could not be added to the Media Library." = "Die Datei konnte nicht zur Mediathek hinzugefügt werden.";
-
 /* Accessibility hint for list */
 "The kinds of sites that can be created" = "Die Arten von Websites, die erstellt werden können.";
 
@@ -7203,9 +7061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Der Server hat eine leere Antwort zurückgesendet. Dies bedeutet normalerweise, dass Du das Speicherlimit auf deiner Website erhöhen musst.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Die Website %@ wird nicht mehr in deinem Reader erscheinen. Tippe für Undo.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Die Website-Adresse muss kürzer als 64 Zeichen sein.";
 
@@ -7221,9 +7076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Die Website konnte nicht exportiert werden.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Die Websites in dieser Liste haben in letzter Zeit nichts veröffentlicht.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Die Titelform ist die URL-freundliche Version des Beitragstitels.";
@@ -7434,9 +7286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Dieser Beitrag befindet sich nicht in meinen Likes";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Auf dieser Website wurde noch nichts veröffentlicht. Versuche es später nochmal. ";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Dieses Benutzerkonto kann nicht geschlossen werden, solange noch ungelöste Rückbuchungen bestehen.";
 
@@ -7582,12 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Thema nicht gefunden für ID:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Themen";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Themen (%lu)";
-
 /* Label for total followers */
 "Total" = "Gesamt";
 
@@ -7673,9 +7516,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Jetzt versuchen";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Durch Auswahl von %@ kannst du Themen hinzufügen, die dir gefallen.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Probiere den neuen Block-Editor aus";
 
@@ -7688,23 +7528,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Schreibanregungen ausschalten";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Website-Benachrichtigungen deaktivieren";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Benachrichtigungen aktivieren";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Push-Benachrichtigungen aktivieren";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Website-Benachrichtigungen aktivieren";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Website-Benachrichtigungen deaktiviert";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Website-Benachrichtigungen aktiviert";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Wenn du den Schalter deaktivierst, werden alle Benachrichtigungen von dieser App, unabhängig vom Typ, deaktiviert.";
@@ -7751,9 +7579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Synchronisieren nicht möglich";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Kann Website nicht blockieren";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Neue Einladungslinks können nicht erstellt werden.";
 
@@ -7771,9 +7596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Der Unterhaltung kann nicht gefolgt werden";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Der Website kann nicht gefolgt werden";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Es können gerade keine Seiten geladen werden.";
@@ -7820,23 +7642,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Link kann nicht geteilt werden";
 
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Website-Benachrichtigungen können nicht deaktiviert werden";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Website-Benachrichtigungen können nicht aktiviert werden";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Die Option „Nicht mehr folgen“ kann für diese Website nicht aktiviert werden";
-
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Homepage-Einstellungen können nicht aktualisiert werden";
 
 /* This is an error message that could be shown when updating Plans in the app. */
 "Unable to update plan prices. There is a problem with the supplied blog." = "Tarifpreise können nicht aktualisiert werden. Es gibt ein Problem mit dem angegebenen Blog.";
-
-/* Alert displayed to the user when a single post has failed to upload. */
-"Unable to upload 1 draft post" = "1 Beitragsentwurf konnte nicht hochgeladen werden.";
 
 /* Alert displayed to the user when a single post has failed to upload. */
 "Unable to upload 1 post" = "1 Beitrag konnte nicht hochgeladen werden";
@@ -7889,24 +7699,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Rückgängig";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Entfolgen";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Entfolge %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Unterhaltung nicht mehr folgen";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Unterhaltung nicht mehr folgen";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Website entfolgen";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Entfolgte Website";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Hiermit folgst du dem Blog nicht mehr.";
@@ -8276,6 +8073,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Registrierung wird von Google abgeschlossen …";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "Warten auf Verbindung";
+
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
 "Waiting for security key" = "Warten auf Sicherheitsschlüssel";
@@ -8542,9 +8342,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Willkommen bei Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Willkommen beim Reader. Entdecke mit nur einem Klick Millionen von Blogs.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Willkommen bei WordPress";
 
@@ -8626,9 +8423,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Wenn ein Kommentar eines dieser Wörter im Inhalt, Namen, in der URL, E-Mail-Adresse oder der IP enthält, wird er als Spam gekennzeichnet. Du kannst auch Teilbegriffe eingeben. So wird beispielsweise bei der Eingabe von „press“ als Ergebnis „WordPress“ angezeigt.";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Wenn du Websites folgst, wirst du ihren Inhalt hier sehen.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "Wenn du Änderungen im Editor vornimmst, kannst du hier den Verlauf sehen.";
@@ -8811,9 +8605,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du bist dabei, deinen Benutzernamen zu ändern, bisher %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Du folgst bereits dieser Website.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Du änderst deinen Benutzernamen auf %@. Das Ändern deines Benutzernamens wird sich auf dein Gravatar-Profile und IntenseDebate-Profile-Adressen auswirken. \nBestätige deinen neuen Benutzernamen, um fortzufahren.";
 
@@ -8837,12 +8628,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Du kannst diesen Block über die Webversion des Editors bearbeiten.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Du kannst Beiträgen einer bestimmten Website folgen, indem du ihr folgst.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Du kannst Beiträgen zu einem bestimmten Thema folgen, indem du ein Thema hinzufügst.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Für individuelle Beiträge kannst du die Einstellungen auch ausschalten.";
@@ -9137,18 +8922,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Bildqualität";
-
-/* Message of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.message" = "Die Bildoptimierung schrumpft Bilder für schnelleres Hochladen.\n\nDiese Option ist standardmäßig aktiviert, aber du kannst jederzeit Änderungen in den App-Einstellungen vornehmen.";
-
-/* Title of an alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.title" = "Sollen Bilder weiterhin optimiert werden?";
-
-/* Title of button for turning off image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOff" = "Nein, deaktivieren";
-
-/* Title of button for leaving on image optimization, displayed in the alert informing users to enable image optimization in uploads. */
-"appSettings.optimizeImagesPopup.turnOn" = "Ja, aktiviert lassen";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "Audiodatei";
@@ -9466,6 +9239,12 @@ Example: Reply to Pamela Nguyen */
 /* Debug menu item title */
 "debugMenu.analytics" = "Analysen";
 
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Boolesche Benutzerstandards";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Boolesche Benutzerstandards";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
 
@@ -9517,9 +9296,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Ausblenden";
-
-/* Search domain - Title for the Suggested domains screen */
-"domain.management.addDomain.search.title" = "Nach einer Domain suchen";
 
 /* Domain management buy domain card button title */
 "domain.management.buy.card.button.title" = "Domain erhalten";
@@ -9779,6 +9555,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/meine-website-adresse (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Gefällt dir die Jetpack-Mobil-App?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Nicht wirklich";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Dein Feedback ist uns wichtig";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "Sie ist toll";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Danke, dass du uns hilfst, die App zu verbessern.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback gesendet";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Möchtest du weitere Informationen mit uns teilen?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Jetzt nicht";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Hilf mit, uns zu verbessern";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Gerne";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "Um Fotos oder Videos für deine Beiträge aufzunehmen.";
@@ -10332,6 +10138,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Wartungsmodus";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Website-Überwachung";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Social";
 
@@ -10392,6 +10201,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the personalize home option */
 "mySite.siteActions.personalizeHome" = "Startseite personalisieren";
 
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Website teilen";
+
 /* Menu title for the change site icon option */
 "mySite.siteActions.siteIcon" = "Website-Icon ändern";
 
@@ -10403,6 +10215,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Zur Website";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "Es gibt keine Protokolleinträge innerhalb dieses Zeitraums";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "Ein Fehler ist aufgetreten";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Erneut versuchen";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Schließen";
@@ -10509,6 +10330,27 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefonnummer";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "Enddatum";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Schweregrad";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Startdatum";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Veraltet";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Schwerwiegender Fehler";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "Benutzer";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Warnung";
+
 /* Title for the plan selection view */
 "planSelection.title" = "Tarife";
 
@@ -10601,9 +10443,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Vorschau";
-
-/* Label for an option that moves a publishes a post immediately */
-"posts.publish.actionTitle" = "Jetzt veröffentlichen";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Erneut versuchen";
@@ -10729,8 +10568,38 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du bist angemeldet!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Wähle %@ aus, um abonnierte Inhalte anzuzeigen und deine Abonnements zu verwalten.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Abonnements";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mehr";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "Der Blog %@ wird nicht mehr in deinem Reader erscheinen. Tippe, um es rückgängig zu machen.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ Beiträge • %2$@ Abonnenten";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Zeigt die Beiträge des Blogs an.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Es gab ein Problem beim Laden der Blogs";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Blogs werden abgerufen …";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Es wurden keine Blogs gefunden, die %@ in deiner Sprache entsprechen.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Es wurden keine Blogs gefunden";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ Abonnenten";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Zeigt Beiträge von der Website an";
@@ -10769,15 +10638,189 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Gespeicherter Beitrag";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "Du hast dieses Blog bereits abonniert.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Bearbeiten";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Nach Blog filtern";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Nach Schlagwort filtern";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Abonniere Blogs in „Entdecken“ und die neuesten Beiträge werden hier angezeigt. Oder suche nach einem Blog, das du schon kennst und magst.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Suche nach einem Blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Keine Blog-Abonnements";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Abonniere ein Schlagwort und du siehst hier die besten Beiträge dazu.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Schlagwort abonnieren";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Vorgeschlagene Schlagwörter";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Keine Schlagwörter";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Neue Schlagwörter werden abonniert …";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Vorgeschlagene Schlagwörter";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Blogs werden abgerufen …";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blogs";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Schlagwörter";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d Blogs";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d Blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Schlagwörter";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d Schlagwörter";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d Schlagwort";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Schlagwörter";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Gefiltert nach %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Öffnet die Filterliste";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Mit einem „Like“ markiert";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Listen";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Zurücksetzen";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Gespeichert";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Suche";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Abonnements";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Suche";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader-Einstellungen";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Blogs entdecken";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Abonniere Blogs in „Entdecken“ und die neuesten Beiträge werden hier angezeigt. Oder suche nach einem Blog, das du schon kennst und magst.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Keine Blog-Abonnements";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "In diesem Blog wurde noch nichts veröffentlicht. Versuche es später erneut.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "Die Blogs in dieser Liste haben in letzter Zeit nichts veröffentlicht.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Blogs verwalten";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Aktuelle Beiträge von Blogs und Websites, die du abonniert hast, siehst du hier.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Gehe zu Abonnements";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Du kannst die Beiträge eines bestimmten Blogs abonnieren, indem du ihn abonnierst.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Einen Blog hinzufügen";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Der Blog kann nicht blockiert werden";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blockierter Blog";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Der Blog ist abonniert";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Das Austragen des Blog-Abonnements ist fehlgeschlagen";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Das Austragen des Blog-Abonnements ist fehlgeschlagen";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Vom Blog-Abonnement ausgetragen";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Blog-Benachrichtigungen können nicht deaktiviert werden";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Blog-Benachrichtigungen deaktiviert";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Blog-Benachrichtigungen können nicht aktiviert werden";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Blog-Benachrichtigungen aktivieren?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Blog-Benachrichtigungen aktiviert";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "dieser Website";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "dieses Blog";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Blog kann nicht abonniert werden";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "%1$@ ist abonniert";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Blog kann nicht abbestellt werden";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Blog abbestellt";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10815,8 +10858,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Öffnet die Websitedetails des Beitrags.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Diesen Blog blockieren";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Diesen Benutzer blockieren";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Blog-Benachrichtigungen deaktivieren";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Blog-Benachrichtigungen aktivieren";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Gespeicherten Beitrag entfernen";
@@ -10827,8 +10879,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Speichern";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ Beiträge • %2$@ Follower";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Blog abonnieren";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Blog abbestellen";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Blogs verwalten";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Sobald du einen WordPress.com-Blog erstellt hast, kannst du Inhalte, die dir gefallen, deinem eigenen Blog hinzufügen.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Keine verfügbaren Blogs bei WordPress.com";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blogs";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Neue Schlagwörter werden abonniert …";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Schlagwörter abonnieren";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Keine neuen Schlagwörter zum Abonnieren";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Wähle deine Schlagwörter";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Abonniert das Schlagwort.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Abonnieren";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "Blog-URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Gib die URL eines Blogs ein, um ihn zu abonnieren";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Abonniert";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Interessante Blogs, die du abonnieren kannst";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Schlagwort hinzufügen";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Schlagwort hinzufügen";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Füge ein beliebiges Schlagwort hinzu";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Schlagwort hinzufügen";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Mehr Schlagwörter entdecken";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "%@ abbestellen";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Abbestellen";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Zurück";
@@ -11010,6 +11128,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Medien";
 
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Protokolleintrag";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Im Cache";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "Datei";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP-Host";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Typ";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Zeile";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Name";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Referrer";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Anfragezeit";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "Anfrage-URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Antwortgröße";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Zeitstempel";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "Metriken";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP-Protokolle";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Datenschutz";
 
@@ -11072,6 +11235,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Automatisches Teilen auf Twitter ist aufgrund von Änderungen an den Nutzungsbedingungen und Preisen von Twitter nicht mehr verfügbar.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Traffic";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Letzte 7 Tage";
@@ -11180,6 +11346,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Suche nach kostenlosen Fotos, die du deiner Mediathek hinzufügen kannst!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Übermitteln";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dieser Konversation";
@@ -11349,6 +11521,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Verwerfen";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "Enddatum";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Anfragetyp";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Startdatum";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Beiträge im gesamten Zeitraum und häufigste Aufrufe";
 
@@ -11501,6 +11685,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Leider wird diese Website von der WordPress-APP nicht unterstützt";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Das Limit wurde erreicht. In einer Minute kannst du es erneut versuchen. Ein früherer Versuch verlängert nur die Wartezeit, bis die Sperre aufgehoben wird. Wenn Du einen Fehler vermutest, kontaktiere den Support.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Willkommen bei der Jetpack-App. Du kannst die WordPress-App deinstallieren.";

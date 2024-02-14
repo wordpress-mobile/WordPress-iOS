@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-alpha.11 */
+/* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -16,18 +16,12 @@
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ дни";
 
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ последователи";
-
 /* Comments Threading Levels
    Number of Threading Levels */
 "%@ levels" = "%@ нива";
 
 /* Number of Links */
 "%@ links" = "%@ връзки";
-
-/* Plan yearly price */
-"%@ per year" = "%@ на година";
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ се свърза отново.";
@@ -771,7 +765,8 @@
 /* Noun. Title. Links to the Domains screen. */
 "Domains" = "Домейни";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -855,9 +850,6 @@
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Въвеждане на парола";
 
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Въведете адрес на сайта, за който да се абонирате";
-
 /* (placeholder) Help enter WordPress username */
 "Enter username" = "Потребителско име";
 
@@ -929,9 +921,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Изтегляне на публикациите...";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Изтегляне на сайтовете...";
 
 /* Label for the file name for a media asset (image / video) */
@@ -946,20 +936,12 @@
 "First Name" = "Собствено име";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Следване";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Последвани сайтове";
-
-/* Followed Topics Title */
-"Followed Topics" = "Следени теми";
-
-/* User followed a site. */
-"Followed site" = "Последван сайт";
 
 /* Label for list of followers.
    User role badge */
@@ -970,9 +952,7 @@
    Label for number of followers. */
 "Followers" = "Последователи";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Следван";
 
 /* Filters Follows Notifications */
@@ -1239,7 +1219,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Харесвания";
 
@@ -1248,9 +1227,6 @@
 
 /* Setting: indicates if Replies to your comments will be notified */
 "Likes on my posts" = "Харесвания на моите публикации";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Лимитът е достигнат. Опитайте отново след минута. Ако опитате преди това само ще увеличите времето, което ще трябва да изчакате преди да изтече забраната. Ако смятате, че това е грешка, свържете се с поддръжката. ";
 
 /* Label for link title in Clicks stat.
    Menu item label for linking a custom source URL. */
@@ -1353,9 +1329,6 @@
    Label for managing the Blog Jetpack Connection section
    Title for the Jetpack Manage Connection Screen */
 "Manage Connection" = "Управление на връзката";
-
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Управление на сайтовете";
 
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Управление на сайт";
@@ -1897,9 +1870,6 @@
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Близки седмици";
 
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Най-новите публикации от блоговете и сайтовете, за които сте абонирани, ще се показват тук.";
-
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Получател";
 
@@ -2104,7 +2074,6 @@
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Настройки";
@@ -2184,10 +2153,6 @@
 
 /* Setting: indicates if New Follows will be notified */
 "Site follows" = "Абонирания за сайта";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Сайтове";
 
 /* Image size option title. */
 "Size" = "Размер";
@@ -2405,9 +2370,6 @@
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Сървърът върна празен отговор. Това обикновено значи, че трябва да вдигнете паметта на сайта си.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Сайтът %@ повече няма да се появява във вашия Reader. Натиснете, за да отмените това.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Адресът на сайта трябва да е по-кратък от 64 символа.";
 
@@ -2419,9 +2381,6 @@
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Сайтът не може да бъде експортиран.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Сайтовете в този списък нямат скорошни публикации.";
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "Този потребител не може да бъде открит. Моля, потвърдете че сте го изписали правилно.";
@@ -2491,9 +2450,6 @@
 /* An error message display if the users device does not have a camera input available */
 "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this." = "Това приложение се нуждае от разрешение да използва камерата, за да може да заснема. Моля, променете вашите настройки за поверителност ако искате да разрешите това.";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Този сайт няма публикации. Моля опитайте по-късно.";
-
 /* A description of the twitter sharing setting.
    Information about the twitter sharing feature. */
 "This will be included in tweets when people share using the Twitter button." = "Това ще бъде включено в туитовете при споделяне чрез бутона на Twitter.";
@@ -2536,9 +2492,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Тема";
-
-/* Topics Filter Tab Title */
-"Topics" = "Теми";
 
 /* Label for total followers */
 "Total" = "Общо";
@@ -2615,13 +2568,6 @@
    Revert enabling notification after successfully subcribing to the comments for the post.
    Undo action */
 "Undo" = "Връщане";
-
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Отабониране";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Отабонирахте се за сайта";
 
 /* Label for size of media when it's not possible to calculate it.
    Unknown Tag Name */

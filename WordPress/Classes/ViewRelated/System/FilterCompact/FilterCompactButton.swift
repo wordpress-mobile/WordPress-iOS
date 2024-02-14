@@ -47,7 +47,7 @@ struct FilterCompactButton<Value, Content: View, Label: View>: View {
         let label = makeLabel()
             .lineLimit(1)
             .foregroundStyle(Color.primary)
-            .font(.callout)
+            .font(.subheadline)
         switch contentStyle {
         case .menu:
             Menu(content: content) { label }

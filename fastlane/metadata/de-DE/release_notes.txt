@@ -1,5 +1,1 @@
-Wenn du Text-Blöcke im Editor bearbeitest, verschwindet die Tastatur deines Geräts nicht mehr mitten in der Bearbeitung. Der Editor scrollt auch direkt zu einem neuen Block, wenn du ihn hinzufügst. Viel Spaß beim Schreiben.
-
-Vermisst du das Anmelden mit deinen Sicherheitsschlüsseln? Jetzt nicht mehr! Wir haben die Sicherheitsschlüssel für die zweistufige Authentifizierung beim Anmelden wieder aktiviert. Nur du kannst dich in deinem Konto anmelden.
-
-Schließlich haben wir mehrere seltene (und nicht so seltene) Probleme behoben, die zu App-Abstürzen führten. Diese Probleme standen hauptsächlich im Zusammenhang mit der Bearbeitung von Schlagwörtern und Kategorien, der Verwendung von doppelten Schlagwörtern, dem Löschen von Beiträgen und der Bearbeitung von gelöschten Beiträgen. Das ist doch selbstverständlich.
+Wir haben ein Problem behoben, wodurch Bilder und andere Medien während des Uploads kurz verschwanden. Jetzt ist alles jederzeit sichtbar.

@@ -1,9 +1,5 @@
-Du kannst jetzt einen WordPress-Tarif mit einer kostenlosen Domain im Domain-Dashboard erhalten. Wir haben auch einige Verbesserungen am Website-Domains-Bildschirm vorgenommen, sodass es noch einfacher ist, deine Domains zu verwalten.
+Lieber Leser, wir haben der Inhaltsnavigation und der Filterfunktion ein neues Erscheinungsbild hinzugefügt. Das heißt: Wenn du nach Beiträgen suchst, kannst du die für dich relevantesten nun besser finden und den Rest ignorieren.
 
-Wenn du Text-Blöcke im Editor bearbeitest, verschwindet die Tastatur deines Geräts nicht mehr mitten in der Bearbeitung. Der Editor scrollt auch direkt zu einem neuen Block, wenn du ihn hinzufügst. Viel Spaß beim Schreiben.
+Wir haben ein Problem behoben, wodurch Bilder und andere Medien während des Uploads kurz verschwanden. Jetzt ist alles jederzeit sichtbar.
 
-Vermisst du das Anmelden mit deinen Sicherheitsschlüsseln? Jetzt nicht mehr! Wir haben die Sicherheitsschlüssel für die zweistufige Authentifizierung beim Anmelden wieder aktiviert. Nur du kannst dich in deinem Konto anmelden.
-
-Wir haben die Farben des Anmeldebildschirms aktualisiert, um sowohl WordPress als auch Jetpack zu entsprechen. Einer für alle, alle für einen.
-
-Zuletzt haben wir verschiedene Code-Korrekturen vorgenommen und mehrere seltene (und nicht so seltene) Probleme behoben, die zu App-Abstürzen führten. Diese Probleme standen hauptsächlich im Zusammenhang mit der Bearbeitung von Schlagwörtern und Kategorien, der Verwendung von doppelten Schlagwörtern, dem Löschen von Beiträgen und der Bearbeitung von gelöschten Beiträgen. Das ist doch selbstverständlich.
+Zu guter Letzt haben wir neue Menüelemente für die Website-Überwachung hinzugefügt, einschließlich Metriken, PHP- und Webserver-Protokolle. So behältst du deine Website besser im Auge. (Aber sei unbesorgt: Es besteht keine Fluchtgefahr.)
