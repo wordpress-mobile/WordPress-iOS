@@ -182,15 +182,12 @@ private extension NotificationCommentDetailViewController {
     }
 
     private func makeNewContent(with comment: Comment) -> Content {
-        if let blog = comment.blog,
-           let blogID = blog.dotComID,
-           let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: blogID, source: .commentNotification),
-           blog.supports(.wpComRESTAPI),
-           !comment.allowsModeration() {
-            readerComments.navigateToCommentID = commentID
-            readerComments.allowsPushingPostDetails = true
-            return .readerComments(readerComments)
-        } else {
+        guard !comment.allowsModeration(),
+              let blog = comment.blog,
+              blog.supports(.wpComRESTAPI),
+              let blogID = blog.dotComID,
+              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: blogID, source: .commentNotification)
+        else {
             let viewController = CommentDetailViewController(
                 comment: comment,
                 notification: notification,
@@ -199,6 +196,9 @@ private extension NotificationCommentDetailViewController {
             )
             return .commentDetails(viewController)
         }
+        readerComments.navigateToCommentID = commentID
+        readerComments.allowsPushingPostDetails = true
+        return .readerComments(readerComments)
     }
 
     func loadComment() {
