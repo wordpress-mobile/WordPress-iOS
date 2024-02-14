@@ -356,6 +356,11 @@ private extension NotificationCommentDetailViewController {
 
     // MARK: - Types
 
+    /// The `Content` enum defines the types of view controllers that can be presented in the `NotificationCommentDetailViewController`.
+    /// It differentiates the content based on the comment's moderation capabilities.
+    ///
+    /// - `commentDetails`: A view controller for comments that permit moderation actions.
+    /// - `readerComments`: A view controller for comments that do not allow moderation.
     private enum Content {
 
         case commentDetails(CommentDetailViewController)
