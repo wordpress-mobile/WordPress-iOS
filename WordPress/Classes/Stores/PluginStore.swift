@@ -803,7 +803,7 @@ private extension PluginStore {
     }
 
     private func selfHostedRemoteClient(site: JetpackSiteRef) -> PluginManagementClient? {
-        guard let remote = BlogService.blog(with: site)?.wordPressOrgRestApi else {
+        guard let remote = BlogService.blog(with: site)?.selfHostedSiteRestApi else {
             return nil
         }
 
