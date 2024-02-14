@@ -889,7 +889,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (WordPressOrgRestApi *)wordPressOrgRestApi
 {
     if (_wordPressOrgRestApi == nil) {
-        _wordPressOrgRestApi = [[WordPressOrgRestApi alloc] initWithBlog:self];
+        _wordPressOrgRestApi = self.account == nil ? [[WordPressOrgRestApi alloc] initWithBlog:self] : nil;
     }
     return _wordPressOrgRestApi;
 }

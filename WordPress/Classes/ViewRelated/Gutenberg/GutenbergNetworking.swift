@@ -70,37 +70,36 @@ struct GutenbergNetworkRequest {
             return
         }
 
+        let task: Task<WordPressAPIResult<Any, WordPressOrgRestApiError>, Never>
+
         switch method {
         case .get:
-            api.GET(path, parameters: nil) { (result, httpResponse) in
-                switch result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if handleEmbedError(path: path, error: error, completion: completion) {
-                        return
-                    }
-                    completion(.failure(error as NSError))
-                }
+            task = Task {
+                await api.get(path: path)
             }
         case .post:
-            api.POST(path, parameters: data) { (result, httpResponse) in
-                switch result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if handleEmbedError(path: path, error: error, completion: completion) {
-                        return
-                    }
-                    completion(.failure(error as NSError))
+            task = Task {
+                await api.post(path: path, parameters: data ?? [:])
+            }
+        }
+
+        Task { @MainActor in
+            let result = await task.value
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                if handleEmbedError(path: path, error: error, completion: completion) {
+                    return
                 }
+                completion(.failure(error as NSError))
             }
         }
     }
 
-    private func handleEmbedError(path: String, error: Error, completion: @escaping CompletionHandler) -> Bool {
+    private func handleEmbedError(path: String, error: WordPressAPIError<WordPressOrgRestApiError>, completion: @escaping CompletionHandler) -> Bool {
         if path.starts(with: "/oembed/1.0/") {
-            if let error = error as? AFError, error.responseCode == 404 {
+            if case let .unacceptableStatusCode(response: response, body: _) = error, response.statusCode == 404 {
                 completion(.failure(URLError(URLError.Code(rawValue: 404)) as NSError))
                 return true
             }

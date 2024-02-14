@@ -37,15 +37,29 @@ private func apiBase(blog: Blog) -> URL? {
 }
 
 extension WordPressOrgRestApi {
-    @objc public convenience init?(blog: Blog) {
-        guard let apiBase = apiBase(blog: blog),
-            let authenticator = makeAuthenticator(blog: blog) else {
+    @objc
+    convenience init?(blog: Blog) {
+        if let dotComID = blog.dotComID?.uint64Value,
+           let token = blog.account?.authToken,
+           token.count > 0 {
+            self.init(dotComSiteID: dotComID, bearerToken: token, userAgent: WPUserAgent.wordPress())
+        } else if let apiBase = apiBase(blog: blog),
+                  let loginURL = try? blog.loginUrl().asURL(),
+                  let adminURL = try? blog.adminUrl(withPath: "").asURL(),
+                  let username = blog.username,
+                  let password = blog.password {
+            self.init(
+                selfHostedSiteWPJSONURL: apiBase,
+                credential: .init(
+                    loginURL: loginURL,
+                    username: username,
+                    password: password,
+                    adminURL: adminURL
+                ),
+                userAgent: WPUserAgent.wordPress()
+            )
+        } else {
             return nil
         }
-        self.init(
-            apiBase: apiBase,
-            authenticator: authenticator,
-            userAgent: WPUserAgent.wordPress()
-        )
     }
 }
