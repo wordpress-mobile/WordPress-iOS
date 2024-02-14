@@ -1,4 +1,7 @@
 {
+  "scenarioName": "reader_subscriptions_flow",
+  "requiredScenarioState": "Started",
+  "newScenarioState": "initial_subscriptions_list",
   "request": {
     "method": "GET",
     "urlPath": "/rest/v1.2/read/following"
