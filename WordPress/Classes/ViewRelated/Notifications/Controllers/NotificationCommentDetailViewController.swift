@@ -170,7 +170,7 @@ private extension NotificationCommentDetailViewController {
             commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
             self.content?.viewController.remove()
-            let newContent = makeNewContent(with: comment)
+            let newContent = makeNewContent(with: comment, notification: notification)
             let viewController = newContent.viewController
             viewController.view.translatesAutoresizingMaskIntoConstraints = false
             self.add(viewController)
@@ -181,12 +181,23 @@ private extension NotificationCommentDetailViewController {
         self.configureNavBarButtons()
     }
 
-    private func makeNewContent(with comment: Comment) -> Content {
+    /// Creates content based on a comment's moderation ability.
+    /// If the comment does not allow moderation, and the blog supports WordPress.com REST API capability,
+    /// it returns a `ReaderCommentsViewController`. Otherwise, it defaults to a `CommentDetailViewController`.
+    ///
+    /// - Parameters:
+    ///   - comment: The comment object, used to check moderation capabilities.
+    ///   - notification: The notification object, used for additional information like site ID.
+    ///
+    /// - Returns: Either `.readerComments` with a `ReaderCommentsViewController` or `.commentDetails` with a `CommentDetailViewController`.
+    private func makeNewContent(with comment: Comment, notification: Notification) -> Content {
+        let blogSupportsWpcomRestAPI: Bool = {
+            return blog?.supports(.wpComRESTAPI) ?? true
+        }()
         guard !comment.allowsModeration(),
-              let blog = comment.blog,
-              blog.supports(.wpComRESTAPI),
-              let blogID = blog.dotComID,
-              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: blogID, source: .commentNotification)
+              blogSupportsWpcomRestAPI,
+              let siteID = notification.metaSiteID,
+              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: siteID, source: .commentNotification)
         else {
             let viewController = CommentDetailViewController(
                 comment: comment,
