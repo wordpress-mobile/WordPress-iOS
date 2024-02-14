@@ -82,7 +82,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version:),
+      branch: git_branch, # use current branch to get all the hacks
       pipeline_file: File.join(PIPELINES_ROOT, 'new-hotfix.yml'),
       message: "Set up new hotfix version #{release_version}",
       environment: { VERSION: version }
