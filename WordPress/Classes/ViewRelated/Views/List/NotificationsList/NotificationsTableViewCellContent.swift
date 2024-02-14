@@ -59,7 +59,6 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
                 Spacer()
             }
-            .offset(x: 0, y: info.avatarStyle.verticalOffset)
             .padding(.trailing, Length.Padding.double)
         }
 
@@ -67,7 +66,8 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(spacing: 0) {
                 if info.shouldShowIndicator {
                     indicator
-                        .padding(.horizontal, Length.Padding.single)
+                        .padding(.leading, Length.Padding.single)
+                        .padding(.trailing, Length.Padding.split)
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
@@ -85,7 +85,7 @@ fileprivate extension NotificationsTableViewCellContent {
         }
 
         private var textsVStack: some View {
-            VStack(alignment: .leading, spacing: Length.Padding.half) {
+            VStack(alignment: .leading, spacing: 0) {
                 Text(info.title)
                     .style(.bodySmall(.regular))
                     .foregroundStyle(Color.DS.Foreground.primary)
@@ -96,6 +96,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
                         .lineLimit(2)
+                        .padding(.top, Length.Padding.half)
                 }
             }
         }
