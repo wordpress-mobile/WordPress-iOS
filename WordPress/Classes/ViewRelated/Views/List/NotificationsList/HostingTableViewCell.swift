@@ -23,5 +23,7 @@ class HostingTableViewCell<Content: View>: UITableViewCell {
             swiftUICellViewController.didMove(toParent: parent)
             swiftUICellViewController.view.layoutIfNeeded()
         }
+
+        self.controller?.view.invalidateIntrinsicContentSize()
     }
 }
