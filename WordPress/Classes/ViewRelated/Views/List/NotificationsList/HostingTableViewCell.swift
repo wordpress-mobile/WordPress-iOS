@@ -13,15 +13,12 @@ class HostingTableViewCell<Content: View>: UITableViewCell {
             controller = swiftUICellViewController
             swiftUICellViewController.view.backgroundColor = .clear
 
-            layoutIfNeeded()
-
             parent.addChild(swiftUICellViewController)
             contentView.addSubview(swiftUICellViewController.view)
             swiftUICellViewController.view.translatesAutoresizingMaskIntoConstraints = false
             contentView.pinSubviewToAllEdges(swiftUICellViewController.view)
 
             swiftUICellViewController.didMove(toParent: parent)
-            swiftUICellViewController.view.layoutIfNeeded()
         }
 
         self.controller?.view.invalidateIntrinsicContentSize()
