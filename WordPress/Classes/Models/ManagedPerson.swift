@@ -2,6 +2,7 @@ import Foundation
 import CoreData
 import WordPressKit
 import WordPressUI
+import Gravatar
 
 public typealias Person = RemotePerson
 
@@ -10,7 +11,7 @@ public typealias Person = RemotePerson
 class ManagedPerson: NSManagedObject {
 
     func updateWith<T: Person>(_ person: T) {
-        let canonicalAvatarURL = person.avatarURL.flatMap { Gravatar($0)?.canonicalURL }
+        let canonicalAvatarURL = person.avatarURL.flatMap { GravatarURL($0)?.canonicalURL }
 
         avatarURL = canonicalAvatarURL?.absoluteString
         displayName = person.displayName
