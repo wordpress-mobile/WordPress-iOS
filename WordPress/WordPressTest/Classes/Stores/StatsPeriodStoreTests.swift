@@ -28,7 +28,7 @@ class StatsPeriodStoreTests: XCTestCase {
         let referrerTwo = StatsReferrer(title: "A title", viewsCount: 0, url: secondURL, iconURL: nil, children: [])
         sut.state.topReferrers = .init(period: .month, periodEndDate: Date(), referrers: [referrerOne, referrerTwo], totalReferrerViewsCount: 0, otherReferrerViewsCount: 0)
 
-        sut.toggleSpamState(for: referrerOne.url?.host ?? "", currentValue: referrerOne.isSpam)
+        sut.actionDispatcher.dispatch(PeriodAction.toggleSpam(referrerDomain: referrerOne.url?.host ?? "", currentValue: referrerOne.isSpam))
 
         XCTAssertTrue(sut.state.topReferrers!.referrers[0].isSpam)
         XCTAssertFalse(sut.state.topReferrers!.referrers[1].isSpam)
@@ -46,7 +46,7 @@ class StatsPeriodStoreTests: XCTestCase {
         let referrerTwo = StatsReferrer(title: "A title", viewsCount: 0, url: secondURL, iconURL: nil, children: [])
         sut.state.topReferrers = .init(period: .month, periodEndDate: Date(), referrers: [referrerOne, referrerTwo], totalReferrerViewsCount: 0, otherReferrerViewsCount: 0)
 
-        sut.toggleSpamState(for: referrerOne.url?.host ?? "", currentValue: referrerOne.isSpam)
+        sut.actionDispatcher.dispatch(PeriodAction.toggleSpam(referrerDomain: referrerOne.url?.host ?? "", currentValue: referrerOne.isSpam))
 
         XCTAssertFalse(sut.state.topReferrers!.referrers[0].isSpam)
         XCTAssertFalse(sut.state.topReferrers!.referrers[1].isSpam)
