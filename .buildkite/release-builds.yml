@@ -15,28 +15,9 @@ common_params:
 
 steps:
 
-  - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
-    command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
-    # The TestFlight build has a priority of 2 so that it is higher than the AppCenter build
-    priority: 2
+  - label: "Test release build for hotfix "
+    command: |
+      echo "beta release parameter: $BETA_RELEASE"
+      echo "beta release parameter: $BETA_RELEASE"
     env: *common_env
     plugins: *common_plugins
-    notify:
-    - slack: "#build-and-ship"
-
-  - label: ":wordpress: :appcenter: WordPress Release Build (App Center)"
-    command: ".buildkite/commands/release-build-wordpress-internal.sh"
-    priority: 1
-    env: *common_env
-    plugins: *common_plugins
-    notify:
-    - slack: "#build-and-ship"
-
-  - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
-    command: ".buildkite/commands/release-build-jetpack.sh"
-    # The TestFlight build has a priority of 2 so that it is higher than the AppCenter build
-    priority: 2
-    env: *common_env
-    plugins: *common_plugins
-    notify:
-    - slack: "#build-and-ship"
