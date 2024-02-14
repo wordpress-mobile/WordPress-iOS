@@ -126,6 +126,7 @@ struct StatsTrafficBarChartMockData {
 
         static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
             period: .day,
+            unit: .day,
             periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
             summaryData: statsSummaryData
         )
@@ -213,6 +214,7 @@ struct StatsTrafficBarChartMockData {
 
         static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
             period: .week,
+            unit: .day,
             periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
             summaryData: statsSummaryData
         )
@@ -356,6 +358,7 @@ struct StatsTrafficBarChartMockData {
 
         static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
             period: .month,
+            unit: .week,
             periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
             summaryData: statsSummaryData
         )
@@ -443,6 +446,7 @@ struct StatsTrafficBarChartMockData {
 
         static let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
             period: .week,
+            unit: .day,
             periodEndDate: Date(timeIntervalSinceReferenceDate: 727315200.0),
             summaryData: statsSummaryData
         )
