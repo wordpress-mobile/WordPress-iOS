@@ -3,6 +3,7 @@ import Gridicons
 
 // MARK: - Shared Rows
 
+// TODO: Remove with SiteStatsPeriodViewModelDeprecated
 struct OverviewRow: ImmuTableRow {
 
     typealias CellType = OverviewCell
@@ -26,6 +27,25 @@ struct OverviewRow: ImmuTableRow {
         }
 
         cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
+    }
+}
+
+struct StatsTrafficBarChartRow: ImmuTableRow {
+    typealias CellType = StatsTrafficBarChartCell
+    let action: ImmuTableAction?
+    let tabsData: [StatsTrafficBarChartTabData]
+    let chartData: [BarChartDataConvertible]
+    let chartStyling: [StatsTrafficBarChartStyling]
+    let period: StatsPeriodUnit?
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(CellType.self)
+    }()
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else { return }
+
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period)
     }
 }
 
