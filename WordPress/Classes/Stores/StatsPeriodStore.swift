@@ -18,9 +18,8 @@ enum PeriodType: CaseIterable {
 
 enum PeriodAction: Action {
 
-    // Period overview
+    // TODO: Remove together with SiteStatsPeriodViewModelDeprecated
     case refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit, forceRefresh: Bool)
-    case refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int)
     case refreshPeriod(query: PeriodQuery)
     case toggleSpam(referrerDomain: String, currentValue: Bool)
 }
@@ -37,6 +36,7 @@ enum PeriodQuery {
     case allPublished(date: Date, period: StatsPeriodUnit)
     case allFileDownloads(date: Date, period: StatsPeriodUnit)
     case postStats(postID: Int)
+    case trafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int)
 
     var postID: Int? {
         switch self {
@@ -69,6 +69,8 @@ enum PeriodQuery {
             return date
         case .allFileDownloads(let date, _):
             return date
+        case .trafficOverviewData(let date, _, _, _):
+            return date
         default:
             return StatsDataHelper.currentDateForSite().normalizedDate()
         }
@@ -95,6 +97,8 @@ enum PeriodQuery {
         case .allPublished( _, let period):
             return period
         case .allFileDownloads( _, let period):
+            return period
+        case .trafficOverviewData(_, let period, _, _):
             return period
         default:
             return .day
@@ -181,8 +185,6 @@ class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
         switch periodAction {
         case .refreshPeriodOverviewData(let date, let period, let forceRefresh):
             refreshPeriodOverviewData(date: date, period: period, forceRefresh: forceRefresh)
-        case .refreshTrafficOverviewData(let date, let period, let unit, let limit):
-            refreshTrafficOverviewData(date: date, period: period, unit: unit, limit: limit)
         case .refreshPeriod(let query):
             refreshPeriodData(for: query)
         case .toggleSpam(let referrerDomain, let currentValue):
@@ -277,6 +279,8 @@ private extension StatsPeriodStore {
             if shouldFetchPostStats(for: query.postID) {
                 fetchPostStats(postID: query.postID)
             }
+        case .trafficOverviewData(let date, let period, let unit, let limit):
+            refreshTrafficOverviewData(date: date, period: period, unit: unit, limit: limit)
         }
     }
 
@@ -1260,6 +1264,7 @@ extension StatsPeriodStore {
 
     var fetchingOverviewHasFailed: Bool {
         return [state.timeIntervalsSummaryStatus,
+                state.totalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -1295,6 +1300,8 @@ extension StatsPeriodStore {
             return topFileDownloadsStatus == .error
         case .postStats(let postId):
             return state.postStatsFetchingStatuses[postId] == .error
+        case .trafficOverviewData(let date, let period, let unit, let limit):
+            return fetchingOverviewHasFailed
         }
     }
 

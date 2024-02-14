@@ -65,12 +65,13 @@ class SiteStatsPeriodViewModel: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: unit(from: lastRequestedPeriod)))
-        store.actionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(
-            date: lastRequestedDate,
-            period: lastRequestedPeriod,
-            unit: unit(from: lastRequestedPeriod),
-            limit: limit(for: lastRequestedPeriod))
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                date: lastRequestedDate,
+                period: lastRequestedPeriod,
+                unit: unit(from: lastRequestedPeriod),
+                limit: limit(for: lastRequestedPeriod)
+            )
         )
     }
 
@@ -216,11 +217,13 @@ class SiteStatsPeriodViewModel: Observable {
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshTrafficOverviewData(
-            date: date,
-            period: period,
-            unit: unit(from: period),
-            limit: limit(for: period))
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                date: date,
+                period: period,
+                unit: unit(from: period),
+                limit: limit(for: period)
+            )
         )
     }
 
