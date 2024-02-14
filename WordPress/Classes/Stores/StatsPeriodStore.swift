@@ -1300,7 +1300,7 @@ extension StatsPeriodStore {
             return topFileDownloadsStatus == .error
         case .postStats(let postId):
             return state.postStatsFetchingStatuses[postId] == .error
-        case .trafficOverviewData(let date, let period, let unit, let limit):
+        case .trafficOverviewData:
             return fetchingOverviewHasFailed
         }
     }
