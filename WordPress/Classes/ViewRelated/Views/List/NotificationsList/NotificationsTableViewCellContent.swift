@@ -5,7 +5,7 @@ struct NotificationsTableViewCellContent: View {
     static let reuseIdentifier = String(describing: Self.self)
     enum Style {
         struct Regular {
-            let title: String
+            let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
@@ -83,13 +83,15 @@ fileprivate extension NotificationsTableViewCellContent {
                 .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                 .frame(width: Length.Padding.single)
         }
-
+        
         private var textsVStack: some View {
             VStack(alignment: .leading, spacing: 0) {
-                Text(info.title)
-                    .style(.bodySmall(.regular))
-                    .foregroundStyle(Color.DS.Foreground.primary)
-                    .lineLimit(2)
+                if let title = info.title {
+                    Text(title)
+                        .style(.bodySmall(.regular))
+                        .foregroundStyle(Color.DS.Foreground.primary)
+                        .lineLimit(2)
+                }
 
                 if let description = info.description {
                     Text(description)
