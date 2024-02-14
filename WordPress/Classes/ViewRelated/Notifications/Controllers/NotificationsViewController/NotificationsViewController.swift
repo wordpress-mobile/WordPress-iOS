@@ -466,18 +466,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return configuration
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let note = sender as? Notification else {
-            return
-        }
-
-        guard let detailsViewController = segue.destination as? NotificationDetailsViewController else {
-            return
-        }
-
-        configureDetailsViewController(detailsViewController, withNote: note)
-    }
-
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
         detailsViewController.hidesBottomBarWhenPushed = true
@@ -826,13 +814,8 @@ extension NotificationsViewController {
             note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
-            if shouldPushDetailsViewController {
-                readerViewController.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(readerViewController, animated: true)
-            } else {
-                showDetailViewController(readerViewController, sender: nil)
-            }
-
+            readerViewController.hidesBottomBarWhenPushed = true
+            displayViewController(readerViewController)
             return
         }
 
@@ -853,45 +836,48 @@ extension NotificationsViewController {
             guard let self = self else {
                 return
             }
-
             self.view.isUserInteractionEnabled = true
-
+            let viewController: UIViewController?
             if note.kind == .comment {
-                guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
-                    DDLogError("Notifications: failed creating Comment Detail view.")
-                    return
-                }
-
-                self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
-                    self?.selectRow(for: note)
-                }
-                commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-
-                if shouldPushDetailsViewController {
-                    commentDetailViewController.hidesBottomBarWhenPushed = true
-                    navigationController?.pushViewController(commentDetailViewController, animated: true)
-                } else {
-                    self.showDetailViewController(commentDetailViewController, sender: nil)
-                }
-                return
-            }
-            if shouldPushDetailsViewController {
-                presentDetailsWithNoTabBar(for: note)
+                viewController = getNotificationCommentDetailViewController(for: note)
             } else {
-                self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+                viewController = getNotificationDetailsViewController(for: note)
             }
+            guard let viewController = viewController else { return }
+            displayViewController(viewController)
         }
     }
 
-    private func presentDetailsWithNoTabBar(for note: Notification) {
+    private func getNotificationCommentDetailViewController(for note: Notification) -> NotificationCommentDetailViewController? {
+        guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
+            DDLogError("Notifications: failed creating Comment Detail view.")
+            return nil
+        }
+
+        self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+            self?.selectRow(for: note)
+        }
+        commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+        commentDetailViewController.hidesBottomBarWhenPushed = true
+        return commentDetailViewController
+    }
+
+    private func getNotificationDetailsViewController(for note: Notification) -> NotificationDetailsViewController? {
         let viewControllerID = NotificationDetailsViewController.classNameWithoutNamespaces()
         let detailsViewController = storyboard?.instantiateViewController(withIdentifier: viewControllerID)
         guard let detailsViewController = detailsViewController as? NotificationDetailsViewController else {
-            return
+            return nil
         }
-
         configureDetailsViewController(detailsViewController, withNote: note)
-        navigationController?.pushViewController(detailsViewController, animated: true)
+        return detailsViewController
+    }
+
+    private func displayViewController(_ controller: UIViewController) {
+        if shouldPushDetailsViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            showDetailViewController(controller, sender: nil)
+        }
     }
 
     /// Tracks: Details Event!
