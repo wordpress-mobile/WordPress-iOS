@@ -8,9 +8,9 @@ struct AvatarsView: View {
     }
 
     enum Style {
-        case single(URL)
-        case double(URL, URL)
-        case triple(URL, URL, URL)
+        case single(URL?)
+        case double(URL?, URL?)
+        case triple(URL?, URL?, URL?)
 
         var diameter: CGFloat {
             switch self {
@@ -70,9 +70,9 @@ struct AvatarsView: View {
         }
     }
 
-    private func avatar(url: URL) -> some View {
-        let processedURL: URL
-        if let gravatar = Gravatar(url) {
+    private func avatar(url: URL?) -> some View {
+        let processedURL: URL?
+        if let url, let gravatar = Gravatar(url) {
             let size = Int(ceil(style.diameter * UIScreen.main.scale))
             processedURL = gravatar.urlWithSize(size)
         } else {
@@ -89,7 +89,7 @@ struct AvatarsView: View {
         .clipShape(Circle())
     }
 
-    private func doubleAvatarView(primaryURL: URL, secondaryURL: URL) -> some View {
+    private func doubleAvatarView(primaryURL: URL?, secondaryURL: URL?) -> some View {
         ZStack {
             HStack {
                 avatar(url: secondaryURL)
@@ -104,9 +104,9 @@ struct AvatarsView: View {
     }
 
     private func tripleAvatarView(
-        primaryURL: URL,
-        secondaryURL: URL,
-        tertiaryURL: URL
+        primaryURL: URL?,
+        secondaryURL: URL?,
+        tertiaryURL: URL?
     ) -> some View {
         ZStack {
             HStack {
