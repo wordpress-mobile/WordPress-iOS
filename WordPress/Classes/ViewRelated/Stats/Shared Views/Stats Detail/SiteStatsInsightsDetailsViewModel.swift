@@ -565,7 +565,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshPostsAndPages(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPostsAndPages(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshSearchTerms() {
@@ -573,7 +573,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshSearchTerms(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allSearchTerms(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshVideos() {
@@ -581,7 +581,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshVideos(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allVideos(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshClicks() {
@@ -589,7 +589,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshClicks(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allClicks(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshAuthors() {
@@ -597,7 +597,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshAuthors(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allAuthors(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshReferrers() {
@@ -605,7 +605,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshReferrers(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allReferrers(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshCountries() {
@@ -613,7 +613,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshCountries(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allCountries(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPublished() {
@@ -621,7 +621,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPublished(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshFileDownloads() {
@@ -629,15 +629,14 @@ class SiteStatsInsightsDetailsViewModel: Observable {
               let selectedPeriod = selectedPeriod else {
             return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshFileDownloads(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allFileDownloads(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPostStats() {
         guard let postID = postID else {
             return
         }
-
-        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .postStats(postID: postID)))
     }
 
     // MARK: - Views & Visitors
@@ -695,7 +694,7 @@ private extension SiteStatsInsightsDetailsViewModel {
         case .periodFileDownloads:
             return .allFileDownloads(date: selectedDate, period: selectedPeriod)
         case .insightsViewsVisitors, .insightsLikesTotals:
-            return .periods(date: selectedDate, period: selectedPeriod)
+            return .allCachedPeriodData(date: selectedDate, period: selectedPeriod, unit: selectedPeriod)
         default:
             return nil
         }

@@ -328,7 +328,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshPostsAndPages(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPostsAndPages(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshSearchTerms() {
@@ -336,7 +336,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshSearchTerms(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allSearchTerms(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshVideos() {
@@ -344,7 +344,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshVideos(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allVideos(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshClicks() {
@@ -352,7 +352,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshClicks(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allClicks(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshAuthors() {
@@ -360,7 +360,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshAuthors(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allAuthors(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshReferrers() {
@@ -368,7 +368,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshReferrers(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allReferrers(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshCountries() {
@@ -376,7 +376,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshCountries(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allCountries(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPublished() {
@@ -384,7 +384,7 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshPublished(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allPublished(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshFileDownloads() {
@@ -392,15 +392,14 @@ class SiteStatsDetailsViewModel: Observable {
             let selectedPeriod = selectedPeriod else {
                 return
         }
-        ActionDispatcher.dispatch(PeriodAction.refreshFileDownloads(date: selectedDate, period: selectedPeriod))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .allFileDownloads(date: selectedDate, period: selectedPeriod)))
     }
 
     func refreshPostStats() {
         guard let postID = postID else {
             return
         }
-
-        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .postStats(postID: postID)))
     }
 }
 
