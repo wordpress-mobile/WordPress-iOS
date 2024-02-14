@@ -7,6 +7,7 @@ import WordPressAuthenticator
 import Gridicons
 import UIKit
 import WordPressUI
+import SwiftUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -331,8 +332,42 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
-        configureCell(cell, at: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationsTableViewCellContent.reuseIdentifier) as? HostingTableViewCell<NotificationsTableViewCellContent>,
+              let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
+            return UITableViewCell()
+        }
+        cell.selectionStyle = .none
+        let style: NotificationsTableViewCellContent.Style
+        if let deletionRequest = notificationDeletionRequests[note.objectID] {
+            style = .altered(
+                .init(
+                    text: deletionRequest.kind.legendText,
+                    action: { [weak self] in
+                        self?.cancelDeletionRequestForNoteWithID(note.objectID)
+                    }
+                )
+            )
+        } else {
+            let attributedTitle: AttributedString?
+            if let attributedSubject = note.renderSubject() {
+                attributedTitle = AttributedString(attributedSubject)
+            } else {
+                attributedTitle = nil
+            }
+            style = .regular(
+                .init(
+                    title: attributedTitle,
+                    description: note.renderSnippet()?.string,
+                    shouldShowIndicator: !note.read,
+                    avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL),
+                    actionIconName: nil
+                )
+            )
+        }
+
+        cell.accessibilityHint = Self.accessibilityHint(for: note)
+        cell.host(NotificationsTableViewCellContent(style: style), parent: self)
+
         return cell
     }
 
@@ -588,13 +623,17 @@ private extension NotificationsViewController {
     func setupTableView() {
         // Register the cells
         tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
-        tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
+        tableView.register(
+            HostingTableViewCell<NotificationsTableViewCellContent>.self,
+            forCellReuseIdentifier: NotificationsTableViewCellContent.reuseIdentifier
+        )
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tableView.backgroundColor = .systemBackground
+        tableView.separatorStyle = .none
         view.backgroundColor = .systemBackground
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
     }
