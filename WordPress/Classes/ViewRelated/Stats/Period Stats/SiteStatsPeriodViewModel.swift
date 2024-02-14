@@ -15,33 +15,10 @@ class SiteStatsPeriodViewModel: Observable {
     private let store: StatsPeriodStore
     private var selectedDate: Date
     private var lastRequestedDate: Date
-    private var lastRequestedPeriod: StatsPeriodUnit {
-        didSet {
-            if lastRequestedPeriod != oldValue {
-                mostRecentChartData = nil
-            }
-        }
-    }
+    private var lastRequestedPeriod: StatsPeriodUnit
     private var periodReceipt: Receipt?
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
-
-    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
-
-    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
-        didSet {
-            if oldValue == nil {
-                guard let mostRecentChartData = mostRecentChartData else {
-                    return
-                }
-
-                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate <= selectedDate })
-                    ?? max(mostRecentChartData.summaryData.count - 1, 0)
-            }
-        }
-    }
-
-    private var currentEntryIndex: Int = 0
 
     private let calendar: Calendar = .current
 
@@ -76,8 +53,7 @@ class SiteStatsPeriodViewModel: Observable {
     }
 
     func isFetchingChart() -> Bool {
-        return store.isFetchingSummary &&
-            mostRecentChartData == nil
+        return store.isFetchingSummary
     }
 
     func fetchingFailed() -> Bool {
@@ -103,15 +79,11 @@ class SiteStatsPeriodViewModel: Observable {
 
         var sections: [ImmuTableSection] = []
 
-        // TODO: Replace with a new Bar Chart
         sections.append(.init(rows: blocks(for: .timeIntervalsSummary,
                                             type: .period,
-                                            status: store.timeIntervalsSummaryStatus,
-                                            checkingCache: { [weak self] in
-                                                return self?.mostRecentChartData != nil
-            },
+                                            status: barChartFetchingStatus(),
                                             block: { [weak self] in
-                                                return self?.overviewTableRows() ?? summaryErrorBlock()
+                                                return self?.barChartRows() ?? summaryErrorBlock()
             }, loading: {
                 return [StatsGhostChartImmutableRow()]
         }, error: summaryErrorBlock)))
@@ -212,6 +184,19 @@ class SiteStatsPeriodViewModel: Observable {
         return ImmuTable(sections: sections)
     }
 
+    func barChartFetchingStatus() -> StoreFetchingStatus {
+        switch (store.timeIntervalsSummaryStatus, store.totalsSummaryStatus) {
+        case (.success, .success):
+            return .success
+        case (.loading, _), (_, .loading):
+            return .loading
+        case (.error, _), (_, .error):
+            return .error
+        default:
+            return .idle
+        }
+    }
+
     // MARK: - Refresh Data
 
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
@@ -229,31 +214,10 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Chart Date
 
-    func chartDate(for entryIndex: Int) -> Date? {
-        if let summaryData = mostRecentChartData?.summaryData,
-            summaryData.indices.contains(entryIndex) {
-            currentEntryIndex = entryIndex
-            return summaryData[entryIndex].periodStartDate
-        }
-        return nil
-    }
-
     func updateDate(forward: Bool) -> Date? {
-        if forward {
-            currentEntryIndex += 1
-        } else {
-            currentEntryIndex -= 1
-        }
-
-        guard let nextDate = chartDate(for: currentEntryIndex) else {
-            // The date doesn't exist in the chart data... we need to manually calculate it and request
-            // a refresh.
-            let increment = forward ? 1 : -1
-            let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
-            refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
-            return nextDate
-        }
-
+        let increment = forward ? 1 : -1
+        let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
+        refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
         return nextDate
     }
 }
@@ -264,141 +228,72 @@ private extension SiteStatsPeriodViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [ImmuTableRow] {
+    func barChartRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        let periodSummary = store.getSummary()
-        let summaryData = periodSummary?.summaryData ?? []
+        let chartSummary = store.getSummary()
+        let chartSumaryData = chartSummary?.summaryData ?? []
+        let totalsSummary = store.getTotalsSummary()
+        let totalsSummaryData = totalsSummary != nil ? [totalsSummary!] : []
 
-        if mostRecentChartData == nil {
-            mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-            let periodSummary = periodSummary,
-            mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
-            self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary,   // when there is API data that has more recent API period date
-                  let chartData = mostRecentChartData, // than our local chartData
-                  periodSummary.periodEndDate > chartData.periodEndDate {
+        let periodDate = chartSummary?.periodEndDate
+        let period = chartSummary?.period
 
-            // we validate if our periodDates match and if so we set the currentEntryIndex to the last index of the summaryData
-            // fixes issue #19688
-            if let lastSummaryDataEntry = summaryData.last,
-               periodSummary.periodEndDate == lastSummaryDataEntry.periodStartDate {
-                mostRecentChartData = periodSummary
-                currentEntryIndex = summaryData.count - 1
-            } else {
-                mostRecentChartData = chartData
-            }
-        }
+        let viewsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewViews.tabTitle,
+            tabData: totalsSummaryData.first?.viewsCount ?? 0,
+            difference: 0,
+            differencePercent: 0,
+            date: periodDate,
+            period: period
+        )
 
-        let periodDate = summaryData.indices.contains(currentEntryIndex) ? summaryData[currentEntryIndex].periodStartDate : nil
-        let period = periodSummary?.period
+        let visitorsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewVisitors.tabTitle,
+            tabData: totalsSummaryData.first?.visitorsCount ?? 0,
+            difference: 0,
+            differencePercent: 0,
+            date: periodDate,
+            period: period
+        )
 
-        let viewsData = intervalData(summaryType: .views)
-        let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
-                                           tabData: viewsData.count,
-                                           difference: viewsData.difference,
-                                           differencePercent: viewsData.percentage,
-                                           date: periodDate,
-                                           period: period,
-                                           analyticsStat: .statsOverviewTypeTappedViews,
-                                           accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint)
+        let likesTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewLikes.tabTitle,
+            tabData: totalsSummaryData.first?.likesCount ?? 0,
+            difference: 0,
+            differencePercent: 0,
+            date: periodDate,
+            period: period
+        )
 
-        let visitorsData = intervalData(summaryType: .visitors)
-        let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
-                                              tabData: visitorsData.count,
-                                              difference: visitorsData.difference,
-                                              differencePercent: visitorsData.percentage,
-                                              date: periodDate,
-                                              period: period,
-                                              analyticsStat: .statsOverviewTypeTappedVisitors,
-                                              accessibilityHint: StatSection.periodOverviewVisitors.tabAccessibilityHint)
-
-        let likesData = intervalData(summaryType: .likes)
-        // If Summary Likes is still loading, show dashes (instead of 0)
-        // to indicate it's still loading.
-        let likesLoadingStub = likesData.count > 0 ? nil : (store.isFetchingSummary ? "----" : nil)
-        let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
-                                           tabData: likesData.count,
-                                           tabDataStub: likesLoadingStub,
-                                           difference: likesData.difference,
-                                           differencePercent: likesData.percentage,
-                                           date: periodDate,
-                                           period: period,
-                                           analyticsStat: .statsOverviewTypeTappedLikes,
-                                           accessibilityHint: StatSection.periodOverviewLikes.tabAccessibilityHint)
-
-        let commentsData = intervalData(summaryType: .comments)
-        let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
-                                              tabData: commentsData.count,
-                                              difference: commentsData.difference,
-                                              differencePercent: commentsData.percentage,
-                                              date: periodDate,
-                                              period: period,
-                                              analyticsStat: .statsOverviewTypeTappedComments,
-                                              accessibilityHint: StatSection.periodOverviewComments.tabAccessibilityHint)
+        let commentsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewComments.tabTitle,
+            tabData: totalsSummaryData.first?.commentsCount ?? 0,
+            difference: 0,
+            differencePercent: 0,
+            date: periodDate,
+            period: period
+        )
 
         var barChartData = [BarChartDataConvertible]()
-        var barChartStyling = [BarChartStyling]()
-        var indexToHighlight: Int?
-        if let chartData = mostRecentChartData {
-            let chart = PeriodChart(data: chartData)
-
+        var barChartStyling = [StatsTrafficBarChartStyling]()
+        if let chartData = chartSummary {
+            let chart = StatsTrafficBarChart(data: chartData)
             barChartData.append(contentsOf: chart.barChartData)
             barChartStyling.append(contentsOf: chart.barChartStyling)
-
-            indexToHighlight = chartData.summaryData.lastIndex(where: {
-                $0.periodStartDate.normalizedDate() <= selectedDate.normalizedDate()
-            })
         }
 
-        let row = OverviewRow(
+        let row = StatsTrafficBarChartRow(
+            action: nil,
             tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
             chartData: barChartData,
             chartStyling: barChartStyling,
-            period: lastRequestedPeriod,
-            statsBarChartViewDelegate: statsBarChartViewDelegate,
-            chartHighlightIndex: indexToHighlight)
+            period: unit(from: lastRequestedPeriod)
+        )
+
         tableRows.append(row)
 
         return tableRows
-    }
-
-    func intervalData(summaryType: StatsSummaryType) -> (count: Int, difference: Int, percentage: Int) {
-            guard let summaryData = mostRecentChartData?.summaryData,
-                summaryData.indices.contains(currentEntryIndex) else {
-                return (0, 0, 0)
-            }
-
-            let currentInterval = summaryData[currentEntryIndex]
-            let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
-
-            let currentCount: Int
-            let previousCount: Int
-            switch summaryType {
-            case .views:
-                currentCount = currentInterval.viewsCount
-                previousCount = previousInterval?.viewsCount ?? 0
-            case .visitors:
-                currentCount = currentInterval.visitorsCount
-                previousCount = previousInterval?.visitorsCount ?? 0
-            case .likes:
-                currentCount = currentInterval.likesCount
-                previousCount = previousInterval?.likesCount ?? 0
-            case .comments:
-                currentCount = currentInterval.commentsCount
-                previousCount = previousInterval?.commentsCount ?? 0
-            }
-
-            let difference = currentCount - previousCount
-            var roundedPercentage = 0
-
-            if previousCount > 0 {
-                let percentage = (Float(difference) / Float(previousCount)) * 100
-                roundedPercentage = Int(round(percentage))
-            }
-
-            return (currentCount, difference, roundedPercentage)
     }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
