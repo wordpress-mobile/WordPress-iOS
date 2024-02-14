@@ -59,6 +59,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
                 Spacer()
             }
+            .offset(x: 0, y: info.avatarStyle.verticalOffset)
             .padding(.trailing, Length.Padding.double)
         }
 

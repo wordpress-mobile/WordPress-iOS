@@ -33,6 +33,15 @@ struct AvatarsView: View {
                 return Length.Padding.split/2
             }
         }
+
+        var verticalOffset: CGFloat {
+            switch self {
+            case .single, .double:
+                return 0
+            case .triple:
+                return Length.Padding.large/2
+            }
+        }
     }
 
     private let style: Style
@@ -92,7 +101,6 @@ struct AvatarsView: View {
                     .avatarBorderOverlay()
             }
         }
-        .frame(height: style.diameter)
     }
 
     private func tripleAvatarView(
@@ -116,7 +124,6 @@ struct AvatarsView: View {
                     .avatarBorderOverlay()
             }
         }
-        .frame(height: Length.Padding.large + style.diameter)
     }
 }
 
@@ -150,30 +157,3 @@ private extension View {
         )
     }
 }
-
-#if DEBUG
-#Preview {
-    VStack(spacing: Length.Padding.medium) {
-        AvatarsView(
-            style: .single(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
-            )
-        )
-        AvatarsView(
-            style: .double(
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
-                URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
-            )
-        )
-        AvatarsView(
-            style: .init(
-                urls: [
-                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
-                    URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
-                ]
-            )!
-        )
-    }
-}
-#endif
