@@ -63,7 +63,7 @@ private struct StatsTrafficBarChartDataTransformer {
             xAxisIndexToDate[x] = dateInterval
         }
 
-        let formatter = StatsTrafficHorizontalAxisFormatter(period: data.period, xAxisIndexToDate: xAxisIndexToDate)
+        let formatter = StatsTrafficHorizontalAxisFormatter(period: data.unit ?? data.period, xAxisIndexToDate: xAxisIndexToDate)
         let styling = StatsTrafficBarChartStyle(xAxisValueFormatter: formatter)
         return Array(repeating: styling, count: StatsTrafficBarChartTabs.allCases.count)
     }
