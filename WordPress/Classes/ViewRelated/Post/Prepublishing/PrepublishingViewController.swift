@@ -60,7 +60,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let publishButton: NUXButton = {
         let nuxButton = NUXButton()
         nuxButton.isPrimary = true
-
+        nuxButton.accessibilityIdentifier = "publish"
         return nuxButton
     }()
 

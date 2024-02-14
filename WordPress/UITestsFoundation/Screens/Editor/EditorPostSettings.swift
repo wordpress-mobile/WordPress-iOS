@@ -47,20 +47,20 @@ public class EditorPostSettings: ScreenObject {
         $0.buttons.containing(.staticText, identifier: "1").element
     }
 
-    private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Done"]
+    private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars.buttons["close"]
     }
 
-    private let backButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars.buttons.element(boundBy: 0)
+    private let backButtonGetter: (XCUIApplication) -> XCUIElement? = {
+        $0.navigationBars.lastMatch?.buttons.element(boundBy: 0)
     }
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
     var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
-    var doneButton: XCUIElement { doneButtonGetter(app) }
-    var backButton: XCUIElement { backButtonGetter(app) }
+    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var backButton: XCUIElement? { backButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
     var monthLabel: XCUIElement { monthLabelGetter(app) }
@@ -136,7 +136,7 @@ public class EditorPostSettings: ScreenObject {
 
     @discardableResult
     public func closePostSettings() throws -> BlockEditorScreen {
-        navigateBack()
+        closeButton.tap()
 
         return try BlockEditorScreen()
     }
@@ -160,7 +160,8 @@ public class EditorPostSettings: ScreenObject {
             firstCalendarDayButton.tapUntil(.selected, failureMessage: "First Day button not selected!")
         }
 
-        backButton.tap()
+        // Grab the top-most navigation bar
+        backButton?.tap()
         return self
     }
 
