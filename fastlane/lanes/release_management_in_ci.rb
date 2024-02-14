@@ -84,7 +84,7 @@ platform :ios do
       buildkite_pipeline: BUILDKITE_PIPELINE,
       branch: git_branch, # use current branch to get all the hacks
       pipeline_file: File.join(PIPELINES_ROOT, 'new-hotfix.yml'),
-      message: "Set up new hotfix version #{release_version}",
+      message: "Set up new hotfix version #{version}",
       environment: { VERSION: version }
     )
   end
@@ -97,7 +97,7 @@ platform :ios do
       buildkite_pipeline: BUILDKITE_PIPELINE,
       branch: compute_release_branch_name(options:, version:),
       pipeline_file: File.join(PIPELINES_ROOT, 'finalize-hotfix.yml'),
-      message: "Finalize hotfix version #{release_version}",
+      message: "Finalize hotfix version #{version}",
       environment: { VERSION: version }
     )
   end
