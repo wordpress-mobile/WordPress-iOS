@@ -95,7 +95,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version:),
+      branch: git_branch, # need this branch because of the hacks
       pipeline_file: File.join(PIPELINES_ROOT, 'finalize-hotfix.yml'),
       message: "Finalize hotfix version #{version}",
       environment: { VERSION: version }
