@@ -601,10 +601,12 @@ class AbstractPostListViewController: UIViewController,
         let action = AbstractPostHelper.editorPublishAction(for: post)
 
         func showPrepublishingFlow(for post: Post) {
-            let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
+            let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers, action: action) { [weak self] result in
                 switch result {
                 case .completed(let post):
-                    self?.didConfirmPublish(for: post)
+                    self?.dismiss(animated: true) {
+                        self?.didConfirmPublish(for: post)
+                    }
                 case .dismissed:
                     break
                 }
@@ -635,7 +637,7 @@ class AbstractPostListViewController: UIViewController,
 
     private func didConfirmPublish(for post: AbstractPost) {
         WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
-        PostCoordinator.shared.publish(post)
+//        PostCoordinator.shared.publish(post)
 
         if post is Post {
             BloggingRemindersFlow.present(from: self, for: post.blog, source: .publishFlow, alwaysShow: false)

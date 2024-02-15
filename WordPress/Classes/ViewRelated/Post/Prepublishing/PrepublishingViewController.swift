@@ -2,6 +2,7 @@ import UIKit
 import WordPressAuthenticator
 import Combine
 import WordPressUI
+import SwiftUI
 
 enum PrepublishingIdentifier {
     case title
@@ -40,6 +41,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
+    private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
+        self?.buttonPublishTapped()
+    }
 
     enum CompletionResult {
         case completed(AbstractPost)
@@ -57,12 +61,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let tableView = UITableView(frame: .zero, style: .plain)
     private let footerSeparator = UIView()
 
-    let publishButton: NUXButton = {
-        let nuxButton = NUXButton()
-        nuxButton.isPrimary = true
-        nuxButton.accessibilityIdentifier = "publish"
-        return nuxButton
-    }()
+//    let publishButton: NUXButton = {
+//        let nuxButton = NUXButton()
+//        nuxButton.isPrimary = true
+//        nuxButton.accessibilityIdentifier = "publish"
+//        return nuxButton
+//    }()
 
     private weak var titleField: UITextField?
 
@@ -72,13 +76,17 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private var cancellables = Set<AnyCancellable>()
     @Published private var keyboardShown: Bool = false
 
+    private let action: PostEditorAction
+
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
+         action: PostEditorAction,
          completion: @escaping (CompletionResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
         self.identifiers = identifiers
+        self.action = action
         self.completion = completion
         self.coreDataStack = coreDataStack
         self.persistentStore = persistentStore
@@ -152,7 +160,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         view.backgroundColor = .systemBackground
 
-        announcePublishButton()
+//        announcePublishButton()
     }
 
     private func configureHeader() {
@@ -170,11 +178,15 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func setupPublishButton() -> UIView {
         let footerView = UIView()
-        footerView.addSubview(publishButton)
-        publishButton.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
 
-        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
+        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
+        addChild(hostingViewController)
+
+        footerView.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
+
+//        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
 
         updatePublishButtonLabel()
 
@@ -231,6 +243,48 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
                 post.status = originalStatus
             }
             completion(.dismissed)
+        }
+    }
+
+    // MARK: - Prototype
+
+    func buttonPublishTapped() {
+
+        if action == .saveAsDraft {
+            self.post.status = .draft
+        } else if action == .publish {
+            if self.post.date_created_gmt == nil {
+                self.post.date_created_gmt = Date()
+            }
+
+            if self.post.status != .publishPrivate {
+                self.post.status = .publish
+            }
+        } else if action == .publishNow {
+            self.post.date_created_gmt = Date()
+
+            if self.post.status != .publishPrivate {
+                self.post.status = .publish
+            }
+        } else if action == .submitForReview {
+            self.post.status = .pending
+        }
+
+        self.post.isFirstTimePublish = action == .publish || action == .publishNow
+
+        // TODO: Add media uploader here
+        // TODO: Add error handling and restore to the previous state (?)
+
+        publishButtonViewModel.state = .loading
+
+        PostCoordinator.shared.save(post, automatedRetry: false) { [weak self] in
+            guard let self else { return }
+            switch $0 {
+            case .success(let post):
+                self.completion(.completed(post))
+            case .failure:
+                self.publishButtonViewModel.state = .default
+            }
         }
     }
 
@@ -423,7 +477,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Publish Button
 
     private func updatePublishButtonLabel() {
-        publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
+        // publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
+
+        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
     }
 
     @objc func publish(_ sender: UIButton) {
@@ -461,9 +517,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Accessibility
 
     private func announcePublishButton() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            UIAccessibility.post(notification: .screenChanged, argument: self.publishButton)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now()) {
+//            UIAccessibility.post(notification: .screenChanged, argument: self.publishButton)
+//        }
     }
 
     fileprivate enum Constants {

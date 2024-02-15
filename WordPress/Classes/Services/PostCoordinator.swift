@@ -104,7 +104,8 @@ class PostCoordinator: NSObject {
             post.date_created_gmt = Date()
         }
 
-        post.shouldAttemptAutoUpload = true
+        // TODO: keep the auto-uploader only for drafts
+//        post.shouldAttemptAutoUpload = false
 
         save(post)
     }

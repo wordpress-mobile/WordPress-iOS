@@ -80,8 +80,8 @@ struct PublishButton: View {
 }
 
 final class PublishButtonViewModel: ObservableObject {
-    let title: String
-    let onSubmitTapped: () -> Void
+    @Published var title: String
+    var onSubmitTapped: () -> Void
     @Published var state: PublishButtonState = .default
 
     init(title: String, onSubmitTapped: @escaping () -> Void, state: PublishButtonState = .default) {

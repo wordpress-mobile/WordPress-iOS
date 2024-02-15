@@ -193,7 +193,11 @@ extension PublishingEditor {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
-            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in
+            displayPublishConfirmationAlert(for: action, onPublish: {
+                self.dismissOrPopView()
+                // TODO: open the "Published" tab
+
+            }, onDismiss: { [weak self] in
                 self?.publishingDismissed()
                 WPAnalytics.track(.editorPostPublishDismissed)
             })
@@ -222,7 +226,7 @@ extension PublishingEditor {
     ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         if let post = post as? Post {
-            displayPrepublishingNudges(post: post, onPublish: publishAction, onDismiss: dismissAction)
+            displayPrepublishingNudges(post: post, action: action, onPublish: publishAction, onDismiss: dismissAction)
         } else {
             displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction, onDismiss: dismissAction)
         }
@@ -233,11 +237,11 @@ extension PublishingEditor {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
+    fileprivate func displayPrepublishingNudges(post: Post, action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
+        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers, action: action) { [weak self] result in
             switch result {
             case .completed(let post):
                 self?.post = post
