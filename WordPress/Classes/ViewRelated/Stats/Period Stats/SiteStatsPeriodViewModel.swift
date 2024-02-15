@@ -202,6 +202,7 @@ class SiteStatsPeriodViewModel: Observable {
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
+        periodReceipt = nil
         periodReceipt = store.query(
             .trafficOverviewData(
                 date: date,
