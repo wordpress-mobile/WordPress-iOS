@@ -14,6 +14,7 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
+    controller.tableView = viewController.tableView
 
     let menuController = AvatarMenuController(viewController: viewController)
     menuController.onAvatarSelected = { [weak controller, weak viewController] image in
@@ -56,6 +57,7 @@ private class MyProfileController: SettingsController {
     var trackingKey: String {
         return "my_profile"
     }
+    weak var tableView: UITableView?
 
     // MARK: - Private Properties
 
@@ -192,10 +194,11 @@ private class MyProfileController: SettingsController {
     }
 
     fileprivate func visitGravatarWebsiteAction() -> ImmuTableAction {
-        return { row in
+        return { [weak self] row in
             guard let url = URL(string: GravatarInfoConstants.gravatarLink) else {
                 return
             }
+            self?.tableView?.deselectSelectedRowWithAnimation(true)
             UIApplication.shared.open(url)
         }
     }
