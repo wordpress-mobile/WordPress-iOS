@@ -2,6 +2,7 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
+
     static let reuseIdentifier = String(describing: Self.self)
 
     enum Style {
@@ -48,6 +49,14 @@ struct NotificationsTableViewCellContent: View {
 // MARK: - Regular Style
 fileprivate extension NotificationsTableViewCellContent {
     struct Regular: View {
+
+        @State private var avatarSize: CGSize = .zero
+        @State private var textsSize: CGSize = .zero
+
+        private var rootStackAlignment: VerticalAlignment {
+            return textsSize.height >= avatarSize.height ? .top : .center
+        }
+
         private let info: Style.Regular
 
         fileprivate init(info: Style.Regular) {
@@ -55,18 +64,20 @@ fileprivate extension NotificationsTableViewCellContent {
         }
 
         var body: some View {
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: rootStackAlignment, spacing: 0) {
                 avatarHStack
+                    .saveSize(in: $avatarSize)
                 textsVStack
                     .offset(x: -info.avatarStyle.leadingOffset*2)
-                    .padding(.horizontal, Length.Padding.split)
+                    .padding(.leading, Length.Padding.split)
+                    .saveSize(in: $textsSize)
                 Spacer()
                 if let inlineAction = info.inlineAction {
                     Button {
                         inlineAction.action()
                     } label: {
                         inlineAction.icon
-                            .imageScale(.small)
+                            .imageScale(.medium)
                             .foregroundStyle(Color.DS.Foreground.secondary)
                             .frame(width: Length.Padding.medium, height: Length.Padding.medium)
                     }
@@ -114,13 +125,6 @@ fileprivate extension NotificationsTableViewCellContent {
                         .padding(.top, Length.Padding.half)
                 }
             }
-        }
-
-        private func actionIcon(withName iconName: String) -> some View {
-            Image(systemName: iconName)
-                .imageScale(.small)
-                .foregroundStyle(Color.DS.Foreground.secondary)
-                .frame(width: Length.Padding.medium, height: Length.Padding.medium)
         }
     }
 }
@@ -174,6 +178,33 @@ fileprivate extension NotificationsTableViewCellContent {
     }
 }
 
+// MARK: - Helpers
+
+private struct SizeCalculator: ViewModifier {
+
+    @Binding var size: CGSize
+
+    func body(content: Content) -> some View {
+        content
+            .background(
+                GeometryReader { proxy in
+                    Color.clear // we just want the reader to get triggered, so let's use an empty color
+                        .onAppear {
+                            size = proxy.size
+                        }
+                }
+            )
+    }
+}
+
+private extension View {
+    func saveSize(in size: Binding<CGSize>) -> some View {
+        modifier(SizeCalculator(size: size))
+    }
+}
+
+// MARK: - Preview
+
 #if DEBUG
 #Preview {
     VStack(alignment: .leading, spacing: Length.Padding.medium) {
@@ -209,14 +240,14 @@ fileprivate extension NotificationsTableViewCellContent {
             style: .regular(
                 .init(
                     title: "New likes on Night Time in Tokyo",
-                    description: "Sarah, Céline and Amit",
+                    description: nil,
                     shouldShowIndicator: true,
                     avatarStyle: .triple(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
                     ),
-                    inlineAction: nil
+                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), action: {})
                 )
             )
         )
