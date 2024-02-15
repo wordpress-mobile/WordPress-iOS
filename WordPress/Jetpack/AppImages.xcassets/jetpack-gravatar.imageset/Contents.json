@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "wordpress-logo-light 1.pdf",
+      "filename" : "Jetpack+Gravatar White 1.pdf",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "wordpress-logo-light.pdf",
+      "filename" : "Jetpack+Gravatar White.pdf",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "wordpress-logo-darkpdf.pdf",
+      "filename" : "Jetpack+Gravatar Dark.pdf",
       "idiom" : "universal"
     }
   ],
