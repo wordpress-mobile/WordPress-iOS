@@ -178,8 +178,6 @@
 		01616C902B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */; };
 		01616C912B5AA6E50023C123 /* StatsTrafficBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */; };
 		01616C922B5AA6E60023C123 /* StatsTrafficBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */; };
-		01616C992B5AA7920023C123 /* StatsTrafficBarChartMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C982B5AA7920023C123 /* StatsTrafficBarChartMockData.swift */; };
-		01616C9A2B5AA7920023C123 /* StatsTrafficBarChartMockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C982B5AA7920023C123 /* StatsTrafficBarChartMockData.swift */; };
 		016231502B3B3CAD0010E377 /* PrimaryDomainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */; };
 		016231512B3B3CAD0010E377 /* PrimaryDomainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */; };
 		0167F4B62AAA0342005B9E42 /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
@@ -5898,7 +5896,6 @@
 		01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChart.swift; sourceTree = "<group>"; };
 		01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartCell.swift; sourceTree = "<group>"; };
 		01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartView.swift; sourceTree = "<group>"; };
-		01616C982B5AA7920023C123 /* StatsTrafficBarChartMockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartMockData.swift; sourceTree = "<group>"; };
 		0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDomainView.swift; sourceTree = "<group>"; };
 		0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackIntents.entitlements; sourceTree = "<group>"; };
 		0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackIntentsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
@@ -9869,7 +9866,6 @@
 				01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */,
 				01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */,
 				01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */,
-				01616C982B5AA7920023C123 /* StatsTrafficBarChartMockData.swift */,
 			);
 			path = Chart;
 			sourceTree = "<group>";
@@ -21250,7 +21246,6 @@
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				FAB8F76E25AD73C000D5D54A /* JetpackBackupOptionsViewController.swift in Sources */,
 				175CC17C2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
-				01616C992B5AA7920023C123 /* StatsTrafficBarChartMockData.swift in Sources */,
 				7E4123BE20F4097B00DF8486 /* NotificationContentRangeFactory.swift in Sources */,
 				FA332AD429C1FC7A00182FBB /* MovedToJetpackViewModel.swift in Sources */,
 				FA3FBF8B2A2772340012FC90 /* DashboardActivityLogViewModel.swift in Sources */,
@@ -25453,7 +25448,6 @@
 				FABB24F62602FC2C00C8785C /* Media.swift in Sources */,
 				837966A3299E9C85004A92B9 /* JetpackInstallPluginHelper.swift in Sources */,
 				17039227282E6DF500F602E9 /* ViewsVisitorsChartMarker.swift in Sources */,
-				01616C9A2B5AA7920023C123 /* StatsTrafficBarChartMockData.swift in Sources */,
 				FABB24F72602FC2C00C8785C /* WordPressOrgRestApi+WordPress.swift in Sources */,
 				FABB24F92602FC2C00C8785C /* ReaderTableConfiguration.swift in Sources */,
 				FABB24FA2602FC2C00C8785C /* AnnouncementsStore.swift in Sources */,
