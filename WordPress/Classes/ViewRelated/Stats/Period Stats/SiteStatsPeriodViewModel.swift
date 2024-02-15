@@ -44,10 +44,13 @@ class SiteStatsPeriodViewModel: Observable {
     func startFetchingOverview() {
         periodReceipt = store.query(
             .trafficOverviewData(
-                date: lastRequestedDate,
-                period: lastRequestedPeriod,
-                unit: unit(from: lastRequestedPeriod),
-                limit: limit(for: lastRequestedPeriod)
+                .init(
+                    date: lastRequestedDate,
+                    period: lastRequestedPeriod,
+                    unit: unit(from: lastRequestedPeriod),
+                    chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
+                    chartTotalsLimit: chartTotalsLimit()
+                )
             )
         )
     }
@@ -205,10 +208,13 @@ class SiteStatsPeriodViewModel: Observable {
         periodReceipt = nil
         periodReceipt = store.query(
             .trafficOverviewData(
-                date: date,
-                period: period,
-                unit: unit(from: period),
-                limit: limit(for: period)
+                .init (
+                    date: date,
+                    period: period,
+                    unit: unit(from: period),
+                    chartBarsLimit: chartBarsLimit(for: period),
+                    chartTotalsLimit: chartTotalsLimit()
+                )
             )
         )
     }
@@ -231,53 +237,55 @@ private extension SiteStatsPeriodViewModel {
     func barChartRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        let chartSummary = store.getSummary()
-        let chartSumaryData = chartSummary?.summaryData ?? []
-        let totalsSummary = store.getTotalsSummary()
-        let totalsSummaryData = totalsSummary != nil ? [totalsSummary!] : []
+        let barChartDataSummary = store.getSummary()
+        let barChartTotalsSummary = store.getTotalsSummary()
 
-        let periodDate = chartSummary?.periodEndDate
-        let period = chartSummary?.period
+        let periodDate = barChartDataSummary?.periodEndDate
+        let period = barChartDataSummary?.period
 
+        let viewsIntervalData = intervalData(summaryType: .views, totalsSummary: barChartTotalsSummary)
         let viewsTabData = StatsTrafficBarChartTabData(
             tabTitle: StatSection.periodOverviewViews.tabTitle,
-            tabData: totalsSummaryData.first?.viewsCount ?? 0,
-            difference: 0,
-            differencePercent: 0,
+            tabData: viewsIntervalData.count,
+            difference: viewsIntervalData.difference,
+            differencePercent: viewsIntervalData.percentage,
             date: periodDate,
             period: period
         )
 
+        let visitorsIntervalData = intervalData(summaryType: .visitors, totalsSummary: barChartTotalsSummary)
         let visitorsTabData = StatsTrafficBarChartTabData(
             tabTitle: StatSection.periodOverviewVisitors.tabTitle,
-            tabData: totalsSummaryData.first?.visitorsCount ?? 0,
-            difference: 0,
-            differencePercent: 0,
+            tabData: visitorsIntervalData.count,
+            difference: visitorsIntervalData.difference,
+            differencePercent: visitorsIntervalData.percentage,
             date: periodDate,
             period: period
         )
 
+        let likesIntervalData = intervalData(summaryType: .likes, totalsSummary: barChartTotalsSummary)
         let likesTabData = StatsTrafficBarChartTabData(
             tabTitle: StatSection.periodOverviewLikes.tabTitle,
-            tabData: totalsSummaryData.first?.likesCount ?? 0,
-            difference: 0,
-            differencePercent: 0,
+            tabData: likesIntervalData.count,
+            difference: likesIntervalData.difference,
+            differencePercent: likesIntervalData.percentage,
             date: periodDate,
             period: period
         )
 
+        let commentsIntervalData = intervalData(summaryType: .comments, totalsSummary: barChartTotalsSummary)
         let commentsTabData = StatsTrafficBarChartTabData(
             tabTitle: StatSection.periodOverviewComments.tabTitle,
-            tabData: totalsSummaryData.first?.commentsCount ?? 0,
-            difference: 0,
-            differencePercent: 0,
+            tabData: commentsIntervalData.count,
+            difference: commentsIntervalData.difference,
+            differencePercent: commentsIntervalData.percentage,
             date: periodDate,
             period: period
         )
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [StatsTrafficBarChartStyling]()
-        if let chartData = chartSummary {
+        if let chartData = barChartDataSummary {
             let chart = StatsTrafficBarChart(data: chartData)
             barChartData.append(contentsOf: chart.barChartData)
             barChartStyling.append(contentsOf: chart.barChartStyling)
@@ -294,6 +302,42 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(row)
 
         return tableRows
+    }
+
+    func intervalData(summaryType: StatsSummaryType, totalsSummary: StatsSummaryTimeIntervalData?) -> (count: Int, difference: Int, percentage: Int) {
+        guard let summaryData = totalsSummary?.summaryData, summaryData.count > 0 else {
+            return (0, 0, 0)
+        }
+
+        let currentInterval = summaryData[summaryData.count - 1]
+        let previousInterval = summaryData.count > 1 ? summaryData[summaryData.count - 2] : nil
+
+        let currentCount: Int
+        let previousCount: Int
+        switch summaryType {
+        case .views:
+            currentCount = currentInterval.viewsCount
+            previousCount = previousInterval?.viewsCount ?? 0
+        case .visitors:
+            currentCount = currentInterval.visitorsCount
+            previousCount = previousInterval?.visitorsCount ?? 0
+        case .likes:
+            currentCount = currentInterval.likesCount
+            previousCount = previousInterval?.likesCount ?? 0
+        case .comments:
+            currentCount = currentInterval.commentsCount
+            previousCount = previousInterval?.commentsCount ?? 0
+        }
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, difference, roundedPercentage)
     }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
@@ -566,8 +610,8 @@ private extension SiteStatsPeriodViewModel {
         }
     }
 
-    /// - Returns: Number of pieces of data for a given Stats period
-    private func limit(for period: StatsPeriodUnit) -> Int {
+    /// - Returns: Number of bars data to fetch for a given Stats period
+    private func chartBarsLimit(for period: StatsPeriodUnit) -> Int {
         switch period {
         case .day, .week:
             return 7
@@ -576,6 +620,12 @@ private extension SiteStatsPeriodViewModel {
         case .year:
             return 12
         }
+    }
+
+    /// - Returns: Number of totals summary data to fetch
+    /// Minimum value 2 - for current and previous period to show comparison label
+    private func chartTotalsLimit() -> Int {
+        return 2
     }
 }
 
