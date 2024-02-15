@@ -33,15 +33,6 @@ struct AvatarsView: View {
                 return Length.Padding.split/2
             }
         }
-
-        var verticalOffset: CGFloat {
-            switch self {
-            case .single, .double:
-                return 0
-            case .triple:
-                return Length.Padding.large/2
-            }
-        }
     }
 
     private let style: Style
@@ -91,15 +82,11 @@ struct AvatarsView: View {
 
     private func doubleAvatarView(primaryURL: URL?, secondaryURL: URL?) -> some View {
         ZStack {
-            HStack {
-                avatar(url: secondaryURL)
-                Spacer().frame(width: Constants.doubleAvatarHorizontalOffset)
-            }
-            HStack {
-                Spacer().frame(width: Constants.doubleAvatarHorizontalOffset)
-                avatar(url: primaryURL)
-                    .avatarBorderOverlay()
-            }
+            avatar(url: secondaryURL)
+                .padding(.trailing, Constants.doubleAvatarHorizontalOffset)
+            avatar(url: primaryURL)
+                .avatarBorderOverlay()
+                .padding(.leading, Constants.doubleAvatarHorizontalOffset)
         }
     }
 
@@ -108,22 +95,17 @@ struct AvatarsView: View {
         secondaryURL: URL?,
         tertiaryURL: URL?
     ) -> some View {
-        ZStack {
-            HStack {
-                avatar(url: tertiaryURL)
-                Spacer().frame(width: Length.Padding.medium)
-            }
-            VStack {
-                avatar(url: secondaryURL)
-                    .avatarBorderOverlay()
-                Spacer().frame(height: Length.Padding.large)
-            }
-            HStack {
-                Spacer().frame(width: Length.Padding.medium)
-                avatar(url: primaryURL)
-                    .avatarBorderOverlay()
-            }
+        ZStack(alignment: .bottom) {
+            avatar(url: tertiaryURL)
+                .padding(.trailing, Length.Padding.medium)
+            avatar(url: secondaryURL)
+                .avatarBorderOverlay()
+                .offset(x: 0, y: -Length.Padding.split)
+            avatar(url: primaryURL)
+                .avatarBorderOverlay()
+                .padding(.leading, Length.Padding.medium)
         }
+        .padding(.top, Length.Padding.split)
     }
 }
 

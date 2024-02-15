@@ -72,7 +72,8 @@ private class MyProfileController: SettingsController {
     let title = NSLocalizedString("My Profile", comment: "My Profile view title")
 
     var immuTableRows: [ImmuTableRow.Type] {
-        return [EditableTextRow.self]
+        return [EditableTextRow.self,
+                GravatarInfoRow.self]
     }
 
     // MARK: - Initialization
@@ -146,13 +147,16 @@ private class MyProfileController: SettingsController {
                 service: service)),
             fieldName: "about_me")
 
+        let gravatarInfoRow = GravatarInfoRow()
+
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
                 firstNameRow,
                 lastNameRow,
                 displayNameRow,
                 aboutMeRow
-                ])
+            ]),
+            ImmuTableSection(rows: [gravatarInfoRow])
             ])
     }
 

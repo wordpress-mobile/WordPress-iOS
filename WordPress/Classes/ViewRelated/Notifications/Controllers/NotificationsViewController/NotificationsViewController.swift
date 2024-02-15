@@ -348,9 +348,15 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
                 )
             )
         } else {
+            let attributedTitle: AttributedString?
+            if let attributedSubject = note.renderSubject() {
+                attributedTitle = AttributedString(attributedSubject)
+            } else {
+                attributedTitle = nil
+            }
             style = .regular(
                 .init(
-                    title: note.renderSubject()?.string ?? "",
+                    title: attributedTitle,
                     description: note.renderSnippet()?.string,
                     shouldShowIndicator: !note.read,
                     avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL),

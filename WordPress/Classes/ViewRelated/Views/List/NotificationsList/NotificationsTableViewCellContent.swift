@@ -5,7 +5,7 @@ struct NotificationsTableViewCellContent: View {
     static let reuseIdentifier = String(describing: Self.self)
     enum Style {
         struct Regular {
-            let title: String
+            let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
@@ -59,7 +59,6 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
                 Spacer()
             }
-            .offset(x: 0, y: info.avatarStyle.verticalOffset)
             .padding(.trailing, Length.Padding.double)
         }
 
@@ -67,7 +66,8 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(spacing: 0) {
                 if info.shouldShowIndicator {
                     indicator
-                        .padding(.horizontal, Length.Padding.single)
+                        .padding(.leading, Length.Padding.single)
+                        .padding(.trailing, Length.Padding.split)
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
@@ -83,19 +83,22 @@ fileprivate extension NotificationsTableViewCellContent {
                 .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                 .frame(width: Length.Padding.single)
         }
-
+        
         private var textsVStack: some View {
-            VStack(alignment: .leading, spacing: Length.Padding.half) {
-                Text(info.title)
-                    .style(.bodySmall(.regular))
-                    .foregroundStyle(Color.DS.Foreground.primary)
-                    .lineLimit(2)
+            VStack(alignment: .leading, spacing: 0) {
+                if let title = info.title {
+                    Text(title)
+                        .style(.bodySmall(.regular))
+                        .foregroundStyle(Color.DS.Foreground.primary)
+                        .lineLimit(2)
+                }
 
                 if let description = info.description {
                     Text(description)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
                         .lineLimit(2)
+                        .padding(.top, Length.Padding.half)
                 }
             }
         }
