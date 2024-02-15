@@ -385,6 +385,8 @@
 		08E6E07F2A4C405500B807B0 /* CompliancePopoverViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */; };
 		08E77F451EE87FCF006F9515 /* MediaThumbnailExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */; };
 		08E77F471EE9D72F006F9515 /* MediaThumbnailExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */; };
+		08F531FE2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F531FD2B7E94F20061BD0E /* CachedAsyncImage.swift */; };
+		08F531FF2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F531FD2B7E94F20061BD0E /* CachedAsyncImage.swift */; };
 		08F8CD2A1EBD22EF0049D0C0 /* MediaExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */; };
 		08F8CD2D1EBD24600049D0C0 /* MediaExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */; };
 		08F8CD2F1EBD29440049D0C0 /* MediaImageExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */; };
@@ -6098,6 +6100,7 @@
 		08E6E07D2A4C405500B807B0 /* CompliancePopoverViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverViewModel.swift; sourceTree = "<group>"; };
 		08E77F441EE87FCF006F9515 /* MediaThumbnailExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporter.swift; sourceTree = "<group>"; };
 		08E77F461EE9D72F006F9515 /* MediaThumbnailExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaThumbnailExporterTests.swift; sourceTree = "<group>"; };
+		08F531FD2B7E94F20061BD0E /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		08F8CD291EBD22EF0049D0C0 /* MediaExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporter.swift; sourceTree = "<group>"; };
 		08F8CD2C1EBD245F0049D0C0 /* MediaExporterTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaExporterTests.swift; sourceTree = "<group>"; };
 		08F8CD2E1EBD29440049D0C0 /* MediaImageExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImageExporter.swift; sourceTree = "<group>"; };
@@ -10279,6 +10282,7 @@
 				0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */,
 				3F2ABE15277037A9005D8916 /* VideoLimitsAlertPresenter.swift */,
 				0C7073942A65CB2E00F325CE /* MemoryCache.swift */,
+				08F531FD2B7E94F20061BD0E /* CachedAsyncImage.swift */,
 			);
 			path = Media;
 			sourceTree = "<group>";
@@ -22971,6 +22975,7 @@
 				D8212CB720AA7703008E8AE8 /* ReaderShareAction.swift in Sources */,
 				C7BB60192863AF9700748FD9 /* QRLoginProtocols.swift in Sources */,
 				9826AE8A21B5CC7300C851FA /* PostingActivityMonth.swift in Sources */,
+				08F531FE2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */,
 				3F09CCAE24292EFD00D00A8C /* ReaderTabItem.swift in Sources */,
 				FAB8FD6E25AEB23600D5D54A /* JetpackBackupService.swift in Sources */,
 				17171374265FAA8A00F3A022 /* BloggingRemindersNavigationController.swift in Sources */,
@@ -24237,6 +24242,7 @@
 				83C972E1281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */,
 				3FE3D1FC26A6F2AC00F3CD10 /* ListTableViewCell.swift in Sources */,
 				FABB21892602FC2C00C8785C /* Post+RefreshStatus.swift in Sources */,
+				08F531FF2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */,
 				F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,
 				8379669D299C0C44004A92B9 /* JetpackRemoteInstallTableViewCell.swift in Sources */,
