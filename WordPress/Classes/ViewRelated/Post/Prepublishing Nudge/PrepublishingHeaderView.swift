@@ -24,7 +24,7 @@ final class PrepublishingHeaderView: UIView {
         closeButton.configuration = {
             var configuration = UIButton.Configuration.plain()
             configuration.image = UIImage(systemName: "xmark.circle.fill")
-            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 14, trailing: 12)
+            configuration.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 14, bottom: 14, trailing: 14)
             configuration.preferredSymbolConfigurationForImage = UIImage.SymbolConfiguration(paletteColors: [.secondaryLabel, .secondarySystemFill])
                 .applying(UIImage.SymbolConfiguration(font: WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)))
             return configuration
