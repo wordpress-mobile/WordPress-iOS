@@ -160,8 +160,19 @@ public class EditorPostSettings: ScreenObject {
             firstCalendarDayButton.tapUntil(.selected, failureMessage: "First Day button not selected!")
         }
 
-        // Grab the top-most navigation bar
-        backButton?.tap()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            // Dismiss popover by tapping outside of it. There is a sheet covering
+            // the screen and a popover and both are "PopoverDismissRegion", so
+            // we need to find the first hittable.
+            app.otherElements.matching(identifier: "PopoverDismissRegion")
+                .allElementsBoundByIndex
+                .first(where: \.isHittable)?
+                .tap()
+            app.navigationBars["Publish"].buttons.element(boundBy: 0).tap()
+        } else {
+            app.navigationBars["Publish Date"].buttons.element(boundBy: 0).tap()
+        }
+
         return self
     }
 
