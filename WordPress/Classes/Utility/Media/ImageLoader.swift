@@ -1,5 +1,4 @@
 import MobileCoreServices
-import AlamofireImage
 import AutomatticTracks
 
 /// Class used together with `CachedAnimatedImageView` to facilitate the loading of both

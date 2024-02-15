@@ -1,4 +1,3 @@
-import AlamofireImage
 import Foundation
 import AutomatticTracks
 import WordPressShared.WPStyleGuide

@@ -1,4 +1,3 @@
-import Alamofire
 import WordPressKit
 
 struct GutenbergNetworkRequest {
