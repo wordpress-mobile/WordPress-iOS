@@ -3,13 +3,14 @@ import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
     static let reuseIdentifier = String(describing: Self.self)
+
     enum Style {
         struct Regular {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
-            let actionIconName: String? // TODO: Will be refactored to contain the action.
+            let inlineAction: InlineAction?
         }
 
         struct Altered {
@@ -19,6 +20,11 @@ struct NotificationsTableViewCellContent: View {
 
         case regular(Regular)
         case altered(Altered)
+    }
+
+    struct InlineAction {
+        let icon: SwiftUI.Image
+        let action: () -> Void
     }
 
     private let style: Style
@@ -54,10 +60,17 @@ fileprivate extension NotificationsTableViewCellContent {
                 textsVStack
                     .offset(x: -info.avatarStyle.leadingOffset*2)
                     .padding(.horizontal, Length.Padding.split)
-                if let actionIconName = info.actionIconName {
-                    actionIcon(withName: actionIconName)
-                }
                 Spacer()
+                if let inlineAction = info.inlineAction {
+                    Button {
+                        inlineAction.action()
+                    } label: {
+                        inlineAction.icon
+                            .imageScale(.small)
+                            .foregroundStyle(Color.DS.Foreground.secondary)
+                            .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+                    }
+                }
             }
             .padding(.trailing, Length.Padding.double)
         }
@@ -83,7 +96,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                 .frame(width: Length.Padding.single)
         }
-        
+
         private var textsVStack: some View {
             VStack(alignment: .leading, spacing: 0) {
                 if let title = info.title {
@@ -173,7 +186,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     avatarStyle: .single(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
                     ),
-                    actionIconName: "star"
+                    inlineAction: .init(icon: .init(systemName: "star"), action: {})
                 )
             )
         )
@@ -188,7 +201,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
                     ),
-                    actionIconName: "plus"
+                    inlineAction: .init(icon: .init(systemName: "plus"), action: {})
                 )
             )
         )
@@ -203,7 +216,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
                     ),
-                    actionIconName: nil
+                    inlineAction: nil
                 )
             )
         )
