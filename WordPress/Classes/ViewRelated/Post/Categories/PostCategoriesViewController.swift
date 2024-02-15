@@ -15,7 +15,6 @@ import Foundation
    @objc weak var delegate: PostCategoriesViewControllerDelegate?
 
     var onCategoriesChanged: (() -> Void)?
-    var onTableViewHeightDetermined: (() -> Void)?
 
     private var blog: Blog
     private var originalSelection: [PostCategory]?
@@ -50,9 +49,6 @@ import Foundation
         if !hasSyncedCategories {
             syncCategories()
         }
-
-        preferredContentSize = tableView.contentSize
-        onTableViewHeightDetermined?()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

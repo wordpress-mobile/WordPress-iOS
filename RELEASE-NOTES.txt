@@ -1,6 +1,7 @@
 24.3
 -----
 * [*] Gravatar: Adds a new view to the profile editing page to inform the users about Gravatar. [#22615]
+* [**] Multiple pre-publishing sheet fixes and improvements [#22606]
 
 24.2
 -----
