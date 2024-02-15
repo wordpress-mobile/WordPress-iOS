@@ -29,7 +29,7 @@ class GravatarInfoCell: MigrationCell {
         static let imageSize = CGSize(width: 50, height: 30)
     }
 
-    private var intersectingLogosView: UIImageView = {
+    private let intersectingLogosView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.contentMode = .scaleAspectFit
