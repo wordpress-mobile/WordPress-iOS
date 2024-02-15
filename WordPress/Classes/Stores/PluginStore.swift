@@ -690,18 +690,17 @@ private extension PluginStore {
     }
 
     func fetchPluginDirectoryEntry(slug: String) {
-        let remote = PluginDirectoryServiceRemote()
         state.fetchingDirectoryEntry[slug] = true
-        remote.getPluginInformation(
-            slug: slug,
-            completion: { [actionDispatcher] (result) in
-                switch result {
-                case .success(let entry):
-                    actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntry(slug: slug, entry: entry))
-                case .failure(let error):
-                    actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntryFailed(slug: slug, error: error))
-                }
-            })
+
+        Task { @MainActor [actionDispatcher] in
+            do {
+                let remote = PluginDirectoryServiceRemote()
+                let entry = try await remote.getPluginInformation(slug: slug)
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntry(slug: slug, entry: entry))
+            } catch {
+                actionDispatcher.dispatch(PluginAction.receivePluginDirectoryEntryFailed(slug: slug, error: error))
+            }
+        }
     }
 
     func receivePluginDirectoryEntry(slug: String, entry: PluginDirectoryEntry) {
@@ -747,12 +746,12 @@ private extension PluginStore {
     func fetchPluginDirectoryFeed(feed: PluginDirectoryFeedType) {
         state.fetchingDirectoryFeed[feed.slug] = true
 
-        let remote = PluginDirectoryServiceRemote()
-        remote.getPluginFeed(feed) { [actionDispatcher] result in
-            switch result {
-            case .success(let response):
+        Task { @MainActor [actionDispatcher] in
+            do {
+                let remote = PluginDirectoryServiceRemote()
+                let response = try await remote.getPluginFeed(feed)
                 actionDispatcher.dispatch(PluginAction.receivePluginDirectoryFeed(feed: feed, response: response))
-            case .failure(let error):
+            } catch {
                 actionDispatcher.dispatch(PluginAction.receivePluginDirectoryFeedFailed(feed: feed, error: error))
             }
         }
