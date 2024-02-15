@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-12 21:26:29+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: zh_TW */
@@ -3923,7 +3923,7 @@
 "Link Name" = "連結名稱";
 
 /* No comment provided by engineer. */
-"Link Rel" = "鏈結 Rel";
+"Link Rel" = "連結 rel 屬性";
 
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "連結設定";
@@ -11131,8 +11131,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "時間戳記";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "指標";
 
 /* Title for PHP logs screen. */

@@ -10,10 +10,10 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
     private var config: JetpackBrandingMenuCardPresenter.Config?
 
     /// Sets the animation based on the language orientation
-    private var animation: Animation? {
+    private var animation: LottieAnimation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(Constants.animationLtr) :
-        Animation.named(Constants.animationRtl)
+        LottieAnimation.named(Constants.animationLtr) :
+        LottieAnimation.named(Constants.animationRtl)
     }
 
     private var cardType: JetpackBrandingMenuCardPresenter.Config.CardType {
@@ -52,8 +52,8 @@ class JetpackBrandingMenuCardCell: UITableViewCell {
         return view
     }()
 
-    private lazy var logosAnimationView: AnimationView = {
-        let view = AnimationView()
+    private lazy var logosAnimationView: LottieAnimationView = {
+        let view = LottieAnimationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.animation = animation
 

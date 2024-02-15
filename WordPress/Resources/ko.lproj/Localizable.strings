@@ -11095,8 +11095,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "타임스탬프";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "지표";
 
 /* Title for PHP logs screen. */

@@ -9,9 +9,12 @@ struct StatsMockDataLoader {
 
         let jsonDictionary = try JSONObject.init(fromFileNamed: fileName)
 
-        guard let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(date: date,
-                period: .day,
-                jsonDictionary: jsonDictionary) else {
+        guard let statsSummaryTimeIntervalData = StatsSummaryTimeIntervalData(
+            date: date,
+            period: .day,
+            unit: .day,
+            jsonDictionary: jsonDictionary
+        ) else {
             XCTFail()
             return nil
         }
