@@ -787,6 +787,7 @@ import WordPressUI
 
     /// Scrolls to the top of the list of posts.
     @objc func scrollViewToTop() {
+        navigationMenuDelegate?.didScrollToTop()
         guard tableView.numberOfRows(inSection: .zero) > 0 else {
             tableView.setContentOffset(.zero, animated: true)
             return

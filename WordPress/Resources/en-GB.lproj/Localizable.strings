@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-08 12:21:39+0000 */
+/* Translation-Revision-Date: 2024-02-09 12:26:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: en_GB */
@@ -10710,14 +10710,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "Tags";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtered by %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opens the filter list";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Liked";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Lists";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Reset";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Saved";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Search";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Subscriptions";
@@ -11153,8 +11167,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "Timestamp";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "Metrics";
 
 /* Title for PHP logs screen. */

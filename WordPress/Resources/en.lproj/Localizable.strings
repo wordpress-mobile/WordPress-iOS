@@ -8759,12 +8759,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "Timestamp";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "Metrics";
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP Logs";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web Server Logs";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
