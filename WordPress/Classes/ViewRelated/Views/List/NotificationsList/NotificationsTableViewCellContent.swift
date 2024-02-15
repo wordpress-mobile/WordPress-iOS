@@ -186,7 +186,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     avatarStyle: .single(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
                     ),
-                    inlineAction: .init(icon: .init(systemName: "star"), action: {})
+                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), action: {})
                 )
             )
         )
