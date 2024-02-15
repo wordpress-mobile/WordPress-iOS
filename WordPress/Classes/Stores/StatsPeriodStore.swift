@@ -458,11 +458,12 @@ private extension StatsPeriodStore {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
-        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record) -> T? {
+        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, unit: StatsPeriodUnit? = nil) -> T? {
             cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
-            state.timeIntervalsSummary = getValue(.timeIntervalsSummary)
+            /// timeIntervalsSummary is the only that depends on both period and unit
+            state.timeIntervalsSummary = getValue(.timeIntervalsSummary, unit: unit)
             state.totalsSummary = getValue(.totalsSummary)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
@@ -510,9 +511,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTotalsSummary(totalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
         operationQueue.addOperation(totalsOperation)
 
@@ -525,9 +525,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
 
         operationQueue.addOperation(chartOperation)
@@ -569,9 +568,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
 
         operationQueue.addOperation(chartOperation)
@@ -597,8 +595,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -661,8 +659,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -725,8 +723,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -757,8 +755,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -789,8 +787,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -821,8 +819,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -853,8 +851,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
