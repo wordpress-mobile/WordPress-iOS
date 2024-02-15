@@ -274,7 +274,8 @@ private extension SiteStatsDashboardViewController {
             insightsTableViewController.refreshInsights()
         case .traffic:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
-                pageViewController?.setViewControllers([trafficTableViewController],
+                let viewController = StatsTrafficBarChartMockVC()
+                pageViewController?.setViewControllers([viewController],
                                                        direction: .forward,
                                                        animated: false)
             }
