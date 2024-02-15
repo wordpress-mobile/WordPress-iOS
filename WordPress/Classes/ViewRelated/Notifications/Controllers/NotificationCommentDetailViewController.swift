@@ -166,11 +166,11 @@ private extension NotificationCommentDetailViewController {
 
         // Refresh the current content if the underlying view controller supports it
         // Else, remove the existing child view controller and add a new one.
-        if let commentDetailViewController, comment.allowsModeration() {
+        let newContent = makeNewContent(with: comment, notification: notification)
+        if let commentDetailViewController, case .commentDetails = newContent {
             commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
             self.content?.viewController.remove()
-            let newContent = makeNewContent(with: comment, notification: notification)
             let viewController = newContent.viewController
             viewController.view.translatesAutoresizingMaskIntoConstraints = false
             self.add(viewController)
