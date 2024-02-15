@@ -4,6 +4,8 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Properties
 
+    private var content: Content?
+
     private var notification: Notification {
         didSet {
             title = notification.title
@@ -31,7 +33,13 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     // In this case, use the Post to obtain Comment information.
     private var post: ReaderPost?
 
-    private var commentDetailViewController: CommentDetailViewController?
+    private var commentDetailViewController: CommentDetailViewController? {
+        guard let content, case let .commentDetails(viewController) = content  else {
+            return nil
+        }
+        return viewController
+    }
+
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
     private let managedObjectContext = ContextManager.shared.mainContext
 
@@ -156,21 +164,52 @@ private extension NotificationCommentDetailViewController {
             return
         }
 
-        if commentDetailViewController != nil {
-            commentDetailViewController?.refreshView(comment: comment, notification: notification)
+        // Refresh the current content if the underlying view controller supports it
+        // Else, remove the existing child view controller and add a new one.
+        let newContent = makeNewContent(with: comment, notification: notification)
+        if let commentDetailViewController, case .commentDetails = newContent {
+            commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
-            let commentDetailViewController = CommentDetailViewController(comment: comment,
-                                                                      notification: notification,
-                                                                      notificationDelegate: notificationDelegate,
-                                                                      managedObjectContext: managedObjectContext)
-
-            commentDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            add(commentDetailViewController)
-            view.pinSubviewToAllEdges(commentDetailViewController.view)
-            self.commentDetailViewController = commentDetailViewController
+            self.content?.viewController.remove()
+            let viewController = newContent.viewController
+            viewController.view.translatesAutoresizingMaskIntoConstraints = false
+            self.add(viewController)
+            self.view.pinSubviewToAllEdges(viewController.view)
+            self.content = newContent
         }
 
-        configureNavBarButtons()
+        self.configureNavBarButtons()
+    }
+
+    /// Creates content based on a comment's moderation ability.
+    /// If the comment does not allow moderation, and the blog supports WordPress.com REST API capability,
+    /// it returns a `ReaderCommentsViewController`. Otherwise, it defaults to a `CommentDetailViewController`.
+    ///
+    /// - Parameters:
+    ///   - comment: The comment object, used to check moderation capabilities.
+    ///   - notification: The notification object, used for additional information like site ID.
+    ///
+    /// - Returns: Either `.readerComments` with a `ReaderCommentsViewController` or `.commentDetails` with a `CommentDetailViewController`.
+    private func makeNewContent(with comment: Comment, notification: Notification) -> Content {
+        let blogSupportsWpcomRestAPI: Bool = {
+            return blog?.supports(.wpComRESTAPI) ?? true
+        }()
+        guard !comment.allowsModeration(),
+              blogSupportsWpcomRestAPI,
+              let siteID = notification.metaSiteID,
+              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: siteID, source: .commentNotification)
+        else {
+            let viewController = CommentDetailViewController(
+                comment: comment,
+                notification: notification,
+                notificationDelegate: notificationDelegate,
+                managedObjectContext: managedObjectContext
+            )
+            return .commentDetails(viewController)
+        }
+        readerComments.navigateToCommentID = commentID
+        readerComments.allowsPushingPostDetails = true
+        return .readerComments(readerComments)
     }
 
     func loadComment() {
@@ -324,6 +363,26 @@ private extension NotificationCommentDetailViewController {
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
         static let imageName = "wp-illustration-notifications"
+    }
+
+    // MARK: - Types
+
+    /// The `Content` enum defines the types of view controllers that can be presented in the `NotificationCommentDetailViewController`.
+    /// It differentiates the content based on the comment's moderation capabilities.
+    ///
+    /// - `commentDetails`: A view controller for comments that permit moderation actions.
+    /// - `readerComments`: A view controller for comments that do not allow moderation.
+    private enum Content {
+
+        case commentDetails(CommentDetailViewController)
+        case readerComments(ReaderCommentsViewController)
+
+        var viewController: UIViewController {
+            switch self {
+            case .commentDetails(let vc): return vc
+            case .readerComments(let vc): return vc
+            }
+        }
     }
 
 }

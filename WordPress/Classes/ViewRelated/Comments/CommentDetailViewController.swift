@@ -390,7 +390,7 @@ private extension CommentDetailViewController {
         return rows
     }
 
-    func configureModeratationRows() -> [RowType] {
+    func configureModerationRows() -> [RowType] {
         var rows: [RowType] = []
         rows.append(.status(status: .approved))
         rows.append(.status(status: .pending))
@@ -406,7 +406,7 @@ private extension CommentDetailViewController {
 
         sections.append(.content(configureContentRows()))
         if comment.allowsModeration() {
-            sections.append(.moderation(configureModeratationRows()))
+            sections.append(.moderation(configureModerationRows()))
         }
         self.sections = sections
     }

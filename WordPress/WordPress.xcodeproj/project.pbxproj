@@ -11033,6 +11033,7 @@
 		2F706A870DFB229B00B43086 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				F460391A2B7A67A700D4FE12 /* Comment */,
 				F48D44B4298992A90051EAA6 /* Blocking */,
 				46963F5724649509000D356D /* Gutenberg */,
 				9A38DC63218899E4006A409B /* Revisions */,
@@ -11064,8 +11065,6 @@
 				837B49D4283C2AE80061A657 /* BloggingPromptSettings+CoreDataProperties.swift */,
 				837B49D5283C2AE80061A657 /* BloggingPromptSettingsReminderDays+CoreDataClass.swift */,
 				837B49D6283C2AE80061A657 /* BloggingPromptSettingsReminderDays+CoreDataProperties.swift */,
-				98AA6D1026B8CE7200920C8B /* Comment+CoreDataClass.swift */,
-				9815D0B226B49A0600DF7226 /* Comment+CoreDataProperties.swift */,
 				E14932B4130427B300154804 /* Coordinate.h */,
 				E14932B5130427B300154804 /* Coordinate.m */,
 				E690F6ED25E05D170015A777 /* InviteLinks+CoreDataClass.swift */,
@@ -17575,6 +17574,15 @@
 				F44FB6D02878A1020001E3CE /* user-suggestions.json */,
 			);
 			name = Suggestions;
+			sourceTree = "<group>";
+		};
+		F460391A2B7A67A700D4FE12 /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				98AA6D1026B8CE7200920C8B /* Comment+CoreDataClass.swift */,
+				9815D0B226B49A0600DF7226 /* Comment+CoreDataProperties.swift */,
+			);
+			path = Comment;
 			sourceTree = "<group>";
 		};
 		F465976528E464DE00D5F49A /* Icons */ = {
