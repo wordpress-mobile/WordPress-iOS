@@ -180,26 +180,36 @@ fileprivate extension NotificationsTableViewCellContent {
 
 // MARK: - Helpers
 
-private struct SizeCalculator: ViewModifier {
+private struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
 
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
+private struct SizeModifier: ViewModifier {
     @Binding var size: CGSize
 
+    private var sizeView: some View {
+        GeometryReader { geometry in
+            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
+        }
+    }
+
     func body(content: Content) -> some View {
-        content
-            .background(
-                GeometryReader { proxy in
-                    Color.clear // we just want the reader to get triggered, so let's use an empty color
-                        .onAppear {
-                            size = proxy.size
-                        }
-                }
-            )
+        content.background(
+            sizeView
+                .onPreferenceChange(SizePreferenceKey.self, perform: { value in
+                    size = value
+                })
+        )
     }
 }
 
 private extension View {
     func saveSize(in size: Binding<CGSize>) -> some View {
-        modifier(SizeCalculator(size: size))
+        modifier(SizeModifier(size: size))
     }
 }
 
