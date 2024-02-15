@@ -356,7 +356,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    if (self.shouldUseStaticScreens) {
+    BOOL isIPad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
+
+    if (self.shouldUseStaticScreens || !isIPad) {
         return @[
             self.mySitesCoordinator.rootViewController,
             self.readerNavigationController,
