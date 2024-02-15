@@ -105,7 +105,7 @@ enum PublishButtonState {
 
 private enum Strings {
     static func progress(_ progress: PublishButtonState.Progress) -> String {
-        let format = NSLocalizedString("publishButton.progress", value: "%@ of %@", comment: "Shows the download or upload progress with two parameters: preformatted completed and total bytes")
+        let format = NSLocalizedString("publishButton.progress", value: "%@ of %@ (Demo)", comment: "Shows the download or upload progress with two parameters: preformatted completed and total bytes")
         return String(format: format, ByteCountFormatter.string(fromByteCount: progress.completed, countStyle: .file), ByteCountFormatter.string(fromByteCount: progress.total, countStyle: .file))
     }
 

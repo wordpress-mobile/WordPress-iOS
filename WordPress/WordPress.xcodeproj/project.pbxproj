@@ -170,6 +170,14 @@
 		014ACD152A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */; };
 		014D7E8F2AA9FBDE00F8C9E3 /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
 		015BA4EB29A788A300920F4B /* StatsTotalInsightsCellTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */; };
+		01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */; };
+		01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */; };
+		01616C8D2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */; };
+		01616C8E2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */; };
+		01616C8F2B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */; };
+		01616C902B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */; };
+		01616C912B5AA6E50023C123 /* StatsTrafficBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */; };
+		01616C922B5AA6E60023C123 /* StatsTrafficBarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */; };
 		016231502B3B3CAD0010E377 /* PrimaryDomainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */; };
 		016231512B3B3CAD0010E377 /* PrimaryDomainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */; };
 		0167F4B62AAA0342005B9E42 /* WidgetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0107E15C28FFE99300DE87DB /* WidgetConfiguration.swift */; };
@@ -2368,8 +2376,6 @@
 		912347762216E27200BD9F97 /* GutenbergViewController+Localization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */; };
 		91B0535D2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
 		91B0535E2B726F810073455C /* GravatarInfoRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535C2B726F810073455C /* GravatarInfoRow.swift */; };
-		91B053602B72807C0073455C /* GravatarIntersectingLogosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535F2B72807C0073455C /* GravatarIntersectingLogosView.swift */; };
-		91B053612B72807C0073455C /* GravatarIntersectingLogosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B0535F2B72807C0073455C /* GravatarIntersectingLogosView.swift */; };
 		91D8364121946EFB008340B2 /* GutenbergMediaPickerHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */; };
 		91DCE84621A6A7F50062F134 /* PostEditor+MoreOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */; };
 		91DCE84821A6C58C0062F134 /* PostEditor+Publish.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91DCE84721A6C58C0062F134 /* PostEditor+Publish.swift */; };
@@ -5888,6 +5894,10 @@
 		0148CC2A2859C87000CF5D96 /* BlogServiceMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogServiceMock.swift; sourceTree = "<group>"; };
 		014ACD132A1E5033008A706C /* WebKitViewController+SandboxStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WebKitViewController+SandboxStore.swift"; sourceTree = "<group>"; };
 		015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTotalInsightsCellTests.swift; sourceTree = "<group>"; };
+		01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartTabs.swift; sourceTree = "<group>"; };
+		01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChart.swift; sourceTree = "<group>"; };
+		01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartCell.swift; sourceTree = "<group>"; };
+		01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatsTrafficBarChartView.swift; sourceTree = "<group>"; };
 		0162314F2B3B3CAD0010E377 /* PrimaryDomainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrimaryDomainView.swift; sourceTree = "<group>"; };
 		0167F4AD2AAA0250005B9E42 /* JetpackIntents.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = JetpackIntents.entitlements; sourceTree = "<group>"; };
 		0167F4AE2AAA0250005B9E42 /* JetpackIntentsRelease-Alpha.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "JetpackIntentsRelease-Alpha.entitlements"; sourceTree = "<group>"; };
@@ -7678,7 +7688,6 @@
 		912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GutenbergViewController+Localization.swift"; sourceTree = "<group>"; };
 		9149D34BF5182F360C84EDB9 /* Pods-JetpackDraftActionExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JetpackDraftActionExtension.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		91B0535C2B726F810073455C /* GravatarInfoRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarInfoRow.swift; sourceTree = "<group>"; };
-		91B0535F2B72807C0073455C /* GravatarIntersectingLogosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravatarIntersectingLogosView.swift; sourceTree = "<group>"; };
 		91D8364021946EFB008340B2 /* GutenbergMediaPickerHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergMediaPickerHelper.swift; sourceTree = "<group>"; };
 		91DCE84521A6A7F50062F134 /* PostEditor+MoreOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostEditor+MoreOptions.swift"; sourceTree = "<group>"; };
 		91DCE84721A6C58C0062F134 /* PostEditor+Publish.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PostEditor+Publish.swift"; sourceTree = "<group>"; };
@@ -9845,6 +9854,25 @@
 			path = Support;
 			sourceTree = "<group>";
 		};
+		01616C842B5AA6E50023C123 /* Traffic */ = {
+			isa = PBXGroup;
+			children = (
+				01616C852B5AA6E50023C123 /* Chart */,
+			);
+			path = Traffic;
+			sourceTree = "<group>";
+		};
+		01616C852B5AA6E50023C123 /* Chart */ = {
+			isa = PBXGroup;
+			children = (
+				01616C862B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift */,
+				01616C872B5AA6E50023C123 /* StatsTrafficBarChart.swift */,
+				01616C882B5AA6E50023C123 /* StatsTrafficBarChartCell.swift */,
+				01616C892B5AA6E50023C123 /* StatsTrafficBarChartView.swift */,
+			);
+			path = Chart;
+			sourceTree = "<group>";
+		};
 		0167F4AC2AAA0250005B9E42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
@@ -11245,6 +11273,7 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				01616C842B5AA6E50023C123 /* Traffic */,
 				01DC4CD32B5FC889000110E5 /* Deprecated */,
 				9AA0ADAF235F11500027AB5D /* Operation */,
 				73FF702D221F43BB00541798 /* Charts */,
@@ -11376,7 +11405,6 @@
 				43FF64EE20DAA0840060A69A /* GravatarUploader.swift */,
 				0CA1C8C02A940EE300F691EE /* AvatarMenuController.swift */,
 				91B0535C2B726F810073455C /* GravatarInfoRow.swift */,
-				91B0535F2B72807C0073455C /* GravatarIntersectingLogosView.swift */,
 			);
 			path = Gravatar;
 			sourceTree = "<group>";
@@ -21259,6 +21287,7 @@
 				17F67C56203D81430072001E /* PostCardStatusViewModel.swift in Sources */,
 				C3835559288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */,
 				E63BBC961C5168BE00598BE8 /* SharingAuthorizationHelper.m in Sources */,
+				01616C912B5AA6E50023C123 /* StatsTrafficBarChartView.swift in Sources */,
 				98880A4A22B2E5E400464538 /* TwoColumnCell.swift in Sources */,
 				ACBAB5FE0E121C7300F38795 /* PostSettingsViewController.m in Sources */,
 				08CC677E1C49B65A00153AD7 /* MenuItem.m in Sources */,
@@ -21482,6 +21511,7 @@
 				8B4EDADD27DF9D5E004073B6 /* Blog+MySite.swift in Sources */,
 				D8071631203DA23700B32FD9 /* Accessible.swift in Sources */,
 				9826AE9021B5D3CD00C851FA /* PostingActivityCell.swift in Sources */,
+				01616C8D2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */,
 				934098C02719577D00B3E77E /* InsightType.swift in Sources */,
 				98077B5A2075561800109F95 /* SupportTableViewController.swift in Sources */,
 				987535632282682D001661B4 /* DetailDataCell.swift in Sources */,
@@ -21620,6 +21650,7 @@
 				FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
 				43DDFE8C21715ADD008BE72F /* WPTabBarController+QuickStart.swift in Sources */,
+				01616C8B2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */,
 				74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */,
 				3F8B45AC292C455800730FA4 /* MigrationSuccessCell.swift in Sources */,
 				E11000991CDB5F1E00E33887 /* KeychainTools.swift in Sources */,
@@ -22127,7 +22158,6 @@
 				08CC677F1C49B65A00153AD7 /* Menu.m in Sources */,
 				BE13B3E71B2B58D800A4211D /* BlogListViewController.m in Sources */,
 				C768B5B425828A5D00556E75 /* JetpackScanStatusCell.swift in Sources */,
-				91B053602B72807C0073455C /* GravatarIntersectingLogosView.swift in Sources */,
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
 				4AA33EF829963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift in Sources */,
 				73BFDA8A211D054800907245 /* Notifiable.swift in Sources */,
@@ -22857,6 +22887,7 @@
 				24351254264DCA08009BB2B6 /* Secrets.swift in Sources */,
 				03216EC6279946CA00D444CA /* SchedulingDatePickerViewController.swift in Sources */,
 				7E4123C420F4097B00DF8486 /* FormattableContentActionCommand.swift in Sources */,
+				01616C8F2B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */,
 				17A28DCB2052FB5D00EA6D9E /* AuthorFilterViewController.swift in Sources */,
 				3F946C592684DD8E00B946F6 /* BloggingRemindersActions.swift in Sources */,
 				08D345521CD7F50900358E8C /* MenusSelectionItemView.m in Sources */,
@@ -24178,6 +24209,7 @@
 				FA34AD972B629FCB00208D65 /* SiteMonitoringView.swift in Sources */,
 				FABB21732602FC2C00C8785C /* JetpackScanStatusViewModel.swift in Sources */,
 				F195C42C26DFBE21000EC884 /* WeeklyRoundupBackgroundTask.swift in Sources */,
+				01616C902B5AA6E50023C123 /* StatsTrafficBarChartCell.swift in Sources */,
 				FABB21752602FC2C00C8785C /* HeaderContentGroup.swift in Sources */,
 				FABB21762602FC2C00C8785C /* CameraHandler.swift in Sources */,
 				F4C1FC642A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift in Sources */,
@@ -24403,6 +24435,7 @@
 				C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				3F8D988A26153484003619E5 /* UnifiedPrologueBackgroundView.swift in Sources */,
 				FABB22182602FC2C00C8785C /* SiteSegmentsStep.swift in Sources */,
+				01616C8E2B5AA6E50023C123 /* StatsTrafficBarChart.swift in Sources */,
 				FABB22192602FC2C00C8785C /* ReaderInterestsCollectionViewFlowLayout.swift in Sources */,
 				FABB221B2602FC2C00C8785C /* Theme.m in Sources */,
 				FABB221D2602FC2C00C8785C /* DefaultFormattableContentAction.swift in Sources */,
@@ -24808,6 +24841,7 @@
 				FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */,
 				0C700B8A2AE1E1940085C2EE /* PageListItemViewModel.swift in Sources */,
 				8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */,
+				01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */,
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
@@ -24869,7 +24903,6 @@
 				FABB23662602FC2C00C8785C /* NotificationCommentRange.swift in Sources */,
 				FABB23672602FC2C00C8785C /* NotificationAction.swift in Sources */,
 				3F39C93627A09927001EC300 /* WordPressLibraryLogger.swift in Sources */,
-				91B053612B72807C0073455C /* GravatarIntersectingLogosView.swift in Sources */,
 				FABB23682602FC2C00C8785C /* NSManagedObject.swift in Sources */,
 				0CB54F582AEC320700582080 /* WordPressAppDelegate+PostCoordinatorDelegate.swift in Sources */,
 				FABB23692602FC2C00C8785C /* ExportableAsset.swift in Sources */,
@@ -25627,6 +25660,7 @@
 				FABB25892602FC2C00C8785C /* Autosaver.swift in Sources */,
 				982D26202788DDF200A41286 /* ReaderCommentsFollowPresenter.swift in Sources */,
 				FABB258A2602FC2C00C8785C /* BlogAuthor.swift in Sources */,
+				01616C922B5AA6E60023C123 /* StatsTrafficBarChartView.swift in Sources */,
 				FABB258B2602FC2C00C8785C /* Blog+BlogAuthors.swift in Sources */,
 				FACF66D12ADD6CD8008C3E13 /* PostListItemViewModel.swift in Sources */,
 				FABB258C2602FC2C00C8785C /* ActivityContentStyles.swift in Sources */,

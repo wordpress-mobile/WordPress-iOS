@@ -186,8 +186,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             var total: Int64 = 0
             for media in post.media {
                 if let progress = coordinator.progress(for: media) {
-                    completed = progress.completedUnitCount
-                    total += progress.totalUnitCount
+                    completed += Int64(100 * progress.fractionCompleted)
+                    total += 100
                 }
             }
             publishButtonViewModel.state = .uploading(title: "Uploading Media...", progress: .init(completed: completed, total: total))
