@@ -71,6 +71,9 @@ private extension StatsTrafficBarChartCell {
     }
 
     func updateButtons() {
+        let font = tabsFont(for: tabsData)
+        filterTabBar.tabsFont = font
+        filterTabBar.tabsSelectedFont = font
         filterTabBar.items = tabsData
     }
 
@@ -166,11 +169,19 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.selectedTitleColor = UIColor.DS.Foreground.primary
         filterTabBar.deselectedTabColor = UIColor.DS.Foreground.secondary
         filterTabBar.tabSeparatorPlacement = .top
-        filterTabBar.tabsFont = UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
-        filterTabBar.tabsSelectedFont = UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
+        filterTabBar.tabsFont = tabsFont()
+        filterTabBar.tabsSelectedFont = tabsFont()
         filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
         filterTabBar.tabSeparatorPadding = Length.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func tabsFont(for data: [StatsTrafficBarChartTabData] = []) -> UIFont {
+        if (tabsData.first { $0.tabTitle.count > 8 } != nil) {
+            return UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
+        } else {
+            return UIFont.preferredFont(forTextStyle: .footnote, compatibleWith: .init(preferredContentSizeCategory: .large))
+        }
     }
 }
 
