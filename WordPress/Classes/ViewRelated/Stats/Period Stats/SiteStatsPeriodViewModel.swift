@@ -217,7 +217,6 @@ class SiteStatsPeriodViewModel: Observable {
     func updateDate(forward: Bool) -> Date? {
         let increment = forward ? 1 : -1
         let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
-        refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
         return nextDate
     }
 }
