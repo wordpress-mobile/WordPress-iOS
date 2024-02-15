@@ -161,7 +161,42 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         view.backgroundColor = .systemBackground
 
 //        announcePublishButton()
+
+        // TOOD: implement a system that doesn't rely on a pull mechanism
+
+        mediaTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            self?.updateMediaUploadStatus()
+        }
     }
+
+    private func updateMediaUploadStatus() {
+        if case .loading = publishButtonViewModel.state {
+            return
+        }
+
+        let coordinator = MediaCoordinator.shared
+
+        if post.hasFailedMedia {
+            publishButtonViewModel.state = .failed(title: "Failed to upload media", details: nil, onRetryTapped: { [weak self] in
+                guard let self else { return }
+                coordinator.uploadMedia(for: self.post, automatedRetry: true)
+            })
+        } else if coordinator.isUploadingMedia(for: post) {
+            var completed: Int64 = 0
+            var total: Int64 = 0
+            for media in post.media {
+                if let progress = coordinator.progress(for: media) {
+                    completed = progress.completedUnitCount
+                    total += progress.totalUnitCount
+                }
+            }
+            publishButtonViewModel.state = .uploading(title: "Uploading Media...", progress: .init(completed: completed, total: total))
+        } else {
+            publishButtonViewModel.state = .default
+        }
+    }
+
+    private weak var mediaTimer: Timer?
 
     private func configureHeader() {
         headerView.closeButton.addAction(.init(handler: { [weak self] _ in
