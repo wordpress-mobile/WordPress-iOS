@@ -3,6 +3,7 @@ import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
+import Gravatar
 
 /// Displays a Blog's User Details
 ///
@@ -507,7 +508,7 @@ private extension PersonViewController {
     }
 
     func refreshGravatarImage(in imageView: UIImageView) {
-        let gravatar = person.avatarURL.flatMap { Gravatar($0) }
+        let gravatar = person.avatarURL.flatMap { GravatarURL($0) }
         let placeholder = UIImage(named: "gravatar")!
         imageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }

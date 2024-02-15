@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared
 import WordPressUI
+import Gravatar
 
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     typealias EventHandler = (() -> Void)
@@ -54,7 +55,7 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
             return
         }
 
-        let gravatar = url.flatMap { Gravatar($0) }
+        let gravatar = url.flatMap { GravatarURL($0) }
         gravatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
 
         gravatarURL = url
