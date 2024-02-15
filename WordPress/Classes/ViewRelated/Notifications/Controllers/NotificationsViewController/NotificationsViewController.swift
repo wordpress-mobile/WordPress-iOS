@@ -843,8 +843,9 @@ extension NotificationsViewController {
             } else {
                 viewController = getNotificationDetailsViewController(for: note)
             }
-            guard let viewController = viewController else { return }
-            displayViewController(viewController)
+            if let viewController {
+                displayViewController(viewController)
+            }
         }
     }
 
