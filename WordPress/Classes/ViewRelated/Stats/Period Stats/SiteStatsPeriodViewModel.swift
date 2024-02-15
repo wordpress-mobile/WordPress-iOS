@@ -79,7 +79,7 @@ class SiteStatsPeriodViewModel: Observable {
 
         var sections: [ImmuTableSection] = []
 
-        sections.append(.init(rows: blocks(for: .timeIntervalsSummary,
+        sections.append(.init(rows: blocks(for: .timeIntervalsSummary, .totalsSummary,
                                             type: .period,
                                             status: barChartFetchingStatus(),
                                             block: { [weak self] in
