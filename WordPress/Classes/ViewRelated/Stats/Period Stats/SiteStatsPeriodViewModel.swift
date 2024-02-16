@@ -329,6 +329,10 @@ private extension SiteStatsPeriodViewModel {
             previousCount = previousInterval?.commentsCount ?? 0
         }
 
+        guard summaryData.count > 1 else {
+            return (currentCount, 0, 0)
+        }
+
         let difference = currentCount - previousCount
         var roundedPercentage = 0
 
@@ -623,9 +627,9 @@ private extension SiteStatsPeriodViewModel {
     }
 
     /// - Returns: Number of totals summary data to fetch
-    /// Minimum value 2 - for current and previous period to show comparison label
+    /// 1 is enough to optimize for speed if we don't show comparison label with other periods
     private func chartTotalsLimit() -> Int {
-        return 2
+        return 1
     }
 }
 
