@@ -1,5 +1,6 @@
 24.3
 -----
+* [***] [internal] Refactored websocket connections to Pinghub. [#22611]
 
 
 24.2
