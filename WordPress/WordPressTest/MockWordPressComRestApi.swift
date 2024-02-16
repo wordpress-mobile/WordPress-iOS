@@ -56,33 +56,3 @@ class MockWordPressComRestApi: WordPressComRestApi {
         return method
     }
 }
-
-class MockWordPressOrgRestApi: WordPressOrgRestApi {
-    var getMethodCalled = false
-    var URLStringPassedIn: String?
-    var parametersPassedIn: AnyObject?
-    var completionPassedIn: WordPressOrgRestApi.Completion?
-
-    init() {
-        super.init(apiBase: URL(string: "https://example.com")!)
-    }
-
-    override func GET(_ path: String, parameters: [String: AnyObject]?, completion: @escaping WordPressOrgRestApi.Completion) -> Progress? {
-        getMethodCalled = true
-        URLStringPassedIn = path
-        parametersPassedIn = parameters as AnyObject?
-        completionPassedIn = completion
-
-        return Progress()
-    }
-
-    @objc func methodCalled() -> String {
-
-        var method = "Unknown"
-        if getMethodCalled {
-            method = "GET"
-        }
-
-        return method
-    }
-}

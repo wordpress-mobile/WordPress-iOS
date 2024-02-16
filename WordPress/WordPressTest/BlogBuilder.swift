@@ -97,6 +97,7 @@ final class BlogBuilder {
         let account = NSEntityDescription.insertNewObject(forEntityName: WPAccount.entityName(), into: context) as! WPAccount
         account.displayName = "displayName"
         account.username = username
+        account.authToken = "authtoken"
         blog.account = account
 
         return self
