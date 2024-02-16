@@ -1359,6 +1359,7 @@
 		4AA33F05299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */; };
 		4AA7EE0F2ADF7367007D261D /* PostRepositoryPostsListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */; };
 		4AAD69082A6F68A5007FE77E /* MediaRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */; };
+		4AB6A3602B7C3EB500769115 /* PinghubWebSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB6A35F2B7C3EB500769115 /* PinghubWebSocketTests.swift */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -6961,6 +6962,7 @@
 		4AA33F03299A1F93005B6E23 /* ReaderTagTopic+Lookup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderTagTopic+Lookup.swift"; sourceTree = "<group>"; };
 		4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostRepositoryPostsListTests.swift; sourceTree = "<group>"; };
 		4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRepositoryTests.swift; sourceTree = "<group>"; };
+		4AB6A35F2B7C3EB500769115 /* PinghubWebSocketTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinghubWebSocketTests.swift; sourceTree = "<group>"; };
 		4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReaderPost+Helper.swift"; sourceTree = "<group>"; };
 		4AD5656E28E413160054C676 /* Blog+History.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+History.swift"; sourceTree = "<group>"; };
 		4AD5657128E543A30054C676 /* BlogQueryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogQueryTests.swift; sourceTree = "<group>"; };
@@ -13930,6 +13932,7 @@
 				F1450CF82437EEBB00A28BFE /* MediaRequestAuthenticatorTests.swift */,
 				4688E6CB26AB571D00A5D894 /* RequestAuthenticatorTests.swift */,
 				E15027641E03E54100B847E3 /* PinghubTests.swift */,
+				4AB6A35F2B7C3EB500769115 /* PinghubWebSocketTests.swift */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -23728,6 +23731,7 @@
 				AE3047AA270B66D300FE9266 /* Scanner+QuotedTextTests.swift in Sources */,
 				02761EC4227010BC009BAF0F /* BlogDetailsSectionIndexTests.swift in Sources */,
 				732A473D218787500015DA74 /* WPRichTextFormatterTests.swift in Sources */,
+				4AB6A3602B7C3EB500769115 /* PinghubWebSocketTests.swift in Sources */,
 				1ABA150822AE5F870039311A /* WordPressUIBundleTests.swift in Sources */,
 				F46546352AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift in Sources */,
 				FEA312842987FB0100FFD405 /* BlogJetpackTests.swift in Sources */,

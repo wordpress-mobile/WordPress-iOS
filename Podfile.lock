@@ -56,7 +56,7 @@ PODS:
     - SentryPrivate (= 8.18.0)
   - SentryPrivate (8.18.0)
   - Sodium (0.9.1)
-  - Starscream (3.0.6)
+  - Starscream (4.0.6)
   - SVProgressHUD (2.2.5)
   - SwiftLint (0.54.0)
   - UIDeviceIdentifier (2.3.0)
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - Reachability (= 3.2)
-  - Starscream (= 3.0.6)
+  - Starscream (~> 4.0)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (~> 0.50)
   - WordPress-Editor-iOS (~> 1.19.9)
@@ -216,7 +216,7 @@ SPEC CHECKSUMS:
   Sentry: 8984a4ffb2b9bd2894d74fb36e6f5833865bc18e
   SentryPrivate: 2f0c9ba4c3fc993f70eab6ca95673509561e0085
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
-  Starscream: ef3ece99d765eeccb67de105bfa143f929026cf5
+  Starscream: fb2c4510bebf908c62bd383bcf05e673720e91fd
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
   SwiftLint: c1de071d9d08c8aba837545f6254315bc900e211
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
@@ -236,6 +236,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: d7f320bedde48770f2ca24d6086bc5214172ddec
+PODFILE CHECKSUM: cde235b576e5cd0b95b5a64d6bc75628c7adad12
 
 COCOAPODS: 1.14.2
