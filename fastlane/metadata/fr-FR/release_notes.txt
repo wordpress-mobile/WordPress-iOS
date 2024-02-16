@@ -1,0 +1,1 @@
+Nous avons corrigé un problème qui faisait « clignoter » les images et autres médias lors de leur mise en ligne. Fini les « on me voit, on me voit plus ».
