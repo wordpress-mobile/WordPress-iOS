@@ -2,14 +2,16 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
+
     static let reuseIdentifier = String(describing: Self.self)
+
     enum Style {
         struct Regular {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
-            let actionIconName: String? // TODO: Will be refactored to contain the action.
+            let inlineAction: InlineAction?
         }
 
         struct Altered {
@@ -19,6 +21,11 @@ struct NotificationsTableViewCellContent: View {
 
         case regular(Regular)
         case altered(Altered)
+    }
+
+    struct InlineAction {
+        let icon: SwiftUI.Image
+        let action: () -> Void
     }
 
     private let style: Style
@@ -42,6 +49,14 @@ struct NotificationsTableViewCellContent: View {
 // MARK: - Regular Style
 fileprivate extension NotificationsTableViewCellContent {
     struct Regular: View {
+
+        @State private var avatarSize: CGSize = .zero
+        @State private var textsSize: CGSize = .zero
+
+        private var rootStackAlignment: VerticalAlignment {
+            return textsSize.height >= avatarSize.height ? .top : .center
+        }
+
         private let info: Style.Regular
 
         fileprivate init(info: Style.Regular) {
@@ -49,15 +64,24 @@ fileprivate extension NotificationsTableViewCellContent {
         }
 
         var body: some View {
-            HStack(alignment: .top, spacing: 0) {
+            HStack(alignment: rootStackAlignment, spacing: 0) {
                 avatarHStack
+                    .saveSize(in: $avatarSize)
                 textsVStack
                     .offset(x: -info.avatarStyle.leadingOffset*2)
-                    .padding(.horizontal, Length.Padding.split)
-                if let actionIconName = info.actionIconName {
-                    actionIcon(withName: actionIconName)
-                }
+                    .padding(.leading, Length.Padding.split)
+                    .saveSize(in: $textsSize)
                 Spacer()
+                if let inlineAction = info.inlineAction {
+                    Button {
+                        inlineAction.action()
+                    } label: {
+                        inlineAction.icon
+                            .imageScale(.medium)
+                            .foregroundStyle(Color.DS.Foreground.secondary)
+                            .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+                    }
+                }
             }
             .padding(.trailing, Length.Padding.double)
         }
@@ -83,7 +107,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                 .frame(width: Length.Padding.single)
         }
-        
+
         private var textsVStack: some View {
             VStack(alignment: .leading, spacing: 0) {
                 if let title = info.title {
@@ -101,13 +125,6 @@ fileprivate extension NotificationsTableViewCellContent {
                         .padding(.top, Length.Padding.half)
                 }
             }
-        }
-
-        private func actionIcon(withName iconName: String) -> some View {
-            Image(systemName: iconName)
-                .imageScale(.small)
-                .foregroundStyle(Color.DS.Foreground.secondary)
-                .frame(width: Length.Padding.medium, height: Length.Padding.medium)
         }
     }
 }
@@ -161,6 +178,43 @@ fileprivate extension NotificationsTableViewCellContent {
     }
 }
 
+// MARK: - Helpers
+
+private struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
+private struct SizeModifier: ViewModifier {
+    @Binding var size: CGSize
+
+    private var sizeView: some View {
+        GeometryReader { geometry in
+            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
+        }
+    }
+
+    func body(content: Content) -> some View {
+        content.background(
+            sizeView
+                .onPreferenceChange(SizePreferenceKey.self, perform: { value in
+                    size = value
+                })
+        )
+    }
+}
+
+private extension View {
+    func saveSize(in size: Binding<CGSize>) -> some View {
+        modifier(SizeModifier(size: size))
+    }
+}
+
+// MARK: - Preview
+
 #if DEBUG
 #Preview {
     VStack(alignment: .leading, spacing: Length.Padding.medium) {
@@ -173,7 +227,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     avatarStyle: .single(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=40x40")!
                     ),
-                    actionIconName: "star"
+                    inlineAction: .init(icon: .DS.icon(named: .ellipsisHorizontal), action: {})
                 )
             )
         )
@@ -188,7 +242,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=34x34")!
                     ),
-                    actionIconName: "plus"
+                    inlineAction: .init(icon: .init(systemName: "plus"), action: {})
                 )
             )
         )
@@ -196,14 +250,14 @@ fileprivate extension NotificationsTableViewCellContent {
             style: .regular(
                 .init(
                     title: "New likes on Night Time in Tokyo",
-                    description: "Sarah, Céline and Amit",
+                    description: nil,
                     shouldShowIndicator: true,
                     avatarStyle: .triple(
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!,
                         URL(string: "https://i.pickadummy.com/index.php?imgsize=28x28")!
                     ),
-                    actionIconName: nil
+                    inlineAction: .init(icon: .init(systemName: "square.and.arrow.up"), action: {})
                 )
             )
         )

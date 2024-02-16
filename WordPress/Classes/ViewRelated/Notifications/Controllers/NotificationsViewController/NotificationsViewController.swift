@@ -362,7 +362,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
                     description: note.renderSnippet()?.string,
                     shouldShowIndicator: !note.read,
                     avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL),
-                    actionIconName: nil
+                    inlineAction: nil
                 )
             )
         }
