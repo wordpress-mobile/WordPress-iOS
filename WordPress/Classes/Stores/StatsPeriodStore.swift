@@ -546,6 +546,7 @@ private extension StatsPeriodStore {
         if forceRefresh {
             DDLogInfo("Stats Period: Cancel all operations")
             cancelQueries()
+            setAllFetchingStatus(.idle)
         }
 
         loadFromCache(date: date, period: period, unit: period)
@@ -880,7 +881,8 @@ private extension StatsPeriodStore {
                 return
         }
 
-        operationQueue.cancelAllOperations()
+        cancelQueries()
+        setAllFetchingStatus(.idle)
 
         state.postStatsFetchingStatuses[postID] = .loading
 
@@ -899,7 +901,6 @@ private extension StatsPeriodStore {
 
     private func refreshPostStats(postID: Int) {
         state.postStatsFetchingStatuses[postID] = .idle
-        cancelQueries()
         fetchPostStats(postID: postID)
     }
 
@@ -1052,9 +1053,7 @@ private extension StatsPeriodStore {
 
     private func cancelQueries() {
         operationQueue.cancelAllOperations()
-
         statsServiceRemote?.wordPressComRestApi.cancelTasks()
-        setAllFetchingStatus(.idle)
     }
 
     private func shouldFetchOverview() -> Bool {
