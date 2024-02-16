@@ -490,11 +490,6 @@ private extension StatsPeriodStore {
     // MARK: - Traffic Overview Data
 
     private func refreshTrafficOverviewData(_ params: PeriodQuery.TrafficOverviewParams) {
-        guard shouldFetchOverview() else {
-            DDLogInfo("Stats Traffic Overview refresh triggered while one was in progress.")
-            return
-        }
-
         loadFromCache(date: params.date, period: params.period, unit: params.chartBarsUnit)
         cancelQueries()
 
