@@ -34,8 +34,6 @@ class PostTagPickerViewController: UIViewController {
         }
     }
 
-    var onContentViewHeightDetermined: (() -> Void)?
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -118,7 +116,6 @@ class PostTagPickerViewController: UIViewController {
         super.viewWillAppear(animated)
 
         textView.becomeFirstResponder()
-        updateContainerHeight()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -163,14 +160,6 @@ class PostTagPickerViewController: UIViewController {
         }
 
         tableView.contentInset.bottom += presentedVC?.yPosition ?? 0
-    }
-
-    fileprivate func updateContainerHeight() {
-        descriptionLabel.layoutIfNeeded()
-        textViewContainer.layoutIfNeeded()
-        let contentHeight = tableView.contentSize.height + descriptionLabel.bounds.size.height + textViewContainer.bounds.height
-        preferredContentSize = CGSize(width: view.bounds.width, height: max(300.0, contentHeight))
-        onContentViewHeightDetermined?()
     }
 }
 

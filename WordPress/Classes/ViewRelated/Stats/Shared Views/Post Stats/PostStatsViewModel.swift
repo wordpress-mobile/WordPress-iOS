@@ -94,7 +94,7 @@ class PostStatsViewModel: Observable {
 
     func refreshPostStats(postID: Int, selectedDate: Date) {
         self.selectedDate = selectedDate
-        ActionDispatcher.dispatch(PeriodAction.refreshPostStats(postID: postID))
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .postStats(postID: postID)))
     }
 
     func fetchDataHasFailed() -> Bool {
