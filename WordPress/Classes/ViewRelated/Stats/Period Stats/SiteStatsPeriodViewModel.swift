@@ -65,10 +65,14 @@ class SiteStatsPeriodViewModel: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
-                                                                               period: lastRequestedPeriod,
-                                                                               forceRefresh: true))
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                date: lastRequestedDate,
+                period: lastRequestedPeriod,
+                unit: unit(from: lastRequestedPeriod),
+                limit: limit(for: lastRequestedPeriod)
+            )
+        )
     }
 
     func isFetchingChart() -> Bool {
@@ -100,9 +104,9 @@ class SiteStatsPeriodViewModel: Observable {
         var sections: [ImmuTableSection] = []
 
         // TODO: Replace with a new Bar Chart
-        sections.append(.init(rows: blocks(for: .summary,
+        sections.append(.init(rows: blocks(for: .timeIntervalsSummary,
                                             type: .period,
-                                            status: store.summaryStatus,
+                                            status: store.timeIntervalsSummaryStatus,
                                             checkingCache: { [weak self] in
                                                 return self?.mostRecentChartData != nil
             },
@@ -210,10 +214,17 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Refresh Data
 
-    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+    func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
         selectedDate = date
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                date: date,
+                period: period,
+                unit: unit(from: period),
+                limit: limit(for: period)
+            )
+        )
     }
 
     // MARK: - Chart Date
@@ -239,7 +250,7 @@ class SiteStatsPeriodViewModel: Observable {
             // a refresh.
             let increment = forward ? 1 : -1
             let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
-            refreshPeriodOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
+            refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
             return nextDate
         }
 
@@ -645,7 +656,32 @@ private extension SiteStatsPeriodViewModel {
                                                                                              statSection: .periodFileDownloads) }
             ?? []
     }
+}
 
+private extension SiteStatsPeriodViewModel {
+    /// - Returns: `StatsPeriodUnit` granularity of period data we want to receive from API
+    private func unit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
+        switch period {
+        case .day, .week:
+            return .day
+        case .month:
+            return .week
+        case .year:
+            return .month
+        }
+    }
+
+    /// - Returns: Number of pieces of data for a given Stats period
+    private func limit(for period: StatsPeriodUnit) -> Int {
+        switch period {
+        case .day, .week:
+            return 7
+        case .month:
+            return 5
+        case .year:
+            return 12
+        }
+    }
 }
 
 extension SiteStatsPeriodViewModel: AsyncBlocksLoadable {

@@ -4,6 +4,7 @@ protocol ReaderNavigationMenuDelegate: AnyObject {
     func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint)
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
     func didTapDiscoverBlogs()
+    func didScrollToTop()
 }
 
 struct ReaderNavigationMenu: View {
@@ -24,13 +25,15 @@ struct ReaderNavigationMenu: View {
     }
 
     var body: some View {
-        HStack(spacing: 8.0) {
+        HStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ReaderNavigationButton(viewModel: viewModel)
                         .frame(maxHeight: .infinity)
                         .animation(.easeInOut, value: viewModel.selectedItem)
                     streamFilterView
+                    // add some empty space so that the last filter chip doesn't get covered by the gradient mask.
+                    Spacer(minLength: Metrics.gradientMaskWidth)
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
@@ -41,10 +44,10 @@ struct ReaderNavigationMenu: View {
                     LinearGradient(gradient: Gradient(colors: [.black, .clear]),
                                    startPoint: .leading,
                                    endPoint: .trailing)
-                               .frame(width: 16)
+                    .frame(width: Metrics.gradientMaskWidth)
                 }
             })
-            Spacer()
+            Spacer(minLength: 0)
             Button {
                 viewModel.navigateToSearch()
             } label: {
@@ -110,12 +113,16 @@ struct ReaderNavigationMenu: View {
         return String(format: Strings.activeFilterAccessibilityStringFormat, activeFilter.topic.title)
     }
 
+    struct Metrics {
+        static let gradientMaskWidth: CGFloat = 16.0
+    }
+
     struct Colors {
         static let searchIcon: Color = Color(uiColor: .text)
 
         struct StreamFilter {
             static let text = Color.primary
-            static let background = Color(uiColor: .secondarySystemBackground)
+            static let background = Color(uiColor: .init(light: .secondarySystemBackground, dark: .tertiarySystemBackground))
             static let selectedText = Color(uiColor: .systemBackground)
             static let selectedBackground = Color.primary
         }

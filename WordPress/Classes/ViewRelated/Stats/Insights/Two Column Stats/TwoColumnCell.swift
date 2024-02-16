@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 
 class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
 
@@ -10,6 +11,7 @@ class TwoColumnCell: StatsBaseCell, NibLoadable, Accessible {
     @IBOutlet weak var viewMoreLabel: UILabel!
     @IBOutlet weak var viewMoreButton: UIButton!
     @IBOutlet weak var bottomSeparatorLine: UIView!
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
 
     private typealias Style = WPStyleGuide.Stats
     private var dataRows = [StatsTwoColumnRowData]()
@@ -63,6 +65,12 @@ private extension TwoColumnCell {
         Style.configureCell(self)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
+        configureSpacing()
+    }
+
+    private func configureSpacing() {
+        bottomConstraint.constant = Length.Padding.double
+        rowsStackView.spacing = Length.Padding.single
     }
 
     func addRows() {
