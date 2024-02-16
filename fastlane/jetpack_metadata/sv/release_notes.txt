@@ -1,0 +1,5 @@
+Bästa läsare, vi har gett innehållsnavigeringen och filtreringen ett nytt utseende och en ny känsla. När du letar efter inlägg att läsa kan du nu hitta de bästa och ignorera resten.
+
+Vi har åtgärdat ett problem som gjorde att bilder och annan media blinkade bort under uppladdning. Klart. Inget mer försvinnande.
+
+Slutligen har vi lagt till nya menyval för webbplatsövervakning – inklusive mätvärden, PHP-loggar och webbserverloggar – så att du kan hålla bättre koll på din webbplats. (Oroa dig inte. Inget kommer att försvinna.)
