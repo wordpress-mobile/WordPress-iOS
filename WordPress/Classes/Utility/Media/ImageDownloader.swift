@@ -1,5 +1,4 @@
 import UIKit
-import SwiftUI
 
 struct ImageRequestOptions {
     /// Resize the thumbnail to the given size. By default, `nil`.
@@ -45,12 +44,6 @@ actor ImageDownloader {
         request.addValue("image/*", forHTTPHeaderField: "Accept")
         return try await image(from: request, options: options)
     }
-    
-    /// Downloads image for the given `URL`.
-    /// Returns SwiftUI.Image
-    func image(from url: URL, options: ImageRequestOptions = .init()) async throws -> SwiftUI.Image {
-        return try await Image(uiImage: image(from: url, options: options))
-    }
 
     /// Downloads image for the given `URLRequest`.
     func image(from request: URLRequest, options: ImageRequestOptions = .init()) async throws -> UIImage {
@@ -95,18 +88,6 @@ actor ImageDownloader {
     /// with the async functions.
     nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> UIImage? {
         cache[makeKey(for: imageURL, size: size)]
-    }
-
-    /// Returns an image from the memory cache.
-    ///
-    /// - note: Use it to retrieve the image synchronously, which is no not possible
-    /// with the async functions.
-    nonisolated func cachedImage(for imageURL: URL, size: CGSize? = nil) -> Image? {
-        if let uiImage = cache[makeKey(for: imageURL, size: size)] {
-            return Image(uiImage: uiImage)
-        } else {
-            return nil
-        }
     }
 
     nonisolated func setCachedImage(_ image: UIImage?, for imageURL: URL, size: CGSize? = nil) {
