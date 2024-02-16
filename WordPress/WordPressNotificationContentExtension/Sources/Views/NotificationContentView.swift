@@ -2,6 +2,7 @@ import UIKit
 
 import WordPressShared
 import WordPressUI
+import Gravatar
 
 // MARK: - NotificationContentView
 
@@ -186,7 +187,7 @@ extension NotificationContentView {
     func downloadGravatar() {
         guard let specifiedGravatar = viewModel.gravatarURLString,
             let validURL = URL(string: specifiedGravatar),
-            let gravatar = Gravatar(validURL) else {
+            let gravatar = GravatarURL(validURL) else {
 
             return
         }
