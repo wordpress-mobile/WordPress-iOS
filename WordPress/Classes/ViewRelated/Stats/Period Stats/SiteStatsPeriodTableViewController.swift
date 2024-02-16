@@ -162,7 +162,8 @@ private extension SiteStatsPeriodTableViewController {
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
-                StatsGhostTopImmutableRow.self]
+                StatsGhostTopImmutableRow.self,
+                TwoColumnStatsRow.self]
     }
 
     // MARK: - Table Refreshing

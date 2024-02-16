@@ -79,15 +79,28 @@ class SiteStatsPeriodViewModel: Observable {
         }
 
         var sections: [ImmuTableSection] = []
-
-        sections.append(.init(rows: blocks(for: .timeIntervalsSummary, .totalsSummary,
-                                            type: .period,
-                                            status: barChartFetchingStatus(),
-                                            block: { [weak self] in
-                                                return self?.barChartRows() ?? summaryErrorBlock()
+        switch lastRequestedPeriod {
+        case .day:
+            sections.append(.init(rows: blocks(for: .totalsSummary,
+                                               type: .period,
+                                               status: store.totalsSummaryStatus,
+                                               block: { [weak self] in
+                return self?.todayRows() ?? errorBlock(.periodOverviewViews)
+            }, loading: {
+                return loadingBlock(.periodOverviewViews)
+            }, error: {
+                return errorBlock(.periodOverviewViews)
+            })))
+        case .week, .month, .year:
+            sections.append(.init(rows: blocks(for: .timeIntervalsSummary, .totalsSummary,
+                                               type: .period,
+                                               status: barChartFetchingStatus(),
+                                               block: { [weak self] in
+                return self?.barChartRows() ?? summaryErrorBlock()
             }, loading: {
                 return [StatsGhostChartImmutableRow()]
-        }, error: summaryErrorBlock)))
+            }, error: summaryErrorBlock)))
+        }
 
         sections.append(.init(rows: blocks(for: .topPostsAndPages,
                                             type: .period,
@@ -373,6 +386,32 @@ private extension SiteStatsPeriodViewModel {
         }
 
         return (currentCount, difference, roundedPercentage)
+    }
+
+    func todayRows() -> [ImmuTableRow] {
+        let todaySummary = store.getTotalsSummary()?.summaryData.first
+        let dataRows = [
+            StatsTwoColumnRowData(
+                leftColumnName: StatSection.periodOverviewViews.tabTitle,
+                leftColumnData: (todaySummary?.viewsCount ?? 0).abbreviatedString(),
+                rightColumnName: StatSection.periodOverviewVisitors.tabTitle,
+                rightColumnData: (todaySummary?.visitorsCount ?? 0).abbreviatedString()
+            ),
+            StatsTwoColumnRowData(
+                leftColumnName: StatSection.periodOverviewLikes.tabTitle,
+                leftColumnData: (todaySummary?.likesCount ?? 0).abbreviatedString(),
+                rightColumnName: StatSection.periodOverviewComments.tabTitle,
+                rightColumnData: (todaySummary?.commentsCount ?? 0).abbreviatedString()
+            )
+        ]
+
+        return [
+            TwoColumnStatsRow(
+                dataRows: dataRows,
+                statSection: .insightsTodaysStats,
+                siteStatsInsightsDelegate: nil
+            )
+        ]
     }
 
     func postsAndPagesTableRows() -> [ImmuTableRow] {
