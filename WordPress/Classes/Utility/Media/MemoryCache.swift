@@ -1,6 +1,7 @@
 import Foundation
 import AlamofireImage
 import WordPressUI
+import protocol Gravatar.ImageCaching
 
 protocol MemoryCacheProtocol: AnyObject {
     subscript(key: String) -> UIImage? { get set }
@@ -88,7 +89,7 @@ extension MemoryCache {
     }
 }
 
-private struct WordpressUICacheAdapter: WordPressUI.ImageCaching {
+private struct WordpressUICacheAdapter: ImageCaching {
     let cache: MemoryCache
 
     func setImage(_ image: UIImage, forKey key: String) {
