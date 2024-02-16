@@ -39,8 +39,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
         }
     }
 
-    var onContentHeightUpdated: (() -> Void)? = nil
-
     /// Stores the interaction state for disabled connections.
     /// The value is stored in order to perform table operations *only* when the value changes.
     private var canInteractWithDisabledConnections: Bool {
@@ -114,17 +112,6 @@ class PrepublishingSocialAccountsViewController: UITableViewController {
 
         // setting a custom spacer view will override the default 34pt padding from the grouped table view style.
         tableView.tableHeaderView = UIView(frame: .init(x: 0, y: 0, width: 0, height: Constants.tableTopPadding))
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        // manually configure preferredContentSize for precise drawer sizing.
-        let bottomInset = max(UIApplication.shared.mainWindow?.safeAreaInsets.bottom ?? 0, Constants.defaultBottomInset)
-        let contentHeight = tableView.contentSize.height + bottomInset + Constants.additionalBottomInset
-        preferredContentSize = CGSize(width: tableView.contentSize.width,
-                                      height: max(contentHeight, Constants.minContentHeight))
-        onContentHeightUpdated?()
     }
 
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

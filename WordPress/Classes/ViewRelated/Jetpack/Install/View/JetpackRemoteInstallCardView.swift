@@ -7,14 +7,14 @@ class JetpackRemoteInstallCardView: UIView {
 
     private var viewModel: JetpackRemoteInstallCardViewModel
 
-    private lazy var animation: Animation? = {
+    private lazy var animation: LottieAnimation? = {
         effectiveUserInterfaceLayoutDirection == .leftToRight ?
-        Animation.named(Constants.lottieLTRFileName) :
-        Animation.named(Constants.lottieRTLFileName)
+        LottieAnimation.named(Constants.lottieLTRFileName) :
+        LottieAnimation.named(Constants.lottieRTLFileName)
     }()
 
-    private lazy var logosAnimationView: AnimationView = {
-        let view = AnimationView()
+    private lazy var logosAnimationView: LottieAnimationView = {
+        let view = LottieAnimationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.animation = animation
         let animationSize = animation?.size ?? .init(width: 1, height: 1)
