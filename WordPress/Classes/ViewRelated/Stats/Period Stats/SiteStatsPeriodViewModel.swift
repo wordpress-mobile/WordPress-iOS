@@ -13,7 +13,6 @@ class SiteStatsPeriodViewModel: Observable {
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: StatsPeriodStore
-    private var selectedDate: Date
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit
     private var periodReceipt: Receipt?
@@ -32,8 +31,7 @@ class SiteStatsPeriodViewModel: Observable {
         self.periodDelegate = periodDelegate
         self.referrerDelegate = referrerDelegate
         self.store = store
-        self.selectedDate = selectedDate
-        self.lastRequestedDate = Date()
+        self.lastRequestedDate = StatsPeriodHelper().endDate(from: selectedDate, period: selectedPeriod)
         self.lastRequestedPeriod = selectedPeriod
 
         changeReceipt = store.onChange { [weak self] in
@@ -203,7 +201,7 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        selectedDate = date
+        lastRequestedDate = date
         lastRequestedPeriod = period
         periodReceipt = nil
         periodReceipt = store.query(
@@ -223,7 +221,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func updateDate(forward: Bool) -> Date? {
         let increment = forward ? 1 : -1
-        let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
+        let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastRequestedDate)!
         return nextDate
     }
 }
@@ -237,11 +235,13 @@ private extension SiteStatsPeriodViewModel {
     func barChartRows() -> [ImmuTableRow] {
         var tableRows = [ImmuTableRow]()
 
-        let barChartDataSummary = store.getSummary()
-        let barChartTotalsSummary = store.getTotalsSummary()
+        guard let summary = store.getSummary(), let barChartTotalsSummary = store.getTotalsSummary() else {
+            return tableRows
+        }
 
-        let periodDate = barChartDataSummary?.periodEndDate
-        let period = barChartDataSummary?.period
+        let barChartDataSummary = boundChartData(summary, within: lastRequestedPeriod, and: lastRequestedDate)
+        let periodDate = barChartDataSummary.periodEndDate
+        let period = barChartDataSummary.period
 
         let viewsIntervalData = intervalData(summaryType: .views, totalsSummary: barChartTotalsSummary)
         let viewsTabData = StatsTrafficBarChartTabData(
@@ -285,11 +285,9 @@ private extension SiteStatsPeriodViewModel {
 
         var barChartData = [BarChartDataConvertible]()
         var barChartStyling = [StatsTrafficBarChartStyling]()
-        if let chartData = barChartDataSummary {
-            let chart = StatsTrafficBarChart(data: chartData)
-            barChartData.append(contentsOf: chart.barChartData)
-            barChartStyling.append(contentsOf: chart.barChartStyling)
-        }
+        let chart = StatsTrafficBarChart(data: barChartDataSummary)
+        barChartData.append(contentsOf: chart.barChartData)
+        barChartStyling.append(contentsOf: chart.barChartStyling)
 
         let row = StatsTrafficBarChartRow(
             action: nil,
@@ -302,6 +300,39 @@ private extension SiteStatsPeriodViewModel {
         tableRows.append(row)
 
         return tableRows
+    }
+
+    func boundChartData(_ data: StatsSummaryTimeIntervalData, within period: StatsPeriodUnit, and date: Date) -> StatsSummaryTimeIntervalData {
+        let unit = chartBarsUnit(from: period)
+        let summaryData = data.summaryData
+        let currentDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: date)
+
+        let updatedSummaryData = summaryData.filter { summary in
+            let summaryStartDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
+            let sumaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: unit)
+            let summaryEndDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: sumaryEndDate)
+            switch period {
+            case .day:
+                return currentDateComponents.day == summaryStartDateComponents.day
+                    || currentDateComponents.day == summaryEndDateComponents.day
+            case .week:
+                return currentDateComponents.weekOfYear == summaryStartDateComponents.weekOfYear
+                    || currentDateComponents.weekOfYear == summaryEndDateComponents.weekOfYear
+            case .month:
+                return currentDateComponents.month == summaryStartDateComponents.month
+                    || currentDateComponents.month == summaryEndDateComponents.month
+            case .year:
+                return currentDateComponents.year == summaryStartDateComponents.year
+                    || currentDateComponents.year == summaryEndDateComponents.year
+            }
+        }
+
+        return StatsSummaryTimeIntervalData(
+            period: data.period,
+            unit: data.unit,
+            periodEndDate: data.periodEndDate,
+            summaryData: updatedSummaryData
+        )
     }
 
     func intervalData(summaryType: StatsSummaryType, totalsSummary: StatsSummaryTimeIntervalData?) -> (count: Int, difference: Int, percentage: Int) {
