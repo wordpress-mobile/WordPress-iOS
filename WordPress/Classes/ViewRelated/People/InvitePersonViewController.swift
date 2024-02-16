@@ -92,7 +92,7 @@ class InvitePersonViewController: UITableViewController {
 
     private var sortedInviteLinks: [InviteLinks] {
         guard
-            let links = blog.inviteLinks?.array as? [InviteLinks]
+            let links = Array(blog.inviteLinks ?? []) as? [InviteLinks]
         else {
             return []
         }

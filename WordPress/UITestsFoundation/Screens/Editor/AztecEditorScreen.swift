@@ -259,7 +259,7 @@ public class AztecEditorScreen: ScreenObject {
         if FancyAlertComponent.isLoaded() {
             try FancyAlertComponent().acceptAlert()
         } else {
-            app.buttons["Publish Now"].tap()
+            app.buttons["Publish"].tap()
         }
     }
 

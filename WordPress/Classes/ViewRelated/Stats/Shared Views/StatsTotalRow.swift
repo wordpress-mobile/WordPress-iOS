@@ -233,8 +233,8 @@ private extension StatsTotalRow {
     func applyStyles() {
         backgroundColor = .listForeground
         contentView.backgroundColor = .listForeground
-        Style.configureLabelAsCellRowTitle(itemLabel)
-        Style.configureLabelItemDetail(itemDetailLabel)
+        Style.configureLabelAsCellValueTitle(itemLabel)
+        Style.configureLabelAsCellValue(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
