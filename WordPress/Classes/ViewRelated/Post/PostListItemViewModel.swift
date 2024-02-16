@@ -5,20 +5,21 @@ final class PostListItemViewModel {
     let content: NSAttributedString
     let imageURL: URL?
     let badges: NSAttributedString
-    let isEnabled: Bool
+    let syncStateViewModel: PostSyncStateViewModel
     private let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
+    var isEnabled: Bool { syncStateViewModel.isEditable }
 
     init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
-        self.content = makeContentString(for: post)
         self.imageURL = post.featuredImageURL
-        self.badges = makeBadgesString(for: post, shouldHideAuthor: shouldHideAuthor)
         self.statusViewModel = PostCardStatusViewModel(post: post)
-        self.isEnabled = !PostCoordinator.shared.isDeleting(post)
+        self.syncStateViewModel = PostSyncStateViewModel(post: post)
+        self.badges = makeBadgesString(for: post, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
+        self.content = makeContentString(for: post, syncStateViewModel: syncStateViewModel)
     }
 }
 
@@ -58,7 +59,7 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         .joined(separator: " ")
 }
 
-private func makeContentString(for post: Post) -> NSAttributedString {
+private func makeContentString(for post: Post, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
     let title = post.titleForDisplay()
     let snippet = post.contentPreviewForDisplay()
 
@@ -66,7 +67,7 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: UIColor.text
+            .foregroundColor: syncStateViewModel.isEditable ? UIColor.text : UIColor.textTertiary
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
@@ -79,7 +80,7 @@ private func makeContentString(for post: Post) -> NSAttributedString {
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: UIColor.textSubtle
+            .foregroundColor: syncStateViewModel.isEditable ? UIColor.textSubtle : UIColor.textTertiary
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
@@ -92,9 +93,11 @@ private func makeContentString(for post: Post) -> NSAttributedString {
     return string
 }
 
-private func makeBadgesString(for post: Post, shouldHideAuthor: Bool) -> NSAttributedString {
+private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateViewModel, shouldHideAuthor: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
-    if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
+    if let statusMessage = syncStateViewModel.statusMessage {
+        badges.append((statusMessage, nil))
+    } else if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
         let color: UIColor? = post.status == .trash ? .systemRed : nil
         badges.append((date, color))
     }

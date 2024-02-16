@@ -5,6 +5,8 @@ final class PostListHeaderView: UIView {
     // MARK: - Views
 
     private let textLabel = UILabel()
+    private let icon = UIImageView()
+    private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
 
     // MARK: - Properties
@@ -30,6 +32,25 @@ final class PostListHeaderView: UIView {
             configureEllipsisButton(with: viewModel.post, delegate: delegate)
         }
         textLabel.attributedText = viewModel.badges
+
+        let syncStateViewModel = viewModel.syncStateViewModel
+        configureIcon(with: syncStateViewModel)
+
+        ellipsisButton.isHidden = !syncStateViewModel.isShowingEllipsis
+        icon.isHidden = !syncStateViewModel.isShowingIcon
+        indicator.isHidden = !syncStateViewModel.isShowingIndicator
+
+        if syncStateViewModel.isShowingIndicator {
+            indicator.startAnimating()
+        }
+    }
+
+    private func configureIcon(with viewModel: PostSyncStateViewModel) {
+        guard let iconInfo = viewModel.iconInfo else {
+            return
+        }
+        icon.image = iconInfo.image
+        icon.tintColor = iconInfo.color
     }
 
     private func configureEllipsisButton(with post: Post, delegate: InteractivePostViewDelegate) {
@@ -41,13 +62,24 @@ final class PostListHeaderView: UIView {
     // MARK: - Setup
 
     private func setupView() {
+        setupIcon()
         setupEllipsisButton()
 
-        let stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
+        let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
+        innerStackView.spacing = 4
+
+        let stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
         stackView.spacing = 12
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
         pinSubviewToAllEdges(stackView)
+    }
+
+    private func setupIcon() {
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 24),
+            icon.heightAnchor.constraint(equalToConstant: 24)
+        ])
     }
 
     private func setupEllipsisButton() {
