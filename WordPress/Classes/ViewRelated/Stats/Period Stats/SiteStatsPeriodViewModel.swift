@@ -47,7 +47,7 @@ class SiteStatsPeriodViewModel: Observable {
                 .init(
                     date: lastRequestedDate,
                     period: lastRequestedPeriod,
-                    unit: unit(from: lastRequestedPeriod),
+                    chartBarsUnit: chartBarsUnit(from: lastRequestedPeriod),
                     chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
                     chartTotalsLimit: chartTotalsLimit()
                 )
@@ -211,7 +211,7 @@ class SiteStatsPeriodViewModel: Observable {
                 .init (
                     date: date,
                     period: period,
-                    unit: unit(from: period),
+                    chartBarsUnit: chartBarsUnit(from: period),
                     chartBarsLimit: chartBarsLimit(for: period),
                     chartTotalsLimit: chartTotalsLimit()
                 )
@@ -296,7 +296,7 @@ private extension SiteStatsPeriodViewModel {
             tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
             chartData: barChartData,
             chartStyling: barChartStyling,
-            period: unit(from: lastRequestedPeriod)
+            period: chartBarsUnit(from: lastRequestedPeriod)
         )
 
         tableRows.append(row)
@@ -603,7 +603,7 @@ private extension SiteStatsPeriodViewModel {
 
 private extension SiteStatsPeriodViewModel {
     /// - Returns: `StatsPeriodUnit` granularity of period data we want to receive from API
-    private func unit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
+    private func chartBarsUnit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
         switch period {
         case .day, .week:
             return .day

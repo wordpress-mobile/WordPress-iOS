@@ -28,7 +28,7 @@ enum PeriodQuery {
     struct TrafficOverviewParams {
         let date: Date
         let period: StatsPeriodUnit
-        let unit: StatsPeriodUnit
+        let chartBarsUnit: StatsPeriodUnit
         let chartBarsLimit: Int
         let chartTotalsLimit: Int
     }
@@ -470,9 +470,10 @@ private extension StatsPeriodStore {
             cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
-            /// timeIntervalsSummary and summary depends on both period and unit
+            // timeIntervalsSummary and totalsSummary depends on both period and unit
             state.timeIntervalsSummary = getValue(.timeIntervalsSummary, unit: unit)
-            state.totalsSummary = getValue(.totalsSummary, unit: unit)
+            // totals are fetched with a unit equal to period
+            state.totalsSummary = getValue(.totalsSummary, unit: period)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
             state.topClicks = getValue(.topClicks)
@@ -489,14 +490,13 @@ private extension StatsPeriodStore {
     // MARK: - Traffic Overview Data
 
     private func refreshTrafficOverviewData(_ params: PeriodQuery.TrafficOverviewParams) {
-        cancelQueries()
-
-        loadFromCache(date: params.date, period: params.period, unit: params.unit)
-
         guard shouldFetchOverview() else {
             DDLogInfo("Stats Traffic Overview refresh triggered while one was in progress.")
             return
         }
+
+        loadFromCache(date: params.date, period: params.period, unit: params.chartBarsUnit)
+        cancelQueries()
 
         setAllFetchingStatus(.loading)
         scheduler.debounce { [weak self] in
@@ -524,7 +524,7 @@ private extension StatsPeriodStore {
         }
         operationQueue.addOperation(totalsOperation)
 
-        let chartOperation = PeriodOperation(service: service, for: params.period, unit: params.unit, date: params.date, limit: params.chartBarsLimit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+        let chartOperation = PeriodOperation(service: service, for: params.period, unit: params.chartBarsUnit, date: params.date, limit: params.chartBarsLimit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Traffic: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
             }
