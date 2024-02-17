@@ -365,6 +365,16 @@ extension Notification {
     }
 
     var allAvatarURLs: [URL] {
+        let shouldReturnMultipleAvatars: Bool = {
+            let isMatcherWithComment = kind == .matcher && metaCommentID != nil
+            let likeAndFollowKinds: Set<NotificationKind> = [.commentLike, .like, .follow]
+            return likeAndFollowKinds.contains(kind) || isMatcherWithComment
+        }()
+
+        guard shouldReturnMultipleAvatars else {
+            return [iconURL].compactMap { $0 }
+        }
+
         let firstMedias: [AnyObject] = body?.compactMap {
             let allMedia = $0["media"] as? [AnyObject]
             return allMedia?.first as? AnyObject
