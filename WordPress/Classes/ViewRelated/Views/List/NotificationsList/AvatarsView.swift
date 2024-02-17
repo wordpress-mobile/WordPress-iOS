@@ -110,23 +110,19 @@ struct AvatarsView: View {
 }
 
 extension AvatarsView.Style {
-    init?(urls: [URL]) {
-        var tempURLs: [URL]
-        if urls.count > 3 {
-            tempURLs = Array(urls.prefix(3))
-        } else {
-            tempURLs = urls
-        }
+    init(urls: [URL]) {
+        let numberOfAvatars = min(3, urls.count)
+        let urls = urls[0..<numberOfAvatars]
 
-        switch UInt(tempURLs.count) {
+        switch urls.count {
         case 0:
-            return nil
+            self = AvatarsView.Style.single(nil)
         case 1:
-            self = AvatarsView.Style.single(tempURLs[0])
+            self = AvatarsView.Style.single(urls[0])
         case 2:
-            self = AvatarsView.Style.double(tempURLs[0], tempURLs[1])
+            self = AvatarsView.Style.double(urls[0], urls[1])
         default:
-            self = AvatarsView.Style.triple(tempURLs[0], tempURLs[1], tempURLs[2])
+            self = AvatarsView.Style.triple(urls[0], urls[1], urls[2])
         }
     }
 }
