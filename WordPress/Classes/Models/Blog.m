@@ -607,6 +607,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsTiledGallery];
         case BlogFeatureVideoPress:
             return [self supportsVideoPress];
+        case BlogFeatureVideoPressV5:
+            return [self supportsVideoPressV5];
         case BlogFeatureFacebookEmbed:
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureInstagramEmbed:
@@ -731,6 +733,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsVideoPress
 {
     return self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsVideoPressV5
+{
+    return self.isHostedAtWPcom || self.isAtomic;
 }
 
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
