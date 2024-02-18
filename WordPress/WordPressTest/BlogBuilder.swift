@@ -17,7 +17,7 @@ final class BlogBuilder {
         blog = NSEntityDescription.insertNewObject(forEntityName: Blog.entityName(), into: context) as! Blog
 
         // Non-null properties in Core Data
-        blog.dotComID = NSNumber(value: arc4random_uniform(UInt32.max))
+        blog.dotComID = NSNumber(value: arc4random_uniform(999_999))
         blog.url = "https://\(blog.dotComID!).example.com"
         blog.xmlrpc = "https://\(blog.dotComID!).example.com/xmlrpc.php"
     }
