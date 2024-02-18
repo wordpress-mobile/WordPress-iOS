@@ -42,8 +42,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -75,8 +75,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -108,8 +108,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertFalse(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -146,8 +146,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -167,8 +167,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -191,8 +191,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -216,8 +216,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertTrue(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
@@ -242,8 +242,8 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
             case .success(let settings):
                 XCTAssertFalse(settings.hasChanges)
                 XCTAssertNotNil(settings.blockEditorSettings)
-            case .failure:
-                XCTFail()
+            case let .failure(error):
+                XCTFail("Unexpected failure: \(error)")
             }
             waitExpectation.fulfill()
         }
