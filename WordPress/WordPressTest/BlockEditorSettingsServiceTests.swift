@@ -387,7 +387,7 @@ extension BlockEditorSettingsServiceTests {
         service.fetchSettings { _ in
             waitExpectation.fulfill()
         }
-        waitForExpectations(timeout: expectationTimeout)
+        wait(for: [waitExpectation], timeout: expectationTimeout)
         HTTPStubs.removeStub(descriptor)
     }
 }
