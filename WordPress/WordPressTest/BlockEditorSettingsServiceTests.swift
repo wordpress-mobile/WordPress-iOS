@@ -24,7 +24,7 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
     }
 
     // MARK: Editor `theme_supports` support
-    func testThemeSupportsNewTheme() {
+    func testThemeSupportsNewTheme() throws {
         blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
@@ -49,11 +49,11 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
         }
 
         waitForExpectations(timeout: expectationTimeout)
-        validateThemeResponse()
+        try validateThemeResponse()
         XCTAssertNotNil(self.blog.blockEditorSettings?.checksum)
     }
 
-    func testThemeSupportsThemeChange() {
+    func testThemeSupportsThemeChange() throws {
         blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
@@ -82,11 +82,11 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
         }
 
         waitForExpectations(timeout: expectationTimeout)
-        validateThemeResponse()
+        try validateThemeResponse()
         XCTAssertNotEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-    func testThemeSupportsThemeIsTheSame() {
+    func testThemeSupportsThemeIsTheSame() throws {
         blog = BlogBuilder(mainContext)
             .with(wordPressVersion: "5.7")
             .with(isHostedAtWPCom: true)
@@ -115,13 +115,13 @@ class BlockEditorSettingsServiceTests: CoreDataTestCase {
         }
 
         waitForExpectations(timeout: expectationTimeout)
-        validateThemeResponse()
+        try validateThemeResponse()
         XCTAssertEqual(self.blog.blockEditorSettings?.checksum, originalChecksum)
     }
 
-    private func validateThemeResponse() {
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.colors!.count, 0)
-        XCTAssertGreaterThan(self.blog.blockEditorSettings!.gradients!.count, 0)
+    private func validateThemeResponse() throws {
+        try XCTAssertGreaterThan(XCTUnwrap(self.blog.blockEditorSettings?.colors?.count), 0)
+        try XCTAssertGreaterThan(XCTUnwrap(self.blog.blockEditorSettings?.gradients?.count), 0)
     }
 
     private func stubThemeRequest(response: HTTPStubsResponse) {
