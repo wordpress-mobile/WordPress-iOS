@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-09 12:26:15+0000 */
+/* Translation-Revision-Date: 2024-02-13 11:19:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: en_GB */
@@ -11172,6 +11172,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP Logs";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web Server Logs";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
