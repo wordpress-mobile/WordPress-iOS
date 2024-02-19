@@ -114,7 +114,7 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'Starscream', '3.0.6'
+  pod 'Starscream', '~> 4.0'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'AlamofireImage', '3.5.2'

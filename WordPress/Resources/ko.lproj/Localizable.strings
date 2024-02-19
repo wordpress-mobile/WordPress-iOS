@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-15 16:23:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ko_KR */
@@ -10526,6 +10526,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "구독한 콘텐츠를 보고 구독을 관리하려면 %@을(를) 선택해 보세요.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "구독";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "더 보기";
 
@@ -10650,6 +10656,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "태그";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d 태그";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d 태그";
@@ -10658,14 +10668,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "태그";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "필터링 기준: %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "필터 목록 열기";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "좋아함";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "목록";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "초기화";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "저장됨";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "검색";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "구독";
@@ -11100,6 +11124,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP 로그";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "웹 서버 로그";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
