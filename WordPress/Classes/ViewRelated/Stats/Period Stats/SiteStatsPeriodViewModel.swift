@@ -323,8 +323,8 @@ private extension SiteStatsPeriodViewModel {
 
         let updatedSummaryData = summaryData.filter { summary in
             let summaryStartDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
-            let sumaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: unit)
-            let summaryEndDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: sumaryEndDate)
+            let summaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: period)
+            let summaryEndDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summaryEndDate)
             switch period {
             case .day:
                 return currentDateComponents.day == summaryStartDateComponents.day
