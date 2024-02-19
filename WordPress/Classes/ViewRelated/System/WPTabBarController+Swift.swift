@@ -1,6 +1,21 @@
 
 // MARK: - Tab Access Tracking
 
+extension WPTab {
+    var hasStaticScreen: Bool {
+        switch self {
+        case .reader:
+            return true
+        case .notifications:
+            return true
+        case .mySites:
+            return false
+        case .me:
+            return false
+        }
+    }
+}
+
 extension WPTabBarController {
     private static let tabIndexToStatMap: [WPTab: WPAnalyticsStat] = [.mySites: .mySitesTabAccessed, .reader: .readerAccessed]
 
@@ -82,6 +97,10 @@ extension WPTabBarController {
         guard let tabType = WPTab(rawValue: Int(tabIndex)),
             let stat = WPTabBarController.tabIndexToStatMap[tabType] else {
                 return false
+        }
+
+        if tabType.hasStaticScreen && shouldUseStaticScreens {
+            return false
         }
 
         WPAppAnalytics.track(stat)
