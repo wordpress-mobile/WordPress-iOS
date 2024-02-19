@@ -85,11 +85,11 @@ class SiteStatsPeriodViewModel: Observable {
                                                type: .period,
                                                status: store.totalsSummaryStatus,
                                                block: { [weak self] in
-                return self?.todayRows() ?? errorBlock(.periodOverviewViews)
+                return self?.todayRows() ?? errorBlock(.periodToday)
             }, loading: {
-                return loadingBlock(.periodOverviewViews)
+                return loadingBlock(.periodToday)
             }, error: {
-                return errorBlock(.periodOverviewViews)
+                return errorBlock(.periodToday)
             })))
         case .week, .month, .year:
             sections.append(.init(rows: blocks(for: .timeIntervalsSummary, .totalsSummary,
@@ -409,7 +409,7 @@ private extension SiteStatsPeriodViewModel {
         return [
             TwoColumnStatsRow(
                 dataRows: dataRows,
-                statSection: .periodOverviewViews,
+                statSection: .periodToday,
                 siteStatsInsightsDelegate: nil
             )
         ]
