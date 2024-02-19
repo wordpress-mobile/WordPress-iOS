@@ -15,6 +15,7 @@ struct PublishButton: View {
             .controlSize(.large)
             .disabled(isDisabled)
             .buttonBorderShape(.roundedRectangle(radius: 8))
+            .accessibilityIdentifier("publish")
 
             switch viewModel.state {
             case .default:
@@ -80,11 +81,11 @@ struct PublishButton: View {
 }
 
 final class PublishButtonViewModel: ObservableObject {
-    let title: String
-    let onSubmitTapped: () -> Void
+    @Published var title: String
     @Published var state: PublishButtonState = .default
+    let onSubmitTapped: () -> Void
 
-    init(title: String, onSubmitTapped: @escaping () -> Void, state: PublishButtonState = .default) {
+    init(title: String, state: PublishButtonState = .default, onSubmitTapped: @escaping () -> Void) {
         self.title = title
         self.onSubmitTapped = onSubmitTapped
         self.state = state
@@ -114,11 +115,11 @@ private enum Strings {
 
 #Preview {
     VStack(spacing: 16) {
-        PublishButton(viewModel: .init(title: "Publish", onSubmitTapped: {}, state: .default))
-        PublishButton(viewModel: .init(title: "Publish", onSubmitTapped: {}, state: .loading))
-        PublishButton(viewModel: .init(title: "Publish", onSubmitTapped: {}, state: .uploading(title: "Uploading media...", progress: .init(completed: 100, total: 2000))))
-        PublishButton(viewModel: .init(title: "Publish", onSubmitTapped: {}, state: .failed(title: "Failed to upload media")))
-        PublishButton(viewModel: .init(title: "Publish", onSubmitTapped: {}, state: .failed(title: "Failed to upload media", details: "Not connected to Internet", onRetryTapped: {})))
+        PublishButton(viewModel: .init(title: "Publish", state: .default) {})
+        PublishButton(viewModel: .init(title: "Publish", state: .loading) {})
+        PublishButton(viewModel: .init(title: "Publish", state: .uploading(title: "Uploading media...", progress: .init(completed: 100, total: 2000))) {})
+        PublishButton(viewModel: .init(title: "Publish", state: .failed(title: "Failed to upload media")) {})
+        PublishButton(viewModel: .init(title: "Publish", state: .failed(title: "Failed to upload media", details: "Not connected to Internet", onRetryTapped: {})) {})
     }
     .padding()
 }

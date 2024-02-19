@@ -2,6 +2,7 @@ import UIKit
 import WordPressAuthenticator
 import Combine
 import WordPressUI
+import SwiftUI
 
 enum PrepublishingIdentifier {
     case title
@@ -57,14 +58,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let tableView = UITableView(frame: .zero, style: .plain)
     private let footerSeparator = UIView()
 
-    let publishButton: NUXButton = {
-        let nuxButton = NUXButton()
-        nuxButton.isPrimary = true
-        nuxButton.accessibilityIdentifier = "publish"
-        return nuxButton
-    }()
-
     private weak var titleField: UITextField?
+
+    private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
+        self?.buttonPublishTapped()
+    }
 
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
@@ -151,8 +149,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         view.pinSubviewToSafeArea(stackView)
 
         view.backgroundColor = .systemBackground
-
-        announcePublishButton()
     }
 
     private func configureHeader() {
@@ -170,11 +166,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func setupPublishButton() -> UIView {
         let footerView = UIView()
-        footerView.addSubview(publishButton)
-        publishButton.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
 
-        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
+        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
+        addChild(hostingViewController)
+
+        footerView.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
 
         updatePublishButtonLabel()
 
@@ -423,10 +421,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Publish Button
 
     private func updatePublishButtonLabel() {
-        publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
+        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
     }
 
-    @objc func publish(_ sender: UIButton) {
+    private func buttonPublishTapped() {
         didTapPublish = true
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
@@ -459,12 +457,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     // MARK: - Accessibility
-
-    private func announcePublishButton() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            UIAccessibility.post(notification: .screenChanged, argument: self.publishButton)
-        }
-    }
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
