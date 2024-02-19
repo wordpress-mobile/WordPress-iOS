@@ -214,16 +214,16 @@ class SiteStatsPeriodViewModel: Observable {
     // MARK: - Refresh Data
 
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        lastRequestedDate = date
+        lastRequestedDate = StatsPeriodHelper().endDate(from: date, period: period)
         lastRequestedPeriod = period
         periodReceipt = nil
         periodReceipt = store.query(
             .trafficOverviewData(
                 .init (
-                    date: date,
-                    period: period,
-                    chartBarsUnit: chartBarsUnit(from: period),
-                    chartBarsLimit: chartBarsLimit(for: period),
+                    date: lastRequestedDate,
+                    period: lastRequestedPeriod,
+                    chartBarsUnit: chartBarsUnit(from: lastRequestedPeriod),
+                    chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
                     chartTotalsLimit: chartTotalsLimit()
                 )
             )
