@@ -231,6 +231,7 @@
 		01D2FF652AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */; };
 		01D2FF682AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */; };
 		01D2FF6B2AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */; };
+		01D7EBA82B7CD07E00F14992 /* SiteStatsPeriodViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01D7EBA72B7CD07E00F14992 /* SiteStatsPeriodViewModelTests.swift */; };
 		01DBFD8729BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01DBFD8829BDCBF200F3720F /* JetpackNativeConnectionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */; };
 		01DC4CD82B5FC8CE000110E5 /* SiteStatsPeriodTableViewControllerDeprecated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01DC4CD72B5FC8CE000110E5 /* SiteStatsPeriodTableViewControllerDeprecated.swift */; };
@@ -5935,6 +5936,7 @@
 		01D2FF632AA77F790038E040 /* LockScreenTodayViewsVisitorsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenTodayViewsVisitorsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		01D2FF662AA780DC0038E040 /* LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimeViewsVisitorsStatWidgetConfig.swift; sourceTree = "<group>"; };
 		01D2FF692AA782720038E040 /* LockScreenAllTimePostsBestViewsStatWidgetConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenAllTimePostsBestViewsStatWidgetConfig.swift; sourceTree = "<group>"; };
+		01D7EBA72B7CD07E00F14992 /* SiteStatsPeriodViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsPeriodViewModelTests.swift; sourceTree = "<group>"; };
 		01DBFD8629BDCBF200F3720F /* JetpackNativeConnectionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNativeConnectionService.swift; sourceTree = "<group>"; };
 		01DC4CD72B5FC8CE000110E5 /* SiteStatsPeriodTableViewControllerDeprecated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteStatsPeriodTableViewControllerDeprecated.swift; sourceTree = "<group>"; };
 		01DC4CDA2B5FCA7B000110E5 /* SiteStatsDashboardDeprecated.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = SiteStatsDashboardDeprecated.storyboard; sourceTree = "<group>"; };
@@ -9953,6 +9955,14 @@
 				01B5C3C62AE7FC61007055BB /* UITestConfigurator.swift */,
 			);
 			name = UITesting;
+			sourceTree = "<group>";
+		};
+		01D7EBA62B7CD06B00F14992 /* Traffic */ = {
+			isa = PBXGroup;
+			children = (
+				01D7EBA72B7CD07E00F14992 /* SiteStatsPeriodViewModelTests.swift */,
+			);
+			path = Traffic;
 			sourceTree = "<group>";
 		};
 		01DC4CD32B5FC889000110E5 /* Deprecated */ = {
@@ -16620,6 +16630,7 @@
 		DC772AFB28200A3600664C02 /* Stats */ = {
 			isa = PBXGroup;
 			children = (
+				01D7EBA62B7CD06B00F14992 /* Traffic */,
 				DC2CA0822837B9070037E17E /* Shared Views */,
 				DCF892CE282FA40000BB71E1 /* Helpers */,
 				DC772AFC28200A3600664C02 /* Insights */,
@@ -23588,6 +23599,7 @@
 				E1AB5A091E0BF31E00574B4E /* ArrayTests.swift in Sources */,
 				570B037722F1FFF6009D8411 /* PostCoordinatorFailedPostsFetcherTests.swift in Sources */,
 				C8567496243F3D37001A995E /* TenorResultsPageTests.swift in Sources */,
+				01D7EBA82B7CD07E00F14992 /* SiteStatsPeriodViewModelTests.swift in Sources */,
 				3F28CEA92A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift in Sources */,
 				B0A6DEBF2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift in Sources */,
 				93B853231B4416A30064FE72 /* WPAnalyticsTrackerAutomatticTracksTests.m in Sources */,

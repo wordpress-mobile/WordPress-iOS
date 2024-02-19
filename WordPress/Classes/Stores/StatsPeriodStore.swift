@@ -168,7 +168,37 @@ protocol StatsPeriodStoreDelegate: AnyObject {
     func changingSpamStateForReferrerDomainFailed(oldValue: Bool)
 }
 
-class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+protocol StatsPeriodStoreMethods {
+    var isFetchingSummary: Bool { get }
+    var fetchingOverviewHasFailed: Bool { get }
+    var containsCachedData: Bool { get }
+    var timeIntervalsSummaryStatus: StoreFetchingStatus { get }
+    var totalsSummaryStatus: StoreFetchingStatus { get }
+    var topPostsAndPagesStatus: StoreFetchingStatus { get }
+    var topReferrersStatus: StoreFetchingStatus { get }
+    var topPublishedStatus: StoreFetchingStatus { get }
+    var topClicksStatus: StoreFetchingStatus { get }
+    var topAuthorsStatus: StoreFetchingStatus { get }
+    var topSearchTermsStatus: StoreFetchingStatus { get }
+    var topCountriesStatus: StoreFetchingStatus { get }
+    var topVideosStatus: StoreFetchingStatus { get }
+    var topFileDownloadsStatus: StoreFetchingStatus { get }
+    func getSummary() -> StatsSummaryTimeIntervalData?
+    func getTotalsSummary() -> StatsSummaryTimeIntervalData?
+    func getTopReferrers() -> StatsTopReferrersTimeIntervalData?
+    func getTopClicks() -> StatsTopClicksTimeIntervalData?
+    func getTopAuthors() -> StatsTopAuthorsTimeIntervalData?
+    func getTopSearchTerms() -> StatsSearchTermTimeIntervalData?
+    func getTopVideos() -> StatsTopVideosTimeIntervalData?
+    func getTopCountries() -> StatsTopCountryTimeIntervalData?
+    func getTopFileDownloads() -> StatsFileDownloadsTimeIntervalData?
+    func getTopPostsAndPages() -> StatsTopPostsTimeIntervalData?
+    func getTopPublished() -> StatsPublishedPostsTimeIntervalData?
+}
+
+typealias StatsPeriodStoreProtocol = QueryStore<PeriodStoreState, PeriodQuery> & StatsPeriodStoreMethods & StatsStoreCacheable
+
+final class StatsPeriodStore: StatsPeriodStoreProtocol {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
     private typealias PostDetailOperation = StatsPostDetailAsyncOperation

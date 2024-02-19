@@ -12,7 +12,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
-    private let store: StatsPeriodStore
+    private let store: any StatsPeriodStoreProtocol
     private var lastRequestedDate: Date
     private var lastRequestedPeriod: StatsPeriodUnit
     private var periodReceipt: Receipt?
@@ -23,7 +23,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Constructor
 
-    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
+    init(store: any StatsPeriodStoreProtocol = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,
@@ -307,7 +307,8 @@ private extension SiteStatsPeriodViewModel {
             tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
             chartData: barChartData,
             chartStyling: barChartStyling,
-            period: chartBarsUnit(from: lastRequestedPeriod)
+            period: lastRequestedPeriod,
+            unit: chartBarsUnit(from: lastRequestedPeriod)
         )
 
         tableRows.append(row)
@@ -408,7 +409,7 @@ private extension SiteStatsPeriodViewModel {
         return [
             TwoColumnStatsRow(
                 dataRows: dataRows,
-                statSection: .insightsTodaysStats,
+                statSection: .periodOverviewViews,
                 siteStatsInsightsDelegate: nil
             )
         ]
@@ -704,9 +705,35 @@ private extension SiteStatsPeriodViewModel {
 }
 
 extension SiteStatsPeriodViewModel: AsyncBlocksLoadable {
+    typealias CurrentStore = any StatsStoreCacheable
     typealias RowType = PeriodType
 
-    var currentStore: StatsPeriodStore {
-        return store
+    var currentStore: any StatsStoreCacheable {
+        store
+    }
+
+    func blocks<Value>(
+        for blockType: RowType...,
+        type: StatType,
+        status: StoreFetchingStatus,
+        checkingCache: CacheBlock? = nil,
+        block: AsyncBlock<Value>,
+        loading: AsyncBlock<Value>,
+        error: AsyncBlock<Value>
+    ) -> Value {
+        let containsCachedData = checkingCache?() ?? blockType.allSatisfy { store.containsCachedData(for: $0) }
+
+        if containsCachedData {
+            return block()
+        }
+
+        switch status {
+        case .loading, .idle:
+            return loading()
+        case .success:
+            return block()
+        case .error:
+            return error()
+        }
     }
 }

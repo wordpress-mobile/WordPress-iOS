@@ -36,7 +36,8 @@ struct StatsTrafficBarChartRow: ImmuTableRow {
     let tabsData: [StatsTrafficBarChartTabData]
     let chartData: [BarChartDataConvertible]
     let chartStyling: [StatsTrafficBarChartStyling]
-    let period: StatsPeriodUnit?
+    let period: StatsPeriodUnit
+    let unit: StatsPeriodUnit
 
     static let cell: ImmuTableCell = {
         return ImmuTableCell.class(CellType.self)
@@ -45,7 +46,7 @@ struct StatsTrafficBarChartRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else { return }
 
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, unit: unit)
     }
 }
 
