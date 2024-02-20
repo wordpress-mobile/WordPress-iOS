@@ -15,7 +15,12 @@ extension WordPressOrgRestApi {
         if let dotComID = blog.dotComID?.uint64Value,
            let token = blog.account?.authToken,
            token.count > 0 {
-            self.init(dotComSiteID: dotComID, bearerToken: token, userAgent: WPUserAgent.wordPress())
+            self.init(
+                dotComSiteID: dotComID,
+                bearerToken: token,
+                userAgent: WPUserAgent.wordPress(),
+                apiURL: AppEnvironment.current.wordPressComApiBase
+            )
         } else if let apiBase = apiBase(blog: blog),
                   let loginURL = try? blog.loginUrl().asURL(),
                   let adminURL = try? blog.adminUrl(withPath: "").asURL(),
