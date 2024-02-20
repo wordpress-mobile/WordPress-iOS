@@ -37,6 +37,7 @@ struct AvatarsView: View {
 
     private let style: Style
     private let borderColor: Color
+    @ScaledMetric private var scale = 1
 
     init(style: Style, borderColor: Color = .DS.Background.primary) {
         self.style = style
@@ -76,17 +77,17 @@ struct AvatarsView: View {
             Image("gravatar")
                 .resizable()
         }
-        .frame(width: style.diameter, height: style.diameter)
+        .frame(width: style.diameter * scale, height: style.diameter * scale)
         .clipShape(Circle())
     }
 
     private func doubleAvatarView(primaryURL: URL?, secondaryURL: URL?) -> some View {
         ZStack {
             avatar(url: secondaryURL)
-                .padding(.trailing, Constants.doubleAvatarHorizontalOffset)
+                .padding(.trailing, Constants.doubleAvatarHorizontalOffset * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay()
-                .padding(.leading, Constants.doubleAvatarHorizontalOffset)
+                .padding(.leading, Constants.doubleAvatarHorizontalOffset * scale)
         }
     }
 
@@ -97,13 +98,13 @@ struct AvatarsView: View {
     ) -> some View {
         ZStack(alignment: .bottom) {
             avatar(url: tertiaryURL)
-                .padding(.trailing, Length.Padding.medium)
+                .padding(.trailing, Length.Padding.medium * scale)
             avatar(url: secondaryURL)
                 .avatarBorderOverlay()
-                .offset(x: 0, y: -Length.Padding.split)
+                .offset(x: 0, y: -Length.Padding.split * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay()
-                .padding(.leading, Length.Padding.medium)
+                .padding(.leading, Length.Padding.medium * scale)
         }
         .padding(.top, Length.Padding.split)
     }

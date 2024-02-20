@@ -2,7 +2,6 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
-
     static let reuseIdentifier = String(describing: Self.self)
 
     enum Style {
@@ -84,7 +83,6 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
             }
             .padding(.trailing, Length.Padding.double)
-            .frame(maxHeight: 60)
         }
 
         private var avatarHStack: some View {
@@ -124,7 +122,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
                         .layoutPriority(2)
-                        .lineLimit(2)
+                        .lineLimit(1)
                         .padding(.top, Length.Padding.half)
                 }
             }
