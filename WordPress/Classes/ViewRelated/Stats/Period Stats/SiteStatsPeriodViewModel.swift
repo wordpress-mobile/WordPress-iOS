@@ -19,13 +19,6 @@ class SiteStatsPeriodViewModel: Observable {
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
-    private lazy var calendar: Calendar = {
-        /// Use iso8601 calendar that enforces Mon-Sun week
-        var calendar = Calendar(identifier: .iso8601)
-        calendar.timeZone = .autoupdatingCurrent
-        return calendar
-    }()
-
     // MARK: - Constructor
 
     init(store: any StatsPeriodStoreProtocol = StoreContainer.shared.statsPeriod,
@@ -239,7 +232,7 @@ class SiteStatsPeriodViewModel: Observable {
 
     func updateDate(forward: Bool) -> Date? {
         let increment = forward ? 1 : -1
-        let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastRequestedDate)!
+        let nextDate = StatsDataHelper.calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastRequestedDate)!
         return nextDate
     }
 }
@@ -324,12 +317,12 @@ private extension SiteStatsPeriodViewModel {
     func boundChartData(_ data: StatsSummaryTimeIntervalData, within period: StatsPeriodUnit, and date: Date) -> StatsSummaryTimeIntervalData {
         let unit = chartBarsUnit(from: period)
         let summaryData = data.summaryData
-        let currentDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: date)
+        let currentDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: date)
 
         let updatedSummaryData = summaryData.filter { summary in
-            let summaryStartDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
+            let summaryStartDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
             let summaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: unit)
-            let summaryEndDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summaryEndDate)
+            let summaryEndDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summaryEndDate)
             switch period {
             case .day:
                 return currentDateComponents.day == summaryStartDateComponents.day
