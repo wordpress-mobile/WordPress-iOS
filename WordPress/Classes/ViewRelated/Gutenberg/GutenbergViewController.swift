@@ -1353,6 +1353,12 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         }
     }
 
+    func gutenbergDidRequestLogException(_ exception: [AnyHashable: Any]) {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception)
+        }
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         requestHTML(for: .close)
     }
