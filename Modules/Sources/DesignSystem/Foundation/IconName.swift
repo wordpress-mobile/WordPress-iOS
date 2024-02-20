@@ -11,6 +11,7 @@ public enum IconName: String, CaseIterable {
     case ellipsisHorizontal = "ellipsis.horizontal"
     case checkmark
     case gearshapeFill = "gearshape.fill"
+    case blockShare = "block.share"
 }
 
 // MARK: - Load Image
