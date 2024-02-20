@@ -49,12 +49,12 @@ PODS:
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
   - Reachability (3.2)
-  - Sentry (8.18.0):
-    - Sentry/Core (= 8.18.0)
-    - SentryPrivate (= 8.18.0)
-  - Sentry/Core (8.18.0):
-    - SentryPrivate (= 8.18.0)
-  - SentryPrivate (8.18.0)
+  - Sentry (8.20.0):
+    - Sentry/Core (= 8.20.0)
+    - SentryPrivate (= 8.20.0)
+  - Sentry/Core (8.20.0):
+    - SentryPrivate (= 8.20.0)
+  - SentryPrivate (8.20.0)
   - Sodium (0.9.1)
   - Starscream (4.0.6)
   - SVProgressHUD (2.2.5)
@@ -99,7 +99,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 2.4)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
-  - Automattic-Tracks-iOS (~> 3.0)
+  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `add/sentry-js-exception`)
   - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
@@ -134,7 +134,6 @@ SPEC REPOS:
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
     - AppCenter
-    - Automattic-Tracks-iOS
     - CocoaLumberjack
     - CropViewController
     - Down
@@ -169,6 +168,9 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
+  Automattic-Tracks-iOS:
+    :branch: add/sentry-js-exception
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -182,6 +184,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
+  Automattic-Tracks-iOS:
+    :commit: cf6accc5e21ee023b552afae6e4675f30dd0d9f8
+    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -213,8 +218,8 @@ SPEC CHECKSUMS:
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
-  Sentry: 8984a4ffb2b9bd2894d74fb36e6f5833865bc18e
-  SentryPrivate: 2f0c9ba4c3fc993f70eab6ca95673509561e0085
+  Sentry: a8d7b373b9f9868442b02a0c425192f693103cbf
+  SentryPrivate: 006b24af16828441f70e2ab6adf241bd0a8ad130
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
   Starscream: fb2c4510bebf908c62bd383bcf05e673720e91fd
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
@@ -236,6 +241,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: cde235b576e5cd0b95b5a64d6bc75628c7adad12
+PODFILE CHECKSUM: b2628bd1c79c3a469983ab29ea29b5ef594968b2
 
 COCOAPODS: 1.14.2
