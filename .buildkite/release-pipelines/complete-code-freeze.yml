@@ -1,5 +1,6 @@
 steps:
   - label: Complete Code Freeze
+    key: complete_code_freeze
     plugins:
       - automattic/a8c-ci-toolkit#2.18.2
     # The code freeze completion needs to run on macOS because it uses genstrings under the hood
@@ -8,3 +9,12 @@ steps:
     env:
       IMAGE_ID: xcode-15.1
     command: ".buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION"
+
+  - label: Log Outdated Pods
+    depends_on: complete_code_freeze
+    agents:
+        queue: mac
+    env:
+      IMAGE_ID: xcode-15.1
+    command: ".buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION"
+
