@@ -261,14 +261,11 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
+    upload_build_to_app_center(
+      name: 'WP-Internal',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
+      distribute_to_everyone: true
     )
 
     sentry_upload_dsym(
@@ -380,16 +377,12 @@ platform :ios do
       - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
     NOTES
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: appcenter_app_name,
+    upload_build_to_app_center(
+      name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
       release_notes:,
-      destinations: 'Collaborators',
-      notify_testers: false
+      distribute_to_everyone: false
     )
 
     # Upload dSYMs to Sentry
@@ -458,6 +451,26 @@ platform :ios do
       # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
       reject_build_waiting_for_review: true,
       groups: distribution_groups
+    )
+  end
+
+  def upload_build_to_app_center(
+    name:,
+    file:,
+    dsym:,
+    release_notes:,
+    distribute_to_everyone:
+  )
+    appcenter_upload(
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: name,
+      file:,
+      dsym:,
+      release_notes:,
+      destinations: distribute_to_everyone ? '*' : 'Collaborators',
+      notify_testers: false
     )
   end
 end
