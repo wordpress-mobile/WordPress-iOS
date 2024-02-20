@@ -265,6 +265,7 @@ platform :ios do
       name: 'WP-Internal',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
+      release_notes: File.read(WORDPRESS_RELEASE_NOTES_PATH),
       distribute_to_everyone: true
     )
 
