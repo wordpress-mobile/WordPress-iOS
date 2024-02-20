@@ -17,5 +17,8 @@ install_gems
 echo '--- :closed_lock_with_key: Access secrets'
 bundle exec fastlane run configure_apply
 
+echo '--- :cocoapods: Install Pods (required to check for outdated next)'
+install_cocoapods
+
 echo '+++ :cocoapods: Outdated Pods'
 bundle exec pod outdated
