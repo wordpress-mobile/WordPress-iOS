@@ -1004,46 +1004,6 @@ private extension ZendeskUtils {
 
     // MARK: - Plans
 
-    /// Retrieves the highest priority plan, if it exists
-    /// - Returns: the highest priority plan found, or an empty string if none was found
-    private func getHighestPriorityPlan(planService: PlanService? = nil) -> String {
-
-        let availablePlans = getAvailablePlansWithPriority(planService: planService)
-        if !ZendeskUtils.sharedInstance.sitePlansCache.isEmpty {
-            let plans = Set(ZendeskUtils.sharedInstance.sitePlansCache.values.compactMap { $0.name })
-
-            for availablePlan in availablePlans {
-                if plans.contains(availablePlan.nonLocalizedName) {
-                    return availablePlan.supportName
-                }
-            }
-        } else {
-            // fail safe: if the plan cache call fails for any reason, at least let's use the cached blogs
-            // and compare the localized names
-            let plans = Set(((try? BlogQuery().blogs(in: contextManager.mainContext)) ?? []).compactMap { $0.planTitle })
-
-            for availablePlan in availablePlans {
-                if plans.contains(availablePlan.name) {
-                    return availablePlan.supportName
-                }
-            }
-        }
-        return ""
-    }
-
-    /// Obtains the available plans, sorted by priority
-    private func getAvailablePlansWithPriority(planService: PlanService? = nil) -> [SupportPlan] {
-        let planService = planService ?? PlanService(coreDataStack: contextManager)
-        return planService.allPlans(in: contextManager.mainContext).map {
-            SupportPlan(priority: $0.supportPriority,
-                        name: $0.shortname,
-                        nonLocalizedName: $0.nonLocalizedShortname,
-                        supportName: $0.supportName)
-
-        }
-        .sorted { $0.priority > $1.priority }
-    }
-
     /// Retrieves up to date Zendesk metadata from the backend
     /// - Parameters:
     ///   - planServiceRemote: optional plan service remote. The default is used if none is passed
@@ -1086,27 +1046,6 @@ private extension ZendeskUtils {
             return nil
         }
         return Int(truncating: siteID)
-    }
-
-    struct SupportPlan {
-        let priority: Int
-        let name: String
-        let nonLocalizedName: String
-        let supportName: String
-
-        // used to resolve discrepancies of unlocalized names between endpoints
-        let mappings = ["E-commerce": "eCommerce"]
-
-        init(priority: Int16,
-             name: String,
-             nonLocalizedName: String,
-             supportName: String) {
-
-            self.priority = Int(priority)
-            self.name = name
-            self.nonLocalizedName = mappings[nonLocalizedName] ?? nonLocalizedName
-            self.supportName = supportName
-        }
     }
 
     // MARK: - Constants
