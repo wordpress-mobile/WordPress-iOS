@@ -44,6 +44,50 @@ class MockWordPressComRestApi: WordPressComRestApi {
         return Progress()
     }
 
+    override func perform<T: Decodable>(
+        _ method: HTTPRequestBuilder.Method,
+        URLString: String,
+        parameters: [String: AnyObject]? = nil,
+        fulfilling progress: Progress? = nil,
+        jsonDecoder: JSONDecoder? = nil,
+        type: T.Type = T.self
+    ) async -> APIResult<T> {
+        switch method {
+        case .get:
+            getMethodCalled = true
+        case .post:
+            postMethodCalled = true
+        case .delete, .patch, .put:
+            break
+        }
+
+        URLStringPassedIn = URLString
+        parametersPassedIn = parameters as AnyObject?
+
+        return .failure(.unknown(underlyingError: NSError(domain: "tests", code: 0)))
+    }
+
+    override func perform(
+        _ method: HTTPRequestBuilder.Method,
+        URLString: String,
+        parameters: [String: AnyObject]? = nil,
+        fulfilling progress: Progress? = nil
+    ) async -> WordPressComRestApi.APIResult<AnyObject> {
+        switch method {
+        case .get:
+            getMethodCalled = true
+        case .post:
+            postMethodCalled = true
+        case .delete, .patch, .put:
+            break
+        }
+
+        URLStringPassedIn = URLString
+        parametersPassedIn = parameters as AnyObject?
+
+        return .failure(.unknown(underlyingError: NSError(domain: "tests", code: 0)))
+    }
+
     func methodCalled() -> String {
 
         var method = "Unknown"

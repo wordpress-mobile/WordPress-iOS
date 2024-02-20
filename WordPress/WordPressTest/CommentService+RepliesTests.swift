@@ -94,11 +94,15 @@ final class CommentService_RepliesTests: CoreDataTestCase {
 
         let parentKey = CommentServiceRemoteREST.RequestKeys.parent.rawValue
 
-        self.commentService.getLatestReplyID(for: commentID,
-                                     siteID: siteID,
-                                     accountService: accountService,
-                                     success: { _ in },
-                                     failure: { _ in })
+        waitUntil { done in
+            self.commentService.getLatestReplyID(
+                for: self.commentID,
+                siteID: self.siteID,
+                accountService: self.accountService,
+                success: { _ in done() },
+                failure: { _ in done() }
+            )
+        }
 
         expect(request).toNotEventually(beNil())
         expect(request?.url?.query).to(contain("parent=\(commentID)"))

@@ -10,14 +10,13 @@ public enum PostEditorAction {
     case saveAsDraft
     case schedule
     case publish
-    case publishNow
     case update
     case submitForReview
     case continueFromHomepageEditing
 
     var dismissesEditor: Bool {
         switch self {
-        case .publish, .publishNow, .schedule, .submitForReview:
+        case .publish, .schedule, .submitForReview:
             return true
         default:
             return false
@@ -26,7 +25,7 @@ public enum PostEditorAction {
 
     var isAsync: Bool {
         switch self {
-        case .publish, .publishNow, .schedule, .submitForReview:
+        case .publish, .schedule, .submitForReview:
             return true
         default:
             return false
@@ -37,8 +36,6 @@ public enum PostEditorAction {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
-        case .publishNow:
-            return NSLocalizedString("Publish Now", comment: "Title of button allowing the user to immediately publish the post they are editing.")
         case .save:
             return NSLocalizedString("Save", comment: "Save button label (saving content, ex: Post, Page, Comment).")
         case .saveAsDraft:
@@ -58,8 +55,6 @@ public enum PostEditorAction {
         switch self {
         case .publish:
             return NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing.")
-        case .publishNow:
-            return NSLocalizedString("Are you sure you want to publish now?", comment: "Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing.")
         case .save:
             return NSLocalizedString("Are you sure you want to save?", comment: "Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing.")
         case .saveAsDraft:
@@ -78,7 +73,7 @@ public enum PostEditorAction {
 
     var publishingActionLabel: String {
         switch self {
-        case .publish, .publishNow:
+        case .publish:
             return NSLocalizedString("Publishing...", comment: "Text displayed in HUD while a post is being published.")
         case .save, .saveAsDraft:
             return NSLocalizedString("Saving...", comment: "Text displayed in HUD while a post is being saved as a draft.")
@@ -95,7 +90,7 @@ public enum PostEditorAction {
 
     var publishingErrorLabel: String {
         switch self {
-        case .publish, .publishNow:
+        case .publish:
             return NSLocalizedString("Error occurred during publishing", comment: "Text displayed in notice while a post is being published.")
         case .schedule:
             return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
@@ -110,7 +105,7 @@ public enum PostEditorAction {
         case .save, .saveAsDraft, .update:
             return .save
             // TODO: make a new analytics event(s) for site creation homepage changes
-        case .publish, .publishNow, .schedule, .submitForReview, .continueFromHomepageEditing:
+        case .publish, .schedule, .submitForReview, .continueFromHomepageEditing:
             return .publish
         }
     }
@@ -135,8 +130,6 @@ public enum PostEditorAction {
         case .schedule:
             return .editorScheduledPost
         case .publish:
-            return .editorPublishedPost
-        case .publishNow:
             return .editorPublishedPost
             // TODO: make a new analytics event(s)
         case .update, .continueFromHomepageEditing:
