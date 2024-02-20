@@ -11,6 +11,7 @@ common_params:
 # This is the default pipeline – it will build and test the app
 steps:
   - label: Log Outdated Pods
+    plugins: *common_plugins
     agents:
         queue: mac
     env:
