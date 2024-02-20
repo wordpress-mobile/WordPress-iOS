@@ -238,12 +238,6 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
 
         let coordinator = JetpackDefaultOverlayCoordinator()
         let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog, coordinator: coordinator)
-        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
-        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
-        coordinator.navigationController = navigationViewController
-        coordinator.viewModel = viewModel
-        viewModel.onWillDismiss = onWillDismiss
-        viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = OverlayFrequencyTracker(source: source,
                                                        type: .featuresRemoval,
                                                        frequencyConfig: frequencyConfig,
@@ -253,6 +247,12 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
+        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
+        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+        coordinator.navigationController = navigationViewController
+        coordinator.viewModel = viewModel
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         presentOverlay(navigationViewController: navigationViewController, in: viewController, fullScreen: fullScreen)
         frequencyTracker.track()
     }
