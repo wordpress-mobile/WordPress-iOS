@@ -166,7 +166,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: WORDPRESS_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
+      distribution_groups: ['Internal a8c Testers', 'Public Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -212,7 +215,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: JETPACK_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: JETPACK_RELEASE_NOTES_PATH,
+      distribution_groups: ['Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -442,12 +448,16 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:)
+  def upload_build_to_testflight(whats_new_path:, distribution_groups:)
     upload_to_testflight(
       skip_waiting_for_build_processing: true,
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
-      changelog: File.read(whats_new_path)
+      changelog: File.read(whats_new_path),
+      distribute_external: true,
+      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
+      reject_build_waiting_for_review: true,
+      groups: distribution_groups
     )
   end
 end
