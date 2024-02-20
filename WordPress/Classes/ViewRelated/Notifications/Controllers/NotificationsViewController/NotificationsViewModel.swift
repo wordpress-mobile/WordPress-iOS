@@ -3,8 +3,21 @@ final class NotificationsViewModel {
         static let lastSeenKey = "notifications_last_seen_time"
     }
 
+    // MARK: - Type Aliases
+
+    typealias ShareablePost = (url: String, title: String?)
+    typealias PostReadyForShareCallback = (ShareablePost, IndexPath) -> Void
+
+    // MARK: - Callbacks
+
+    var onPostReadyForShare: PostReadyForShareCallback?
+
+    // MARK: - Depdencies
+
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
+
+    // MARK: - Init
 
     init(
         userDefaults: UserPersistentRepository,
@@ -72,5 +85,18 @@ final class NotificationsViewModel {
                 .reversed()
                 .first(where: notMatcher)
         }
+    }
+
+    // MARK: - Handling Inline Actions
+
+    func shareActionTapped(with notification: Notification, at indexPath: IndexPath) {
+        guard let url = notification.url else {
+            return
+        }
+        let content: ShareablePost = (
+            url: url,
+            title: notification.title
+        )
+        self.onPostReadyForShare?(content, indexPath)
     }
 }

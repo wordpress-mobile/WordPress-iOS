@@ -43,11 +43,11 @@ import SVProgressHUD
         }
     }
 
-    @objc func sharePost(_ title: String, summary: String, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
+    @objc func sharePost(_ title: String?, summary: String?, link: String?, fromView anchorView: UIView, inViewController viewController: UIViewController) {
         sharePost(title, summary: summary, link: link, fromAnchor: .view(anchorView), inViewController: viewController)
     }
 
-    private func sharePost(_ title: String, summary: String, link: String?, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
+    private func sharePost(_ title: String?, summary: String?, link: String?, fromAnchor anchor: PopoverAnchor, inViewController viewController: UIViewController) {
         let controller = shareController(
             title,
             summary: summary,

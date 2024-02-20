@@ -134,6 +134,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         setupRefreshControl()
         setupNoResultsView()
         setupFilterBar()
+        setupViewModel()
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
@@ -340,7 +341,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
         cell.selectionStyle = .none
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.host(cellContent(from: note), parent: self)
+        cell.host(cellContent(from: note, at: indexPath), parent: self)
         return cell
     }
 
@@ -352,7 +353,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .none
     }
 
-    private func cellContent(from notification: Notification) -> NotificationsTableViewCellContent {
+    private func cellContent(from notification: Notification, at indexPath: IndexPath) -> NotificationsTableViewCellContent {
         // Handle the case of a deleted / spammed notification
         if let deletionRequest = notificationDeletionRequests[notification.objectID] {
             let style = NotificationsTableViewCellContent.Style.altered(
@@ -374,7 +375,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return AttributedString(attributedSubject)
         }()
         let description = notification.renderSnippet()?.string
-        let inlineAction = cellInlineAction(from: notification)
+        let inlineAction = cellInlineAction(from: notification, at: indexPath)
         let avatarStyle = AvatarsView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
         let style = NotificationsTableViewCellContent.Style.regular(
             .init(
@@ -388,7 +389,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .init(style: style)
     }
 
-    private func cellInlineAction(from notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
+    private func cellInlineAction(from notification: Notification, at indexPath: IndexPath) -> NotificationsTableViewCellContent.InlineAction? {
         switch notification.kind {
         case .comment:
             return .init(
@@ -403,7 +404,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         case .like, .reblog:
             return .init(
                 icon: Image.DS.icon(named: .blockShare),
-                action: { [weak self] in self?.cellShareActionTapped(with: notification) }
+                action: { [weak self] in self?.viewModel.shareActionTapped(with: notification, at: indexPath) }
             )
         default:
             return nil
@@ -546,15 +547,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
             self.selectRow(for: note)
         }
-    }
-}
-
-// MARK: - User Interaction
-
-private extension NotificationsViewController {
-
-    func cellShareActionTapped(with notification: Notification) {
-        print("ROW TAPPED MY BOY")
     }
 }
 
@@ -703,6 +695,16 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
+    }
+
+    func setupViewModel() {
+        self.viewModel.onPostReadyForShare = { [weak self] content, indexPath in
+            guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
+                return
+            }
+            let controller = PostSharingController()
+            controller.sharePost(content.title, summary: nil, link: content.url, fromView: cell, inViewController: self)
+        }
     }
 }
 
