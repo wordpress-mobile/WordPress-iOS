@@ -19,7 +19,12 @@ class SiteStatsPeriodViewModel: Observable {
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
-    private let calendar: Calendar = .current
+    private lazy var calendar: Calendar = {
+        /// Use iso8601 calendar that enforces Mon-Sun week
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = .autoupdatingCurrent
+        return calendar
+    }()
 
     // MARK: - Constructor
 
@@ -323,7 +328,7 @@ private extension SiteStatsPeriodViewModel {
 
         let updatedSummaryData = summaryData.filter { summary in
             let summaryStartDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
-            let summaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: period)
+            let summaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: unit)
             let summaryEndDateComponents = calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summaryEndDate)
             switch period {
             case .day:
