@@ -365,18 +365,21 @@ extension Notification {
     }
 
     var allAvatarURLs: [URL] {
-        let firstMedias: [AnyObject] = body?.compactMap {
-            let allMedia = $0["media"] as? [AnyObject]
-            return allMedia?.first as? AnyObject
-        } ?? []
+        let users = body?.filter({ element in
+            let type = element["type"] as? String
+            return type == "user"
+        }) ?? []
 
-        let urlStrings = firstMedias.compactMap {
-            $0["url"] as? String
+        let avatars: [URL] = users.compactMap {
+            guard let allMedia = $0["media"] as? [AnyObject],
+                  let firstMedia = allMedia.first,
+                  let urlString = firstMedia["url"] as? String else {
+                return nil
+            }
+            return URL(string: urlString)
         }
 
-        return urlStrings.compactMap {
-            URL(string: $0)
-        }
+        return avatars
     }
 }
 
