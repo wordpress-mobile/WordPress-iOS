@@ -70,6 +70,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private var cancellables = Set<AnyCancellable>()
     @Published private var keyboardShown: Bool = false
 
+    private weak var mediaPollingTimer: Timer?
+
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
          completion: @escaping (CompletionResult) -> (),
@@ -175,6 +177,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
 
         updatePublishButtonLabel()
+
+        if FeatureFlag.offlineMode.enabled {
+            updatePublishButtonState()
+            mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.updatePublishButtonState()
+            }
+        }
 
         return footerView
     }
@@ -419,6 +428,18 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     // MARK: - Publish Button
+
+    private func updatePublishButtonState() {
+        if let state = PublishButtonState.uploadingState(for: post) {
+            publishButtonViewModel.state = state
+        } else {
+            if case .loading = publishButtonViewModel.state {
+                // Do nothing
+            } else {
+                publishButtonViewModel.state = .default
+            }
+        }
+    }
 
     private func updatePublishButtonLabel() {
         publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
