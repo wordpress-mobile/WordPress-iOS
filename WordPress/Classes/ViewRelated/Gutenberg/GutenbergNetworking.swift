@@ -4,6 +4,11 @@ import WordPressKit
 struct GutenbergNetworkRequest {
     typealias CompletionHandler = (Swift.Result<Any, NSError>) -> Void
 
+    // Please note: even though this variable is named 'path', the actually values (passed from React Native) contain
+    // path and query.
+    //
+    // For example, when uploading an image to a post in a self-hosted site, this struct is instantiated with a path
+    // `/wp/v2/media/<id>?context=edit&_locale=user`.
     private let path: String
     private unowned let blog: Blog
     private let method: HTTPMethod
