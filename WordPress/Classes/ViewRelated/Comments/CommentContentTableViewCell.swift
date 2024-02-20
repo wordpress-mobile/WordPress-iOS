@@ -375,7 +375,7 @@ private extension CommentContentTableViewCell {
             return
         }
 
-        avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
+        avatarImageView.downloadGravatar(for: someEmail, placeholderImage: Style.placeholderImage)
     }
 
     func updateContainerLeadingConstraint() {

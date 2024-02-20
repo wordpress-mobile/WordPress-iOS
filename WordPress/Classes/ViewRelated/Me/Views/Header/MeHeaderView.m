@@ -1,6 +1,7 @@
 #import "MeHeaderView.h"
 #import "Blog.h"
 #import "WordPress-Swift.h"
+#import "Gravatar-Swift.h"
 
 const CGFloat MeHeaderViewHeight = 154;
 const CGFloat MeHeaderViewGravatarSize = 64.0;
@@ -67,7 +68,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {    
     // Since this view is only visible to the current user, we should show all ratings
-    [self.gravatarImageView downloadGravatarWithEmail:gravatarEmail rating:GravatarRatingsX];
+    [self.gravatarImageView downloadGravatarFor:gravatarEmail gravatarRating:GravatarRatingX];
     _gravatarEmail = gravatarEmail;
 }
 

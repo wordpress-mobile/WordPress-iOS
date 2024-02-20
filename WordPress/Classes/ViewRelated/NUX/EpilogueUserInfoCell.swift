@@ -60,7 +60,7 @@ class EpilogueUserInfoCell: UITableViewCell {
                 gravatarView.downloadImage(from: url)
             } else {
                 let placeholder: UIImage = allowGravatarUploads ? .gravatarUploadablePlaceholderImage : .gravatarPlaceholderImage
-                gravatarView.downloadGravatarWithEmail(userInfo.email, rating: .x, placeholderImage: placeholder)
+                gravatarView.downloadGravatar(for: userInfo.email, gravatarRating: .x, placeholderImage: placeholder)
             }
         }
     }
