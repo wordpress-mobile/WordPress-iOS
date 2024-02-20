@@ -24,4 +24,3 @@ steps:
     agents:
         queue: mac
     command: ".buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION"
-
