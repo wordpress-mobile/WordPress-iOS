@@ -1,6 +1,6 @@
 24.4
 -----
-
+* [**] [internal] Refactored .org REST API calls. [#22612]
 
 24.3
 -----
@@ -8,7 +8,6 @@
 
 * [**] Multiple pre-publishing sheet fixes and improvements [#22606]
 * [*] Gravatar: Adds informative new view about Gravatar to the profile editing page. [#22615]
-* [**] [internal] Refactored .org REST API calls. [#22612]
 
 24.2
 -----
