@@ -15,4 +15,4 @@ steps:
         queue: mac
     env:
       IMAGE_ID: xcode-15.1
-    command: ".buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION"
+    command: ".buildkite/commands/log-outdated-pods.sh 24.3"
