@@ -389,7 +389,25 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     private func cellInlineAction(from notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
-        return nil
+        switch notification.kind {
+        case .comment:
+            return .init(
+                icon: Image.DS.icon(named: .starOutline),
+                action: {}
+            )
+        case .newPost:
+            return .init(
+                icon: Image.DS.icon(named: .starOutline),
+                action: {}
+            )
+        case .like, .reblog:
+            return .init(
+                icon: Image.DS.icon(named: .blockShare),
+                action: { [weak self] in self?.cellShareActionTapped(with: notification) }
+            )
+        default:
+            return nil
+        }
     }
 
     // MARK: - UITableViewDelegate Methods
@@ -528,6 +546,15 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
             self.selectRow(for: note)
         }
+    }
+}
+
+// MARK: - User Interaction
+
+private extension NotificationsViewController {
+
+    func cellShareActionTapped(with notification: Notification) {
+        print("ROW TAPPED MY BOY")
     }
 }
 
