@@ -20,5 +20,8 @@ bundle exec fastlane run configure_apply
 echo '--- :cocoapods: Install Pods (required to check for outdated next)'
 install_cocoapods
 
+# Expand this group to surface the information.
+#
+# It's simpler than capturing the CocoaPods output, filtering, and annotating the build with it.
 echo '+++ :cocoapods: Outdated Pods'
 bundle exec pod outdated
