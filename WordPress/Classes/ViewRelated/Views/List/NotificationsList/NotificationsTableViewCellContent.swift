@@ -84,6 +84,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 }
             }
             .padding(.trailing, Length.Padding.double)
+            .frame(maxHeight: 60)
         }
 
         private var avatarHStack: some View {
@@ -114,6 +115,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     Text(title)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.primary)
+                        .layoutPriority(1)
                         .lineLimit(2)
                 }
 
@@ -121,6 +123,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     Text(description)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
+                        .layoutPriority(2)
                         .lineLimit(2)
                         .padding(.top, Length.Padding.half)
                 }
