@@ -574,7 +574,7 @@ def create_release_management_pull_request(release_version:, base_branch:, title
 
   # Next, set the milestone for the PR
   #
-  # The create_pull_request action has a 'milestone' prameter, but it expects the milestone id.
+  # The create_pull_request action has a 'milestone' parameter, but it expects the milestone id.
   # We don't know the id of the milestone, but we can use a different action to set it.
   #
   # PR URLs are in the format github.com/org/repo/pull/id
