@@ -1,4 +1,5 @@
 import SwiftUI
+import DesignSystem
 
 /// Asynchronous Image View that replicates the public API of `SwiftUI.AsyncImage`.
 /// It uses `ImageDownloader` to fetch and cache the images.
@@ -15,9 +16,15 @@ struct CachedAsyncImage<Content>: View where Content: View {
 
     // MARK: - Initializers
 
-    init(url: URL?) where Content == Image {
+    /// Initializes an image without any customization.
+    /// Provides a plain color as placeholder
+    init(url: URL?) where Content == _ConditionalContent<Image, Color> {
         self.init(url: url) { phase in
-            phase.image ?? Image(uiImage: .init())
+            if let image = phase.image {
+                image
+            } else {
+                Color.DS.Background.secondary
+            }
         }
     }
 
