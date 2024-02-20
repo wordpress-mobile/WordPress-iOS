@@ -339,37 +339,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return UITableViewCell()
         }
         cell.selectionStyle = .none
-        let style: NotificationsTableViewCellContent.Style
-        if let deletionRequest = notificationDeletionRequests[note.objectID] {
-            style = .altered(
-                .init(
-                    text: deletionRequest.kind.legendText,
-                    action: { [weak self] in
-                        self?.cancelDeletionRequestForNoteWithID(note.objectID)
-                    }
-                )
-            )
-        } else {
-            let attributedTitle: AttributedString?
-            if let attributedSubject = note.renderSubject() {
-                attributedTitle = AttributedString(attributedSubject)
-            } else {
-                attributedTitle = nil
-            }
-            style = .regular(
-                .init(
-                    title: attributedTitle,
-                    description: note.renderSnippet()?.string,
-                    shouldShowIndicator: !note.read,
-                    avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL),
-                    inlineAction: nil
-                )
-            )
-        }
-
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.host(NotificationsTableViewCellContent(style: style), parent: self)
-
+        cell.host(cellContent(from: note), parent: self)
         return cell
     }
 
@@ -379,6 +350,46 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
+    }
+
+    private func cellContent(from notification: Notification) -> NotificationsTableViewCellContent {
+        // Handle the case of a deleted / spammed notification
+        if let deletionRequest = notificationDeletionRequests[notification.objectID] {
+            let style = NotificationsTableViewCellContent.Style.altered(
+                .init(
+                    text: deletionRequest.kind.legendText,
+                    action: { [weak self] in
+                        self?.cancelDeletionRequestForNoteWithID(notification.objectID)
+                    }
+                )
+            )
+            return .init(style: style)
+        }
+
+        // Handle the regular case
+        let title: AttributedString? = {
+            guard let attributedSubject = notification.renderSubject() else {
+                return nil
+            }
+            return AttributedString(attributedSubject)
+        }()
+        let description = notification.renderSnippet()?.string
+        let inlineAction = cellInlineAction(from: notification)
+        let avatarStyle = AvatarsView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
+        let style = NotificationsTableViewCellContent.Style.regular(
+            .init(
+                title: title,
+                description: description,
+                shouldShowIndicator: !notification.read,
+                avatarStyle: avatarStyle,
+                inlineAction: inlineAction
+            )
+        )
+        return .init(style: style)
+    }
+
+    private func cellInlineAction(from notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
+        return nil
     }
 
     // MARK: - UITableViewDelegate Methods
