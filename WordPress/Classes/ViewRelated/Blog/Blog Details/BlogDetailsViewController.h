@@ -93,6 +93,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceWidget = 3,
     BlogDetailsNavigationSourceOnboarding = 4,
     BlogDetailsNavigationSourceNotification = 5,
+    BlogDetailsNavigationSourceShortcut = 6,
 };
 
 
