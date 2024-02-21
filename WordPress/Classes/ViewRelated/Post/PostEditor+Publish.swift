@@ -236,6 +236,9 @@ extension PublishingEditor {
             case .completed(let post):
                 self?.post = post
                 publishAction()
+            case .published:
+                // TODO: verify if we need anything else from here
+                self?.dismissOrPopView()
             case .dismissed:
                 dismissAction()
             }

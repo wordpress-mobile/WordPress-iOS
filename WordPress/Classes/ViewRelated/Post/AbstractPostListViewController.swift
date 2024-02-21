@@ -605,6 +605,8 @@ class AbstractPostListViewController: UIViewController,
                 switch result {
                 case .completed(let post):
                     self?.didConfirmPublish(for: post)
+                case .published:
+                    self?.dismiss(animated: true)
                 case .dismissed:
                     break
                 }

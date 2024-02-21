@@ -44,6 +44,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     enum CompletionResult {
         case completed(AbstractPost)
+        case published
         case dismissed
     }
 
@@ -447,9 +448,31 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func buttonPublishTapped() {
         didTapPublish = true
-        navigationController?.dismiss(animated: true) {
-            WPAnalytics.track(.editorPostPublishNowTapped)
-            self.completion(.completed(self.post))
+
+        if FeatureFlag.offlineMode.enabled {
+            publishPost()
+        } else {
+            navigationController?.dismiss(animated: true) {
+                WPAnalytics.track(.editorPostPublishNowTapped)
+                self.completion(.completed(self.post))
+            }
+        }
+    }
+
+    // TODO: Add support for other target statuses
+    private func publishPost() {
+        publishButtonViewModel.state = .loading
+
+        Task {
+            do {
+                try await PostRepository().publish(post)
+                self.completion(.published)
+                // TODO: show success like from coordinator
+            } catch {
+                publishButtonViewModel.state = .default
+                // TODO:  verify if we need anything else from the coorrdinator
+                // TODO: show error message
+            }
         }
     }
 
