@@ -90,7 +90,8 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceButton = 0,
     BlogDetailsNavigationSourceRow = 1,
     BlogDetailsNavigationSourceLink = 2,
-    BlogDetailsNavigationSourceWidget = 3,    
+    BlogDetailsNavigationSourceWidget = 3,
+    BlogDetailsNavigationSourceOnboarding = 4,
 };
 
 
