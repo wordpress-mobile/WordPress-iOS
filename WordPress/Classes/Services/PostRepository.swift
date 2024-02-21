@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 final class PostRepository {
 
@@ -22,14 +23,7 @@ final class PostRepository {
     ///   - blogID: The blog that has the post.
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
-        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
-            let blog = try context.existingObject(with: blogID)
-            return remoteFactory.forBlog(blog)
-        }
-
-        guard let remote else {
-            throw PostRepository.Error.remoteAPIUnavailable
-        }
+        let remote = try await getRemote(forblogID: blogID)
 
         let remotePost: RemotePost? = try await withCheckedThrowingContinuation { continuation in
             remote.getPostWithID(
@@ -61,6 +55,52 @@ final class PostRepository {
 
             return .init(post)
         }
+    }
+
+    /// Publishes the given post.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not a responsibility of `PostRepository`.
+    ///
+    /// - note: The post status will be updated only after the successful upload.
+    ///
+    /// - parameter post: Either an existing draft or a brand-new post.
+    func publish(_ post: AbstractPost) async throws {
+        let postID = TaggedManagedObjectID(post)
+        let blogID = TaggedManagedObjectID(post.blog)
+
+        let remote = try await getRemote(forblogID: blogID)
+
+        let remotePost = PostHelper.remotePost(with: post)
+        remotePost.status = PostStatusPublish
+
+        var isFirstTimePublish = false
+        let uploadedPost: RemotePost
+        if let postID = post.postID, postID.intValue > 0 {
+            isFirstTimePublish = true
+            uploadedPost = try await remote.update(remotePost)
+        } else {
+            uploadedPost = try await remote.create(remotePost)
+        }
+
+        try await coreDataStack.performAndSave { context in
+            var post = try context.existingObject(with: postID)
+            if post.isRevision(), let original = post.original {
+                original.applyRevision()
+                original.deleteRevision()
+                post = original
+            }
+            // TODO: Remove the uses of this property. It makes no sense outside of the current operation.
+            post.isFirstTimePublish = isFirstTimePublish
+            PostHelper.update(post, with: uploadedPost, in: context)
+            // TODO: Update media (see PostService.updateMediaFor) (???)
+        }
+//
+//        remote.createPost(remotePost) { post in
+//            // Update the status of the post and merge the remaining fields
+//        } failure: { error in
+//            // Report an error
+//        }
     }
 
     /// Permanently delete the given post from local database and the post's WordPress site.
@@ -229,7 +269,19 @@ final class PostRepository {
             PostHelper.update(post, with: updatedRemotePost, in: context)
         }
     }
+}
 
+private extension PostRepository {
+    func getRemote(forblogID blogID: TaggedManagedObjectID<Blog>) async throws -> PostServiceRemote {
+        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
+            let blog = try context.existingObject(with: blogID)
+            return remoteFactory.forBlog(blog)
+        }
+        guard let remote else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+        return remote
+    }
 }
 
 // MARK: - Posts/Pages List
