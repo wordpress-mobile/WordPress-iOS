@@ -111,7 +111,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             return
         }
 
-        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
+        gravatarImageView.downloadGravatar(for: unwrappedEmail, placeholderImage: placeholderImage)
     }
 
     // MARK: - View Methods

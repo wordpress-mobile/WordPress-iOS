@@ -102,7 +102,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
             return
         }
 
-        avatarView.downloadGravatarWithEmail(someEmail, placeholderImage: placeholderImage)
+        avatarView.downloadGravatar(for: someEmail, placeholderImage: placeholderImage)
     }
 
     // MARK: Overlay View Support

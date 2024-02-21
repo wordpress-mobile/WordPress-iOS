@@ -253,7 +253,7 @@ private class AuthorFilterCell: UITableViewCell {
 
                 let placeholder = UIImage(named: "comment-author-gravatar")
                 if let email = email {
-                    gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: placeholder ?? UIImage())
+                    gravatarImageView.downloadGravatar(for: email, placeholderImage: placeholder ?? UIImage())
                 } else {
                     gravatarImageView.image = placeholder
                 }
