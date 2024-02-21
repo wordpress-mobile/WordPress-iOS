@@ -14,9 +14,6 @@ echo '--- :git: Checkout release branch'
 echo '--- :ruby: Setup Ruby tools'
 install_gems
 
-echo '--- :closed_lock_with_key: Access secrets'
-bundle exec fastlane run configure_apply
-
 echo '--- :cocoapods: Install Pods (required to check for outdated next)'
 install_cocoapods
 
