@@ -2,9 +2,6 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
-
-    static let reuseIdentifier = String(describing: Self.self)
-
     enum Style {
         struct Regular {
             let title: AttributedString?
@@ -175,10 +172,13 @@ extension NotificationsTableViewCellContent {
         class Configuration: ObservableObject {
 
             @Published var icon: SwiftUI.Image
+            @Published var color: Color?
+
             let action: () -> Void
 
-            init(icon: SwiftUI.Image, action: @escaping () -> Void) {
+            init(icon: SwiftUI.Image, color: Color? = nil, action: @escaping () -> Void) {
                 self.icon = icon
+                self.color = color
                 self.action = action
             }
         }
@@ -191,7 +191,7 @@ extension NotificationsTableViewCellContent {
             } label: {
                 configuration.icon
                     .imageScale(.small)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .foregroundStyle(configuration.color ?? Color.DS.Foreground.secondary)
                     .frame(width: Length.Padding.medium, height: Length.Padding.medium)
                     .transaction { transaction in
                         transaction.animation = nil
