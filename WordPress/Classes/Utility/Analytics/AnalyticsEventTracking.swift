@@ -9,4 +9,11 @@ protocol AnalyticsEventTracking {
     static func track(_ event: AnalyticsEvent)
 }
 
+extension AnalyticsEventTracking {
+
+    static func track(_ event: WPAnalyticsEvent, properties: [String: String] = [:]) {
+        track(.init(name: event.value, properties: properties))
+    }
+}
+
 extension WPAnalytics: AnalyticsEventTracking {}

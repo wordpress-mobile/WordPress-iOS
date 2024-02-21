@@ -16,15 +16,18 @@ final class NotificationsViewModel {
 
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
+    private let analyticsTracker: AnalyticsEventTracking.Type
 
     // MARK: - Init
 
     init(
         userDefaults: UserPersistentRepository,
-        notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator()
+        notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
+        analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self
     ) {
         self.userDefaults = userDefaults
         self.notificationMediator = notificationMediator
+        self.analyticsTracker = analyticsTracker
     }
 
     /// The last time when user seen notifications
@@ -89,7 +92,7 @@ final class NotificationsViewModel {
 
     // MARK: - Handling Inline Actions
 
-    func shareActionTapped(with notification: Notification, at indexPath: IndexPath) {
+    func sharePostActionTapped(with notification: Notification, at indexPath: IndexPath) {
         guard let url = notification.url else {
             return
         }
@@ -98,5 +101,21 @@ final class NotificationsViewModel {
             title: notification.title
         )
         self.onPostReadyForShare?(content, indexPath)
+        self.trackInlineActionTapped(action: .sharePost)
+    }
+}
+
+// MARK: - Analytics Tracking
+
+private extension NotificationsViewModel {
+
+    func trackInlineActionTapped(action: InlineAction) {
+        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: ["inline_action": action.rawValue])
+    }
+
+    enum InlineAction: String {
+        case sharePost = "share_post"
+        case commentLike = "comment_like"
+        case postLike = "post_like"
     }
 }

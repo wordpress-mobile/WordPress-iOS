@@ -404,7 +404,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         case .like, .reblog:
             return .init(
                 icon: Image.DS.icon(named: .blockShare),
-                action: { [weak self] in self?.viewModel.shareActionTapped(with: notification, at: indexPath) }
+                action: { [weak self] in self?.viewModel.sharePostActionTapped(with: notification, at: indexPath) }
             )
         default:
             return nil
