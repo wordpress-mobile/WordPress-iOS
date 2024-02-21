@@ -737,7 +737,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
 - (BOOL)supportsVideoPressV5
 {
-    return self.isHostedAtWPcom || (self.isAtomic && [self videoPressEnabled]);
+    return self.isHostedAtWPcom || self.isAtomic || [self hasRequiredJetpackVersion:@"8.5"];
 }
 
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
