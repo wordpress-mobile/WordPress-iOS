@@ -98,17 +98,17 @@ final class NotificationsViewModel {
 
     // MARK: - Handling Inline Actions
 
-    func sharePostActionTapped(with notification: Notification, at indexPath: IndexPath) {
+    func sharePostActionTapped(with notification: Notification) -> ShareablePost? {
         guard let url = notification.url else {
             self.crashLogger.logMessage("Failed to share a notification post due to null url", level: .error)
-            return
+            return nil
         }
         let content: ShareablePost = (
             url: url,
             title: notification.title
         )
-        self.onPostReadyForShare?(content, indexPath)
         self.trackInlineActionTapped(action: .sharePost)
+        return content
     }
 }
 

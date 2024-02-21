@@ -134,7 +134,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         setupRefreshControl()
         setupNoResultsView()
         setupFilterBar()
-        setupViewModel()
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
@@ -339,9 +338,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
+        let content = content(for: cell, notification: note)
         cell.selectionStyle = .none
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.host(cellContent(from: note, at: indexPath), parent: self)
+        cell.host(content, parent: self)
         return cell
     }
 
@@ -353,7 +353,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .none
     }
 
-    private func cellContent(from notification: Notification, at indexPath: IndexPath) -> NotificationsTableViewCellContent {
+    private func content(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent {
         // Handle the case of a deleted / spammed notification
         if let deletionRequest = notificationDeletionRequests[notification.objectID] {
             let style = NotificationsTableViewCellContent.Style.altered(
@@ -375,7 +375,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return AttributedString(attributedSubject)
         }()
         let description = notification.renderSnippet()?.string
-        let inlineAction = cellInlineAction(from: notification, at: indexPath)
+        let inlineAction = inlineAction(for: cell, notification: notification)
         let avatarStyle = AvatarsView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
         let style = NotificationsTableViewCellContent.Style.regular(
             .init(
@@ -389,7 +389,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .init(style: style)
     }
 
-    private func cellInlineAction(from notification: Notification, at indexPath: IndexPath) -> NotificationsTableViewCellContent.InlineAction? {
+    private func inlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
         switch notification.kind {
         case .comment:
             return .init(
@@ -402,13 +402,30 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
                 action: {}
             )
         case .like, .reblog:
-            return .init(
-                icon: Image.DS.icon(named: .blockShare),
-                action: { [weak self] in self?.viewModel.sharePostActionTapped(with: notification, at: indexPath) }
-            )
+            return self.shareInlineAction(for: cell, notification: notification)
         default:
             return nil
         }
+    }
+
+    private func shareInlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction {
+        let action: () -> Void = { [weak self] in
+            guard let self, let content = self.viewModel.sharePostActionTapped(with: notification) else {
+                return
+            }
+            let sharingController = PostSharingController()
+            sharingController.sharePost(
+                content.title,
+                summary: nil,
+                link: content.url,
+                fromView: cell,
+                inViewController: self
+            )
+        }
+        return .init(
+            icon: Image.DS.icon(named: .blockShare),
+            action: action
+        )
     }
 
     // MARK: - UITableViewDelegate Methods
@@ -695,16 +712,6 @@ private extension NotificationsViewController {
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
-    }
-
-    func setupViewModel() {
-        self.viewModel.onPostReadyForShare = { [weak self] content, indexPath in
-            guard let self, let cell = self.tableView.cellForRow(at: indexPath) else {
-                return
-            }
-            let controller = PostSharingController()
-            controller.sharePost(content.title, summary: nil, link: content.url, fromView: cell, inViewController: self)
-        }
     }
 }
 
