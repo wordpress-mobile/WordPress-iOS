@@ -156,7 +156,7 @@ class MySitesCoordinator: NSObject {
             UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
         }
 
-        let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): source]
+        let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): NSNumber(value: source.rawValue)]
         mySiteViewController.showBlogDetailsSubsection(.stats, userInfo: userInfo)
     }
 
