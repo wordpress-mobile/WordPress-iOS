@@ -35,9 +35,9 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         switch notification.kind {
         case .comment:
-            return likeInlineAction(viewModel: viewModel, notification: notification)
+            return nil
         case .newPost:
-            return likeInlineAction(viewModel: viewModel, notification: notification)
+            return postLikeInlineAction(viewModel: viewModel, notification: notification)
         case .like, .reblog:
             return shareInlineAction(viewModel: viewModel, notification: notification, parent: parent)
         default:
@@ -65,7 +65,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         )
     }
 
-    private func likeInlineAction(viewModel: NotificationsViewModel, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+    private func postLikeInlineAction(viewModel: NotificationsViewModel, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
         let action: () -> Void = { [weak self] in
             guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
                 return
