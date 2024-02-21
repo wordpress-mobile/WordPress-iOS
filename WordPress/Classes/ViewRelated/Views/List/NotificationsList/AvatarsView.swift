@@ -70,7 +70,7 @@ struct AvatarsView: View {
             processedURL = url
         }
 
-        return AsyncImage(url: processedURL) { image in
+        return CachedAsyncImage(url: processedURL) { image in
             image.resizable()
         } placeholder: {
             Image("gravatar")
