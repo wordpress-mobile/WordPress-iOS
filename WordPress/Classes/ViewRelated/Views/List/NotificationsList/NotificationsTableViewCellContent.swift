@@ -89,8 +89,7 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(spacing: 0) {
                 if info.shouldShowIndicator {
                     indicator
-                        .padding(.leading, Length.Padding.single)
-                        .padding(.trailing, Length.Padding.split)
+                        .padding(.horizontal, Length.Padding.single)
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
