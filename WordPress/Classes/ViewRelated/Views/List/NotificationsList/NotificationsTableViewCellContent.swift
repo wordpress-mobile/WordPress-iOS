@@ -51,6 +51,7 @@ fileprivate extension NotificationsTableViewCellContent {
 
         @State private var avatarSize: CGSize = .zero
         @State private var textsSize: CGSize = .zero
+        @ScaledMetric(relativeTo: .subheadline) private var textScale = 1
 
         private var rootStackAlignment: VerticalAlignment {
             return textsSize.height >= avatarSize.height ? .top : .center
@@ -67,7 +68,10 @@ fileprivate extension NotificationsTableViewCellContent {
                 avatarHStack
                     .saveSize(in: $avatarSize)
                 textsVStack
-                    .offset(x: -info.avatarStyle.leadingOffset*2)
+                    .offset(
+                        x: -info.avatarStyle.leadingOffset * 2,
+                        y: -3 * textScale
+                    )
                     .padding(.leading, Length.Padding.split)
                     .saveSize(in: $textsSize)
                 Spacer()
