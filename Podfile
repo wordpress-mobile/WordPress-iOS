@@ -50,7 +50,7 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 13.0'
+  pod 'WordPressKit', '~> 13.1'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
@@ -114,7 +114,7 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'Starscream', '3.0.6'
+  pod 'Starscream', '~> 4.0'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'AlamofireImage', '3.5.2'
@@ -140,8 +140,8 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.1'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'fa06fca7178b268d382d91861752b3be0729e8a8'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 

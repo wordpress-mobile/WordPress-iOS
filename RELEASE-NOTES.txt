@@ -1,12 +1,18 @@
-24.3
+24.4
 -----
 
+
+24.3
+-----
+* [***] [internal] Refactored websocket connections to Pinghub. [#22611]
+
+* [**] Multiple pre-publishing sheet fixes and improvements [#22606]
+* [*] Gravatar: Adds informative new view about Gravatar to the profile editing page. [#22615]
 
 24.2
 -----
 * [*] [Jetpack-only] Fixed a UI bug where the Dynamic Dashboard Card would slightly jump on first launch.
 * [**] Prevent images from temporarily disappearing when uploading media [https://github.com/WordPress/gutenberg/pull/57869]
-* [**] Fix crash occurring on large post on Android [https://github.com/WordPress/gutenberg/pull/58266]
 * [*] [Jetpack-only] Site Monitoring: Add Metrics, PHP Logs, and Web Server Logs under Site Monitoring [#22475, #22499, #22504, #22500]
 * [***] [Jetpack-only] Reader: introduced new UI/UX for content navigation and filtering [#22536]
 

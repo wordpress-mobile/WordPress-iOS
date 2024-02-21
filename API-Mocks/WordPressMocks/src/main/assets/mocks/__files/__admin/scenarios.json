@@ -13,6 +13,12 @@
       "possibleStates" : [ "Started", "initial_likes_list", "post_liked", "new_likes_list" ]
     },
     {
+      "id" : "reader_subscriptions_flow",
+      "name" : "reader_subscriptions_flow",
+      "state" : "Started",
+      "possibleStates" : [ "Started", "initial_subscriptions_list", "empty_subscriptions_list" ]
+    },
+    {
       "id" : "new_page_flow",
       "name" : "new_page_flow",
       "state" : "Started",

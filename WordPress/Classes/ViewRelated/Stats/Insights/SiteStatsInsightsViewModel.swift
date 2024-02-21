@@ -81,7 +81,7 @@ class SiteStatsInsightsViewModel: Observable {
     }
 
     func startFetchingPeriodOverview() {
-        periodReceipt = periodStore.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
+        periodReceipt = periodStore.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: lastRequestedPeriod))
         periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
                 period: lastRequestedPeriod,
                 forceRefresh: true))
@@ -119,7 +119,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .viewsVisitors:
                 tableRows.append(contentsOf: blocks(for: .viewsVisitors,
                         type: .period,
-                        status: periodStore.summaryStatus,
+                        status: periodStore.timeIntervalsSummaryStatus,
                         checkingCache: { [weak self] in
                             return self?.mostRecentChartData != nil
                         },
@@ -180,7 +180,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .likesTotals:
                 tableRows.append(blocks(for: .likesTotals,
                                         type: .period,
-                                        status: periodStore.summaryStatus,
+                                        status: periodStore.timeIntervalsSummaryStatus,
                                         checkingCache: { [weak self] in
                                             return self?.mostRecentChartData != nil
                                         },
@@ -194,7 +194,7 @@ class SiteStatsInsightsViewModel: Observable {
             case .commentsTotals:
                 tableRows.append(blocks(for: .commentsTotals,
                                         type: .period,
-                                        status: periodStore.summaryStatus,
+                                        status: periodStore.timeIntervalsSummaryStatus,
                                         checkingCache: { [weak self] in
                                             return self?.mostRecentChartData != nil
                                         },
@@ -871,14 +871,20 @@ extension SiteStatsInsightsViewModel: AsyncBlocksLoadable {
     public static func createStatsSummaryTimeIntervalDataAsAWeeks(summaryData: [StatsSummaryData]) -> [StatsSummaryTimeIntervalDataAsAWeek] {
         let half = 7
         let prevWeekData = summaryData[0 ..< half]
-        let prevWeekTimeIntervalData = StatsSummaryTimeIntervalData(period: .day,
-                periodEndDate: prevWeekData.last!.periodStartDate,
-                summaryData: Array(prevWeekData))
+        let prevWeekTimeIntervalData = StatsSummaryTimeIntervalData(
+            period: .day,
+            unit: .day,
+            periodEndDate: prevWeekData.last!.periodStartDate,
+            summaryData: Array(prevWeekData)
+        )
 
         let thisWeekData = summaryData[half ..< Constants.fourteenDays]
-        let thisWeekTimeIntervalData = StatsSummaryTimeIntervalData(period: .day,
-                periodEndDate: thisWeekData.last!.periodStartDate,
-                summaryData: Array(thisWeekData))
+        let thisWeekTimeIntervalData = StatsSummaryTimeIntervalData(
+            period: .day,
+            unit: .day,
+            periodEndDate: thisWeekData.last!.periodStartDate,
+            summaryData: Array(thisWeekData)
+        )
 
         return [StatsSummaryTimeIntervalDataAsAWeek.thisWeek(data: thisWeekTimeIntervalData),
                 StatsSummaryTimeIntervalDataAsAWeek.prevWeek(data: prevWeekTimeIntervalData)]

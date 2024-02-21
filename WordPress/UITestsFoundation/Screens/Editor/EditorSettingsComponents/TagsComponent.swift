@@ -9,6 +9,11 @@ public class TagsComponent: ScreenObject {
 
     var tagsField: XCUIElement { tagsFieldGetter(app) }
 
+    var backButton: XCUIElement {
+        app.navigationBars["Tags"]
+            .buttons.element(boundBy: 0)
+    }
+
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ tagsFieldGetter ],
@@ -23,7 +28,7 @@ public class TagsComponent: ScreenObject {
     }
 
     func goBackToSettings() throws -> EditorPostSettings {
-        navigateBack()
+        backButton.tap()
 
         return try EditorPostSettings()
     }
