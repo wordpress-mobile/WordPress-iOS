@@ -106,7 +106,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-897f363e6c8c7d81bc7c33dd140b787c6411946a.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-e4abec201fc3d79d32d28752e2477413be787659.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -129,7 +129,6 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
   trunk:
     - Alamofire
@@ -159,6 +158,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressKit
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -175,13 +175,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-897f363e6c8c7d81bc7c33dd140b787c6411946a.podspec
-  WordPressAuthenticator:
-    :commit: fa06fca7178b268d382d91861752b3be0729e8a8
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: b5c2bd39ec8f478dd53ecb7533ad025aad48f42e
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-e4abec201fc3d79d32d28752e2477413be787659.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -200,7 +194,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: d873c23fa05f4509c8cf17f8bd49808d3aee4f16
+  Gutenberg: 675ed62028dd2b197ca705e519cf9676f398827a
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -219,7 +213,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: 0891ba77c788044d32fe67a4d0435fdd598cecbd
-  WordPressKit: 7189845e0325fc6022a02638b572e1de8c1d7cc6
+  WordPressKit: c1ba7b4f531693a0914f676423808fdffd820d81
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
