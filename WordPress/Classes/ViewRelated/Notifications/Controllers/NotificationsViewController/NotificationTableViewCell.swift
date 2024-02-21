@@ -76,7 +76,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
                 config.color = color
             }
         }
-        let (image, color) = self.likeInlineActionIcon(filled: false)
+        let (image, color) = self.likeInlineActionIcon(filled: notification.isLikedPost)
         return .init(icon: image, color: color, action: action)
     }
 

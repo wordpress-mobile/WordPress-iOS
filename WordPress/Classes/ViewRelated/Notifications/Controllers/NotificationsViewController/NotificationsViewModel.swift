@@ -112,7 +112,9 @@ final class NotificationsViewModel {
     }
 
     func postLikeActionTapped(with notification: Notification, changes: (Bool) -> Void) {
-        changes(true)
+        notification.isLikedPost = !notification.isLikedPost
+        changes(notification.isLikedPost)
+        self.trackInlineActionTapped(action: .postLike)
     }
 }
 
