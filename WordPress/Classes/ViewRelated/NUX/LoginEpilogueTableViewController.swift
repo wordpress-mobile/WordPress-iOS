@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressAuthenticator
+import Gravatar
 
 // MARK: - LoginEpilogueTableViewController
 //
@@ -299,13 +300,20 @@ private extension LoginEpilogueTableViewController {
 
             /// Load: Gravatar's Metadata
             ///
-            let service = GravatarService()
-            service.fetchProfile(email: userProfile.email) { gravatarProfile in
-                if let gravatarProfile = gravatarProfile {
+            let service = ProfileService()
+            service.fetchProfile(with: userProfile.email) { response in
+                switch response {
+                case .success(let gravatarProfile):
                     epilogueInfo.update(with: gravatarProfile)
+                    DispatchQueue.main.async {
+                        completion(epilogueInfo)
+                    }
+                case .failure(let error):
+                    print("Error: \(error)")
+                    DispatchQueue.main.async {
+                        completion(nil)
+                    }
                 }
-
-                completion(epilogueInfo)
             }
         }
     }
