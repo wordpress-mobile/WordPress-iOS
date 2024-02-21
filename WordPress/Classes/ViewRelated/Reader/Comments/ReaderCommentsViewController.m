@@ -361,6 +361,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureKeyboardManager
 {
+    // The variable introduced because we cannot reuse the same constraint for the keyboard manager and the reply text view.
     self.replyTextViewBottomConstraint = [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
     self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
                                                                   scrollView:self.tableView
