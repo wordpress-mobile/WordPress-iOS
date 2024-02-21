@@ -193,6 +193,9 @@ extension NotificationsTableViewCellContent {
                     .imageScale(.small)
                     .foregroundStyle(Color.DS.Foreground.secondary)
                     .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
             }
         }
     }
