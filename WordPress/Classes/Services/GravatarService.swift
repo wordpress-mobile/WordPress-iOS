@@ -1,6 +1,7 @@
 import Foundation
 import CocoaLumberjack
 import WordPressKit
+import Gravatar
 
 @objc public enum GravatarServiceError: Int, Error {
     case invalidAccountInfo
@@ -53,8 +54,8 @@ open class GravatarService {
 
         let email = accountEmail.trimmingCharacters(in: CharacterSet.whitespaces).lowercased()
 
-        let remote = gravatarServiceRemote()
-        remote.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
+        let imageService = ImageService()
+        imageService.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
             if let theError = error {
                 DDLogError("GravatarService.uploadImage Error: \(theError)")
             } else {
