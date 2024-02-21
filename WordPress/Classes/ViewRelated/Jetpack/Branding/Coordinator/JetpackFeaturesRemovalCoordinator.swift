@@ -129,7 +129,7 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.enabled(using: featureFlagStore) {
-            return .two
+            return Self.hasBlog() ? .two : .normal
         }
         if RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.enabled(using: featureFlagStore)
             || RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.enabled(using: featureFlagStore)
@@ -238,12 +238,6 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
 
         let coordinator = JetpackDefaultOverlayCoordinator()
         let viewModel = JetpackFullscreenOverlayGeneralViewModel(phase: phase, source: source, blog: blog, coordinator: coordinator)
-        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
-        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
-        coordinator.navigationController = navigationViewController
-        coordinator.viewModel = viewModel
-        viewModel.onWillDismiss = onWillDismiss
-        viewModel.onDidDismiss = onDidDismiss
         let frequencyTracker = OverlayFrequencyTracker(source: source,
                                                        type: .featuresRemoval,
                                                        frequencyConfig: frequencyConfig,
@@ -253,6 +247,12 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
             onDidDismiss?()
             return
         }
+        let overlayViewController = JetpackFullscreenOverlayViewController(with: viewModel)
+        let navigationViewController = UINavigationController(rootViewController: overlayViewController)
+        coordinator.navigationController = navigationViewController
+        coordinator.viewModel = viewModel
+        viewModel.onWillDismiss = onWillDismiss
+        viewModel.onDidDismiss = onDidDismiss
         presentOverlay(navigationViewController: navigationViewController, in: viewController, fullScreen: fullScreen)
         frequencyTracker.track()
     }
@@ -288,12 +288,16 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
         presentOverlay(navigationViewController: navigationViewController, in: viewController)
     }
 
-    private static func presentOverlay(navigationViewController: UINavigationController,
-                                       in viewController: UIViewController,
-                                       fullScreen: Bool = false) {
+    static func presentOverlay(navigationViewController: UINavigationController,
+                               in viewController: UIViewController,
+                               fullScreen: Bool = false) {
         let shouldUseFormSheet = WPDeviceIdentification.isiPad() || !fullScreen
         navigationViewController.modalPresentationStyle = shouldUseFormSheet ? .formSheet : .fullScreen
 
         viewController.present(navigationViewController, animated: true)
+    }
+
+    private static func hasBlog() -> Bool {
+        Blog.count(in: ContextManager.sharedInstance().mainContext) > 0
     }
 }

@@ -9,42 +9,16 @@ final class SiteStatsPeriodViewModel: Observable {
 
     private weak var periodDelegate: SiteStatsPeriodDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
-    private let store: StatsPeriodStore
-    private var selectedDate: Date
+    private let store: any StatsPeriodStoreProtocol
     private var lastRequestedDate: Date
-    private var lastRequestedPeriod: StatsPeriodUnit {
-        didSet {
-            if lastRequestedPeriod != oldValue {
-                mostRecentChartData = nil
-            }
-        }
-    }
+    private var lastRequestedPeriod: StatsPeriodUnit
     private var periodReceipt: Receipt?
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
 
-    weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
-
-    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
-        didSet {
-            if oldValue == nil {
-                guard let mostRecentChartData = mostRecentChartData else {
-                    return
-                }
-
-                currentEntryIndex = mostRecentChartData.summaryData.lastIndex(where: { $0.periodStartDate <= selectedDate })
-                    ?? max(mostRecentChartData.summaryData.count - 1, 0)
-            }
-        }
-    }
-
-    private var currentEntryIndex: Int = 0
-
-    private let calendar: Calendar = .current
-
     // MARK: - Constructor
 
-    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
+    init(store: any StatsPeriodStoreProtocol = StoreContainer.shared.statsPeriod,
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,
@@ -52,8 +26,7 @@ final class SiteStatsPeriodViewModel: Observable {
         self.periodDelegate = periodDelegate
         self.referrerDelegate = referrerDelegate
         self.store = store
-        self.selectedDate = selectedDate
-        self.lastRequestedDate = Date()
+        self.lastRequestedDate = StatsPeriodHelper().endDate(from: selectedDate, period: selectedPeriod)
         self.lastRequestedPeriod = selectedPeriod
 
         changeReceipt = store.onChange { [weak self] in
@@ -62,15 +35,21 @@ final class SiteStatsPeriodViewModel: Observable {
     }
 
     func startFetchingOverview() {
-        periodReceipt = store.query(.periods(date: lastRequestedDate, period: lastRequestedPeriod))
-        store.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
-                                                                               period: lastRequestedPeriod,
-                                                                               forceRefresh: true))
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                .init(
+                    date: lastRequestedDate,
+                    period: lastRequestedPeriod,
+                    chartBarsUnit: chartBarsUnit(from: lastRequestedPeriod),
+                    chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
+                    chartTotalsLimit: chartTotalsLimit()
+                )
+            )
+        )
     }
 
     func isFetchingChart() -> Bool {
-        return store.isFetchingSummary &&
-            mostRecentChartData == nil
+        return store.isFetchingSummary
     }
 
     func fetchingFailed() -> Bool {
@@ -95,33 +74,51 @@ final class SiteStatsPeriodViewModel: Observable {
             return [StatsGhostTopImmutableRow(statSection: section)]
         }
 
-        let summarySection = StatsTrafficSection(periodType: .summary)
-        let summaryRows = blocks(for: .summary,
-                                 type: .period,
-                                 status: store.summaryStatus,
-                                 checkingCache: { [weak self] in
-            return self?.mostRecentChartData != nil
-        },
-                                 block: { [weak self] in
-            return self?.overviewTableRows() ?? summaryErrorBlock()
-        }, loading: {
-            return [StatsGhostChartImmutableRow(statSection: .periodOverviewViews)]
-        }, error: summaryErrorBlock)
-            .map { AnyHashableImmuTableRow(immuTableRow: $0) }
-        snapshot.appendSections([summarySection])
-        snapshot.appendItems(summaryRows, toSection: summarySection)
+        switch lastRequestedPeriod {
+        case .day:
+            let todaySection = StatsTrafficSection(periodType: .totalsSummary)
+            let todayRows = blocks(for: .totalsSummary,
+                                   type: .period,
+                                   status: store.totalsSummaryStatus,
+                                   block: { [weak self] in
+                return self?.todayRows() ?? errorBlock(.periodToday)
+            }, loading: {
+                return loadingBlock(.periodToday)
+            }, error: {
+                return errorBlock(.periodToday)
+            })
+                .map { AnyHashableImmuTableRow(immuTableRow: $0) }
+
+            snapshot.appendSections([todaySection])
+            snapshot.appendItems(todayRows, toSection: todaySection)
+
+        case .week, .month, .year:
+            let summarySection = StatsTrafficSection(periodType: .timeIntervalsSummary)
+            let summaryRows = blocks(for: .timeIntervalsSummary, .totalsSummary,
+                                     type: .period,
+                                     status: barChartFetchingStatus(),
+                                     block: { [weak self] in
+                return self?.barChartRows() ?? summaryErrorBlock()
+            }, loading: {
+                return [StatsGhostChartImmutableRow()]
+            }, error: summaryErrorBlock)
+                .map { AnyHashableImmuTableRow(immuTableRow: $0) }
+
+            snapshot.appendSections([summarySection])
+            snapshot.appendItems(summaryRows, toSection: summarySection)
+        }
 
         let topPostsAndPagesSection = StatsTrafficSection(periodType: .topPostsAndPages)
         let topPostsAndPagesRows = blocks(for: .topPostsAndPages,
                                           type: .period,
                                           status: store.topPostsAndPagesStatus,
                                           block: { [weak self] in
-                                              return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
-                                          }, loading: {
-                                              return loadingBlock(.periodPostsAndPages)
-                                          }, error: {
-                                              return errorBlock(.periodPostsAndPages)
-                                          })
+            return self?.postsAndPagesTableRows() ?? errorBlock(.periodPostsAndPages)
+        }, loading: {
+            return loadingBlock(.periodPostsAndPages)
+        }, error: {
+            return errorBlock(.periodPostsAndPages)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topPostsAndPagesSection])
         snapshot.appendItems(topPostsAndPagesRows, toSection: topPostsAndPagesSection)
@@ -131,12 +128,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                       type: .period,
                                       status: store.topReferrersStatus,
                                       block: { [weak self] in
-                                          return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
-                                      }, loading: {
-                                          return loadingBlock(.periodReferrers)
-                                      }, error: {
-                                          return errorBlock(.periodReferrers)
-                                      })
+            return self?.referrersTableRows() ?? errorBlock(.periodReferrers)
+        }, loading: {
+            return loadingBlock(.periodReferrers)
+        }, error: {
+            return errorBlock(.periodReferrers)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topReferrersSection])
         snapshot.appendItems(topReferrersRows, toSection: topReferrersSection)
@@ -146,12 +143,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                    type: .period,
                                    status: store.topClicksStatus,
                                    block: { [weak self] in
-                                       return self?.clicksTableRows() ?? errorBlock(.periodClicks)
-                                   }, loading: {
-                                       return loadingBlock(.periodClicks)
-                                   }, error: {
-                                       return errorBlock(.periodClicks)
-                                   })
+            return self?.clicksTableRows() ?? errorBlock(.periodClicks)
+        }, loading: {
+            return loadingBlock(.periodClicks)
+        }, error: {
+            return errorBlock(.periodClicks)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topClicksSection])
         snapshot.appendItems(topClicksRows, toSection: topClicksSection)
@@ -161,12 +158,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                     type: .period,
                                     status: store.topAuthorsStatus,
                                     block: { [weak self] in
-                                        return self?.authorsTableRows() ?? errorBlock(.periodAuthors)
-                                    }, loading: {
-                                        return loadingBlock(.periodAuthors)
-                                    }, error: {
-                                        return errorBlock(.periodAuthors)
-                                    })
+            return self?.authorsTableRows() ?? errorBlock(.periodAuthors)
+        }, loading: {
+            return loadingBlock(.periodAuthors)
+        }, error: {
+            return errorBlock(.periodAuthors)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topAuthorsSection])
         snapshot.appendItems(topAuthorsRows, toSection: topAuthorsSection)
@@ -176,12 +173,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                       type: .period,
                                       status: store.topCountriesStatus,
                                       block: { [weak self] in
-                                          return self?.countriesTableRows() ?? errorBlock(.periodCountries)
-                                      }, loading: {
-                                          return loadingBlock(.periodCountries)
-                                      }, error: {
-                                          return errorBlock(.periodCountries)
-                                      })
+            return self?.countriesTableRows() ?? errorBlock(.periodCountries)
+        }, loading: {
+            return loadingBlock(.periodCountries)
+        }, error: {
+            return errorBlock(.periodCountries)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topCountriesSection])
         snapshot.appendItems(topCountriesRows, toSection: topCountriesSection)
@@ -191,12 +188,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                         type: .period,
                                         status: store.topSearchTermsStatus,
                                         block: { [weak self] in
-                                            return self?.searchTermsTableRows() ?? errorBlock(.periodSearchTerms)
-                                        }, loading: {
-                                            return loadingBlock(.periodSearchTerms)
-                                        }, error: {
-                                            return errorBlock(.periodSearchTerms)
-                                        })
+            return self?.searchTermsTableRows() ?? errorBlock(.periodSearchTerms)
+        }, loading: {
+            return loadingBlock(.periodSearchTerms)
+        }, error: {
+            return errorBlock(.periodSearchTerms)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topSearchTermsSection])
         snapshot.appendItems(topSearchTermsRows, toSection: topSearchTermsSection)
@@ -206,12 +203,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                       type: .period,
                                       status: store.topPublishedStatus,
                                       block: { [weak self] in
-                                          return self?.publishedTableRows() ?? errorBlock(.periodPublished)
-                                      }, loading: {
-                                          return loadingBlock(.periodPublished)
-                                      }, error: {
-                                          return errorBlock(.periodPublished)
-                                      })
+            return self?.publishedTableRows() ?? errorBlock(.periodPublished)
+        }, loading: {
+            return loadingBlock(.periodPublished)
+        }, error: {
+            return errorBlock(.periodPublished)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topPublishedSection])
         snapshot.appendItems(topPublishedRows, toSection: topPublishedSection)
@@ -221,12 +218,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                    type: .period,
                                    status: store.topVideosStatus,
                                    block: { [weak self] in
-                                       return self?.videosTableRows() ?? errorBlock(.periodVideos)
-                                   }, loading: {
-                                       return loadingBlock(.periodVideos)
-                                   }, error: {
-                                       return errorBlock(.periodVideos)
-                                   })
+            return self?.videosTableRows() ?? errorBlock(.periodVideos)
+        }, loading: {
+            return loadingBlock(.periodVideos)
+        }, error: {
+            return errorBlock(.periodVideos)
+        })
             .map { AnyHashableImmuTableRow(immuTableRow: $0) }
         snapshot.appendSections([topVideosSection])
         snapshot.appendItems(topVideosRows, toSection: topVideosSection)
@@ -238,12 +235,12 @@ final class SiteStatsPeriodViewModel: Observable {
                                               type: .period,
                                               status: store.topFileDownloadsStatus,
                                               block: { [weak self] in
-                                                  return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
-                                              }, loading: {
-                                                  return loadingBlock(.periodFileDownloads)
-                                              }, error: {
-                                                  return errorBlock(.periodFileDownloads)
-                                              })
+                return self?.fileDownloadsTableRows() ?? errorBlock(.periodFileDownloads)
+            }, loading: {
+                return loadingBlock(.periodFileDownloads)
+            }, error: {
+                return errorBlock(.periodFileDownloads)
+            })
                 .map { AnyHashableImmuTableRow(immuTableRow: $0) }
             snapshot.appendSections([topFileDownloadsSection])
             snapshot.appendItems(topFileDownloadsRows, toSection: topFileDownloadsSection)
@@ -252,41 +249,43 @@ final class SiteStatsPeriodViewModel: Observable {
         return snapshot
     }
 
+    func barChartFetchingStatus() -> StoreFetchingStatus {
+        switch (store.timeIntervalsSummaryStatus, store.totalsSummaryStatus) {
+        case (.success, .success):
+            return .success
+        case (.loading, _), (_, .loading):
+            return .loading
+        case (.error, _), (_, .error):
+            return .error
+        default:
+            return .idle
+        }
+    }
+
     // MARK: - Refresh Data
 
-    func refreshPeriodOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        selectedDate = date
+    func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        lastRequestedDate = StatsPeriodHelper().endDate(from: date, period: period)
         lastRequestedPeriod = period
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date, period: period, forceRefresh: true))
+        periodReceipt = nil
+        periodReceipt = store.query(
+            .trafficOverviewData(
+                .init (
+                    date: lastRequestedDate,
+                    period: lastRequestedPeriod,
+                    chartBarsUnit: chartBarsUnit(from: lastRequestedPeriod),
+                    chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
+                    chartTotalsLimit: chartTotalsLimit()
+                )
+            )
+        )
     }
 
     // MARK: - Chart Date
 
-    func chartDate(for entryIndex: Int) -> Date? {
-        if let summaryData = mostRecentChartData?.summaryData,
-            summaryData.indices.contains(entryIndex) {
-            currentEntryIndex = entryIndex
-            return summaryData[entryIndex].periodStartDate
-        }
-        return nil
-    }
-
     func updateDate(forward: Bool) -> Date? {
-        if forward {
-            currentEntryIndex += 1
-        } else {
-            currentEntryIndex -= 1
-        }
-
-        guard let nextDate = chartDate(for: currentEntryIndex) else {
-            // The date doesn't exist in the chart data... we need to manually calculate it and request
-            // a refresh.
-            let increment = forward ? 1 : -1
-            let nextDate = calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: selectedDate)!
-            refreshPeriodOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
-            return nextDate
-        }
-
+        let increment = forward ? 1 : -1
+        let nextDate = StatsDataHelper.calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastRequestedDate)!
         return nextDate
     }
 }
@@ -297,141 +296,174 @@ private extension SiteStatsPeriodViewModel {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [any StatsHashableImmuTableRow] {
+    func barChartRows() -> [any StatsHashableImmuTableRow] {
         var tableRows = [any StatsHashableImmuTableRow]()
 
-        let periodSummary = store.getSummary()
-        let summaryData = periodSummary?.summaryData ?? []
-
-        if mostRecentChartData == nil {
-            mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-            let periodSummary = periodSummary,
-            mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
-            self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary,   // when there is API data that has more recent API period date
-                  let chartData = mostRecentChartData, // than our local chartData
-                  periodSummary.periodEndDate > chartData.periodEndDate {
-
-            // we validate if our periodDates match and if so we set the currentEntryIndex to the last index of the summaryData
-            // fixes issue #19688
-            if let lastSummaryDataEntry = summaryData.last,
-               periodSummary.periodEndDate == lastSummaryDataEntry.periodStartDate {
-                mostRecentChartData = periodSummary
-                currentEntryIndex = summaryData.count - 1
-            } else {
-                mostRecentChartData = chartData
-            }
+        guard let summary = store.getSummary(), let barChartTotalsSummary = store.getTotalsSummary() else {
+            return tableRows
         }
 
-        let periodDate = summaryData.indices.contains(currentEntryIndex) ? summaryData[currentEntryIndex].periodStartDate : nil
-        let period = periodSummary?.period
+        let barChartDataSummary = boundChartData(summary, within: lastRequestedPeriod, and: lastRequestedDate)
+        let periodDate = barChartDataSummary.periodEndDate
+        let period = barChartDataSummary.period
 
-        let viewsData = intervalData(summaryType: .views)
-        let viewsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewViews.tabTitle,
-                                           tabData: viewsData.count,
-                                           difference: viewsData.difference,
-                                           differencePercent: viewsData.percentage,
-                                           date: periodDate,
-                                           period: period,
-                                           analyticsStat: .statsOverviewTypeTappedViews,
-                                           accessibilityHint: StatSection.periodOverviewViews.tabAccessibilityHint)
+        let viewsIntervalData = intervalData(summaryType: .views, totalsSummary: barChartTotalsSummary)
+        let viewsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewViews.tabTitle,
+            tabData: viewsIntervalData.count,
+            difference: viewsIntervalData.difference,
+            differencePercent: viewsIntervalData.percentage,
+            date: periodDate,
+            period: period
+        )
 
-        let visitorsData = intervalData(summaryType: .visitors)
-        let visitorsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewVisitors.tabTitle,
-                                              tabData: visitorsData.count,
-                                              difference: visitorsData.difference,
-                                              differencePercent: visitorsData.percentage,
-                                              date: periodDate,
-                                              period: period,
-                                              analyticsStat: .statsOverviewTypeTappedVisitors,
-                                              accessibilityHint: StatSection.periodOverviewVisitors.tabAccessibilityHint)
+        let visitorsIntervalData = intervalData(summaryType: .visitors, totalsSummary: barChartTotalsSummary)
+        let visitorsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewVisitors.tabTitle,
+            tabData: visitorsIntervalData.count,
+            difference: visitorsIntervalData.difference,
+            differencePercent: visitorsIntervalData.percentage,
+            date: periodDate,
+            period: period
+        )
 
-        let likesData = intervalData(summaryType: .likes)
-        // If Summary Likes is still loading, show dashes (instead of 0)
-        // to indicate it's still loading.
-        let likesLoadingStub = likesData.count > 0 ? nil : (store.isFetchingSummary ? "----" : nil)
-        let likesTabData = OverviewTabData(tabTitle: StatSection.periodOverviewLikes.tabTitle,
-                                           tabData: likesData.count,
-                                           tabDataStub: likesLoadingStub,
-                                           difference: likesData.difference,
-                                           differencePercent: likesData.percentage,
-                                           date: periodDate,
-                                           period: period,
-                                           analyticsStat: .statsOverviewTypeTappedLikes,
-                                           accessibilityHint: StatSection.periodOverviewLikes.tabAccessibilityHint)
+        let likesIntervalData = intervalData(summaryType: .likes, totalsSummary: barChartTotalsSummary)
+        let likesTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewLikes.tabTitle,
+            tabData: likesIntervalData.count,
+            difference: likesIntervalData.difference,
+            differencePercent: likesIntervalData.percentage,
+            date: periodDate,
+            period: period
+        )
 
-        let commentsData = intervalData(summaryType: .comments)
-        let commentsTabData = OverviewTabData(tabTitle: StatSection.periodOverviewComments.tabTitle,
-                                              tabData: commentsData.count,
-                                              difference: commentsData.difference,
-                                              differencePercent: commentsData.percentage,
-                                              date: periodDate,
-                                              period: period,
-                                              analyticsStat: .statsOverviewTypeTappedComments,
-                                              accessibilityHint: StatSection.periodOverviewComments.tabAccessibilityHint)
+        let commentsIntervalData = intervalData(summaryType: .comments, totalsSummary: barChartTotalsSummary)
+        let commentsTabData = StatsTrafficBarChartTabData(
+            tabTitle: StatSection.periodOverviewComments.tabTitle,
+            tabData: commentsIntervalData.count,
+            difference: commentsIntervalData.difference,
+            differencePercent: commentsIntervalData.percentage,
+            date: periodDate,
+            period: period
+        )
 
         var barChartData = [BarChartDataConvertible]()
-        var barChartStyling = [BarChartStyling]()
-        var indexToHighlight: Int?
-        if let chartData = mostRecentChartData {
-            let chart = PeriodChart(data: chartData)
+        var barChartStyling = [StatsTrafficBarChartStyling]()
+        let chart = StatsTrafficBarChart(data: barChartDataSummary)
+        barChartData.append(contentsOf: chart.barChartData)
+        barChartStyling.append(contentsOf: chart.barChartStyling)
 
-            barChartData.append(contentsOf: chart.barChartData)
-            barChartStyling.append(contentsOf: chart.barChartStyling)
-
-            indexToHighlight = chartData.summaryData.lastIndex(where: {
-                $0.periodStartDate.normalizedDate() <= selectedDate.normalizedDate()
-            })
-        }
-
-        let row = OverviewRow(
+        let row = StatsTrafficBarChartRow(
+            action: nil,
             tabsData: [viewsTabData, visitorsTabData, likesTabData, commentsTabData],
             chartData: barChartData,
             chartStyling: barChartStyling,
             period: lastRequestedPeriod,
-            statsBarChartViewDelegate: statsBarChartViewDelegate,
-            chartHighlightIndex: indexToHighlight)
+            unit: chartBarsUnit(from: lastRequestedPeriod)
+        )
+
         tableRows.append(row)
 
         return tableRows
     }
 
-    func intervalData(summaryType: StatsSummaryType) -> (count: Int, difference: Int, percentage: Int) {
-            guard let summaryData = mostRecentChartData?.summaryData,
-                summaryData.indices.contains(currentEntryIndex) else {
-                return (0, 0, 0)
+    func boundChartData(_ data: StatsSummaryTimeIntervalData, within period: StatsPeriodUnit, and date: Date) -> StatsSummaryTimeIntervalData {
+        let unit = chartBarsUnit(from: period)
+        let summaryData = data.summaryData
+        let currentDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: date)
+
+        let updatedSummaryData = summaryData.filter { summary in
+            let summaryStartDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summary.periodStartDate)
+            let summaryEndDate = StatsPeriodHelper().endDate(from: summary.periodStartDate, period: unit)
+            let summaryEndDateComponents = StatsDataHelper.calendar.dateComponents([unit.calendarComponent, period.calendarComponent], from: summaryEndDate)
+            switch period {
+            case .day:
+                return currentDateComponents.day == summaryStartDateComponents.day
+                    || currentDateComponents.day == summaryEndDateComponents.day
+            case .week:
+                return currentDateComponents.weekOfYear == summaryStartDateComponents.weekOfYear
+                    || currentDateComponents.weekOfYear == summaryEndDateComponents.weekOfYear
+            case .month:
+                return currentDateComponents.month == summaryStartDateComponents.month
+                    || currentDateComponents.month == summaryEndDateComponents.month
+            case .year:
+                return currentDateComponents.year == summaryStartDateComponents.year
+                    || currentDateComponents.year == summaryEndDateComponents.year
             }
+        }
 
-            let currentInterval = summaryData[currentEntryIndex]
-            let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
+        return StatsSummaryTimeIntervalData(
+            period: data.period,
+            unit: data.unit,
+            periodEndDate: data.periodEndDate,
+            summaryData: updatedSummaryData
+        )
+    }
 
-            let currentCount: Int
-            let previousCount: Int
-            switch summaryType {
-            case .views:
-                currentCount = currentInterval.viewsCount
-                previousCount = previousInterval?.viewsCount ?? 0
-            case .visitors:
-                currentCount = currentInterval.visitorsCount
-                previousCount = previousInterval?.visitorsCount ?? 0
-            case .likes:
-                currentCount = currentInterval.likesCount
-                previousCount = previousInterval?.likesCount ?? 0
-            case .comments:
-                currentCount = currentInterval.commentsCount
-                previousCount = previousInterval?.commentsCount ?? 0
-            }
+    func intervalData(summaryType: StatsSummaryType, totalsSummary: StatsSummaryTimeIntervalData?) -> (count: Int, difference: Int, percentage: Int) {
+        guard let summaryData = totalsSummary?.summaryData, summaryData.count > 0 else {
+            return (0, 0, 0)
+        }
 
-            let difference = currentCount - previousCount
-            var roundedPercentage = 0
+        let currentInterval = summaryData[summaryData.count - 1]
+        let previousInterval = summaryData.count > 1 ? summaryData[summaryData.count - 2] : nil
 
-            if previousCount > 0 {
-                let percentage = (Float(difference) / Float(previousCount)) * 100
-                roundedPercentage = Int(round(percentage))
-            }
+        let currentCount: Int
+        let previousCount: Int
+        switch summaryType {
+        case .views:
+            currentCount = currentInterval.viewsCount
+            previousCount = previousInterval?.viewsCount ?? 0
+        case .visitors:
+            currentCount = currentInterval.visitorsCount
+            previousCount = previousInterval?.visitorsCount ?? 0
+        case .likes:
+            currentCount = currentInterval.likesCount
+            previousCount = previousInterval?.likesCount ?? 0
+        case .comments:
+            currentCount = currentInterval.commentsCount
+            previousCount = previousInterval?.commentsCount ?? 0
+        }
 
-            return (currentCount, difference, roundedPercentage)
+        guard summaryData.count > 1 else {
+            return (currentCount, 0, 0)
+        }
+
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
+
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        return (currentCount, difference, roundedPercentage)
+    }
+
+    func todayRows() -> [any StatsHashableImmuTableRow] {
+        let todaySummary = store.getTotalsSummary()?.summaryData.first
+        let dataRows = [
+            StatsTwoColumnRowData(
+                leftColumnName: StatSection.periodOverviewViews.tabTitle,
+                leftColumnData: (todaySummary?.viewsCount ?? 0).abbreviatedString(),
+                rightColumnName: StatSection.periodOverviewVisitors.tabTitle,
+                rightColumnData: (todaySummary?.visitorsCount ?? 0).abbreviatedString()
+            ),
+            StatsTwoColumnRowData(
+                leftColumnName: StatSection.periodOverviewLikes.tabTitle,
+                leftColumnData: (todaySummary?.likesCount ?? 0).abbreviatedString(),
+                rightColumnName: StatSection.periodOverviewComments.tabTitle,
+                rightColumnData: (todaySummary?.commentsCount ?? 0).abbreviatedString()
+            )
+        ]
+
+        return [
+            TwoColumnStatsRow(
+                dataRows: dataRows,
+                statSection: .periodToday,
+                siteStatsInsightsDelegate: nil
+            )
+        ]
     }
 
     func postsAndPagesTableRows() -> [any StatsHashableImmuTableRow] {
@@ -689,13 +721,70 @@ private extension SiteStatsPeriodViewModel {
                                                                                              statSection: .periodFileDownloads) }
             ?? []
     }
+}
 
+private extension SiteStatsPeriodViewModel {
+    /// - Returns: `StatsPeriodUnit` granularity of period data we want to receive from API
+    private func chartBarsUnit(from period: StatsPeriodUnit) -> StatsPeriodUnit {
+        switch period {
+        case .day, .week:
+            return .day
+        case .month:
+            return .week
+        case .year:
+            return .month
+        }
+    }
+
+    /// - Returns: Number of bars data to fetch for a given Stats period
+    private func chartBarsLimit(for period: StatsPeriodUnit) -> Int {
+        switch period {
+        case .day, .week:
+            return 7
+        case .month:
+            return 5
+        case .year:
+            return 12
+        }
+    }
+
+    /// - Returns: Number of totals summary data to fetch
+    /// 1 is enough to optimize for speed if we don't show comparison label with other periods
+    private func chartTotalsLimit() -> Int {
+        return 1
+    }
 }
 
 extension SiteStatsPeriodViewModel: AsyncBlocksLoadable {
+    typealias CurrentStore = any StatsStoreCacheable
     typealias RowType = PeriodType
 
-    var currentStore: StatsPeriodStore {
-        return store
+    var currentStore: any StatsStoreCacheable {
+        store
+    }
+
+    func blocks<Value>(
+        for blockType: RowType...,
+        type: StatType,
+        status: StoreFetchingStatus,
+        checkingCache: CacheBlock? = nil,
+        block: AsyncBlock<Value>,
+        loading: AsyncBlock<Value>,
+        error: AsyncBlock<Value>
+    ) -> Value {
+        let containsCachedData = checkingCache?() ?? blockType.allSatisfy { store.containsCachedData(for: $0) }
+
+        if containsCachedData {
+            return block()
+        }
+
+        switch status {
+        case .loading, .idle:
+            return loading()
+        case .success:
+            return block()
+        case .error:
+            return error()
+        }
     }
 }

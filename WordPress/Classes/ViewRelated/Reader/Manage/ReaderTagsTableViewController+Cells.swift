@@ -9,14 +9,22 @@ extension ReaderTagsTableViewModel {
 
         let button = UIButton.closeAccessoryButton()
         button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
-        let unfollowString = NSLocalizedString("Unfollow %@", comment: "Accessibility label for unfollowing a tag")
+        let unfollowString = NSLocalizedString(
+            "reader.tags.unsubscribe.accessibility.label",
+            value: "Unsubscribe from %@",
+            comment: "Accessibility label for unsubscribing from a tag"
+        )
         button.accessibilityLabel = String(format: unfollowString, topic.title)
         cell.accessoryView = button
         cell.accessibilityElements = [button]
     }
 
     private func configureAddTag(cell: UITableViewCell) {
-        cell.textLabel?.text = NSLocalizedString("Add a Topic", comment: "Title of a feature to add a new topic to the topics subscribed by the user.")
+        cell.textLabel?.text = NSLocalizedString(
+            "reader.tags.add.tag",
+            value: "Add a Tag",
+            comment: "Title of a feature to add a new tag to the tags subscribed by the user."
+        )
         cell.accessoryView = UIImageView(image: UIImage.gridicon(.plusSmall))
     }
 }

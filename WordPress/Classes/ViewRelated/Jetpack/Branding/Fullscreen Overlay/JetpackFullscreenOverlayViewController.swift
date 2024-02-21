@@ -8,10 +8,10 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     private let viewModel: JetpackFullscreenOverlayViewModel
 
     /// Sets the animation based on the language orientation
-    private var animation: Animation? {
+    private var animation: LottieAnimation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(viewModel.animationLtr) :
-        Animation.named(viewModel.animationRtl)
+        LottieAnimation.named(viewModel.animationLtr) :
+        LottieAnimation.named(viewModel.animationRtl)
     }
 
     // MARK: Lazy Views
@@ -45,7 +45,7 @@ class JetpackFullscreenOverlayViewController: UIViewController {
     // MARK: Outlets
 
     @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var animationView: AnimationView!
+    @IBOutlet weak var animationView: LottieAnimationView!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var footnoteLabel: UILabel!

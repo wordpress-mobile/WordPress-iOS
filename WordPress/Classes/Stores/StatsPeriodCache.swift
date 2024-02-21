@@ -6,13 +6,13 @@ final class StatsPediodCache {
 
     private var cache: [CacheKey: StatsTimeIntervalData] = [:]
 
-    func getValue<T: StatsTimeIntervalData>(record: Record, date: Date, period: StatsPeriodUnit, siteID: NSNumber) -> T? {
-        let key = makeKey(record: record, date: date, period: period, siteID: siteID)
+    func getValue<T: StatsTimeIntervalData>(record: Record, date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit?, siteID: NSNumber) -> T? {
+        let key = makeKey(record: record, date: date, period: period, unit: unit, siteID: siteID)
         return cache[key] as? T
     }
 
     func setValue<T: StatsTimeIntervalData>(_ value: T, record: Record, siteID: NSNumber) {
-        let key = makeKey(record: record, date: value.periodEndDate, period: value.period, siteID: siteID)
+        let key = makeKey(record: record, date: value.periodEndDate, period: value.period, unit: value.unit, siteID: siteID)
         cache[key] = value
     }
 
@@ -20,13 +20,14 @@ final class StatsPediodCache {
         cache.removeAll()
     }
 
-    private func makeKey(record: Record, date: Date, period: StatsPeriodUnit, siteID: NSNumber) -> CacheKey {
+    private func makeKey(record: Record, date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit?, siteID: NSNumber) -> CacheKey {
         let date = Calendar.current.startOfDay(for: date)
-        return CacheKey(record: record, date: date, period: period, siteID: siteID)
+        return CacheKey(record: record, date: date, period: period, unit: unit, siteID: siteID)
     }
 
     enum Record: Hashable {
-        case summary
+        case timeIntervalsSummary
+        case totalsSummary
         case topPostsAndPages
         case topReferrers
         case topClicks
@@ -42,6 +43,7 @@ final class StatsPediodCache {
         let record: Record
         let date: Date
         let period: StatsPeriodUnit
+        let unit: StatsPeriodUnit?
         let siteID: NSNumber
     }
 }

@@ -1,3 +1,6 @@
+import Foundation
+import WordPressFlux
+
 protocol StatsStoreCacheable {
     associatedtype StatsStoreType
 
@@ -51,11 +54,15 @@ extension StatsInsightsStore: StatsStoreCacheable {
     }
 }
 
-extension StatsPeriodStore: StatsStoreCacheable {
-    func containsCachedData(for type: PeriodType) -> Bool {
+extension QueryStore where State == PeriodStoreState {
+    typealias StatsStoreType = PeriodType
+
+    func containsCachedData(for type: StatsStoreType) -> Bool {
         switch type {
-        case .summary:
-            return state.summary != nil
+        case .timeIntervalsSummary:
+            return state.timeIntervalsSummary != nil
+        case .totalsSummary:
+            return state.totalsSummary != nil
         case .topPostsAndPages:
             return state.topPostsAndPages != nil
         case .topReferrers:

@@ -1,14 +1,1 @@
-Ora vedrai una notifica mentre lavori offline. I caricamenti dei media sui blocchi Immagine saranno messi in pausa quando la tua connessione internet si interrompe, per poi essere ripresi quando ti riconnetti.
-Come ulteriore vantaggio, quando riprovi a caricare manualmente un media non andato a buon fine, l'app proverà a ricaricare tutti gli altri media presenti nel tuo articolo. Questa sì che è efficienza.
-
-Quando selezioni un gradiente personalizzato nell'editor dei blocchi, ora c'è un indicatore che mostra il colore scelto.
-
-Scorrendo le immagini nella schermata dei dettagli del media del sito, queste verranno caricate in anticipo per un'esperienza più veloce. O forse erano già lì.
-
-Abbiamo aggiunto il supporto per le immagini poster, le GIF e la riproduzione video ad alta risoluzione, per i documenti e le anteprime di altri file. (homer-simpson-Woohoo.gif)
-
-Abbiamo cambiato il flusso di pubblicazione per darti istruzioni più chiare. Gli utenti con il ruolo "Collaboratore" vedranno l'azione "Invia per la revisione" anziché "Pubblica". Puoi anche spostare nel cestino le bozze e gli articoli eliminati senza dover confermare.
-
-Ora c'è un'azione "Condividi" nel menu a tendina del sito che ti consente di condividere il tuo sito con altri.
-
-Infine, perché ci piace ricevere complimenti, abbiamo migliorato la richiesta di valutazione in-app. Ti verrà chiesto di lasciare una recensione se sei soddisfatto dell'app o di compilare un modulo del feedback se ritieni che l'app debba essere migliorata. I feedback ci permettono di migliorare, quindi non esitare a inviarci il tuo!
+Abbiamo sistemato un problema che cancellava immagini e altri media durante il caricamento. Presto, niente più sparizioni.

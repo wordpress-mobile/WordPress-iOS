@@ -229,7 +229,7 @@ final class SiteAssemblyWizardContent: UIViewController {
 
         if configuration.dismissalActionHandler == nil {
             configuration.dismissalActionHandler = { [weak self] in
-                guard let self = self else {
+                guard let self else {
                     return
                 }
                 self.dismissTapped()
@@ -268,6 +268,7 @@ private extension SiteAssemblyWizardContent {
 
     func dismissTapped(viaDone: Bool = false, completion: (() -> Void)? = nil) {
         // TODO : using viaDone, capture analytics event via #10335
+        RootViewCoordinator.shared.isSiteCreationActive = false
         navigationController?.dismiss(animated: true, completion: completion)
     }
 
@@ -302,13 +303,16 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             return
         }
 
+        RootViewCoordinator.shared.isSiteCreationActive = false
+        RootViewCoordinator.shared.reloadUIIfNeeded(blog: blog)
+
         dismissTapped(viaDone: true) { [blog, weak self] in
             RootViewCoordinator.sharedPresenter.showBlogDetails(for: blog)
 
-            // present quick start, and mark site title as complete if they already selected one
-            guard let self = self else {
+            guard let self = self, AppConfiguration.isJetpack else {
                 return
             }
+
             let completedSteps: [QuickStartTour] = self.siteCreator.hasSiteTitle ? [QuickStartSiteTitleTour(blog: blog)] : []
             self.showQuickStartPrompt(for: blog, completedSteps: completedSteps)
         }
@@ -316,6 +320,11 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
 
     private func showQuickStartPrompt(for blog: Blog, completedSteps: [QuickStartTour] = []) {
         guard !quickStartSettings.promptWasDismissed(for: blog) else {
+            return
+        }
+
+        // Disable the prompt for WordPress when the blog has no domains.
+        guard AppConfiguration.isJetpack || isDashboardEnabled(for: blog) else {
             return
         }
 
@@ -327,5 +336,9 @@ extension SiteAssemblyWizardContent: NUXButtonViewControllerDelegate {
             }
         }
         rootViewController.present(quickstartPrompt, animated: true)
+    }
+
+    private func isDashboardEnabled(for blog: Blog) -> Bool {
+        return JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled() && blog.isAccessibleThroughWPCom()
     }
 }

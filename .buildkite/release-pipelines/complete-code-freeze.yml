@@ -1,10 +1,26 @@
+common_params:
+  # Common plugin settings to use with the `plugins` key.
+  - &common_plugins
+    - automattic/a8c-ci-toolkit#2.18.1
+  # Common environment values to use with the `env` key.
+  - &common_env
+    # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
+    IMAGE_ID: xcode-15.1
+
 steps:
   - label: Complete Code Freeze
-    plugins:
-      - automattic/a8c-ci-toolkit#2.18.2
+    key: complete_code_freeze
+    plugins: *common_plugins
+    env: *common_env
     # The code freeze completion needs to run on macOS because it uses genstrings under the hood
     agents:
         queue: mac
-    env:
-      IMAGE_ID: xcode-15.1
     command: ".buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION"
+
+  - label: Log Outdated Pods
+    depends_on: complete_code_freeze
+    plugins: *common_plugins
+    env: *common_env
+    agents:
+        queue: mac
+    command: ".buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION"

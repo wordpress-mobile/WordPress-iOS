@@ -9,6 +9,11 @@ public class CategoriesComponent: ScreenObject {
 
     var categoriesList: XCUIElement { categoriesListGetter(app) }
 
+    var backButton: XCUIElement {
+        app.navigationBars["Post Categories"]
+            .buttons.element(boundBy: 0)
+    }
+
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
             expectedElementGetters: [ categoriesListGetter ],
@@ -24,7 +29,7 @@ public class CategoriesComponent: ScreenObject {
     }
 
     func goBackToSettings() throws -> EditorPostSettings {
-        navigateBack()
+        backButton.tap()
 
         return try EditorPostSettings()
     }

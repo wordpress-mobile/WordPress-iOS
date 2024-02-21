@@ -130,7 +130,10 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         let configuration = AddNewSiteConfiguration(
             canCreateWPComSite: viewModel.defaultAccount != nil,
             canAddSelfHostedSite: AppConfiguration.showAddSelfHostedSiteButton,
-            launchSiteCreation: { [weak self] in self?.launchSiteCreationFromNoSites() },
+            launchSiteCreation: {
+                [weak self] in self?.launchSiteCreationFromNoSites()
+                RootViewCoordinator.shared.isSiteCreationActive = true
+            },
             launchLoginForSelfHostedSite: { [weak self] in self?.launchLoginForSelfHostedSite() }
         )
         let noSiteView = NoSitesView(
@@ -198,6 +201,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
         Task { @MainActor in
             await overlaysCoordinator.presentOverlayIfNeeded(in: self)
         }
+
     }
 
     override func viewDidLayoutSubviews() {
@@ -591,6 +595,7 @@ final class MySiteViewController: UIViewController, UIScrollViewDelegate, NoSite
             guard let wizard = wizardLauncher.ui else {
                 return
             }
+            RootViewCoordinator.shared.isSiteCreationActive = true
             self.present(wizard, animated: true)
             SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
         })
@@ -924,7 +929,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
 
 private extension MySiteViewController {
     @objc func displayOverlayIfNeeded() {
-        if isViewOnScreen(), !willDisplayPostSignupFlow {
+        if isViewOnScreen() && !willDisplayPostSignupFlow && !RootViewCoordinator.shared.isSiteCreationActive {
             let didReloadUI = RootViewCoordinator.shared.reloadUIIfNeeded(blog: self.blog)
             if !didReloadUI {
                 let phase = JetpackFeaturesRemovalCoordinator.generalPhase()

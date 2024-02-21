@@ -601,7 +601,7 @@ class AbstractPostListViewController: UIViewController,
         let action = AbstractPostHelper.editorPublishAction(for: post)
 
         func showPrepublishingFlow(for post: Post) {
-            let prepublishing = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
+            let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
                 switch result {
                 case .completed(let post):
                     self?.didConfirmPublish(for: post)
@@ -609,9 +609,7 @@ class AbstractPostListViewController: UIViewController,
                     break
                 }
             }
-            let navigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: false)
-            let bottomSheet = BottomSheetViewController(childViewController: navigationController, customHeaderSpacing: 0)
-            bottomSheet.show(from: self)
+            viewController.presentAsSheet(from: self)
         }
 
         func showPublishingConfirmation() {
