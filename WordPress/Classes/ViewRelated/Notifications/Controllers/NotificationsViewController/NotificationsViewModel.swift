@@ -1,3 +1,6 @@
+import Foundation
+import AutomatticTracks
+
 final class NotificationsViewModel {
     enum Constants {
         static let lastSeenKey = "notifications_last_seen_time"
@@ -8,26 +11,29 @@ final class NotificationsViewModel {
     typealias ShareablePost = (url: String, title: String?)
     typealias PostReadyForShareCallback = (ShareablePost, IndexPath) -> Void
 
-    // MARK: - Callbacks
-
-    var onPostReadyForShare: PostReadyForShareCallback?
-
     // MARK: - Depdencies
 
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
+    private let crashLogger: CrashLogging
+
+    // MARK: - Callbacks
+
+    var onPostReadyForShare: PostReadyForShareCallback?
 
     // MARK: - Init
 
     init(
         userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
-        analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self
+        analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
+        crashLogger: CrashLogging = CrashLogging.main
     ) {
         self.userDefaults = userDefaults
         self.notificationMediator = notificationMediator
         self.analyticsTracker = analyticsTracker
+        self.crashLogger = crashLogger
     }
 
     /// The last time when user seen notifications
@@ -94,6 +100,7 @@ final class NotificationsViewModel {
 
     func sharePostActionTapped(with notification: Notification, at indexPath: IndexPath) {
         guard let url = notification.url else {
+            self.crashLogger.logMessage("Failed to share a notification post due to null url", level: .error)
             return
         }
         let content: ShareablePost = (
