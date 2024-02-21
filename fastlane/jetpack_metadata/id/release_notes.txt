@@ -1,0 +1,5 @@
+Pembaca yang terhormat, kami telah menambahkan tampilan dan nuansa baru untuk menyaring dan menavigasi konten. Sekarang, jika mencari pos untuk dibaca, Anda bisa temukan pos terbaik dan abaikan pos yang lain.
+
+Kami mengatasi masalah yang menyebabkan gambar dan media lain “berkedip” ketika diunggah. Dalam sekejap, tiada lagi yang tiba-tiba lenyap.
+
+Kami juga menambahkan item menu baru di Pemantauan Situs—termasuk metrik, log PHP, dan log server web—sehingga Anda dapat mengawasi situs secara lebih ketat. (Tenang, situs Anda tidak akan kabur, kok.)

@@ -1,6 +1,13 @@
-24.3
+24.4
 -----
 * [**] Block editor: Introduce VideoPress v5 support, to fix issues using video block with dotcom and Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6634]
+
+24.3
+-----
+* [***] [internal] Refactored websocket connections to Pinghub. [#22611]
+
+* [**] Multiple pre-publishing sheet fixes and improvements [#22606]
+* [*] Gravatar: Adds informative new view about Gravatar to the profile editing page. [#22615]
 
 24.2
 -----

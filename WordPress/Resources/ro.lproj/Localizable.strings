@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-09 00:31:50+0000 */
+/* Translation-Revision-Date: 2024-02-13 08:15:30+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ro */
@@ -10704,11 +10704,19 @@ This is displayed when we don't know the number of blogs yet. */
 
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.singular" = "%1$d etichete";
+"reader.navigation.filter.tag.singular" = "%1$d etichetă";
 
 /* Button title to filter the Reader stream by tag.
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "Etichete";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtrare by %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Deschide lista cu filtre";
 
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Apreciate";
@@ -10716,8 +10724,14 @@ This is displayed when we don't know the number of tags yet. */
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Liste";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Resetează";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Salvate";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Caută";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonamente";
@@ -11153,12 +11167,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "Datare";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "Valori metrice";
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "Jurnale PHP";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Jurnale server web";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidențialitate";

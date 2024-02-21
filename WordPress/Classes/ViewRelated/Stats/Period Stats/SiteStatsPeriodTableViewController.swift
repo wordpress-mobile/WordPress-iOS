@@ -87,7 +87,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
                 return
             }
             addViewModelListeners()
-            viewModel?.refreshPeriodOverviewData(withDate: date, forPeriod: period)
+            viewModel?.refreshTrafficOverviewData(withDate: date, forPeriod: period)
         }
     }
 
@@ -204,7 +204,7 @@ private extension SiteStatsPeriodTableViewController {
                 return
         }
         addViewModelListeners()
-        viewModel?.refreshPeriodOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
+        viewModel?.refreshTrafficOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
     }
 
     func applyTableUpdates() {

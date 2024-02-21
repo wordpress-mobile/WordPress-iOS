@@ -1,0 +1,5 @@
+Lieber Leser, wir haben der Inhaltsnavigation und der Filterfunktion ein neues Erscheinungsbild hinzugefügt. Das heißt: Wenn du nach Beiträgen suchst, kannst du die für dich relevantesten nun besser finden und den Rest ignorieren.
+
+Wir haben ein Problem behoben, wodurch Bilder und andere Medien während des Uploads kurz verschwanden. Jetzt ist alles jederzeit sichtbar.
+
+Zu guter Letzt haben wir neue Menüelemente für die Website-Überwachung hinzugefügt, einschließlich Metriken, PHP- und Webserver-Protokolle. So behältst du deine Website besser im Auge. (Aber sei unbesorgt: Es besteht keine Fluchtgefahr.)

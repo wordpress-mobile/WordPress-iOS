@@ -89,11 +89,15 @@ final class CommentService_RepliesTests: CoreDataTestCase {
         let (mockService, mockApi) = makeMockService()
         let parentKey = CommentServiceRemoteREST.RequestKeys.parent.rawValue
 
-        mockService.getLatestReplyID(for: commentID,
-                                     siteID: siteID,
-                                     accountService: accountService,
-                                     success: { _ in },
-                                     failure: { _ in })
+        waitUntil { done in
+            mockService.getLatestReplyID(
+                for: self.commentID,
+                siteID: self.siteID,
+                accountService: self.accountService,
+                success: { _ in done() },
+                failure: { _ in done() }
+            )
+        }
 
         var parameters = [String: Any]()
         expect(mockApi.parametersPassedIn).toNot(beNil())

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-05 15:54:13+0000 */
+/* Translation-Revision-Date: 2024-02-14 13:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: ar */
@@ -10547,6 +10547,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "لقد قمت بتسجيل الدخول!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "يمكنك محاولة تحديد %@ لعرض المحتوى الذي تم الاشتراك فيه وإدارة اشتراكاتك.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "الاشتراكات";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "مزيد";
 
@@ -10657,6 +10663,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "الوسوم";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "⁦%1$d⁩ من الوسوم";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "⁦%1$d⁩ من الوسوم";
@@ -10665,14 +10675,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "الوسوم";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "تمت التصفية بواسطة %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "يفتح قائمة التصفية";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "أعجبني";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "القوائم";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "إعادة التعيين";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "تم الحفظ";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "البحث";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "الاشتراكات";
@@ -11078,12 +11102,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "الطابع الزمني";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "المقاييس";
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "سجلات PHP";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "سجلات خادم الويب";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "الخصوصية";
