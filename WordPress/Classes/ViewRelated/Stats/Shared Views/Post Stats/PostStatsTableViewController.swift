@@ -120,6 +120,8 @@ private extension PostStatsTableViewController {
     func trackAccessEvent() {
         var properties = [AnyHashable: Any]()
 
+        properties[WPAppAnalyticsKeyTapSource] = "posts"
+
         if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
             properties["blog_id"] = blogIdentifier
         }
@@ -128,7 +130,7 @@ private extension PostStatsTableViewController {
             properties["post_id"] = postIdentifier
         }
 
-        WPAppAnalytics.track(.statsSinglePostAccessed, withProperties: properties)
+        WPAppAnalytics.track(.statsAccessed, withProperties: properties)
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
