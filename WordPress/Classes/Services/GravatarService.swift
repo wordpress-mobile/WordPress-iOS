@@ -54,7 +54,7 @@ open class GravatarService {
 
         let email = accountEmail.trimmingCharacters(in: CharacterSet.whitespaces).lowercased()
 
-        let imageService = ImageService()
+        let imageService = gravatarImageService()
         imageService.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
             if let theError = error {
                 DDLogError("GravatarService.uploadImage Error: \(theError)")
@@ -68,6 +68,10 @@ open class GravatarService {
 
     /// Overridden by tests for mocking.
     ///
+    func gravatarImageService() -> ImageServing {
+        return ImageService()
+    }
+
     func gravatarServiceRemote() -> GravatarServiceRemote {
         return GravatarServiceRemote()
     }
