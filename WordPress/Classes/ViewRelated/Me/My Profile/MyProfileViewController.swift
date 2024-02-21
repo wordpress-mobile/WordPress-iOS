@@ -14,6 +14,7 @@ func MyProfileViewController(account: WPAccount) -> ImmuTableViewController? {
 func MyProfileViewController(account: WPAccount, service: AccountSettingsService, headerView: MyProfileHeaderView) -> ImmuTableViewController {
     let controller = MyProfileController(account: account, service: service, headerView: headerView)
     let viewController = ImmuTableViewController(controller: controller, style: .insetGrouped)
+    controller.tableView = viewController.tableView
 
     let menuController = AvatarMenuController(viewController: viewController)
     menuController.onAvatarSelected = { [weak controller, weak viewController] image in
@@ -56,6 +57,7 @@ private class MyProfileController: SettingsController {
     var trackingKey: String {
         return "my_profile"
     }
+    weak var tableView: UITableView?
 
     // MARK: - Private Properties
 
@@ -73,7 +75,8 @@ private class MyProfileController: SettingsController {
 
     var immuTableRows: [ImmuTableRow.Type] {
         return [EditableTextRow.self,
-                GravatarInfoRow.self]
+                GravatarInfoRow.self,
+                ExternalLinkButtonRow.self]
     }
 
     // MARK: - Initialization
@@ -147,7 +150,13 @@ private class MyProfileController: SettingsController {
                 service: service)),
             fieldName: "about_me")
 
-        let gravatarInfoRow = GravatarInfoRow()
+        let gravatarInfoRow = GravatarInfoRow(title: GravatarInfoConstants.title,
+                                              description: GravatarInfoConstants.description,
+                                              action: nil)
+        let gravatarLinkRow = ExternalLinkButtonRow(title: GravatarInfoConstants.linkText,
+                                                    accessibilityHint: GravatarInfoConstants.gravatarLinkAccessibilityHint,
+                                                    action: visitGravatarWebsiteAction(),
+                                                    accessibilityIdentifier: "visit-gravatar-website-button")
 
         return ImmuTable(sections: [
             ImmuTableSection(rows: [
@@ -156,8 +165,11 @@ private class MyProfileController: SettingsController {
                 displayNameRow,
                 aboutMeRow
             ]),
-            ImmuTableSection(rows: [gravatarInfoRow])
+            ImmuTableSection(rows: [
+                gravatarInfoRow,
+                gravatarLinkRow
             ])
+        ])
     }
 
     // MARK: - Helpers
@@ -178,6 +190,16 @@ private class MyProfileController: SettingsController {
                 self?.gravatarUploadInProgress = false
                 self?.refreshModel()
             })
+        }
+    }
+
+    fileprivate func visitGravatarWebsiteAction() -> ImmuTableAction {
+        return { [weak self] row in
+            guard let url = URL(string: GravatarInfoConstants.gravatarLink) else {
+                return
+            }
+            self?.tableView?.deselectSelectedRowWithAnimation(true)
+            UIApplication.shared.open(url)
         }
     }
 

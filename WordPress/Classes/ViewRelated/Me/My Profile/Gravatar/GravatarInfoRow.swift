@@ -3,100 +3,51 @@ import WordPressShared
 import DesignSystem
 
 struct GravatarInfoRow: ImmuTableRow {
-    var action: ImmuTableAction?
-
-    func configureCell(_ cell: UITableViewCell) {
-        guard let cell = cell as? GravatarInfoCell else { return }
-        cell.applyColors()
-        cell.selectionStyle = .none
-    }
 
     static let cell = ImmuTableCell.class(GravatarInfoCell.self)
+
+    let title: String
+    let description: String
+    let action: ImmuTableAction?
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? GravatarInfoCell else {
+            return
+        }
+
+        cell.titleLabel.text = title
+        cell.descriptionLabel.text = description
+        cell.selectionStyle = .none
+    }
 }
 
-class GravatarInfoCell: WPTableViewCellDefault {
+class GravatarInfoCell: MigrationCell {
 
     private enum Constants {
-        static let externalLinkLogo: UIImage? = UIImage(named: "icon-post-actionbar-view")?.withRenderingMode(.alwaysTemplate)
-        static let infoText = NSLocalizedString("Gravatar keeps your profile information safe and up to date, automatically syncing any updates made here with your Gravatar profile.", comment: "This text is shown in the profile editing page to let the user know about Gravatar.")
-        static let linkText = NSLocalizedString("Learn more on Gravatar.com", comment: "This is a link that takes the user to the external Gravatar website")
-        static var font: UIFont { TextStyle.caption.uiFont }
-        static let gravatarLink = "https://gravatar.com"
+        static let wordpressGravatarLogo = UIImage(named: "wordpress-gravatar")
+        static let jetpackGravatarLogo = UIImage(named: "jetpack-gravatar")
+        static let imageSize = CGSize(width: 50, height: 30)
     }
 
-    private var infoLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = Constants.font
-        label.text = Constants.infoText
-        label.adjustsFontForContentSizeCategory = true
-        label.numberOfLines = 0
-        return label
-    }()
-
-    private var linkTextView: UITextView = {
-        let text = UITextView()
-        text.translatesAutoresizingMaskIntoConstraints = false
-        text.isEditable = false
-        text.isScrollEnabled = false
-        text.isSelectable = true
-        text.backgroundColor = .clear
-        text.textContainerInset = .zero
-        text.textContainer.lineFragmentPadding = 0
-        text.textDragInteraction?.isEnabled = false
-        text.adjustsFontForContentSizeCategory = true
-        return text
-    }()
-
-    private var logosView: GravatarIntersectingLogosView = {
-        let view = GravatarIntersectingLogosView(frame: .zero)
+    private let intersectingLogosView: UIImageView = {
+        let view = UIImageView(frame: .zero)
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.contentMode = .scaleAspectFit
+        view.image = AppConfiguration.isJetpack ? Constants.jetpackGravatarLogo : Constants.wordpressGravatarLogo
+        view.widthAnchor.constraint(equalToConstant: Constants.imageSize.width).isActive = true
+        view.heightAnchor.constraint(equalToConstant: Constants.imageSize.height).isActive = true
         return view
     }()
 
-    private lazy var verticalStackView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [logosView, infoLabel, linkTextView])
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.spacing = Length.Padding.split
-        stackView.alignment = .leading
-        return stackView
-    }()
-
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(verticalStackView)
-        NSLayoutConstraint.activate([
-            verticalStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Length.Padding.double),
-            verticalStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Length.Padding.double),
-            verticalStackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: Length.Padding.double),
-            verticalStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Length.Padding.double),
-        ])
-        applyColors()
+    override var logoImageView: UIImageView {
+        return intersectingLogosView
     }
+}
 
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    func applyColors() {
-        infoLabel.textColor = UIColor.DS.Foreground.primary
-        linkTextView.tintColor = UIColor.primary
-
-        let infoText = NSMutableAttributedString(string: Constants.linkText,
-                                                             attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue,
-                                                                          .font: Constants.font])
-        if let linkImage = Constants.externalLinkLogo {
-            let imageAttachment = NSTextAttachment()
-            imageAttachment.image = linkImage
-            imageAttachment.bounds = CGRect(x: 0, y: (Constants.font.capHeight - linkImage.size.height).rounded() / 2, width: linkImage.size.width, height: linkImage.size.height)
-
-            let imageString = NSAttributedString(attachment: imageAttachment)
-            infoText.append(NSAttributedString(string: " "))
-            infoText.append(imageString)
-        }
-
-        infoText.addAttributes([.link: Constants.gravatarLink], range: NSRange(location: 0, length: infoText.length))
-        linkTextView.attributedText = infoText
-    }
+enum GravatarInfoConstants {
+    static let title = NSLocalizedString("Your WordPress.com profile is powered by Gravatar.", comment: "Text in the profile editing page. Let the user know that their profile is managed by Gravatar.")
+    static let description = NSLocalizedString("Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles.", comment: "Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar.")
+    static let linkText = NSLocalizedString("What is Gravatar?", comment: "This is a link that takes the user to the external Gravatar website")
+    static let gravatarLinkAccessibilityHint = NSLocalizedString("Tap to visit the Gravatar website in an external browser", comment: "Accessibility hint, informing user the button can be used to visit the Gravatar website.")
+    static let gravatarLink = "https://gravatar.com"
 }

@@ -131,17 +131,11 @@ extension PublishingEditor {
                 if self.post.status != .publishPrivate {
                     self.post.status = .publish
                 }
-            } else if action == .publishNow {
-                self.post.date_created_gmt = Date()
-
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
-                }
             } else if action == .submitForReview {
                 self.post.status = .pending
             }
 
-            self.post.isFirstTimePublish = action == .publish || action == .publishNow
+            self.post.isFirstTimePublish = action == .publish
 
             self.post.shouldAttemptAutoUpload = true
 
@@ -237,7 +231,7 @@ extension PublishingEditor {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let prepublishing = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
+        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
             switch result {
             case .completed(let post):
                 self?.post = post
@@ -246,16 +240,7 @@ extension PublishingEditor {
                 dismissAction()
             }
         }
-
-        let isTitleDisplayed = prepublishingIdentifiers.contains { $0 == .title }
-        let shouldDisplayPortrait = WPDeviceIdentification.isiPhone() && isTitleDisplayed
-        let prepublishingNavigationController = PrepublishingNavigationController(rootViewController: prepublishing, shouldDisplayPortrait: shouldDisplayPortrait)
-        let bottomSheet = BottomSheetViewController(childViewController: prepublishingNavigationController, customHeaderSpacing: 0)
-        if let sourceView = prepublishingSourceView {
-            bottomSheet.show(from: self, sourceView: sourceView)
-        } else {
-            bottomSheet.show(from: self.topmostPresentedViewController)
-        }
+        viewController.presentAsSheet(from: topmostPresentedViewController)
     }
 
     /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.

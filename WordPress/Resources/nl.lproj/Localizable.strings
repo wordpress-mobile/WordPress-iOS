@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-06 15:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-14 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: nl */
@@ -10580,12 +10580,14 @@ but tapping on this button will remove their like from the post. */
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyResponseBodySize" = "Responsieve grootte";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "Meetwaarden";
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP-logboeken";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Webserverlogboeken";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
