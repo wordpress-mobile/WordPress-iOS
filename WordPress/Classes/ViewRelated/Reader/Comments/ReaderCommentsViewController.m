@@ -43,6 +43,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic, strong) SuggestionsTableView *suggestionsTableView;
 @property (nonatomic, strong) NSIndexPath *indexPathForCommentRepliedTo;
 @property (nonatomic, strong) NSLayoutConstraint *replyTextViewHeightConstraint;
+@property (nonatomic, strong) NSLayoutConstraint *replyTextViewBottomConstraint;
 @property (nonatomic, strong) NSCache *estimatedRowHeights;
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
@@ -360,10 +361,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureKeyboardManager
 {
+    self.replyTextViewBottomConstraint = [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
     self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
                                                                   scrollView:self.tableView
                                                           dismissableControl:self.replyTextView
-                                                      bottomLayoutConstraint:self.keyboardManager.bottomLayoutConstraint];
+                                                      bottomLayoutConstraint:self.replyTextViewBottomConstraint];
 
     __weak UITableView *weakTableView = self.tableView;
     __weak ReaderCommentsViewController *weakSelf = self;
