@@ -20,6 +20,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
+    typealias TableViewCell = HostingTableViewCell<NotificationsTableViewCellContent>
+
     // MARK: - Properties
 
     /// Table View
@@ -334,7 +336,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationsTableViewCellContent.reuseIdentifier) as? HostingTableViewCell<NotificationsTableViewCellContent>,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationsTableViewCellContent.reuseIdentifier) as? TableViewCell,
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
@@ -353,7 +355,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .none
     }
 
-    private func content(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent {
+    private func content(for cell: TableViewCell, notification: Notification) -> NotificationsTableViewCellContent {
         // Handle the case of a deleted / spammed notification
         if let deletionRequest = notificationDeletionRequests[notification.objectID] {
             let style = NotificationsTableViewCellContent.Style.altered(
@@ -389,18 +391,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return .init(style: style)
     }
 
-    private func inlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
+    private func inlineAction(for cell: TableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         switch notification.kind {
         case .comment:
-            return .init(
-                icon: Image.DS.icon(named: .starOutline),
-                action: {}
-            )
+            return likeInlineAction(for: cell, notification: notification)
         case .newPost:
-            return .init(
-                icon: Image.DS.icon(named: .starOutline),
-                action: {}
-            )
+            return likeInlineAction(for: cell, notification: notification)
         case .like, .reblog:
             return self.shareInlineAction(for: cell, notification: notification)
         default:
@@ -408,9 +404,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
     }
 
-    private func shareInlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction {
-        let action: () -> Void = { [weak self] in
-            guard let self, let content = self.viewModel.sharePostActionTapped(with: notification) else {
+    private func shareInlineAction(for cell: TableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+        let action: () -> Void = { [weak self, weak cell] in
+            guard let self, let cell, let content = self.viewModel.sharePostActionTapped(with: notification) else {
                 return
             }
             let sharingController = PostSharingController()
@@ -426,6 +422,22 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             icon: Image.DS.icon(named: .blockShare),
             action: action
         )
+    }
+
+    private func likeInlineAction(for cell: TableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+        let action: () -> Void = { [weak self, weak cell] in
+            guard let self, let content = cell?.content, case let .regular(style) = content.style, let action = style.inlineAction else {
+                return
+            }
+            self.viewModel.postLikeActionTapped(with: notification) { liked in
+                action.icon = self.likeInlineActionImage(filled: liked)
+            }
+        }
+        return .init(icon: likeInlineActionImage(filled: false), action: action)
+    }
+
+    private func likeInlineActionImage(filled: Bool) -> Image {
+        return Image.DS.icon(named: filled ? .starFill : .starOutline)
     }
 
     // MARK: - UITableViewDelegate Methods

@@ -110,6 +110,10 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: .sharePost)
         return content
     }
+
+    func postLikeActionTapped(with notification: Notification, changes: (Bool) -> Void) {
+        changes(true)
+    }
 }
 
 // MARK: - Analytics Tracking

@@ -11,7 +11,7 @@ struct NotificationsTableViewCellContent: View {
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
-            let inlineAction: InlineAction?
+            let inlineAction: InlineAction.Configuration?
         }
 
         struct Altered {
@@ -23,12 +23,7 @@ struct NotificationsTableViewCellContent: View {
         case altered(Altered)
     }
 
-    struct InlineAction {
-        let icon: SwiftUI.Image
-        let action: () -> Void
-    }
-
-    private let style: Style
+    let style: Style
 
     init(style: Style) {
         self.style = style
@@ -73,14 +68,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     .saveSize(in: $textsSize)
                 Spacer()
                 if let inlineAction = info.inlineAction {
-                    Button {
-                        inlineAction.action()
-                    } label: {
-                        inlineAction.icon
-                            .imageScale(.small)
-                            .foregroundStyle(Color.DS.Foreground.secondary)
-                            .frame(width: Length.Padding.medium, height: Length.Padding.medium)
-                    }
+                    InlineAction(configuration: inlineAction)
                 }
             }
             .padding(.trailing, Length.Padding.double)
@@ -174,6 +162,38 @@ fileprivate extension NotificationsTableViewCellContent {
             }
             .frame(height: 60)
             .background(Color.DS.Foreground.error)
+        }
+    }
+}
+
+// MARK: - Inline Action
+
+extension NotificationsTableViewCellContent {
+
+    struct InlineAction: View {
+
+        class Configuration: ObservableObject {
+
+            @Published var icon: SwiftUI.Image
+            let action: () -> Void
+
+            init(icon: SwiftUI.Image, action: @escaping () -> Void) {
+                self.icon = icon
+                self.action = action
+            }
+        }
+
+        @ObservedObject var configuration: Configuration
+
+        var body: some View {
+            Button {
+                configuration.action()
+            } label: {
+                configuration.icon
+                    .imageScale(.small)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+            }
         }
     }
 }

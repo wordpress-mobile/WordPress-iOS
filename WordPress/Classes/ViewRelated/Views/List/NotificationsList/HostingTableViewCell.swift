@@ -4,6 +4,10 @@ import SwiftUI
 class HostingTableViewCell<Content: View>: UITableViewCell {
     private weak var controller: UIHostingController<Content>?
 
+    var content: Content? {
+        return controller?.rootView
+    }
+
     func host(_ view: Content, parent: UIViewController) {
         if let controller = controller {
             controller.rootView = view
