@@ -81,13 +81,11 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v24.2-whats-new"
+msgctxt "v24.3-whats-new"
 msgid ""
-"Dear reader, we’ve added a new look and feel for content navigation and filtering. Now when you’re looking for posts to read, you can find the best and ignore the rest.\n"
+"We’ve made several tweaks to the pre-publishing sheet. You might notice changes like smoother screen transitions, a simplified date picker, and cleaner settings when you’re publishing on your iPad.\n"
 "\n"
-"We fixed an issue that made images and other media blink away while being uploaded. Presto, no more disappearing act.\n"
-"\n"
-"Finally, we added new Site Monitoring menu items—including metrics, PHP logs, and web server logs—so you can keep a closer eye on your website. (Don’t worry, it’s not going anywhere.)\n"
+"We also updated the info section of your user profile that talks about your Gravatar. (Not sure what that is? You’re in for a Grava-treat.)\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

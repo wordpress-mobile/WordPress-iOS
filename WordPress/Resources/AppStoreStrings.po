@@ -45,9 +45,11 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v24.2-whats-new"
+msgctxt "v24.3-whats-new"
 msgid ""
-"We fixed an issue that made images and other media “blink” while being uploaded. Presto, no more disappearing act.\n"
+"We’ve made several tweaks to the pre-publishing sheet. You might notice changes like smoother screen transitions, a simplified date picker, and cleaner settings when you’re publishing on your iPad.\n"
+"\n"
+"We also updated the info section of your user profile that talks about your Gravatar. (Not sure what that is? You’re in for a Grava-treat.)\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.
