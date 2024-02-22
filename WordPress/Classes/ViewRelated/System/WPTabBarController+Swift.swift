@@ -1,7 +1,7 @@
 
 // MARK: - Tab Access Tracking
 
-extension WPTab {
+fileprivate extension WPTab {
     var hasStaticScreen: Bool {
         switch self {
         case .reader:
