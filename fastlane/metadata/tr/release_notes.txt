@@ -1,1 +1,0 @@
-Görselleri ve diğer ortamları yüklerken bunların "yanıp sönmesine" sebep olan bir sorunu düzelttik. Presto'da artık ortadan kaybolmak yok.
