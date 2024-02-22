@@ -8,9 +8,9 @@ final class SiteStatsPeriodViewModelTests: XCTestCase {
     private var store: StatsPeriodStoreMock!
 
     private var firstRow: ImmuTableRow {
-        let tableViewModel = sut.tableViewModel()
-        let section = tableViewModel.sections[0]
-        return section.rows[0]
+        let section = sut.tableViewSnapshot().sectionIdentifiers[0]
+        let rows = sut.tableViewSnapshot().itemIdentifiers(inSection: section)
+        return rows[0].immuTableRow
     }
 
     override func setUpWithError() throws {
