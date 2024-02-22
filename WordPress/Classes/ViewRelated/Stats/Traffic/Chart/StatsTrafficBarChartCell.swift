@@ -340,4 +340,8 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
     var accessibilityLabel: String? {
         tabTitle
     }
+
+    var accessibilityValue: String? {
+        return tabDataStub != nil ? "" : "\(tabData)"
+    }
 }
