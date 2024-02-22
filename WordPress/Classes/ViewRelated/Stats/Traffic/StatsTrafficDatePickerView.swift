@@ -2,15 +2,12 @@ import SwiftUI
 import DesignSystem
 
 struct StatsTrafficDatePickerView: View {
-    typealias ViewModel = StatsTrafficDatePickerViewModel
-    typealias Period = ViewModel.Period
-
-    @ObservedObject var viewModel = ViewModel()
+    @ObservedObject var viewModel = StatsTrafficDatePickerViewModel()
 
     var body: some View {
         HStack {
             Menu {
-                ForEach(Period.allCases, id: \.self) { period in
+                ForEach([StatsPeriodUnit.day, .week, .month, .year], id: \.self) { period in
                     Button(period.label, action: {
                         viewModel.selectedPeriod = period
                     })
@@ -66,7 +63,7 @@ struct StatsTrafficDatePickerView: View {
     }
 }
 
-private extension StatsTrafficDatePickerViewModel.Period {
+private extension StatsPeriodUnit {
     var label: String {
         switch self {
         case .day:

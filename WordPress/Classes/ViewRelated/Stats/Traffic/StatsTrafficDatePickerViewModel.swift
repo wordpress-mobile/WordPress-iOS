@@ -12,12 +12,6 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     private let now: Date
     private static let calendar: Calendar = .current
 
-    private let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy"
-        return formatter
-    }()
-
     var isNextDateIntervalAvailable: Bool {
         let nextDateInterval = nextDateInterval()
         return nextDateInterval.start <= now
@@ -79,10 +73,28 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func formattedCurrentInterval() -> String {
-        if currentDateInterval.duration < 24 * 60 * 60 {    // different format when showing a single day vs. a period such as a week
-            return formatter.string(from: currentDateInterval.start)
+        let dateFormatter = selectedPeriod.dateFormatter
+        if selectedPeriod == .week {
+            return "\(dateFormatter.string(from: currentDateInterval.start)) - \(dateFormatter.string(from: currentDateInterval.end))"
         } else {
-            return "\(formatter.string(from: currentDateInterval.start)) - \(formatter.string(from: currentDateInterval.end))"
+            return dateFormatter.string(from: currentDateInterval.start)
         }
+    }
+}
+
+private extension StatsPeriodUnit {
+    var dateFormatter: DateFormatter {
+        let formatter = DateFormatter()
+        switch self {
+        case .day:
+            formatter.dateFormat = "MMMM d"
+        case .week:
+            formatter.dateFormat = "MMM d"
+        case .month:
+            formatter.dateFormat = "MMMM"
+        case .year:
+            formatter.dateFormat = "yyyy"
+        }
+        return formatter
     }
 }
