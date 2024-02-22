@@ -164,7 +164,7 @@ private extension StatsTrafficBarChartCell {
     func setupButtons() {
         contentStackView.addArrangedSubview(filterTabBar)
         filterTabBar.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
-        filterTabBar.tabBarHeight = 40
+        filterTabBar.tabBarHeight = 56
         filterTabBar.equalWidthFill = .fillEqually
         filterTabBar.equalWidthSpacing = Length.Padding.single
         filterTabBar.tabSizingStyle = .equalWidths
@@ -174,7 +174,7 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.tabSeparatorPlacement = .top
         filterTabBar.tabsFont = tabsFont()
         filterTabBar.tabsSelectedFont = tabsFont()
-        filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
+        filterTabBar.tabAttributedButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
         filterTabBar.tabSeparatorPadding = Length.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
@@ -331,6 +331,33 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
 
     var title: String {
         return self.tabTitle
+    }
+
+    var attributedTitle: NSAttributedString? {
+        let attributedTitle = NSMutableAttributedString(string: tabTitle)
+        attributedTitle.addAttributes([.font: TextStyle.footnote.uiFont],
+                                      range: NSMakeRange(0, attributedTitle.string.count))
+
+        let dataString: String = {
+            if let tabDataStub = tabDataStub {
+                return tabDataStub
+            }
+            return tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
+        attributedData.addAttributes([.font: TextStyle.bodyLarge(.emphasized).uiFont],
+                                     range: NSMakeRange(0, attributedData.string.count))
+
+        attributedTitle.append(NSAttributedString(string: "\n"))
+        attributedTitle.append(attributedData)
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.9
+        paragraphStyle.alignment = .center
+        attributedTitle.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedTitle.length))
+
+        return attributedTitle
     }
 
     var accessibilityIdentifier: String {
