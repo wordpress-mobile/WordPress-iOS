@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import DGCharts
 
 // MARK: - Shared Rows
 
@@ -14,11 +15,19 @@ struct OverviewRow: ImmuTableRow {
 
     let tabsData: [OverviewTabData]
     let action: ImmuTableAction? = nil
-    let chartData: [BarChartDataConvertible]
+    let chartData: [any BarChartDataConvertible]
     let chartStyling: [BarChartStyling]
     let period: StatsPeriodUnit?
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
     let chartHighlightIndex: Int?
+    let statSection: StatSection? = nil
+
+    // MARK: - Hashable
+
+    static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData &&
+            lhs.chartHighlightIndex == rhs.chartHighlightIndex
+    }
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -30,12 +39,13 @@ struct OverviewRow: ImmuTableRow {
     }
 }
 
-struct StatsTrafficBarChartRow: ImmuTableRow {
+struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {
     typealias CellType = StatsTrafficBarChartCell
     let action: ImmuTableAction?
     let tabsData: [StatsTrafficBarChartTabData]
     let chartData: [BarChartDataConvertible]
     let chartStyling: [StatsTrafficBarChartStyling]
+    let statSection: StatSection? = nil
     let period: StatsPeriodUnit
     let unit: StatsPeriodUnit
 
@@ -44,9 +54,14 @@ struct StatsTrafficBarChartRow: ImmuTableRow {
     }()
 
     func configureCell(_ cell: UITableViewCell) {
+
         guard let cell = cell as? CellType else { return }
 
         cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, unit: unit)
+    }
+
+    static func == (lhs: StatsTrafficBarChartRow, rhs: StatsTrafficBarChartRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData && lhs.period == rhs.period && lhs.unit == rhs.unit
     }
 }
 
@@ -79,7 +94,7 @@ struct ViewsVisitorsRow: ImmuTableRow {
     }
 }
 
-struct CellHeaderRow: ImmuTableRow {
+struct CellHeaderRow: StatsHashableImmuTableRow {
 
     typealias CellType = StatsCellHeader
 
@@ -87,7 +102,7 @@ struct CellHeaderRow: ImmuTableRow {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
 
-    let statSection: StatSection
+    let statSection: StatSection?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -97,6 +112,12 @@ struct CellHeaderRow: ImmuTableRow {
         }
 
         cell.configure(statSection: statSection)
+    }
+
+    // MARK: - Hashable
+
+    static func == (lhs: CellHeaderRow, rhs: CellHeaderRow) -> Bool {
+        return lhs.statSection == rhs.statSection
     }
 }
 
@@ -271,8 +292,7 @@ struct TopTotalsInsightStatsRow: ImmuTableRow {
     }
 }
 
-struct TwoColumnStatsRow: ImmuTableRow {
-
+struct TwoColumnStatsRow: StatsHashableImmuTableRow {
     typealias CellType = TwoColumnCell
 
     static let cell: ImmuTableCell = {
@@ -280,17 +300,20 @@ struct TwoColumnStatsRow: ImmuTableRow {
     }()
 
     let dataRows: [StatsTwoColumnRowData]
-    let statSection: StatSection
+    let statSection: StatSection?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else {
+        guard let cell = cell as? CellType, let statSection else {
             return
         }
 
         cell.configure(dataRows: dataRows, statSection: statSection, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+    }
+
+    static func == (lhs: TwoColumnStatsRow, rhs: TwoColumnStatsRow) -> Bool {
+        return lhs.dataRows == rhs.dataRows && lhs.statSection == rhs.statSection
     }
 }
 
@@ -413,7 +436,7 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsPeriodStatsRow: ImmuTableRow {
+struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -431,6 +454,15 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     weak var siteStatsDetailsDelegate: SiteStatsDetailsDelegate?
     var topAccessoryView: UIView? = nil
     let action: ImmuTableAction? = nil
+
+    // MARK: - Hashable
+
+    static func == (lhs: TopTotalsPeriodStatsRow, rhs: TopTotalsPeriodStatsRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.dataRows == rhs.dataRows &&
+            lhs.statSection == rhs.statSection
+    }
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -450,7 +482,7 @@ struct TopTotalsPeriodStatsRow: ImmuTableRow {
     }
 }
 
-struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
+struct TopTotalsNoSubtitlesPeriodStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -463,6 +495,13 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     let action: ImmuTableAction? = nil
 
+    // MARK: - Hashable
+
+    static func == (lhs: TopTotalsNoSubtitlesPeriodStatsRow, rhs: TopTotalsNoSubtitlesPeriodStatsRow) -> Bool {
+        return lhs.dataRows == rhs.dataRows &&
+            lhs.statSection == rhs.statSection
+    }
+
     func configureCell(_ cell: UITableViewCell) {
 
         guard let cell = cell as? CellType else {
@@ -473,7 +512,7 @@ struct TopTotalsNoSubtitlesPeriodStatsRow: ImmuTableRow {
     }
 }
 
-struct CountriesStatsRow: ImmuTableRow {
+struct CountriesStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = CountriesCell
 
@@ -488,6 +527,15 @@ struct CountriesStatsRow: ImmuTableRow {
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
     weak var siteStatsInsightsDetailsDelegate: SiteStatsInsightsDelegate?
     let action: ImmuTableAction? = nil
+
+    // MARK: - Hashable
+
+    static func == (lhs: CountriesStatsRow, rhs: CountriesStatsRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.statSection == rhs.statSection &&
+            lhs.dataRows == rhs.dataRows
+    }
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -504,7 +552,7 @@ struct CountriesStatsRow: ImmuTableRow {
     }
 }
 
-struct CountriesMapRow: ImmuTableRow {
+struct CountriesMapRow: StatsHashableImmuTableRow {
     let action: ImmuTableAction? = nil
     let countriesMap: CountriesMap
     var statSection: StatSection?
@@ -514,6 +562,13 @@ struct CountriesMapRow: ImmuTableRow {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
     }()
+
+    // MARK: - Hashable
+
+    static func == (lhs: CountriesMapRow, rhs: CountriesMapRow) -> Bool {
+        return lhs.countriesMap == rhs.countriesMap &&
+            lhs.statSection == rhs.statSection
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? CellType else {
@@ -761,7 +816,7 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
     }
 }
 
-struct StatsErrorRow: ImmuTableRow {
+struct StatsErrorRow: StatsHashableImmuTableRow {
     static let cell: ImmuTableCell = {
         return ImmuTableCell.nib(StatsStackViewCell.defaultNib, StatsStackViewCell.self)
     }()
@@ -771,6 +826,14 @@ struct StatsErrorRow: ImmuTableRow {
     let statSection: StatSection?
 
     private let noDataRow = StatsNoDataRow.loadFromNib()
+
+    // MARK: - Hashable
+
+    static func == (lhs: StatsErrorRow, rhs: StatsErrorRow) -> Bool {
+        return lhs.rowStatus == rhs.rowStatus &&
+            lhs.statType == rhs.statType &&
+            lhs.statSection == rhs.statSection
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         guard let cell = cell as? StatsStackViewCell else {

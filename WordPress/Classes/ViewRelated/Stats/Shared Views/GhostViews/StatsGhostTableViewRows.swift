@@ -1,6 +1,6 @@
 import WordPressUI
 
-protocol StatsRowGhostable: ImmuTableRow {
+protocol StatsRowGhostable: StatsHashableImmuTableRow {
     var statSection: StatSection? { get }
 }
 
@@ -48,6 +48,14 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
     var hideTopBorder = false
     var hideBottomBorder = false
     var statSection: StatSection? = nil
+
+    // MARK: - Hashable
+
+    static func == (lhs: StatsGhostTopImmutableRow, rhs: StatsGhostTopImmutableRow) -> Bool {
+        return lhs.hideTopBorder == rhs.hideTopBorder &&
+            lhs.hideBottomBorder == rhs.hideBottomBorder &&
+            lhs.statSection == rhs.statSection
+    }
 
     func configureCell(_ cell: UITableViewCell) {
         DispatchQueue.main.async {

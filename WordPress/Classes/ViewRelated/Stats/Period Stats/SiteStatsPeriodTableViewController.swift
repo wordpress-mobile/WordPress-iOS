@@ -48,12 +48,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
+    private weak var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     init() {
@@ -173,9 +173,10 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
+        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -217,7 +218,7 @@ private extension SiteStatsPeriodTableViewController {
 
 extension SiteStatsPeriodTableViewController: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+        guard tableHandler.diffableDataSource.snapshot().numberOfSections == 0 else {
             return
         }
 
