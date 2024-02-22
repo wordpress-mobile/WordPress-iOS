@@ -505,6 +505,7 @@ extension Notification {
     ///
     enum ActionsKeys {
         static let likePost = "like-post"
+        static let likeComment = "like-comment"
     }
 }
 

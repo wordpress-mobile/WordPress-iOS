@@ -146,6 +146,36 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: .postLike)
     }
 
+    func commentLikeActionTapped(with notification: CommentNotification, changes: @escaping (Bool) -> Void) {
+        // Optimisitcally update liked status
+        var notification = notification
+        let oldLikedStatus = notification.liked
+        let newLikedStatus = !notification.liked
+        changes(newLikedStatus)
+
+        // Update liked status remotely
+        notification.liked = newLikedStatus
+//        let mainContext = contextManager.mainContext
+//        self.updatePostLikeRemotely(notification: notification) { result in
+//            mainContext.perform {
+//                do {
+//                    switch result {
+//                    case .success(let liked):
+//                        notification.liked = liked
+//                        try mainContext.save()
+//                    case .failure(let error):
+//                        throw error
+//                    }
+//                } catch {
+//                    changes(oldLikedStatus)
+//                }
+//            }
+//        }
+
+        // Track analytics event
+        self.trackInlineActionTapped(action: .commentLike)
+    }
+
     private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Error>) -> Void) {
         self.readerPostService.fetchPost(notification.postID, forSite: notification.siteID, isFeed: false) { [weak self] post in
             guard let self, let post else {
