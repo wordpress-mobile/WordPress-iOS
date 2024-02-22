@@ -118,7 +118,7 @@ class ReaderDetailToolbar: UIView, NibLoadable {
         }
 
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
-        service.toggleLiked(for: post, success: { [weak self] in
+        service.toggleLiked(for: post, success: { [weak self] _ in
             self?.trackArticleDetailsLikedOrUnliked()
         }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()

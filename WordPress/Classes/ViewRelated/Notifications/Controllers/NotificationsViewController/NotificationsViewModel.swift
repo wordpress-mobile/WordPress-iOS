@@ -13,6 +13,8 @@ final class NotificationsViewModel {
 
     // MARK: - Depdencies
 
+    private let contextManager: CoreDataStackSwift
+    private let readerPostService: ReaderPostService
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
@@ -27,6 +29,8 @@ final class NotificationsViewModel {
     init(
         userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
+        contextManager: CoreDataStackSwift = ContextManager.shared,
+        readerPostService: ReaderPostService? = nil,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
@@ -34,6 +38,8 @@ final class NotificationsViewModel {
         self.notificationMediator = notificationMediator
         self.analyticsTracker = analyticsTracker
         self.crashLogger = crashLogger
+        self.contextManager = contextManager
+        self.readerPostService = readerPostService ?? .init(coreDataStack: contextManager)
     }
 
     /// The last time when user seen notifications
@@ -111,12 +117,47 @@ final class NotificationsViewModel {
         return content
     }
 
-    func postLikeActionTapped(with notification: NewPostNotification, changes: (Bool) -> Void) {
+    func postLikeActionTapped(with notification: NewPostNotification, changes: @escaping (Bool) -> Void) {
+        // Optimisitcally update liked status
         var notification = notification
+        let oldLikedStatus = notification.liked
         let newLikedStatus = !notification.liked
-        notification.liked = newLikedStatus
-        changes(notification.liked)
+        changes(newLikedStatus)
+
+        // Update liked status remotely
+        let mainContext = contextManager.mainContext
+        self.updatePostLikeRemotely(notification: notification) { result in
+            mainContext.perform {
+                do {
+                    switch result {
+                    case .success(let liked):
+                        notification.liked = liked
+                        try mainContext.save()
+                    case .failure(let error):
+                        throw error
+                    }
+                } catch {
+                    changes(oldLikedStatus)
+                }
+            }
+        }
+
+        // Track analytics event
         self.trackInlineActionTapped(action: .postLike)
+    }
+
+    private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Error>) -> Void) {
+        self.readerPostService.fetchPost(notification.postID, forSite: notification.siteID, isFeed: false) { [weak self] post in
+            guard let self, let post else {
+                return
+            }
+            let action = ReaderLikeAction(service: self.readerPostService)
+            action.execute(with: post) { result in
+                completion(result)
+            }
+        } failure: { error in
+            completion(.failure(error!))
+        }
     }
 }
 

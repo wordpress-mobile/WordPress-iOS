@@ -192,7 +192,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(BOOL liked))success failure:(void (^)(NSError * _Nonnull error))failure;
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         // Get a the post in our own context
@@ -211,7 +211,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     }];
 }
 
-- (void)toggleLikedForPost:(ReaderPost *)readerPost inContext:(NSManagedObjectContext *)context success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)readerPost inContext:(NSManagedObjectContext *)context success:(void (^)(BOOL liked))success failure:(void (^)(NSError * _Nonnull error))failure
 {
     NSParameterAssert(readerPost.managedObjectContext == context);
 
@@ -248,7 +248,7 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             }
         }
         if (success) {
-            success();
+            success(like);
         }
     };
 

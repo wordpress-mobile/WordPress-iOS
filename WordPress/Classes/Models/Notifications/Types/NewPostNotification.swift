@@ -2,9 +2,11 @@ import Foundation
 
 struct NewPostNotification {
 
-    let note: Notification
+    // MARK: - Properties
 
-    // MARK: - API
+    let note: Notification
+    let postID: UInt
+    let siteID: UInt
 
     var liked: Bool {
         get {
@@ -12,6 +14,17 @@ struct NewPostNotification {
         } set {
             updatePostLikedStatus(newValue)
         }
+    }
+
+    // MARK: - Init
+
+    init?(note: Notification) {
+        guard let postID = note.metaPostID?.uintValue, let siteID = note.metaSiteID?.uintValue else {
+            return nil
+        }
+        self.note = note
+        self.postID = postID
+        self.siteID = siteID
     }
 
     // MARK: - Helpers

@@ -433,10 +433,18 @@ extension Notification {
 
     func parsed() -> Subtype {
         switch kind {
-        case .newPost: return .newPost(NewPostNotification(note: self))
-        case .comment: return .comment(CommentNotification(note: self))
-        default: return .other(self)
+        case .newPost:
+            if let note = NewPostNotification(note: self) {
+                return .newPost(note)
+            }
+        case .comment:
+            if let note = CommentNotification(note: self) {
+                return .comment(note)
+            }
+        default: 
+            break
         }
+        return .other(self)
     }
 
     enum Subtype {
