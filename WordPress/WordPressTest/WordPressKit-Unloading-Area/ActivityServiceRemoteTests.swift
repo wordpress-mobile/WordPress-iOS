@@ -495,13 +495,16 @@ extension RemoteTestCase {
         status: Int32 = 200
     ) {
         stub(condition: condition) { _ in
-            let stubPath = OHPathForFile(filename, type(of: self))
+            guard let stubPath = OHPathForFile(filename, type(of: self)) else {
+                fatalError("Could not find stub file named '\(filename)' in module for type \(type(of: self))'.")
+            }
+
             var headers: [NSObject: AnyObject]?
 
             if contentType != .NoContentType {
                 headers = ["Content-Type" as NSObject: contentType.rawValue as AnyObject]
             }
-            return OHHTTPStubs.fixture(filePath: stubPath!, status: status, headers: headers)
+            return OHHTTPStubs.fixture(filePath: stubPath, status: status, headers: headers)
         }
     }
 
@@ -517,13 +520,16 @@ extension RemoteTestCase {
         stub(condition: { request in
             return request.url?.absoluteString.range(of: endpoint) != nil
         }) { _ in
-            let stubPath = OHPathForFile(filename, type(of: self))
+            guard let stubPath = OHPathForFile(filename, type(of: self)) else {
+                fatalError("Could not find stub file named '\(filename)' in module for type \(type(of: self))'.")
+            }
+
             var headers: [NSObject: AnyObject]?
 
             if contentType != .NoContentType {
                 headers = ["Content-Type" as NSObject: contentType.rawValue as AnyObject]
             }
-            return fixture(filePath: stubPath!, status: status, headers: headers)
+            return fixture(filePath: stubPath, status: status, headers: headers)
         }
     }
 
