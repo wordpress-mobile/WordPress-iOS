@@ -1,1 +1,0 @@
-Abbiamo sistemato un problema che cancellava immagini e altri media durante il caricamento. Presto, niente più sparizioni.

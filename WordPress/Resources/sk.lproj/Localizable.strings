@@ -615,8 +615,7 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Pozor!";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategórie";
 
 /* Category menu item in share extension.
@@ -689,12 +688,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknutia";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Zavrieť";
 
 /* Settings: Close comments after X period */
@@ -2674,8 +2671,7 @@
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Zverejniť okamžite";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
+/* Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publikovať";
 
 /* Title of a Quick Start Tour */
@@ -2969,9 +2965,6 @@
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Naplánovať";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Naplánovať teraz";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -3421,7 +3414,6 @@
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -3699,7 +3691,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Nadpis";
@@ -4097,8 +4088,7 @@
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Viditeľnosť";
 

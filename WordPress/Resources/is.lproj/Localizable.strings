@@ -377,8 +377,7 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Varlega!";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Flokkar";
 
 /* Category menu item in share extension.
@@ -425,12 +424,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Smellir";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Loka";
 
 /* Settings: Close comments after X period */
@@ -1753,8 +1750,7 @@
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Birta strax";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
+/* Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Birta núna";
 
 /* Name for the status of a published post.
@@ -2223,7 +2219,6 @@
 "Tagline" = "Kjörorð";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -2401,7 +2396,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titill";
@@ -2643,8 +2637,7 @@
    Today's Stats 'Views' label */
 "Views" = "Flettingar";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Sýnileiki";
 
