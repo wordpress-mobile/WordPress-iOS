@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import WordPressKit
+import Gravatar
 @testable import WordPress
 
 /// GravatarService Unit Tests
@@ -18,14 +19,45 @@ class GravatarServiceTests: CoreDataTestCase {
                 completion(nil)
             }
         }
+    }
 
+    class ImageServiceMock: ImageServing {
+        var capturedAccountToken: String = ""
+        var capturedAccountEmail: String = ""
+
+        func uploadImage(_ image: UIImage, accountEmail: String, accountToken: String) async throws -> URLResponse {
+            capturedAccountEmail = accountEmail
+            capturedAccountToken = accountToken
+            return URLResponse()
+        }
+
+        func uploadImage(_ image: UIImage, accountEmail: String, accountToken: String, completion: ((NSError?) -> Void)?) {
+            capturedAccountEmail = accountEmail
+            capturedAccountToken = accountToken
+        }
+
+        func fetchImage(with email: String, options: Gravatar.GravatarImageDownloadOptions, completionHandler: Gravatar.ImageDownloadCompletion?) -> Gravatar.CancellableDataTask {
+            fatalError("Not implemented")
+        }
+
+        func fetchImage(with url: URL, forceRefresh: Bool, processor: Gravatar.ImageProcessor, completionHandler: Gravatar.ImageDownloadCompletion?) -> Gravatar.CancellableDataTask? {
+            fatalError("Not implemented")
+        }
+
+        func fetchImage(with email: String, options: Gravatar.GravatarImageDownloadOptions) async throws -> Gravatar.GravatarImageDownloadResult {
+            fatalError("Not implemented")
+        }
+
+        func fetchImage(with url: URL, forceRefresh: Bool, processor: Gravatar.ImageProcessor) async throws -> Gravatar.GravatarImageDownloadResult {
+            fatalError("Not implemented")
+        }
     }
 
     class GravatarServiceTester: GravatarService {
-        var gravatarServiceRemoteMock: GravatarServiceRemoteMock?
+        var gravatarServiceRemoteMock: ImageServiceMock?
 
-        override func gravatarServiceRemote() -> GravatarServiceRemote {
-            gravatarServiceRemoteMock = GravatarServiceRemoteMock()
+        override func gravatarImageService() -> ImageServing {
+            gravatarServiceRemoteMock = ImageServiceMock()
             return gravatarServiceRemoteMock!
         }
     }
