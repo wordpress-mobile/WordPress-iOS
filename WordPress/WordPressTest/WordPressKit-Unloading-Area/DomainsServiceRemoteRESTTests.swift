@@ -8,7 +8,8 @@ class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
     let siteID = 12345
 
-    let domainServiceAllDomainsMockFilename     = "domain-service-all-domain-types.json"
+    // Notice the -wordpresskit suffix to differentiate it from the file by the same name from the original unit tests target.
+    let domainServiceAllDomainsMockFilename     = "domain-service-all-domain-types-wordpresskit.json"
     let domainServiceAuthFailureMockFilename    = "site-export-auth-failure.json"
     let domainServiceBadJsonFailureMockFilename = "domain-service-bad-json.json"
     let domainServiceEmptyResponseMockFilename  = "domain-service-empty.json"

@@ -1,0 +1,180 @@
+{
+  "domains": [
+    {
+      "domain": "example1.com",
+      "blog_id": 12345,
+      "blog_name": "Example Blog 1",
+      "type": "redirect",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": false,
+      "has_registration": true,
+      "registration_date": "2022-01-01T00:00:00+00:00",
+      "expiry": "2023-01-01T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": false,
+      "site_slug": "exampleblog1.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "sample2.net",
+      "blog_id": 67890,
+      "blog_name": "Sample Blog 2",
+      "type": "mapping",
+      "is_domain_only_site": true,
+      "is_wpcom_staging_domain": true,
+      "has_registration": false,
+      "registration_date": "2022-02-02T00:00:00+00:00",
+      "expiry": "2023-02-02T00:00:00+00:00",
+      "wpcom_domain": true,
+      "current_user_is_owner": true,
+      "site_slug": "sampleblog2.wordpress.com",
+      "domain_status": {
+          "status": "Expiring soon",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "testsite3.org",
+      "blog_id": 98765,
+      "blog_name": "Test Site 3",
+      "type": "mapping",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": false,
+      "has_registration": true,
+      "registration_date": "2022-03-03T00:00:00+00:00",
+      "expiry": "2023-03-03T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": true,
+      "site_slug": "testsite3.wordpress.com",
+      "domain_status": {
+          "status": "Error",
+          "status_type": "error"
+      }
+    },
+    {
+      "domain": "demo4.com",
+      "blog_id": 54321,
+      "blog_name": "Demo Blog 4",
+      "type": "mapping",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": false,
+      "has_registration": false,
+      "registration_date": "2022-04-04T00:00:00+00:00",
+      "expiry": "2023-04-04T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": false,
+      "site_slug": "demoblog4.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "fake5.net",
+      "blog_id": 13579,
+      "blog_name": "Fake Blog 5",
+      "type": "redirect",
+      "is_domain_only_site": true,
+      "is_wpcom_staging_domain": false,
+      "has_registration": true,
+      "registration_date": "2022-05-05T00:00:00+00:00",
+      "expiry": "2023-05-05T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": true,
+      "site_slug": "fakeblog5.wordpress.com",
+      "domain_status": {
+          "status": "Expired",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "mocksite6.org",
+      "blog_id": 86420,
+      "blog_name": "Mock Site 6",
+      "type": "mapping",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": false,
+      "has_registration": true,
+      "registration_date": "2022-06-06T00:00:00+00:00",
+      "expiry": "2023-06-06T00:00:00+00:00",
+      "wpcom_domain": true,
+      "current_user_is_owner": false,
+      "site_slug": "mocksite6.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "example7.com",
+      "blog_id": 98765,
+      "blog_name": "Example Blog 7",
+      "type": "mapping",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": true,
+      "has_registration": false,
+      "registration_date": "2022-07-07T00:00:00+00:00",
+      "expiry": "2023-07-07T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": true,
+      "site_slug": "exampleblog7.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "testsite8.net",
+      "blog_id": 24680,
+      "blog_name": "Test Site 8",
+      "type": "redirect",
+      "is_domain_only_site": true,
+      "is_wpcom_staging_domain": true,
+      "has_registration": true,
+      "registration_date": "2022-08-08T00:00:00+00:00",
+      "expiry": "2023-08-08T00:00:00+00:00",
+      "wpcom_domain": false,
+      "current_user_is_owner": true,
+      "site_slug": "testsite8.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "fakesite9.org",
+      "blog_id": 11111,
+      "blog_name": "Fake Site 9",
+      "type": "mapping",
+      "is_domain_only_site": false,
+      "is_wpcom_staging_domain": false,
+      "has_registration": true,
+      "registration_date": "2022-09-09T00:00:00+00:00",
+      "expiry": "2023-09-09T00:00:00+00:00",
+      "wpcom_domain": true,
+      "current_user_is_owner": false,
+      "site_slug": "fakesite9.wordpress.com",
+      "domain_status": {
+          "status": "Active",
+          "status_type": "success"
+      }
+    },
+    {
+      "domain": "imaginary10.com",
+      "blog_id": 22222,
+      "blog_name": "Imaginary Blog 10",
+      "type": "redirect",
+      "is_domain_only_site": true,
+      "is_wpcom_staging_domain": false,
+      "has_registration": false,
+      "registration_date": "2022-10-10T00:00:00+00:00",
+      "expiry": "2023-10-10T00:00:00+00:00",
+      "wpcom_domain": true,
+      "current_user_is_owner": false,
+      "site_slug": "imaginaryblog10.wordpress.com"
+    }
+  ]
+}

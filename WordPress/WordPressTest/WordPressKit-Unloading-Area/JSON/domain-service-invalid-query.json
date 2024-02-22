@@ -1,0 +1,4 @@
+{
+  "error": "invalid_query",
+  "message": "Domain searches only support the following characters (many accents are also allowed): A-Z, a-z, 0-9, -, ., space. You searched for the following unsupported characters: t"
+}
