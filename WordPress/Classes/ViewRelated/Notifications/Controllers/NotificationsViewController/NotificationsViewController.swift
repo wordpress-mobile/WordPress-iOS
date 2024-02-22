@@ -338,7 +338,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
-        cell.selectionStyle = .none
+        if splitViewControllerIsHorizontallyCompact {
+            cell.selectionStyle = .none
+        }
         let style: NotificationsTableViewCellContent.Style
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
             style = .altered(
