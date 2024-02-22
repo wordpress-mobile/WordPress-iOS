@@ -28,9 +28,11 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     var selectedPeriod: StatsPeriodUnit? {
         didSet {
 
-            guard selectedPeriod != nil else {
+            guard let selectedPeriod else {
                 return
             }
+
+            trackPeriodAccessEvent(selectedPeriod)
 
             clearExpandedRows()
 
@@ -345,5 +347,26 @@ private extension SiteStatsPeriodTableViewController {
         if let bannerView = bannerView {
             analyticsTracker.addTranslationObserver(bannerView)
         }
+    }
+}
+
+// MARK: - Tracking
+
+private extension SiteStatsPeriodTableViewController {
+    func trackPeriodAccessEvent(_ period: StatsPeriodUnit) {
+        let event: WPAnalyticsStat = {
+            switch period {
+            case .day:
+                return .statsPeriodDaysAccessed
+            case .week:
+                return .statsPeriodWeeksAccessed
+            case .month:
+                return .statsPeriodMonthsAccessed
+            case .year:
+                return .statsPeriodYearsAccessed
+            }
+        }()
+
+        WPAppAnalytics.track(event)
     }
 }

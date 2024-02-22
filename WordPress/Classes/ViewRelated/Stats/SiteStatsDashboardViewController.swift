@@ -49,14 +49,14 @@ fileprivate extension StatsPeriodType {
         }
     }
 
-    var analyticsAccessEvent: WPAnalyticsStat {
+    var analyticsAccessEvent: WPAnalyticsStat? {
         switch self {
         case .insights: return .statsInsightsAccessed
         case .days:     return .statsPeriodDaysAccessed
         case .weeks:    return .statsPeriodWeeksAccessed
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
-        case .traffic:  return .noStat // TODO
+        case .traffic:  return nil
         }
     }
 }
@@ -318,7 +318,8 @@ private extension SiteStatsDashboardViewController {
     }
 
     func trackAccessEvent() {
-        let event = currentSelectedPeriod.analyticsAccessEvent
-        captureAnalyticsEvent(event)
+        if let event = currentSelectedPeriod.analyticsAccessEvent {
+            captureAnalyticsEvent(event)
+        }
     }
 }
