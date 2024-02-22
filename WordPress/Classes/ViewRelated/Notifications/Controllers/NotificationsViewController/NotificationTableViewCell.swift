@@ -5,6 +5,8 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     static let reuseIdentifier = String(describing: NotificationTableViewCell.self)
 
+    // MARK: - API
+
     func configure(with notification: Notification, deletionRequest: NotificationDeletionRequest, parent: UIViewController, onDeletionRequestCanceled: @escaping () -> Void) {
         let style = NotificationsTableViewCellContent.Style.altered(.init(text: deletionRequest.kind.legendText, action: onDeletionRequestCanceled))
         self.host(.init(style: style), parent: parent)
@@ -31,6 +33,8 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         )
         self.host(.init(style: style), parent: parent)
     }
+
+    // MARK: - Private Methods
 
     private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         switch notification.kind {
