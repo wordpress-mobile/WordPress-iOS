@@ -2745,8 +2745,6 @@
 		B0960C8727D14BD400BC9717 /* SiteIntentStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */; };
 		B098796F2B55EC010048256D /* StatsTrafficDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */; };
 		B09879702B55EC010048256D /* StatsTrafficDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */; };
-		B09879732B55ED180048256D /* TrafficView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879722B55ED180048256D /* TrafficView.swift */; };
-		B09879742B55ED180048256D /* TrafficView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879722B55ED180048256D /* TrafficView.swift */; };
 		B09879762B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */; };
 		B09879772B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */; };
 		B09879792B5730BC0048256D /* StatsTrafficTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879782B5730BC0048256D /* StatsTrafficTests.swift */; };
@@ -8073,7 +8071,6 @@
 		B089140C27E1255D00CF468B /* SiteIntentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentViewController.swift; sourceTree = "<group>"; };
 		B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentStep.swift; sourceTree = "<group>"; };
 		B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerView.swift; sourceTree = "<group>"; };
-		B09879722B55ED180048256D /* TrafficView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrafficView.swift; sourceTree = "<group>"; };
 		B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerViewModel.swift; sourceTree = "<group>"; };
 		B09879782B5730BC0048256D /* StatsTrafficTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficTests.swift; sourceTree = "<group>"; };
 		B0A6DEBE2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AztecPostViewController+MenuTests.swift"; path = "Aztec/AztecPostViewController+MenuTests.swift"; sourceTree = "<group>"; };
@@ -15135,7 +15132,6 @@
 			children = (
 				B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */,
 				B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */,
-				B09879722B55ED180048256D /* TrafficView.swift */,
 			);
 			path = Traffic;
 			sourceTree = "<group>";
@@ -21718,7 +21714,6 @@
 				435D101A2130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift in Sources */,
 				8000361D292468D4007D2D26 /* JetpackFullscreenOverlaySiteCreationViewModel.swift in Sources */,
 				0C23F33E2AC4AEF600EE6117 /* SiteMediaPickerViewController.swift in Sources */,
-				B09879732B55ED180048256D /* TrafficView.swift in Sources */,
 				F1E72EBA267790110066FF91 /* UIViewController+Dismissal.swift in Sources */,
 				F532AD61253B81320013B42E /* StoriesIntroDataSource.swift in Sources */,
 				E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */,
@@ -25524,7 +25519,6 @@
 				C31852A329673BFC00A78BE9 /* MenusViewController+JetpackBannerViewController.swift in Sources */,
 				FABB25002602FC2C00C8785C /* PlansLoadingIndicatorView.swift in Sources */,
 				FABB25012602FC2C00C8785C /* JetpackScanThreatDetailsViewController.swift in Sources */,
-				B09879742B55ED180048256D /* TrafficView.swift in Sources */,
 				FABB25022602FC2C00C8785C /* NotificationTextContent.swift in Sources */,
 				FABB25032602FC2C00C8785C /* PostEditor+Publish.swift in Sources */,
 				FABB25042602FC2C00C8785C /* MediaCoordinator.swift in Sources */,

@@ -2,7 +2,7 @@ import SwiftUI
 import DesignSystem
 
 struct StatsTrafficDatePickerView: View {
-    @ObservedObject var viewModel = StatsTrafficDatePickerViewModel()
+    @ObservedObject var viewModel: StatsTrafficDatePickerViewModel
 
     var body: some View {
         HStack {
@@ -36,6 +36,8 @@ struct StatsTrafficDatePickerView: View {
                 .style(TextStyle.bodyMedium(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
+
+            Spacer().frame(width: Length.Padding.single)
 
             Button(action: {
                 viewModel.goToPreviousDateInterval()

@@ -1,7 +1,7 @@
 import XCTest
 @testable import WordPress
 
-final class StatsTrafficTests: XCTestCase {
+final class StatsTrafficDatePickerViewModelTests: XCTestCase {
     private var viewModel: StatsTrafficDatePickerViewModel!
     let today = Date("2023-01-18")
     let startOfWeek = Date("2023-01-15")

@@ -1,5 +1,6 @@
 import UIKit
 import WordPressFlux
+import Combine
 
 @objc protocol SiteStatsPeriodDelegate {
     @objc optional func displayWebViewWithURL(_ url: URL)
@@ -51,7 +52,9 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
-    private weak var tableHeaderView: SiteStatsTableHeaderView?
+    private let datePickerViewModel = StatsTrafficDatePickerViewModel()
+    private var datePickerView: StatsTrafficDatePickerView!
+    private var cancellables: Set<AnyCancellable> = []
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
@@ -81,6 +84,17 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         tableView.estimatedRowHeight = 500
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         sendScrollEventsToBanner()
+
+        datePickerViewModel.$currentDateInterval
+            .sink(receiveValue: { [weak self] dateInterval in
+                DispatchQueue.main.async {
+                    self?.selectedDate = dateInterval.start
+                    self?.selectedPeriod = self?.datePickerViewModel.selectedPeriod
+                    self?.refreshData()
+                }
+            })
+            .store(in: &cancellables)
+        datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -98,14 +112,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard section == 0 else { return nil }
 
-        guard let cell = Bundle.main.loadNibNamed("SiteStatsTableHeaderView", owner: nil, options: nil)?.first as? SiteStatsTableHeaderView else {
-            return nil
-        }
 
-        cell.configure(date: selectedDate, period: selectedPeriod, delegate: self)
-        cell.animateGhostLayers(viewModel?.isFetchingChart() == true)
-        tableHeaderView = cell
-        return cell
+        let picker = UIView.embedSwiftUIView(datePickerView)
+        picker.backgroundColor = .red
+        picker.translatesAutoresizingMaskIntoConstraints = true
+        picker.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 150)
+        return picker
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -179,7 +191,7 @@ private extension SiteStatsPeriodTableViewController {
         tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
-        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
+//        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -329,21 +341,6 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 extension SiteStatsPeriodTableViewController: SiteStatsReferrerDelegate {
     func showReferrerDetails(_ data: StatsTotalRowData) {
         show(ReferrerDetailsTableViewController(data: data), sender: nil)
-    }
-}
-
-// MARK: - SiteStatsTableHeaderDelegate Methods
-
-extension SiteStatsPeriodTableViewController: SiteStatsTableHeaderDateButtonDelegate {
-    func dateChangedTo(_ newDate: Date?) {
-        selectedDate = newDate
-        refreshData()
-    }
-
-    func didTouchHeaderButton(forward: Bool) {
-        if let intervalDate = viewModel?.updateDate(forward: forward) {
-            tableHeaderView?.updateDate(with: intervalDate)
-        }
     }
 }
 

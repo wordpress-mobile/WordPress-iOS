@@ -56,7 +56,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
                   let inclusiveEndDate = calendar.date(byAdding: .second, value: -1, to: weekInterval.end) else {
                 return oldDateInterval
             }
-            return DateInterval(start: weekInterval.start, end: inclusiveEndDate)
+            return DateInterval(start: anchorDate, end: inclusiveEndDate)
         case .month:
             guard let monthInterval = calendar.dateInterval(of: .month, for: anchorDate),
                   let inclusiveEndDate = calendar.date(byAdding: .second, value: -1, to: monthInterval.end) else {
