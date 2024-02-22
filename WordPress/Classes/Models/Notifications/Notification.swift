@@ -174,6 +174,46 @@ class Notification: NSManagedObject {
     }
 }
 
+// MARK: - Read / Write Body Objects
+
+extension Notification {
+
+    private func indexOfBody(type: BodyType) -> Int? {
+        guard let body else {
+            return nil
+        }
+        return body.firstIndex { item in
+            guard let item = item as? [String: Any], let itemType = item[BodyKeys.type] as? String, itemType == type.rawValue else {
+                return false
+            }
+            return true
+        }
+    }
+
+    func body(ofType type: BodyType) -> [String: Any]? {
+        guard let body, let index = indexOfBody(type: type) else {
+            return nil
+        }
+        return body[index] as? [String: Any]
+    }
+
+    func updateBody(ofType type: BodyType, newValue: AnyObject) {
+        guard let index = indexOfBody(type: type) else {
+            return
+        }
+        self.body?[index] = newValue
+    }
+
+    func updateBody(ofType type: BodyType, newValue: [String: Any]) {
+        self.updateBody(ofType: type, newValue: newValue as AnyObject)
+    }
+
+    enum BodyType: String {
+        case post
+        case comment
+    }
+}
+
 // MARK: - Notification Computed Properties
 //
 extension Notification {
@@ -387,6 +427,25 @@ extension Notification {
     }
 }
 
+// MARK: - Notification Subtypes
+
+extension Notification {
+
+    func parsed() -> Subtype {
+        switch kind {
+        case .newPost: return .newPost(NewPostNotification(note: self))
+        case .comment: return .comment(CommentNotification(note: self))
+        default: return .other(self)
+        }
+    }
+
+    enum Subtype {
+        case newPost(NewPostNotification)
+        case comment(CommentNotification)
+        case other(Notification)
+    }
+}
+
 // MARK: - Update Helpers
 //
 extension Notification {
@@ -425,6 +484,19 @@ extension Notification {
         static let Parent   = "parent_comment"
         static let Reply    = "reply_comment"
         static let Home     = "home"
+    }
+
+    /// Body Parsing Keys
+    ///
+    enum BodyKeys {
+        static let type     = "type"
+        static let actions  = "actions"
+    }
+
+    /// Actions Parsing Keys
+    ///
+    enum ActionsKeys {
+        static let likePost = "like-post"
     }
 }
 

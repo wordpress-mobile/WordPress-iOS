@@ -37,15 +37,17 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     // MARK: - Private Methods
 
     private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
-        switch notification.kind {
-        case .comment:
+        let notification = notification.parsed()
+        switch notification {
+        case .comment(let notification):
             return nil
-        case .newPost:
+        case .newPost(let notification):
             return postLikeInlineAction(viewModel: viewModel, notification: notification)
-        case .like, .reblog:
+        case .other(let notification):
+            guard notification.kind == .like || notification.kind == .reblog else {
+                return nil
+            }
             return shareInlineAction(viewModel: viewModel, notification: notification, parent: parent)
-        default:
-            return nil
         }
     }
 
@@ -69,7 +71,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         )
     }
 
-    private func postLikeInlineAction(viewModel: NotificationsViewModel, notification: Notification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+    private func postLikeInlineAction(viewModel: NotificationsViewModel, notification: NewPostNotification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
         let action: () -> Void = { [weak self] in
             guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
                 return
@@ -80,7 +82,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
                 config.color = color
             }
         }
-        let (image, color) = self.likeInlineActionIcon(filled: notification.isLikedPost)
+        let (image, color) = self.likeInlineActionIcon(filled: notification.liked)
         return .init(icon: image, color: color, action: action)
     }
 
