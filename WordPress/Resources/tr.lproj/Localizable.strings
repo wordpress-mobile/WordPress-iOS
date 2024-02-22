@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-06 17:54:08+0000 */
+/* Translation-Revision-Date: 2024-02-14 09:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: tr */
@@ -10556,6 +10556,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Abone olunan içerikleri görüntülemek ve aboneliklerinizi yönetmek için %@ öğesini seçmeyi deneyin.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Abonelikler";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Daha Fazla";
 
@@ -10676,6 +10682,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "Etiketler";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d Etiket";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d Etiket";
@@ -10684,14 +10694,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "Etiketler";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "%1$@ tarafından filtrelendi";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Filtre listesini açar";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Beğenildi";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Listeler";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Sıfırlayın";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Kaydedildi";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Arayın";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Takipler";
@@ -11127,12 +11151,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyTimestamp" = "Zaman damgası";
 
-/* Title for metrics screen.
-   Title for web server log screen. */
+/* Title for metrics screen. */
 "siteMonitoring.metrics" = "Ölçümler";
 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP Günlükleri";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web Sunucusu Günlükleri";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";

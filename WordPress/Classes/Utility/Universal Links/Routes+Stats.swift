@@ -113,6 +113,7 @@ extension StatsRoute: NavigationAction {
                                   using coordinator: MySitesCoordinator) {
         if let blog = blog(from: values) {
             coordinator.showStats(for: blog,
+                                  source: source(from: values),
                                   timePeriod: timePeriod)
         } else {
             showMySitesAndFailureNotice(using: coordinator,
@@ -143,6 +144,14 @@ extension StatsRoute: NavigationAction {
             return
         }
 
-        coordinator.showStats(for: blog, timePeriod: timePeriod)
+        coordinator.showStats(for: blog, source: source(from: values), timePeriod: timePeriod)
+    }
+
+    private func source(from values: [String: String]) -> BlogDetailsNavigationSource {
+        if values["matched-route-source"] != nil {
+            return .widget
+        } else {
+            return .link
+        }
     }
 }

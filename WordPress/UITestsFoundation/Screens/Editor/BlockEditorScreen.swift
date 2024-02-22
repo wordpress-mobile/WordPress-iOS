@@ -290,7 +290,7 @@ public class BlockEditorScreen: ScreenObject {
         } else if postType == .page && XCUIDevice.isPhone {
             postNowButton = app.scrollViews.buttons[action.rawValue]
         } else {
-            postNowButton = app.buttons["\(action.rawValue) Now"]
+            postNowButton = app.buttons["publish"]
         }
 
         waitForExistenceAndTap(postButton)

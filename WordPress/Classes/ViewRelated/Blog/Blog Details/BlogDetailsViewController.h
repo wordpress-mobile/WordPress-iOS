@@ -89,7 +89,11 @@ typedef NS_ENUM(NSInteger, QuickStartTourElement) {
 typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceButton = 0,
     BlogDetailsNavigationSourceRow = 1,
-    BlogDetailsNavigationSourceLink = 2
+    BlogDetailsNavigationSourceLink = 2,
+    BlogDetailsNavigationSourceWidget = 3,
+    BlogDetailsNavigationSourceOnboarding = 4,
+    BlogDetailsNavigationSourceNotification = 5,
+    BlogDetailsNavigationSourceShortcut = 6,
 };
 
 
@@ -189,5 +193,6 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 
 + (nonnull NSString *)userInfoShowPickerKey;
 + (nonnull NSString *)userInfoSiteMonitoringTabKey;
++ (nonnull NSString *)userInfoSourceKey;
 
 @end

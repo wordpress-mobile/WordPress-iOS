@@ -58,7 +58,7 @@ extension ReferrerDetailsTableViewController: ReferrerDetailsViewModelDelegate {
 
     func toggleSpamState(for referrerDomain: String, currentValue: Bool) {
         setLoadingState(true)
-        periodStore.toggleSpamState(for: referrerDomain, currentValue: currentValue)
+        periodStore.actionDispatcher.dispatch(PeriodAction.toggleSpam(referrerDomain: referrerDomain, currentValue: currentValue))
     }
 }
 

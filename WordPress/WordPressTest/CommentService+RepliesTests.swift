@@ -86,19 +86,26 @@ final class CommentService_RepliesTests: CoreDataTestCase {
     }
 
     func test_getReplies_addsCommentIdInParameter() {
-        let (mockService, mockApi) = makeMockService()
+        var request: URLRequest?
+        stub(condition: { $0.url?.absoluteString.contains("/wp/v2/sites/\(self.siteID)/comments") == true }) {
+            request = $0
+            return HTTPStubsResponse(error: URLError(.networkConnectionLost))
+        }
+
         let parentKey = CommentServiceRemoteREST.RequestKeys.parent.rawValue
 
-        mockService.getLatestReplyID(for: commentID,
-                                     siteID: siteID,
-                                     accountService: accountService,
-                                     success: { _ in },
-                                     failure: { _ in })
+        waitUntil { done in
+            self.commentService.getLatestReplyID(
+                for: self.commentID,
+                siteID: self.siteID,
+                accountService: self.accountService,
+                success: { _ in done() },
+                failure: { _ in done() }
+            )
+        }
 
-        var parameters = [String: Any]()
-        expect(mockApi.parametersPassedIn).toNot(beNil())
-        expect { parameters = mockApi.parametersPassedIn! as! [String: Any] }.toNot(throwError())
-        expect(parameters[parentKey] as? Int).to(equal(commentID))
+        expect(request).toNotEventually(beNil())
+        expect(request?.url?.query).to(contain("parent=\(commentID)"))
     }
 
     func test_replyToPost_givenSuccessfulAPICall_insertsNewComment() throws {

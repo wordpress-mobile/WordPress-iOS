@@ -13,6 +13,7 @@ final class ReaderCommentAction {
         controller.navigateToCommentID = navigateToCommentID as NSNumber?
         controller.promptToAddComment = promptToAddComment
         controller.trackCommentsOpened()
+        controller.hidesBottomBarWhenPushed = true
         origin.navigationController?.pushViewController(controller, animated: true)
     }
 }

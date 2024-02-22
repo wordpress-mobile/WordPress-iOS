@@ -115,6 +115,30 @@ class SupportTableViewController: UITableViewController {
     }
 }
 
+struct ExternalLinkButtonRow: ImmuTableRow {
+    typealias CellType = ButtonCell
+
+    static let cell = ImmuTableCell.class(CellType.self)
+
+    let title: String
+    let accessibilityHint: String
+    let action: ImmuTableAction?
+    let accessibilityIdentifier: String?
+
+    func configureCell(_ cell: UITableViewCell) {
+        guard let cell = cell as? CellType else {
+            return
+        }
+        cell.button.setTitle(title, for: .normal)
+        cell.button.accessibilityHint = accessibilityHint
+        cell.accessibilityIdentifier = accessibilityIdentifier
+        cell.button.addAction(UIAction { _ in
+            action?(self)
+            cell.setSelected(false, animated: true)
+        }, for: .touchUpInside)
+    }
+}
+
 // MARK: - Private Extension
 
 private extension SupportTableViewController {
@@ -144,7 +168,7 @@ private extension SupportTableViewController {
                                 DestructiveButtonRow.self,
                                 SupportEmailRow.self,
                                 SupportForumRow.self,
-                                ButtonRow.self,
+                                ExternalLinkButtonRow.self,
                                 MigrationRow.self],
                                tableView: tableView)
         tableHandler = ImmuTableViewHandler(takeOver: self)
@@ -182,10 +206,10 @@ private extension SupportTableViewController {
             rows.append(SupportForumRow(title: LocalizedText.wpForumPrompt,
                                         action: nil,
                                         accessibilityIdentifier: "visit-wordpress-forums-prompt"))
-            rows.append(ButtonRow(title: LocalizedText.visitWpForumsButton,
-                                  accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
-                                  action: visitForumsSelected(),
-                                  accessibilityIdentifier: "visit-wordpress-forums-button"))
+            rows.append(ExternalLinkButtonRow(title: LocalizedText.visitWpForumsButton,
+                                              accessibilityHint: LocalizedText.visitWpForumsButtonAccessibilityHint,
+                                              action: visitForumsSelected(),
+                                              accessibilityIdentifier: "visit-wordpress-forums-button"))
             helpSection = ImmuTableSection(headerText: LocalizedText.wpForumsSectionHeader, rows: rows, footerText: nil)
         }
 
@@ -360,9 +384,9 @@ private extension SupportTableViewController {
         rows.append(MigrationRow(title: LocalizedText.jetpackMigrationTitle,
                                  description: LocalizedText.jetpackMigrationDescription,
                                  action: nil))
-        rows.append(ButtonRow(title: LocalizedText.jetpackMigrationButton,
-                              accessibilityHint: LocalizedText.jetpackMigrationButtonAccessibilityHint,
-                              action: { _ in
+        rows.append(ExternalLinkButtonRow(title: LocalizedText.jetpackMigrationButton,
+                                          accessibilityHint: LocalizedText.jetpackMigrationButtonAccessibilityHint,
+                                          action: { _ in
             guard let url = Constants.jetpackMigrationFAQURL else {
                 return
             }
@@ -435,32 +459,6 @@ private extension SupportTableViewController {
             cell.accessibilityIdentifier = accessibilityIdentifier
             WPStyleGuide.configureTableViewCell(cell)
         }
-    }
-
-    struct ButtonRow: ImmuTableRow {
-        typealias CellType = ButtonCell
-
-        static let cell = ImmuTableCell.class(CellType.self)
-
-        let title: String
-        let accessibilityHint: String
-        let action: ImmuTableAction?
-        let accessibilityIdentifier: String?
-
-        func configureCell(_ cell: UITableViewCell) {
-            guard let cell = cell as? CellType else {
-                return
-            }
-
-            cell.button.setTitle(title, for: .normal)
-            cell.button.accessibilityHint = accessibilityHint
-            cell.accessibilityIdentifier = accessibilityIdentifier
-            cell.button.addAction(UIAction { _ in
-                action?(self)
-                cell.setSelected(false, animated: true)
-            }, for: .touchUpInside)
-        }
-
     }
 
     struct MigrationRow: ImmuTableRow {
@@ -542,7 +540,12 @@ extension SupportTableViewController: SupportChatBotCreatedTicketDelegate {
     }
 }
 
-private class ButtonCell: WPTableViewCellDefault {
+fileprivate enum SupportTableLayoutSpacing {
+    static let topBottomPadding: CGFloat = 16
+    static let sidePadding: CGFloat = 20
+}
+
+class ButtonCell: WPTableViewCellDefault {
 
     let button: SpotlightableButton = {
         let button = SpotlightableButton(type: .custom)
@@ -587,22 +590,21 @@ private class ButtonCell: WPTableViewCellDefault {
         contentView.addSubview(button)
 
         NSLayoutConstraint.activate([
-                                        button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutSpacing.padding),
-                                        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -LayoutSpacing.padding),
-                                        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: LayoutSpacing.padding),
-                                        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -LayoutSpacing.padding)
+            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SupportTableLayoutSpacing.sidePadding),
+                                        button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
+                                        button.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
+                                        button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding)
                                     ])
     }
 
     enum LayoutSpacing {
         static let imageSize: CGFloat = 17.0
-        static let padding: CGFloat = 16.0
         static let buttonTitleImageInsets = UIEdgeInsets(top: 1, left: 4, bottom: 0, right: 0)
         static let rtlButtonTitleImageInsets = UIEdgeInsets(top: 1, left: -4, bottom: 0, right: 4)
     }
 }
 
-private class MigrationCell: WPTableViewCell {
+open class MigrationCell: WPTableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -627,9 +629,11 @@ private class MigrationCell: WPTableViewCell {
         return stackView
     }()
 
-    private let logoImageView: UIImageView = {
+    private let migrationLogoImageView: UIImageView = {
         let imageView = UIImageView(image: .init(named: "wp-migration-welcome"))
         imageView.contentMode = .scaleAspectFit
+        imageView.heightAnchor.constraint(equalToConstant: LayoutConstants.imageSize.height).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: LayoutConstants.imageSize.width).isActive = true
         return imageView
     }()
 
@@ -639,8 +643,12 @@ private class MigrationCell: WPTableViewCell {
         setup()
     }
 
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    open var logoImageView: UIImageView {
+        migrationLogoImageView
     }
 
     private func setup() {
@@ -652,18 +660,14 @@ private class MigrationCell: WPTableViewCell {
         stackView.addArrangedSubview(descriptionLabel)
 
         NSLayoutConstraint.activate([
-            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: LayoutConstants.topBottomPadding),
-            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -LayoutConstants.topBottomPadding),
-            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: LayoutConstants.sidePadding),
-            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -LayoutConstants.sidePadding),
-            logoImageView.heightAnchor.constraint(equalToConstant: LayoutConstants.imageSize.height),
-            logoImageView.widthAnchor.constraint(equalToConstant: LayoutConstants.imageSize.width)
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: SupportTableLayoutSpacing.topBottomPadding),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -SupportTableLayoutSpacing.topBottomPadding),
+            stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: SupportTableLayoutSpacing.sidePadding),
+            stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -SupportTableLayoutSpacing.sidePadding),
         ])
     }
 
     enum LayoutConstants {
-        static let topBottomPadding: CGFloat = 16
-        static let sidePadding: CGFloat = 20
         static let imageSize = CGSize(width: 56, height: 30)
     }
 }
