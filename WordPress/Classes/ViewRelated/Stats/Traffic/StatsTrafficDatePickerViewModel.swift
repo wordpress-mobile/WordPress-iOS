@@ -2,27 +2,7 @@ import Foundation
 
 class StatsTrafficDatePickerViewModel: ObservableObject {
 
-    enum Period: String, CaseIterable {
-        case day
-        case week
-        case month
-        case year
-
-        var calendarComponent: Calendar.Component {
-            switch self {
-            case .day:
-                return .day
-            case .week:
-                return .weekOfYear
-            case .month:
-                return .month
-            case .year:
-                return .year
-            }
-        }
-    }
-
-    @Published var selectedPeriod: Period {
+    @Published var selectedPeriod: StatsPeriodUnit {
         didSet {
             currentDateInterval = StatsTrafficDatePickerViewModel.calculateDateInterval(for: selectedPeriod, oldDateInterval: currentDateInterval)
         }
@@ -45,7 +25,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
 
     init(now: Date = Date()) {
         self.now = now
-        let defaultPeriod: Period = .day
+        let defaultPeriod: StatsPeriodUnit = .day
         selectedPeriod = defaultPeriod
         let defaultDateInterval = DateInterval(start: now, end: now) // Use today by default
         currentDateInterval = StatsTrafficDatePickerViewModel.calculateDateInterval(for: defaultPeriod, oldDateInterval: defaultDateInterval)
@@ -71,7 +51,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
         return DateInterval(start: newStartDate, end: newEndDate)
     }
 
-    private static func calculateDateInterval(for period: Period, oldDateInterval: DateInterval) -> DateInterval {
+    private static func calculateDateInterval(for period: StatsPeriodUnit, oldDateInterval: DateInterval) -> DateInterval {
         let anchorDate = oldDateInterval.start // The date in the date interval which stays fixed when the period changes
 
         switch period {
