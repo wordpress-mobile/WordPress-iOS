@@ -36,7 +36,7 @@
     case postStatsRecentWeeks
 
     static var allInsights: [StatSection] {
-        var insights: [StatSection] = [
+        var insights: [StatSection?] = [
             .insightsViewsVisitors,
             .insightsLikesTotals,
             .insightsCommentsTotals,
@@ -45,6 +45,7 @@
             .insightsLatestPostSummary,
             .insightsAllTime,
             .insightsAnnualSiteStats,
+            RemoteFeatureFlag.statsTrafficTab.enabled() ? nil : .insightsTodaysStats,
             .insightsPostingActivity,
             .insightsTagsAndCategories,
             .insightsFollowersWordPress,
@@ -52,11 +53,7 @@
             .insightsPublicize
         ]
 
-        if !RemoteFeatureFlag.statsTrafficTab.enabled() {
-            insights.insert(.insightsTodaysStats, at: 8)
-        }
-
-        return insights
+        return insights.compactMap { $0 }
     }
 
     static let allPeriods: [StatSection] = [
