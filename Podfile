@@ -51,7 +51,7 @@ end
 
 def wordpress_kit
   # pod 'WordPressKit', '~> 13.1'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '7c01ab3f347d16c083239ce9f2945636e7fd4611'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'f335202c98b972dd2a426dfe0e06780a38579ee7'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
