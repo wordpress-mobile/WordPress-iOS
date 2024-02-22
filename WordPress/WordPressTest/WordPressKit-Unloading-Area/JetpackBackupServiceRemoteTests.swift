@@ -1,6 +1,5 @@
+@testable import WordPress
 import XCTest
-
-@testable import WordPressKit
 
 class JetpackBackupServiceRemoteTests: RemoteTestCase, RESTTestable {
 

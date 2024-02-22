@@ -24,7 +24,7 @@ class PinghubWebSocketTests: XCTestCase {
     }
 
     func testDisconnect() throws {
-        let (server, client, delegate) = try connect()
+        let (_, client, delegate) = try connect()
 
         delegate.disconnected = expectation(description: "Disconnected to pinghub")
         client.disconnect()

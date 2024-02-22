@@ -28,7 +28,7 @@ import WordPressShared
                                         let decodedResult = try JSONDecoder.apiDecoder.decode([WPCountry].self, from: data)
                                         success(decodedResult)
                                     } catch {
-                                        WPKitLogError("Error parsing Supported Countries (\(error)): \(response)")
+                                        DDLogError("Error parsing Supported Countries (\(error)): \(response)")
                                         failure(error)
                                     }
         }, failure: { error, _ in
@@ -150,6 +150,29 @@ public enum TransactionsServiceProduct {
 }
 
 public struct CartResponse {
+
+    public struct Product {
+        let productID: Int
+        let meta: String?
+        let extra: [String: AnyObject]?
+
+        fileprivate func jsonRepresentation() -> [String: AnyObject] {
+            var returnDict: [String: AnyObject] = [:]
+
+            returnDict["product_id"] = productID as AnyObject
+
+            if let meta = meta {
+                returnDict["meta"] = meta as AnyObject
+            }
+
+            if let extra = extra {
+                returnDict["extra"] = extra as AnyObject
+            }
+
+            return returnDict
+        }
+    }
+
     let blogID: Int
     let cartKey: Any // cart key can be either Int or String
     let products: [Product]
@@ -184,27 +207,5 @@ public struct CartResponse {
                 "cart_key": cartKey as AnyObject,
                 "products": products.map { $0.jsonRepresentation() } as AnyObject]
 
-    }
-}
-
-public struct Product {
-    let productID: Int
-    let meta: String?
-    let extra: [String: AnyObject]?
-
-    fileprivate func jsonRepresentation() -> [String: AnyObject] {
-        var returnDict: [String: AnyObject] = [:]
-
-        returnDict["product_id"] = productID as AnyObject
-
-        if let meta = meta {
-            returnDict["meta"] = meta as AnyObject
-        }
-
-        if let extra = extra {
-            returnDict["extra"] = extra as AnyObject
-        }
-
-        return returnDict
     }
 }

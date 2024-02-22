@@ -1,5 +1,5 @@
+import WordPress
 import XCTest
-@testable import WordPressKit
 
 class JetpackProxyServiceRemoteTests: XCTestCase {
     let timeout: TimeInterval = 1.0

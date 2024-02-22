@@ -1,6 +1,6 @@
-import XCTest
 import WordPressShared
-@testable import WordPressKit
+@testable import WordPress
+import XCTest
 
 class TransactionsServiceRemoteTests: RemoteTestCase, RESTTestable {
 

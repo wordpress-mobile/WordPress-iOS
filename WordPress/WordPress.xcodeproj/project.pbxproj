@@ -973,6 +973,8 @@
 		3F21E9692B86E8AC00DCE8DD /* JetpackScanServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9682B86E8AB00DCE8DD /* JetpackScanServiceRemoteTests.swift */; };
 		3F21E96B2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96A2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift */; };
 		3F21E96D2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96C2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift */; };
+		3F21E96F2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96E2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift */; };
+		3F21E9702B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96E2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift */; };
 		3F28CEA52A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */; };
 		3F28CEA92A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA82A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift */; };
 		3F28CEAA2A4ACB9A00B79686 /* AnalyticsEventTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA62A4ACA3500B79686 /* AnalyticsEventTracking.swift */; };
@@ -6710,6 +6712,7 @@
 		3F21E9682B86E8AB00DCE8DD /* JetpackScanServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanServiceRemoteTests.swift; sourceTree = "<group>"; };
 		3F21E96A2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackBackupServiceRemoteTests.swift; sourceTree = "<group>"; };
 		3F21E96C2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
+		3F21E96E2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Enum+UnknownCaseRepresentable.swift"; sourceTree = "<group>"; };
 		3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocalizedString.swift; sourceTree = "<group>"; };
 		3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 96.xcdatamodel"; sourceTree = "<group>"; };
 		3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalyticsTrackerTests.swift; sourceTree = "<group>"; };
@@ -11448,6 +11451,7 @@
 			children = (
 				3F21E9472B86E61700DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift */,
 				3F21E9012B86E58900DCE8DD /* Domains */,
+				3F21E96E2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift */,
 				3F21E9062B86E58900DCE8DD /* Jetpack */,
 			);
 			path = "WordPressKit-Unloding-Area";
@@ -22510,6 +22514,7 @@
 				BE87E1A01BD4054F0075D45B /* WP3DTouchShortcutCreator.swift in Sources */,
 				742B7F3A209CB2B6002E3CC9 /* GIFPlaybackStrategy.swift in Sources */,
 				8B6214E327B1B2F3001DF7B6 /* BlogDashboardService.swift in Sources */,
+				3F21E96F2B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift in Sources */,
 				F49D7BEB29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */,
 				F1D8C6E926BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift in Sources */,
 				D8212CC520AA83F9008E8AE8 /* ReaderCommentAction.swift in Sources */,
@@ -24546,6 +24551,7 @@
 				FABB21D92602FC2C00C8785C /* SearchIdentifierGenerator.swift in Sources */,
 				FABB21DA2602FC2C00C8785C /* StatsTwoColumnRow.swift in Sources */,
 				8352AC752B2A485100F8492C /* ReaderNavigationMenu.swift in Sources */,
+				3F21E9702B86F88600DCE8DD /* Enum+UnknownCaseRepresentable.swift in Sources */,
 				982DDF91263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */,
 				FABB21DC2602FC2C00C8785C /* ReaderSaveForLaterRemovedPosts.swift in Sources */,
 				FABB21DD2602FC2C00C8785C /* NSAttributedString+StyledHTML.swift in Sources */,

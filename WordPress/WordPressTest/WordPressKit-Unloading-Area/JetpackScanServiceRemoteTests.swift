@@ -1,6 +1,5 @@
+import WordPress
 import XCTest
-
-@testable import WordPressKit
 
 class JetpackScanServiceRemoteTests: RemoteTestCase, RESTTestable {
     let mockRemoteApi = MockWordPressComRestApi()

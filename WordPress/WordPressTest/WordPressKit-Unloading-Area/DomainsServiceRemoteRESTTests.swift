@@ -1,8 +1,6 @@
-import Foundation
-import XCTest
 import OHHTTPStubs
-
-@testable import WordPressKit
+import WordPress
+import XCTest
 
 class DomainsServiceRemoteRESTTests: RemoteTestCase, RESTTestable {
 
