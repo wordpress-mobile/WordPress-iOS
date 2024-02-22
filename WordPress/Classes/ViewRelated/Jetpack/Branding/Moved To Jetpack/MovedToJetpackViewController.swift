@@ -67,8 +67,8 @@ final class MovedToJetpackViewController: UIViewController {
         return view
     }()
 
-    private lazy var animationView: AnimationView = {
-        let animationView = AnimationView()
+    private lazy var animationView: LottieAnimationView = {
+        let animationView = LottieAnimationView()
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.animation = animation
         return animationView
@@ -138,10 +138,10 @@ final class MovedToJetpackViewController: UIViewController {
     private let tracker: MovedToJetpackEventsTracker
 
     /// Sets the animation based on the language orientation
-    private var animation: Animation? {
+    private var animation: LottieAnimation? {
         traitCollection.layoutDirection == .leftToRight ?
-        Animation.named(viewModel.animationLtr) :
-        Animation.named(viewModel.animationRtl)
+        LottieAnimation.named(viewModel.animationLtr) :
+        LottieAnimation.named(viewModel.animationRtl)
     }
 
     // MARK: - Initializers

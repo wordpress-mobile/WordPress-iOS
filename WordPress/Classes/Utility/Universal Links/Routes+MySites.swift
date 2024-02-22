@@ -93,6 +93,11 @@ extension MySitesRoute: NavigationAction {
             }
             WPAppAnalytics.track(.deepLinkFailed, withProperties: properties)
 
+            if campaign.flatMap(AppBannerCampaign.init) == .qrCodeMedia {
+                postFailureNotice(title: Strings.siteNotFound, message: Strings.checkAccount)
+                return
+            }
+
             if failAndBounce(values) == false {
                 coordinator.showRootViewController()
                 postFailureNotice(title: NSLocalizedString("Site not found",
@@ -130,4 +135,17 @@ extension MySitesRoute: NavigationAction {
             coordinator.showSiteMonitoring(for: blog, selectedTab: .webServerLogs)
         }
     }
+}
+
+private enum Strings {
+    static let siteNotFound = NSLocalizedString(
+        "universalLink.qrCodeMedia.error.title",
+        value: "Site not found",
+        comment: "Title for error notice shown if the app can't find a specific site belonging to the user"
+    )
+    static let checkAccount = NSLocalizedString(
+        "universalLink.qrCodeMedia.error.message",
+        value: "Check that you are logged into the correct account",
+        comment: "Message for error notice shown if the app can't find a specific site belonging to the user"
+    )
 }

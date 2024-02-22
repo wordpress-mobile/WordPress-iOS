@@ -34,18 +34,20 @@ struct WebServerLogsView: View {
                 Spacer()
             }
         } else {
-            List {
-                Section {
-                    ForEach(viewModel.loadedLogs) { entry in
-                        makeRow(for: entry)
+            GeometryReader { geometry in
+                List {
+                    Section {
+                        ForEach(viewModel.loadedLogs) { entry in
+                            makeRow(for: entry, width: geometry.size.width)
+                        }
+                        if viewModel.hasMore {
+                            footerRow
+                        }
                     }
-                    if viewModel.hasMore {
-                        footerRow
-                    }
+                    .listSectionSeparator(.hidden, edges: .bottom)
                 }
-                .listSectionSeparator(.hidden, edges: .bottom)
+                .listStyle(.plain)
             }
-            .listStyle(.plain)
         }
     }
 
@@ -113,13 +115,13 @@ struct WebServerLogsView: View {
         }
     }
 
-    private func makeRow(for entry: AtomicWebServerLogEntry) -> some View {
+    private func makeRow(for entry: AtomicWebServerLogEntry, width: CGFloat) -> some View {
         let attributedDescription = entry.attributedDescription
         return NavigationLink(destination: {
             SiteMonitoringEntryDetailsView(text: attributedDescription)
                 .onAppear { WPAnalytics.track(.siteMonitoringEntryDetailsShown, properties: ["tab": "web_server_logs"]) }
         }) {
-            WebServerLogsRowView(entry: entry)
+            WebServerLogsRowView(entry: entry, width: width)
                 .swipeActions(edge: .trailing) {
                     ShareLink(item: attributedDescription.string) {
                         Label("Share", systemImage: "square.and.arrow.up")
@@ -150,7 +152,10 @@ struct WebServerLogsView: View {
 }
 
 private struct WebServerLogsRowView: View {
+    @State private var requestUrlHeight: CGFloat = .zero
+
     let entry: AtomicWebServerLogEntry
+    let width: CGFloat
 
     var body: some View {
         VStack(alignment: .leading) {
@@ -170,10 +175,30 @@ private struct WebServerLogsRowView: View {
                     .font(.system(.footnote))
                     .foregroundStyle(.secondary)
             }
-            Text(entry.requestUrl ?? "")
-                .font(.system(.subheadline))
-                .lineLimit(3)
+            WebServerLogUrlLabel(text: entry.requestUrl ?? "", width: width)
         }
+    }
+}
+
+private struct WebServerLogUrlLabel: UIViewRepresentable {
+    let text: String
+    let width: CGFloat
+
+    func makeUIView(context: Context) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.preferredMaxLayoutWidth = width
+        label.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        label.setContentHuggingPriority(.defaultHigh, for: .vertical)
+        label.numberOfLines = 3
+        label.lineBreakMode = .byCharWrapping
+        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.adjustsFontForContentSizeCategory = true
+        return label
+    }
+
+    func updateUIView(_ uiView: UILabel, context: Context) {
+        // Do nothing
     }
 }
 

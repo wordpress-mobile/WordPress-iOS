@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-01-22 10:48:28+0000 */
+/* Translation-Revision-Date: 2024-02-14 11:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0-beta.2 */
 /* Language: sv_SE */
@@ -108,9 +108,6 @@
 
 /* Number of days after which comments should autoclose */
 "%@ days" = "%@ dagar";
-
-/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"%@ followers" = "%@ följare";
 
 /* Comments Threading Levels
    Number of Threading Levels */
@@ -480,9 +477,6 @@
 /* No comment provided by engineer. */
 "Add To End" = "Lägg till sist";
 
-/* Button Title. Tapping subscribes the user to a new topic. */
-"Add Topic" = "Lägg till ämne";
-
 /* No comment provided by engineer. */
 "Add URL" = "Lägg till URL";
 
@@ -491,9 +485,6 @@
 
 /* Add a profile photo to Me > My Profile */
 "Add a Profile Photo" = "Lägg till profilbild";
-
-/* Title of a feature to add a new topic to the topics subscribed by the user. */
-"Add a Topic" = "Lägg till ett ämne";
 
 /* Label of the button that starts the purchase of an additional redirected domain in the Domains Dashboard. */
 "Add a domain" = "Lägg till en domän";
@@ -507,20 +498,11 @@
 /* No comment provided by engineer. */
 "Add a shortcode…" = "Lägg till en kortkod …";
 
-/* No Tags View Button Label */
-"Add a site" = "Lägg till en webbplats";
-
-/* No Topics View Button Label */
-"Add a topic" = "Lägg till ämne";
-
 /* Accessibility description for adding an image to a new user account. Tapping this initiates that flow. */
 "Add account image." = "Lägg till bild för kontot.";
 
 /* No comment provided by engineer. */
 "Add alt text" = "Lägg till alt-text";
-
-/* Placeholder text. A call to action for the user to type any topic to which they would like to subscribe. */
-"Add any topic" = "Lägg till något ämne";
 
 /* No comment provided by engineer. */
 "Add audio" = "Lägg till ljud";
@@ -1107,14 +1089,8 @@
 /* No comment provided by engineer. */
 "Block settings" = "Blockinställningar";
 
-/* The title of a button that triggers blocking a site from the user's reader. */
-"Block this site" = "Blockera denna webbplats";
-
 /* translators: displayed right after the block is ungrouped. */
 "Block ungrouped" = "Block avgrupperat";
-
-/* Notice title when blocking a site succeeds. */
-"Blocked site" = "Blockerad webbplats";
 
 /* Notice title when blocking a user succeeds. */
 "Blocked user" = "Blockerade användare";
@@ -1518,9 +1494,6 @@
 /* No comment provided by engineer. */
 "Choose video" = "Välj video";
 
-/* Reader select interests subtitle label text */
-"Choose your topics" = "Välj dina ämnen";
-
 /* Register Domain - Address information field City */
 "City" = "Ort";
 
@@ -1893,9 +1866,6 @@
 /* The app failed to enable notifications for the subscription */
 "Could not enable notifications" = "Det gick inte att aktivera aviseringar";
 
-/* Title of a prompt. */
-"Could not follow site" = "Det gick inte att följa webbplatsen";
-
 /* Error message informing the user that there was a problem subscribing to a site or feed. */
 "Could not follow the site at the address specified." = "Det gick inte att börja följa webbplatsen på angiven adress.";
 
@@ -1919,9 +1889,6 @@
 
 /* An error description explaining that Seen could not be toggled due to a missing postID. */
 "Could not toggle Seen: missing postID." = "Det gick inte att ändra visningsläget: postID saknas.";
-
-/* Title of a prompt. */
-"Could not unfollow site" = "Det gick inte att sluta följa webbplatsen";
 
 /* Error message informing the user that there was a problem unsubscribing to a site or feed. */
 "Could not unfollow the site at the address specified." = "Det gick inte att sluta följa webbplatsen på angiven adress.";
@@ -2320,17 +2287,11 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Upptäck";
 
-/* Title for button on the no followed sites result screen */
-"Discover Sites" = "Upptäck webbplatser";
-
 /* Reader select interests title label text */
 "Discover and follow blogs you love" = "Upptäck och följ bloggar du gillar";
 
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Hitta och följ webbplatser som inspirerar dig.";
-
-/* Button title. Tapping shows the Follow Topics screen. */
-"Discover more topics" = "Upptäck fler ämnen";
 
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
@@ -2371,7 +2332,8 @@
 /* Label for button to log in using your site address. The underscores _..._ denote underline */
 "Don't have an account? _Sign up_" = "Har du inget konto? _Registrera dig_";
 
-/* Accessibility label for the Done button in the Me screen.
+/* A done button
+   Accessibility label for the Done button in the Me screen.
    Button text on site creation epilogue page to proceed to My Sites.
    Done button title
    Done editing an image
@@ -2701,9 +2663,6 @@
 /* Describes a switch component that toggles in-app notifications for a followed post. */
 "Enable in-app notifications" = "Aktivera aviseringar i appen";
 
-/* Message prompting user to enable site notifications. */
-"Enable site notifications?" = "Aktivera notiser från webbplats?";
-
 /* Error message shown when trying to view Stats and the stats module is disabled. */
 "Enable site stats to see detailed information about your traffic, likes, comments, and subscribers." = "Aktivera för att se detaljerad information om din trafik, gillamarkeringar, kommentarer och prenumeranter.";
 
@@ -2731,9 +2690,6 @@
 /* (placeholder) Help enter WordPress password
    Placeholder of a field to type a password to protect the post. */
 "Enter password" = "Ange lösenord";
-
-/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"Enter the URL of a site to follow" = "Ange URL för en webbsida för att följa";
 
 /* Instruction text on the login's site addresss screen.
    Label for button to log in using your site address. */
@@ -2997,9 +2953,7 @@
 /* A brief prompt shown when the reader is empty, letting the user know the app is currently fetching new posts. */
 "Fetching posts..." = "Hämtar inlägg …";
 
-/* A brief prompt when the user is searching for sites in the Reader.
-   A short message to inform the user data for their followed sites is being fetched..
-   A short message to inform the user data for their sites are being fetched. */
+/* A short message to inform the user data for their sites are being fetched. */
 "Fetching sites..." = "Hämtar webbplatser …";
 
 /* Label for the posting activity legend. */
@@ -3025,9 +2979,6 @@
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film och tv";
-
-/* Title of the filter button in the Reader */
-"Filter" = "Filtrera";
 
 /* Title of a screen that shows activity types so the user can filter using them (eg.: posts, images, users) */
 "Filter by activity type" = "Filtrera på aktivitetstyp";
@@ -3068,8 +3019,7 @@
 "Fixing Threats" = "Åtgärdar hot";
 
 /* Button title. Follow the comments on a post.
-   Prompt to follow a blog.
-   Verb. Button title. Follow a new blog. */
+   Prompt to follow a blog. */
 "Follow" = "Följ";
 
 /* Button title. Follow the comments on a post. */
@@ -3077,9 +3027,6 @@
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Följ konversation";
-
-/* Verb. An option to follow a site. */
-"Follow site" = "Följ webbplats";
 
 /* Screen title. Reader select interests title label text. */
 "Follow topics" = "Följ ämnen";
@@ -3091,15 +3038,8 @@
 "Follow your favorite sites and discover new blogs." = "Följ dina favoritwebbplatser och hitta nya bloggar att läsa.";
 
 /* Displayed in the Notification Settings View
-   Followed Sites Title
    Section title for sites the user has followed. */
 "Followed Sites" = "Webbplatser som du följer";
-
-/* Followed Topics Title */
-"Followed Topics" = "Följda ämnen";
-
-/* User followed a site. */
-"Followed site" = "Följd webbplats";
 
 /* Label for list of followers.
    User role badge */
@@ -3110,13 +3050,8 @@
    Label for number of followers. */
 "Followers" = "Följare";
 
-/* Title of the Following Reader tab
-   User is following the blog.
-   Verb. Button title. The user is following a blog. */
+/* User is following the blog. */
 "Following" = "Följer";
-
-/* Notice title when following a site succeeds. %1$@ is a placeholder for the site name. */
-"Following %1$@" = "Följer %1$@";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Följer nya ämnen …";
@@ -3129,9 +3064,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
 "Follows the blog." = "Följer bloggen.";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"Follows the tag." = "Följer denna etikett.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Typsnittsstorlek";
@@ -3280,9 +3212,6 @@
 
 /* Option to select the Gmail app when logging in with magic links */
 "Gmail" = "Gmail";
-
-/* Button title. Tapping lets the user view the sites they follow. */
-"Go to Following" = "Gå till följda webbplatser";
 
 /* Displayed in the Notifications Tab as a button title, when there are no notifications */
 "Go to Reader" = "Gå till läsare";
@@ -3962,7 +3891,6 @@
    Label for Period Overview likes
    Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
-   Title of the Likes Reader tab
    Today's Stats 'Likes' label */
 "Likes" = "Gillamarkeringar";
 
@@ -3974,9 +3902,6 @@
 
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Gillar kommentaren.";
-
-/* Message to show when a request for a WP.com API endpoint is throttled */
-"Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support." = "Gränsen är nådd. Du kan försöka igen om 1 minut. Att försöka igen innan dess kommer bara att öka den tid du måste vänta innan förbudet upphävs. Om du tror att detta är felaktigt, kontakta supporten.";
 
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Linjediagram som visar antalet visningar för Insikter.";
@@ -4198,9 +4123,6 @@
 /* Accessibility label for button that displays Manage Insight options. */
 "Manage Insight" = "Hantera insikter";
 
-/* Button title. Tapping lets the user manage the sites they follow. */
-"Manage Sites" = "Hantera webbplatser";
-
 /* Return to blog screen action when theme activation succeeds */
 "Manage site" = "Hantera webbplats";
 
@@ -4378,9 +4300,6 @@
 
 /* No comment provided by engineer. */
 "More support options" = "Fler supportalternativ";
-
-/* Insights 'Most Popular Time' header */
-"Most Popular Time" = "Populäraste tidpunkten";
 
 /* Screen reader text for button that will move the menu item. Argument is menu item's name. */
 "Move %@" = "Flytta %@";
@@ -4620,9 +4539,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "No application can handle this request. Please install a Web browser." = "Det finns inget program som kan hantera denna begäran. Installera ett webbläsarprogram.";
 
-/* A short message that informs the user no WordPress.com sites could be found. */
-"No available WordPress.com sites" = "Det finns inga tillgängliga WordPress.com-webbplatser";
-
 /* Advises the user that no Domain suggestions could be found for the search query. */
 "No available addresses matching your search" = "Inga tillgängliga adresser matchar din sökning";
 
@@ -4666,9 +4582,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
-
-/* Title for the no followed sites result screen */
-"No followed sites" = "Inga följda webbplatser";
 
 /* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
 "No followers yet" = "Inga följare än";
@@ -4717,9 +4630,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A hint to users about restoring their site. */
 "No need to wait around. We'll notify you when your site has been fully restored." = "Du behöver inte sitta och vänta. Vi aviserar dig när webbplatsen är helt återställd.";
 
-/* Message shown when there are no new topics to follow. */
-"No new topics to follow" = "Inga nya ämnen att följa";
-
 /* Displayed in the Notifications Tab as a title, when there are no notifications */
 "No notifications yet" = "Inga aviseringar än";
 
@@ -4761,12 +4671,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Message displayed in Reader Saved Posts view if a user hasn't yet saved any posts. */
 "No saved posts" = "Inga sparade inlägg";
-
-/* A message title */
-"No sites found" = "Inga webbplatser hittades";
-
-/* Message shown when the reader finds no sites for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"No sites found matching %@ in your language." = "Inga webbplatser hittades som matchar %@ på ditt språk.";
 
 /* Displayed when the user is searching site tags and there are no matches. */
 "No tags matching your search" = "Inga etiketter motsvarar din sökning";
@@ -4941,9 +4845,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* No comment provided by engineer. */
 "Once you become familiar with the names of different blocks, you can add a block by typing a forward slash followed by the block name — for example, \/image or \/heading." = "Om du vet namnen på de block du behöver kan du lägga till ett block genom att skriva ett snedstreck följt av blockets namn, exempelvis \/bild eller \/rubrik.";
-
-/* A subtitle with more detailed info for the user when no WordPress.com sites could be found. */
-"Once you create a WordPress.com site, you can reblog content that you like to your own site." = "När du har skapat en webbplats på WordPress.com kan du reblogga innehåll du tycker om till din egen webbplats.";
 
 /* No comment provided by engineer. */
 "One" = "En";
@@ -5553,9 +5454,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Error message title informing the user that reader content could not be loaded. */
 "Problem loading content" = "Problem att ladda in innehåll";
 
-/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"Problem loading sites" = "Problem att ladda webbplatser";
-
 /* No comment provided by engineer. */
 "Problem opening the audio" = "Svårigheter att öppna ljudfilen";
 
@@ -5692,9 +5590,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Post Stats recent weeks header. */
 "Recent Weeks" = "Senaste veckorna";
-
-/* A message explaining the Following topic in the reader */
-"Recent posts from blogs and sites you follow will appear here." = "Nya inlägg från bloggar och webbplatser som du följer visas här.";
 
 /* Invite Person: Email or Username Edition Title */
 "Recipient" = "Mottagare";
@@ -5902,9 +5797,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Accessibility label for the reset date range button */
 "Reset Date Range filter" = "Återställ filtret för datumintervall";
-
-/* Accessibility label for the reset filter button in the reader. */
-"Reset filter" = "Återställ filtret";
 
 /* The button title for a secondary call-to-action button. When the user can't remember their password. */
 "Reset your password" = "Återställ ditt lösenord";
@@ -6378,7 +6270,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Link to plugin's Settings
    Section title
-   The menu item to select during a guided tour.
    Title for screen that allows configuration of your blog/site settings.
    Title for the Jetpack Security Settings Screen */
 "Settings" = "Inställningar";
@@ -6514,9 +6405,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for the Reader Cell */
 "Shows the post content" = "Visa inläggets innehåll";
 
-/* Accessibility hint for the site name and URL button on Reader's Post Details. */
-"Shows the site's posts." = "Visar webbplatsens inlägg.";
-
 /* View title during the sign up process. */
 "Sign Up" = "Skapa konto";
 
@@ -6571,8 +6459,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of the navigation bar, shown when the large title is hidden. */
 "Site Topic" = "Webbplatsämnen";
 
-/* The accessibility label for the followed sites search field
-   The item to select during a guided tour. */
+/* The item to select during a guided tour. */
 "Site URL" = "Webbplatsens URL";
 
 /* Setting: indicates if Achievements will be notified */
@@ -6604,16 +6491,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Confirmation that the user successfully changed the site's title */
 "Site title changed successfully" = "Webbplatsrubriken har ändrats";
-
-/* Sites Filter Tab Title
-   Title of a Reader tab showing Sites matching a user's search query */
-"Sites" = "Webbplatser";
-
-/* Sites Filter Tab Title with Count */
-"Sites (%lu)" = "Webbplatser (%lu)";
-
-/* A suggestion of topics the user might */
-"Sites to follow" = "Webbplatser att följa";
 
 /* Image size option title. */
 "Size" = "Storlek";
@@ -7184,9 +7061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The server returned an empty response. This usually means you need to increase the memory limit for your site." = "Servern skickade tillbaka ett tomt svar. Detta betyder vanligtvis att du behöver öka minnesgränsen för din webbplats.";
 
-/* Message expliaining that the specified site will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the site. */
-"The site %@ will no longer appear in your reader. Tap to undo." = "Webbplatsen %@ kommer inte längre att visas i läsaren. Tryck här om du vill ångra.";
-
 /* No comment provided by engineer. */
 "The site address must be shorter than 64 characters." = "Adressen till webbplatsen måste vara kortare än 64 tecken.";
 
@@ -7202,9 +7076,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown when site export API failed */
 "The site could not be exported." = "Webbplatsen kunde inte exporteras.";
-
-/* Message shown when the reader finds no posts for the chosen list */
-"The sites in this list have not posted anything recently." = "Webbplatserna i denna lista har inte publicerat några inlägg på senare tid.";
 
 /* Should be the same as the text displayed if the user clicks the (i) in Slug in Calypso. */
 "The slug is the URL-friendly version of the post title." = "Denna permalänk är en URL-anpassad version av inläggsrubriken.";
@@ -7415,9 +7286,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post is not in my likes. Accessibility label */
 "This post is not in My Likes" = "Detta inlägg finns inte bland Mina gillade";
 
-/* Message shown when the reader finds no posts for the chosen site */
-"This site has not posted anything yet. Try back later." = "Denna webbplats har inte publicerat något ännu. Försök igen senare.";
-
 /* Error message displayed when unable to close user account due to unresolved chargebacks. */
 "This user account cannot be closed if there are unresolved chargebacks." = "Detta användarkonto kan inte avslutas eftersom det fortfarande finns någon oavslutad chargeback.";
 
@@ -7563,12 +7431,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Used when a Reader Topic is not found for a specific id */
 "Topic not found for id:" = "Ämnet inte funnet för ID:";
 
-/* Topics Filter Tab Title */
-"Topics" = "Ämnen";
-
-/* Topics Filter Tab Title with Count */
-"Topics (%lu)" = "Ämnen (%lu)";
-
 /* Label for total followers */
 "Total" = "Totalt";
 
@@ -7654,9 +7516,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title on the blogging prompt's feature introduction view to answer a prompt. */
 "Try it now" = "Prova nu";
 
-/* A step in a guided tour for quick start. %@ will be the name of the item to select. */
-"Try selecting %@ to add topics you like." = "Prova att välja %@ för att lägga till ämnen som du gillar.";
-
 /* The title of a notice telling users that the classic editor is deprecated and will be removed in a future version of the app. */
 "Try the new Block Editor" = "Prova den nya blockredigeraren";
 
@@ -7669,23 +7528,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Destructive menu title to remove the prompt card from the dashboard. */
 "Turn off prompts" = "Stäng av förslag";
 
-/* Verb. An option to switch off site notifications. */
-"Turn off site notifications" = "Stäng av webbplatsnotiser";
-
 /* Title for a button which takes the user to the WordPress app's settings in the system Settings app. */
 "Turn on notifications" = "Slå på notiser";
 
 /* Title of the screen in the Blogging Reminders flow which prompts users to enable push notifications. */
 "Turn on push notifications" = "Slå på push-meddelanden";
-
-/* Verb. An option to switch on site notifications. */
-"Turn on site notifications" = "Slå på webbplatsnotiser";
-
-/* Notice title when turning site notifications off succeeds. */
-"Turned off site notifications" = "Webbplatsaviseringar har stängts av";
-
-/* Notice title when turning site notifications on succeeds. */
-"Turned on site notifications" = "Webbplatsaviseringar har slagits på";
 
 /* Notification Settings switch for the app. */
 "Turning the switch off will disable all notifications from this app, regardless of type." = "Om du stänger av detta reglage blockeras alla aviseringar från appen, oavsett deras typ.";
@@ -7732,9 +7579,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of error prompt shown when a sync the user initiated fails. */
 "Unable to Sync" = "Det gick inte att synkronisera";
 
-/* Notice title when blocking a site fails. */
-"Unable to block site" = "Kan inte blockera webbplats";
-
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Det gick inte att skapa nya inbjudningslänkar.";
 
@@ -7752,9 +7596,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* The app failed to subscribe to the comments for the post */
 "Unable to follow conversation" = "Det gick inte att följa konversationen";
-
-/* Notice title when following a site fails. */
-"Unable to follow site" = "Kunde inte följa webbplatsen";
 
 /* Title for No results full page screen displayedfrom pages list when there is no connection */
 "Unable to load pages right now." = "Kan inte ladda sidor just nu.";
@@ -7800,15 +7641,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message displayed when sharing a link to the downloadable backup fails. */
 "Unable to share link" = "Kan inte dela länken";
-
-/* Notice title when turning site notifications off fails. */
-"Unable to turn off site notifications" = "Kan inte stänga av webbplatsaviseringar";
-
-/* Notice title when turning site notifications on fails. */
-"Unable to turn on site notifications" = "Kan inte slå på webbplatsaviseringar";
-
-/* Notice title when unfollowing a site fails. */
-"Unable to unfollow site" = "Kan inte ta sluta följa webbplatsen";
 
 /* Error informing the user that their homepage settings could not be updated */
 "Unable to update homepage settings" = "Kan inte uppdatera inställningar för startsida";
@@ -7867,24 +7699,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Undo action */
 "Undo" = "Ångra";
 
-/* Label of the table view cell's delete button, when unfollowing a site. */
-"Unfollow" = "Sluta följa";
-
-/* Accessibility label for unfollowing a tag */
-"Unfollow %@" = "Sluta att följa %@";
-
 /* Title for a button that unsubscribes the user from the post. */
 "Unfollow Conversation" = "Sluta följ konversation";
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Sluta följ konversation";
-
-/* Verb. An option to unfollow a site. */
-"Unfollow site" = "Sluta följa webbplats";
-
-/* Notice title when unfollowing a site succeeds.
-   User unfollowed a site. */
-"Unfollowed site" = "Webbplats som slutat följas";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
 "Unfollows the blog." = "Sluta följ bloggen.";
@@ -8523,9 +8342,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Post Signup Interstitial Title Text for Jetpack iOS */
 "Welcome to Jetpack" = "Välkommen till Jetpack";
 
-/* Welcome message shown under Discover in the Reader just the 1st time the user sees it */
-"Welcome to Reader. Discover millions of blogs at your fingertips." = "Välkommen till läsaren. Upptäck miljontals bloggar som finns smidigt tillgängliga.";
-
 /* Post Signup Interstitial Title Text for WordPress iOS */
 "Welcome to WordPress" = "Välkommen till WordPress";
 
@@ -8607,9 +8423,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "När en kommentar innehåller något av dessa ord i innehåll, namn, URL, e-postadress eller IP markeras den som skräp. Du kan ange delar av ord, så \"press\" kommer att matcha \"Wordpress\".";
-
-/* Subtitle for the no followed sites result screen */
-"When you follow sites, you’ll see their content here." = "Om du följer några webbplatser kan du se deras innehåll här.";
 
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "When you make changes in the editor you'll be able to see the history here" = "När du ändrar något i redigeraren kommer du att kunna se historiken här";
@@ -8792,9 +8605,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Paragraph displayed in the tableview header. The placholders are for the current username, highlight text and the current display name. */
 "You are about to change your username, which is currently %@. %@" = "Du är på väg att ändra ditt användarnamn, som för närvarande är %1$@. %2$@";
 
-/* Error message informing the user that they are already following a site in their reader. */
-"You are already following this site." = "Du följer redan denna webbplats.";
-
 /* Alert message. */
 "You are changing your username to %@. Changing your username will also affect your Gravatar profile and IntenseDebate profile addresses. \nConfirm your new username to continue." = "Du är på väg att ändra ditt användarnamn till %@. När du byter användarnamn kommer detta även att påverka adresserna till profilerna för Gravatar och IntenseDebate.\nBekräfta ditt nya användarnamn för att fortsätta.";
 
@@ -8818,12 +8628,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Du kan redigera detta block i webbversionen av redigeraren.";
-
-/* No Sites View Label */
-"You can follow posts on a specific site by following it." = "Du kan följa inlägg på en specifik webbplats genom att följa den.";
-
-/* No Topics View Label */
-"You can follow posts on a specific subject by adding a topic." = "Du kan följa inlägg om ett specifikt ämne genom att lägga till ett ämne.";
 
 /* Discussion Settings: Footer Text */
 "You can override these settings for individual posts." = "Du kan åsidosätta dessa inställningar för enskilda inlägg.";
@@ -9434,6 +9238,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug menu item title */
 "debugMenu.analytics" = "Analys";
+
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Booleska användarstandarder";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Booleska användarstandarder";
 
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Funktionsflaggor";
@@ -10328,6 +10138,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Underhåll";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Webbplatsövervakning";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Socialt";
 
@@ -10402,6 +10215,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Besök webbplats";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "Inga loggposter inom detta tidsintervall";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "Ett fel uppstod";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Försök igen";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Avfärda";
@@ -10507,6 +10329,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "telefonnummer";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "Slutdatum";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Allvarlighetsgrad";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Startdatum";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Föråldrat";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Allvarligt fel";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "Användare";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Varning";
 
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
@@ -10725,8 +10568,38 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Du är inloggad!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Prova välja %@ för att visa prenumererat innehåll och hantera dina prenumerationer.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Prenumerationer";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mer";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "Bloggen %@ kommer inte längre att visas i läsaren. Tryck här för att ångra åtgärden.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ inlägg • %2$@ prenumeranter";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Visar bloggens inlägg.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Det gick inte att hämta bloggarna";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Hämtar bloggar …";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Inga bloggar som matchar %@ på ditt språk hittades.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Inga bloggar hittades";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ prenumeranter";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Visar inlägg från webbplatsen";
@@ -10765,15 +10638,189 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Sparat inlägg";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "Du prenumererar redan på den här bloggen.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Redigera";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filtrera efter blogg";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filtrera efter etikett";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Prenumerera på bloggar i Upptäck så kommer du att se deras senaste inlägg här. Eller så kan du söka efter en blogg som du redan gillar.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Sök efter en blogg";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Inga bloggprenumerationer";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Prenumerera på en etikett så kommer du att se de bästa inläggen från den här.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Prenumerera på en etikett";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Föreslagna etiketter";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Inga etiketter";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Prenumererar på nya etiketter...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Föreslagna etiketter";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Hämtar bloggar …";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Bloggar";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Etiketter";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d bloggar";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d blogg";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Etiketter";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d etiketter";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d-etikett";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Etiketter";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtrera efter %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Öppnar filterlistan";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Gillat";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Listor";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Återställ";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Sparad";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Sök";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Prenumerationer";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Sök";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Läsarinställningar";
 
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Upptäck bloggar";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Prenumerera på bloggar i Upptäck så kommer du att se deras senaste inlägg här. Eller så kan du söka efter en blogg som du redan gillar.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Inga bloggprenumerationer";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "Den här bloggen har inte publicerat något än. Försök igen senare.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "Bloggarna i den här listan har inte publicerat några inlägg på senare tid.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Hantera bloggar";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "De senaste inläggen från bloggar och webbplatser som du prenumererar på kommer visas här.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Gå till prenumerationer";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Du kan prenumerera på inlägg från en specifik blogg genom att prenumerera på den.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Lägg till en blogg";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Kan inte blockera blogg";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blockerad blogg";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Prenumererar på bloggen";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Det gick inte att avsluta bloggprenumerationen";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Det gick inte att avsluta bloggprenumerationen";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Bloggprenumerationen har avslutats";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Det gick inte att inaktivera bloggaviseringar";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Bloggaviseringar har inaktiverats";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Det gick inte att aktivera bloggaviseringar";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Aktivera bloggaviseringar?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Bloggaviseringar har aktiverats";
+
 /* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
-Example: given a notice format "Following %@" and empty site name, this will be "Following this site". */
-"reader.notice.follow.site.unknown" = "denna webbplats";
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "denna blogg";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Det gick inte att prenumerera på bloggen";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Prenumererar på %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Det gick inte att avsluta bloggprenumerationen";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Bloggprenumerationen har avslutats";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10811,8 +10858,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Öppnar webbplatsinformationen för inlägget.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Blockera denna blogg";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Blockera denna användare";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Inaktivera bloggaviseringar";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Aktivera bloggaviseringar";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Ta bort sparat inlägg";
@@ -10823,8 +10879,74 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Spara";
 
-/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the site post count. '%2$@' is a placeholder for the site follower count. Example: `5,000 posts • 10M followers` */
-"reader.site.header.counts" = "%1$@ inlägg • %2$@ följare";
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Prenumerera på blogg";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Avsluta bloggprenumeration";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Hantera bloggar";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "När du har skapat en WordPress.com-blogg kan du reblogga innehåll som du tycker om till din egen blogg.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Inga tillgängliga WordPress.com-bloggar";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Bloggar";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Prenumererar på nya etiketter...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Prenumerera på etiketter";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Inga nya etiketter att prenumerera på";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Välj dina etiketter";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Prenumererar på etiketten.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Prenumerera";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "Blogg-URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Ange URL:en till en blogg att prenumerera på";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Prenumenerad";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Bloggar att prenumerera på";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Lägg till en etikett";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Lägg till etikett";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Lägg till en etikett";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Lägg till en etikett";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Upptäck fler etiketter";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Avsluta prenumeration från %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Avsluta prenumeration";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Tillbaka";
@@ -11005,6 +11127,54 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
+
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Logginlägg";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Cachelagrad";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "Fil";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP-server";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Typ";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Linje";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Namn";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Hänvisande webbplats";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Tid för begäran";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "URL för begäran";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Storlek på svar";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Tidsstämpel";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "Mätvärden";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP-loggar";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Webbserverloggar";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Integritet";
@@ -11354,6 +11524,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Avfärda";
 
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "Slutdatum";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Typ av begäran";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Startdatum";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
+
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Alla inlägg och flest visningar";
 
@@ -11506,6 +11688,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Denna webbplats stöds inte av WordPress-appen";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Gräns uppnådd. Du kan försöka igen om en minut. Att försöka igen innan dess kommer bara att öka den tid du måste vänta innan begränsningen upphävs. Om du tror att det här är fel, kontakta supporten.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Välkommen till Jetpack-appen. Du kan avinstallera WordPress-appen.";

@@ -493,11 +493,11 @@ struct AnyHashableImmuTableRow: Hashable {
     let immuTableRow: any (ImmuTableRow & Hashable)
 
     static func == (lhs: AnyHashableImmuTableRow, rhs: AnyHashableImmuTableRow) -> Bool {
-        lhs.immuTableRow.hashValue == rhs.immuTableRow.hashValue
+        return AnyHashable(lhs.immuTableRow) == AnyHashable(rhs.immuTableRow)
     }
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(immuTableRow)
+        hasher.combine(AnyHashable(immuTableRow))
     }
 }
 

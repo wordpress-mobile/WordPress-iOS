@@ -1,4 +1,5 @@
 import UIKit
+import DesignSystem
 
 struct StatsTwoColumnRowData: Equatable {
     var leftColumnName: String
@@ -54,10 +55,10 @@ class StatsTwoColumnRow: UIView, NibLoadable, Accessible {
 private extension StatsTwoColumnRow {
 
     func applyStyles() {
-        Style.configureLabelAsCellRowTitle(leftItemLabel)
-        Style.configureLabelAsCellRowTitle(leftDataLabel)
-        Style.configureLabelAsCellRowTitle(rightItemLabel)
-        Style.configureLabelAsCellRowTitle(rightDataLabel)
+        Style.configureLabelAsCellValueTitle(leftItemLabel)
+        Style.configureLabelAsCellValue(leftDataLabel)
+        Style.configureLabelAsCellValueTitle(rightItemLabel)
+        Style.configureLabelAsCellValue(rightDataLabel)
         Style.configureViewAsVerticalSeparator(separatorLine)
     }
 

@@ -1,6 +1,6 @@
 import UIKit
 
-struct StatsTotalRowData: Hashable {
+struct StatsTotalRowData: Equatable {
     var name: String
     var data: String
     var mediaID: NSNumber?
@@ -56,6 +56,22 @@ struct StatsTotalRowData: Hashable {
         } else {
             return name.contains(".")
         }
+    }
+
+    static func == (lhs: StatsTotalRowData, rhs: StatsTotalRowData) -> Bool {
+        return lhs.name == rhs.name &&
+            lhs.data == rhs.data &&
+            lhs.mediaID == rhs.mediaID &&
+            lhs.postID == rhs.postID &&
+            lhs.dataBarPercent == rhs.dataBarPercent &&
+            lhs.socialIconURL?.absoluteString == rhs.socialIconURL?.absoluteString &&
+            lhs.userIconURL == rhs.userIconURL &&
+            lhs.nameDetail == rhs.nameDetail &&
+            lhs.showDisclosure == rhs.showDisclosure &&
+            lhs.disclosureURL?.absoluteString == rhs.disclosureURL?.absoluteString &&
+            lhs.childRows == rhs.childRows &&
+            lhs.statSection == rhs.statSection &&
+            lhs.isReferrerSpam == rhs.isReferrerSpam
     }
 }
 

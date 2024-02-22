@@ -1,14 +1,5 @@
-Artık çevrimdışı çalışırken bir bildirim görürsünüz. İnternet bağlantınız kesildiğinde görsel bloklarına ortam yükleme de durdurulur, yeniden bağlandığınızda devam eder.
-Ek bir bonus olarak, başarısız bir ortam yüklemesini manuel olarak yeniden denediğinizde uygulama gönderinizdeki diğer tüm başarısız ortam yüklemelerini yeniden dener. Bu da etkili bir kullanım sağlar.
+Sayın okuyucu, içeriklerde gezinme ve içerikleri filtreleme için yeni bir genel görünüm ekledik. Artık okuyacak gönderiler ararken en iyisini bulabilir ve gerisini görmezden gelebilirsiniz.
 
-Blok düzenleyiciden özel bir gradyan seçtiğinizde artık seçtiğiniz rengi gösteren bir gösterge olur.
+Görselleri ve diğer ortamları yüklerken bunların yanıp sönmesine sebep olan bir sorunu düzelttik. Presto'da artık ortadan kaybolmak yok.
 
-Site Ortamları bilgilerinde görsellerde dolaşırken daha hızlı bir deneyim için görseller ekranda önceden yüklenir. Görseller belki de hep oradaydı.
-
-Daha yüksek çözünürlüklü poster görselleri, GIF ile video oynatma ve diğer dosya önizlemeleri için destek ekledik. (homer-simpson-woohoo.gif)
-
-Daha net talimatlar sağlamak için yayımlama akışında değişiklik yaptık. "Katkıda bulunan" rolü olan kullanıcılar "Yayımla" yerine "İncelemeye Gönder" işlemini görür. Ayrıca gönderi taslaklarını ve silinen gönderileri onaya gerek kalmadan çöpe atabilirsiniz.
-
-Artık sitenizi başkalarıyla paylaşabilmeniz için sitenizin bağlam menüsünde bir "Paylaş" işlemi var.
-
-Son olarak, daha da fazla alkışlanmak için uygulama içi değerlendirme istemini de iyileştirdik. Uygulamadan memnunsanız değerlendirme bırakmanız veya uygulamanın geliştirilmesi gerektiğini düşünüyorsanız geri bildirim vermeniz istenir. Geri bildirimleriniz sayesinde kendimizi iyileştiriyoruz, düşüncelerinizi paylaşmaktan çekinmeyin!
+Son olarak ölçümler, PHP günlükleri ve web sunucusu günlükleri dahil yeni Site İzleme menü öğeleri ekledik, bu sayede web sitenizi daha yakından takip edebilirsiniz. (Endişelenmeyin, bir yere gittiği yok.)

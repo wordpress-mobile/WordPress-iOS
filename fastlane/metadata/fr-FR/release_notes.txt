@@ -1,14 +1,1 @@
-Vous verrez désormais une notification lorsque vous travaillez hors ligne. Les mises en ligne de médias dans les blocs Image seront suspendues en cas de coupure de la connexion Internet, puis reprendront dès reconnexion.
-Bonus : lorsque vous réessayez manuellement de mettre en ligne un média, l’application réessaiera de mettre en ligne tous les autres médias de votre article dont le chargement avait échoué. Voilà qui est efficace.
-
-Lorsque vous sélectionnez un dégradé personnalisé dans l’éditeur de blocs, un indicateur vous montre désormais la couleur que vous avez choisie.
-
-Faire défiler vos images sur l’écran des détails des Médias du site entraîne leur préchargement pour une expérience plus rapide. Ou peut-être qu’elles ont toujours été là.
-
-Nous avons ajouté la prise en charge de miniatures, de GIF et de lecteurs vidéo, de documents et d’autres aperçus de fichiers en plus haute résolution. (homer-simpson-woohoo.gif)
-
-Nous avons modifié le flux de publication pour vous donner des instructions plus claires. Les utilisateurs avec le rôle « Contributeur » verront l’action « Envoyer pour relecture » plutôt que « Publier ». Vous pouvez également déplacer vers la corbeille les brouillons de publication et les articles supprimés sans avoir à confirmer.
-
-Il y a désormais une action « Partager » dans le menu contextuel du site, pour que vous puissiez partager votre site avec d’autres.
-
-Enfin, parce que nous vivons pour les applaudissements, nous avons amélioré l’invite d’évaluation de l’application. On vous demandera d’évaluer l’application si vous l’aimez et on vous proposera un formulaire de commentaires si vous pensez que l’application doit être revue. Les commentaires nous permettent de nous améliorer, alors n’hésitez pas à nous faire part des vôtres !
+Nous avons corrigé un problème qui faisait « clignoter » les images et autres médias lors de leur mise en ligne. Fini les « on me voit, on me voit plus ».

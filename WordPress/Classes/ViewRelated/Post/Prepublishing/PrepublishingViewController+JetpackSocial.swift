@@ -1,3 +1,6 @@
+import UIKit
+import SwiftUI
+
 /// Encapsulates logic related to Jetpack Social in the pre-publishing sheet.
 ///
 extension PrepublishingViewController {
@@ -41,10 +44,6 @@ extension PrepublishingViewController {
                                                                                      model: model,
                                                                                      delegate: self,
                                                                                      coreDataStack: coreDataStack)
-
-        socialAccountsViewController.onContentHeightUpdated = { [weak self] in
-            self?.presentedVC?.containerViewWillLayoutSubviews()
-        }
 
         self.navigationController?.pushViewController(socialAccountsViewController, animated: true)
     }
@@ -109,15 +108,11 @@ private extension PrepublishingViewController {
     func configureAutoSharingView(for cell: UITableViewCell) {
         let viewModel = makeAutoSharingModel()
         let viewToEmbed = UIView.embedSwiftUIView(PrepublishingAutoSharingView(model: viewModel))
-        cell.contentView.addSubview(viewToEmbed)
 
-        // Pin constraints to the cell's layoutMarginsGuide so that the content is properly aligned.
-        NSLayoutConstraint.activate([
-            viewToEmbed.leadingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.leadingAnchor),
-            viewToEmbed.topAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.topAnchor),
-            viewToEmbed.bottomAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.bottomAnchor),
-            viewToEmbed.trailingAnchor.constraint(equalTo: cell.contentView.layoutMarginsGuide.trailingAnchor)
-        ])
+        viewToEmbed.translatesAutoresizingMaskIntoConstraints = false
+        cell.selectionStyle = .default
+        cell.contentView.addSubview(viewToEmbed)
+        cell.contentView.pinSubviewToAllEdgeMargins(viewToEmbed)
 
         cell.accessoryType = .disclosureIndicator
 
@@ -134,19 +129,23 @@ private extension PrepublishingViewController {
             return
         }
 
+        viewToEmbed.translatesAutoresizingMaskIntoConstraints = false
+        cell.selectionStyle = .none
         cell.contentView.addSubview(viewToEmbed)
-        cell.contentView.pinSubviewToSafeArea(viewToEmbed)
+        cell.contentView.pinSubviewToAllEdgeMargins(viewToEmbed)
 
         WPAnalytics.track(.jetpackSocialNoConnectionCardDisplayed, properties: ["source": Constants.trackingSource])
     }
 
     func makeNoConnectionViewModel() -> JetpackSocialNoConnectionViewModel {
         let context = post.managedObjectContext ?? coreDataStack.mainContext
+        let insets = EdgeInsets(top: 8, leading: 0, bottom: 8, trailing: 0)
         guard let services = try? PublicizeService.allSupportedServices(in: context) else {
-            return .init()
+            return .init(padding: insets)
         }
 
         return .init(services: services,
+                     padding: insets,
                      preferredBackgroundColor: tableView.backgroundColor,
                      onConnectTap: noConnectionConnectTapped(),
                      onNotNowTap: noConnectionDismissTapped())
@@ -188,13 +187,7 @@ private extension PrepublishingViewController {
 
             self.tableView.performBatchUpdates {
                 self.tableView.deleteRows(at: [.init(row: autoSharingRowIndex, section: .zero)], with: .fade)
-            } completion: { _ in
-                self.presentedVC?.transition(to: .collapsed)
-            }
-
-            // when displayed in a popover view (i.e. iPad), updating the content size will resize
-            // the popover window to fit the updated content.
-            self.navigationController?.preferredContentSize = self.tableView.contentSize
+            } completion: { _ in }
         }
     }
 

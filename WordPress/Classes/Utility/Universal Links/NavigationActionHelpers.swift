@@ -26,8 +26,9 @@ extension NavigationAction {
         return nil
     }
 
-    func postFailureNotice(title: String) {
+    func postFailureNotice(title: String, message: String? = nil) {
         let notice = Notice(title: title,
+                            message: message,
                             feedbackType: .error,
                             notificationInfo: nil)
         ActionDispatcher.dispatch(NoticeAction.post(notice))

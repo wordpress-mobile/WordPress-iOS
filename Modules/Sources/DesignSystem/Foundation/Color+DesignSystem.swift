@@ -35,8 +35,6 @@ public extension Color {
             private static let wordPress = colorWithModuleBundle(colorName: DesignSystemColorNames.Background.wordPress)
         }
 
-        public static let divider = colorWithModuleBundle(colorName: DesignSystemColorNames.divider)
-
         private static func colorWithModuleBundle(colorName: String) -> Color {
             Color(colorName, bundle: .module)
         }

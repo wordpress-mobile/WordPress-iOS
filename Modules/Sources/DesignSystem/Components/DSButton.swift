@@ -109,7 +109,7 @@ public struct DSButton: View {
                 .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
         case .secondary:
             RoundedRectangle(cornerRadius: Length.Radius.small)
-                .stroke(Color.DS.divider, lineWidth: 1)
+                .stroke(Color.DS.Background.tertiary, lineWidth: 1)
                 .background(Color.clear)
 
         case .tertiary:

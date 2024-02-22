@@ -4,6 +4,11 @@ import WordPressKit
 struct GutenbergNetworkRequest {
     typealias CompletionHandler = (Swift.Result<Any, NSError>) -> Void
 
+    // Please note: even though this variable is named 'path', the actually values (passed from React Native) contain
+    // path and query.
+    //
+    // For example, when uploading an image to a post in a self-hosted site, this struct is instantiated with a path
+    // `/wp/v2/media/<id>?context=edit&_locale=user`.
     private let path: String
     private unowned let blog: Blog
     private let method: HTTPMethod
@@ -65,42 +70,41 @@ struct GutenbergNetworkRequest {
     }
 
     private func performSelfHostedRequest(completion: @escaping CompletionHandler) {
-        guard let api = blog.wordPressOrgRestApi else {
+        guard let api = blog.selfHostedSiteRestApi else {
             completion(.failure(NSError(domain: NSURLErrorDomain, code: NSURLErrorUnknown, userInfo: nil)))
             return
         }
 
+        let task: Task<WordPressAPIResult<Any, WordPressOrgRestApiError>, Never>
+
         switch method {
         case .get:
-            api.GET(path, parameters: nil) { (result, httpResponse) in
-                switch result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if handleEmbedError(path: path, error: error, completion: completion) {
-                        return
-                    }
-                    completion(.failure(error as NSError))
-                }
+            task = Task {
+                await api.get(path: path)
             }
         case .post:
-            api.POST(path, parameters: data) { (result, httpResponse) in
-                switch result {
-                case .success(let response):
-                    completion(.success(response))
-                case .failure(let error):
-                    if handleEmbedError(path: path, error: error, completion: completion) {
-                        return
-                    }
-                    completion(.failure(error as NSError))
+            task = Task {
+                await api.post(path: path, parameters: data ?? [:])
+            }
+        }
+
+        Task { @MainActor in
+            let result = await task.value
+            switch result {
+            case .success(let response):
+                completion(.success(response))
+            case .failure(let error):
+                if handleEmbedError(path: path, error: error, completion: completion) {
+                    return
                 }
+                completion(.failure(error as NSError))
             }
         }
     }
 
-    private func handleEmbedError(path: String, error: Error, completion: @escaping CompletionHandler) -> Bool {
+    private func handleEmbedError(path: String, error: WordPressAPIError<WordPressOrgRestApiError>, completion: @escaping CompletionHandler) -> Bool {
         if path.starts(with: "/oembed/1.0/") {
-            if let error = error as? AFError, error.responseCode == 404 {
+            if case let .unacceptableStatusCode(response: response, body: _) = error, response.statusCode == 404 {
                 completion(.failure(URLError(URLError.Code(rawValue: 404)) as NSError))
                 return true
             }

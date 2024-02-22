@@ -373,6 +373,7 @@ extension WordPressAuthenticationManager: WordPressAuthenticatorDelegate {
                     return
                 }
 
+                RootViewCoordinator.shared.isSiteCreationActive = true
                 navigationController.present(wizard, animated: true)
                 SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
             })

@@ -112,7 +112,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
     // MARK: - Configuration
 
     @objc func configureSearchBar() {
-        let placeholderText = NSLocalizedString("Enter the URL of a site to follow", comment: "Placeholder text prompting the user to type the name of the URL they would like to follow.")
+        let placeholderText = NSLocalizedString(
+            "reader.subscribed.blogs.search.placeholder",
+            value: "Enter the URL of a blog to subscribe to",
+            comment: "Placeholder text prompting the user to type the name of the URL they would like to follow."
+        )
         UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self, ReaderFollowedSitesViewController.self]).placeholder = placeholderText
         WPStyleGuide.configureSearchBar(searchBar)
 
@@ -124,7 +128,11 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         searchBar.keyboardType = .URL
         searchBar.setImage(clearImage, for: .clear, state: UIControl.State())
         searchBar.setImage(addOutline, for: .search, state: UIControl.State())
-        searchBar.searchTextField.accessibilityLabel = NSLocalizedString("Site URL", comment: "The accessibility label for the followed sites search field")
+        searchBar.searchTextField.accessibilityLabel = NSLocalizedString(
+            "reader.subscribed.blogs.search.accessibility.label",
+            value: "Blog URL",
+            comment: "The accessibility label for the followed blogs search field"
+        )
         searchBar.searchTextField.accessibilityValue = nil
         searchBar.searchTextField.accessibilityHint = placeholderText
     }
@@ -196,7 +204,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
         service.toggleFollowing(forSite: site, success: { [weak self] follow in
             let siteURL = URL(string: site.siteURL)
-            let notice = Notice(title: NSLocalizedString("Unfollowed site", comment: "User unfollowed a site."),
+            let notice = Notice(title: NSLocalizedString("reader.notice.blog.unsubscribed.success",
+                                                         value: "Unsubscribed from blog",
+                                                         comment: "User unsubscribed from a blog."),
                                 message: siteURL?.host,
                                 feedbackType: .success)
             self?.post(notice)
@@ -206,7 +216,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }, failure: { [weak self] (follow, error) in
             DDLogError("Could not unfollow site: \(String(describing: error))")
 
-            let notice = Notice(title: NSLocalizedString("Could not unfollow site", comment: "Title of a prompt."),
+            let notice = Notice(title: NSLocalizedString("reader.notice.blog.unsubscribed.error",
+                                                         value: "Could not unsubscribe from blog",
+                                                         comment: "Title of a prompt."),
                                 message: error?.localizedDescription,
                                 feedbackType: .error)
             self?.post(notice)
@@ -222,7 +234,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
 
         let service = ReaderSiteService(coreDataStack: ContextManager.shared)
         service.followSite(by: url, success: { [weak self] in
-            let notice = Notice(title: NSLocalizedString("Followed site", comment: "User followed a site."),
+            let notice = Notice(title: NSLocalizedString("reader.notice.blog.subscribe.success",
+                                                         value: "Subscribed to blog",
+                                                         comment: "User subscribed to a blog."),
                                 message: url.host,
                                 feedbackType: .success)
             self?.post(notice)
@@ -233,7 +247,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }, failure: { [weak self] error in
             DDLogError("Could not follow site: \(String(describing: error))")
 
-            let title = error?.localizedDescription ?? NSLocalizedString("Could not follow site", comment: "Title of a prompt.")
+            let title = error?.localizedDescription ?? NSLocalizedString("reader.notice.blog.unsubscribe.error",
+                                                                         value: "Could not unsubscribe from blog",
+                                                                         comment: "Title of a prompt.")
             let notice = Notice(title: title,
                                 message: url.host,
                                 feedbackType: .error)
@@ -357,7 +373,11 @@ private extension ReaderFollowedSitesViewController {
     }
 
     struct NoResultsText {
-        static let loadingTitle = NSLocalizedString("Fetching sites...", comment: "A short message to inform the user data for their followed sites is being fetched..")
+        static let loadingTitle = NSLocalizedString(
+           "reader.followed.blogs.loading",
+            value: "Fetching blogs...",
+            comment: "A short message to inform the user data for their followed sites is being fetched.."
+        )
     }
 
     func startListeningToNotifications() {
@@ -476,7 +496,11 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView,
                    titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String? {
-        return NSLocalizedString("Unfollow", comment: "Label of the table view cell's delete button, when unfollowing a site.")
+        return NSLocalizedString(
+            "reader.unsubscribe.button",
+            value: "Unsubscribe",
+            comment: "Label of the table view cell's delete button, when unsubscribing from a blog."
+        )
     }
 
     func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath) {

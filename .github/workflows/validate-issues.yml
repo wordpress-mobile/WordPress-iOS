@@ -1,0 +1,18 @@
+name: 📝 Validate Issues
+
+on:
+  issues:
+    types: [opened, labeled, unlabeled]
+
+jobs:
+  check-labels-on-issues:
+    uses: Automattic/dangermattic/.github/workflows/reusable-check-labels-on-issues.yml@v1.0.0
+    with:
+      label-format-list: '[
+        "^\[.+\]",
+        "^[[:alnum:]]"
+      ]'
+      label-error-message: '🚫 Please add a type label (e.g. **[Type] Enhancement**) and a feature label (e.g. **Stats**) to this issue.'
+      label-success-message: 'Thanks for reporting! 👍'
+    secrets:
+      github-token: ${{ secrets.DANGERMATTIC_GITHUB_TOKEN }}

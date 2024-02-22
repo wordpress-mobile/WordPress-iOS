@@ -1,5 +1,6 @@
 import UIKit
 import Gridicons
+import DesignSystem
 
 class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfigurable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
@@ -140,19 +141,18 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Metrics.statsStackViewVerticalSpacing
+        stackView.spacing = 0
 
         let topLabel = UILabel()
-        topLabel.font = UIFont.preferredFont(forTextStyle: .subheadline)
-        topLabel.textColor = .text
         topLabel.text = title
         topLabel.adjustsFontSizeToFitWidth = true
+        topLabel.adjustsFontForContentSizeCategory = true
+        Style.configureLabelAsCellValueTitle(topLabel)
 
-        countLabel.font = Style.insightsCountFont
-        countLabel.textColor = .text
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.adjustsFontForContentSizeCategory = true
         countLabel.text = "0"
+        Style.configureLabelAsCellValue(countLabel)
 
         stackView.addArrangedSubviews([topLabel, countLabel])
 
@@ -250,13 +250,12 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     // MARK: - Constants
 
     private enum Metrics {
-        static let outerStackViewSpacing: CGFloat = 16.0
-        static let postStackViewHorizontalSpacing: CGFloat = 16.0
-        static let postStackViewVerticalSpacing: CGFloat = 8.0
-        static let statsStackViewVerticalSpacing: CGFloat = 8.0
-        static let createPostButtonInset: CGFloat = 8.0
+        static let outerStackViewSpacing: CGFloat = Length.Padding.double
+        static let postStackViewHorizontalSpacing: CGFloat = Length.Padding.double
+        static let postStackViewVerticalSpacing: CGFloat = Length.Padding.single
+        static let createPostButtonInset: CGFloat = Length.Padding.single
         static let thumbnailSize: CGFloat = 68.0
-        static let thumbnailCornerRadius: CGFloat = 4.0
+        static let thumbnailCornerRadius: CGFloat = Length.Padding.half
         static let dividerWidth: CGFloat = 1.0
     }
 

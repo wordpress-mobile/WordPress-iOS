@@ -25,8 +25,10 @@ class ReaderCardService {
     }
 
     func fetch(isFirstPage: Bool, refreshCount: Int = 0, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
-        followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
-            guard let interests = topics, !interests.isEmpty else {
+        followedInterestsService.fetchFollowedInterestsLocally { [weak self] topics in
+            guard let self,
+                  let interests = topics,
+                  !interests.isEmpty else {
                 failure(Errors.noInterests)
                 return
             }
@@ -52,6 +54,12 @@ class ReaderCardService {
                                     }
 
                                     cards.enumerated().forEach { index, remoteCard in
+                                        if isFirstPage && index == 0 && remoteCard.type == .interests {
+                                            // Removes displaying the tags recommendation card
+                                            // first in the Discover feed
+                                            return
+                                        }
+
                                         let card = ReaderCard(context: context, from: remoteCard)
 
                                         // Assign each interest an endpoint

@@ -121,6 +121,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @interface Blog : NSManagedObject
 
 @property (nonatomic, strong, readwrite, nullable) NSNumber *blogID __deprecated_msg("Use dotComID instead");
+/// WordPress.com site ID stored as signed 32-bit integer.
 @property (nonatomic, strong, readwrite, nullable) NSNumber *dotComID;
 @property (nonatomic, strong, readwrite, nullable) NSString *xmlrpc;
 @property (nonatomic, strong, readwrite, nullable) NSString *apiKey;
@@ -208,7 +209,7 @@ typedef NS_ENUM(NSInteger, SiteVisibility) {
 @property (nonatomic,   weak,  readonly, nullable) NSArray *sortedConnections;
 @property (nonatomic, readonly, nullable) NSArray<Role *> *sortedRoles;
 @property (nonatomic, strong,  readonly, nullable) WordPressOrgXMLRPCApi *xmlrpcApi;
-@property (nonatomic, strong,  readonly, nullable) WordPressOrgRestApi *wordPressOrgRestApi;
+@property (nonatomic, strong,  readonly, nullable) WordPressOrgRestApi *selfHostedSiteRestApi;
 @property (nonatomic,   weak,  readonly, nullable) NSString       *version;
 @property (nonatomic, strong,  readonly, nullable) NSString       *authToken;
 @property (nonatomic, strong,  readonly, nullable) NSSet *allowedFileTypes;

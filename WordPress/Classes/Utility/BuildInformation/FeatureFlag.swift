@@ -11,6 +11,8 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
+    case useURLSession
+    case offlineMode
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,6 +39,10 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
+        case .useURLSession:
+            return BuildConfiguration.current != .appStore
+        case .offlineMode:
+            return false
         }
     }
 
@@ -77,6 +83,10 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
+        case .useURLSession:
+            return "Use URLSession in WordPressKit (instead of Alamofire)"
+        case .offlineMode:
+            return "Offline Mode (Sync Issues)"
         }
     }
 }

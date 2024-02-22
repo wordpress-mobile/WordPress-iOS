@@ -1,14 +1,5 @@
-Je krijgt nu een melding wanneer je offline werkt. Media-uploads naar afbeeldingblokken worden ook gepauzeerd wanneer je internetverbinding wordt verbroken, en gaan daarna weer verder zodra deze hersteld is.
-Als kers op de taart, zal de app ook alle andere mislukte media-uploads opnieuw proberen uit te voeren zodra een mislukte media-upload handmatig opnieuw wordt uitgevoerd. Dat is pas efficiënt.
+Dear reader, we’ve added a new look and feel for content navigation and filtering. Now when you’re looking for posts to read, you can find the best and ignore the rest.
 
-Als je een aangepast kleurverloop selecteert in de blokeditor, krijg je nu een indicator te zien die jouw gekozen kleur weergeeft.
+We fixed an issue that made images and other media blink away while being uploaded. Zo, geen verdwijntruc meer.
 
-De afbeeldingen in het Sitemedia-detailscherm worden van te voren geladen wanneer je erdoor scrolt voor een snellere ervaring. Of stonden ze altijd al klaar?
-
-We hebben ondersteuning toegevoegd voor miniatuurweergaven met een hogere resolutie, voorbeeldafbeeldingen van gifjes en video's, documenten en andere bestanden. (homer-simpson-woohoo.gif)
-
-We hebben de publicatieworkflow veranderd zodat je precies weet wat je moet doen. Gebruikers met de rol 'Bijdrager' zien de actie 'Inzenden voor beoordeling' in plaats van 'Publiceren'. Je kan ook conceptberichten en verwijderde berichten naar de prullenbak verplaatsen zonder te hoeven bevestigen.
-
-Er is nu de actie 'Delen' in het contextmenu van de site, zodat je je site met anderen kan delen.
-
-En omdat we dol zijn op complimenten, hebben we de beoordelingsprompt in de app verbeterd. Je wordt gevraagd een beoordeling te schrijven als je blij bent met de app, of een feedbackformulier in te vullen als je vindt dat er nog ruimte voor verbetering is. Door feedback worden we beter, dus deel die van jou!
+Finally, we added new Site Monitoring menu items—including metrics, PHP logs, and web server logs—so you can keep a closer eye on your website. (Don’t worry, it’s not going anywhere.)

@@ -1,14 +1,1 @@
-Ahora verás una notificación cuando estés trabajando y se vaya la conexión. Las cargas multimedia a bloques de imágenes también se dejarán en pausa si la conexión a Internet se interrumpe y se volverán a reanudar cuando la conexión se restablezca.
-Como ventaja añadida, si vuelves a intentar realizar una carga multimedia fallida manualmente, la aplicación volverá a intentar a realizar todas las cargas multimedia fallidas en tu publicación. Esto sí que es eficiencia.
-
-Cuando seleccionas un gradiente personalizado en el editor de bloques, ahora hay un indicador te muestra el color que has elegido.
-
-Al desplazarte por las imágenes en la pantalla de detalles de Site Media, estas se cargarán de forma anticipada para agilizar el proceso. Si es que no estaban ya cargadas de antes.
-
-Hemos añadido compatibilidad para imágenes de póster, reproducciones de vídeo y GIF, documentos y otras previsualizaciones de archivos con una resolución más alta. (homer-simpson-woohoo.gif)
-
-Hemos modificado el flujo de publicación para ofrecerte instrucciones más claras. Los usuarios con función de colaborador verán la acción de envío de reseñas en lugar de la de publicación. También podrás enviar a la papelera publicaciones en borrador y eliminadas sin tener que confirmar la acción.
-
-El menú contextual del sitio incluye ahora una acción para compartir, de modo que podrás compartir tu sitio con otros usuarios.
-
-Por último, en un mundo que vive pendiente de la visibilidad y los "Likes", hemos mejorado la sugerencia del sistema de puntuación de la aplicación. Se te pedirá que dejes una reseña si te gusta la aplicación, o podrás acceder a un formulario de valoración si crees que la aplicación necesita alguna puesta a punto. Las opiniones de la comunidad nos sirven para mejorar, así que no dudes en compartir la tuya.
+Hemos solucionado un problema que hacía que las imágenes y otros medios «parpadearan» mientras se cargaban. Presto, se acabaron las desapariciones.
