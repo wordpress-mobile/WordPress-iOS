@@ -4,6 +4,7 @@ import AutomatticTracks
 final class NotificationsViewModel {
     enum Constants {
         static let lastSeenKey = "notifications_last_seen_time"
+        static let headerTextKey = "text"
     }
 
     // MARK: - Type Aliases
@@ -105,10 +106,22 @@ final class NotificationsViewModel {
         }
         let content: ShareablePost = (
             url: url,
-            title: notification.title
+            title: createSharingTitle(from: notification)
         )
         self.trackInlineActionTapped(action: .sharePost)
         return content
+    }
+
+    private func createSharingTitle(from notification: Notification) -> String {
+        guard notification.kind == .like,
+              let header = notification.header,
+              header.count == 2,
+              let titleDictionary = header[1] as? [String: String],
+              let postTitle = titleDictionary[Constants.headerTextKey] else {
+            crashLogger.logMessage("Failed to extract post title from like notification", level: .info)
+            return Strings.sharingMessageWithoutPost
+        }
+        return String(format: Strings.sharingMessageWithPostFormat, postTitle)
     }
 }
 
@@ -124,5 +137,14 @@ private extension NotificationsViewModel {
         case sharePost = "share_post"
         case commentLike = "comment_like"
         case postLike = "post_like"
+    }
+
+    enum Strings {
+        static let sharingMessageWithPostFormat = NSLocalizedString("notifications.share.messageWithPost",
+                                                                    value: "Check out my post \"%@\":",
+                                                                    comment: "Message to use along with the post URL when sharing a post")
+        static let sharingMessageWithoutPost = NSLocalizedString("notifications.share.messageWithoutPost",
+                                                                       value: "Check out my post:",
+                                                                       comment: "Message to use along with the post URL when sharing a post")
     }
 }

@@ -4,13 +4,12 @@ import SVProgressHUD
 @objc class PostSharingController: NSObject {
 
     @objc func shareController(_ title: String?, summary: String?, link: String?) -> UIActivityViewController {
-        var activityItems = [AnyObject]()
         let url = link.flatMap(URL.init(string:))
-        let post = SharePost(title: title, summary: summary, url: url?.absoluteString)
-        activityItems.append(post)
+        let allItems: [Any?] = [title, summary, url]
+        let nonNilActivityItems = allItems.compactMap({ $0 })
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
-        let controller = UIActivityViewController(activityItems: activityItems, applicationActivities: activities)
+        let controller = UIActivityViewController(activityItems: nonNilActivityItems, applicationActivities: activities)
         if let str = title {
             controller.setValue(str, forKey: "subject")
         }
