@@ -670,7 +670,10 @@ end
 
 def swiftlint(args)
   args = [SWIFTLINT_BIN] + args
-  sh(*args)
+
+  result = system(*args)
+
+  exit result
 end
 
 def swiftlint_needs_install
