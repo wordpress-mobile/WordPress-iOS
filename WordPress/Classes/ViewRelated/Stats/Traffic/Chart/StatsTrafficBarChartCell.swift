@@ -7,10 +7,6 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
     private let contentStackView = UIStackView()
 
-    private let labelsStackView = UIStackView()
-    private let titleStackView = UIStackView()
-    private let numberLabel = UILabel()
-    private let titleLabel = UILabel()
     private let differenceLabel = UILabel()
 
     private let chartContainerView = UIView()
@@ -68,8 +64,6 @@ private extension StatsTrafficBarChartCell {
 
     func updateLabels() {
         let tabData = tabsData[filterTabBar.selectedIndex]
-        titleLabel.text = tabData.tabTitle
-        numberLabel.text = tabData.tabData.abbreviatedString()
         differenceLabel.attributedText = differenceAttributedString(tabData)
     }
 
@@ -97,7 +91,7 @@ private extension StatsTrafficBarChartCell {
             chartView.translatesAutoresizingMaskIntoConstraints = false
             chartContainerView.addSubview(chartView)
             chartContainerView.accessibilityElements = [chartView]
-            chartContainerView.pinSubviewToAllEdges(chartView)
+            chartContainerView.pinSubviewToAllEdges(chartView, insets: UIEdgeInsets(top: Length.Padding.split, left: 0, bottom: 0, right: 0))
             self.chartView = chartView
         } else {
             self.chartView?.update(barChartData: chartData, styling: styling)
@@ -117,7 +111,6 @@ private extension StatsTrafficBarChartCell {
     func setupViews() {
         setupContentView()
         setupContentStackView()
-        setupLabels()
         setupChart()
         setupButtons()
     }
@@ -133,26 +126,6 @@ private extension StatsTrafficBarChartCell {
         contentStackView.spacing = Length.Padding.split
         contentView.addSubview(contentStackView)
         contentView.pinSubviewToAllEdges(contentStackView)
-    }
-
-    func setupLabels() {
-        labelsStackView.axis = .vertical
-        labelsStackView.alignment = .leading
-        labelsStackView.spacing = 0
-        labelsStackView.isLayoutMarginsRelativeArrangement = true
-        labelsStackView.layoutMargins = .init(top: Length.Padding.single, left: Length.Padding.double, bottom: 0, right: Length.Padding.double)
-        contentStackView.addArrangedSubview(labelsStackView)
-
-        titleStackView.axis = .horizontal
-        titleStackView.alignment = .firstBaseline
-        titleStackView.spacing = Length.Padding.single
-        contentStackView.addArrangedSubview(titleStackView)
-        titleStackView.addArrangedSubviews([numberLabel, titleLabel])
-
-        titleLabel.font = .preferredFont(forTextStyle: .body)
-        numberLabel.font = .preferredFont(forTextStyle: .largeTitle).semibold()
-
-        labelsStackView.addArrangedSubviews([titleStackView, differenceLabel])
     }
 
     func setupChart() {
