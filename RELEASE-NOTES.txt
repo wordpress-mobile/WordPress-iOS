@@ -1,6 +1,6 @@
 24.4
 -----
-
+* [**] [internal] Refactored .org REST API calls. [#22612]
 
 24.3
 -----
