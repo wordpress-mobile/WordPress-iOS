@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex)
 }
 
 protocol SiteStatsReferrerDelegate: AnyObject {
@@ -314,6 +315,12 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+
+    func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
+        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex), let period = selectedPeriod {
+            trackBarChartTabSelectionEvent(tab: tab, period: period)
+        }
+    }
 }
 
 // MARK: - SiteStatsReferrerDelegate
@@ -368,5 +375,11 @@ private extension SiteStatsPeriodTableViewController {
         }()
 
         WPAppAnalytics.track(event)
+    }
+
+    func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period.description as Any]
+        WPAppAnalytics.track(tab.analyticsEvent, withProperties: properties)
+
     }
 }
