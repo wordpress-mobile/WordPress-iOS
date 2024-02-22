@@ -247,6 +247,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             self.showNoResultsViewIfNeeded()
         }
 
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            tableView.reloadData()
+        }
+
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
@@ -340,6 +344,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
         if splitViewControllerIsHorizontallyCompact {
             cell.selectionStyle = .none
+        } else {
+            cell.selectionStyle = .default
         }
         let style: NotificationsTableViewCellContent.Style
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
