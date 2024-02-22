@@ -1,5 +1,0 @@
-Sayın okuyucu, içeriklerde gezinme ve içerikleri filtreleme için yeni bir genel görünüm ekledik. Artık okuyacak gönderiler ararken en iyisini bulabilir ve gerisini görmezden gelebilirsiniz.
-
-Görselleri ve diğer ortamları yüklerken bunların yanıp sönmesine sebep olan bir sorunu düzelttik. Presto'da artık ortadan kaybolmak yok.
-
-Son olarak ölçümler, PHP günlükleri ve web sunucusu günlükleri dahil yeni Site İzleme menü öğeleri ekledik, bu sayede web sitenizi daha yakından takip edebilirsiniz. (Endişelenmeyin, bir yere gittiği yok.)
