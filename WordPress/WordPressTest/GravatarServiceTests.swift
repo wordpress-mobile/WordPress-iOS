@@ -21,7 +21,7 @@ class GravatarServiceTests: CoreDataTestCase {
         }
     }
 
-    class ImageServiceMock: ImageServing {
+    class ImageServiceMock: ImageUploader {
         var capturedAccountToken: String = ""
         var capturedAccountEmail: String = ""
 
@@ -35,28 +35,12 @@ class GravatarServiceTests: CoreDataTestCase {
             capturedAccountEmail = accountEmail
             capturedAccountToken = accountToken
         }
-
-        func fetchImage(with email: String, options: Gravatar.GravatarImageDownloadOptions, completionHandler: Gravatar.ImageDownloadCompletion?) -> Gravatar.CancellableDataTask {
-            fatalError("Not implemented")
-        }
-
-        func fetchImage(with url: URL, forceRefresh: Bool, processor: Gravatar.ImageProcessor, completionHandler: Gravatar.ImageDownloadCompletion?) -> Gravatar.CancellableDataTask? {
-            fatalError("Not implemented")
-        }
-
-        func fetchImage(with email: String, options: Gravatar.GravatarImageDownloadOptions) async throws -> Gravatar.GravatarImageDownloadResult {
-            fatalError("Not implemented")
-        }
-
-        func fetchImage(with url: URL, forceRefresh: Bool, processor: Gravatar.ImageProcessor) async throws -> Gravatar.GravatarImageDownloadResult {
-            fatalError("Not implemented")
-        }
     }
 
     class GravatarServiceTester: GravatarService {
         var gravatarServiceRemoteMock: ImageServiceMock?
 
-        override func gravatarImageService() -> ImageServing {
+        override func gravatarImageService() -> ImageUploader {
             gravatarServiceRemoteMock = ImageServiceMock()
             return gravatarServiceRemoteMock!
         }
