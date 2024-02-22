@@ -398,6 +398,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return nil
         }
         view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        if section == 0 {
+            view.style = .leading
+        } else {
+            view.style = .subsequent
+        }
         return view
     }
 
