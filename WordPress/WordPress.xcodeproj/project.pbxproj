@@ -929,6 +929,50 @@
 		3F170E242655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F170E252655917400F6F670 /* UIView+SwiftUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F170E232655917400F6F670 /* UIView+SwiftUI.swift */; };
 		3F1B66A323A2F54B0075F09E /* ReaderReblogActionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */; };
+		3F21E9272B86E58A00DCE8DD /* DomainsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9032B86E58900DCE8DD /* DomainsServiceRemote.swift */; };
+		3F21E9282B86E58A00DCE8DD /* DomainsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9032B86E58900DCE8DD /* DomainsServiceRemote.swift */; };
+		3F21E9292B86E58A00DCE8DD /* DomainContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9042B86E58900DCE8DD /* DomainContactInformation.swift */; };
+		3F21E92A2B86E58A00DCE8DD /* DomainContactInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9042B86E58900DCE8DD /* DomainContactInformation.swift */; };
+		3F21E92B2B86E58A00DCE8DD /* DomainsServiceRemote+AllDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9052B86E58900DCE8DD /* DomainsServiceRemote+AllDomains.swift */; };
+		3F21E92C2B86E58A00DCE8DD /* DomainsServiceRemote+AllDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9052B86E58900DCE8DD /* DomainsServiceRemote+AllDomains.swift */; };
+		3F21E92D2B86E58A00DCE8DD /* JetpackRestoreTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9072B86E58900DCE8DD /* JetpackRestoreTypes.swift */; };
+		3F21E92E2B86E58A00DCE8DD /* JetpackRestoreTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9072B86E58900DCE8DD /* JetpackRestoreTypes.swift */; };
+		3F21E9372B86E58A00DCE8DD /* JetpackBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E90D2B86E58900DCE8DD /* JetpackBackup.swift */; };
+		3F21E9382B86E58A00DCE8DD /* JetpackBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E90D2B86E58900DCE8DD /* JetpackBackup.swift */; };
+		3F21E9392B86E58A00DCE8DD /* JetpackScanHistoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E90F2B86E58900DCE8DD /* JetpackScanHistoryStats.swift */; };
+		3F21E93A2B86E58A00DCE8DD /* JetpackScanHistoryStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E90F2B86E58900DCE8DD /* JetpackScanHistoryStats.swift */; };
+		3F21E93B2B86E58A00DCE8DD /* JetpackCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9102B86E58900DCE8DD /* JetpackCredentials.swift */; };
+		3F21E93C2B86E58A00DCE8DD /* JetpackCredentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9102B86E58900DCE8DD /* JetpackCredentials.swift */; };
+		3F21E93D2B86E58A00DCE8DD /* JetpackThreatFixStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9112B86E58900DCE8DD /* JetpackThreatFixStatus.swift */; };
+		3F21E93E2B86E58A00DCE8DD /* JetpackThreatFixStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9112B86E58900DCE8DD /* JetpackThreatFixStatus.swift */; };
+		3F21E93F2B86E58A00DCE8DD /* JetpackScanHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9122B86E58900DCE8DD /* JetpackScanHistory.swift */; };
+		3F21E9402B86E58A00DCE8DD /* JetpackScanHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9122B86E58900DCE8DD /* JetpackScanHistory.swift */; };
+		3F21E9412B86E58A00DCE8DD /* JetpackScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9132B86E58900DCE8DD /* JetpackScan.swift */; };
+		3F21E9422B86E58A00DCE8DD /* JetpackScan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9132B86E58900DCE8DD /* JetpackScan.swift */; };
+		3F21E9432B86E58A00DCE8DD /* JetpackScanThreat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9142B86E58900DCE8DD /* JetpackScanThreat.swift */; };
+		3F21E9442B86E58A00DCE8DD /* JetpackScanThreat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9142B86E58900DCE8DD /* JetpackScanThreat.swift */; };
+		3F21E9482B86E61800DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9472B86E61700DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift */; };
+		3F21E9492B86E61800DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9472B86E61700DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift */; };
+		3F21E94B2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94A2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift */; };
+		3F21E94C2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94A2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift */; };
+		3F21E9512B86E65500DCE8DD /* JetpackProxyServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94D2B86E65400DCE8DD /* JetpackProxyServiceRemote.swift */; };
+		3F21E9522B86E65500DCE8DD /* JetpackProxyServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94D2B86E65400DCE8DD /* JetpackProxyServiceRemote.swift */; };
+		3F21E9532B86E65500DCE8DD /* JetpackScanServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94E2B86E65400DCE8DD /* JetpackScanServiceRemote.swift */; };
+		3F21E9542B86E65500DCE8DD /* JetpackScanServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94E2B86E65400DCE8DD /* JetpackScanServiceRemote.swift */; };
+		3F21E9552B86E65500DCE8DD /* JetpackServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94F2B86E65500DCE8DD /* JetpackServiceRemote.swift */; };
+		3F21E9562B86E65500DCE8DD /* JetpackServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E94F2B86E65500DCE8DD /* JetpackServiceRemote.swift */; };
+		3F21E9572B86E65500DCE8DD /* JetpackSocialServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9502B86E65500DCE8DD /* JetpackSocialServiceRemote.swift */; };
+		3F21E9582B86E65500DCE8DD /* JetpackSocialServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9502B86E65500DCE8DD /* JetpackSocialServiceRemote.swift */; };
+		3F21E95A2B86E68600DCE8DD /* TransactionsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9592B86E68600DCE8DD /* TransactionsServiceRemote.swift */; };
+		3F21E95B2B86E68600DCE8DD /* TransactionsServiceRemote.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9592B86E68600DCE8DD /* TransactionsServiceRemote.swift */; };
+		3F21E95F2B86E71600DCE8DD /* ActivityServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E95E2B86E71600DCE8DD /* ActivityServiceRemoteTests.swift */; };
+		3F21E9612B86E7DB00DCE8DD /* JetpackProxyServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9602B86E7DB00DCE8DD /* JetpackProxyServiceRemoteTests.swift */; };
+		3F21E9632B86E84900DCE8DD /* TransactionsServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9622B86E84900DCE8DD /* TransactionsServiceRemoteTests.swift */; };
+		3F21E9652B86E86600DCE8DD /* JetpackSocialServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9642B86E86500DCE8DD /* JetpackSocialServiceRemoteTests.swift */; };
+		3F21E9672B86E88100DCE8DD /* JetpackServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9662B86E88000DCE8DD /* JetpackServiceRemoteTests.swift */; };
+		3F21E9692B86E8AC00DCE8DD /* JetpackScanServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E9682B86E8AB00DCE8DD /* JetpackScanServiceRemoteTests.swift */; };
+		3F21E96B2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96A2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift */; };
+		3F21E96D2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F21E96C2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift */; };
 		3F28CEA52A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */; };
 		3F28CEA92A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA82A4ACB1000B79686 /* AnalyticsEventTrackingSpy.swift */; };
 		3F28CEAA2A4ACB9A00B79686 /* AnalyticsEventTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F28CEA62A4ACA3500B79686 /* AnalyticsEventTracking.swift */; };
@@ -6640,6 +6684,32 @@
 		3F170E232655917400F6F670 /* UIView+SwiftUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+SwiftUI.swift"; sourceTree = "<group>"; };
 		3F1B66A223A2F54B0075F09E /* ReaderReblogActionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderReblogActionTests.swift; sourceTree = "<group>"; };
 		3F20FDF4276BF21000DA3CAD /* WordPressFlux */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = WordPressFlux; path = ../WordPressFlux; sourceTree = "<group>"; };
+		3F21E9032B86E58900DCE8DD /* DomainsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E9042B86E58900DCE8DD /* DomainContactInformation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainContactInformation.swift; sourceTree = "<group>"; };
+		3F21E9052B86E58900DCE8DD /* DomainsServiceRemote+AllDomains.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DomainsServiceRemote+AllDomains.swift"; sourceTree = "<group>"; };
+		3F21E9072B86E58900DCE8DD /* JetpackRestoreTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackRestoreTypes.swift; sourceTree = "<group>"; };
+		3F21E90D2B86E58900DCE8DD /* JetpackBackup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackBackup.swift; sourceTree = "<group>"; };
+		3F21E90F2B86E58900DCE8DD /* JetpackScanHistoryStats.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanHistoryStats.swift; sourceTree = "<group>"; };
+		3F21E9102B86E58900DCE8DD /* JetpackCredentials.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackCredentials.swift; sourceTree = "<group>"; };
+		3F21E9112B86E58900DCE8DD /* JetpackThreatFixStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackThreatFixStatus.swift; sourceTree = "<group>"; };
+		3F21E9122B86E58900DCE8DD /* JetpackScanHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanHistory.swift; sourceTree = "<group>"; };
+		3F21E9132B86E58900DCE8DD /* JetpackScan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScan.swift; sourceTree = "<group>"; };
+		3F21E9142B86E58900DCE8DD /* JetpackScanThreat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanThreat.swift; sourceTree = "<group>"; };
+		3F21E9472B86E61700DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemote_ApiVersion1_0.swift; sourceTree = "<group>"; };
+		3F21E94A2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackBackupServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E94D2B86E65400DCE8DD /* JetpackProxyServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackProxyServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E94E2B86E65400DCE8DD /* JetpackScanServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E94F2B86E65500DCE8DD /* JetpackServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E9502B86E65500DCE8DD /* JetpackSocialServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSocialServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E9592B86E68600DCE8DD /* TransactionsServiceRemote.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsServiceRemote.swift; sourceTree = "<group>"; };
+		3F21E95E2B86E71600DCE8DD /* ActivityServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E9602B86E7DB00DCE8DD /* JetpackProxyServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackProxyServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E9622B86E84900DCE8DD /* TransactionsServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionsServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E9642B86E86500DCE8DD /* JetpackSocialServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackSocialServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E9662B86E88000DCE8DD /* JetpackServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E9682B86E8AB00DCE8DD /* JetpackScanServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackScanServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E96A2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JetpackBackupServiceRemoteTests.swift; sourceTree = "<group>"; };
+		3F21E96C2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsServiceRemoteRESTTests.swift; sourceTree = "<group>"; };
 		3F2656A025AF4DFA0073A832 /* AppLocalizedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLocalizedString.swift; sourceTree = "<group>"; };
 		3F26DFD124930B5900B5EBD1 /* WordPress 96.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 96.xcdatamodel"; sourceTree = "<group>"; };
 		3F28CEA42A4ABB8800B79686 /* PrivacySettingsAnalyticsTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalyticsTrackerTests.swift; sourceTree = "<group>"; };
@@ -10882,6 +10952,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3F21E8F72B86E54900DCE8DD /* WordPressKit-Unloding-Area */,
 				3F20FDF3276BF21000DA3CAD /* Packages */,
 				F14B5F6F208E648200439554 /* config */,
 				E1B34C091CCDFFCE00889709 /* Credentials */,
@@ -11370,6 +11441,70 @@
 				3F20FDF4276BF21000DA3CAD /* WordPressFlux */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		3F21E8F72B86E54900DCE8DD /* WordPressKit-Unloding-Area */ = {
+			isa = PBXGroup;
+			children = (
+				3F21E9472B86E61700DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift */,
+				3F21E9012B86E58900DCE8DD /* Domains */,
+				3F21E9062B86E58900DCE8DD /* Jetpack */,
+			);
+			path = "WordPressKit-Unloding-Area";
+			sourceTree = "<group>";
+		};
+		3F21E9012B86E58900DCE8DD /* Domains */ = {
+			isa = PBXGroup;
+			children = (
+				3F21E9042B86E58900DCE8DD /* DomainContactInformation.swift */,
+				3F21E9032B86E58900DCE8DD /* DomainsServiceRemote.swift */,
+				3F21E9052B86E58900DCE8DD /* DomainsServiceRemote+AllDomains.swift */,
+				3F21E9592B86E68600DCE8DD /* TransactionsServiceRemote.swift */,
+			);
+			path = Domains;
+			sourceTree = "<group>";
+		};
+		3F21E9062B86E58900DCE8DD /* Jetpack */ = {
+			isa = PBXGroup;
+			children = (
+				3F21E90E2B86E58900DCE8DD /* Jetpack-Scan */,
+				3F21E90D2B86E58900DCE8DD /* JetpackBackup.swift */,
+				3F21E94A2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift */,
+				3F21E94D2B86E65400DCE8DD /* JetpackProxyServiceRemote.swift */,
+				3F21E9072B86E58900DCE8DD /* JetpackRestoreTypes.swift */,
+				3F21E94E2B86E65400DCE8DD /* JetpackScanServiceRemote.swift */,
+				3F21E94F2B86E65500DCE8DD /* JetpackServiceRemote.swift */,
+				3F21E9502B86E65500DCE8DD /* JetpackSocialServiceRemote.swift */,
+			);
+			path = Jetpack;
+			sourceTree = "<group>";
+		};
+		3F21E90E2B86E58900DCE8DD /* Jetpack-Scan */ = {
+			isa = PBXGroup;
+			children = (
+				3F21E90F2B86E58900DCE8DD /* JetpackScanHistoryStats.swift */,
+				3F21E9102B86E58900DCE8DD /* JetpackCredentials.swift */,
+				3F21E9112B86E58900DCE8DD /* JetpackThreatFixStatus.swift */,
+				3F21E9122B86E58900DCE8DD /* JetpackScanHistory.swift */,
+				3F21E9132B86E58900DCE8DD /* JetpackScan.swift */,
+				3F21E9142B86E58900DCE8DD /* JetpackScanThreat.swift */,
+			);
+			path = "Jetpack-Scan";
+			sourceTree = "<group>";
+		};
+		3F21E9462B86E5EE00DCE8DD /* WordPressKit-Unloading-Area */ = {
+			isa = PBXGroup;
+			children = (
+				3F21E96C2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift */,
+				3F21E96A2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift */,
+				3F21E95E2B86E71600DCE8DD /* ActivityServiceRemoteTests.swift */,
+				3F21E9602B86E7DB00DCE8DD /* JetpackProxyServiceRemoteTests.swift */,
+				3F21E9682B86E8AB00DCE8DD /* JetpackScanServiceRemoteTests.swift */,
+				3F21E9662B86E88000DCE8DD /* JetpackServiceRemoteTests.swift */,
+				3F21E9642B86E86500DCE8DD /* JetpackSocialServiceRemoteTests.swift */,
+				3F21E9622B86E84900DCE8DD /* TransactionsServiceRemoteTests.swift */,
+			);
+			path = "WordPressKit-Unloading-Area";
 			sourceTree = "<group>";
 		};
 		3F26569F25AF4DBF0073A832 /* Localization */ = {
@@ -16886,6 +17021,7 @@
 		E16AB92F14D978240047A2E5 /* WordPressTest */ = {
 			isa = PBXGroup;
 			children = (
+				3F21E9462B86E5EE00DCE8DD /* WordPressKit-Unloading-Area */,
 				E16AB93014D978240047A2E5 /* Supporting Files */,
 				B532ACD41DC3AE1F00FFFA57 /* Extensions */,
 				E16AB94414D9A13A0047A2E5 /* Mock Data */,
@@ -21181,6 +21317,7 @@
 				0857BB40299275760011CBD1 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				37022D931981C19000F322B7 /* VerticallyStackedButton.m in Sources */,
 				59DCA5211CC68AF3000F245F /* PageListViewController.swift in Sources */,
+				3F21E9292B86E58A00DCE8DD /* DomainContactInformation.swift in Sources */,
 				B5ECA6CA1DBAA0020062D7E0 /* CoreDataHelper.swift in Sources */,
 				FFC6ADDA1B56F366002F3C84 /* LocalCoreDataService.m in Sources */,
 				B5FDF9F320D842D2006D14E3 /* AztecNavigationController.swift in Sources */,
@@ -21289,6 +21426,7 @@
 				F4D9188629D78C9100974A71 /* BlogDetailsViewController+Strings.swift in Sources */,
 				83204EDC2ACE098B000C3229 /* ReaderPostCardCellViewModel.swift in Sources */,
 				43FB3F471EC10F1E00FC8A62 /* LoginEpilogueTableViewController.swift in Sources */,
+				3F21E9392B86E58A00DCE8DD /* JetpackScanHistoryStats.swift in Sources */,
 				9A8ECE112254A3260043C8DA /* JetpackRemoteInstallViewModel.swift in Sources */,
 				5727EAF82284F5AC00822104 /* InteractivePostViewDelegate.swift in Sources */,
 				93C486511810445D00A24725 /* ActivityLogViewController.m in Sources */,
@@ -21590,6 +21728,7 @@
 				7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
+				3F21E93B2B86E58A00DCE8DD /* JetpackCredentials.swift in Sources */,
 				FA4BC0D02996A589005EB077 /* BlazeService.swift in Sources */,
 				088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */,
 				C3C2F84828AC8EBF00937E45 /* JetpackBannerScrollVisibility.swift in Sources */,
@@ -21655,6 +21794,8 @@
 				803BB97C2959559500B3F6D6 /* RootViewPresenter.swift in Sources */,
 				178810B52611D25600A98BD8 /* Text+BoldSubString.swift in Sources */,
 				018635872A8109F900915532 /* SupportChatBotViewModel.swift in Sources */,
+				3F21E9482B86E61800DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift in Sources */,
+				3F21E9532B86E65500DCE8DD /* JetpackScanServiceRemote.swift in Sources */,
 				3FA53E9C256571D800F4D9A2 /* HomeWidgetCache.swift in Sources */,
 				FAB8AB5F25AFFD0600F9F8A0 /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FE1E20172A47042500CE7C90 /* PublicizeInfo+CoreDataClass.swift in Sources */,
@@ -21684,6 +21825,7 @@
 				43FF64EF20DAA0840060A69A /* GravatarUploader.swift in Sources */,
 				B5899ADE1B419C560075A3D6 /* NotificationSettingDetailsViewController.swift in Sources */,
 				D8A3A5AA2069E53900992576 /* AztecMediaPickingCoordinator.swift in Sources */,
+				3F21E9572B86E65500DCE8DD /* JetpackSocialServiceRemote.swift in Sources */,
 				B06378C0253F639D00FD45D2 /* SiteSuggestion+CoreDataClass.swift in Sources */,
 				C7AFF87C283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
 				FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */,
@@ -21883,6 +22025,7 @@
 				3FB1929526C79EC6000F5AA3 /* Date+Formats.swift in Sources */,
 				FA4EBCC12A98F00200BA3DFB /* NoSitesView.swift in Sources */,
 				0C7762232AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */,
+				3F21E94B2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift in Sources */,
 				178DDD57266E4165006C68C4 /* CalendarDayToggleButton.swift in Sources */,
 				73ACDF992114FE4500233AD4 /* NotificationSupportService.swift in Sources */,
 				08D345531CD7F50900358E8C /* MenusSelectionView.m in Sources */,
@@ -21907,6 +22050,7 @@
 				08216FC81CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m in Sources */,
 				F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */,
 				5703A4C622C003DC0028A343 /* WPStyleGuide+Posts.swift in Sources */,
+				3F21E92B2B86E58A00DCE8DD /* DomainsServiceRemote+AllDomains.swift in Sources */,
 				DC8F61F727032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
 				91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */,
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
@@ -22159,6 +22303,7 @@
 				FEC26030283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */,
 				FADC40A52A8BBA4200C19997 /* WPTabBarController+MeTab.swift in Sources */,
 				40E469932017F4070030DB5F /* PluginDirectoryViewController.swift in Sources */,
+				3F21E93F2B86E58A00DCE8DD /* JetpackScanHistory.swift in Sources */,
 				E1D28E931F2F6EB500A5DAFD /* RoleService.swift in Sources */,
 				B5C9401A1DB900DC0079D4FF /* AccountHelper.swift in Sources */,
 				3F46AAFE25BF5D6300CE2E98 /* Sites.intentdefinition in Sources */,
@@ -22203,6 +22348,7 @@
 				E15644EB1CE0E4C500D96E64 /* FeatureItemRow.swift in Sources */,
 				0839F88C2993C1B500415038 /* JetpackPluginOverlayCoordinator.swift in Sources */,
 				F5A738BF244DF7E400EDE065 /* ReaderTagsTableViewController+Cells.swift in Sources */,
+				3F21E93D2B86E58A00DCE8DD /* JetpackThreatFixStatus.swift in Sources */,
 				FAA9084C27BD60710093FFA8 /* MySiteViewController+QuickStart.swift in Sources */,
 				8B0732E9242BA1F000E7FBD3 /* PrepublishingHeaderView.swift in Sources */,
 				3F2ABE16277037A9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */,
@@ -22336,6 +22482,7 @@
 				17870A702816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */,
 				82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */,
 				803BB983295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
+				3F21E9432B86E58A00DCE8DD /* JetpackScanThreat.swift in Sources */,
 				8BBC778B27B5531700DBA087 /* BlogDashboardPersistence.swift in Sources */,
 				F5E29038243FAB0300C19CA5 /* FilterTableData.swift in Sources */,
 				0CE538D02B0E317000834BA2 /* StockPhotosWelcomeView.swift in Sources */,
@@ -22483,6 +22630,7 @@
 				FAD3DE812AE2965A00A3B031 /* AbstractPostMenuHelper.swift in Sources */,
 				FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */,
 				B0B89DC02A1E882F003D5295 /* DomainResultView.swift in Sources */,
+				3F21E9272B86E58A00DCE8DD /* DomainsServiceRemote.swift in Sources */,
 				7EA30DB621ADA20F0092F894 /* AztecAttachmentDelegate.swift in Sources */,
 				931215F4267FE177008C3B69 /* ReferrerDetailsSpamActionCell.swift in Sources */,
 				FEDDD46F26A03DE900F8942B /* ListTableViewCell+Notifications.swift in Sources */,
@@ -22493,8 +22641,10 @@
 				E126C81F1F95FC1B00A5F464 /* PluginViewController.swift in Sources */,
 				E61084C11B9B47BA008050C5 /* ReaderSiteTopic.swift in Sources */,
 				0878580328B4CF950069F96C /* UserPersistentRepositoryUtility.swift in Sources */,
+				3F21E9552B86E65500DCE8DD /* JetpackServiceRemote.swift in Sources */,
 				FE18495827F5ACBA00D26879 /* DashboardPromptsCardCell.swift in Sources */,
 				80DB57922AF8B59B00C728FF /* RegisterDomainCoordinator.swift in Sources */,
+				3F21E92D2B86E58A00DCE8DD /* JetpackRestoreTypes.swift in Sources */,
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
 				46F583A92624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
@@ -22680,6 +22830,7 @@
 				0C700B862AE1E1300085C2EE /* PageListCell.swift in Sources */,
 				F1450CF32437DA3E00A28BFE /* MediaRequestAuthenticator.swift in Sources */,
 				0C391E5E2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift in Sources */,
+				3F21E9372B86E58A00DCE8DD /* JetpackBackup.swift in Sources */,
 				9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
 				F42A1D9729928B360059CC70 /* BlockedAuthor.swift in Sources */,
@@ -22970,7 +23121,9 @@
 				FAB8F7AA25AD792500D5D54A /* JetpackBackupStatusViewController.swift in Sources */,
 				E11DA4931E03E03F00CF07A8 /* Pinghub.swift in Sources */,
 				E1B912831BB01047003C25B9 /* PeopleRoleBadgeLabel.swift in Sources */,
+				3F21E9512B86E65500DCE8DD /* JetpackProxyServiceRemote.swift in Sources */,
 				40FC6B7F2072E3EC00B9A1CD /* ActivityDetailViewController.swift in Sources */,
+				3F21E95A2B86E68600DCE8DD /* TransactionsServiceRemote.swift in Sources */,
 				E16FB7E11F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift in Sources */,
 				98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */,
 				8BADF16524801BCE005AD038 /* ReaderWebView.swift in Sources */,
@@ -23033,6 +23186,7 @@
 				FE43DAAF26DFAD1C00CFF595 /* CommentContentTableViewCell.swift in Sources */,
 				0C308FFE2B1234E70071C551 /* SiteMediaFilterButtonView.swift in Sources */,
 				803BB986295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift in Sources */,
+				3F21E9412B86E58A00DCE8DD /* JetpackScan.swift in Sources */,
 				F4CBE3D6292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift in Sources */,
 				8F22804451E5812433733348 /* TimeZoneSearchHeaderView.swift in Sources */,
 				8332DD2429259AE300802F7D /* DataMigrator.swift in Sources */,
@@ -23604,6 +23758,7 @@
 				088134FF2A56C5240027C086 /* CompliancePopoverViewModelTests.swift in Sources */,
 				08AA640E2A8540590076E38D /* MockEventTracker.swift in Sources */,
 				F4426FD9287F02FD00218003 /* SiteSuggestionsServiceMock.swift in Sources */,
+				3F21E9632B86E84900DCE8DD /* TransactionsServiceRemoteTests.swift in Sources */,
 				E66969CD1B9E2EBF00EC9C00 /* SafeReaderTopicToReaderTopic.m in Sources */,
 				DC3B9B2F27739887003F7249 /* TimeZoneSelectorViewModelTests.swift in Sources */,
 				E6A215901D1065F200DE5270 /* AbstractPostTest.swift in Sources */,
@@ -23658,6 +23813,7 @@
 				FF1B11E7238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift in Sources */,
 				FE320CC5294705990046899B /* ReaderPostBackupTests.swift in Sources */,
 				F46546332AF54DCD0017E3D1 /* AllDomainsListItemViewModelTests.swift in Sources */,
+				3F21E9652B86E86600DCE8DD /* JetpackSocialServiceRemoteTests.swift in Sources */,
 				F4D9AF51288AE23500803D40 /* SuggestionTableViewTests.swift in Sources */,
 				8BC12F72231FEBA1004DDA72 /* PostCoordinatorTests.swift in Sources */,
 				C3C2F84628AC8BC700937E45 /* JetpackBannerScrollVisibilityTests.swift in Sources */,
@@ -23668,21 +23824,25 @@
 				E135965D1E7152D1006C6606 /* RecentSitesServiceTests.swift in Sources */,
 				F4D7FD6C2A57030E00642E06 /* CompliancePopoverViewControllerTests.swift in Sources */,
 				DCFC6A29292523D20062D65B /* SiteStatsPinnedItemStoreTests.swift in Sources */,
+				3F21E95F2B86E71600DCE8DD /* ActivityServiceRemoteTests.swift in Sources */,
 				D88A64AC208D9B09008AE9BC /* StockPhotosPageableTests.swift in Sources */,
 				3FFB3F222AFC72EC00A742B0 /* DeepLinkSourceTests.swift in Sources */,
 				0148CC2B2859C87000CF5D96 /* BlogServiceMock.swift in Sources */,
 				59ECF87B1CB7061D00E68F25 /* PostSharingControllerTests.swift in Sources */,
 				E157D5E01C690A6C00F04FB9 /* ImmuTableTestUtils.swift in Sources */,
 				C81CCD86243C00E000A83E27 /* TenorPageableTests.swift in Sources */,
+				3F21E96D2B86E93000DCE8DD /* DomainsServiceRemoteRESTTests.swift in Sources */,
 				46F58501262605930010A723 /* BlockEditorSettingsServiceTests.swift in Sources */,
 				8BBBEBB224B8F8C0005E358E /* ReaderCardTests.swift in Sources */,
 				D81C2F5E20F88CE5002AE1F1 /* MarkAsSpamActionTests.swift in Sources */,
+				3F21E9672B86E88100DCE8DD /* JetpackServiceRemoteTests.swift in Sources */,
 				D848CC1520FF33FC00A9038F /* NotificationContentRangeTests.swift in Sources */,
 				084FC3B729913B1B00A17BCF /* JetpackPluginOverlayViewModelTests.swift in Sources */,
 				D826D67F211D21C700A5D8FE /* NullMockUserDefaults.swift in Sources */,
 				7E987F58210811CC00CAFB88 /* NotificationContentRouterTests.swift in Sources */,
 				E1C9AA561C10427100732665 /* MathTest.swift in Sources */,
 				93A379EC19FFBF7900415023 /* KeychainTest.m in Sources */,
+				3F21E96B2B86E8FB00DCE8DD /* JetpackBackupServiceRemoteTests.swift in Sources */,
 				3F759FBE2A2DB3280039A845 /* AccountSettingsRemoteInterfaceStub.swift in Sources */,
 				F1BB660C274E704D00A319BE /* LikeUserHelperTests.swift in Sources */,
 				436D5655212209D600CEAA33 /* RegisterDomainDetailsServiceProxyMock.swift in Sources */,
@@ -23785,6 +23945,7 @@
 				3236F7A124B61B950088E8F3 /* ReaderInterestsDataSourceTests.swift in Sources */,
 				0CB424F42ADF3CBE0080B807 /* PostSearchViewModelTests.swift in Sources */,
 				8BDA5A74247C5EAA00AB124C /* ReaderDetailCoordinatorTests.swift in Sources */,
+				3F21E9692B86E8AC00DCE8DD /* JetpackScanServiceRemoteTests.swift in Sources */,
 				74585B991F0D58F300E7E667 /* DomainsServiceTests.swift in Sources */,
 				D88A64B0208DA093008AE9BC /* StockPhotosResultsPageTests.swift in Sources */,
 				0879FC161E9301DD00E1EFC8 /* MediaTests.swift in Sources */,
@@ -23794,6 +23955,7 @@
 				DC13DB7E293FD09F00E33561 /* StatsInsightsStoreTests.swift in Sources */,
 				ACACE3AE28D729FA000992F9 /* NoResultsViewControllerTests.swift in Sources */,
 				4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */,
+				3F21E9612B86E7DB00DCE8DD /* JetpackProxyServiceRemoteTests.swift in Sources */,
 				0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */,
 				8BFE36FF230F1C850061EBA8 /* AbstractPost+fixLocalMediaURLsTests.swift in Sources */,
 				08A2AD791CCED2A800E84454 /* PostTagServiceTests.m in Sources */,
@@ -24227,6 +24389,7 @@
 				80D9D04B29FC118900FE3400 /* NSMutableArray+NullableObjects.m in Sources */,
 				FABB216C2602FC2C00C8785C /* PostSignUpInterstitialViewController.swift in Sources */,
 				FABB216D2602FC2C00C8785C /* StatsGhostTableViewRows.swift in Sources */,
+				3F21E9422B86E58A00DCE8DD /* JetpackScan.swift in Sources */,
 				FABB216E2602FC2C00C8785C /* ActivityContentRouter.swift in Sources */,
 				FABB216F2602FC2C00C8785C /* UIView+ContentLayout.swift in Sources */,
 				FABB21702602FC2C00C8785C /* PeopleCell.swift in Sources */,
@@ -24268,6 +24431,7 @@
 				83C972E1281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */,
 				3FE3D1FC26A6F2AC00F3CD10 /* ListTableViewCell.swift in Sources */,
 				FABB21892602FC2C00C8785C /* Post+RefreshStatus.swift in Sources */,
+				3F21E93C2B86E58A00DCE8DD /* JetpackCredentials.swift in Sources */,
 				08F531FF2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */,
 				F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,
@@ -24503,6 +24667,7 @@
 				FABB22342602FC2C00C8785C /* ShareNoticeNavigationCoordinator.swift in Sources */,
 				C77FC90A28009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */,
 				FABB22362602FC2C00C8785C /* HomeWidgetCache.swift in Sources */,
+				3F21E93E2B86E58A00DCE8DD /* JetpackThreatFixStatus.swift in Sources */,
 				0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */,
 				FABB22372602FC2C00C8785C /* JetpackRestoreStatusCoordinator.swift in Sources */,
 				FABB22382602FC2C00C8785C /* EventLoggingDelegate.swift in Sources */,
@@ -24526,10 +24691,12 @@
 				8BC81D6627CFFC310057F790 /* BlogDashboardState.swift in Sources */,
 				FABB22492602FC2C00C8785C /* FullScreenCommentReplyViewController.swift in Sources */,
 				0A3FCA1E28B71CBD00499A15 /* FullScreenCommentReplyViewModel.swift in Sources */,
+				3F21E9402B86E58A00DCE8DD /* JetpackScanHistory.swift in Sources */,
 				FABB224A2602FC2C00C8785C /* ReaderFollowedSitesViewController.swift in Sources */,
 				FABB224B2602FC2C00C8785C /* AnnouncementsCache.swift in Sources */,
 				803BB987295A873800B3F6D6 /* RootViewPresenter+MeNavigation.swift in Sources */,
 				8B74A9A9268E3C68003511CE /* RewindStatus+multiSite.swift in Sources */,
+				3F21E92A2B86E58A00DCE8DD /* DomainContactInformation.swift in Sources */,
 				FABB224C2602FC2C00C8785C /* GravatarUploader.swift in Sources */,
 				FABB224D2602FC2C00C8785C /* NotificationSettingDetailsViewController.swift in Sources */,
 				0CB4057D29C8DF83008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */,
@@ -24565,6 +24732,7 @@
 				0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
 				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
+				3F21E94C2B86E63B00DCE8DD /* JetpackBackupServiceRemote.swift in Sources */,
 				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FE4DC5AA293A84F8008F322F /* WordPressExportRoute.swift in Sources */,
@@ -24604,6 +24772,7 @@
 				FABB227F2602FC2C00C8785C /* SettingsTextViewController.m in Sources */,
 				FABB22802602FC2C00C8785C /* PlanListViewController.swift in Sources */,
 				FABB22812602FC2C00C8785C /* GutenbergRequestAuthenticator.swift in Sources */,
+				3F21E93A2B86E58A00DCE8DD /* JetpackScanHistoryStats.swift in Sources */,
 				FAE8EE9A273AC06F00A65307 /* QuickStartSettings.swift in Sources */,
 				8BA125EC27D8F5E4008B779F /* UIView+PinSubviewPriority.swift in Sources */,
 				3FB1929626C79EC6000F5AA3 /* Date+Formats.swift in Sources */,
@@ -24653,6 +24822,7 @@
 				FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */,
 				3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				FABB22A82602FC2C00C8785C /* TableDataCoordinator.swift in Sources */,
+				3F21E9442B86E58A00DCE8DD /* JetpackScanThreat.swift in Sources */,
 				FABB22A92602FC2C00C8785C /* SettingsMultiTextViewController.m in Sources */,
 				FABB22AA2602FC2C00C8785C /* FilterSheetViewController.swift in Sources */,
 				FABB22AB2602FC2C00C8785C /* Plan.swift in Sources */,
@@ -24690,6 +24860,7 @@
 				0830538D2B2732E400B889FE /* DynamicDashboardCard.swift in Sources */,
 				FABB22C32602FC2C00C8785C /* ReaderTagsFooter.swift in Sources */,
 				4A2C73F52A95856000ACE79E /* PostRepository.swift in Sources */,
+				3F21E95B2B86E68600DCE8DD /* TransactionsServiceRemote.swift in Sources */,
 				98DCF4A6275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
 				FABB22C42602FC2C00C8785C /* ReaderPostCellActions.swift in Sources */,
 				FABB22C52602FC2C00C8785C /* ActivityStore.swift in Sources */,
@@ -24737,6 +24908,7 @@
 				FABB22DF2602FC2C00C8785C /* PlanDetailViewModel.swift in Sources */,
 				FABB22E02602FC2C00C8785C /* DebugMenuViewController.swift in Sources */,
 				9801E683274EEBC4002FDDB6 /* ReaderDetailCommentsHeader.swift in Sources */,
+				3F21E9492B86E61800DCE8DD /* ActivityServiceRemote_ApiVersion1_0.swift in Sources */,
 				FABB22E12602FC2C00C8785C /* MenuItemCheckButtonView.m in Sources */,
 				FAFF7A232B695801006A7CB2 /* WebServerLogsView.swift in Sources */,
 				80348F312AF87FEA0045CCD3 /* AllDomainsListViewController.swift in Sources */,
@@ -24866,6 +25038,7 @@
 				3FFDEF7829177D7500B625CE /* MigrationNotificationsViewModel.swift in Sources */,
 				FABB23372602FC2C00C8785C /* WebNavigationDelegate.swift in Sources */,
 				FAFC065227D27241002F0483 /* BlogDetailsViewController+Dashboard.swift in Sources */,
+				3F21E9562B86E65500DCE8DD /* JetpackServiceRemote.swift in Sources */,
 				0C700B8A2AE1E1940085C2EE /* PageListItemViewModel.swift in Sources */,
 				8B55FAAD2614FC87007D618E /* Text+BoldSubString.swift in Sources */,
 				01616C8C2B5AA6E50023C123 /* StatsTrafficBarChartTabs.swift in Sources */,
@@ -25140,6 +25313,7 @@
 				FABB24082602FC2C00C8785C /* ActivityRange.swift in Sources */,
 				FABB24092602FC2C00C8785C /* DiffAbstractValue+Attributes.swift in Sources */,
 				FABB240A2602FC2C00C8785C /* AppEnvironment.swift in Sources */,
+				3F21E9382B86E58A00DCE8DD /* JetpackBackup.swift in Sources */,
 				FABB240B2602FC2C00C8785C /* AbstractPostListViewController.swift in Sources */,
 				F4DD58332A095210009A772D /* DataMigrationError.swift in Sources */,
 				FABB240C2602FC2C00C8785C /* ManagedAccountSettings.swift in Sources */,
@@ -25152,6 +25326,7 @@
 				FABB24112602FC2C00C8785C /* NSAttributedString+RichTextView.swift in Sources */,
 				FABB24122602FC2C00C8785C /* NoteBlockButtonTableViewCell.swift in Sources */,
 				084FC3BD299155CA00A17BCF /* JetpackOverlayCoordinator.swift in Sources */,
+				3F21E9582B86E65500DCE8DD /* JetpackSocialServiceRemote.swift in Sources */,
 				C7F7ABD6261CED7A00CE547F /* JetpackAuthenticationManager.swift in Sources */,
 				0C1DB6092B0A419B0028F200 /* ImageDecoder.swift in Sources */,
 				FABB24142602FC2C00C8785C /* ThemeBrowserSectionHeaderView.swift in Sources */,
@@ -25282,6 +25457,7 @@
 				C3895DDD28C65435004E7C9B /* SplashPrologueView.swift in Sources */,
 				FABB246A2602FC2C00C8785C /* WordPressAuthenticationManager.swift in Sources */,
 				FABB246B2602FC2C00C8785C /* SiteManagementService.swift in Sources */,
+				3F21E9522B86E65500DCE8DD /* JetpackProxyServiceRemote.swift in Sources */,
 				FABB246C2602FC2C00C8785C /* ActivityPostRange.swift in Sources */,
 				3FF717FF291F07AB00323614 /* MigrationCenterViewConfiguration.swift in Sources */,
 				FABB246D2602FC2C00C8785C /* ReaderSelectInterestsViewController.swift in Sources */,
@@ -25371,6 +25547,7 @@
 				C3643AD028AC049D00FC5FD3 /* SharingViewController.swift in Sources */,
 				FABB24A42602FC2C00C8785C /* NotificationContentFactory.swift in Sources */,
 				FABB24A52602FC2C00C8785C /* SiteIconView.swift in Sources */,
+				3F21E9282B86E58A00DCE8DD /* DomainsServiceRemote.swift in Sources */,
 				3FF15A56291B4EEA00E1B4E5 /* MigrationCenterView.swift in Sources */,
 				FABB24A62602FC2C00C8785C /* JetpackRestoreCompleteViewController.swift in Sources */,
 				FABB24A72602FC2C00C8785C /* FormattableNoticonRange.swift in Sources */,
@@ -25411,6 +25588,7 @@
 				FABB24C02602FC2C00C8785C /* MenuItemTypeSelectionView.m in Sources */,
 				FABB24C12602FC2C00C8785C /* WordPressAppDelegate+openURL.swift in Sources */,
 				F4CBE3DA29265BC8004FFBB6 /* LogOutActionHandler.swift in Sources */,
+				3F21E92C2B86E58A00DCE8DD /* DomainsServiceRemote+AllDomains.swift in Sources */,
 				FABB24C22602FC2C00C8785C /* WPSplitViewController.swift in Sources */,
 				FABB24C32602FC2C00C8785C /* CollectionViewContainerRow.swift in Sources */,
 				0CFE9ACA2AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift in Sources */,
@@ -25594,6 +25772,7 @@
 				FABB25462602FC2C00C8785C /* PostFeaturedImageCell.m in Sources */,
 				FABB25472602FC2C00C8785C /* WPException.m in Sources */,
 				FABB25482602FC2C00C8785C /* StatsGhostCells.swift in Sources */,
+				3F21E9542B86E65500DCE8DD /* JetpackScanServiceRemote.swift in Sources */,
 				FABB25492602FC2C00C8785C /* NotificationCenter+ObserveOnce.swift in Sources */,
 				FABB254A2602FC2C00C8785C /* SharePost.swift in Sources */,
 				FABB254B2602FC2C00C8785C /* RoleViewController.swift in Sources */,
@@ -25651,6 +25830,7 @@
 				FABB25722602FC2C00C8785C /* UITableView+Header.swift in Sources */,
 				FABB25732602FC2C00C8785C /* RichTextContentStyles.swift in Sources */,
 				F1E72EBB267790110066FF91 /* UIViewController+Dismissal.swift in Sources */,
+				3F21E92E2B86E58A00DCE8DD /* JetpackRestoreTypes.swift in Sources */,
 				FABB25752602FC2C00C8785C /* ContentCoordinator.swift in Sources */,
 				FABB25762602FC2C00C8785C /* InviteLinks+CoreDataProperties.swift in Sources */,
 				FABB25772602FC2C00C8785C /* NotificationMediaDownloader.swift in Sources */,
