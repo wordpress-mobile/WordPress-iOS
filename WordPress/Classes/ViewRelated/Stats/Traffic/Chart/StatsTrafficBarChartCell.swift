@@ -309,18 +309,15 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
     var attributedTitle: NSAttributedString? {
         let attributedTitle = NSMutableAttributedString(string: tabTitle)
         attributedTitle.addAttributes([.font: TextStyle.footnote.uiFont],
-                                      range: NSMakeRange(0, attributedTitle.string.count))
+                                      range: NSMakeRange(0, attributedTitle.length))
 
         let dataString: String = {
-            if let tabDataStub = tabDataStub {
-                return tabDataStub
-            }
-            return tabData.abbreviatedString()
+            return tabDataStub ?? tabData.abbreviatedString()
         }()
 
         let attributedData = NSMutableAttributedString(string: dataString)
         attributedData.addAttributes([.font: TextStyle.bodyLarge(.emphasized).uiFont],
-                                     range: NSMakeRange(0, attributedData.string.count))
+                                     range: NSMakeRange(0, attributedData.length))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
         attributedTitle.append(attributedData)
