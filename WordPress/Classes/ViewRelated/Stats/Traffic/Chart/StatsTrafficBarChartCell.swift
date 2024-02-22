@@ -25,6 +25,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     private var period: StatsPeriodUnit?
     private var unit: StatsPeriodUnit?
     private var chartView: StatsTrafficBarChartView?
+    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
     // MARK: - Configure
 
@@ -47,12 +48,14 @@ final class StatsTrafficBarChartCell: UITableViewCell {
                    barChartData: [BarChartDataConvertible] = [],
                    barChartStyling: [StatsTrafficBarChartStyling] = [],
                    period: StatsPeriodUnit,
-                   unit: StatsPeriodUnit) {
+                   unit: StatsPeriodUnit,
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate?) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
         self.period = period
         self.unit = unit
+        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         updateLabels()
         updateButtons()
@@ -64,6 +67,7 @@ private extension StatsTrafficBarChartCell {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         updateLabels()
         updateChartView()
+        siteStatsPeriodDelegate?.barChartTabSelected?(filterBar.selectedIndex)
     }
 
     func updateLabels() {
