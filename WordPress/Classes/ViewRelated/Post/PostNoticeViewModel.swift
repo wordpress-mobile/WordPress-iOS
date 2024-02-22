@@ -8,12 +8,24 @@ struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
     private let autoUploadInteractor = PostAutoUploadInteractor()
+    private let isFirstTimePublish: Bool
     private let isInternetReachable: Bool
 
-    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isFirstTimePublish: Bool? = nil, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
         self.postCoordinator = postCoordinator
+        self.isFirstTimePublish = isFirstTimePublish ?? post.isFirstTimePublish
         self.isInternetReachable = isInternetReachable
+    }
+
+    static func makeSuccessNotice(for post: AbstractPost, isFirstTimePublish: Bool) -> Notice {
+        let model = PostNoticeViewModel(post: post, isFirstTimePublish: isFirstTimePublish)
+        return model.successNotice
+    }
+
+    static func makeFailureNotice(for post: AbstractPost, error: Error) -> Notice {
+        let model = PostNoticeViewModel(post: post, isInternetReachable: (error as? URLError)?.code == .notConnectedToInternet)
+        return model.failureNotice
     }
 
     /// Returns the Notice represented by this view model.
@@ -87,7 +99,7 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
         default:
-            if page.isFirstTimePublish {
+            if isFirstTimePublish {
                 return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
             } else {
                 return NSLocalizedString("Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
@@ -106,7 +118,7 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
         default:
-            if post.isFirstTimePublish {
+            if isFirstTimePublish {
                 return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
             } else {
                 return NSLocalizedString("Post updated", comment: "Title of notification displayed when a post has been successfully updated.")

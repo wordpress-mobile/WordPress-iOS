@@ -20,6 +20,17 @@ enum PrepublishingIdentifier {
     }
 }
 
+enum PrepublishingSheetResult {
+    /// The user confirms that they want to publish (legacy behavior).
+    ///
+    /// - note: Deprecated (kahu-offline-mode)
+    case confirmed
+    /// The sheet published the post (new behavior)
+    case published
+    /// The user cancelled.
+    case cancelled
+}
+
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
@@ -42,13 +53,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
 
-    enum CompletionResult {
-        case completed(AbstractPost)
-        case published
-        case dismissed
-    }
-
-    private let completion: (CompletionResult) -> ()
+    private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.
     private var options = [PrepublishingOption]()
@@ -75,7 +80,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
-         completion: @escaping (CompletionResult) -> (),
+         completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
@@ -232,13 +237,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
 
-        if isBeingDismissed || parent?.isBeingDismissed == true {
-            if !didTapPublish,
-               post.status == .publishPrivate,
-               let originalStatus = post.original?.status {
+        if (isBeingDismissed || parent?.isBeingDismissed == true) && !didTapPublish {
+            if post.status == .publishPrivate, let originalStatus = post.original?.status {
                 post.status = originalStatus
             }
-            completion(.dismissed)
+            getCompletion()?(.cancelled)
         }
     }
 
@@ -334,6 +337,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
         WPStyleGuide.configureTableViewTextCell(cell)
         cell.delegate = self
+    }
+
+    /// Returns the completion closure and sets it to nil to make sure the screen
+    /// only calls it once.
+    private func getCompletion() -> ((PrepublishingSheetResult) -> Void)? {
+        let completion = self.completion
+        self.completion = nil
+        return completion
     }
 
     // MARK: - Title
@@ -452,26 +463,22 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         if FeatureFlag.offlineMode.enabled {
             publishPost()
         } else {
+            let completion = getCompletion()
             navigationController?.dismiss(animated: true) {
                 WPAnalytics.track(.editorPostPublishNowTapped)
-                self.completion(.completed(self.post))
+                completion?(.confirmed)
             }
         }
     }
 
-    // TODO: Add support for other target statuses
     private func publishPost() {
         publishButtonViewModel.state = .loading
-
         Task {
             do {
-                try await PostRepository().publish(post)
-                self.completion(.published)
-                // TODO: show success like from coordinator
+                try await PostCoordinator.shared._publish(post)
+                getCompletion()?(.published)
             } catch {
                 publishButtonViewModel.state = .default
-                // TODO:  verify if we need anything else from the coorrdinator
-                // TODO: show error message
             }
         }
     }

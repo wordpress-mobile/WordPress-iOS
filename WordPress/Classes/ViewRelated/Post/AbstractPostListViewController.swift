@@ -603,11 +603,11 @@ class AbstractPostListViewController: UIViewController,
         func showPrepublishingFlow(for post: Post) {
             let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
                 switch result {
-                case .completed(let post):
+                case .confirmed:
                     self?.didConfirmPublish(for: post)
                 case .published:
                     self?.dismiss(animated: true)
-                case .dismissed:
+                case .cancelled:
                     break
                 }
             }

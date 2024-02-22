@@ -96,8 +96,8 @@ extension PublishingEditor {
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
-        analyticsStat: WPAnalyticsStat?) {
-
+        analyticsStat: WPAnalyticsStat?
+    ) {
         mapUIContentToPostAndSave(immediate: true)
 
         // Cancel publishing if media is currently being uploaded
@@ -187,10 +187,25 @@ extension PublishingEditor {
             WPAnalytics.track(.editorPostPublishTap)
 
             // Only display confirmation alert for unpublished posts
-            displayPublishConfirmationAlert(for: action, onPublish: publishBlock, onDismiss: { [weak self] in
-                self?.publishingDismissed()
-                WPAnalytics.track(.editorPostPublishDismissed)
-            })
+            displayPublishConfirmationAlert(for: action) { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .confirmed:
+                    publishBlock()
+                case .published:
+                    self.emitPostSaveEvent()
+                    if let analyticsStat {
+                        self.trackPostSave(stat: analyticsStat)
+                    }
+                    self.editorSession.end(outcome: action.analyticsEndOutcome)
+
+                    let presentBloggingReminders = JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+                    self.dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
+                case .cancelled:
+                    self.publishingDismissed()
+                    WPAnalytics.track(.editorPostPublishDismissed)
+                }
+            }
         } else {
             publishBlock()
         }
@@ -214,11 +229,11 @@ extension PublishingEditor {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
+    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
         if let post = post as? Post {
-            displayPrepublishingNudges(post: post, onPublish: publishAction, onDismiss: dismissAction)
+            displayPrepublishingNudges(post: post, completion: completion)
         } else {
-            displayPublishConfirmationAlertForPage(for: action, onPublish: publishAction, onDismiss: dismissAction)
+            displayPublishConfirmationAlertForPage(for: action, completion: completion)
         }
     }
 
@@ -227,22 +242,11 @@ extension PublishingEditor {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPrepublishingNudges(post: Post, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
+    fileprivate func displayPrepublishingNudges(post: Post, completion: @escaping (PrepublishingSheetResult) -> Void) {
         // End editing to avoid issues with accessibility
         view.endEditing(true)
 
-        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers) { [weak self] result in
-            switch result {
-            case .completed(let post):
-                self?.post = post
-                publishAction()
-            case .published:
-                // TODO: verify if we need anything else from here
-                self?.dismissOrPopView()
-            case .dismissed:
-                dismissAction()
-            }
-        }
+        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers, completion: completion)
         viewController.presentAsSheet(from: topmostPresentedViewController)
     }
 
@@ -251,7 +255,7 @@ extension PublishingEditor {
     /// - Parameters:
     ///     - action: Publishing action being performed
     ///
-    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, onPublish publishAction: @escaping () -> (), onDismiss dismissAction: @escaping () -> ()) {
+    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
         let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel
@@ -259,10 +263,10 @@ extension PublishingEditor {
         let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
 
         alertController.addCancelActionWithTitle(keepEditingTitle) { _ in
-            dismissAction()
+            completion(.cancelled)
         }
         alertController.addDefaultActionWithTitle(publishTitle) { _ in
-            publishAction()
+            completion(.confirmed)
         }
         present(alertController, animated: true, completion: nil)
     }

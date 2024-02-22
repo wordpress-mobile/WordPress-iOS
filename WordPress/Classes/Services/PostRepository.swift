@@ -59,36 +59,51 @@ final class PostRepository {
     }
 
     /// Uploads the changes to the given post to the server and deletes the
-      /// uploaded local revision afterward. If the post has an associated
-      /// remote ID, creates a new post.
-      ///
-      /// - note: This method is a low-level primitive for syncing the latest
-      /// post date to the server.
-      ///
-      /// - warning: Before publishing, ensure that the media for the post got
-      /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    /// uploaded local revision afterward. If the post has an associated
+    /// remote ID, creates a new post.
+    ///
+    /// - note: This method is a low-level primitive for syncing the latest
+    /// post date to the server.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func upload(_ post: AbstractPost) async throws {
-        let service = try getRemoteService(for: post.blog)
-        let isFirstTimePublish = post.isFirstTimePublish
-
+    func _upload(_ post: AbstractPost) async throws {
         let remotePost = PostHelper.remotePost(with: post)
+        try await _upload(remotePost, for: post)
+    }
+
+    /// Uploads the changes to the given post to the server and deletes the
+    /// uploaded local revision afterward. If the post has an associated
+    /// remote ID, creates a new post.
+    ///
+    /// - note: This method is a low-level primitive for syncing the latest
+    /// post date to the server.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @MainActor
+    func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws {
+        let service = try getRemoteService(for: post.blog)
+
         let uploadedPost: RemotePost
         if let postID = post.postID, postID.intValue > 0 {
-            uploadedPost = try await service.update(remotePost)
+            uploadedPost = try await service.update(parameters)
         } else {
-            uploadedPost = try await service.create(remotePost)
+            uploadedPost = try await service.create(parameters)
         }
 
         let postID = TaggedManagedObjectID(post)
         try await coreDataStack.performAndSave { context in
             var post = try context.existingObject(with: postID)
             if post.isRevision(), let original = post.original {
-                original.applyRevision()
                 original.deleteRevision()
                 post = original
             }
-            post.isFirstTimePublish = isFirstTimePublish
             PostHelper.update(post, with: uploadedPost, in: context)
             PostService(managedObjectContext: context)
                 .updateMediaFor(post: post, success: {}, failure: { _ in })
