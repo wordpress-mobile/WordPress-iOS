@@ -876,7 +876,7 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
 
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^)(void))success
+                           success:(void (^)(BOOL liked))success
                            failure:(void (^)(NSError *error))failure
 {
     NSManagedObjectID *commentObjectID = comment.objectID;
@@ -901,14 +901,18 @@ static NSTimeInterval const CommentsRefreshTimeoutInSeconds = 60 * 5; // 5 minut
                 }
             } onQueue:dispatch_get_main_queue()];
         };
-
+        BOOL newLikedStatus = !isLikedOriginally;
+        void (^successBlock)(void) = ^void() {
+            if (success) {
+                success(!isLikedOriginally);
+            }
+        };
         NSNumber *commentID = [NSNumber numberWithInt:comment.commentID];
-
-        if (!isLikedOriginally) {
-            [self likeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
+        if (newLikedStatus) {
+            [self likeCommentWithID:commentID siteID:siteID success:successBlock failure:failureBlock];
         }
         else {
-            [self unlikeCommentWithID:commentID siteID:siteID success:success failure:failureBlock];
+            [self unlikeCommentWithID:commentID siteID:siteID success:successBlock failure:failureBlock];
         }
     } onQueue:dispatch_get_main_queue()];
 }

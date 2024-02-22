@@ -678,7 +678,7 @@ private extension CommentDetailViewController {
                                     CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
-        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: {}, failure: { _ in
+        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: { _ in }, failure: { _ in
             self.refreshData() // revert the like button state.
         })
     }
