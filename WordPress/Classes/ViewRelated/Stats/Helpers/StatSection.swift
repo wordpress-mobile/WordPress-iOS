@@ -35,22 +35,29 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights: [StatSection] = [
-        .insightsViewsVisitors,
-        .insightsLikesTotals,
-        .insightsCommentsTotals,
-        .insightsFollowerTotals,
-        .insightsMostPopularTime,
-        .insightsLatestPostSummary,
-        .insightsAllTime,
-        .insightsAnnualSiteStats,
-        .insightsTodaysStats,
-        .insightsPostingActivity,
-        .insightsTagsAndCategories,
-        .insightsFollowersWordPress,
-        .insightsFollowersEmail,
-        .insightsPublicize
-    ]
+    static var allInsights: [StatSection] {
+        var insights: [StatSection] = [
+            .insightsViewsVisitors,
+            .insightsLikesTotals,
+            .insightsCommentsTotals,
+            .insightsFollowerTotals,
+            .insightsMostPopularTime,
+            .insightsLatestPostSummary,
+            .insightsAllTime,
+            .insightsAnnualSiteStats,
+            .insightsPostingActivity,
+            .insightsTagsAndCategories,
+            .insightsFollowersWordPress,
+            .insightsFollowersEmail,
+            .insightsPublicize
+        ]
+
+        if !RemoteFeatureFlag.statsTrafficTab.enabled() {
+            insights.insert(.insightsTodaysStats, at: 8)
+        }
+
+        return insights
+    }
 
     static let allPeriods: [StatSection] = [
         .periodOverviewViews,
