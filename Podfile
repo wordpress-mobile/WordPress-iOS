@@ -92,12 +92,6 @@ def shared_style_pods
   pod 'Gridicons', '~> 1.2'
 end
 
-def swiftlint_version
-  require 'yaml'
-
-  YAML.load_file('.swiftlint.yml')['swiftlint_version']
-end
-
 abstract_target 'Apps' do
   project 'WordPress/WordPress.xcodeproj'
 
@@ -284,6 +278,16 @@ end
 ##
 target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
+end
+
+## Tools
+## ===================
+##
+
+def swiftlint_version
+  require 'yaml'
+
+  YAML.load_file('.swiftlint.yml')['swiftlint_version']
 end
 
 abstract_target 'Tools' do
