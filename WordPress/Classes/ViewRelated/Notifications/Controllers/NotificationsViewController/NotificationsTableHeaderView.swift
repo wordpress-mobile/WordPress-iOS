@@ -3,6 +3,13 @@ import DesignSystem
 
 final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
 
+    // HeaderPosition categorizes table view headers based on their position in a list,
+    // distinguishing between the very first header and any that follow.
+    enum HeaderPosition {
+        case first
+        case subsequent
+    }
+
     static let reuseIdentifier: String = String(describing: NotificationsTableHeaderView.self)
 
     // MARK: - Properties
@@ -13,9 +20,9 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         }
     }
 
-    var style: Style = .leading {
+    var position: HeaderPosition = .first {
         didSet {
-            self.update(style: style)
+            self.update(position: position)
         }
     }
 
@@ -62,10 +69,10 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         self.contentConfiguration = config
     }
 
-    private func update(style: Style) {
+    private func update(position: HeaderPosition) {
         if var config = self.contentConfiguration as? UIListContentConfiguration {
-            switch style {
-            case .leading:
+            switch position {
+            case .first:
                 config.directionalLayoutMargins = Appearance.layoutMarginsLeading
             case .subsequent:
                 config.directionalLayoutMargins = Appearance.layoutMarginsSubsequent
@@ -93,10 +100,4 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
             trailing: Length.Padding.double
         )
     }
-
-    enum Style {
-        case leading
-        case subsequent
-    }
-
 }

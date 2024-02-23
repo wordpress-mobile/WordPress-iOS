@@ -399,9 +399,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
         view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
         if section == 0 {
-            view.style = .leading
+            view.position = .first
         } else {
-            view.style = .subsequent
+            view.position = .subsequent
         }
         return view
     }
