@@ -190,7 +190,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  */
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^ _Nullable)(void))success
+                           success:(void (^ _Nullable)(BOOL liked))success
                            failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 /**

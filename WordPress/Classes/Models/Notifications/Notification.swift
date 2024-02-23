@@ -87,6 +87,10 @@ class Notification: NSManagedObject {
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
+    /// Temporary variable
+    ///
+    var isLikedPost: Bool = false
+
     override func awakeFromFetch() {
         super.awakeFromFetch()
 
@@ -433,7 +437,11 @@ extension Notification {
             if let note = NewPostNotification(note: self) {
                 return .newPost(note)
             }
-        default:
+        case .comment:
+            if let note = CommentNotification(note: self) {
+                return .comment(note)
+            }
+        default: 
             break
         }
         return .other(self)
@@ -441,6 +449,7 @@ extension Notification {
 
     enum Subtype {
         case newPost(NewPostNotification)
+        case comment(CommentNotification)
         case other(Notification)
     }
 }

@@ -983,7 +983,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     __typeof(self) __weak weakSelf = self;
-    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^{
+    [commentService toggleLikeStatusForComment:comment siteID:self.post.siteID success:^(__unused BOOL liked) {
         [weakSelf trackCommentLikedOrUnliked:comment];
     } failure:^(NSError * __unused error) {
         // in case of failure, revert the cell's like state.

@@ -39,6 +39,8 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         let notification = notification.parsed()
         switch notification {
+        case .comment(let notification):
+            return commentLikeInlineAction(viewModel: viewModel, notification: notification)
         case .newPost(let notification):
             return postLikeInlineAction(viewModel: viewModel, notification: notification)
         case .other(let notification):
@@ -75,6 +77,21 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
                 return
             }
             viewModel.postLikeActionTapped(with: notification) { liked in
+                let (image, color) = self.likeInlineActionIcon(filled: liked)
+                config.icon = image
+                config.color = color
+            }
+        }
+        let (image, color) = self.likeInlineActionIcon(filled: notification.liked)
+        return .init(icon: image, color: color, action: action)
+    }
+
+    private func commentLikeInlineAction(viewModel: NotificationsViewModel, notification: CommentNotification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+        let action: () -> Void = { [weak self] in
+            guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
+                return
+            }
+            viewModel.commentLikeActionTapped(with: notification) { liked in
                 let (image, color) = self.likeInlineActionIcon(filled: liked)
                 config.icon = image
                 config.color = color
