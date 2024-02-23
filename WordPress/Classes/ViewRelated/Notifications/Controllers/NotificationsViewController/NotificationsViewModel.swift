@@ -15,8 +15,6 @@ final class NotificationsViewModel {
     // MARK: - Depdencies
 
     private let contextManager: CoreDataStackSwift
-    private let readerPostService: ReaderPostService
-    private let commentService: CommentService
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
@@ -32,8 +30,6 @@ final class NotificationsViewModel {
         userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
         contextManager: CoreDataStackSwift = ContextManager.shared,
-        readerPostService: ReaderPostService? = nil,
-        commentService: CommentService? = nil,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
@@ -42,8 +38,6 @@ final class NotificationsViewModel {
         self.analyticsTracker = analyticsTracker
         self.crashLogger = crashLogger
         self.contextManager = contextManager
-        self.readerPostService = readerPostService ?? .init(coreDataStack: contextManager)
-        self.commentService = commentService ?? .init(coreDataStack: contextManager)
     }
 
     /// The last time when user seen notifications
@@ -150,52 +144,7 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: .postLike)
     }
 
-    private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.contextManager.performAndSave { context in
-            self.updatePostLikeRemotely(notification: notification, in: context, completion: completion)
-        }
-    }
-
-    private func updatePostLikeRemotely(notification: NewPostNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.fetchPost(withId: notification.postID, siteID: notification.siteID, in: context) { result in
-            switch result {
-            case .success(let post):
-                let action = ReaderLikeAction(service: self.readerPostService)
-                action.execute(with: post) { result in
-                    completion(result)
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
     // MARK: - Load Posts & Comments
-
-    private func fetchPost(withId id: UInt, siteID: UInt, in context: NSManagedObjectContext, completion: @escaping (Result<ReaderPost, Swift.Error>) -> Void) {
-        // Fetch locally
-        if let post = try? ReaderPost.lookup(withID: NSNumber(value: id), forSiteWithID: NSNumber(value: siteID), in: context) {
-            completion(.success(post))
-            return
-        }
-
-        // If not found, then fetch remotely
-        self.readerPostService.fetchPost(id, forSite: siteID, isFeed: false) { [weak self] post in
-            guard let self else {
-                return
-            }
-            context.perform {
-                if let postID = post?.objectID, let post = try? context.existingObject(with: postID) as? ReaderPost {
-                    completion(.success(post))
-                } else {
-                    self.crashLogger.logMessage("Post with ID \(id) is not found", level: .error)
-                    completion(.failure(Error.unknown))
-                }
-            }
-        } failure: { error in
-            completion(.failure(error ?? Error.unknown))
-        }
-    }
 
     // MARK: - Helpers
 
@@ -209,12 +158,6 @@ final class NotificationsViewModel {
             return Strings.sharingMessageWithoutPost
         }
         return String(format: Strings.sharingMessageWithPostFormat, postTitle)
-    }
-
-    // MARK: - Types
-
-    enum Error: Swift.Error {
-        case unknown
     }
 }
 

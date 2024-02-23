@@ -86,7 +86,7 @@ class ReaderPostCellActions: NSObject, ReaderPostCellDelegate {
             return
         }
 
-        ReaderLikeAction().execute(with: post, completion: { _ in
+        ReaderLikeAction().execute(with: post, completion: {
             cell.refreshLikeButton()
         })
     }
