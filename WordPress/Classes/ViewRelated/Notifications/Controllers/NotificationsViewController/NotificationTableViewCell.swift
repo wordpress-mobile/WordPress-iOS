@@ -91,7 +91,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
             guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
                 return
             }
-            viewModel.commentLikeActionTapped(with: notification) { liked in
+            viewModel.likeActionTapped(with: notification, action: .commentLike) { liked in
                 let (image, color) = self.likeInlineActionIcon(filled: liked)
                 config.icon = image
                 config.color = color

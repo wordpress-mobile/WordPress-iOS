@@ -151,38 +151,6 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: action, extraProperties: properties)
     }
 
-    func commentLikeActionTapped(with notification: CommentNotification, changes: @escaping (Bool) -> Void) {
-        // Optimistically update liked status
-        var notification = notification
-        let oldLikedStatus = notification.liked
-        let newLikedStatus = !notification.liked
-        changes(newLikedStatus)
-
-        // Update liked status remotely
-        let mainContext = contextManager.mainContext
-        notificationMediator?.toggleLikeForCommentNotification(like: newLikedStatus,
-                                                              commentID: notification.commentID,
-                                                              siteID: notification.siteID) { result in
-            mainContext.perform {
-                do {
-                    switch result {
-                    case .success(let liked):
-                        notification.liked = liked
-                        try mainContext.save()
-                    case .failure(let error):
-                        throw error
-                    }
-                } catch {
-                    changes(oldLikedStatus)
-                }
-            }
-        }
-
-        // Track analytics event
-        let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
-        self.trackInlineActionTapped(action: .commentLike, extraProperties: properties)
-    }
-
     // MARK: - Helpers
 
     private func createSharingTitle(from notification: Notification) -> String {

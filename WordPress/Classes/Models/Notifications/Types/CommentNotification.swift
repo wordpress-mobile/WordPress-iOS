@@ -1,13 +1,27 @@
 import Foundation
 
-struct CommentNotification {
+struct CommentNotification: LikeableNotification {
 
     // MARK: - Properties
 
-    let note: Notification
-    let commentID: UInt
-    let postID: UInt
-    let siteID: UInt
+    private let note: Notification
+    private let commentID: UInt
+    private let siteID: UInt
+
+    // MARK: - Init
+
+    init?(note: Notification) {
+        guard let siteID = note.metaSiteID?.uintValue,
+              let commentID = note.metaCommentID?.uintValue
+        else {
+            return nil
+        }
+        self.note = note
+        self.siteID = siteID
+        self.commentID = commentID
+    }
+
+    // MARK: LikeableNotification
 
     var liked: Bool {
         get {
@@ -17,24 +31,18 @@ struct CommentNotification {
         }
     }
 
-    // MARK: - Init
-
-    init?(note: Notification) {
-        guard let postID = note.metaPostID?.uintValue,
-              let siteID = note.metaSiteID?.uintValue,
-              let commentID = note.metaCommentID?.uintValue
-        else {
-            return nil
-        }
-        self.note = note
-        self.postID = postID
-        self.siteID = siteID
-        self.commentID = commentID
+    func toggleLike(using notificationMediator: NotificationSyncMediatorProtocol,
+                    like: Bool,
+                    completion: @escaping (Result<Bool, Error>) -> Void) {
+        notificationMediator.toggleLikeForCommentNotification(like: like,
+                                                              commentID: commentID,
+                                                              siteID: siteID,
+                                                              completion: completion)
     }
 
     // MARK: - Helpers
 
-    func getCommentLikedStatus() -> Bool {
+    private func getCommentLikedStatus() -> Bool {
         guard let body = note.body(ofType: .comment),
               let actions = body[Notification.BodyKeys.actions] as? [String: Bool],
               let liked = actions[Notification.ActionsKeys.likeComment]
@@ -44,7 +52,7 @@ struct CommentNotification {
         return liked
     }
 
-    func updateCommentLikedStatus(_ newValue: Bool) {
+    private func updateCommentLikedStatus(_ newValue: Bool) {
         guard var body = note.body(ofType: .comment),
               var actions = body[Notification.BodyKeys.actions] as? [String: Bool]
         else {
