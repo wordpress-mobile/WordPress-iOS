@@ -175,7 +175,8 @@ final class NotificationsViewModel {
         }
 
         // Track analytics event
-        self.trackInlineActionTapped(action: .commentLike)
+        let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
+        self.trackInlineActionTapped(action: .commentLike, extraProperties: properties)
     }
 
     // MARK: - Helpers
