@@ -178,7 +178,8 @@ platform :ios do
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       release_version: release_version_current,
-      build_version: build_code_current
+      build_version: build_code_current,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
     )
 
     next unless options[:create_release]
@@ -230,7 +231,8 @@ platform :ios do
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       release_version: release_version_current,
-      build_version: build_code_current
+      build_version: build_code_current,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
   end
 
@@ -287,7 +289,8 @@ platform :ios do
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       release_version: release_version_current_internal,
-      build_version: build_code_current_internal
+      build_version: build_code_current_internal,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
     )
     
   end
@@ -307,7 +310,8 @@ platform :ios do
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
       app_icon: ':wordpress:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
     )
   end
 
@@ -326,7 +330,8 @@ platform :ios do
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
       app_icon: ':jetpack:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
   end
 
@@ -358,7 +363,7 @@ platform :ios do
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
   # rubocop:disable Metrics/AbcSize
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:)
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:, app_identifier:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
@@ -416,7 +421,8 @@ platform :ios do
     upload_gutenberg_sourcemaps(
       sentry_project_slug: sentry_project_slug,
       release_version: release_version_current,
-      build_version: build_number
+      build_version: build_number,
+      app_identifier: app_identifier
     )
 
     # Post PR Comment
@@ -476,7 +482,7 @@ platform :ios do
     )
   end
 
-  def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:)
+  def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
     # The bundle and source map files are the same for all architectures.
     gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, "Pods/Gutenberg/Frameworks/Gutenberg.xcframework/ios-arm64/Gutenberg.framework")
 
@@ -486,12 +492,23 @@ platform :ios do
       FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
       FileUtils.cp(File.join(gutenberg_bundle, 'App.composed.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
 
+      # To generate the full release version string to attach the source maps, we need to specify:
+      # - App identifier
+      # - Release version
+      # - Build version
+      # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
+      # Here are a couple of examples:
+      # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3 
+      # - App Store build: org.wordpress@24.1+24.1.0.3
+
       sentry_upload_sourcemap(
         auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
         org_slug: SENTRY_ORG_SLUG,
         project_slug: sentry_project_slug,
         version: release_version,
         dist: build_version,
+        build: build_version,
+        app_identifier: app_identifier,
         # When the React native bundle is generated, the source map file references
         # include the local machine path, with the `rewrite` and `strip_common_prefix` 
         # options Sentry automatically strips this part.
