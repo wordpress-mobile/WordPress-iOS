@@ -1,6 +1,7 @@
 24.4
 -----
 * [**] Block editor: Introduce VideoPress v5 support, to fix issues using video block with dotcom and Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6634]
+* [**] [internal] Refactored .org REST API calls. [#22612]
 
 24.3
 -----

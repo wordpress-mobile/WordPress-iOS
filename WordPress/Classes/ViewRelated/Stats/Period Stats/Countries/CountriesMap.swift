@@ -1,6 +1,6 @@
 import Foundation
 
-struct CountriesMap {
+struct CountriesMap: Hashable {
     let minViewsCount: Int
     let maxViewsCount: Int
     let data: [String: NSNumber]

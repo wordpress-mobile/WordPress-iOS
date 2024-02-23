@@ -48,12 +48,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
+    private weak var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     init() {
@@ -115,14 +115,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
 
 }
 
-extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
-    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
-            tableHeaderView?.updateDate(with: intervalDate)
-        }
-    }
-}
-
 // MARK: - Private Extension
 
 private extension SiteStatsPeriodTableViewController {
@@ -141,7 +133,6 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
                                              referrerDelegate: self)
-        viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
     }
@@ -167,11 +158,12 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 CountriesMapRow.self,
-                OverviewRow.self,
+                StatsTrafficBarChartRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
-                StatsGhostTopImmutableRow.self]
+                StatsGhostTopImmutableRow.self,
+                TwoColumnStatsRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -181,9 +173,10 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
+        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -225,7 +218,7 @@ private extension SiteStatsPeriodTableViewController {
 
 extension SiteStatsPeriodTableViewController: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+        guard tableHandler.diffableDataSource.snapshot().numberOfSections == 0 else {
             return
         }
 

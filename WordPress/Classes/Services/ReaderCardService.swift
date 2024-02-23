@@ -25,8 +25,10 @@ class ReaderCardService {
     }
 
     func fetch(isFirstPage: Bool, refreshCount: Int = 0, success: @escaping (Int, Bool) -> Void, failure: @escaping (Error?) -> Void) {
-        followedInterestsService.fetchFollowedInterestsLocally { [unowned self] topics in
-            guard let interests = topics, !interests.isEmpty else {
+        followedInterestsService.fetchFollowedInterestsLocally { [weak self] topics in
+            guard let self,
+                  let interests = topics,
+                  !interests.isEmpty else {
                 failure(Errors.noInterests)
                 return
             }

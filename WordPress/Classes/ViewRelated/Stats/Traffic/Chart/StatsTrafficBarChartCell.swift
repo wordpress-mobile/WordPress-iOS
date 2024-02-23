@@ -23,6 +23,7 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [StatsTrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
+    private var unit: StatsPeriodUnit?
     private var chartView: StatsTrafficBarChartView?
 
     // MARK: - Configure
@@ -45,11 +46,13 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     func configure(tabsData: [StatsTrafficBarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
                    barChartStyling: [StatsTrafficBarChartStyling] = [],
-                   period: StatsPeriodUnit? = nil) {
+                   period: StatsPeriodUnit,
+                   unit: StatsPeriodUnit) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
         self.period = period
+        self.unit = unit
 
         updateLabels()
         updateButtons()
@@ -213,7 +216,7 @@ private extension StatsTrafficBarChartCell {
 
     func differenceAttributedString(_ data: StatsTrafficBarChartTabData) -> NSAttributedString? {
         guard let differenceText = differenceText(data) else {
-            return .init(string: " ")
+            return nil
         }
 
         let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .footnote), NSAttributedString.Key.foregroundColor: UIColor.DS.Foreground.secondary]
@@ -300,7 +303,7 @@ private extension StatsTrafficBarChartCell {
     }
 }
 
-struct StatsTrafficBarChartTabData: FilterTabBarItem {
+struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
     var tabTitle: String
     var tabData: Int
     var tabDataStub: String?
