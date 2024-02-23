@@ -87,10 +87,6 @@ class Notification: NSManagedObject {
     ///
     fileprivate static let cachedAttributes = Set(arrayLiteral: "body", "header", "subject", "timestamp")
 
-    /// Temporary variable
-    ///
-    var isLikedPost: Bool = false
-
     override func awakeFromFetch() {
         super.awakeFromFetch()
 
@@ -437,7 +433,7 @@ extension Notification {
             if let note = NewPostNotification(note: self) {
                 return .newPost(note)
             }
-        default: 
+        default:
             break
         }
         return .other(self)
