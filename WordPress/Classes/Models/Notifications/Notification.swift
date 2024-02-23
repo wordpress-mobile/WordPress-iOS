@@ -427,7 +427,10 @@ extension Notification {
 
 extension Notification {
 
-    func parsed() -> Subtype {
+    /// Parses the meta data of the notification to extract key information like postID
+    /// Parsing logic and wrapper used depends on the notification kind
+    /// - Returns: An enum with it's associated value being a wrapper around the notification
+    func parsed() -> ParsedNotification {
         switch kind {
         case .newPost:
             if let note = NewPostNotification(note: self) {
@@ -443,7 +446,7 @@ extension Notification {
         return .other(self)
     }
 
-    enum Subtype {
+    enum ParsedNotification {
         case newPost(NewPostNotification)
         case comment(CommentNotification)
         case other(Notification)
