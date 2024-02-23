@@ -97,8 +97,6 @@ final class PostRepository {
             uploadedPost = try await service.create(parameters)
         }
 
-        PostHelper.update(post, with: uploadedPost, in: context)
-
         let postID = TaggedManagedObjectID(post)
         try await coreDataStack.performAndSave { context in
             var post = try context.existingObject(with: postID)

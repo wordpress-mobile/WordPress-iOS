@@ -10,6 +10,7 @@ struct PostNoticeViewModel {
     private let autoUploadInteractor = PostAutoUploadInteractor()
     private let isFirstTimePublish: Bool
     private let isInternetReachable: Bool
+    private var isActionHidden = false
 
     init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isFirstTimePublish: Bool? = nil, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
@@ -19,7 +20,8 @@ struct PostNoticeViewModel {
     }
 
     static func makeFailureNotice(for post: AbstractPost, error: Error) -> Notice {
-        let model = PostNoticeViewModel(post: post, isInternetReachable: (error as? URLError)?.code == .notConnectedToInternet)
+        var model = PostNoticeViewModel(post: post, isInternetReachable: (error as? URLError)?.code == .notConnectedToInternet)
+        model.isActionHidden = true
         return model.failureNotice
     }
 
@@ -52,20 +54,22 @@ struct PostNoticeViewModel {
     }
 
     private var failureNotice: Notice {
-        let failureAction = self.failureAction
+        let failureAction = isActionHidden ? nil : self.failureAction
 
         return Notice(title: failureTitle,
                       message: message,
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
-                      actionTitle: failureAction.title,
+                      actionTitle: failureAction?.title,
                       actionHandler: { _ in
-                        switch failureAction {
-                        case .cancel:
-                            self.cancelAutoUpload()
-                        case .retry:
-                            self.retryUpload()
-                        }
+            if let failureAction {
+                switch failureAction {
+                case .cancel:
+                    self.cancelAutoUpload()
+                case .retry:
+                    self.retryUpload()
+                }
+            }
         })
     }
 
