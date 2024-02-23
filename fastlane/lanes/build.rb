@@ -290,7 +290,7 @@ platform :ios do
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       release_version: release_version_current_internal,
       build_version: build_code_current_internal,
-      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
+      app_identifier: 'org.wordpress.internal'
     )
     
   end
@@ -311,7 +311,7 @@ platform :ios do
       appcenter_app_name: 'WPiOS-One-Offs',
       app_icon: ':wordpress:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
+      app_identifier: 'org.wordpress.alpha'
     )
   end
 
@@ -331,7 +331,7 @@ platform :ios do
       appcenter_app_name: 'jetpack-installable-builds',
       app_icon: ':jetpack:', # Use Buildkite emoji
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      app_identifier: JETPACK_BUNDLE_IDENTIFIER
+      app_identifier: 'com.jetpack.alpha'
     )
   end
 
