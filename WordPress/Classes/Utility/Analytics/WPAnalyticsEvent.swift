@@ -332,6 +332,7 @@ import Foundation
     case notificationMarkAsReadTapped
     case notificationMarkAsUnreadTapped
     case notificationMenuTapped
+    case notificationsInlineActionTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -1145,6 +1146,8 @@ import Foundation
             return "notification_mark_as_unread_tapped"
         case .notificationMenuTapped:
             return "notification_menu_tapped"
+        case .notificationsInlineActionTapped:
+            return "notifications_inline_action_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:
