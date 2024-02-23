@@ -8,6 +8,13 @@ final class NotificationsViewModel {
         case postLike = "post_like"
     }
 
+    enum Constants {
+        static let lastSeenKey = "notifications_last_seen_time"
+        static let headerTextKey = "text"
+        static let actionAnalyticsKey = "inline_action"
+        static let likedAnalyticsKey = "liked"
+    }
+
     // MARK: - Type Aliases
 
     typealias ShareablePost = (url: String, title: String?)
@@ -173,13 +180,6 @@ private extension NotificationsViewModel {
         var properties: [AnyHashable: Any] = [Constants.actionAnalyticsKey: action.rawValue]
         properties.merge(extraProperties) { current, _ in current }
         self.analyticsTracker.track(.notificationsInlineActionTapped, properties: properties)
-    }
-
-    enum Constants {
-        static let lastSeenKey = "notifications_last_seen_time"
-        static let headerTextKey = "text"
-        static let actionAnalyticsKey = "inline_action"
-        static let likedAnalyticsKey = "liked"
     }
 
     enum Strings {
