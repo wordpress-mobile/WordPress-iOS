@@ -5,6 +5,7 @@ struct CommentNotification {
     // MARK: - Properties
 
     let note: Notification
+    let commentID: UInt
     let postID: UInt
     let siteID: UInt
 
@@ -19,12 +20,16 @@ struct CommentNotification {
     // MARK: - Init
 
     init?(note: Notification) {
-        guard let postID = note.metaPostID?.uintValue, let siteID = note.metaSiteID?.uintValue else {
+        guard let postID = note.metaPostID?.uintValue,
+              let siteID = note.metaSiteID?.uintValue,
+              let commentID = note.metaCommentID?.uintValue
+        else {
             return nil
         }
         self.note = note
         self.postID = postID
         self.siteID = siteID
+        self.commentID = commentID
     }
 
     // MARK: - Helpers
