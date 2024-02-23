@@ -1353,9 +1353,9 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         }
     }
 
-    func gutenbergDidRequestLogException(_ exception: [AnyHashable: Any]) {
+    func gutenbergDidRequestLogException(_ exception: [AnyHashable: Any], with callback: @escaping () -> Void) {
         DispatchQueue.main.async {
-            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception)
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
         }
     }
 
