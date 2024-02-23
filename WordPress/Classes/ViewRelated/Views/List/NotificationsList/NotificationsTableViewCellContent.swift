@@ -76,14 +76,8 @@ fileprivate extension NotificationsTableViewCellContent {
                     .saveSize(in: $textsSize)
                 Spacer()
                 if let inlineAction = info.inlineAction {
-                    Button {
-                        inlineAction.action()
-                    } label: {
-                        inlineAction.icon
-                            .imageScale(.small)
-                            .foregroundStyle(Color.DS.Foreground.secondary)
-                            .frame(width: Length.Padding.medium, height: Length.Padding.medium)
-                    }
+                    actionIcon(inlineAction: inlineAction)
+                        .padding(.top, actionIconTopPadding(inlineAction: inlineAction))
                 }
             }
             .padding(.trailing, Length.Padding.double)
@@ -129,6 +123,21 @@ fileprivate extension NotificationsTableViewCellContent {
                         .padding(.top, Length.Padding.half)
                 }
             }
+        }
+
+        private func actionIcon(inlineAction: InlineAction) -> some View {
+            Button {
+                inlineAction.action()
+            } label: {
+                inlineAction.icon
+                    .imageScale(.small)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
+                    .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+            }
+        }
+
+        private func actionIconTopPadding(inlineAction: InlineAction) -> CGFloat {
+            rootStackAlignment == .center ? 0 : ((info.avatarStyle.diameter * textScale - Length.Padding.medium) / 2)
         }
     }
 }

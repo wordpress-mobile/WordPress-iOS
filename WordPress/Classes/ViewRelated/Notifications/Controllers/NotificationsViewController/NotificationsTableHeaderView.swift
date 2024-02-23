@@ -61,10 +61,10 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
 
     private enum Appearance {
         static let backgroundColor = UIColor.systemBackground
-        static let textColor = UIColor.DS.Foreground.primary ?? .text
+        static let textColor = UIColor.DS.Foreground.primary
         static let textFont = UIFont.DS.font(.bodyLarge(.emphasized))
         static let layoutMargins = NSDirectionalEdgeInsets(
-            top: Length.Padding.double,
+            top: Length.Padding.single,
             leading: Length.Padding.double,
             bottom: Length.Padding.double,
             trailing: Length.Padding.double
