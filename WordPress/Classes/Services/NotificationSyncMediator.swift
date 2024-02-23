@@ -24,6 +24,10 @@ protocol NotificationSyncMediatorProtocol {
                                        postID: UInt,
                                        siteID: UInt,
                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void)
+    func toggleLikeForCommentNotification(like: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void)
 }
 
 // MARK: - NotificationSyncMediator
@@ -33,6 +37,11 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///
     private let contextManager: CoreDataStackSwift
 
+    /// API object used to make network requests
+    /// Used by remote services
+    ///
+    fileprivate let restAPI: WordPressComRestApi
+
     /// Sync Service Remote
     ///
     fileprivate let remote: NotificationSyncServiceRemote
@@ -41,6 +50,10 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Used for toggling like status for posts and comments
     ///
     fileprivate let readerRemoteService: ReaderPostServiceRemote
+
+    /// Comment Remote Factory
+    /// Used to create a comment remote service by providing a siteID and restAPI
+    fileprivate let commentRemoteFactory: CommentServiceRemoteFactory
 
     /// Maximum number of Notes to Sync
     ///
@@ -87,8 +100,10 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
 
         contextManager = manager
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
-        readerRemoteService = ReaderPostServiceRemote(wordPressComRestApi: dotcomAPI)
+        restAPI = dotcomAPI
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: restAPI)
+        readerRemoteService = ReaderPostServiceRemote(wordPressComRestApi: restAPI)
+        commentRemoteFactory = CommentServiceRemoteFactory()
     }
 
     /// Syncs the latest *maximumNotes*:
@@ -332,6 +347,26 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
             }
         } else {
             readerRemoteService.unlikePost(postID, forSite: siteID) {
+                completion(.success(like))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        }
+    }
+
+    func toggleLikeForCommentNotification(like: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        let commentService = commentRemoteFactory.restRemote(siteID: NSNumber(value: siteID), api: restAPI)
+        if like {
+            commentService.likeComment(withID: NSNumber(value: commentID)) {
+                completion(.success(like))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        } else {
+            commentService.unlikeComment(withID: NSNumber(value: commentID)) {
                 completion(.success(like))
             } failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))

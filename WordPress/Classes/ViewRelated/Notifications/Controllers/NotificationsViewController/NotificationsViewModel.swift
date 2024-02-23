@@ -156,7 +156,9 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        self.updateCommentLikeRemotely(notification: notification) { result in
+        notificationMediator?.toggleLikeForCommentNotification(like: newLikedStatus,
+                                                              commentID: notification.commentID,
+                                                              siteID: notification.siteID) { result in
             mainContext.perform {
                 do {
                     switch result {
@@ -175,26 +177,6 @@ final class NotificationsViewModel {
         // Track analytics event
         self.trackInlineActionTapped(action: .commentLike)
     }
-
-    private func updateCommentLikeRemotely(notification: CommentNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.fetchComment(withId: notification.commentID, postID: notification.postID, siteID: notification.siteID, in: context) { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let comment):
-                self.commentService.toggleLikeStatus(for: comment, siteID: .init(value: notification.siteID)) { liked in
-                    completion(.success(liked))
-                } failure: { error in
-                    completion(.failure(error ?? Error.unknown))
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    // MARK: - Load Posts & Comments
 
     // MARK: - Helpers
 
