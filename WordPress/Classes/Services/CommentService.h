@@ -108,7 +108,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post;
 
 // Counts and returns the number of full pages of hierarchcial comments synced for a post.
-// A partial set does not count toward the total number of pages. 
+// A partial set does not count toward the total number of pages.
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
 
 
@@ -190,7 +190,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
  */
 - (void)toggleLikeStatusForComment:(Comment *)comment
                             siteID:(NSNumber *)siteID
-                           success:(void (^ _Nullable)(BOOL liked))success
+                           success:(void (^ _Nullable)(void))success
                            failure:(void (^ _Nullable)(NSError * _Nullable error))failure;
 
 /**
