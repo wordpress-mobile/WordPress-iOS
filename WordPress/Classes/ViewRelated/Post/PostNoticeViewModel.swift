@@ -18,11 +18,6 @@ struct PostNoticeViewModel {
         self.isInternetReachable = isInternetReachable
     }
 
-    static func makeSuccessNotice(for post: AbstractPost, isFirstTimePublish: Bool) -> Notice {
-        let model = PostNoticeViewModel(post: post, isFirstTimePublish: isFirstTimePublish)
-        return model.successNotice
-    }
-
     static func makeFailureNotice(for post: AbstractPost, error: Error) -> Notice {
         let model = PostNoticeViewModel(post: post, isInternetReachable: (error as? URLError)?.code == .notConnectedToInternet)
         return model.failureNotice

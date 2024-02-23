@@ -131,8 +131,9 @@ class PostCoordinator: NSObject {
             try await repository._upload(parameters, for: post)
             didPublish(post)
 
-            let notice = PostNoticeViewModel.makeSuccessNotice(for: post, isFirstTimePublish: true)
-            actionDispatcherFacade.dispatch(NoticeAction.post(notice))
+            // TODO: The post is not updated by the time this method is called. Refactor this to ensure _upload returns something we could work with immediatelly (kahu-offline-mode)
+            // let notice = PostNoticeViewModel.makeSuccessNotice(for: post, isFirstTimePublish: true)
+            // actionDispatcherFacade.dispatch(NoticeAction.post(notice))
         } catch {
             let notice = PostNoticeViewModel.makeFailureNotice(for: post, error: error)
             actionDispatcherFacade.dispatch(NoticeAction.post(notice))
