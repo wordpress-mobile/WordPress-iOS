@@ -49,8 +49,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
-@property (nonatomic, assign) BOOL shouldUseStaticScreens;
-
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;

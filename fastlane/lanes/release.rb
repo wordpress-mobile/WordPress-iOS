@@ -579,7 +579,11 @@ def create_release_management_pull_request(release_version:, base_branch:, title
   #
   # PR URLs are in the format github.com/org/repo/pull/id
   pr_number = File.basename(pr_url)
-  update_pull_requests_milestone(pr_numbers: [pr_number], to_milestone: release_version)
+  update_pull_requests_milestone(
+    repository: GITHUB_REPO,
+    pr_numbers: [pr_number],
+    to_milestone: release_version
+  )
 
   # Return the PR URL
   pr_url

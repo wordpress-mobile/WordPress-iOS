@@ -359,7 +359,8 @@ private extension SiteStatsPeriodViewModel {
             chartData: barChartData,
             chartStyling: barChartStyling,
             period: lastRequestedPeriod,
-            unit: chartBarsUnit(from: lastRequestedPeriod)
+            unit: chartBarsUnit(from: lastRequestedPeriod),
+            siteStatsPeriodDelegate: periodDelegate
         )
 
         tableRows.append(row)

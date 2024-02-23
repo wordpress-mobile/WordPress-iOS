@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex)
 }
 
 protocol SiteStatsReferrerDelegate: AnyObject {
@@ -28,9 +29,11 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     var selectedPeriod: StatsPeriodUnit? {
         didSet {
 
-            guard selectedPeriod != nil else {
+            guard let selectedPeriod else {
                 return
             }
+
+            trackPeriodAccessEvent(selectedPeriod)
 
             clearExpandedRows()
 
@@ -313,6 +316,12 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+
+    func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
+        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex), let period = selectedPeriod {
+            trackBarChartTabSelectionEvent(tab: tab, period: period)
+        }
+    }
 }
 
 // MARK: - SiteStatsReferrerDelegate
@@ -346,5 +355,32 @@ private extension SiteStatsPeriodTableViewController {
         if let bannerView = bannerView {
             analyticsTracker.addTranslationObserver(bannerView)
         }
+    }
+}
+
+// MARK: - Tracking
+
+private extension SiteStatsPeriodTableViewController {
+    func trackPeriodAccessEvent(_ period: StatsPeriodUnit) {
+        let event: WPAnalyticsStat = {
+            switch period {
+            case .day:
+                return .statsPeriodDaysAccessed
+            case .week:
+                return .statsPeriodWeeksAccessed
+            case .month:
+                return .statsPeriodMonthsAccessed
+            case .year:
+                return .statsPeriodYearsAccessed
+            }
+        }()
+
+        WPAppAnalytics.track(event)
+    }
+
+    func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period.description as Any]
+        WPAppAnalytics.track(tab.analyticsEvent, withProperties: properties)
+
     }
 }

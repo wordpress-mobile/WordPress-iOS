@@ -35,22 +35,26 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights: [StatSection] = [
-        .insightsViewsVisitors,
-        .insightsLikesTotals,
-        .insightsCommentsTotals,
-        .insightsFollowerTotals,
-        .insightsMostPopularTime,
-        .insightsLatestPostSummary,
-        .insightsAllTime,
-        .insightsAnnualSiteStats,
-        .insightsTodaysStats,
-        .insightsPostingActivity,
-        .insightsTagsAndCategories,
-        .insightsFollowersWordPress,
-        .insightsFollowersEmail,
-        .insightsPublicize
-    ]
+    static var allInsights: [StatSection] {
+        var insights: [StatSection?] = [
+            .insightsViewsVisitors,
+            .insightsLikesTotals,
+            .insightsCommentsTotals,
+            .insightsFollowerTotals,
+            .insightsMostPopularTime,
+            .insightsLatestPostSummary,
+            .insightsAllTime,
+            .insightsAnnualSiteStats,
+            RemoteFeatureFlag.statsTrafficTab.enabled() ? nil : .insightsTodaysStats,
+            .insightsPostingActivity,
+            .insightsTagsAndCategories,
+            .insightsFollowersWordPress,
+            .insightsFollowersEmail,
+            .insightsPublicize
+        ]
+
+        return insights.compactMap { $0 }
+    }
 
     static let allPeriods: [StatSection] = [
         .periodOverviewViews,
