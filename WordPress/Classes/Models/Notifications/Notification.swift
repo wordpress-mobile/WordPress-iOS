@@ -437,10 +437,6 @@ extension Notification {
             if let note = NewPostNotification(note: self) {
                 return .newPost(note)
             }
-        case .comment:
-            if let note = CommentNotification(note: self) {
-                return .comment(note)
-            }
         default: 
             break
         }
@@ -449,7 +445,6 @@ extension Notification {
 
     enum Subtype {
         case newPost(NewPostNotification)
-        case comment(CommentNotification)
         case other(Notification)
     }
 }

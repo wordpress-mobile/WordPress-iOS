@@ -149,44 +149,9 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: .postLike)
     }
 
-    func commentLikeActionTapped(with notification: CommentNotification, changes: @escaping (Bool) -> Void) {
-        // Optimistically update liked status
-        var notification = notification
-        let oldLikedStatus = notification.liked
-        let newLikedStatus = !notification.liked
-        changes(newLikedStatus)
-
-        // Update liked status remotely
-        let mainContext = contextManager.mainContext
-        self.updateCommentLikeRemotely(notification: notification) { result in
-            mainContext.perform {
-                do {
-                    switch result {
-                    case .success(let liked):
-                        notification.liked = liked
-                        try mainContext.save()
-                    case .failure(let error):
-                        throw error
-                    }
-                } catch {
-                    changes(oldLikedStatus)
-                }
-            }
-        }
-
-        // Track analytics event
-        self.trackInlineActionTapped(action: .commentLike)
-    }
-
     private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
         self.contextManager.performAndSave { context in
             self.updatePostLikeRemotely(notification: notification, in: context, completion: completion)
-        }
-    }
-
-    private func updateCommentLikeRemotely(notification: CommentNotification, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.contextManager.performAndSave { context in
-            self.updateCommentLikeRemotely(notification: notification, in: context, completion: completion)
         }
     }
 
@@ -197,24 +162,6 @@ final class NotificationsViewModel {
                 let action = ReaderLikeAction(service: self.readerPostService)
                 action.execute(with: post) { result in
                     completion(result)
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    private func updateCommentLikeRemotely(notification: CommentNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.fetchComment(withId: notification.commentID, postID: notification.postID, siteID: notification.siteID, in: context) { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let comment):
-                self.commentService.toggleLikeStatus(for: comment, siteID: .init(value: notification.siteID)) { liked in
-                    completion(.success(liked))
-                } failure: { error in
-                    completion(.failure(error ?? Error.unknown))
                 }
             case .failure(let error):
                 completion(.failure(error))
@@ -247,43 +194,6 @@ final class NotificationsViewModel {
         } failure: { error in
             completion(.failure(error ?? Error.unknown))
         }
-    }
-
-    private func fetchComment(withId id: UInt, postID: UInt, siteID: UInt, in context: NSManagedObjectContext, completion: @escaping (Result<Comment, Swift.Error>) -> Void) {
-        self.fetchPost(withId: postID, siteID: siteID, in: context) { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let post):
-                // Fetch locally
-                let commentID = NSNumber(value: id)
-                if let comment = post.comment(withID: commentID) {
-                    completion(.success(comment))
-                    return
-                }
-
-                // Fetch remotely
-                self.fetchComment(withId: commentID, post: post, in: context, completion: completion)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    private func fetchComment(withId id: NSNumber, post: ReaderPost, in context: NSManagedObjectContext, completion: @escaping (Result<Comment, Swift.Error>) -> Void) {
-        self.commentService.loadComment(withID: id, for: post, success: { comment in
-            context.perform {
-                if let commentID = comment?.objectID, let comment = try? context.existingObject(with: commentID) as? Comment {
-                    completion(.success(comment))
-                } else {
-                    self.crashLogger.logMessage("Comment with ID \(id) is not found", level: .error)
-                    completion(.failure(Error.unknown))
-                }
-            }
-        }, failure: { error in
-            completion(.failure(error ?? Error.unknown))
-        })
     }
 
     // MARK: - Types

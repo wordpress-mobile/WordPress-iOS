@@ -3694,9 +3694,7 @@
 		F45EB5012B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */; };
 		F45EB5022B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */; };
 		F45EB5052B87E0F2004E9053 /* NewPostNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */; };
-		F45EB5072B87E119004E9053 /* CommentNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5062B87E119004E9053 /* CommentNotification.swift */; };
 		F45EB5082B87E167004E9053 /* NewPostNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */; };
-		F45EB5092B87E16A004E9053 /* CommentNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5062B87E119004E9053 /* CommentNotification.swift */; };
 		F46039182B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
 		F46039192B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
@@ -9066,7 +9064,6 @@
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
 		F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostNotification.swift; sourceTree = "<group>"; };
-		F45EB5062B87E119004E9053 /* CommentNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentNotification.swift; sourceTree = "<group>"; };
 		F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableHeaderView.swift; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
@@ -17601,7 +17598,6 @@
 			isa = PBXGroup;
 			children = (
 				F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */,
-				F45EB5062B87E119004E9053 /* CommentNotification.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -22915,7 +22911,6 @@
 				4AFB1A812A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				FEC26033283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
-				F45EB5072B87E119004E9053 /* CommentNotification.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */,
@@ -24927,7 +24922,6 @@
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
-				F45EB5092B87E16A004E9053 /* CommentNotification.swift in Sources */,
 				98BC522527F6245700D6E8C2 /* BloggingPromptsFeatureIntroduction.swift in Sources */,
 				FABB233A2602FC2C00C8785C /* RevisionsNavigationController.swift in Sources */,
 				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
