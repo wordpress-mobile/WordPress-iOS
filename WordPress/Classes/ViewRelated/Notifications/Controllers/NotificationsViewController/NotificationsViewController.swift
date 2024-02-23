@@ -217,11 +217,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         }
-        // TODO: Remove this when In-App Rating project is shipped
-//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-//            setupAppRatings()
-//            self.showInlinePrompt()
-//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -1677,36 +1672,6 @@ extension NotificationsViewController: NoResultsViewControllerDelegate {
             WPAnalytics.track(.notificationsTappedNewPost, withProperties: properties)
             RootViewCoordinator.sharedPresenter.showPostTab()
         }
-    }
-}
-
-// MARK: - Inline Prompt Helpers
-//
-internal extension NotificationsViewController {
-    func showInlinePrompt() {
-        guard inlinePromptView.alpha != WPAlphaFull,
-            userDefaults.notificationPrimerAlertWasDisplayed,
-            userDefaults.notificationsTabAccessCount >= Constants.inlineTabAccessCount else {
-            return
-        }
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: 0, options: .curveEaseIn, animations: {
-            self.inlinePromptView.isHidden = false
-        })
-
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.5, delay: WPAnimationDurationDefault * 0.75, options: .curveEaseIn, animations: {
-            self.inlinePromptView.alpha = WPAlphaFull
-        })
-    }
-
-    func hideInlinePrompt(delay: TimeInterval) {
-        UIView.animate(withDuration: WPAnimationDurationDefault * 0.75, delay: delay, animations: {
-            self.inlinePromptView.alpha = WPAlphaZero
-        })
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, delay: delay + WPAnimationDurationDefault * 0.5, animations: {
-            self.inlinePromptView.isHidden = true
-        })
     }
 }
 
