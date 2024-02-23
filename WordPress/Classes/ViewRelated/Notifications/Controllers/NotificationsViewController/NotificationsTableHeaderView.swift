@@ -52,6 +52,7 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         guard var config = contentConfiguration as? UIListContentConfiguration else {
             return
         }
+        config.textProperties.transform = .capitalized
         config.text = text
         self.contentConfiguration = config
     }
