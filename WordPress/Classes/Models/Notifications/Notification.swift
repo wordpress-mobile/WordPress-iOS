@@ -431,14 +431,28 @@ extension Notification {
     /// Parsing logic and wrapper used depends on the notification kind
     /// - Returns: An enum with it's associated value being a wrapper around the notification
     func parsed() -> ParsedNotification {
+        guard let siteID = metaSiteID?.uintValue else {
+            return .other(self)
+        }
         switch kind {
         case .newPost:
-            if let note = NewPostNotification(note: self) {
+            if let metaPostID = metaPostID?.uintValue {
+                let note = NewPostNotification(
+                    postID: metaPostID,
+                    siteID: siteID,
+                    postBody: body(ofType: .post)) { newValue in
+                        self.updateBody(ofType: .post, newValue: newValue)
+                    }
                 return .newPost(note)
             }
         case .comment:
-            if let note = CommentNotification(note: self) {
-                return .comment(note)
+            if let commentID = metaCommentID?.uintValue {
+                let note = CommentNotification(
+                    commentID: commentID,
+                    siteID: siteID,
+                    postBody: body(ofType: .comment)) { newValue in
+                        self.updateBody(ofType: .comment, newValue: newValue)
+                    }
             }
         default:
             break
