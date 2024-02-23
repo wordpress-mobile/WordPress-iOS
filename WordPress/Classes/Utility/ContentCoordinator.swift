@@ -77,8 +77,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
         let matches = matcher.routesMatching(url)
         if let match = matches.first,
            let action = match.action as? StatsRoute,
-           let timePeriod = action.timePeriod {
-            SiteStatsDashboardPreferences.setSelected(periodType: timePeriod, siteID: siteID)
+           let tab = action.tab {
+            SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
         }
     }
 

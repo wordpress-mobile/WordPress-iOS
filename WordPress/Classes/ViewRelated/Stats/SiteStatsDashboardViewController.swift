@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
+enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
     case days
     case weeks
@@ -56,8 +56,8 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
     }
 }
 
-fileprivate extension StatsPeriodType {
-    static var displayedPeriods: [StatsPeriodType] {
+fileprivate extension StatsTabType {
+    static var displayedTabs: [StatsTabType] {
         if RemoteFeatureFlag.statsTrafficTab.enabled() {
             return [.traffic, .insights]
         } else {
@@ -100,7 +100,7 @@ class SiteStatsDashboardViewController: UIViewController {
         return SiteStatsPeriodTableViewController(selectedDate: selectedDate, selectedPeriod: selectedPeriodUnit)
     }()
     private var pageViewController: UIPageViewController?
-    private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
+    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
 
     @objc lazy var manageInsightsButton: UIBarButtonItem = {
         let button = UIBarButtonItem(
@@ -122,7 +122,7 @@ class SiteStatsDashboardViewController: UIViewController {
         configureTrafficTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
-        restoreSelectedPeriodFromUserDefaults()
+        restoreSelectedTabFromUserDefaults()
         addWillEnterForegroundObserver()
         configureNavBar()
         view.accessibilityIdentifier = "stats-dashboard"
@@ -147,7 +147,7 @@ class SiteStatsDashboardViewController: UIViewController {
     }
 
     func configureNavBar() {
-        parent?.navigationItem.rightBarButtonItem = currentSelectedPeriod == .insights ? manageInsightsButton : nil
+        parent?.navigationItem.rightBarButtonItem = currentSelectedTab == .insights ? manageInsightsButton : nil
     }
 
     func configureJetpackBanner() {
@@ -182,30 +182,30 @@ class SiteStatsDashboardViewController: UIViewController {
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         if traitCollection.verticalSizeClass == .regular, traitCollection.horizontalSizeClass == .compact {
-            updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
+            updatePeriodView(oldSelectedTab: currentSelectedTab)
         }
     }
 }
 
 extension SiteStatsDashboardViewController: StatsForegroundObservable {
     func reloadStatsData() {
-        updatePeriodView(oldSelectedPeriod: currentSelectedPeriod)
+        updatePeriodView(oldSelectedTab: currentSelectedTab)
     }
 }
 
 // MARK: - Private Extension
 
 private extension SiteStatsDashboardViewController {
-    var currentSelectedPeriod: StatsPeriodType {
+    var currentSelectedTab: StatsTabType {
         get {
             let selectedIndex = filterTabBar?.selectedIndex ?? 0
-            return displayedPeriods[selectedIndex]
+            return displayedTabs[selectedIndex]
         }
         set {
-            let index = displayedPeriods.firstIndex(of: newValue) ?? 0
+            let index = displayedTabs.firstIndex(of: newValue) ?? 0
             filterTabBar?.setSelectedIndex(index)
-            let oldSelectedPeriod = getSelectedPeriodFromUserDefaults()
-            updatePeriodView(oldSelectedPeriod: oldSelectedPeriod)
+            let oldSelectedPeriod = getSelectedTabFromUserDefaults()
+            updatePeriodView(oldSelectedTab: oldSelectedPeriod)
             saveSelectedPeriodToUserDefaults()
             trackAccessEvent()
         }
@@ -218,13 +218,13 @@ private extension SiteStatsDashboardViewController {
 
     func setupFilterBar() {
         WPStyleGuide.Stats.configureFilterTabBar(filterTabBar)
-        filterTabBar.items = displayedPeriods
+        filterTabBar.items = displayedTabs
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
         filterTabBar.accessibilityIdentifier = "site-stats-dashboard-filter-bar"
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        currentSelectedPeriod = displayedPeriods[filterBar.selectedIndex]
+        currentSelectedTab = displayedTabs[filterBar.selectedIndex]
 
         configureNavBar()
     }
@@ -241,19 +241,19 @@ private extension SiteStatsDashboardViewController {
         }
 
         guard !insightsTableViewController.isGrowAudienceShowing else {
-            SiteStatsDashboardPreferences.setSelected(periodType: .insights, siteID: siteID)
+            SiteStatsDashboardPreferences.setSelected(tabType: .insights, siteID: siteID)
             return
         }
 
-        SiteStatsDashboardPreferences.setSelected(periodType: currentSelectedPeriod, siteID: siteID)
+        SiteStatsDashboardPreferences.setSelected(tabType: currentSelectedTab, siteID: siteID)
     }
 
-    func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
-        guard let periodType = SiteStatsDashboardPreferences.getSelectedPeriodType() else {
-            return displayedPeriods[0]
+    func getSelectedTabFromUserDefaults() -> StatsTabType {
+        guard let tabType = SiteStatsDashboardPreferences.getSelectedTabType() else {
+            return displayedTabs[0]
         }
 
-        return periodType
+        return tabType
     }
 
     func restoreSelectedDateFromUserDefaults() {
@@ -261,17 +261,17 @@ private extension SiteStatsDashboardViewController {
         SiteStatsDashboardPreferences.removeLastSelectedDateFromUserDefaults()
     }
 
-    func restoreSelectedPeriodFromUserDefaults() {
-        currentSelectedPeriod = getSelectedPeriodFromUserDefaults()
+    func restoreSelectedTabFromUserDefaults() {
+        currentSelectedTab = getSelectedTabFromUserDefaults()
     }
 
-    func updatePeriodView(oldSelectedPeriod: StatsPeriodType) {
-        let selectedPeriodChanged = currentSelectedPeriod != oldSelectedPeriod
-        let previousSelectedPeriodWasInsights = oldSelectedPeriod == .insights
+    func updatePeriodView(oldSelectedTab: StatsTabType) {
+        let selectedPeriodChanged = currentSelectedTab != oldSelectedTab
+        let previousSelectedPeriodWasInsights = oldSelectedTab == .insights
         let pageViewControllerIsEmpty = pageViewController?.viewControllers?.isEmpty ?? true
         let isGrowAudienceShowingOnInsights = insightsTableViewController.isGrowAudienceShowing
 
-        switch currentSelectedPeriod {
+        switch currentSelectedTab {
         case .insights:
             if selectedPeriodChanged || pageViewControllerIsEmpty || isGrowAudienceShowingOnInsights {
                 pageViewController?.setViewControllers([insightsTableViewController],
@@ -298,7 +298,7 @@ private extension SiteStatsDashboardViewController {
                 periodTableViewControllerDeprecated.selectedDate = StatsDataHelper.currentDateForSite()
             }
 
-            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedTab.rawValue - 1) ?? .day
             periodTableViewControllerDeprecated.selectedPeriod = selectedPeriod
         }
     }
@@ -318,7 +318,7 @@ private extension SiteStatsDashboardViewController {
     }
 
     func trackAccessEvent() {
-        if let event = currentSelectedPeriod.analyticsAccessEvent {
+        if let event = currentSelectedTab.analyticsAccessEvent {
             captureAnalyticsEvent(event)
         }
     }
@@ -327,14 +327,14 @@ private extension SiteStatsDashboardViewController {
 // MARK: - Preferences
 
 struct SiteStatsDashboardPreferences {
-    static func setSelected(periodType: StatsPeriodType, siteID: Int? = nil) {
+    static func setSelected(tabType: StatsTabType, siteID: Int? = nil) {
         guard let siteID = siteID ?? SiteStatsInformation.sharedInstance.siteID?.intValue else { return }
 
-        let periodKey = lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-        UserPersistentStoreFactory.instance().set(periodType.rawValue, forKey: periodKey)
+        let periodKey = lastSelectedStatsTabTypeKey(forSiteID: siteID)
+        UserPersistentStoreFactory.instance().set(tabType.rawValue, forKey: periodKey)
 
         let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
-        if let unit = periodType.unit {
+        if let unit = tabType.unit {
             UserPersistentStoreFactory.instance().set(unit.rawValue, forKey: unitKey)
         }
     }
@@ -342,15 +342,15 @@ struct SiteStatsDashboardPreferences {
     static func setSelected(unit: StatsPeriodUnit) {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return }
 
-        let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
+        let unitKey = lastSelectedStatsTabTypeKey(forSiteID: siteID)
         UserPersistentStoreFactory.instance().set(unit.rawValue, forKey: unitKey)
     }
 
-    static func getSelectedPeriodType() -> StatsPeriodType? {
+    static func getSelectedTabType() -> StatsTabType? {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
 
-        let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-        return StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: key))
+        let key = Self.lastSelectedStatsTabTypeKey(forSiteID: siteID)
+        return StatsTabType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: key))
     }
 
     static func getSelectedPeriodUnit() -> StatsPeriodUnit? {
@@ -370,8 +370,8 @@ struct SiteStatsDashboardPreferences {
 
     // MARK: - Keys
 
-    private static func lastSelectedStatsPeriodTypeKey(forSiteID siteID: Int) -> String {
-        return "LastSelectedStatsPeriodType-\(siteID)"
+    private static func lastSelectedStatsTabTypeKey(forSiteID siteID: Int) -> String {
+        return "LastSelectedStatsTabType-\(siteID)"
     }
 
     private static func lastSelectedStatsUnitTypeKey(forSiteID siteID: Int) -> String {
