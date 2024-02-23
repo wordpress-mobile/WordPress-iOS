@@ -2,7 +2,6 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
-
     static let reuseIdentifier = String(describing: Self.self)
 
     enum Style {
@@ -52,6 +51,7 @@ fileprivate extension NotificationsTableViewCellContent {
 
         @State private var avatarSize: CGSize = .zero
         @State private var textsSize: CGSize = .zero
+        @ScaledMetric(relativeTo: .subheadline) private var textScale = 1
 
         private var rootStackAlignment: VerticalAlignment {
             return textsSize.height >= avatarSize.height ? .top : .center
@@ -68,7 +68,10 @@ fileprivate extension NotificationsTableViewCellContent {
                 avatarHStack
                     .saveSize(in: $avatarSize)
                 textsVStack
-                    .offset(x: -info.avatarStyle.leadingOffset*2)
+                    .offset(
+                        x: -info.avatarStyle.leadingOffset * 2,
+                        y: -3 * textScale
+                    )
                     .padding(.leading, Length.Padding.split)
                     .saveSize(in: $textsSize)
                 Spacer()
@@ -90,8 +93,7 @@ fileprivate extension NotificationsTableViewCellContent {
             HStack(spacing: 0) {
                 if info.shouldShowIndicator {
                     indicator
-                        .padding(.leading, Length.Padding.single)
-                        .padding(.trailing, Length.Padding.split)
+                        .padding(.horizontal, Length.Padding.single)
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
@@ -114,6 +116,7 @@ fileprivate extension NotificationsTableViewCellContent {
                     Text(title)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.primary)
+                        .layoutPriority(1)
                         .lineLimit(2)
                 }
 
@@ -121,7 +124,8 @@ fileprivate extension NotificationsTableViewCellContent {
                     Text(description)
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.DS.Foreground.secondary)
-                        .lineLimit(2)
+                        .layoutPriority(2)
+                        .lineLimit(1)
                         .padding(.top, Length.Padding.half)
                 }
             }
