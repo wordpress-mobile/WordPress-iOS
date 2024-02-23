@@ -177,16 +177,48 @@ final class NotificationsViewModel {
     }
 
     private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Error>) -> Void) {
-        self.readerPostService.fetchPost(notification.postID, forSite: notification.siteID, isFeed: false) { [weak self] post in
-            guard let self, let post else {
+        self.contextManager.performAndSave { context in
+            self.updatePostLikeRemotely(notification: notification, in: context, completion: completion)
+        }
+    }
+
+    private func updatePostLikeRemotely(notification: NewPostNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Error>) -> Void) {
+        self.fetchPost(withId: notification.postID, siteID: notification.siteID, in: context) { result in
+            switch result {
+            case .success(let post):
+                let action = ReaderLikeAction(service: self.readerPostService)
+                action.execute(with: post) { result in
+                    completion(result)
+                }
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
+
+    // MARK: - Load Posts & Comments
+
+    private func fetchPost(withId id: UInt, siteID: UInt, in context: NSManagedObjectContext, completion: @escaping (Result<ReaderPost, Error>) -> Void) {
+        // Fetch locally
+        if let post = try? ReaderPost.lookup(withID: NSNumber(value: id), forSiteWithID: NSNumber(value: siteID), in: context) {
+            completion(.success(post))
+            return
+        }
+
+        // If not found, then fetch remotely
+        let unknownError = NSError(domain: "\(NotificationsViewModel.self)", code: -1, userInfo: nil)
+        self.readerPostService.fetchPost(id, forSite: siteID, isFeed: false) { [weak self] post in
+            guard let self else {
                 return
             }
-            let action = ReaderLikeAction(service: self.readerPostService)
-            action.execute(with: post) { result in
-                completion(result)
+            if let post {
+                completion(.success(post))
+            } else {
+                self.crashLogger.logMessage("Post with ID \(id) is not found", level: .error)
+                completion(.failure(unknownError))
             }
         } failure: { error in
-            completion(.failure(error!))
+            completion(.failure(error ?? unknownError))
         }
     }
 }
