@@ -350,6 +350,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         cell.host(content, parent: self)
+        cell.backgroundColor = .systemBackground
         return cell
     }
 
@@ -722,6 +723,7 @@ private extension NotificationsViewController {
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .systemBackground
+        filterTabBar.backgroundColor = .systemBackground
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
