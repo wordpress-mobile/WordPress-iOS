@@ -152,8 +152,7 @@ class MySitesCoordinator: NSObject {
         }
 
         if let siteID = blog.dotComID?.intValue, let timePeriod = timePeriod {
-            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
+            SiteStatsDashboardPreferences.setSelected(periodType: timePeriod, siteID: siteID)
         }
 
         let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): NSNumber(value: source.rawValue)]

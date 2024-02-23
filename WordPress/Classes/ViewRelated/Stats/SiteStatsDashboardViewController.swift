@@ -39,6 +39,21 @@ enum StatsPeriodType: Int, FilterTabBarItem, CaseIterable {
             return nil
         }
     }
+
+    var unit: StatsPeriodUnit? {
+        switch self {
+        case .days:
+            return .day
+        case .weeks:
+            return .week
+        case .months:
+            return .month
+        case .years:
+            return .year
+        default:
+            return nil
+        }
+    }
 }
 
 fileprivate extension StatsPeriodType {
@@ -63,13 +78,6 @@ fileprivate extension StatsPeriodType {
 }
 
 class SiteStatsDashboardViewController: UIViewController {
-
-    // MARK: - Keys
-
-    static func lastSelectedStatsPeriodTypeKey(forSiteID siteID: Int) -> String {
-        return "LastSelectedStatsPeriodType-\(siteID)"
-    }
-
     static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
 
     // MARK: - Properties
@@ -81,15 +89,15 @@ class SiteStatsDashboardViewController: UIViewController {
     private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
     private lazy var trafficTableViewController = {
         let selectedDate: Date
-        if let date = getLastSelectedDateFromUserDefaults() {
+        if let date = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
             selectedDate = date
         } else {
             selectedDate = StatsDataHelper.currentDateForSite()
         }
 
-        let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+        let selectedPeriodUnit = SiteStatsDashboardPreferences.getSelectedPeriodUnit() ?? .day
 
-        return SiteStatsPeriodTableViewController(selectedDate: selectedDate, selectedPeriod: selectedPeriod)
+        return SiteStatsPeriodTableViewController(selectedDate: selectedDate, selectedPeriod: selectedPeriodUnit)
     }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
@@ -232,37 +240,25 @@ private extension SiteStatsDashboardViewController {
             return
         }
 
-        let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-
         guard !insightsTableViewController.isGrowAudienceShowing else {
-            UserPersistentStoreFactory.instance().set(StatsPeriodType.insights.rawValue, forKey: key)
+            SiteStatsDashboardPreferences.setSelected(periodType: .insights, siteID: siteID)
             return
         }
 
-        UserPersistentStoreFactory.instance().set(currentSelectedPeriod.rawValue, forKey: key)
+        SiteStatsDashboardPreferences.setSelected(periodType: currentSelectedPeriod, siteID: siteID)
     }
 
     func getSelectedPeriodFromUserDefaults() -> StatsPeriodType {
-
-        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue,
-              let periodType = StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID))) else {
+        guard let periodType = SiteStatsDashboardPreferences.getSelectedPeriodType() else {
             return displayedPeriods[0]
         }
 
         return periodType
     }
 
-    func getLastSelectedDateFromUserDefaults() -> Date? {
-        UserPersistentStoreFactory.instance().object(forKey: Self.lastSelectedStatsDateKey) as? Date
-    }
-
-    func removeLastSelectedDateFromUserDefaults() {
-        UserPersistentStoreFactory.instance().removeObject(forKey: Self.lastSelectedStatsDateKey)
-    }
-
     func restoreSelectedDateFromUserDefaults() {
-        periodTableViewControllerDeprecated.selectedDate = getLastSelectedDateFromUserDefaults()
-        removeLastSelectedDateFromUserDefaults()
+        periodTableViewControllerDeprecated.selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults()
+        SiteStatsDashboardPreferences.removeLastSelectedDateFromUserDefaults()
     }
 
     func restoreSelectedPeriodFromUserDefaults() {
@@ -326,4 +322,61 @@ private extension SiteStatsDashboardViewController {
             captureAnalyticsEvent(event)
         }
     }
+}
+
+// MARK: - Preferences
+
+struct SiteStatsDashboardPreferences {
+    static func setSelected(periodType: StatsPeriodType, siteID: Int? = nil) {
+        guard let siteID = siteID ?? SiteStatsInformation.sharedInstance.siteID?.intValue else { return }
+
+        let periodKey = lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+        UserPersistentStoreFactory.instance().set(periodType.rawValue, forKey: periodKey)
+
+        let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
+        if let unit = periodType.unit {
+            UserPersistentStoreFactory.instance().set(unit.rawValue, forKey: unitKey)
+        }
+    }
+
+    static func setSelected(unit: StatsPeriodUnit) {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return }
+
+        let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
+        UserPersistentStoreFactory.instance().set(unit.rawValue, forKey: unitKey)
+    }
+
+    static func getSelectedPeriodType() -> StatsPeriodType? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
+
+        let key = Self.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
+        return StatsPeriodType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: key))
+    }
+
+    static func getSelectedPeriodUnit() -> StatsPeriodUnit? {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
+
+        let key = Self.lastSelectedStatsUnitTypeKey(forSiteID: siteID)
+        return StatsPeriodUnit(rawValue: UserPersistentStoreFactory.instance().integer(forKey: key))
+    }
+
+    static func getLastSelectedDateFromUserDefaults() -> Date? {
+        UserPersistentStoreFactory.instance().object(forKey: Self.lastSelectedStatsDateKey) as? Date
+    }
+
+    static func removeLastSelectedDateFromUserDefaults() {
+        UserPersistentStoreFactory.instance().removeObject(forKey: Self.lastSelectedStatsDateKey)
+    }
+
+    // MARK: - Keys
+
+    private static func lastSelectedStatsPeriodTypeKey(forSiteID siteID: Int) -> String {
+        return "LastSelectedStatsPeriodType-\(siteID)"
+    }
+
+    private static func lastSelectedStatsUnitTypeKey(forSiteID siteID: Int) -> String {
+        return "LastSelectedStatsUnitType-\(siteID)"
+    }
+
+    private static let lastSelectedStatsDateKey = "LastSelectedStatsDate"
 }
