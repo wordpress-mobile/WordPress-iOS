@@ -20,6 +20,10 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 protocol NotificationSyncMediatorProtocol {
     func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
+    func toggleLikeForPostNotification(like: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void)
 }
 
 // MARK: - NotificationSyncMediator
@@ -32,6 +36,11 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Sync Service Remote
     ///
     fileprivate let remote: NotificationSyncServiceRemote
+
+    /// Reader Service Remote
+    /// Used for toggling like status for posts and comments
+    ///
+    fileprivate let readerRemoteService: ReaderPostServiceRemote
 
     /// Maximum number of Notes to Sync
     ///
@@ -79,6 +88,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
         contextManager = manager
         remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+        readerRemoteService = ReaderPostServiceRemote(wordPressComRestApi: dotcomAPI)
     }
 
     /// Syncs the latest *maximumNotes*:
@@ -309,6 +319,25 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
             }, completion: done, on: .main)
         })
     }
+
+    func toggleLikeForPostNotification(like: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        if like {
+            readerRemoteService.likePost(postID, forSite: siteID) {
+                completion(.success(like))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        } else {
+            readerRemoteService.unlikePost(postID, forSite: siteID) {
+                completion(.success(like))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        }
+    }
 }
 
 // MARK: - Private Helpers
@@ -430,5 +459,12 @@ private extension NotificationSyncMediator {
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+    }
+}
+
+extension NotificationSyncMediator {
+
+    enum ServiceError: Error {
+        case unknown
     }
 }

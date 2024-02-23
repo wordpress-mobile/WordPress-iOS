@@ -437,7 +437,7 @@ extension Notification {
             if let note = CommentNotification(note: self) {
                 return .comment(note)
             }
-        default: 
+        default:
             break
         }
         return .other(self)

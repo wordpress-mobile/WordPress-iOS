@@ -5,6 +5,8 @@ final class NotificationsViewModel {
     enum Constants {
         static let lastSeenKey = "notifications_last_seen_time"
         static let headerTextKey = "text"
+        static let actionAnalyticsKey = "inline_action"
+        static let likedAnalyticsKey = "liked"
     }
 
     // MARK: - Type Aliases
@@ -15,8 +17,6 @@ final class NotificationsViewModel {
     // MARK: - Depdencies
 
     private let contextManager: CoreDataStackSwift
-    private let readerPostService: ReaderPostService
-    private let commentService: CommentService
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
@@ -32,8 +32,6 @@ final class NotificationsViewModel {
         userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
         contextManager: CoreDataStackSwift = ContextManager.shared,
-        readerPostService: ReaderPostService? = nil,
-        commentService: CommentService? = nil,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
@@ -42,8 +40,6 @@ final class NotificationsViewModel {
         self.analyticsTracker = analyticsTracker
         self.crashLogger = crashLogger
         self.contextManager = contextManager
-        self.readerPostService = readerPostService ?? .init(coreDataStack: contextManager)
-        self.commentService = commentService ?? .init(coreDataStack: contextManager)
     }
 
     /// The last time when user seen notifications
@@ -130,7 +126,7 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        self.updatePostLikeRemotely(notification: notification) { result in
+        notificationMediator?.toggleLikeForPostNotification(like: newLikedStatus, postID: notification.postID, siteID: notification.siteID, completion: { result in
             mainContext.perform {
                 do {
                     switch result {
@@ -144,10 +140,11 @@ final class NotificationsViewModel {
                     changes(oldLikedStatus)
                 }
             }
-        }
+        })
 
         // Track analytics event
-        self.trackInlineActionTapped(action: .postLike)
+        let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
+        self.trackInlineActionTapped(action: .postLike, extraProperties: properties)
     }
 
     func commentLikeActionTapped(with notification: CommentNotification, changes: @escaping (Bool) -> Void) {
@@ -179,32 +176,6 @@ final class NotificationsViewModel {
         self.trackInlineActionTapped(action: .commentLike)
     }
 
-    private func updatePostLikeRemotely(notification: NewPostNotification, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.contextManager.performAndSave { context in
-            self.updatePostLikeRemotely(notification: notification, in: context, completion: completion)
-        }
-    }
-
-    private func updateCommentLikeRemotely(notification: CommentNotification, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.contextManager.performAndSave { context in
-            self.updateCommentLikeRemotely(notification: notification, in: context, completion: completion)
-        }
-    }
-
-    private func updatePostLikeRemotely(notification: NewPostNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        self.fetchPost(withId: notification.postID, siteID: notification.siteID, in: context) { result in
-            switch result {
-            case .success(let post):
-                let action = ReaderLikeAction(service: self.readerPostService)
-                action.execute(with: post) { result in
-                    completion(result)
-                }
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
     private func updateCommentLikeRemotely(notification: CommentNotification, in context: NSManagedObjectContext, completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
         self.fetchComment(withId: notification.commentID, postID: notification.postID, siteID: notification.siteID, in: context) { [weak self] result in
             guard let self else {
@@ -225,31 +196,6 @@ final class NotificationsViewModel {
 
     // MARK: - Load Posts & Comments
 
-    private func fetchPost(withId id: UInt, siteID: UInt, in context: NSManagedObjectContext, completion: @escaping (Result<ReaderPost, Swift.Error>) -> Void) {
-        // Fetch locally
-        if let post = try? ReaderPost.lookup(withID: NSNumber(value: id), forSiteWithID: NSNumber(value: siteID), in: context) {
-            completion(.success(post))
-            return
-        }
-
-        // If not found, then fetch remotely
-        self.readerPostService.fetchPost(id, forSite: siteID, isFeed: false) { [weak self] post in
-            guard let self else {
-                return
-            }
-            context.perform {
-                if let postID = post?.objectID, let post = try? context.existingObject(with: postID) as? ReaderPost {
-                    completion(.success(post))
-                } else {
-                    self.crashLogger.logMessage("Post with ID \(id) is not found", level: .error)
-                    completion(.failure(Error.unknown))
-                }
-            }
-        } failure: { error in
-            completion(.failure(error ?? Error.unknown))
-        }
-    }
-
     // MARK: - Helpers
 
     private func createSharingTitle(from notification: Notification) -> String {
@@ -263,57 +209,15 @@ final class NotificationsViewModel {
         }
         return String(format: Strings.sharingMessageWithPostFormat, postTitle)
     }
-    
-    private func fetchComment(withId id: UInt, postID: UInt, siteID: UInt, in context: NSManagedObjectContext, completion: @escaping (Result<Comment, Swift.Error>) -> Void) {
-        self.fetchPost(withId: postID, siteID: siteID, in: context) { [weak self] result in
-            guard let self else {
-                return
-            }
-            switch result {
-            case .success(let post):
-                // Fetch locally
-                let commentID = NSNumber(value: id)
-                if let comment = post.comment(withID: commentID) {
-                    completion(.success(comment))
-                    return
-                }
-
-                // Fetch remotely
-                self.fetchComment(withId: commentID, post: post, in: context, completion: completion)
-            case .failure(let error):
-                completion(.failure(error))
-            }
-        }
-    }
-
-    private func fetchComment(withId id: NSNumber, post: ReaderPost, in context: NSManagedObjectContext, completion: @escaping (Result<Comment, Swift.Error>) -> Void) {
-        self.commentService.loadComment(withID: id, for: post, success: { comment in
-            context.perform {
-                if let commentID = comment?.objectID, let comment = try? context.existingObject(with: commentID) as? Comment {
-                    completion(.success(comment))
-                } else {
-                    self.crashLogger.logMessage("Comment with ID \(id) is not found", level: .error)
-                    completion(.failure(Error.unknown))
-                }
-            }
-        }, failure: { error in
-            completion(.failure(error ?? Error.unknown))
-        })
-    }
-
-    // MARK: - Types
-
-    enum Error: Swift.Error {
-        case unknown
-    }
 }
 
 // MARK: - Analytics Tracking
 
 private extension NotificationsViewModel {
-
-    func trackInlineActionTapped(action: InlineAction) {
-        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: ["inline_action": action.rawValue])
+    func trackInlineActionTapped(action: InlineAction, extraProperties: [AnyHashable: Any] = [:]) {
+        var properties: [AnyHashable: Any] = [Constants.actionAnalyticsKey: action.rawValue]
+        properties.merge(extraProperties) { current, _ in current }
+        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: properties)
     }
 
     enum InlineAction: String {
