@@ -247,6 +247,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             self.showNoResultsViewIfNeeded()
         }
 
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            tableView.reloadData()
+        }
+
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
@@ -339,7 +343,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return UITableViewCell()
         }
         let content = content(for: cell, notification: note)
-        cell.selectionStyle = .none
+        if splitViewControllerIsHorizontallyCompact {
+            cell.selectionStyle = .none
+        } else {
+            cell.selectionStyle = .default
+        }
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         cell.host(content, parent: self)
         cell.backgroundColor = .systemBackground
@@ -438,6 +446,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return nil
         }
         view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        if section == 0 {
+            view.position = .first
+        } else {
+            view.position = .subsequent
+        }
         return view
     }
 

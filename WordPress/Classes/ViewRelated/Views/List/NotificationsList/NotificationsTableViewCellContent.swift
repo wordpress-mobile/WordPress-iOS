@@ -37,10 +37,10 @@ struct NotificationsTableViewCellContent: View {
         switch style {
         case .regular(let regular):
             Regular(info: regular)
-                .padding(.bottom, Length.Padding.medium)
+                .padding(.vertical, Length.Padding.split)
         case .altered(let altered):
             Altered(info: altered)
-                .padding(.bottom, Length.Padding.medium)
+                .padding(.vertical, Length.Padding.split)
         }
     }
 }
