@@ -137,7 +137,7 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        notification.toggleLike(using: notificationMediator, like: newLikedStatus) { result in
+        notification.toggleLike(using: notificationMediator, isLike: newLikedStatus) { result in
             mainContext.perform {
                 do {
                     switch result {

@@ -20,11 +20,11 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 protocol NotificationSyncMediatorProtocol {
     func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
-    func toggleLikeForPostNotification(like: Bool,
+    func toggleLikeForPostNotification(isLike: Bool,
                                        postID: UInt,
                                        siteID: UInt,
                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void)
-    func toggleLikeForCommentNotification(like: Bool,
+    func toggleLikeForCommentNotification(isLike: Bool,
                                           commentID: UInt,
                                           siteID: UInt,
                                           completion: @escaping (Result<Bool, Swift.Error>) -> Void)
@@ -335,39 +335,39 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         })
     }
 
-    func toggleLikeForPostNotification(like: Bool,
+    func toggleLikeForPostNotification(isLike: Bool,
                                        postID: UInt,
                                        siteID: UInt,
                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
-        if like {
+        if isLike {
             readerRemoteService.likePost(postID, forSite: siteID) {
-                completion(.success(like))
+                completion(.success(isLike))
             } failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }
         } else {
             readerRemoteService.unlikePost(postID, forSite: siteID) {
-                completion(.success(like))
+                completion(.success(isLike))
             } failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }
         }
     }
 
-    func toggleLikeForCommentNotification(like: Bool,
+    func toggleLikeForCommentNotification(isLike: Bool,
                                           commentID: UInt,
                                           siteID: UInt,
                                           completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
         let commentService = commentRemoteFactory.restRemote(siteID: NSNumber(value: siteID), api: restAPI)
-        if like {
+        if isLike {
             commentService.likeComment(withID: NSNumber(value: commentID)) {
-                completion(.success(like))
+                completion(.success(isLike))
             } failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }
         } else {
             commentService.unlikeComment(withID: NSNumber(value: commentID)) {
-                completion(.success(like))
+                completion(.success(isLike))
             } failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }

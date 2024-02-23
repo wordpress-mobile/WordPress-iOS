@@ -32,9 +32,9 @@ struct CommentNotification: LikeableNotification {
     }
 
     func toggleLike(using notificationMediator: NotificationSyncMediatorProtocol,
-                    like: Bool,
+                    isLike: Bool,
                     completion: @escaping (Result<Bool, Error>) -> Void) {
-        notificationMediator.toggleLikeForCommentNotification(like: like,
+        notificationMediator.toggleLikeForCommentNotification(isLike: isLike,
                                                               commentID: commentID,
                                                               siteID: siteID,
                                                               completion: completion)

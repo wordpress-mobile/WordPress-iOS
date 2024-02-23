@@ -30,9 +30,9 @@ struct NewPostNotification: LikeableNotification {
     }
 
     func toggleLike(using notificationMediator: NotificationSyncMediatorProtocol,
-                    like: Bool,
+                    isLike: Bool,
                     completion: @escaping (Result<Bool, Error>) -> Void) {
-        notificationMediator.toggleLikeForPostNotification(like: like,
+        notificationMediator.toggleLikeForPostNotification(isLike: isLike,
                                                            postID: postID,
                                                            siteID: siteID,
                                                            completion: completion)
