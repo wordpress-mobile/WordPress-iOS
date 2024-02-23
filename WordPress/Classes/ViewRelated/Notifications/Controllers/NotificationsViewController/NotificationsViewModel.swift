@@ -130,7 +130,7 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        self.updatePostLikeRemotely(notification: notification) { result in
+        notificationMediator?.toggleLikeForPostNotification(like: newLikedStatus, postID: notification.postID, siteID: notification.siteID, completion: { result in
             mainContext.perform {
                 do {
                     switch result {
@@ -144,7 +144,7 @@ final class NotificationsViewModel {
                     changes(oldLikedStatus)
                 }
             }
-        }
+        })
 
         // Track analytics event
         self.trackInlineActionTapped(action: .postLike)
