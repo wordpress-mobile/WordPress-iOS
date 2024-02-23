@@ -478,23 +478,23 @@ extension Notification {
     /// Meta Parsing Keys
     ///
     fileprivate enum MetaKeys {
-        static let Ids      = "ids"
-        static let Links    = "links"
-        static let Titles   = "titles"
-        static let Site     = "site"
-        static let Post     = "post"
-        static let Comment  = "comment"
-        static let User     = "user"
-        static let Parent   = "parent_comment"
-        static let Reply    = "reply_comment"
-        static let Home     = "home"
+        static let Ids = "ids"
+        static let Links = "links"
+        static let Titles = "titles"
+        static let Site = "site"
+        static let Post = "post"
+        static let Comment = "comment"
+        static let User = "user"
+        static let Parent = "parent_comment"
+        static let Reply = "reply_comment"
+        static let Home = "home"
     }
 
     /// Body Parsing Keys
     ///
     enum BodyKeys {
-        static let type     = "type"
-        static let actions  = "actions"
+        static let type = "type"
+        static let actions = "actions"
     }
 
     /// Actions Parsing Keys
