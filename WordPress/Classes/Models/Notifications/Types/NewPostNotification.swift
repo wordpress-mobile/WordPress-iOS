@@ -1,20 +1,12 @@
 import Foundation
 
-struct NewPostNotification {
+struct NewPostNotification: LikeableNotification {
 
     // MARK: - Properties
 
-    let note: Notification
-    let postID: UInt
-    let siteID: UInt
-
-    var liked: Bool {
-        get {
-            getPostLikedStatus()
-        } set {
-            updatePostLikedStatus(newValue)
-        }
-    }
+    private let note: Notification
+    private let postID: UInt
+    private let siteID: UInt
 
     // MARK: - Init
 
@@ -27,9 +19,28 @@ struct NewPostNotification {
         self.siteID = siteID
     }
 
+    // MARK: LikeableNotification
+
+    var liked: Bool {
+        get {
+            getPostLikedStatus()
+        } set {
+            updatePostLikedStatus(newValue)
+        }
+    }
+
+    func toggleLike(using notificationMediator: NotificationSyncMediatorProtocol,
+                    like: Bool,
+                    completion: @escaping (Result<Bool, Error>) -> Void) {
+        notificationMediator.toggleLikeForPostNotification(like: like,
+                                                           postID: postID,
+                                                           siteID: siteID,
+                                                           completion: completion)
+    }
+
     // MARK: - Helpers
 
-    func getPostLikedStatus() -> Bool {
+    private func getPostLikedStatus() -> Bool {
         guard let body = note.body(ofType: .post),
               let actions = body[Notification.BodyKeys.actions] as? [String: Bool],
               let liked = actions[Notification.ActionsKeys.likePost]
@@ -39,7 +50,7 @@ struct NewPostNotification {
         return liked
     }
 
-    func updatePostLikedStatus(_ newValue: Bool) {
+    private func updatePostLikedStatus(_ newValue: Bool) {
         guard var body = note.body(ofType: Notification.BodyType.post),
               var actions = body[Notification.BodyKeys.actions] as? [String: Bool]
         else {

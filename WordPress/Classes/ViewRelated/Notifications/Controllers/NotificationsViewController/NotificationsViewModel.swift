@@ -2,11 +2,10 @@ import Foundation
 import AutomatticTracks
 
 final class NotificationsViewModel {
-    enum Constants {
-        static let lastSeenKey = "notifications_last_seen_time"
-        static let headerTextKey = "text"
-        static let actionAnalyticsKey = "inline_action"
-        static let likedAnalyticsKey = "liked"
+    enum InlineAction: String {
+        case sharePost = "share_post"
+        case commentLike = "comment_like"
+        case postLike = "post_like"
     }
 
     // MARK: - Type Aliases
@@ -117,7 +116,12 @@ final class NotificationsViewModel {
         return content
     }
 
-    func postLikeActionTapped(with notification: NewPostNotification, changes: @escaping (Bool) -> Void) {
+    func likeActionTapped(with notification: LikeableNotification,
+                          action: InlineAction,
+                          changes: @escaping (Bool) -> Void) {
+        guard let notificationMediator else {
+            return
+        }
         // Optimistically update liked status
         var notification = notification
         let oldLikedStatus = notification.liked
@@ -126,7 +130,7 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        notificationMediator?.toggleLikeForPostNotification(like: newLikedStatus, postID: notification.postID, siteID: notification.siteID, completion: { result in
+        notification.toggleLike(using: notificationMediator, like: newLikedStatus) { result in
             mainContext.perform {
                 do {
                     switch result {
@@ -140,11 +144,11 @@ final class NotificationsViewModel {
                     changes(oldLikedStatus)
                 }
             }
-        })
+        }
 
         // Track analytics event
         let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
-        self.trackInlineActionTapped(action: .postLike, extraProperties: properties)
+        self.trackInlineActionTapped(action: action, extraProperties: properties)
     }
 
     func commentLikeActionTapped(with notification: CommentNotification, changes: @escaping (Bool) -> Void) {
@@ -203,10 +207,11 @@ private extension NotificationsViewModel {
         self.analyticsTracker.track(.notificationsInlineActionTapped, properties: properties)
     }
 
-    enum InlineAction: String {
-        case sharePost = "share_post"
-        case commentLike = "comment_like"
-        case postLike = "post_like"
+    enum Constants {
+        static let lastSeenKey = "notifications_last_seen_time"
+        static let headerTextKey = "text"
+        static let actionAnalyticsKey = "inline_action"
+        static let likedAnalyticsKey = "liked"
     }
 
     enum Strings {
