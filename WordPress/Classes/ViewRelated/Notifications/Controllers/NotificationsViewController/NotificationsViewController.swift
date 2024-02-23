@@ -338,38 +338,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
+        let content = content(for: cell, notification: note)
         cell.selectionStyle = .none
-        let style: NotificationsTableViewCellContent.Style
-        if let deletionRequest = notificationDeletionRequests[note.objectID] {
-            style = .altered(
-                .init(
-                    text: deletionRequest.kind.legendText,
-                    action: { [weak self] in
-                        self?.cancelDeletionRequestForNoteWithID(note.objectID)
-                    }
-                )
-            )
-        } else {
-            let attributedTitle: AttributedString?
-            if let attributedSubject = note.renderSubject() {
-                attributedTitle = AttributedString(attributedSubject)
-            } else {
-                attributedTitle = nil
-            }
-            style = .regular(
-                .init(
-                    title: attributedTitle,
-                    description: note.renderSnippet()?.string,
-                    shouldShowIndicator: !note.read,
-                    avatarStyle: .init(urls: note.allAvatarURLs) ?? .single(note.iconURL),
-                    inlineAction: nil
-                )
-            )
-        }
-
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.host(NotificationsTableViewCellContent(style: style), parent: self)
-
+        cell.host(content, parent: self)
         return cell
     }
 
@@ -379,6 +351,81 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
+    }
+
+    private func content(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent {
+        // Handle the case of a deleted / spammed notification
+        if let deletionRequest = notificationDeletionRequests[notification.objectID] {
+            let style = NotificationsTableViewCellContent.Style.altered(
+                .init(
+                    text: deletionRequest.kind.legendText,
+                    action: { [weak self] in
+                        self?.cancelDeletionRequestForNoteWithID(notification.objectID)
+                    }
+                )
+            )
+            return .init(style: style)
+        }
+
+        // Handle the regular case
+        let title: AttributedString? = {
+            guard let attributedSubject = notification.renderSubject() else {
+                return nil
+            }
+            return AttributedString(attributedSubject)
+        }()
+        let description = notification.renderSnippet()?.string
+        let inlineAction = inlineAction(for: cell, notification: notification)
+        let avatarStyle = AvatarsView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
+        let style = NotificationsTableViewCellContent.Style.regular(
+            .init(
+                title: title,
+                description: description,
+                shouldShowIndicator: !notification.read,
+                avatarStyle: avatarStyle,
+                inlineAction: inlineAction
+            )
+        )
+        return .init(style: style)
+    }
+
+    private func inlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
+        switch notification.kind {
+        case .comment:
+            return .init(
+                icon: Image.DS.icon(named: .starOutline),
+                action: {}
+            )
+        case .newPost:
+            return .init(
+                icon: Image.DS.icon(named: .starOutline),
+                action: {}
+            )
+        case .like, .reblog:
+            return self.shareInlineAction(for: cell, notification: notification)
+        default:
+            return nil
+        }
+    }
+
+    private func shareInlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction {
+        let action: () -> Void = { [weak self] in
+            guard let self, let content = self.viewModel.sharePostActionTapped(with: notification) else {
+                return
+            }
+            let sharingController = PostSharingController()
+            sharingController.sharePost(
+                content.title,
+                summary: nil,
+                link: content.url,
+                fromView: cell,
+                inViewController: self
+            )
+        }
+        return .init(
+            icon: Image.DS.icon(named: .blockShare),
+            action: action
+        )
     }
 
     // MARK: - UITableViewDelegate Methods

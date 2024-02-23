@@ -80,7 +80,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         inlineAction.action()
                     } label: {
                         inlineAction.icon
-                            .imageScale(.medium)
+                            .imageScale(.small)
                             .foregroundStyle(Color.DS.Foreground.secondary)
                             .frame(width: Length.Padding.medium, height: Length.Padding.medium)
                     }
