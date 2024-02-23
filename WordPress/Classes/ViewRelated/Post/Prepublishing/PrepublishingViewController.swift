@@ -472,13 +472,32 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func publishPost() {
-        publishButtonViewModel.state = .loading
+        setLoading(true)
         Task {
             do {
                 try await PostCoordinator.shared._publish(post)
                 getCompletion()?(.published)
             } catch {
+                setLoading(false)
                 publishButtonViewModel.state = .default
+            }
+        }
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        publishButtonViewModel.state = isLoading ? .loading : .default
+        isModalInPresentation = isLoading
+        view.isUserInteractionEnabled = !isLoading
+
+        var subviews: [UIView] = [view]
+        while let view = subviews.popLast() {
+            switch view {
+            case let control as UIControl:
+                control.isEnabled = !isLoading
+            case let cell as UITableViewCell:
+                isLoading ? cell.disable() : cell.enable()
+            default:
+                subviews += view.subviews
             }
         }
     }
