@@ -5,6 +5,8 @@ final class NotificationsViewModel {
     enum Constants {
         static let lastSeenKey = "notifications_last_seen_time"
         static let headerTextKey = "text"
+        static let actionAnalyticsKey = "inline_action"
+        static let likedAnalyticsKey = "liked"
     }
 
     // MARK: - Type Aliases
@@ -141,7 +143,8 @@ final class NotificationsViewModel {
         })
 
         // Track analytics event
-        self.trackInlineActionTapped(action: .postLike)
+        let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
+        self.trackInlineActionTapped(action: .postLike, extraProperties: properties)
     }
 
     // MARK: - Load Posts & Comments
@@ -164,9 +167,10 @@ final class NotificationsViewModel {
 // MARK: - Analytics Tracking
 
 private extension NotificationsViewModel {
-
-    func trackInlineActionTapped(action: InlineAction) {
-        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: ["inline_action": action.rawValue])
+    func trackInlineActionTapped(action: InlineAction, extraProperties: [AnyHashable: Any] = [:]) {
+        var properties: [AnyHashable: Any] = [Constants.actionAnalyticsKey: action.rawValue]
+        properties.merge(extraProperties) { current, _ in current }
+        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: properties)
     }
 
     enum InlineAction: String {
