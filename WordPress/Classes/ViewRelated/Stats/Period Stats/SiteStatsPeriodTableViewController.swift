@@ -75,6 +75,8 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     // MARK: - View
 
     override func viewDidLoad() {
+        datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
+
         super.viewDidLoad()
 
         clearExpandedRows()
@@ -94,7 +96,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
                 }
             })
             .store(in: &cancellables)
-        datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -108,16 +109,24 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         }
     }
 
-    // TODO: Replace with a new Date Picker
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard section == 0 else { return nil }
-
-
-        let picker = UIView.embedSwiftUIView(datePickerView)
-        picker.backgroundColor = .red
-        picker.translatesAutoresizingMaskIntoConstraints = true
-        picker.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: 150)
-        return picker
+    override func initTableView() {
+        let embeddedDatePickerView = UIView.embedSwiftUIView(datePickerView)
+        view.addSubview(embeddedDatePickerView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(tableView)
+        
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: embeddedDatePickerView.topAnchor, constant: 0),
+            view.leadingAnchor.constraint(equalTo: embeddedDatePickerView.leadingAnchor, constant: 0),
+            //            embeddedDatePickerView.heightAnchor.constraint(equalToConstant: 100),
+            view.trailingAnchor.constraint(equalTo: embeddedDatePickerView.trailingAnchor, constant: 0),
+            embeddedDatePickerView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0),
+            view.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0),
+            view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
+        ])
+        
+        tableView.refreshControl = refreshControl
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {

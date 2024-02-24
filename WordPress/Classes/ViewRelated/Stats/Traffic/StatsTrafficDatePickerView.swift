@@ -14,11 +14,12 @@ struct StatsTrafficDatePickerView: View {
                 }
             } label: {
                 Text(viewModel.selectedPeriod.label)
-                    .style(TextStyle.bodyMedium(.emphasized))
+                    .style(TextStyle.bodySmall(.emphasized))
                     .foregroundColor(Color.DS.Foreground.primary)
                 Image(systemName: "chevron.down")
-                    .imageScale(.small)
+                    .font(.system(size: 8))
                     .foregroundColor(Color.DS.Foreground.secondary)
+
             }
             .menuStyle(.borderlessButton)
             .padding(.vertical, Length.Padding.single)
@@ -33,7 +34,7 @@ struct StatsTrafficDatePickerView: View {
             Spacer()
 
             Text(viewModel.formattedCurrentInterval())
-                .style(TextStyle.bodyMedium(.emphasized))
+                .style(TextStyle.bodySmall(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
 
@@ -43,7 +44,7 @@ struct StatsTrafficDatePickerView: View {
                 viewModel.goToPreviousDateInterval()
             }) {
                 Image(systemName: "chevron.left")
-                    .imageScale(.medium)
+                    .imageScale(.small)
                     .foregroundColor(Color.DS.Foreground.secondary)
                     .flipsForRightToLeftLayoutDirection(true)
             }
@@ -57,11 +58,20 @@ struct StatsTrafficDatePickerView: View {
                 viewModel.goToNextDateInterval()
             }) {
                 Image(systemName: "chevron.right")
-                    .imageScale(.medium)
+                    .imageScale(.small)
                     .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
                     .flipsForRightToLeftLayoutDirection(true)
             }.disabled(isNextDisabled)
-        }
+        }.padding(.vertical, Length.Padding.single)
+            .padding(.horizontal, Length.Padding.double)
+            .background(Color.DS.Background.primary)
+            .overlay(
+                Rectangle()
+                    .frame(height: Length.Border.thin)
+                    .foregroundColor(Color.DS.Foreground.tertiary),
+                alignment: .bottom
+            )
+            .background(Color.DS.Background.secondary)
     }
 }
 
