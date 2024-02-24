@@ -1,0 +1,19 @@
+{
+    "state": "scanning",
+    "threats": [],
+    "has_cloud": false,
+    "credentials": [{
+        "host": "example.com",
+        "port": 21,
+        "user": "example",
+        "path": "\/",
+        "type": "ftp",
+        "role": "main",
+        "still_valid": true
+    }],
+    "current": {
+        "is_initial": true,
+        "timestamp": "2020-11-13T01:03:34+00:00",
+        "progress": 78
+    }
+}

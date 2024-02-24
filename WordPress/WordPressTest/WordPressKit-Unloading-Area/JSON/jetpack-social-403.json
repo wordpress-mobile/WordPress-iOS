@@ -1,0 +1,7 @@
+{
+    "code": "rest_cannot_view",
+    "message": "Required headers are missing from the request.",
+    "data": {
+        "status": 403
+    }
+}

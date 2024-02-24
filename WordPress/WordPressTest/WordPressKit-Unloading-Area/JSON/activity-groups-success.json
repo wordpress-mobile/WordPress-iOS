@@ -1,0 +1,22 @@
+{
+  "groups": {
+    "post": {
+      "name": "Posts and Pages",
+      "count": 69
+    },
+    "attachment": {
+      "name": "Media",
+      "count": 5
+    },
+    "user": {
+      "name": "People",
+      "count": 2
+    },
+    "rewind": {
+      "name": "Backups and Restores",
+      "count": 10
+    },
+  },
+  "totalItems": 86,
+  "took": 0.094605
+}

@@ -1,0 +1,4 @@
+{
+    "error":"unauthorized",
+    "message":"User or Token does not have access to specified site."
+}
