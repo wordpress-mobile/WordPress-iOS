@@ -30,10 +30,10 @@ struct NotificationsTableViewCellContent: View {
         switch style {
         case .regular(let regular):
             Regular(info: regular)
-                .padding(.bottom, Length.Padding.medium)
+                .padding(.vertical, Length.Padding.split)
         case .altered(let altered):
             Altered(info: altered)
-                .padding(.bottom, Length.Padding.medium)
+                .padding(.vertical, Length.Padding.split)
         }
     }
 }
@@ -70,6 +70,7 @@ fileprivate extension NotificationsTableViewCellContent {
                 Spacer()
                 if let inlineAction = info.inlineAction {
                     InlineAction(configuration: inlineAction)
+                        .padding(.top, actionIconTopPadding())
                 }
             }
             .padding(.trailing, Length.Padding.double)
@@ -115,6 +116,10 @@ fileprivate extension NotificationsTableViewCellContent {
                         .padding(.top, Length.Padding.half)
                 }
             }
+        }
+
+        private func actionIconTopPadding() -> CGFloat {
+            rootStackAlignment == .center ? 0 : ((info.avatarStyle.diameter * textScale - Length.Padding.medium) / 2)
         }
     }
 }

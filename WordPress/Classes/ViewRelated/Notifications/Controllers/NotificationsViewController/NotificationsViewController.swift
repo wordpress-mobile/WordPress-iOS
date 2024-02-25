@@ -244,6 +244,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             self.showNoResultsViewIfNeeded()
         }
 
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            tableView.reloadData()
+        }
+
         if splitViewControllerIsHorizontallyCompact {
             tableView.deselectSelectedRowWithAnimation(true)
         } else {
@@ -335,7 +339,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
-        cell.selectionStyle = .none
+        if splitViewControllerIsHorizontallyCompact {
+            cell.selectionStyle = .none
+        } else {
+            cell.selectionStyle = .default
+        }
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
             cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
@@ -344,6 +352,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         } else {
             cell.configure(with: viewModel, notification: note, parent: self)
         }
+        cell.backgroundColor = .systemBackground
         return cell
     }
 
@@ -364,6 +373,11 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return nil
         }
         view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        if section == 0 {
+            view.position = .first
+        } else {
+            view.position = .subsequent
+        }
         return view
     }
 
@@ -633,6 +647,7 @@ private extension NotificationsViewController {
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .systemBackground
+        filterTabBar.backgroundColor = .systemBackground
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)

@@ -1,5 +1,6 @@
 24.4
 -----
+* [***] [Jetpack-only] Improved Notifications experience with richer UI elements and interactions
 
 
 24.3

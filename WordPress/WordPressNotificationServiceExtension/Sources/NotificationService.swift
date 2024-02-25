@@ -141,7 +141,7 @@ class NotificationService: UNNotificationServiceExtension {
                 notificationContent.title = contentFormatter.attributedSubject?.string ?? apsAlert
 
                 // Improve the notification body by trimming whitespace and reducing any multiple blank lines
-                notificationContent.body = contentFormatter.body?.condenseWhitespace() ?? ""
+                notificationContent.body = contentFormatter.attributedBody?.string.condenseWhitespace().truncate(with: 256) ?? ""
             }
 
             notificationContent.userInfo[CodingUserInfoKey.richNotificationViewModel.rawValue] = viewModel.data

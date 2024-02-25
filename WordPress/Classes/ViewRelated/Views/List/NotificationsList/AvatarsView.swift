@@ -96,12 +96,12 @@ struct AvatarsView: View {
         secondaryURL: URL?,
         tertiaryURL: URL?
     ) -> some View {
-        ZStack(alignment: .bottom) {
+        ZStack(alignment: .center) {
             avatar(url: tertiaryURL)
                 .padding(.trailing, Length.Padding.medium * scale)
             avatar(url: secondaryURL)
                 .avatarBorderOverlay()
-                .offset(x: 0, y: -Length.Padding.split * scale)
+                .padding(.bottom, Length.Padding.medium * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay()
                 .padding(.leading, Length.Padding.medium * scale)
