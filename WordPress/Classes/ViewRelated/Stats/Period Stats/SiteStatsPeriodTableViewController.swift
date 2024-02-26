@@ -26,34 +26,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ContextManager.sharedInstance().mainContext
     }()
 
-    var selectedDate: Date?
-    var selectedPeriod: StatsPeriodUnit? {
-        didSet {
-
-            guard let selectedPeriod else {
-                return
-            }
-
-            trackPeriodAccessEvent(selectedPeriod)
-
-            clearExpandedRows()
-
-            // If this is the first time setting the Period, need to initialize the view model.
-            // Otherwise, just refresh the data.
-            if oldValue == nil {
-                initViewModel()
-            } else {
-                refreshData()
-            }
-        }
-    }
-
     private let store = StoreContainer.shared.statsPeriod
     private var changeReceipt: Receipt?
 
-    private var viewModel: SiteStatsPeriodViewModel?
-    private let datePickerViewModel = StatsTrafficDatePickerViewModel()
-    private var datePickerView: StatsTrafficDatePickerView!
+    private var viewModel: SiteStatsPeriodViewModel!
+    private let datePickerViewModel: StatsTrafficDatePickerViewModel
+    private let datePickerView: StatsTrafficDatePickerView
     private var cancellables: Set<AnyCancellable> = []
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
@@ -62,9 +40,10 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
-    init() {
+    init(selectedDate: Date, selectedPeriod: StatsPeriodUnit) {
+        datePickerViewModel = StatsTrafficDatePickerViewModel(selectedPeriod: selectedPeriod, selectedDate: selectedDate)
+        datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
         super.init(nibName: nil, bundle: nil)
-
         tableStyle = .insetGrouped
     }
 
@@ -75,8 +54,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     // MARK: - View
 
     override func viewDidLoad() {
-        datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
-
         super.viewDidLoad()
 
         clearExpandedRows()
@@ -87,11 +64,17 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         tableView.estimatedSectionHeaderHeight = SiteStatsTableHeaderView.estimatedHeight
         sendScrollEventsToBanner()
 
-        datePickerViewModel.$currentDateInterval
-            .sink(receiveValue: { [weak self] dateInterval in
+        viewModel = SiteStatsPeriodViewModel(store: store,
+                                             selectedDate: datePickerViewModel.selectedDate,
+                                             selectedPeriod: datePickerViewModel.selectedPeriod,
+                                             periodDelegate: self,
+                                             referrerDelegate: self)
+        addViewModelListeners()
+        viewModel.startFetchingOverview()
+
+        Publishers.CombineLatest(datePickerViewModel.$selectedDate, datePickerViewModel.$selectedPeriod)
+            .sink(receiveValue: { [weak self] _, _ in
                 DispatchQueue.main.async {
-                    self?.selectedDate = dateInterval.start
-                    self?.selectedPeriod = self?.datePickerViewModel.selectedPeriod
                     self?.refreshData()
                 }
             })
@@ -101,11 +84,8 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if !isMovingToParent {
-            guard let date = selectedDate, let period = selectedPeriod else {
-                return
-            }
             addViewModelListeners()
-            viewModel?.refreshTrafficOverviewData(withDate: date, forPeriod: period)
+            viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.selectedDate, forPeriod: datePickerViewModel.selectedPeriod)
         }
     }
 
@@ -144,28 +124,12 @@ private extension SiteStatsPeriodTableViewController {
 
     // MARK: - View Model
 
-    func initViewModel() {
-
-        guard let selectedDate = selectedDate,
-            let selectedPeriod = selectedPeriod else {
-                return
-        }
-
-        viewModel = SiteStatsPeriodViewModel(store: store,
-                                             selectedDate: selectedDate,
-                                             selectedPeriod: selectedPeriod,
-                                             periodDelegate: self,
-                                             referrerDelegate: self)
-        addViewModelListeners()
-        viewModel?.startFetchingOverview()
-    }
-
     func addViewModelListeners() {
         if changeReceipt != nil {
             return
         }
 
-        changeReceipt = viewModel?.onChange { [weak self] in
+        changeReceipt = viewModel.onChange { [weak self] in
             self?.refreshTableView()
         }
     }
@@ -192,10 +156,6 @@ private extension SiteStatsPeriodTableViewController {
     // MARK: - Table Refreshing
 
     func refreshTableView() {
-        guard let viewModel = viewModel else {
-            return
-        }
-
         tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
@@ -213,14 +173,12 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func refreshData() {
-        guard let selectedDate = selectedDate,
-            let selectedPeriod = selectedPeriod,
-            viewIsVisible() else {
+        guard viewIsVisible() else {
             refreshControl.endRefreshing()
-                return
+            return
         }
         addViewModelListeners()
-        viewModel?.refreshTrafficOverviewData(withDate: selectedDate, forPeriod: selectedPeriod)
+        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.selectedDate, forPeriod: datePickerViewModel.selectedPeriod)
     }
 
     func applyTableUpdates() {
@@ -323,8 +281,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection,
-                                            selectedDate: selectedDate,
-                                            selectedPeriod: selectedPeriod)
+                                            selectedDate: datePickerViewModel.selectedDate,
+                                            selectedPeriod: datePickerViewModel.selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
@@ -338,8 +296,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     }
 
     func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
-        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex), let period = selectedPeriod {
-            trackBarChartTabSelectionEvent(tab: tab, period: period)
+        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex) {
+            trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.selectedPeriod)
         }
     }
 }
@@ -366,23 +324,6 @@ private extension SiteStatsPeriodTableViewController {
 // MARK: - Tracking
 
 private extension SiteStatsPeriodTableViewController {
-    func trackPeriodAccessEvent(_ period: StatsPeriodUnit) {
-        let event: WPAnalyticsStat = {
-            switch period {
-            case .day:
-                return .statsPeriodDaysAccessed
-            case .week:
-                return .statsPeriodWeeksAccessed
-            case .month:
-                return .statsPeriodMonthsAccessed
-            case .year:
-                return .statsPeriodYearsAccessed
-            }
-        }()
-
-        WPAppAnalytics.track(event, withBlogID: SiteStatsInformation.sharedInstance.siteID)
-    }
-
     func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {
         let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period.description as Any]
         WPAppAnalytics.track(tab.analyticsEvent, withProperties: properties)
