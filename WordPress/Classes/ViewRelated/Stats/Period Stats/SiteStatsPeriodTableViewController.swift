@@ -380,7 +380,7 @@ private extension SiteStatsPeriodTableViewController {
             }
         }()
 
-        WPAppAnalytics.track(event)
+        WPAppAnalytics.track(event, withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
 
     func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {

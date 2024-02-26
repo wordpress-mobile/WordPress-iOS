@@ -31,10 +31,18 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
             return
         }
         currentDateInterval = DateInterval(start: newStartDate, end: newEndDate)
+        WPAppAnalytics.track(
+            .statsDateTappedBackward,
+            withProperties: [StatsPeriodUnit.analyticsPeriodKey: selectedPeriod.description as Any],
+            withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
 
     func goToNextDateInterval() {
         currentDateInterval = nextDateInterval()
+        WPAppAnalytics.track(
+            .statsDateTappedForward,
+            withProperties: [StatsPeriodUnit.analyticsPeriodKey: selectedPeriod.description as Any],
+            withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
 
     func nextDateInterval() -> DateInterval {
