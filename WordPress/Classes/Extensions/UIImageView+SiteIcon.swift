@@ -64,7 +64,7 @@ extension UIImageView {
         imageSize expectedSize: CGSize = SiteIconDefaults.imageSize,
         placeholderImage: UIImage?
     ) {
-        af_setImage(withURLRequest: request, placeholderImage: placeholderImage, completion: { [weak self] dataResponse in
+        af.setImage(withURLRequest: request, placeholderImage: placeholderImage, completion: { [weak self] dataResponse in
             switch dataResponse.result {
             case .success(let image):
                 guard let self = self else {

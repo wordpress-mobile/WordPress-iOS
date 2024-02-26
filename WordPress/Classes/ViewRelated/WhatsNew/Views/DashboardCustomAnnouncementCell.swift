@@ -65,7 +65,7 @@ class DashboardCustomAnnouncementCell: AnnouncementTableViewCell {
     func configure(feature: WordPressKit.Feature) {
 
         if let url = URL(string: feature.iconUrl) {
-            announcementImageView.af_setImage(withURL: url, completion: { [weak self] response in
+            announcementImageView.af.setImage(withURL: url, completion: { [weak self] response in
 
                 guard let self,
                       let width = response.value?.size.width,
