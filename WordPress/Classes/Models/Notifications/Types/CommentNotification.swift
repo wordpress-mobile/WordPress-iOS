@@ -4,23 +4,21 @@ struct CommentNotification: LikeableNotification {
 
     // MARK: - Properties
 
+    private let note: Notification
     private let commentID: UInt
     private let siteID: UInt
-    private let postBody: [String: Any]?
-    private let updateBody: (([String: Any]) -> Void)
 
     // MARK: - Init
 
-    init(
-        commentID: UInt,
-        siteID: UInt,
-        postBody: [String: Any]?,
-        updateBody: @escaping (([String: Any]) -> Void)
-    ) {
-        self.commentID = commentID
+    init?(note: Notification) {
+        guard let siteID = note.metaSiteID?.uintValue,
+              let commentID = note.metaCommentID?.uintValue
+        else {
+            return nil
+        }
+        self.note = note
         self.siteID = siteID
-        self.postBody = postBody
-        self.updateBody = updateBody
+        self.commentID = commentID
     }
 
     // MARK: LikeableNotification
@@ -45,7 +43,8 @@ struct CommentNotification: LikeableNotification {
     // MARK: - Helpers
 
     private func getCommentLikedStatus() -> Bool {
-        guard let actions = postBody?[Notification.BodyKeys.actions] as? [String: Bool],
+        guard let body = note.body(ofType: .comment),
+              let actions = body[Notification.BodyKeys.actions] as? [String: Bool],
               let liked = actions[Notification.ActionsKeys.likeComment]
         else {
             return false
@@ -54,13 +53,13 @@ struct CommentNotification: LikeableNotification {
     }
 
     private func updateCommentLikedStatus(_ newValue: Bool) {
-        guard var tempBody = postBody,
-              var actions = tempBody[Notification.BodyKeys.actions] as? [String: Bool]
+        guard var body = note.body(ofType: .comment),
+              var actions = body[Notification.BodyKeys.actions] as? [String: Bool]
         else {
             return
         }
         actions[Notification.ActionsKeys.likeComment] = newValue
-        tempBody[Notification.BodyKeys.actions] = actions
-        updateBody(tempBody)
+        body[Notification.BodyKeys.actions] = actions
+        self.note.updateBody(ofType: .comment, newValue: body)
     }
 }
