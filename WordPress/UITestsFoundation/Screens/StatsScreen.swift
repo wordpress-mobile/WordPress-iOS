@@ -7,11 +7,21 @@ public class StatsScreen: ScreenObject {
         $0.buttons["dismiss-customize-insights-cell"]
     }
 
+    private let byDayButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["By day"]
+    }
+
+    private let byYearButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["By year"]
+    }
+
     private let statsDashboardGetter: (XCUIApplication) -> XCUIElement = {
         $0.otherElements["stats-dashboard"]
     }
 
     var dismissCustomizeInsightsButton: XCUIElement { dismissCustomizeInsightsButtonGetter(app) }
+    var byDayButton: XCUIElement { byDayButtonGetter(app) }
+    var byYearButton: XCUIElement { byYearButtonGetter(app) }
     var statsDashboard: XCUIElement { statsDashboardGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
@@ -39,6 +49,13 @@ public class StatsScreen: ScreenObject {
             }
         }
         return true
+    }
+
+    @discardableResult
+    public func selectByYearPeriod() -> Self {
+        byDayButton.tap()
+        byYearButton.tap()
+        return self
     }
 
     @discardableResult
