@@ -27,7 +27,10 @@ extension WPTabBarController {
     }
 
     @objc func makeReaderTabViewController() -> ReaderTabViewController {
-        return ReaderTabViewController(viewModel: readerTabViewModel) { [unowned self] viewModel in
+        return ReaderTabViewController(viewModel: readerTabViewModel) { [weak self] viewModel in
+            guard let self else {
+                return ReaderTabView(viewModel: viewModel)
+            }
             return self.makeReaderTabView(viewModel)
         }
     }
@@ -37,7 +40,10 @@ extension WPTabBarController {
             readerContentFactory: { [unowned self] in
                 self.makeReaderContentViewController(with: $0)
             },
-            searchNavigationFactory: { [unowned self] in
+            searchNavigationFactory: { [weak self] in
+                guard let self else {
+                    return
+                }
                 self.navigateToReaderSearch()
             },
             tabItemsStore: ReaderTabItemsStore(),

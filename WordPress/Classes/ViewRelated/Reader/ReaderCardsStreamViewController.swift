@@ -250,7 +250,10 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
 // MARK: - Select Interests Display
 private extension ReaderCardsStreamViewController {
     func displaySelectInterestsIfNeeded() {
-        selectInterestsViewController.userIsFollowingTopics { [unowned self] isFollowing in
+        selectInterestsViewController.userIsFollowingTopics { [weak self] isFollowing in
+            guard let self else {
+                return
+            }
             if isFollowing {
                 self.hideSelectInterestsView()
             } else {
@@ -291,7 +294,10 @@ private extension ReaderCardsStreamViewController {
         selectInterestsViewController.view.frame = self.view.bounds
         self.add(selectInterestsViewController)
 
-        selectInterestsViewController.didSaveInterests = { [unowned self] _ in
+        selectInterestsViewController.didSaveInterests = { [weak self] _ in
+            guard let self else {
+                return
+            }
             self.hideSelectInterestsView()
         }
     }
