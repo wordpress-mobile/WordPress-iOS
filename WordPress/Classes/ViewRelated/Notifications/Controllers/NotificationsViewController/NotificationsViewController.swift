@@ -446,11 +446,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
             return nil
         }
         view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-        if section == 0 {
-            view.position = .first
-        } else {
-            view.position = .subsequent
-        }
         return view
     }
 
@@ -2035,7 +2030,7 @@ private extension NotificationsViewController {
     }
 
     enum Settings {
-        static let estimatedRowHeight = CGFloat(70)
+        static let estimatedRowHeight = CGFloat(60)
     }
 
     enum Stats {

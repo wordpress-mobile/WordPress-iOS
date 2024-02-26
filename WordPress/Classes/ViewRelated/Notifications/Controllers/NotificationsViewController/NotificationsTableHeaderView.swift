@@ -3,13 +3,6 @@ import DesignSystem
 
 final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
 
-    // HeaderPosition categorizes table view headers based on their position in a list,
-    // distinguishing between the very first header and any that follow.
-    enum HeaderPosition {
-        case first
-        case subsequent
-    }
-
     static let reuseIdentifier: String = String(describing: NotificationsTableHeaderView.self)
 
     // MARK: - Properties
@@ -17,12 +10,6 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
     var text: String? {
         didSet {
             self.update(text: text)
-        }
-    }
-
-    var position: HeaderPosition = .first {
-        didSet {
-            self.update(position: position)
         }
     }
 
@@ -70,16 +57,12 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         self.contentConfiguration = config
     }
 
-    private func update(position: HeaderPosition) {
-        if var config = self.contentConfiguration as? UIListContentConfiguration {
-            switch position {
-            case .first:
-                config.directionalLayoutMargins = Appearance.layoutMarginsLeading
-            case .subsequent:
-                config.directionalLayoutMargins = Appearance.layoutMarginsSubsequent
-            }
-            self.contentConfiguration = config
+    private func update() {
+        guard var config = self.contentConfiguration as? UIListContentConfiguration else {
+            return
         }
+        config.directionalLayoutMargins = Appearance.layoutMarginsLeading
+        self.contentConfiguration = config
     }
 
     // MARK: - Constants
@@ -90,12 +73,6 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         static let textFont = UIFont.DS.font(.bodyLarge(.emphasized))
         static let layoutMarginsLeading = NSDirectionalEdgeInsets(
             top: Length.Padding.single,
-            leading: Length.Padding.double,
-            bottom: Length.Padding.half,
-            trailing: Length.Padding.double
-        )
-        static let layoutMarginsSubsequent = NSDirectionalEdgeInsets(
-            top: Length.Padding.single + Length.Padding.split,
             leading: Length.Padding.double,
             bottom: Length.Padding.half,
             trailing: Length.Padding.double
