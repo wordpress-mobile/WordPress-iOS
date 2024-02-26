@@ -37,8 +37,16 @@ extension WPTabBarController {
 
     @objc func makeReaderTabViewModel() -> ReaderTabViewModel {
         let viewModel = ReaderTabViewModel(
-            readerContentFactory: { [unowned self] in
-                self.makeReaderContentViewController(with: $0)
+            readerContentFactory: { [weak self] content in
+                if content.topicType == .discover, let topic = content.topic {
+                    let controller = ReaderCardsStreamViewController.controller(topic: topic)
+                    controller.shouldShowCommentSpotlight = self?.readerTabViewModel.shouldShowCommentSpotlight ?? false
+                    return controller
+                } else if let topic = content.topic {
+                    return ReaderStreamViewController.controllerWithTopic(topic)
+                } else {
+                    return ReaderStreamViewController.controllerForContentType(content.type)
+                }
             },
             searchNavigationFactory: { [weak self] in
                 guard let self else {
