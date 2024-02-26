@@ -74,7 +74,7 @@ final class NotificationsTableHeaderView: UITableViewHeaderFooterView {
         static let layoutMarginsLeading = NSDirectionalEdgeInsets(
             top: Length.Padding.single,
             leading: Length.Padding.double,
-            bottom: Length.Padding.half,
+            bottom: Length.Padding.single,
             trailing: Length.Padding.double
         )
     }
