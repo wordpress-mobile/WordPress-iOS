@@ -114,18 +114,17 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         view.addSubview(embeddedDatePickerView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(tableView)
-        
+
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: embeddedDatePickerView.topAnchor, constant: 0),
             view.leadingAnchor.constraint(equalTo: embeddedDatePickerView.leadingAnchor, constant: 0),
-            //            embeddedDatePickerView.heightAnchor.constraint(equalToConstant: 100),
             view.trailingAnchor.constraint(equalTo: embeddedDatePickerView.trailingAnchor, constant: 0),
             embeddedDatePickerView.bottomAnchor.constraint(equalTo: tableView.topAnchor, constant: 0),
             view.leadingAnchor.constraint(equalTo: tableView.leadingAnchor, constant: 0),
             view.trailingAnchor.constraint(equalTo: tableView.trailingAnchor, constant: 0),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0),
         ])
-        
+
         tableView.refreshControl = refreshControl
     }
 
