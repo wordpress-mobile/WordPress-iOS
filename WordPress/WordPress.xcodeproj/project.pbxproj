@@ -1861,6 +1861,8 @@
 		8070EB3E28D807CB005C6513 /* InMemoryUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */; };
 		8071390727D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
 		8071390827D039E70012DB21 /* DashboardSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8071390627D039E70012DB21 /* DashboardSingleStatView.swift */; };
+		808D10332B88FC5E0082E64F /* LikeableNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D10322B88FC5E0082E64F /* LikeableNotification.swift */; };
+		808D10342B88FC5E0082E64F /* LikeableNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D10322B88FC5E0082E64F /* LikeableNotification.swift */; };
 		808D102E2B881BE20082E64F /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D102D2B881BE20082E64F /* String+Truncate.swift */; };
 		808D102F2B881BE20082E64F /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D102D2B881BE20082E64F /* String+Truncate.swift */; };
 		808D10302B8820920082E64F /* String+Truncate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 808D102D2B881BE20082E64F /* String+Truncate.swift */; };
@@ -3695,6 +3697,12 @@
 		F44FB6CB287895AF0001E3CE /* SuggestionsListViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */; };
 		F44FB6D12878A1020001E3CE /* user-suggestions.json in Resources */ = {isa = PBXBuildFile; fileRef = F44FB6D02878A1020001E3CE /* user-suggestions.json */; };
 		F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48D44B5298992C30051EAA6 /* BlockedSite.swift */; };
+		F45EB5012B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */; };
+		F45EB5022B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */; };
+		F45EB5052B87E0F2004E9053 /* NewPostNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */; };
+		F45EB5082B87E167004E9053 /* NewPostNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */; };
+		F45EB50B2B883E6E004E9053 /* CommentNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB50A2B883E6E004E9053 /* CommentNotification.swift */; };
+		F45EB50C2B883E6E004E9053 /* CommentNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45EB50A2B883E6E004E9053 /* CommentNotification.swift */; };
 		F46039182B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
 		F46039192B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */; };
 		F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */; };
@@ -7436,6 +7444,7 @@
 		806E53E327E01CFE0064315E /* DashboardStatsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardStatsViewModelTests.swift; sourceTree = "<group>"; };
 		8070EB3D28D807CB005C6513 /* InMemoryUserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InMemoryUserDefaults.swift; sourceTree = "<group>"; };
 		8071390627D039E70012DB21 /* DashboardSingleStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardSingleStatView.swift; sourceTree = "<group>"; };
+		808D10322B88FC5E0082E64F /* LikeableNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeableNotification.swift; sourceTree = "<group>"; };
 		808D102D2B881BE20082E64F /* String+Truncate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Truncate.swift"; sourceTree = "<group>"; };
 		808DB70B2A710EFE00EA1645 /* NUXTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NUXTests.swift; sourceTree = "<group>"; };
 		8091019129078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackFullscreenOverlayViewController.swift; sourceTree = "<group>"; };
@@ -9063,6 +9072,9 @@
 		F44F6ABD2937428B00DC94A2 /* MigrationEmailService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F44FB6CA287895AF0001E3CE /* SuggestionsListViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionsListViewModelTests.swift; sourceTree = "<group>"; };
 		F44FB6D02878A1020001E3CE /* user-suggestions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "user-suggestions.json"; sourceTree = "<group>"; };
+		F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
+		F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostNotification.swift; sourceTree = "<group>"; };
+		F45EB50A2B883E6E004E9053 /* CommentNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommentNotification.swift; sourceTree = "<group>"; };
 		F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsTableHeaderView.swift; sourceTree = "<group>"; };
 		F46546282AED89790017E3D1 /* AllDomainsListEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListEmptyView.swift; sourceTree = "<group>"; };
 		F465462C2AEF22070017E3D1 /* AllDomainsListViewModel+Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListViewModel+Strings.swift"; sourceTree = "<group>"; };
@@ -10099,6 +10111,7 @@
 				083683DC2B4859BB00331ED0 /* NotificationsViewModel.swift */,
 				F42A9C652B7111BB0035CBCE /* NotificationsViewController+Strings.swift */,
 				F46039172B72A95D00D4FE12 /* NotificationsTableHeaderView.swift */,
+				F45EB5002B865AF4004E9053 /* NotificationTableViewCell.swift */,
 			);
 			path = NotificationsViewController;
 			sourceTree = "<group>";
@@ -15341,6 +15354,7 @@
 		B545186718E9E08000AC3A54 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				F45EB5032B87E0E8004E9053 /* Types */,
 				D816C1EA20E0884100C4D82F /* Actions */,
 				982DDE1226320B4A002B3904 /* Likes */,
 				B5722E401D51A28100F40C5E /* Notification.swift */,
@@ -17590,6 +17604,16 @@
 				F44FB6D02878A1020001E3CE /* user-suggestions.json */,
 			);
 			name = Suggestions;
+			sourceTree = "<group>";
+		};
+		F45EB5032B87E0E8004E9053 /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				808D10322B88FC5E0082E64F /* LikeableNotification.swift */,
+				F45EB50A2B883E6E004E9053 /* CommentNotification.swift */,
+				F45EB5042B87E0F2004E9053 /* NewPostNotification.swift */,
+			);
+			path = Types;
 			sourceTree = "<group>";
 		};
 		F460391A2B7A67A700D4FE12 /* Comment */ = {
@@ -21737,6 +21761,7 @@
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
 				FEA088052696F7AA00193358 /* WPStyleGuide+List.swift in Sources */,
 				17C2FF0925D4852400CDB712 /* UnifiedProloguePages.swift in Sources */,
+				808D10332B88FC5E0082E64F /* LikeableNotification.swift in Sources */,
 				FE5096592A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift in Sources */,
 				08D345561CD7FBA900358E8C /* MenuHeaderViewController.m in Sources */,
 				088CC594282BEC41007B9421 /* TooltipPresenter.swift in Sources */,
@@ -21789,6 +21814,7 @@
 				E1389ADB1C59F7C200FB2466 /* PlanListViewController.swift in Sources */,
 				80A2153D29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */,
 				1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */,
+				F45EB5052B87E0F2004E9053 /* NewPostNotification.swift in Sources */,
 				084FC3BC299155C900A17BCF /* JetpackOverlayCoordinator.swift in Sources */,
 				0CAE8EF62A9E9EE30073EEB9 /* SiteMediaCollectionCellViewModel.swift in Sources */,
 				8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */,
@@ -22173,6 +22199,7 @@
 				B5EFB1C21B31B98E007608A3 /* NotificationSettingsService.swift in Sources */,
 				011896A829D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */,
 				011F52BD2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */,
+				F45EB5012B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */,
 				1717139F265FE59700F3A022 /* ButtonStyles.swift in Sources */,
 				C3FF78E828354A91008FA600 /* SiteDesignSectionLoader.swift in Sources */,
 				803BB989295B80D300B3F6D6 /* RootViewPresenter+EditorNavigation.swift in Sources */,
@@ -22900,6 +22927,7 @@
 				4AFB1A812A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */,
 				B522C4F81B3DA79B00E47B59 /* NotificationSettingsViewController.swift in Sources */,
 				FEC26033283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
+				F45EB50B2B883E6E004E9053 /* CommentNotification.swift in Sources */,
 				93E63369272AC532009DACF8 /* LoginEpilogueChooseSiteTableViewCell.swift in Sources */,
 				9A51DA1522E9E8C7005CC335 /* ChangeUsernameViewController.swift in Sources */,
 				0CF0C4232AE98C13006FFAB4 /* AbstractPostHelper.swift in Sources */,
@@ -24257,6 +24285,7 @@
 				FABB21692602FC2C00C8785C /* StockPhotosStrings.swift in Sources */,
 				FABB216A2602FC2C00C8785C /* StatsViewController.m in Sources */,
 				08AA64062A84FFF40076E38D /* DashboardGoogleDomainsViewModel.swift in Sources */,
+				F45EB5022B865AF4004E9053 /* NotificationTableViewCell.swift in Sources */,
 				011F52C42A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift in Sources */,
 				DC8F61F827032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
 				FABB216B2602FC2C00C8785C /* WPRichTextEmbed.swift in Sources */,
@@ -24847,6 +24876,7 @@
 				FABB230F2602FC2C00C8785C /* RestoreStatusFailedView.swift in Sources */,
 				FEFA263F26C5AE9A009CCB7E /* ShareAppContentPresenter.swift in Sources */,
 				FABB23112602FC2C00C8785C /* PostingActivityLegend.swift in Sources */,
+				808D10342B88FC5E0082E64F /* LikeableNotification.swift in Sources */,
 				8B92D69727CD51FA001F5371 /* DashboardGhostCardCell.swift in Sources */,
 				FABB23122602FC2C00C8785C /* WPImmuTableRows.swift in Sources */,
 				808D102F2B881BE20082E64F /* String+Truncate.swift in Sources */,
@@ -24913,6 +24943,7 @@
 				FABB23382602FC2C00C8785C /* WordPress-22-23.xcmappingmodel in Sources */,
 				FED65D79293511E4008071BF /* SharedDataIssueSolver.swift in Sources */,
 				FABB23392602FC2C00C8785C /* CountriesMap.swift in Sources */,
+				F45EB50C2B883E6E004E9053 /* CommentNotification.swift in Sources */,
 				98BC522527F6245700D6E8C2 /* BloggingPromptsFeatureIntroduction.swift in Sources */,
 				FABB233A2602FC2C00C8785C /* RevisionsNavigationController.swift in Sources */,
 				FE3D058426C419C7002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */,
@@ -25218,6 +25249,7 @@
 				FABB24222602FC2C00C8785C /* Uploader.swift in Sources */,
 				FABB24232602FC2C00C8785C /* JetpackRestoreService.swift in Sources */,
 				FABB24242602FC2C00C8785C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
+				F45EB5082B87E167004E9053 /* NewPostNotification.swift in Sources */,
 				FABB24252602FC2C00C8785C /* WPContentSyncHelper.swift in Sources */,
 				830A58D92793AB4500CDE94F /* LoginEpilogueAnimator.swift in Sources */,
 				FABB24262602FC2C00C8785C /* SiteAssemblyStep.swift in Sources */,

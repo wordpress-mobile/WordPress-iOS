@@ -2,9 +2,17 @@ import Foundation
 import AutomatticTracks
 
 final class NotificationsViewModel {
+    enum InlineAction: String {
+        case sharePost = "share_post"
+        case commentLike = "comment_like"
+        case postLike = "post_like"
+    }
+
     enum Constants {
         static let lastSeenKey = "notifications_last_seen_time"
         static let headerTextKey = "text"
+        static let actionAnalyticsKey = "inline_action"
+        static let likedAnalyticsKey = "liked"
     }
 
     // MARK: - Type Aliases
@@ -14,6 +22,7 @@ final class NotificationsViewModel {
 
     // MARK: - Depdencies
 
+    private let contextManager: CoreDataStackSwift
     private let userDefaults: UserPersistentRepository
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
@@ -28,6 +37,7 @@ final class NotificationsViewModel {
     init(
         userDefaults: UserPersistentRepository,
         notificationMediator: NotificationSyncMediatorProtocol? = NotificationSyncMediator(),
+        contextManager: CoreDataStackSwift = ContextManager.shared,
         analyticsTracker: AnalyticsEventTracking.Type = WPAnalytics.self,
         crashLogger: CrashLogging = CrashLogging.main
     ) {
@@ -35,6 +45,7 @@ final class NotificationsViewModel {
         self.notificationMediator = notificationMediator
         self.analyticsTracker = analyticsTracker
         self.crashLogger = crashLogger
+        self.contextManager = contextManager
     }
 
     /// The last time when user seen notifications
@@ -112,6 +123,43 @@ final class NotificationsViewModel {
         return content
     }
 
+    func likeActionTapped(with notification: LikeableNotification,
+                          action: InlineAction,
+                          changes: @escaping (Bool) -> Void) {
+        guard let notificationMediator else {
+            return
+        }
+        // Optimistically update liked status
+        var notification = notification
+        let oldLikedStatus = notification.liked
+        let newLikedStatus = !notification.liked
+        changes(newLikedStatus)
+
+        // Update liked status remotely
+        let mainContext = contextManager.mainContext
+        notification.toggleLike(using: notificationMediator, isLike: newLikedStatus) { result in
+            mainContext.perform {
+                do {
+                    switch result {
+                    case .success(let liked):
+                        notification.liked = liked
+                        try mainContext.save()
+                    case .failure(let error):
+                        throw error
+                    }
+                } catch {
+                    changes(oldLikedStatus)
+                }
+            }
+        }
+
+        // Track analytics event
+        let properties = [Constants.likedAnalyticsKey: String(newLikedStatus)]
+        self.trackInlineActionTapped(action: action, extraProperties: properties)
+    }
+
+    // MARK: - Helpers
+
     private func createSharingTitle(from notification: Notification) -> String {
         guard notification.kind == .like,
               let header = notification.header,
@@ -128,15 +176,10 @@ final class NotificationsViewModel {
 // MARK: - Analytics Tracking
 
 private extension NotificationsViewModel {
-
-    func trackInlineActionTapped(action: InlineAction) {
-        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: ["inline_action": action.rawValue])
-    }
-
-    enum InlineAction: String {
-        case sharePost = "share_post"
-        case commentLike = "comment_like"
-        case postLike = "post_like"
+    func trackInlineActionTapped(action: InlineAction, extraProperties: [AnyHashable: Any] = [:]) {
+        var properties: [AnyHashable: Any] = [Constants.actionAnalyticsKey: action.rawValue]
+        properties.merge(extraProperties) { current, _ in current }
+        self.analyticsTracker.track(.notificationsInlineActionTapped, properties: properties)
     }
 
     enum Strings {

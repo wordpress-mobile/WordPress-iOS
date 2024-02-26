@@ -20,6 +20,14 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 protocol NotificationSyncMediatorProtocol {
     func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
+    func toggleLikeForPostNotification(isLike: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void)
+    func toggleLikeForCommentNotification(isLike: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void)
 }
 
 // MARK: - NotificationSyncMediator
@@ -29,9 +37,23 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///
     private let contextManager: CoreDataStackSwift
 
+    /// API object used to make network requests
+    /// Used by remote services
+    ///
+    fileprivate let restAPI: WordPressComRestApi
+
     /// Sync Service Remote
     ///
     fileprivate let remote: NotificationSyncServiceRemote
+
+    /// Reader Service Remote
+    /// Used for toggling like status for posts and comments
+    ///
+    fileprivate let readerRemoteService: ReaderPostServiceRemote
+
+    /// Comment Remote Factory
+    /// Used to create a comment remote service by providing a siteID and restAPI
+    fileprivate let commentRemoteFactory: CommentServiceRemoteFactory
 
     /// Maximum number of Notes to Sync
     ///
@@ -78,7 +100,10 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
 
         contextManager = manager
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+        restAPI = dotcomAPI
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: restAPI)
+        readerRemoteService = ReaderPostServiceRemote(wordPressComRestApi: restAPI)
+        commentRemoteFactory = CommentServiceRemoteFactory()
     }
 
     /// Syncs the latest *maximumNotes*:
@@ -309,6 +334,45 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
             }, completion: done, on: .main)
         })
     }
+
+    func toggleLikeForPostNotification(isLike: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        if isLike {
+            readerRemoteService.likePost(postID, forSite: siteID) {
+                completion(.success(isLike))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        } else {
+            readerRemoteService.unlikePost(postID, forSite: siteID) {
+                completion(.success(isLike))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        }
+    }
+
+    func toggleLikeForCommentNotification(isLike: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        let commentService = commentRemoteFactory.restRemote(siteID: NSNumber(value: siteID), api: restAPI)
+        if isLike {
+            commentService.likeComment(withID: NSNumber(value: commentID)) {
+                completion(.success(isLike))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        } else {
+            commentService.unlikeComment(withID: NSNumber(value: commentID)) {
+                completion(.success(isLike))
+            } failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        }
+    }
 }
 
 // MARK: - Private Helpers
@@ -430,5 +494,12 @@ private extension NotificationSyncMediator {
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+    }
+}
+
+extension NotificationSyncMediator {
+
+    enum ServiceError: Error {
+        case unknown
     }
 }

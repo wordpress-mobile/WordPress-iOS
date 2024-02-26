@@ -20,6 +20,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
 
+    typealias TableViewCell = NotificationTableViewCell
+
     // MARK: - Properties
 
     /// Table View
@@ -215,11 +217,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         }
-        // TODO: Remove this when In-App Rating project is shipped
-//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-//            setupAppRatings()
-//            self.showInlinePrompt()
-//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -338,18 +335,23 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NotificationsTableViewCellContent.reuseIdentifier) as? HostingTableViewCell<NotificationsTableViewCellContent>,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier) as? TableViewCell,
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
-        let content = content(for: cell, notification: note)
         if splitViewControllerIsHorizontallyCompact {
             cell.selectionStyle = .none
         } else {
             cell.selectionStyle = .default
         }
         cell.accessibilityHint = Self.accessibilityHint(for: note)
-        cell.host(content, parent: self)
+        if let deletionRequest = notificationDeletionRequests[note.objectID] {
+            cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
+                self?.cancelDeletionRequestForNoteWithID(note.objectID)
+            }
+        } else {
+            cell.configure(with: viewModel, notification: note, parent: self)
+        }
         cell.backgroundColor = .systemBackground
         return cell
     }
@@ -360,81 +362,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         return .none
-    }
-
-    private func content(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent {
-        // Handle the case of a deleted / spammed notification
-        if let deletionRequest = notificationDeletionRequests[notification.objectID] {
-            let style = NotificationsTableViewCellContent.Style.altered(
-                .init(
-                    text: deletionRequest.kind.legendText,
-                    action: { [weak self] in
-                        self?.cancelDeletionRequestForNoteWithID(notification.objectID)
-                    }
-                )
-            )
-            return .init(style: style)
-        }
-
-        // Handle the regular case
-        let title: AttributedString? = {
-            guard let attributedSubject = notification.renderSubject() else {
-                return nil
-            }
-            return AttributedString(attributedSubject)
-        }()
-        let description = notification.renderSnippet()?.string
-        let inlineAction = inlineAction(for: cell, notification: notification)
-        let avatarStyle = AvatarsView.Style(urls: notification.allAvatarURLs) ?? .single(notification.iconURL)
-        let style = NotificationsTableViewCellContent.Style.regular(
-            .init(
-                title: title,
-                description: description,
-                shouldShowIndicator: !notification.read,
-                avatarStyle: avatarStyle,
-                inlineAction: inlineAction
-            )
-        )
-        return .init(style: style)
-    }
-
-    private func inlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction? {
-        switch notification.kind {
-        case .comment:
-            return .init(
-                icon: Image.DS.icon(named: .starOutline),
-                action: {}
-            )
-        case .newPost:
-            return .init(
-                icon: Image.DS.icon(named: .starOutline),
-                action: {}
-            )
-        case .like, .reblog:
-            return self.shareInlineAction(for: cell, notification: notification)
-        default:
-            return nil
-        }
-    }
-
-    private func shareInlineAction(for cell: UITableViewCell, notification: Notification) -> NotificationsTableViewCellContent.InlineAction {
-        let action: () -> Void = { [weak self] in
-            guard let self, let content = self.viewModel.sharePostActionTapped(with: notification) else {
-                return
-            }
-            let sharingController = PostSharingController()
-            sharingController.sharePost(
-                content.title,
-                summary: nil,
-                link: content.url,
-                fromView: cell,
-                inViewController: self
-            )
-        }
-        return .init(
-            icon: Image.DS.icon(named: .blockShare),
-            action: action
-        )
     }
 
     // MARK: - UITableViewDelegate Methods
@@ -670,10 +597,7 @@ private extension NotificationsViewController {
     func setupTableView() {
         // Register the cells
         tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
-        tableView.register(
-            HostingTableViewCell<NotificationsTableViewCellContent>.self,
-            forCellReuseIdentifier: NotificationsTableViewCellContent.reuseIdentifier
-        )
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"

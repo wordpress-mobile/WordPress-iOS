@@ -2,15 +2,13 @@ import SwiftUI
 import DesignSystem
 
 struct NotificationsTableViewCellContent: View {
-    static let reuseIdentifier = String(describing: Self.self)
-
     enum Style {
         struct Regular {
             let title: AttributedString?
             let description: String?
             let shouldShowIndicator: Bool
             let avatarStyle: AvatarsView.Style
-            let inlineAction: InlineAction?
+            let inlineAction: InlineAction.Configuration?
         }
 
         struct Altered {
@@ -22,12 +20,7 @@ struct NotificationsTableViewCellContent: View {
         case altered(Altered)
     }
 
-    struct InlineAction {
-        let icon: SwiftUI.Image
-        let action: () -> Void
-    }
-
-    private let style: Style
+    let style: Style
 
     init(style: Style) {
         self.style = style
@@ -76,8 +69,8 @@ fileprivate extension NotificationsTableViewCellContent {
                     .saveSize(in: $textsSize)
                 Spacer()
                 if let inlineAction = info.inlineAction {
-                    actionIcon(inlineAction: inlineAction)
-                        .padding(.top, actionIconTopPadding(inlineAction: inlineAction))
+                    InlineAction(configuration: inlineAction)
+                        .padding(.top, actionIconTopPadding())
                 }
             }
             .padding(.trailing, Length.Padding.double)
@@ -125,18 +118,7 @@ fileprivate extension NotificationsTableViewCellContent {
             }
         }
 
-        private func actionIcon(inlineAction: InlineAction) -> some View {
-            Button {
-                inlineAction.action()
-            } label: {
-                inlineAction.icon
-                    .imageScale(.small)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
-                    .frame(width: Length.Padding.medium, height: Length.Padding.medium)
-            }
-        }
-
-        private func actionIconTopPadding(inlineAction: InlineAction) -> CGFloat {
+        private func actionIconTopPadding() -> CGFloat {
             rootStackAlignment == .center ? 0 : ((info.avatarStyle.diameter * textScale - Length.Padding.medium) / 2)
         }
     }
@@ -187,6 +169,44 @@ fileprivate extension NotificationsTableViewCellContent {
             }
             .frame(height: 60)
             .background(Color.DS.Foreground.error)
+        }
+    }
+}
+
+// MARK: - Inline Action
+
+extension NotificationsTableViewCellContent {
+
+    struct InlineAction: View {
+
+        class Configuration: ObservableObject {
+
+            @Published var icon: SwiftUI.Image
+            @Published var color: Color?
+
+            let action: () -> Void
+
+            init(icon: SwiftUI.Image, color: Color? = nil, action: @escaping () -> Void) {
+                self.icon = icon
+                self.color = color
+                self.action = action
+            }
+        }
+
+        @ObservedObject var configuration: Configuration
+
+        var body: some View {
+            Button {
+                configuration.action()
+            } label: {
+                configuration.icon
+                    .imageScale(.small)
+                    .foregroundStyle(configuration.color ?? Color.DS.Foreground.secondary)
+                    .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+                    .transaction { transaction in
+                        transaction.animation = nil
+                    }
+            }
         }
     }
 }
