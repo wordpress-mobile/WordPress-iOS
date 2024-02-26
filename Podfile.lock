@@ -1,9 +1,9 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AlamofireImage (3.5.2):
-    - Alamofire (~> 4.8)
-  - AlamofireNetworkActivityIndicator (2.4.0):
-    - Alamofire (~> 4.8)
+  - Alamofire (5.8.1)
+  - AlamofireImage (4.3.0):
+    - Alamofire (~> 5.8)
+  - AlamofireNetworkActivityIndicator (3.1.0):
+    - Alamofire (~> 5.1)
   - AppCenter (5.0.3):
     - AppCenter/Analytics (= 5.0.3)
     - AppCenter/Crashes (= 5.0.3)
@@ -94,8 +94,8 @@ PODS:
   - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
-  - AlamofireImage (= 3.5.2)
-  - AlamofireNetworkActivityIndicator (~> 2.4)
+  - AlamofireImage (~> 4.0)
+  - AlamofireNetworkActivityIndicator (~> 3.0)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
   - Automattic-Tracks-iOS (~> 3.0)
@@ -187,9 +187,9 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
-  AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
+  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
+  AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   Automattic-Tracks-iOS: baa126f98d2ce26fd54ee2534bef6e2d46480a5c
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
@@ -230,6 +230,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: a72acf63ca42eea8a17ef32913d3d57c96b18f76
+PODFILE CHECKSUM: bdbb176de951ce4d6a17940622b03282067e0f5e
 
 COCOAPODS: 1.14.2
