@@ -2,7 +2,7 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/a8c-ci-toolkit#2.18.1
+    - automattic/a8c-ci-toolkit#3.1.0
   # Common environment values to use with the `env` key.
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
@@ -105,6 +105,15 @@ steps:
   #################
   - group: "Linters"
     steps:
+      - label: ":swift: SwiftLint"
+        command: run_swiftlint --strict
+        plugins: *common_plugins
+        notify:
+          - github_commit_status:
+              context: "SwiftLint"
+        agents:
+          queue: "default"
+
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
         plugins:
@@ -115,6 +124,7 @@ steps:
         notify:
           - github_commit_status:
               context: "Lint Translations"
+
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
         plugins: *common_plugins

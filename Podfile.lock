@@ -117,7 +117,7 @@ DEPENDENCIES:
   - Reachability (= 3.2)
   - Starscream (~> 4.0)
   - SVProgressHUD (= 2.2.5)
-  - SwiftLint (~> 0.50)
+  - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 9.0.1, ~> 9.0)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `f335202c98b972dd2a426dfe0e06780a38579ee7`)
@@ -231,6 +231,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: c7bf9c542367e6ea6b245cc378ee3dd43a7bffef
+PODFILE CHECKSUM: 4453062b0c973ec7e780bff098a5b1e78639736c
 
 COCOAPODS: 1.14.2
