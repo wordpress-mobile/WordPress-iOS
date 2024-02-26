@@ -40,6 +40,9 @@ class GutenbergWebViewController: GutenbergWebSingleBlockViewController, WebKitA
         addProgressView()
         startObservingWebView()
         waitForGutenbergToLoad(fallback: showTroubleshootingInstructions)
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
     }
 
     deinit {
