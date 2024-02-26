@@ -1,7 +1,7 @@
 steps:
   - label: New Beta Deployment
     plugins:
-      - automattic/a8c-ci-toolkit#2.18.2
+      - automattic/a8c-ci-toolkit#3.1.0
     # The beta needs to run on macOS because it uses genstrings under the hood
     agents:
         queue: mac

@@ -1,1 +1,0 @@
-Wir haben ein Problem behoben, wodurch Bilder und andere Medien während des Uploads kurz verschwanden. Jetzt ist alles jederzeit sichtbar.

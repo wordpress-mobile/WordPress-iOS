@@ -1,1 +1,0 @@
-Vi har åtgärdat ett problem som gjorde att bilder och annan media "blinkade" under uppladdning. Klart. Inget mer försvinnande.
