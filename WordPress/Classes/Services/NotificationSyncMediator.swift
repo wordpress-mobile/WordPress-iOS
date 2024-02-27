@@ -344,18 +344,17 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                                        postID: UInt,
                                        siteID: UInt,
                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        let success = { [weak self] () -> Void in
+            self?.updatePostLikeStatusLocally(isLike: isLike, postID: postID, siteID: siteID, completion: completion)
+        }
         if isLike {
-            readerRemoteService.likePost(postID, forSite: siteID) {
-                completion(.success(isLike))
-            } failure: { error in
+            readerRemoteService.likePost(postID, forSite: siteID, success: success, failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
-            }
+            })
         } else {
-            readerRemoteService.unlikePost(postID, forSite: siteID) {
-                completion(.success(isLike))
-            } failure: { error in
+            readerRemoteService.unlikePost(postID, forSite: siteID, success: success, failure: { error in
                 completion(.failure(error ?? ServiceError.unknown))
-            }
+            })
         }
     }
 
@@ -364,16 +363,15 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                                           siteID: UInt,
                                           completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
         let commentService = commentRemoteFactory.restRemote(siteID: NSNumber(value: siteID), api: restAPI)
+        let success = { [weak self] () -> Void in
+            self?.updateCommentLikeStatusLocally(isLike: isLike, commentID: commentID, siteID: siteID, completion: completion)
+        }
         if isLike {
-            commentService.likeComment(withID: NSNumber(value: commentID)) {
-                completion(.success(isLike))
-            } failure: { error in
+            commentService.likeComment(withID: NSNumber(value: commentID), success: success) { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }
         } else {
-            commentService.unlikeComment(withID: NSNumber(value: commentID)) {
-                completion(.success(isLike))
-            } failure: { error in
+            commentService.unlikeComment(withID: NSNumber(value: commentID), success: success) { error in
                 completion(.failure(error ?? ServiceError.unknown))
             }
         }
@@ -500,11 +498,74 @@ private extension NotificationSyncMediator {
         let notificationCenter = NotificationCenter.default
         notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
     }
+
+    /// Attempts to fetch a `Comment` object matching the comment and site IDs from the local cache
+    /// If found, the like status is updated. If not found, nothing happens
+    /// - Parameters:
+    ///   - isLike: Indicates whether this is a like or unlike
+    ///   - commentID: Comment identifier used to fetch the comment
+    ///   - siteID: Site identifier used to fetch the comment
+    ///   - completion: Callback block which is called when the local comment is updated.
+    func updateCommentLikeStatusLocally(isLike: Bool,
+                                        commentID: UInt,
+                                        siteID: UInt,
+                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        contextManager.performAndSave({ context in
+            do {
+                let fetchRequest = NSFetchRequest<Comment>(entityName: Comment.entityName())
+                fetchRequest.fetchLimit = 1
+                let commentIDPredicate = NSPredicate(format: "\(#keyPath(Comment.commentID)) == %d", commentID)
+                let siteIDPredicate = NSPredicate(format: "blog.blogID = %@", NSNumber(value: siteID))
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [commentIDPredicate, siteIDPredicate])
+                if let comment = try context.fetch(fetchRequest).first {
+                    comment.isLiked = isLike
+                    comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1)
+                }
+            }
+            catch {
+                completion(.failure(ServiceError.localPersistenceError))
+            }
+        }, completion: {
+            completion(.success(isLike))
+        }, on: .main)
+    }
+
+    /// Attempts to fetch a `ReaderPost` object matching the post and site IDs from the local cache
+    /// If found, the like status is updated. If not found, nothing happens
+    /// - Parameters:
+    ///   - isLike: Indicates whether this is a like or unlike
+    ///   - postID: Post identifier used to fetch the post
+    ///   - siteID: Site identifier used to fetch the post
+    ///   - completion: Callback block which is called when the local post is updated.
+    func updatePostLikeStatusLocally(isLike: Bool,
+                                    postID: UInt,
+                                    siteID: UInt,
+                                    completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        contextManager.performAndSave({ context in
+            do {
+                let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
+                fetchRequest.fetchLimit = 1
+                let commentIDPredicate = NSPredicate(format: "\(#keyPath(ReaderPost.postID)) == %d", postID)
+                let siteIDPredicate = NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", NSNumber(value: siteID))
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [commentIDPredicate, siteIDPredicate])
+                if let post = try context.fetch(fetchRequest).first {
+                    post.isLiked = isLike
+                    post.likeCount = NSNumber(value: post.likeCount.intValue + (post.isLiked ? 1 : -1))
+                }
+            }
+            catch {
+                completion(.failure(ServiceError.localPersistenceError))
+            }
+        }, completion: {
+            completion(.success(isLike))
+        }, on: .main)
+    }
 }
 
 extension NotificationSyncMediator {
 
     enum ServiceError: Error {
         case unknown
+        case localPersistenceError
     }
 }
