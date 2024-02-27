@@ -41,7 +41,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     }()
 
     init(selectedDate: Date, selectedPeriod: StatsPeriodUnit) {
-        datePickerViewModel = StatsTrafficDatePickerViewModel(selectedPeriod: selectedPeriod, selectedDate: selectedDate)
+        datePickerViewModel = StatsTrafficDatePickerViewModel(period: selectedPeriod, date: selectedDate)
         datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
         super.init(nibName: nil, bundle: nil)
         tableStyle = .insetGrouped
@@ -65,14 +65,14 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         sendScrollEventsToBanner()
 
         viewModel = SiteStatsPeriodViewModel(store: store,
-                                             selectedDate: datePickerViewModel.selectedDate,
-                                             selectedPeriod: datePickerViewModel.selectedPeriod,
+                                             selectedDate: datePickerViewModel.date,
+                                             selectedPeriod: datePickerViewModel.period,
                                              periodDelegate: self,
                                              referrerDelegate: self)
         addViewModelListeners()
         viewModel.startFetchingOverview()
 
-        Publishers.CombineLatest(datePickerViewModel.$selectedDate, datePickerViewModel.$selectedPeriod)
+        Publishers.CombineLatest(datePickerViewModel.$date, datePickerViewModel.$period)
             .sink(receiveValue: { [weak self] _, _ in
                 DispatchQueue.main.async {
                     self?.refreshData()
@@ -85,7 +85,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         super.viewWillAppear(animated)
         if !isMovingToParent {
             addViewModelListeners()
-            viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.selectedDate, forPeriod: datePickerViewModel.selectedPeriod)
+            viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
         }
     }
 
@@ -178,7 +178,7 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
         addViewModelListeners()
-        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.selectedDate, forPeriod: datePickerViewModel.selectedPeriod)
+        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
     }
 
     func applyTableUpdates() {
@@ -281,8 +281,8 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
         let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
         detailTableViewController.configure(statSection: statSection,
-                                            selectedDate: datePickerViewModel.selectedDate,
-                                            selectedPeriod: datePickerViewModel.selectedPeriod)
+                                            selectedDate: datePickerViewModel.date,
+                                            selectedPeriod: datePickerViewModel.period)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 
@@ -297,7 +297,7 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 
     func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
         if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex) {
-            trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.selectedPeriod)
+            trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.period)
         }
     }
 }

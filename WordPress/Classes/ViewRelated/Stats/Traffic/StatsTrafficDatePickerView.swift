@@ -9,11 +9,11 @@ struct StatsTrafficDatePickerView: View {
             Menu {
                 ForEach([StatsPeriodUnit.day, .week, .month, .year], id: \.self) { period in
                     Button(period.label, action: {
-                        viewModel.selectedPeriod = period
+                        viewModel.period = period
                     })
                 }
             } label: {
-                Text(viewModel.selectedPeriod.label)
+                Text(viewModel.period.label)
                     .style(TextStyle.bodySmall(.emphasized))
                     .foregroundColor(Color.DS.Foreground.primary)
                 Image(systemName: "chevron.down")
@@ -33,7 +33,7 @@ struct StatsTrafficDatePickerView: View {
 
             Spacer()
 
-            Text(viewModel.formattedCurrentInterval())
+            Text(viewModel.formattedCurrentPeriod())
                 .style(TextStyle.bodySmall(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
@@ -41,7 +41,7 @@ struct StatsTrafficDatePickerView: View {
             Spacer().frame(width: Length.Padding.single)
 
             Button(action: {
-                viewModel.goToPreviousDateInterval()
+                viewModel.goToPreviousPeriod()
             }) {
                 Image(systemName: "chevron.left")
                     .imageScale(.small)
@@ -50,12 +50,12 @@ struct StatsTrafficDatePickerView: View {
             }
             .padding(.trailing, Length.Padding.single)
 
-            let isNextDisabled = !viewModel.isNextDateIntervalAvailable
+            let isNextDisabled = !viewModel.isNextPeriodAvailable
             let enabledColor = Color.DS.Foreground.secondary
             let disabledColor = enabledColor.opacity(0.5)
 
             Button(action: {
-                viewModel.goToNextDateInterval()
+                viewModel.goToNextPeriod()
             }) {
                 Image(systemName: "chevron.right")
                     .imageScale(.small)

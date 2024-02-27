@@ -2,48 +2,47 @@ import Foundation
 
 class StatsTrafficDatePickerViewModel: ObservableObject {
 
-    @Published var selectedPeriod: StatsPeriodUnit {
+    @Published var period: StatsPeriodUnit {
         didSet {
-            selectedPeriod.track()
+            period.track()
         }
     }
-    @Published var selectedDate: Date
+    @Published var date: Date
 
-    init(selectedPeriod: StatsPeriodUnit, selectedDate: Date) {
-        self.selectedPeriod = selectedPeriod
-        self.selectedDate = selectedDate
-        selectedPeriod.track()
+    init(period: StatsPeriodUnit, date: Date) {
+        self.period = period
+        self.date = date
+        period.track()
     }
 
-    var isNextDateIntervalAvailable: Bool {
-        return StatsPeriodHelper().dateAvailableAfterDate(selectedDate, period: selectedPeriod)
+    var isNextPeriodAvailable: Bool {
+        return StatsPeriodHelper().dateAvailableAfterDate(date, period: period)
     }
 
-    func goToPreviousDateInterval() {
-        selectedDate = Calendar.current.date(byAdding: selectedPeriod.calendarComponent, value: -1, to: selectedDate) ?? selectedDate
-
-        WPAppAnalytics.track(
-            .statsDateTappedBackward,
-            withProperties: [StatsPeriodUnit.analyticsPeriodKey: selectedPeriod.description as Any],
-            withBlogID: SiteStatsInformation.sharedInstance.siteID)
+    func goToPreviousPeriod() {
+        date = Calendar.current.date(byAdding: period.calendarComponent, value: -1, to: date) ?? date
+        track(isNext: false)
     }
 
-    func goToNextDateInterval() {
-        selectedDate = Calendar.current.date(byAdding: selectedPeriod.calendarComponent, value: 1, to: selectedDate) ?? selectedDate
-
-        WPAppAnalytics.track(
-            .statsDateTappedForward,
-            withProperties: [StatsPeriodUnit.analyticsPeriodKey: selectedPeriod.description as Any],
-            withBlogID: SiteStatsInformation.sharedInstance.siteID)
+    func goToNextPeriod() {
+        date = Calendar.current.date(byAdding: period.calendarComponent, value: 1, to: date) ?? date
+        track(isNext: true)
     }
 
-    func formattedCurrentInterval() -> String {
-        let dateFormatter = selectedPeriod.dateFormatter
-        if selectedPeriod == .week, let week = StatsPeriodHelper().weekIncludingDate(selectedDate) {
+    func formattedCurrentPeriod() -> String {
+        let dateFormatter = period.dateFormatter
+        if period == .week, let week = StatsPeriodHelper().weekIncludingDate(date) {
             return "\(dateFormatter.string(from: week.weekStart)) - \(dateFormatter.string(from: week.weekEnd))"
         } else {
-            return dateFormatter.string(from: selectedDate)
+            return dateFormatter.string(from: date)
         }
+    }
+
+    func track(isNext: Bool) {
+        WPAppAnalytics.track(
+            isNext ? .statsDateTappedForward : .statsDateTappedBackward,
+            withProperties: [StatsPeriodUnit.analyticsPeriodKey: period.description as Any],
+            withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
 }
 
@@ -81,5 +80,4 @@ private extension StatsPeriodUnit {
     func track() {
         WPAppAnalytics.track(event, withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
-
 }
