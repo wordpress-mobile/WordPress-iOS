@@ -78,7 +78,18 @@ class SiteStatsDashboardViewController: UIViewController {
 
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
-    private lazy var trafficTableViewController = SiteStatsPeriodTableViewController()
+    private lazy var trafficTableViewController = {
+        let date: Date
+        if let selectedDate = getLastSelectedDateFromUserDefaults() {
+            date = selectedDate
+        } else {
+            date = StatsDataHelper.currentDateForSite()
+        }
+
+        let currentPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
+
+        return SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
+    }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedPeriods: [StatsPeriodType] = StatsPeriodType.displayedPeriods
 
@@ -250,7 +261,6 @@ private extension SiteStatsDashboardViewController {
 
     func restoreSelectedDateFromUserDefaults() {
         periodTableViewControllerDeprecated.selectedDate = getLastSelectedDateFromUserDefaults()
-        trafficTableViewController.selectedDate = getLastSelectedDateFromUserDefaults()
         removeLastSelectedDateFromUserDefaults()
     }
 
@@ -278,13 +288,6 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-
-            if trafficTableViewController.selectedDate == nil {
-                trafficTableViewController.selectedDate = StatsDataHelper.currentDateForSite()
-            }
-
-            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedPeriod.rawValue - 1) ?? .day
-            trafficTableViewController.selectedPeriod = selectedPeriod
         case .days, .weeks, .months, .years:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([periodTableViewControllerDeprecated],
