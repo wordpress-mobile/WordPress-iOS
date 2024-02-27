@@ -4,6 +4,7 @@ import Aztec
 import WordPressFlux
 import Kanvas
 import React
+import AutomatticTracks
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -1353,9 +1354,24 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         }
     }
 
-    func gutenbergDidRequestLogException(_ exception: [AnyHashable: Any], with callback: @escaping () -> Void) {
+    func gutenbergDidRequestLogException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
+        let jsException = JSException(
+            type: exception.type,
+            value: exception.value,
+            stacktrace: exception.stacktrace.map { JSException.StacktraceLine(
+                filename: $0.filename,
+                function: $0.function,
+                lineno: $0.lineno,
+                colno: $0.colno
+            ) },
+            context: exception.context,
+            tags: exception.tags,
+            isHandled: exception.isHandled,
+            handledBy: exception.handledBy
+        )
+
         DispatchQueue.main.async {
-            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(jsException, callback: callback)
         }
     }
 
