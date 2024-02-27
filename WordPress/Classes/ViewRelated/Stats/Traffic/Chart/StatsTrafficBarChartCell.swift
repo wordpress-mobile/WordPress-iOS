@@ -312,7 +312,7 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
 
     var attributedTitle: NSAttributedString? {
         let attributedTitle = NSMutableAttributedString(string: tabTitle)
-        attributedTitle.addAttributes([.font: TextStyle.footnote.uiFont],
+        attributedTitle.addAttributes([.font: UIFont.DS.font(.footnote)],
                                       range: NSMakeRange(0, attributedTitle.length))
 
         let dataString: String = {
@@ -320,7 +320,7 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
         }()
 
         let attributedData = NSMutableAttributedString(string: dataString)
-        attributedData.addAttributes([.font: TextStyle.bodyLarge(.emphasized).uiFont],
+        attributedData.addAttributes([.font: UIFont.DS.font(.bodyLarge(.emphasized))],
                                      range: NSMakeRange(0, attributedData.length))
 
         attributedTitle.append(NSAttributedString(string: "\n"))
