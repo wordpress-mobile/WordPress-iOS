@@ -124,7 +124,7 @@ class PostCoordinator: NSObject {
             parameters.status = PostStatusPublish
             parameters.date = Date()
         } else {
-            // Pulbish according to the currrent post settings: private, scheduled, etc.
+            // Publish according to the currrent post settings: private, scheduled, etc.
         }
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
