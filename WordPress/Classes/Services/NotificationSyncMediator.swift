@@ -305,14 +305,14 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Deletes the note with the given ID from Core Data.
     ///
     func deleteNote(noteID: String) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
 
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            }, completion: done, on: .main)
+            }, completion: operationCompletion, on: .main)
         })
     }
 
@@ -327,7 +327,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///
     func invalidateCacheForNotifications(_ noteIDs: [String],
                                          completion: (() -> Void)? = nil) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
                 let notifications = context.allObjects(ofType: Notification.self, matching: predicate)
@@ -335,7 +335,7 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
                 notifications.forEach { $0.notificationHash = nil }
             }, completion: {
                 completion?()
-                done()
+                operationCompletion()
             }, on: .main)
         })
     }
@@ -389,7 +389,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
@@ -407,7 +407,7 @@ private extension NotificationSyncMediator {
                     .map { $0.notificationId }
             }, completion: { outdatedIds in
                 completion(outdatedIds)
-                done()
+                operationCompletion()
             }, on: .main)
         })
     }
@@ -420,7 +420,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
@@ -429,7 +429,7 @@ private extension NotificationSyncMediator {
                     localNote.update(with: remoteNote)
                 }
             }, completion: {
-                done()
+                operationCompletion()
                 DispatchQueue.main.async {
                     completion?()
                 }
@@ -443,7 +443,7 @@ private extension NotificationSyncMediator {
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
@@ -452,7 +452,7 @@ private extension NotificationSyncMediator {
                     context.deleteObject(orphan)
                 }
             }, completion: {
-                done()
+                operationCompletion()
                 DispatchQueue.main.async {
                     completion()
                 }
