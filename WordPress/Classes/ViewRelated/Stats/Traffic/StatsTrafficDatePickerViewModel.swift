@@ -20,11 +20,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func goToPreviousDateInterval() {
-        guard let newStartDate = StatsPeriodHelper().calculateEndDate(from: selectedDate, offsetBy: -1, unit: selectedPeriod) else {
-            return
-        }
-
-        selectedDate = newStartDate
+        selectedDate = Calendar.current.date(byAdding: selectedPeriod.calendarComponent, value: -1, to: selectedDate) ?? selectedDate
 
         WPAppAnalytics.track(
             .statsDateTappedBackward,
@@ -33,11 +29,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func goToNextDateInterval() {
-        guard let newStartDate = StatsPeriodHelper().calculateEndDate(from: selectedDate, offsetBy: 1, unit: selectedPeriod) else {
-            return
-        }
-
-        selectedDate = newStartDate
+        selectedDate = Calendar.current.date(byAdding: selectedPeriod.calendarComponent, value: 1, to: selectedDate) ?? selectedDate
 
         WPAppAnalytics.track(
             .statsDateTappedForward,
