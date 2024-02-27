@@ -2747,7 +2747,7 @@
 		B09879702B55EC010048256D /* StatsTrafficDatePickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */; };
 		B09879762B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */; };
 		B09879772B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */; };
-		B09879792B5730BC0048256D /* StatsTrafficTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879782B5730BC0048256D /* StatsTrafficTests.swift */; };
+		B09879792B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B09879782B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift */; };
 		B0A6DEBF2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0A6DEBE2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift */; };
 		B0AC50DD251E96270039E022 /* ReaderCommentsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */; };
 		B0B68A9C252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */; };
@@ -8072,7 +8072,7 @@
 		B0960C8627D14BD400BC9717 /* SiteIntentStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteIntentStep.swift; sourceTree = "<group>"; };
 		B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerView.swift; sourceTree = "<group>"; };
 		B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerViewModel.swift; sourceTree = "<group>"; };
-		B09879782B5730BC0048256D /* StatsTrafficTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficTests.swift; sourceTree = "<group>"; };
+		B09879782B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsTrafficDatePickerViewModelTests.swift; sourceTree = "<group>"; };
 		B0A6DEBE2626335F00B5B8EF /* AztecPostViewController+MenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AztecPostViewController+MenuTests.swift"; path = "Aztec/AztecPostViewController+MenuTests.swift"; sourceTree = "<group>"; };
 		B0AC50DC251E96270039E022 /* ReaderCommentsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCommentsViewController.swift; sourceTree = "<group>"; };
 		B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+CoreDataClass.swift"; sourceTree = "<group>"; };
@@ -12123,7 +12123,7 @@
 				931215E0267DE1C0008C3B69 /* StatsTotalRowDataTests.swift */,
 				01E78D1C296EA54F00FB6863 /* StatsPeriodHelperTests.swift */,
 				015BA4EA29A788A300920F4B /* StatsTotalInsightsCellTests.swift */,
-				B09879782B5730BC0048256D /* StatsTrafficTests.swift */,
+				B09879782B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift */,
 			);
 			name = Stats;
 			sourceTree = "<group>";
@@ -23934,7 +23934,7 @@
 				4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */,
 				8BB185CE24B62CE100A4CCE8 /* ReaderCardServiceTests.swift in Sources */,
 				019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */,
-				B09879792B5730BC0048256D /* StatsTrafficTests.swift in Sources */,
+				B09879792B5730BC0048256D /* StatsTrafficDatePickerViewModelTests.swift in Sources */,
 				57DF04C1231489A200CC93D6 /* PostCardStatusViewModelTests.swift in Sources */,
 				D821C81B21003AE9002ED995 /* FormattableContentGroupTests.swift in Sources */,
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
