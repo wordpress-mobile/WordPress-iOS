@@ -838,6 +838,7 @@ extension NotificationsViewController {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             readerViewController.hidesBottomBarWhenPushed = true
+            readerViewController.coordinator?.notificationID = note.notificationId
             displayViewController(readerViewController)
             return
         }
