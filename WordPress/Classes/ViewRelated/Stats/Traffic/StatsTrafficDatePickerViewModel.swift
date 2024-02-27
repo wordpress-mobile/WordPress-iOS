@@ -20,12 +20,12 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func goToPreviousPeriod() {
-        date = Calendar.current.date(byAdding: period.calendarComponent, value: -1, to: date) ?? date
+        date = StatsDataHelper.calendar.date(byAdding: period.calendarComponent, value: -1, to: date) ?? date
         track(isNext: false)
     }
 
     func goToNextPeriod() {
-        date = Calendar.current.date(byAdding: period.calendarComponent, value: 1, to: date) ?? date
+        date = StatsDataHelper.calendar.date(byAdding: period.calendarComponent, value: 1, to: date) ?? date
         track(isNext: true)
     }
 
