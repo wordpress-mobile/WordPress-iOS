@@ -94,6 +94,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private var shouldCancelNextUpdateAnimation = false
+
     private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
         return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
     }()
@@ -836,6 +838,7 @@ extension NotificationsViewController {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             readerViewController.hidesBottomBarWhenPushed = true
+            readerViewController.coordinator?.notificationID = note.notificationId
             displayViewController(readerViewController)
             return
         }
@@ -968,6 +971,10 @@ extension NotificationsViewController {
         navigationController.modalTransitionStyle = .coverVertical
 
         present(navigationController, animated: true, completion: nil)
+    }
+
+    func cancelNextUpdateAnimation() {
+        shouldCancelNextUpdateAnimation = true
     }
 }
 
@@ -1466,6 +1473,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
+        guard shouldCancelNextUpdateAnimation == false else {
+            shouldCancelNextUpdateAnimation = false
+            return
+        }
         refreshUnreadNotifications()
 
         // Update NoResults View
@@ -1486,6 +1497,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if isViewOnScreen() {
             showSecondNotificationsAlertIfNeeded()
         }
+    }
+
+    func shouldCancelUpdateAnimation() -> Bool {
+        return shouldCancelNextUpdateAnimation
     }
 
     // counts the new notifications for the second alert
