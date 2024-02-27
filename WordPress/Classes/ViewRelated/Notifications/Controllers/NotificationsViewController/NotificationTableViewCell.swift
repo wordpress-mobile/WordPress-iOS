@@ -7,12 +7,12 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     // MARK: - API
 
-    func configure(with notification: Notification, deletionRequest: NotificationDeletionRequest, parent: UIViewController, onDeletionRequestCanceled: @escaping () -> Void) {
+    func configure(with notification: Notification, deletionRequest: NotificationDeletionRequest, parent: NotificationsViewController, onDeletionRequestCanceled: @escaping () -> Void) {
         let style = NotificationsTableViewCellContent.Style.altered(.init(text: deletionRequest.kind.legendText, action: onDeletionRequestCanceled))
         self.host(.init(style: style), parent: parent)
     }
 
-    func configure(with viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) {
+    func configure(with viewModel: NotificationsViewModel, notification: Notification, parent: NotificationsViewController) {
         let title: AttributedString? = {
             guard let attributedSubject = notification.renderSubject() else {
                 return nil
@@ -36,13 +36,13 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
 
     // MARK: - Private Methods
 
-    private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: UIViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
+    private func inlineAction(viewModel: NotificationsViewModel, notification: Notification, parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration? {
         let notification = notification.parsed()
         switch notification {
         case .comment(let notification):
-            return commentLikeInlineAction(viewModel: viewModel, notification: notification)
+            return commentLikeInlineAction(viewModel: viewModel, notification: notification, parent: parent)
         case .newPost(let notification):
-            return postLikeInlineAction(viewModel: viewModel, notification: notification)
+            return postLikeInlineAction(viewModel: viewModel, notification: notification, parent: parent)
         case .other(let notification):
             guard notification.kind == .like || notification.kind == .reblog else {
                 return nil
@@ -71,11 +71,14 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         )
     }
 
-    private func postLikeInlineAction(viewModel: NotificationsViewModel, notification: NewPostNotification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+    private func postLikeInlineAction(viewModel: NotificationsViewModel,
+                                      notification: NewPostNotification,
+                                      parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
         let action: () -> Void = { [weak self] in
             guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
                 return
             }
+            parent.cancelNextUpdateAnimation()
             viewModel.likeActionTapped(with: notification, action: .postLike) { liked in
                 let (image, color) = self.likeInlineActionIcon(filled: liked)
                 config.icon = image
@@ -86,11 +89,14 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         return .init(icon: image, color: color, action: action)
     }
 
-    private func commentLikeInlineAction(viewModel: NotificationsViewModel, notification: CommentNotification) -> NotificationsTableViewCellContent.InlineAction.Configuration {
+    private func commentLikeInlineAction(viewModel: NotificationsViewModel,
+                                         notification: CommentNotification,
+                                         parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
         let action: () -> Void = { [weak self] in
             guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
                 return
             }
+            parent.cancelNextUpdateAnimation()
             viewModel.likeActionTapped(with: notification, action: .commentLike) { liked in
                 let (image, color) = self.likeInlineActionIcon(filled: liked)
                 config.icon = image

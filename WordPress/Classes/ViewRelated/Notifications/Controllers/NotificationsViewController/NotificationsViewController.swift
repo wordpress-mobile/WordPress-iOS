@@ -94,6 +94,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private var shouldCancelNextUpdateAnimation = false
+
     private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
         return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
     }()
@@ -969,6 +971,10 @@ extension NotificationsViewController {
 
         present(navigationController, animated: true, completion: nil)
     }
+
+    func cancelNextUpdateAnimation() {
+        shouldCancelNextUpdateAnimation = true
+    }
 }
 
 // MARK: - Notifications Deletion Mechanism
@@ -1466,6 +1472,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
+        guard shouldCancelNextUpdateAnimation == false else {
+            shouldCancelNextUpdateAnimation = false
+            return
+        }
         refreshUnreadNotifications()
 
         // Update NoResults View
@@ -1486,6 +1496,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if isViewOnScreen() {
             showSecondNotificationsAlertIfNeeded()
         }
+    }
+
+    func shouldCancelUpdateAnimation() -> Bool {
+        return shouldCancelNextUpdateAnimation
     }
 
     // counts the new notifications for the second alert
