@@ -318,20 +318,25 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
     /// Invalidates the local cache for the notification with the specified ID.
     ///
-    func invalidateCacheForNotification(_ noteID: String) {
-        invalidateCacheForNotifications([noteID])
+    func invalidateCacheForNotification(_ noteID: String,
+                                        completion: (() -> Void)? = nil) {
+        invalidateCacheForNotifications([noteID], completion: completion)
     }
 
     /// Invalidates the local cache for all the notifications with specified ID's in the array.
     ///
-    func invalidateCacheForNotifications(_ noteIDs: [String]) {
+    func invalidateCacheForNotifications(_ noteIDs: [String],
+                                         completion: (() -> Void)? = nil) {
         Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
             contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
                 let notifications = context.allObjects(ofType: Notification.self, matching: predicate)
 
                 notifications.forEach { $0.notificationHash = nil }
-            }, completion: done, on: .main)
+            }, completion: {
+                completion?()
+                done()
+            }, on: .main)
         })
     }
 
