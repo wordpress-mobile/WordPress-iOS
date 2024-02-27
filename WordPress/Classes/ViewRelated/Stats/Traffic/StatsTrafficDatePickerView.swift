@@ -61,7 +61,8 @@ struct StatsTrafficDatePickerView: View {
                     .imageScale(.small)
                     .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
                     .flipsForRightToLeftLayoutDirection(true)
-            }.disabled(isNextDisabled)
+            }
+            .disabled(isNextDisabled)
         }.padding(.vertical, Length.Padding.single)
             .padding(.horizontal, Length.Padding.double)
             .background(Color.DS.Background.primary)
