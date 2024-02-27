@@ -51,15 +51,22 @@ class StatsTests: XCTestCase {
             "India, 121"
         ]
 
-        let yearsChartBars: [String] = [
+        let viewsYearsChartBars: [String] = [
             " J: 1218.0",
             " F: 1233.0"
+        ]
+
+        let visitorsYearsChartBars: [String] = [
+            " J: 623.0",
+            " F: 655.0"
         ]
 
         try StatsScreen()
             .switchTo(mode: "traffic")
             .selectByYearPeriod()
             .assertStatsAreLoaded(yearsStats)
-            .assertChartIsLoaded(yearsChartBars)
+            .assertChartIsLoaded(viewsYearsChartBars)
+            .selectVisitorsTab()
+            .assertChartIsLoaded(visitorsYearsChartBars)
     }
 }
