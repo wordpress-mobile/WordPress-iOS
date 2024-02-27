@@ -50,8 +50,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 13.1'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', '~> 13.1'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'f335202c98b972dd2a426dfe0e06780a38579ee7'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -280,8 +280,18 @@ target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
 end
 
+## Tools
+## ===================
+##
+
+def swiftlint_version
+  require 'yaml'
+
+  YAML.load_file('.swiftlint.yml')['swiftlint_version']
+end
+
 abstract_target 'Tools' do
-  pod 'SwiftLint', '~> 0.50'
+  pod 'SwiftLint', swiftlint_version
 end
 
 # Static Frameworks:

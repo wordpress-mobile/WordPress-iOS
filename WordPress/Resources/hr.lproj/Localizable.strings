@@ -135,8 +135,7 @@
    Verb. Title for Jetpack Restore cancel button. */
 "Cancel" = "Otkaži";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategorije";
 
 /* Error popup title to indicate that there was no category title filled in. */
@@ -146,12 +145,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Klikovi";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Zatvori";
 
 /* Header for a comment's content, shown when editing a comment.
@@ -790,7 +787,6 @@
 "Tag" = "Tag";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -828,7 +824,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Naslov";
@@ -944,8 +939,7 @@
    Today's Stats 'Views' label */
 "Views" = "Pregledi";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Vidljivost";
 

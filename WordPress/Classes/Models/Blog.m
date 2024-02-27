@@ -34,7 +34,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @interface Blog ()
 
 @property (nonatomic, strong, readwrite) WordPressOrgXMLRPCApi *xmlrpcApi;
-@property (nonatomic, strong, readwrite) WordPressOrgRestApi *wordPressOrgRestApi;
+@property (nonatomic, strong, readwrite) WordPressOrgRestApi *selfHostedSiteRestApi;
 
 @end
 
@@ -99,7 +99,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 @synthesize videoPressEnabled;
 @synthesize isSyncingMedia;
 @synthesize xmlrpcApi = _xmlrpcApi;
-@synthesize wordPressOrgRestApi = _wordPressOrgRestApi;
+@synthesize selfHostedSiteRestApi = _selfHostedSiteRestApi;
 
 #pragma mark - NSManagedObject subclass methods
 
@@ -113,7 +113,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     }
 
     [_xmlrpcApi invalidateAndCancelTasks];
-    [_wordPressOrgRestApi invalidateAndCancelTasks];
+    [_selfHostedSiteRestApi invalidateAndCancelTasks];
 }
 
 - (void)didTurnIntoFault
@@ -122,7 +122,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 
     // Clean up instance variables
     self.xmlrpcApi = nil;
-    self.wordPressOrgRestApi = nil;
+    self.selfHostedSiteRestApi = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -607,6 +607,8 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
             return [self supportsTiledGallery];
         case BlogFeatureVideoPress:
             return [self supportsVideoPress];
+        case BlogFeatureVideoPressV5:
+            return [self supportsVideoPressV5];
         case BlogFeatureFacebookEmbed:
             return [self supportsEmbedVariation: @"9.0"];
         case BlogFeatureInstagramEmbed:
@@ -701,7 +703,7 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     // Reference: https://make.wordpress.org/core/2020/07/16/new-and-modified-rest-api-endpoints-in-wordpress-5-5/
     if(!supports && !self.account){
         supports = !self.isHostedAtWPcom
-        && self.wordPressOrgRestApi
+        && self.selfHostedSiteRestApi
         && [self hasRequiredWordPressVersion:@"5.5"];
     }
 
@@ -731,6 +733,11 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
 - (BOOL)supportsVideoPress
 {
     return self.isHostedAtWPcom;
+}
+
+- (BOOL)supportsVideoPressV5
+{
+    return self.isHostedAtWPcom || self.isAtomic || [self hasRequiredJetpackVersion:@"8.5"];
 }
 
 - (BOOL)supportsEmbedVariation:(NSString *)requiredJetpackVersion
@@ -886,12 +893,12 @@ NSString * const OptionsKeyIsWPForTeams = @"is_wpforteams_site";
     return _xmlrpcApi;
 }
 
-- (WordPressOrgRestApi *)wordPressOrgRestApi
+- (WordPressOrgRestApi *)selfHostedSiteRestApi
 {
-    if (_wordPressOrgRestApi == nil) {
-        _wordPressOrgRestApi = [[WordPressOrgRestApi alloc] initWithBlog:self];
+    if (_selfHostedSiteRestApi == nil) {
+        _selfHostedSiteRestApi = self.account == nil ? [[WordPressOrgRestApi alloc] initWithBlog:self] : nil;
     }
-    return _wordPressOrgRestApi;
+    return _selfHostedSiteRestApi;
 }
 
 - (WordPressComRestApi *)wordPressComRestApi

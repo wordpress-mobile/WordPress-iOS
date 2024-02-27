@@ -1,5 +1,0 @@
-Caro leitor, adicionamos uma nova aparência para navegação e filtragem de conteúdo. Agora, quando estiver procurando posts para ler, você pode encontrar os melhores e ignorar o resto.
-
-Corrigimos um problema que fazia com que imagens e outras mídias desaparecessem durante o upload. Chega de chá de sumiço.
-
-Por fim, adicionamos novos itens de menu de monitoramento do site, incluindo métricas, logs de PHP e logs de servidor da Web, para que você possa ficar de olho no seu site. (Não se preocupe, sua experiência não vai mudar.)

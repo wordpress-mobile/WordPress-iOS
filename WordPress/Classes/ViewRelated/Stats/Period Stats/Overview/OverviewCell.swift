@@ -1,6 +1,6 @@
 import UIKit
 
-struct OverviewTabData: FilterTabBarItem {
+struct OverviewTabData: FilterTabBarItem, Hashable {
     var tabTitle: String
     var tabData: Int
     var tabDataStub: String?

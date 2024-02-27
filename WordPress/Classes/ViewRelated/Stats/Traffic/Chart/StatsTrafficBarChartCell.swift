@@ -7,10 +7,6 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
     private let contentStackView = UIStackView()
 
-    private let labelsStackView = UIStackView()
-    private let titleStackView = UIStackView()
-    private let numberLabel = UILabel()
-    private let titleLabel = UILabel()
     private let differenceLabel = UILabel()
 
     private let chartContainerView = UIView()
@@ -23,7 +19,9 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     private var chartData: [BarChartDataConvertible] = []
     private var chartStyling: [StatsTrafficBarChartStyling] = []
     private var period: StatsPeriodUnit?
+    private var unit: StatsPeriodUnit?
     private var chartView: StatsTrafficBarChartView?
+    private weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
     // MARK: - Configure
 
@@ -45,11 +43,15 @@ final class StatsTrafficBarChartCell: UITableViewCell {
     func configure(tabsData: [StatsTrafficBarChartTabData],
                    barChartData: [BarChartDataConvertible] = [],
                    barChartStyling: [StatsTrafficBarChartStyling] = [],
-                   period: StatsPeriodUnit? = nil) {
+                   period: StatsPeriodUnit,
+                   unit: StatsPeriodUnit,
+                   siteStatsPeriodDelegate: SiteStatsPeriodDelegate?) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
         self.period = period
+        self.unit = unit
+        self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
         updateLabels()
         updateButtons()
@@ -61,12 +63,11 @@ private extension StatsTrafficBarChartCell {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
         updateLabels()
         updateChartView()
+        siteStatsPeriodDelegate?.barChartTabSelected?(filterBar.selectedIndex)
     }
 
     func updateLabels() {
         let tabData = tabsData[filterTabBar.selectedIndex]
-        titleLabel.text = tabData.tabTitle
-        numberLabel.text = tabData.tabData.abbreviatedString()
         differenceLabel.attributedText = differenceAttributedString(tabData)
     }
 
@@ -94,7 +95,7 @@ private extension StatsTrafficBarChartCell {
             chartView.translatesAutoresizingMaskIntoConstraints = false
             chartContainerView.addSubview(chartView)
             chartContainerView.accessibilityElements = [chartView]
-            chartContainerView.pinSubviewToAllEdges(chartView)
+            chartContainerView.pinSubviewToAllEdges(chartView, insets: UIEdgeInsets(top: Length.Padding.split, left: 0, bottom: 0, right: 0))
             self.chartView = chartView
         } else {
             self.chartView?.update(barChartData: chartData, styling: styling)
@@ -114,7 +115,6 @@ private extension StatsTrafficBarChartCell {
     func setupViews() {
         setupContentView()
         setupContentStackView()
-        setupLabels()
         setupChart()
         setupButtons()
     }
@@ -132,26 +132,6 @@ private extension StatsTrafficBarChartCell {
         contentView.pinSubviewToAllEdges(contentStackView)
     }
 
-    func setupLabels() {
-        labelsStackView.axis = .vertical
-        labelsStackView.alignment = .leading
-        labelsStackView.spacing = 0
-        labelsStackView.isLayoutMarginsRelativeArrangement = true
-        labelsStackView.layoutMargins = .init(top: Length.Padding.single, left: Length.Padding.double, bottom: 0, right: Length.Padding.double)
-        contentStackView.addArrangedSubview(labelsStackView)
-
-        titleStackView.axis = .horizontal
-        titleStackView.alignment = .firstBaseline
-        titleStackView.spacing = Length.Padding.single
-        contentStackView.addArrangedSubview(titleStackView)
-        titleStackView.addArrangedSubviews([numberLabel, titleLabel])
-
-        titleLabel.font = .preferredFont(forTextStyle: .body)
-        numberLabel.font = .preferredFont(forTextStyle: .largeTitle).semibold()
-
-        labelsStackView.addArrangedSubviews([titleStackView, differenceLabel])
-    }
-
     func setupChart() {
         contentStackView.addArrangedSubview(chartContainerView)
         chartContainerView.heightAnchor.constraint(equalToConstant: 150).isActive = true
@@ -161,7 +141,7 @@ private extension StatsTrafficBarChartCell {
     func setupButtons() {
         contentStackView.addArrangedSubview(filterTabBar)
         filterTabBar.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
-        filterTabBar.tabBarHeight = 40
+        filterTabBar.tabBarHeight = 56
         filterTabBar.equalWidthFill = .fillEqually
         filterTabBar.equalWidthSpacing = Length.Padding.single
         filterTabBar.tabSizingStyle = .equalWidths
@@ -171,7 +151,7 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.tabSeparatorPlacement = .top
         filterTabBar.tabsFont = tabsFont()
         filterTabBar.tabsSelectedFont = tabsFont()
-        filterTabBar.tabButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
+        filterTabBar.tabAttributedButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
         filterTabBar.tabSeparatorPadding = Length.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
@@ -213,7 +193,7 @@ private extension StatsTrafficBarChartCell {
 
     func differenceAttributedString(_ data: StatsTrafficBarChartTabData) -> NSAttributedString? {
         guard let differenceText = differenceText(data) else {
-            return .init(string: " ")
+            return nil
         }
 
         let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .footnote), NSAttributedString.Key.foregroundColor: UIColor.DS.Foreground.secondary]
@@ -300,7 +280,7 @@ private extension StatsTrafficBarChartCell {
     }
 }
 
-struct StatsTrafficBarChartTabData: FilterTabBarItem {
+struct StatsTrafficBarChartTabData: FilterTabBarItem, Equatable {
     var tabTitle: String
     var tabData: Int
     var tabDataStub: String?
@@ -330,11 +310,39 @@ struct StatsTrafficBarChartTabData: FilterTabBarItem {
         return self.tabTitle
     }
 
+    var attributedTitle: NSAttributedString? {
+        let attributedTitle = NSMutableAttributedString(string: tabTitle)
+        attributedTitle.addAttributes([.font: TextStyle.footnote.uiFont],
+                                      range: NSMakeRange(0, attributedTitle.length))
+
+        let dataString: String = {
+            return tabDataStub ?? tabData.abbreviatedString()
+        }()
+
+        let attributedData = NSMutableAttributedString(string: dataString)
+        attributedData.addAttributes([.font: TextStyle.bodyLarge(.emphasized).uiFont],
+                                     range: NSMakeRange(0, attributedData.length))
+
+        attributedTitle.append(NSAttributedString(string: "\n"))
+        attributedTitle.append(attributedData)
+
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineHeightMultiple = 0.9
+        paragraphStyle.alignment = .center
+        attributedTitle.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: attributedTitle.length))
+
+        return attributedTitle
+    }
+
     var accessibilityIdentifier: String {
         return self.tabTitle.localizedLowercase
     }
 
     var accessibilityLabel: String? {
         tabTitle
+    }
+
+    var accessibilityValue: String? {
+        return tabDataStub != nil ? "" : "\(tabData)"
     }
 }

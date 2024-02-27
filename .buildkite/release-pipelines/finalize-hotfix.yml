@@ -7,4 +7,4 @@ steps:
         queue: mac
     env:
       IMAGE_ID: xcode-15.1
-    command: ".buildkite/commands/finalize-release.sh $RELEASE_VERSION"
+    command: ".buildkite/commands/finalize-hotfix.sh $VERSION"

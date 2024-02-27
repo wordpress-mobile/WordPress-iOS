@@ -131,17 +131,11 @@ extension PublishingEditor {
                 if self.post.status != .publishPrivate {
                     self.post.status = .publish
                 }
-            } else if action == .publishNow {
-                self.post.date_created_gmt = Date()
-
-                if self.post.status != .publishPrivate {
-                    self.post.status = .publish
-                }
             } else if action == .submitForReview {
                 self.post.status = .pending
             }
 
-            self.post.isFirstTimePublish = action == .publish || action == .publishNow
+            self.post.isFirstTimePublish = action == .publish
 
             self.post.shouldAttemptAutoUpload = true
 

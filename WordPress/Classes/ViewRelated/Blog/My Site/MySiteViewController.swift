@@ -895,11 +895,7 @@ extension MySiteViewController: BlogDetailsPresentationDelegate {
     /// - Parameters:
     ///         - subsection: The specific subsection to show.
     ///
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection) {
-        blogDetailsViewController?.showDetailView(for: subsection)
-    }
-
-    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any]) {
+    func showBlogDetailsSubsection(_ subsection: BlogDetailsSubsection, userInfo: [AnyHashable: Any] =  [:]) {
         blogDetailsViewController?.showDetailView(for: subsection, userInfo: userInfo)
     }
 

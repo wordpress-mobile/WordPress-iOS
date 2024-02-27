@@ -323,20 +323,17 @@ private extension BloggingPromptsService {
             return params
         }()
 
-        api.GET(path, parameters: requestParameter as [String: AnyObject]) { result, _ in
-            switch result {
-            case .success(let responseObject):
-                do {
-                    let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
-                    let remotePrompts = try Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
-                    completion(.success(remotePrompts))
-                } catch {
-                    completion(.failure(error))
-                }
-            case .failure(let error):
+        api.GET(path, parameters: requestParameter as [String: AnyObject], success: { (responseObject, _) in
+            do {
+                let data = try JSONSerialization.data(withJSONObject: responseObject, options: [])
+                let remotePrompts = try Self.jsonDecoder.decode([BloggingPromptRemoteObject].self, from: data)
+                completion(.success(remotePrompts))
+            } catch {
                 completion(.failure(error))
             }
-        }
+        }, failure: { (error, _) in
+            completion(.failure(error))
+        })
     }
 
     /// Loads local prompts based on the given parameters.

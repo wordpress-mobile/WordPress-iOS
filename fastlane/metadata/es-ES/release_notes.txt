@@ -1,1 +1,0 @@
-Hemos solucionado un problema que hacía que las imágenes y otros medios «parpadearan» mientras se cargaban. Presto, se acabaron las desapariciones.
