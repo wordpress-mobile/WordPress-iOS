@@ -7,6 +7,7 @@ import WordPressFlux
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
+    @objc optional func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex)
 }
 
 protocol SiteStatsReferrerDelegate: AnyObject {
@@ -28,9 +29,11 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     var selectedPeriod: StatsPeriodUnit? {
         didSet {
 
-            guard selectedPeriod != nil else {
+            guard let selectedPeriod else {
                 return
             }
+
+            trackPeriodAccessEvent(selectedPeriod)
 
             clearExpandedRows()
 
@@ -48,12 +51,12 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
+    private weak var tableHeaderView: SiteStatsTableHeaderView?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     init() {
@@ -115,14 +118,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
 
 }
 
-extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
-    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
-        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
-            tableHeaderView?.updateDate(with: intervalDate)
-        }
-    }
-}
-
 // MARK: - Private Extension
 
 private extension SiteStatsPeriodTableViewController {
@@ -141,7 +136,6 @@ private extension SiteStatsPeriodTableViewController {
                                              selectedPeriod: selectedPeriod,
                                              periodDelegate: self,
                                              referrerDelegate: self)
-        viewModel?.statsBarChartViewDelegate = self
         addViewModelListeners()
         viewModel?.startFetchingOverview()
     }
@@ -167,11 +161,12 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 CountriesMapRow.self,
-                OverviewRow.self,
+                StatsTrafficBarChartRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
-                StatsGhostTopImmutableRow.self]
+                StatsGhostTopImmutableRow.self,
+                TwoColumnStatsRow.self]
     }
 
     // MARK: - Table Refreshing
@@ -181,9 +176,10 @@ private extension SiteStatsPeriodTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
+        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -225,7 +221,7 @@ private extension SiteStatsPeriodTableViewController {
 
 extension SiteStatsPeriodTableViewController: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+        guard tableHandler.diffableDataSource.snapshot().numberOfSections == 0 else {
             return
         }
 
@@ -320,6 +316,12 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+
+    func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
+        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex), let period = selectedPeriod {
+            trackBarChartTabSelectionEvent(tab: tab, period: period)
+        }
+    }
 }
 
 // MARK: - SiteStatsReferrerDelegate
@@ -353,5 +355,32 @@ private extension SiteStatsPeriodTableViewController {
         if let bannerView = bannerView {
             analyticsTracker.addTranslationObserver(bannerView)
         }
+    }
+}
+
+// MARK: - Tracking
+
+private extension SiteStatsPeriodTableViewController {
+    func trackPeriodAccessEvent(_ period: StatsPeriodUnit) {
+        let event: WPAnalyticsStat = {
+            switch period {
+            case .day:
+                return .statsPeriodDaysAccessed
+            case .week:
+                return .statsPeriodWeeksAccessed
+            case .month:
+                return .statsPeriodMonthsAccessed
+            case .year:
+                return .statsPeriodYearsAccessed
+            }
+        }()
+
+        WPAppAnalytics.track(event)
+    }
+
+    func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {
+        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period.description as Any]
+        WPAppAnalytics.track(tab.analyticsEvent, withProperties: properties)
+
     }
 }

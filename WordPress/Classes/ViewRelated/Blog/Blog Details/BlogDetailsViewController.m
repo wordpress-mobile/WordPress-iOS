@@ -500,13 +500,16 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
             break;
-        case BlogDetailsSubsectionStats:
+        case BlogDetailsSubsectionStats: {
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
                                         animated:NO
                                   scrollPosition:[self optimumScrollPositionForIndexPath:indexPath]];
-            [self showStatsFromSource:BlogDetailsNavigationSourceLink];
+            NSNumber *sourceValue = userInfo[[BlogDetailsViewController userInfoSourceKey]];
+            BlogDetailsNavigationSource source = sourceValue ? sourceValue.unsignedIntegerValue : BlogDetailsNavigationSourceLink;
+            [self showStatsFromSource:source];
             break;
+        }
         case BlogDetailsSubsectionPosts:
             self.restorableSelectedIndexPath = indexPath;
             [self.tableView selectRowAtIndexPath:indexPath
@@ -1756,6 +1759,14 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return @"link";
         case BlogDetailsNavigationSourceButton:
             return @"button";
+        case BlogDetailsNavigationSourceWidget:
+            return @"widget";
+        case BlogDetailsNavigationSourceOnboarding:
+            return @"onboarding";
+        case BlogDetailsNavigationSourceNotification:
+            return @"notification";
+        case BlogDetailsNavigationSourceShortcut:
+            return @"shortcut";
         default:
             return @"";
     }
@@ -2275,6 +2286,10 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 
 + (NSString *)userInfoSiteMonitoringTabKey {
     return @"site-monitoring-tab";
+}
+
++ (NSString *)userInfoSourceKey {
+    return @"source";
 }
 
 @end

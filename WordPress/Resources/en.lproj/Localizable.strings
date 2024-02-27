@@ -6994,21 +6994,23 @@ Please install the %3$@ to use the app with this site.";
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categories";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Close";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Title";
 
-/* Label in the header in the pre-publishing sheet
-   Voiceover accessibility label informing the user that this button dismiss the current view */
-"prepublishing.pubishingTo" = "Close";
-
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Publish";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Publish Date";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publishing to";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schedule";

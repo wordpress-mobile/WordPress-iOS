@@ -171,6 +171,7 @@ platform :ios do
     trigger_beta_build
 
     pr_url = create_release_management_pull_request(
+      release_version: version,
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} code freeze"
     )
@@ -236,6 +237,7 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     pr_url = create_release_management_pull_request(
+      release_version:,
       base_branch: DEFAULT_BRANCH,
       title: "Merge changes from #{build_code_current}"
     )
@@ -411,6 +413,7 @@ platform :ios do
     trigger_release_build
 
     pr_url = create_release_management_pull_request(
+      release_version: release_version_next,
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} release finalization"
     )
@@ -555,12 +558,12 @@ def commit_version_and_build_files
   )
 end
 
-def create_release_management_pull_request(base_branch:, title:)
+def create_release_management_pull_request(release_version:, base_branch:, title:)
   token = ENV.fetch('GITHUB_TOKEN', nil)
 
   UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
 
-  create_pull_request(
+  pr_url = create_pull_request(
     api_token: token,
     repo: 'wordpress-mobile/WordPress-iOS',
     title:,
@@ -568,4 +571,20 @@ def create_release_management_pull_request(base_branch:, title:)
     base: base_branch,
     labels: 'Releases'
   )
+
+  # Next, set the milestone for the PR
+  #
+  # The create_pull_request action has a 'milestone' parameter, but it expects the milestone id.
+  # We don't know the id of the milestone, but we can use a different action to set it.
+  #
+  # PR URLs are in the format github.com/org/repo/pull/id
+  pr_number = File.basename(pr_url)
+  update_pull_requests_milestone(
+    repository: GITHUB_REPO,
+    pr_numbers: [pr_number],
+    to_milestone: release_version
+  )
+
+  # Return the PR URL
+  pr_url
 end

@@ -17,7 +17,7 @@ extension MySiteViewController {
         case .stats:
             // Show the stats view for the current blog
             if let blog = blog {
-                RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, timePeriod: .insights)
+                RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, source: .onboarding, timePeriod: .insights)
             }
         case .writing:
             // Open the editor
