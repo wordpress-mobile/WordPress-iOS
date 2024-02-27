@@ -38,7 +38,7 @@ struct StatsTrafficDatePickerView: View {
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
 
-            Spacer().frame(width: Length.Padding.single)
+            Spacer().frame(width: Length.Padding.split)
 
             Button(action: {
                 viewModel.goToPreviousPeriod()
