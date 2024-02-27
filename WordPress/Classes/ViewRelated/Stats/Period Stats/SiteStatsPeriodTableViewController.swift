@@ -40,8 +40,8 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
-    init(selectedDate: Date, selectedPeriod: StatsPeriodUnit) {
-        datePickerViewModel = StatsTrafficDatePickerViewModel(period: selectedPeriod, date: selectedDate)
+    init(date: Date, period: StatsPeriodUnit) {
+        datePickerViewModel = StatsTrafficDatePickerViewModel(period: period, date: date)
         datePickerView = StatsTrafficDatePickerView(viewModel: datePickerViewModel)
         super.init(nibName: nil, bundle: nil)
         tableStyle = .insetGrouped
@@ -159,7 +159,6 @@ private extension SiteStatsPeriodTableViewController {
         tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl.endRefreshing()
-//        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()

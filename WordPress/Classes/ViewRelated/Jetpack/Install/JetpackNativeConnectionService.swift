@@ -76,6 +76,7 @@ final class JetpackNativeConnectionService: NSObject {
                     }
                     return .failure(.remote(original.localizedDescription))
                 }
+            completion(result)
         }
     }
 }

@@ -1,5 +1,4 @@
 import UIKit
-import SwiftUI
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
@@ -88,16 +87,16 @@ class SiteStatsDashboardViewController: UIViewController {
     private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
     private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
     private lazy var trafficTableViewController = {
-        let selectedDate: Date
-        if let date = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
-            selectedDate = date
+        let date: Date
+        if let selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
+            date = selectedDate
         } else {
-            selectedDate = StatsDataHelper.currentDateForSite()
+            date = StatsDataHelper.currentDateForSite()
         }
 
-        let selectedPeriodUnit = SiteStatsDashboardPreferences.getSelectedPeriodUnit() ?? .day
+        let currentPeriod = SiteStatsDashboardPreferences.getSelectedPeriodUnit() ?? .day
 
-        return SiteStatsPeriodTableViewController(selectedDate: selectedDate, selectedPeriod: selectedPeriodUnit)
+        return SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
     }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
