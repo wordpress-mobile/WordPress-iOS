@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-22 13:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-26 04:29:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9496,9 +9496,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ wordt over %2$@ verplaatst";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "We stappen binnen een paar dagen over naar Jetpack.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ worden binnenkort verplaatst";
 
@@ -10219,6 +10216,9 @@ Example: 27 social shares remaining in the next 30 days */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Selecteer %@ om inhoud van abonnementen te bekijken en je abonnementen te beheren.";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "De blog %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
 
@@ -10283,8 +10283,19 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs ophalen ...";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d tags";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opent de lijst met filters";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Geliket";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Resetten";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
