@@ -7,6 +7,7 @@ import WordPressAuthenticator
 import Gridicons
 import UIKit
 import WordPressUI
+import SwiftUI
 
 /// The purpose of this class is to render the collection of Notifications, associated to the main
 /// WordPress.com account.
@@ -18,6 +19,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
     @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+
+    typealias TableViewCell = NotificationTableViewCell
 
     // MARK: - Properties
 
@@ -91,6 +94,8 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     ///
     private var timestampBeforeUpdatesForSecondAlert: String?
 
+    private var shouldCancelNextUpdateAnimation = false
+
     private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
         return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
     }()
@@ -103,35 +108,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return indicator
     }()
 
-    /// Notification Settings button
-    private lazy var settingsBarButtonItem: UIBarButtonItem = {
-        let settingsButton = UIBarButtonItem(
-            image: .gridicon(.cog),
-            style: .plain,
-            target: self,
-            action: #selector(showNotificationSettings)
-        )
-        settingsButton.accessibilityLabel = NSLocalizedString(
-            "Notification Settings",
-            comment: "Link to Notification Settings section"
-        )
-        return settingsButton
-    }()
-
-    /// Mark All As Read button
-    private lazy var markAllAsReadBarButtonItem: UIBarButtonItem = {
-        let markButton = UIBarButtonItem(
-            image: .gridicon(.checkmark),
-            style: .plain,
-            target: self,
-            action: #selector(showMarkAllAsReadConfirmation)
-        )
-        markButton.accessibilityLabel = NSLocalizedString(
-            "Mark All As Read",
-            comment: "Marks all notifications under the filter as read"
-        )
-        return markButton
-    }()
+    private let shouldPushDetailsViewController = UIDevice.current.userInterfaceIdiom != .pad
 
     /// Used by JPScrollViewDelegate to send scroll position
     internal let scrollViewTranslationPublisher = PassthroughSubject<Bool, Never>()
@@ -199,7 +176,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         // Refresh the UI
         reloadResultsControllerIfNeeded()
-        updateMarkAllAsReadButton()
 
         if !splitViewControllerIsHorizontallyCompact {
             reloadTableViewPreservingSelection()
@@ -243,11 +219,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         if shouldShowPrimeForPush {
             setupNotificationPrompt()
         }
-        // TODO: Remove this when In-App Rating project is shipped
-//        else if AppRatingUtility.shared.shouldPromptForAppReview(section: InlinePrompt.section) {
-//            setupAppRatings()
-//            self.showInlinePrompt()
-//        }
 
         showNotificationPrimerAlertIfNeeded()
         showSecondNotificationsAlertIfNeeded()
@@ -273,6 +244,10 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
         DispatchQueue.main.async {
             self.showNoResultsViewIfNeeded()
+        }
+
+        if traitCollection.horizontalSizeClass != previousTraitCollection?.horizontalSizeClass {
+            tableView.reloadData()
         }
 
         if splitViewControllerIsHorizontallyCompact {
@@ -362,8 +337,24 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ListTableViewCell.defaultReuseID, for: indexPath)
-        configureCell(cell, at: indexPath)
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: TableViewCell.reuseIdentifier) as? TableViewCell,
+              let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
+            return UITableViewCell()
+        }
+        if splitViewControllerIsHorizontallyCompact {
+            cell.selectionStyle = .none
+        } else {
+            cell.selectionStyle = .default
+        }
+        cell.accessibilityHint = Self.accessibilityHint(for: note)
+        if let deletionRequest = notificationDeletionRequests[note.objectID] {
+            cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
+                self?.cancelDeletionRequestForNoteWithID(note.objectID)
+            }
+        } else {
+            cell.configure(with: viewModel, notification: note, parent: self)
+        }
+        cell.backgroundColor = .systemBackground
         return cell
     }
 
@@ -379,12 +370,12 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
-              let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: ListTableHeaderView.defaultReuseID) as? ListTableHeaderView else {
+              let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: NotificationsTableHeaderView.reuseIdentifier) as? NotificationsTableHeaderView
+        else {
             return nil
         }
-
-        headerView.title = Notification.descriptionForSectionIdentifier(sectionInfo.name)
-        return headerView
+        view.text = Notification.descriptionForSectionIdentifier(sectionInfo.name)
+        return view
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -495,20 +486,9 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         return configuration
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let note = sender as? Notification else {
-            return
-        }
-
-        guard let detailsViewController = segue.destination as? NotificationDetailsViewController else {
-            return
-        }
-
-        configureDetailsViewController(detailsViewController, withNote: note)
-    }
-
     fileprivate func configureDetailsViewController(_ detailsViewController: NotificationDetailsViewController, withNote note: Notification) {
         detailsViewController.navigationItem.largeTitleDisplayMode = .never
+        detailsViewController.hidesBottomBarWhenPushed = true
         detailsViewController.dataSource = self
         detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
         detailsViewController.note = note
@@ -528,6 +508,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 // MARK: - User Interface Initialization
 //
 private extension NotificationsViewController {
+
     func setupNavigationBar() {
         navigationController?.navigationBar.prefersLargeTitles = false
         navigationItem.largeTitleDisplayMode = .never
@@ -540,15 +521,57 @@ private extension NotificationsViewController {
     }
 
     func updateNavigationItems() {
-        var barItems: [UIBarButtonItem] = []
-
-        if shouldDisplaySettingsButton {
-            barItems.append(settingsBarButtonItem)
+        let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
+            guard let self else {
+                completion([])
+                return
+            }
+            WPAnalytics.track(.notificationMenuTapped)
+            completion(self.makeMoreMenuElements())
         }
+        self.navigationItem.rightBarButtonItem = {
+            let menu = UIMenu(children: [moreMenuItems])
+            let button = UIBarButtonItem(
+                image: UIImage.DS.icon(named: .ellipsisHorizontal),
+                menu: menu
+            )
+            button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
+            return button
+        }()
+    }
 
-        barItems.append(markAllAsReadBarButtonItem)
+    func makeMoreMenuElements() -> [UIAction] {
+        // Mark All As Read
+        let markAllAsRead: UIAction? = { () -> UIAction? in
+            guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
+                return nil
+            }
+            let isEnabled = notes.first { !$0.read } != nil
+            let attributes = isEnabled ? UIAction.Attributes(rawValue: 0) : .disabled
+            return UIAction(
+                title: Strings.NavigationBar.markAllAsReadActionTitle,
+                image: .DS.icon(named: .checkmark),
+                attributes: attributes
+            ) { [weak self] _ in
+                self?.showMarkAllAsReadConfirmation()
+            }
+        }()
 
-        navigationItem.setRightBarButtonItems(barItems, animated: false)
+        // Notifications Settings
+        let settings: UIAction? = { () -> UIAction? in
+            guard shouldDisplaySettingsButton else {
+                return nil
+            }
+            return UIAction(
+                title: Strings.NavigationBar.notificationSettingsActionTitle,
+                image: .DS.icon(named: .gearshapeFill)
+            ) { [weak self] _ in
+                self?.showNotificationSettings()
+            }
+        }()
+
+        // Return
+        return [markAllAsRead, settings].compactMap { $0 }
     }
 
     @objc func closeNotificationSettings() {
@@ -575,15 +598,17 @@ private extension NotificationsViewController {
 
     func setupTableView() {
         // Register the cells
-        tableView.register(ListTableHeaderView.defaultNib, forHeaderFooterViewReuseIdentifier: ListTableHeaderView.defaultReuseID)
-        tableView.register(ListTableViewCell.defaultNib, forCellReuseIdentifier: ListTableViewCell.defaultReuseID)
+        tableView.register(NotificationsTableHeaderView.self, forHeaderFooterViewReuseIdentifier: NotificationsTableHeaderView.reuseIdentifier)
+        tableView.register(TableViewCell.self, forCellReuseIdentifier: TableViewCell.reuseIdentifier)
 
         // UITableView
         tableView.accessibilityIdentifier  = "notifications-table"
         tableView.cellLayoutMarginsFollowReadableWidth = false
         tableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
+        tableView.backgroundColor = .systemBackground
+        tableView.separatorStyle = .none
+        view.backgroundColor = .systemBackground
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
-        WPStyleGuide.configureColors(view: view, tableView: tableView)
     }
 
     func setupTableFooterView() {
@@ -619,6 +644,7 @@ private extension NotificationsViewController {
     func setupFilterBar() {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .systemBackground
+        filterTabBar.backgroundColor = .systemBackground
 
         filterTabBar.items = Filter.allCases
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
@@ -811,8 +837,9 @@ extension NotificationsViewController {
             note.kind == .matcher || note.kind == .newPost {
             let readerViewController = ReaderDetailViewController.controllerWithPostID(postID, siteID: siteID)
             readerViewController.navigationItem.largeTitleDisplayMode = .never
-            showDetailViewController(readerViewController, sender: nil)
-
+            readerViewController.hidesBottomBarWhenPushed = true
+            readerViewController.coordinator?.notificationID = note.notificationId
+            displayViewController(readerViewController)
             return
         }
 
@@ -833,26 +860,48 @@ extension NotificationsViewController {
             guard let self = self else {
                 return
             }
-
             self.view.isUserInteractionEnabled = true
-
+            let viewController: UIViewController?
             if note.kind == .comment {
-                guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
-                    DDLogError("Notifications: failed creating Comment Detail view.")
-                    return
-                }
-
-                self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
-                    self?.selectRow(for: note)
-                }
-
-                commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
-                self.showDetailViewController(commentDetailViewController, sender: nil)
-
-                return
+                viewController = getNotificationCommentDetailViewController(for: note)
+            } else {
+                viewController = getNotificationDetailsViewController(for: note)
             }
+            if let viewController {
+                displayViewController(viewController)
+            }
+        }
+    }
 
-            self.performSegue(withIdentifier: NotificationDetailsViewController.classNameWithoutNamespaces(), sender: note)
+    private func getNotificationCommentDetailViewController(for note: Notification) -> NotificationCommentDetailViewController? {
+        guard let commentDetailViewController = self.notificationCommentDetailCoordinator.createViewController(with: note) else {
+            DDLogError("Notifications: failed creating Comment Detail view.")
+            return nil
+        }
+
+        self.notificationCommentDetailCoordinator.onSelectedNoteChange = { [weak self] note in
+            self?.selectRow(for: note)
+        }
+        commentDetailViewController.navigationItem.largeTitleDisplayMode = .never
+        commentDetailViewController.hidesBottomBarWhenPushed = true
+        return commentDetailViewController
+    }
+
+    private func getNotificationDetailsViewController(for note: Notification) -> NotificationDetailsViewController? {
+        let viewControllerID = NotificationDetailsViewController.classNameWithoutNamespaces()
+        let detailsViewController = storyboard?.instantiateViewController(withIdentifier: viewControllerID)
+        guard let detailsViewController = detailsViewController as? NotificationDetailsViewController else {
+            return nil
+        }
+        configureDetailsViewController(detailsViewController, withNote: note)
+        return detailsViewController
+    }
+
+    private func displayViewController(_ controller: UIViewController) {
+        if shouldPushDetailsViewController {
+            navigationController?.pushViewController(controller, animated: true)
+        } else {
+            showDetailViewController(controller, sender: nil)
         }
     }
 
@@ -922,6 +971,10 @@ extension NotificationsViewController {
         navigationController.modalTransitionStyle = .coverVertical
 
         present(navigationController, animated: true, completion: nil)
+    }
+
+    func cancelNextUpdateAnimation() {
+        shouldCancelNextUpdateAnimation = true
     }
 }
 
@@ -1074,12 +1127,11 @@ private extension NotificationsViewController {
             !$0.read
         }
 
-        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { [weak self] error in
+        NotificationSyncMediator()?.markAsRead(unreadNotifications, completion: { error in
             let notice = Notice(
                 title: error != nil ? Localization.markAllAsReadNoticeFailure : Localization.markAllAsReadNoticeSuccess
             )
             ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
-            self?.updateMarkAllAsReadButton()
         })
     }
 
@@ -1132,7 +1184,6 @@ private extension NotificationsViewController {
         }
 
         NotificationSyncMediator()?.markAsUnread(note)
-        updateMarkAllAsReadButton()
     }
 
     func markWelcomeNotificationAsSeenIfNeeded() {
@@ -1141,17 +1192,6 @@ private extension NotificationsViewController {
             userDefaults.set(true, forKey: welcomeNotificationSeenKey)
             resetApplicationBadge()
         }
-    }
-
-    func updateMarkAllAsReadButton() {
-        guard let notes = tableViewHandler.resultsController?.fetchedObjects as? [Notification] else {
-            return
-        }
-
-        let isEnabled = notes.first { !$0.read } != nil
-
-        markAllAsReadBarButtonItem.tintColor = isEnabled ? .primary : .textTertiary
-        markAllAsReadBarButtonItem.isEnabled = isEnabled
     }
 }
 
@@ -1221,7 +1261,6 @@ private extension NotificationsViewController {
         // Don't overwork!
         lastReloadDate = Date()
         needsReloadResults = false
-        updateMarkAllAsReadButton()
     }
 
     func reloadRowForNotificationWithID(_ noteObjectID: NSManagedObjectID) {
@@ -1434,6 +1473,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
     }
 
     func tableViewDidChangeContent(_ tableView: UITableView) {
+        guard shouldCancelNextUpdateAnimation == false else {
+            shouldCancelNextUpdateAnimation = false
+            return
+        }
         refreshUnreadNotifications()
 
         // Update NoResults View
@@ -1454,6 +1497,10 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
         if isViewOnScreen() {
             showSecondNotificationsAlertIfNeeded()
         }
+    }
+
+    func shouldCancelUpdateAnimation() -> Bool {
+        return shouldCancelNextUpdateAnimation
     }
 
     // counts the new notifications for the second alert
@@ -1922,7 +1969,7 @@ private extension NotificationsViewController {
     }
 
     enum Settings {
-        static let estimatedRowHeight = CGFloat(70)
+        static let estimatedRowHeight = CGFloat(60)
     }
 
     enum Stats {

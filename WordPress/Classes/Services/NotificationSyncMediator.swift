@@ -20,6 +20,14 @@ let NotificationSyncMediatorDidUpdateNotifications = "NotificationSyncMediatorDi
 
 protocol NotificationSyncMediatorProtocol {
     func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?)
+    func toggleLikeForPostNotification(isLike: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void)
+    func toggleLikeForCommentNotification(isLike: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void)
 }
 
 // MARK: - NotificationSyncMediator
@@ -29,9 +37,23 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     ///
     private let contextManager: CoreDataStackSwift
 
+    /// API object used to make network requests
+    /// Used by remote services
+    ///
+    fileprivate let restAPI: WordPressComRestApi
+
     /// Sync Service Remote
     ///
     fileprivate let remote: NotificationSyncServiceRemote
+
+    /// Reader Service Remote
+    /// Used for toggling like status for posts and comments
+    ///
+    fileprivate let readerRemoteService: ReaderPostServiceRemote
+
+    /// Comment Remote Factory
+    /// Used to create a comment remote service by providing a siteID and restAPI
+    fileprivate let commentRemoteFactory: CommentServiceRemoteFactory
 
     /// Maximum number of Notes to Sync
     ///
@@ -78,7 +100,10 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
         }
 
         contextManager = manager
-        remote = NotificationSyncServiceRemote(wordPressComRestApi: dotcomAPI)
+        restAPI = dotcomAPI
+        remote = NotificationSyncServiceRemote(wordPressComRestApi: restAPI)
+        readerRemoteService = ReaderPostServiceRemote(wordPressComRestApi: restAPI)
+        commentRemoteFactory = CommentServiceRemoteFactory()
     }
 
     /// Syncs the latest *maximumNotes*:
@@ -150,43 +175,59 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
 
     /// Marks a Notification as Read.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notification: The notification that was just read.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark([notification], asRead: true, completion: completion)
+        Task { @MainActor in
+            mark([notification], asRead: true, completion: completion)
+        }
     }
 
     /// Marks an array of notifications as Read.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notifications: Notifications that were marked as read.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsRead(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
-        mark(notifications, asRead: true, completion: completion)
+        Task { @MainActor in
+            mark(notifications, asRead: true, completion: completion)
+        }
     }
 
     /// Marks a Notification as Unead.
     ///
-    /// - Note: This method should only be used on the main thread.
+    /// - Note: This method is called on the main thread.
     ///
     /// - Parameters:
     ///     - notification: The notification that should be marked unread.
     ///     - completion: Callback to be executed on completion.
     ///
     func markAsUnread(_ notification: Notification, completion: ((Error?)-> Void)? = nil) {
-        mark([notification], asRead: false, completion: completion)
+        markAsUnread([notification], completion: completion)
     }
 
-    private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
-        assert(Thread.isMainThread)
+    /// Marks a Notification as Unread.
+    ///
+    /// - Note: This method is called on the main thread.
+    ///
+    /// - Parameters:
+    ///     - notifications: The notifications that should be marked unread.
+    ///     - completion: Callback to be executed on completion.
+    ///
+    func markAsUnread(_ notifications: [Notification], completion: ((Error?)-> Void)? = nil) {
+        Task { @MainActor in
+            mark(notifications, asRead: false, completion: completion)
+        }
+    }
 
+    @MainActor private func mark(_ notifications: [Notification], asRead read: Bool = true, completion: ((Error?)-> Void)? = nil) {
         let noteIDs = notifications.map {
             $0.notificationId
         }
@@ -264,34 +305,76 @@ final class NotificationSyncMediator: NotificationSyncMediatorProtocol {
     /// Deletes the note with the given ID from Core Data.
     ///
     func deleteNote(noteID: String) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId == %@)", noteID)
 
                 for orphan in context.allObjects(ofType: Notification.self, matching: predicate) {
                     context.deleteObject(orphan)
                 }
-            }, completion: done, on: .main)
+            }, completion: operationCompletion, on: .main)
         })
     }
 
     /// Invalidates the local cache for the notification with the specified ID.
     ///
-    func invalidateCacheForNotification(_ noteID: String) {
-        invalidateCacheForNotifications([noteID])
+    func invalidateCacheForNotification(_ noteID: String,
+                                        completion: (() -> Void)? = nil) {
+        invalidateCacheForNotifications([noteID], completion: completion)
     }
 
     /// Invalidates the local cache for all the notifications with specified ID's in the array.
     ///
-    func invalidateCacheForNotifications(_ noteIDs: [String]) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+    func invalidateCacheForNotifications(_ noteIDs: [String],
+                                         completion: (() -> Void)? = nil) {
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let predicate = NSPredicate(format: "(notificationId IN %@)", noteIDs)
                 let notifications = context.allObjects(ofType: Notification.self, matching: predicate)
 
                 notifications.forEach { $0.notificationHash = nil }
-            }, completion: done, on: .main)
+            }, completion: {
+                completion?()
+                operationCompletion()
+            }, on: .main)
         })
+    }
+
+    func toggleLikeForPostNotification(isLike: Bool,
+                                       postID: UInt,
+                                       siteID: UInt,
+                                       completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        let success = { [weak self] () -> Void in
+            self?.updatePostLikeStatusLocally(isLike: isLike, postID: postID, siteID: siteID, completion: completion)
+        }
+        if isLike {
+            readerRemoteService.likePost(postID, forSite: siteID, success: success, failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            })
+        } else {
+            readerRemoteService.unlikePost(postID, forSite: siteID, success: success, failure: { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            })
+        }
+    }
+
+    func toggleLikeForCommentNotification(isLike: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        let commentService = commentRemoteFactory.restRemote(siteID: NSNumber(value: siteID), api: restAPI)
+        let success = { [weak self] () -> Void in
+            self?.updateCommentLikeStatusLocally(isLike: isLike, commentID: commentID, siteID: siteID, completion: completion)
+        }
+        if isLike {
+            commentService.likeComment(withID: NSNumber(value: commentID), success: success) { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        } else {
+            commentService.unlikeComment(withID: NSNumber(value: commentID), success: success) { error in
+                completion(.failure(error ?? ServiceError.unknown))
+            }
+        }
     }
 }
 
@@ -306,7 +389,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func determineUpdatedNotes(with remoteHashes: [RemoteNotification], completion: @escaping (([String]) -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "(notificationId IN %@)", remoteIds)
@@ -324,7 +407,7 @@ private extension NotificationSyncMediator {
                     .map { $0.notificationId }
             }, completion: { outdatedIds in
                 completion(outdatedIds)
-                done()
+                operationCompletion()
             }, on: .main)
         })
     }
@@ -337,7 +420,7 @@ private extension NotificationSyncMediator {
     ///     - completion: Callback to be executed on completion
     ///
     func updateLocalNotes(with remoteNotes: [RemoteNotification], completion: (() -> Void)? = nil) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 for remoteNote in remoteNotes {
                     let predicate = NSPredicate(format: "(notificationId == %@)", remoteNote.notificationId)
@@ -346,7 +429,7 @@ private extension NotificationSyncMediator {
                     localNote.update(with: remoteNote)
                 }
             }, completion: {
-                done()
+                operationCompletion()
                 DispatchQueue.main.async {
                     completion?()
                 }
@@ -360,7 +443,7 @@ private extension NotificationSyncMediator {
     /// - Parameter remoteHashes: Collection of remoteNotifications.
     ///
     func deleteLocalMissingNotes(from remoteHashes: [RemoteNotification], completion: @escaping (() -> Void)) {
-        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] done in
+        Self.operationQueue.addOperation(AsyncBlockOperation { [contextManager] operationCompletion in
             contextManager.performAndSave({ context in
                 let remoteIds = remoteHashes.map { $0.notificationId }
                 let predicate = NSPredicate(format: "NOT (notificationId IN %@)", remoteIds)
@@ -369,7 +452,7 @@ private extension NotificationSyncMediator {
                     context.deleteObject(orphan)
                 }
             }, completion: {
-                done()
+                operationCompletion()
                 DispatchQueue.main.async {
                     completion()
                 }
@@ -414,5 +497,75 @@ private extension NotificationSyncMediator {
     func notifyNotificationsWereUpdated() {
         let notificationCenter = NotificationCenter.default
         notificationCenter.post(name: Foundation.Notification.Name(rawValue: NotificationSyncMediatorDidUpdateNotifications), object: nil)
+    }
+
+    /// Attempts to fetch a `Comment` object matching the comment and site IDs from the local cache
+    /// If found, the like status is updated. If not found, nothing happens
+    /// - Parameters:
+    ///   - isLike: Indicates whether this is a like or unlike
+    ///   - commentID: Comment identifier used to fetch the comment
+    ///   - siteID: Site identifier used to fetch the comment
+    ///   - completion: Callback block which is called when the local comment is updated.
+    func updateCommentLikeStatusLocally(isLike: Bool,
+                                        commentID: UInt,
+                                        siteID: UInt,
+                                        completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        contextManager.performAndSave({ context in
+            do {
+                let fetchRequest = NSFetchRequest<Comment>(entityName: Comment.entityName())
+                fetchRequest.fetchLimit = 1
+                let commentIDPredicate = NSPredicate(format: "\(#keyPath(Comment.commentID)) == %d", commentID)
+                let siteIDPredicate = NSPredicate(format: "blog.blogID = %@", NSNumber(value: siteID))
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [commentIDPredicate, siteIDPredicate])
+                if let comment = try context.fetch(fetchRequest).first {
+                    comment.isLiked = isLike
+                    comment.likeCount = comment.likeCount + (comment.isLiked ? 1 : -1)
+                }
+            }
+            catch {
+                completion(.failure(ServiceError.localPersistenceError))
+            }
+        }, completion: {
+            completion(.success(isLike))
+        }, on: .main)
+    }
+
+    /// Attempts to fetch a `ReaderPost` object matching the post and site IDs from the local cache
+    /// If found, the like status is updated. If not found, nothing happens
+    /// - Parameters:
+    ///   - isLike: Indicates whether this is a like or unlike
+    ///   - postID: Post identifier used to fetch the post
+    ///   - siteID: Site identifier used to fetch the post
+    ///   - completion: Callback block which is called when the local post is updated.
+    func updatePostLikeStatusLocally(isLike: Bool,
+                                    postID: UInt,
+                                    siteID: UInt,
+                                    completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        contextManager.performAndSave({ context in
+            do {
+                let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.entityName())
+                fetchRequest.fetchLimit = 1
+                let commentIDPredicate = NSPredicate(format: "\(#keyPath(ReaderPost.postID)) == %d", postID)
+                let siteIDPredicate = NSPredicate(format: "\(#keyPath(ReaderPost.siteID)) = %@", NSNumber(value: siteID))
+                fetchRequest.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [commentIDPredicate, siteIDPredicate])
+                if let post = try context.fetch(fetchRequest).first {
+                    post.isLiked = isLike
+                    post.likeCount = NSNumber(value: post.likeCount.intValue + (post.isLiked ? 1 : -1))
+                }
+            }
+            catch {
+                completion(.failure(ServiceError.localPersistenceError))
+            }
+        }, completion: {
+            completion(.success(isLike))
+        }, on: .main)
+    }
+}
+
+extension NotificationSyncMediator {
+
+    enum ServiceError: Error {
+        case unknown
+        case localPersistenceError
     }
 }

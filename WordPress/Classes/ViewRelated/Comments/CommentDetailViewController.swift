@@ -390,7 +390,7 @@ private extension CommentDetailViewController {
         return rows
     }
 
-    func configureModeratationRows() -> [RowType] {
+    func configureModerationRows() -> [RowType] {
         var rows: [RowType] = []
         rows.append(.status(status: .approved))
         rows.append(.status(status: .pending))
@@ -406,7 +406,7 @@ private extension CommentDetailViewController {
 
         sections.append(.content(configureContentRows()))
         if comment.allowsModeration() {
-            sections.append(.moderation(configureModeratationRows()))
+            sections.append(.moderation(configureModerationRows()))
         }
         self.sections = sections
     }
@@ -678,7 +678,15 @@ private extension CommentDetailViewController {
                                     CommentAnalytics.trackCommentLiked(comment: comment)
         }
 
-        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: {}, failure: { _ in
+        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: { [weak self] in
+            guard let self, let notification = self.notification else {
+                return
+            }
+            let mediator = NotificationSyncMediator()
+            mediator?.invalidateCacheForNotification(notification.notificationId, completion: {
+                mediator?.syncNote(with: notification.notificationId)
+            })
+        }, failure: { _ in
             self.refreshData() // revert the like button state.
         })
     }

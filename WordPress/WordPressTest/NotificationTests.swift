@@ -84,6 +84,11 @@ class NotificationTests: CoreDataTestCase {
         XCTAssertNotNil(note.metaPostID)
     }
 
+    func testAllAvatarURLsReturnMultipleURLs() throws {
+        let note = try loadLikeMultipleAvatarNotification()
+        XCTAssertEqual(note.allAvatarURLs.count, 3)
+    }
+
     func testFollowerNotificationReturnsTheProperKindValue() throws {
         let note = try loadFollowerNotification()
         XCTAssert(note.kind == .follow)
@@ -265,6 +270,10 @@ class NotificationTests: CoreDataTestCase {
 
     func loadLikeNotification() throws -> WordPress.Notification {
         return try utility.loadLikeNotification()
+    }
+
+    func loadLikeMultipleAvatarNotification() throws -> WordPress.Notification {
+        return try utility.loadLikeMultipleAvatarNotification()
     }
 
     func loadFollowerNotification() throws -> WordPress.Notification {

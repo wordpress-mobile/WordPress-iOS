@@ -36,6 +36,10 @@ class ReaderDetailCoordinator {
         return nil
     }
 
+    /// ID representing the notification the post details is triggered from
+    /// If post details is not related to a notification, this property is `nil`
+    var notificationID: String?
+
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
