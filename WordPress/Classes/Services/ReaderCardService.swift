@@ -38,8 +38,13 @@ class ReaderCardService {
                                     page: self.pageHandle(isFirstPage: isFirstPage),
                                     refreshCount: refreshCount,
                                     success: { [weak self] cards, pageHandle in
-                guard let self = self else {
+                guard let self else {
                     return
+                }
+                var updatedCards = cards
+                if isFirstPage && updatedCards.first?.type == .interests && updatedCards.count > 2 {
+                    // Move the first tags recommendation card to a lower position
+                    updatedCards.move(fromOffsets: IndexSet(integer: 0), toOffset: 3)
                 }
 
                 self.pageHandle = pageHandle
@@ -52,13 +57,7 @@ class ReaderCardService {
                         self.pageNumber += 1
                     }
 
-                    cards.enumerated().forEach { index, remoteCard in
-                        if isFirstPage && index == 0 && remoteCard.type == .interests {
-                            // Removes displaying the tags recommendation card
-                            // first in the Discover feed
-                            return
-                        }
-
+                    updatedCards.enumerated().forEach { index, remoteCard in
                         let card = ReaderCard(context: context, from: remoteCard)
 
                         // Assign each interest an endpoint
