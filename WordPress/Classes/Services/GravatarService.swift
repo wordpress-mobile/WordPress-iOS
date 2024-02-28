@@ -68,7 +68,7 @@ open class GravatarService {
 
     /// Overridden by tests for mocking.
     ///
-    func gravatarImageService() -> ImageServing {
+    func gravatarImageService() -> ImageUploader {
         return ImageService()
     }
 
