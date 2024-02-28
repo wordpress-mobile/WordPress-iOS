@@ -44,11 +44,11 @@ open class GravatarService {
     ///     - account: The WPAccount instance for which to upload a new image.
     ///     - completion: An optional closure to be executed on completion.
     ///
-    open func uploadImage(_ image: UIImage, forAccount account: WPAccount, completion: ((_ error: NSError?) -> ())? = nil) {
+    open func uploadImage(_ image: UIImage, forAccount account: WPAccount, completion: ((_ error: Error?) -> ())? = nil) {
         guard
             let accountToken = account.authToken, !accountToken.isEmpty,
             let accountEmail = account.email, !accountEmail.isEmpty else {
-                completion?(GravatarServiceError.invalidAccountInfo as NSError)
+                completion?(GravatarServiceError.invalidAccountInfo)
                 return
         }
 
