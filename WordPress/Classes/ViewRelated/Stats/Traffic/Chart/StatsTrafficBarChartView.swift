@@ -15,7 +15,7 @@ final class StatsTrafficBarChartView: BarChartView {
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
-        static var labelFont                = { WPStyleGuide.fontForTextStyle(.caption2, symbolicTraits: [], maximumPointSize: 14) }
+        static var labelFont                = { WPStyleGuide.fontForTextStyle(.caption2, symbolicTraits: [], maximumPointSize: 18) }
         static let tickLineHeight           = CGFloat(8)
     }
 
@@ -122,7 +122,15 @@ private extension StatsTrafficBarChartView {
         dataSet.axisDependency = .right
         dataSet.highlightEnabled = false
         barChartData.barChartData.barWidth = Constants.barWidth
-        xAxis.setLabelCount(dataSet.count, force: false)
+        xAxis.setLabelCount(labelCount(dataSet), force: false)
+    }
+
+    private func labelCount(_ dataSet: BarChartDataSet) -> Int {
+        if UIApplication.shared.preferredContentSizeCategory >= .extraExtraLarge {
+            return Int(ceil(Double(dataSet.count) / 2))
+        }
+
+        return dataSet.count
     }
 
     func configureChartViewBaseProperties() {
