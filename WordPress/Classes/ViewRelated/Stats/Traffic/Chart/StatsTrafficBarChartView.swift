@@ -11,7 +11,6 @@ final class StatsTrafficBarChartView: BarChartView {
     private struct Constants {
         static let intrinsicHeight          = CGFloat(175)
         static let topOffsetSansLegend      = Length.Padding.single
-        static let trailingOffset           = Length.Padding.large
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
@@ -165,8 +164,16 @@ private extension StatsTrafficBarChartView {
         rightAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         rightAxis.valueFormatter = styling.yAxisValueFormatter
         extraTopOffset = Constants.topOffsetSansLegend
-        rightAxis.minWidth = Constants.trailingOffset
-        rightAxis.maxWidth = Constants.trailingOffset
+        rightAxis.minWidth = trailingOffset()
+        rightAxis.maxWidth = trailingOffset()
+    }
+
+    private func trailingOffset() -> CGFloat {
+        if UIApplication.shared.preferredContentSizeCategory >= .extraExtraLarge {
+            return Length.Padding.max
+        } else {
+            return Length.Padding.large
+        }
     }
 
     func configureYAxisMaximum() {
