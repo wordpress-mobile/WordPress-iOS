@@ -33,7 +33,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func goToNextPeriod() {
-        let nextDate = StatsDataHelper.calendar.date(byAdding: .year, value: 1, to: date) ?? date
+        let nextDate = StatsDataHelper.calendar.date(byAdding: .period.calendarComponent, value: 1, to: date) ?? date
         date = min(nextDate, getCurrentDateForSite())
         track(isNext: true)
     }
