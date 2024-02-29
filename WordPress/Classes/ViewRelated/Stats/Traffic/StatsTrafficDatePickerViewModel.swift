@@ -1,5 +1,7 @@
 import Foundation
 
+typealias SiteCurrentDateGetter = () -> Date
+
 class StatsTrafficDatePickerViewModel: ObservableObject {
 
     @Published var period: StatsPeriodUnit {
@@ -9,9 +11,15 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
     @Published var date: Date
 
-    init(period: StatsPeriodUnit, date: Date) {
+    private let getCurrentDateForSite: SiteCurrentDateGetter
+
+    init(period: StatsPeriodUnit,
+         date: Date,
+         currentDateGetter: @escaping SiteCurrentDateGetter = StatsDataHelper.currentDateForSite
+    ) {
         self.period = period
         self.date = date
+        self.getCurrentDateForSite = currentDateGetter
         period.track()
     }
 
@@ -25,7 +33,8 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     }
 
     func goToNextPeriod() {
-        date = StatsDataHelper.calendar.date(byAdding: period.calendarComponent, value: 1, to: date) ?? date
+        let nextDate = StatsDataHelper.calendar.date(byAdding: period.calendarComponent, value: 1, to: date) ?? date
+        date = min(nextDate, getCurrentDateForSite())
         track(isNext: true)
     }
 
