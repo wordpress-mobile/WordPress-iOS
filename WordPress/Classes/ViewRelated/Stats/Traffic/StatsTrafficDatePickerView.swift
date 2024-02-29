@@ -4,6 +4,8 @@ import DesignSystem
 struct StatsTrafficDatePickerView: View {
     @ObservedObject var viewModel: StatsTrafficDatePickerViewModel
 
+    private let maxDynamicTypeSize: DynamicTypeSize = .xxxLarge
+
     var body: some View {
         HStack {
             Menu {
@@ -16,9 +18,11 @@ struct StatsTrafficDatePickerView: View {
                 Text(viewModel.period.label)
                     .style(TextStyle.bodySmall(.emphasized))
                     .foregroundColor(Color.DS.Foreground.primary)
+                    .dynamicTypeSize(...maxDynamicTypeSize)
                 Image(systemName: "chevron.down")
                     .font(.system(size: 8))
                     .foregroundColor(Color.DS.Foreground.secondary)
+                    .dynamicTypeSize(...maxDynamicTypeSize)
 
             }
             .menuStyle(.borderlessButton)
@@ -37,6 +41,7 @@ struct StatsTrafficDatePickerView: View {
                 .style(TextStyle.bodySmall(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
+                .dynamicTypeSize(...maxDynamicTypeSize)
 
             Spacer().frame(width: Length.Padding.split)
 
@@ -47,6 +52,7 @@ struct StatsTrafficDatePickerView: View {
                     .imageScale(.small)
                     .foregroundColor(Color.DS.Foreground.secondary)
                     .flipsForRightToLeftLayoutDirection(true)
+                    .dynamicTypeSize(...maxDynamicTypeSize)
             }
             .padding(.trailing, Length.Padding.single)
 
@@ -61,6 +67,7 @@ struct StatsTrafficDatePickerView: View {
                     .imageScale(.small)
                     .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
                     .flipsForRightToLeftLayoutDirection(true)
+                    .dynamicTypeSize(...maxDynamicTypeSize)
             }
             .disabled(isNextDisabled)
         }.padding(.vertical, Length.Padding.single)
