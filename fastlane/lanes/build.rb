@@ -448,9 +448,9 @@ platform :ios do
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
       changelog: File.read(whats_new_path),
       distribute_external: true,
+      groups: distribution_groups,
       # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
-      reject_build_waiting_for_review: true,
-      groups: distribution_groups
+      reject_build_waiting_for_review: true
     )
   end
 
