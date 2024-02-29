@@ -141,6 +141,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupComponentsAppearance()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
+        autoSignInUITestSite()
 
         // This was necessary to properly load fonts for the Stories editor. I believe external libraries may require this call to access fonts.
         let fonts = Bundle.main.urls(forResourcesWithExtension: "ttf", subdirectory: nil)
@@ -969,6 +970,30 @@ extension WordPressAppDelegate {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
             }
         }
+    }
+
+}
+
+// MARK: - UI Test Support
+
+private extension WordPressAppDelegate {
+
+    func autoSignInUITestSite() {
+        let launchArguments = ProcessInfo.processInfo.arguments
+        guard let optIndex = launchArguments.firstIndex(of: "-ui-test-select-wpcom-site"),
+              optIndex + 1 < launchArguments.count else {
+            return
+        }
+
+        let wpComSiteAddress = launchArguments[optIndex + 1]
+        let credential = WordPressComCredentials(authToken: "valid_token", isJetpackLogin: true, multifactor: false)
+        self.authManager?.sync(credentials: AuthenticatorCredentials(wpcom: credential), onCompletion: {
+            if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
+                self.windowManager.showUI(for: blog)
+            } else {
+                fatalError("Can't find blog: \(wpComSiteAddress)")
+            }
+        })
     }
 
 }

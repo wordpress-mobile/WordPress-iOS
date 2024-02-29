@@ -5,10 +5,7 @@ class MainNavigationTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
-        setUpTestSuite()
-
-        try LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail)
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
 
         try MySiteScreen().goToMoreMenu()
     }
