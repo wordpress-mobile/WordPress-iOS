@@ -104,27 +104,28 @@ public class ReaderScreen: ScreenObject {
         )
     }
 
-    public func openLastPost() -> ReaderScreen {
-        getLastPost().tap()
+    public func openLastPost() throws -> ReaderScreen {
+        try getLastPost().tap()
         return self
     }
 
-    public func openLastPostInSafari() -> ReaderScreen {
-        getLastPost().buttons["More"].tap()
+    public func openLastPostInSafari() throws -> ReaderScreen {
+        try getLastPost().buttons["More"].tap()
         visitButton.tap()
         return self
     }
 
     public func openLastPostComments() throws -> CommentsScreen {
-        let commentButton = getLastPost().buttons["Comment"]
-        guard commentButton.waitForIsHittable() else { fatalError("ReaderScreen.Post: Comments button not loaded") }
+        let commentButton = try getLastPost().buttons["Comment"]
+        guard commentButton.waitForIsHittable() else { throw UIElementNotFoundError(message: "ReaderScreen.Post: Comments button not loaded") }
         commentButton.tap()
         return try CommentsScreen()
     }
 
     @discardableResult
-    public func getLastPost() -> XCUIElement {
-        guard let post = app.cells.lastMatch else { fatalError("ReaderScreen: No posts loaded") }
+    public func getLastPost() throws -> XCUIElement {
+        // Crash from testViewPostInSafari
+        guard let post = app.cells.lastMatch else { throw UIElementNotFoundError(message: "ReaderScreen: No posts loaded") }
         scrollDownUntilElementIsFullyVisible(element: post)
         return post
     }
