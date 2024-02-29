@@ -77,7 +77,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
-            expect(cards?.count).to(equal(9))
+            expect(cards?.count).to(equal(10))
             expectation.fulfill()
         }, failure: { _ in })
 
@@ -129,7 +129,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
             // Fetch again, this time the 1st page
             service.fetch(isFirstPage: true, success: { _, _ in
                 let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
-                expect(cards?.count).to(equal(9))
+                expect(cards?.count).to(equal(10))
                 expectation.fulfill()
             }, failure: { _ in })
         }, failure: {_ in })
