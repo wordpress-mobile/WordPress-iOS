@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-18 18:29:40+0000 */
+/* Translation-Revision-Date: 2024-02-26 11:58:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -6880,6 +6880,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Prekeni që të shihni sajtin tuaj";
 
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "Prekeni, që të vizitoni sajtin Gravatar që nga një shfletues i jashtëm";
+
 /* A hint about the completed guided tour. */
 "Task complete." = "Punë e plotësuar.";
 
@@ -7759,6 +7762,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Përditësoni Ikonën e Sajtit";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Përditësimet mund të duan ca kohë të njëkohësohen në profilin tuaj Gravatar.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Përditëson grafikun me vija që të shfaqë komente.";
 
@@ -7776,6 +7782,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "Po përditësohet";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Përditësimi i gravatarit, emrit dhe hollësive tuaja këtu, do t’i përditësojë ato nëpër krejt sajtet që përdorin profile Gravatar.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Po përditësohet…";
@@ -8353,6 +8362,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Ç’doni të bëni me këtë kartelë: të ngarkohet dhe të shtohet te postimi juaj një lidhje për te kartela, apo të shtohet lënda e kartelës drejt e te postimi?";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "Ç’është Gravatar-i?";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "Ç’është WordPress.com?";
 
@@ -8734,6 +8746,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Sajtet Tuaj";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "Profili juaj WordPress.com furnizohet nga Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Sajti juaj te WordPress.com mbulon përdorimin e Faqeve të Përshpejtuara për Celular, një nismë e udhëhequr nga Google, e cila përshpejton në mënyrë dramatike kohët e ngarkimit në pajisje celulare.";
@@ -9231,6 +9246,9 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.overridenValue" = "Formësim Së Largëti";
 
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Vlerë Formësimi Së Largëti";
+
 /* Remote Config Debug Menu reset button title */
 "debugMenu.remoteConfig.reset" = "Riktheji te parazgjedhjet";
 
@@ -9604,9 +9622,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ po kalohet në %2$@";
-
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Kalim në aplikacionin Jetpack pas pak ditësh.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "Së shpejti %@ do të lëvizen";
@@ -10457,6 +10472,30 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "Edhe %1$d ndarje me të tjerë në rrjete shoqërorë";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "Kategori";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Mbylle";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "Titull";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "Publikoje";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "Datë Botimi";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Botim te";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "Vëreni në plan";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10512,8 +10551,26 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Shoqërore";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "Etiketa";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "Dukshmëri";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@ nga %2$@";
+
+/* Retry button title */
+"publishButton.retry" = "Riprovo";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "Tani";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "Datë Botimi";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
@@ -11088,6 +11145,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMonitoring.entryDetailsTitle" = "Zë Regjistri";
 
 /* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Ruajtur në fshehtinë";
+
+/* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyFile" = "Kartelë";
 
 /* Site Monitoring details screen metadata key */
@@ -11294,6 +11354,42 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
 
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "Grafik Me Shtylla që tregon Komente për periudhën e përzgjedhur.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Grafik Me Shtylla që tregon Pëlqime për periudhën e përzgjedhur.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "Grafik Me Shtylla që tregon Parjet për periudhën e përzgjedhur";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "Grafik Me Shtylla që tregon Vizitorë për periudhën e përzgjedhur.";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "%@ më sipër se muaji i kaluar\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "%@ më ulët se muaji i kaluar\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "%@ më sipër se 7 ditët e kaluara\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "%@ më ulët se 7 ditët e kaluara\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "%@ më sipër se viti i kaluar\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "%@ më ulët se viti i kaluar\n";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";
 
@@ -11461,6 +11557,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "ndihmëza kryesuese";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "Kontrolloni nëse keni bërë hyrjen te llogaria e saktë";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "Sajti s’u gjet";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL e panjohur";

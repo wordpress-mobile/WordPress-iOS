@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-22 15:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-26 16:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9638,9 +9638,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "האפשרות '%1$@' תועבר בעוד %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "האפשרות תעבור לאפליקציה של Jetpack בימים הקרובים.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "האפשרויות '%@' יועברו בקרוב";
 
@@ -10496,6 +10493,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "קטגוריות";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "לסגור";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10507,6 +10507,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "תאריך פרסום";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "מפרסם בעמוד";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "תזמון";

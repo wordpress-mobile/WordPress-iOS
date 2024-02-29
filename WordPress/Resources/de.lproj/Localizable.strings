@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-22 12:28:01+0000 */
+/* Translation-Revision-Date: 2024-02-25 18:55:36+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -4742,7 +4742,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to Notification Settings section
    Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
-"Notification Settings" = "Einstellungen für Benachrichtigungen";
+"Notification Settings" = "Benachrichtigungseinstellungen";
 
 /* Title for the time picker button in Blogging Reminders. */
 "Notification time" = "Zeit für Benachrichtigungen";
@@ -9643,9 +9643,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ wird in %2$@ verschoben";
-
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Wird in einigen Tagen in die Jetpack-App verschoben.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ werden demnächst verschoben";

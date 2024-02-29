@@ -1,0 +1,3 @@
+Fizemos vários ajustes na planilha de pré-publicação. Você pode perceber mudanças como transições de tela mais suaves, seletor de data simplificado e configurações mais simples ao publicar no seu iPad.
+
+Além disso, atualizamos a seção de informações sobre o seu Gravatar no perfil de usuário. (Não sabe o que é isso? Aproveite as vantagens do Gravatar.)
