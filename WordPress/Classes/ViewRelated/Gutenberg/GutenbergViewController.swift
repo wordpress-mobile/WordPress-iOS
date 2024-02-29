@@ -1357,7 +1357,7 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
     func gutenbergDidRequestLogException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
         let jsException = JSException(
             type: exception.type,
-            value: exception.value,
+            message: exception.message,
             stacktrace: exception.stacktrace.map { JSException.StacktraceLine(
                 filename: $0.filename,
                 function: $0.function,
