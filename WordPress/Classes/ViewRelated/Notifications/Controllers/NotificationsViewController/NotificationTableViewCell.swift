@@ -44,7 +44,7 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
         case .newPost(let notification):
             return postLikeInlineAction(viewModel: viewModel, notification: notification, parent: parent)
         case .other(let notification):
-            guard notification.kind == .like || notification.kind == .reblog else {
+            guard notification.kind == .like else {
                 return nil
             }
             return shareInlineAction(viewModel: viewModel, notification: notification, parent: parent)
