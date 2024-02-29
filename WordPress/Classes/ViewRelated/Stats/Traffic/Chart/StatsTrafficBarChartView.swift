@@ -15,7 +15,7 @@ final class StatsTrafficBarChartView: BarChartView {
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
-        static let labelFont                = UIFont.systemFont(ofSize: 10)
+        static var labelFont                = { WPStyleGuide.fontForTextStyle(.caption2, symbolicTraits: [], maximumPointSize: 14) }
         static let tickLineHeight           = CGFloat(8)
     }
 
@@ -134,7 +134,7 @@ private extension StatsTrafficBarChartView {
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelFont = Constants.labelFont
+        xAxis.labelFont = Constants.labelFont()
         xAxis.labelTextColor = .init(color: styling.labelColor)
         xAxis.valueFormatter = styling.xAxisValueFormatter
         xAxis.avoidFirstLastClippingEnabled = false
@@ -150,7 +150,7 @@ private extension StatsTrafficBarChartView {
         rightAxis.gridLineWidth = Constants.gridLineWidth
         rightAxis.axisMinimum = 0.0
         rightAxis.drawLabelsEnabled = true
-        rightAxis.labelFont = Constants.labelFont
+        rightAxis.labelFont = Constants.labelFont()
         rightAxis.labelPosition = .outsideChart
         rightAxis.labelAlignment = .left
         rightAxis.labelTextColor = .init(color: styling.labelColor)
