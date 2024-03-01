@@ -126,8 +126,6 @@ DEPENDENCIES:
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressShared
   trunk:
     - Alamofire
     - AlamofireImage
