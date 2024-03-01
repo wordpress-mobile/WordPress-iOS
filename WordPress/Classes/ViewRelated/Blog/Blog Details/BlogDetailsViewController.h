@@ -94,6 +94,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
     BlogDetailsNavigationSourceOnboarding = 4,
     BlogDetailsNavigationSourceNotification = 5,
     BlogDetailsNavigationSourceShortcut = 6,
+    BlogDetailsNavigationSourceTodayStatsCard = 7,
 };
 
 
