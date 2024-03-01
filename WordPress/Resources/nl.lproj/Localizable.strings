@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-14 15:54:08+0000 */
+/* Translation-Revision-Date: 2024-02-26 04:29:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1305,8 +1305,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Maak een film van je leven.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorieën";
 
 /* Category menu item in share extension.
@@ -1431,9 +1430,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "Kies een lay-out";
 
-/* Label for Publish date picker */
-"Choose a date" = "Kies een datum";
-
 /* Select domain name. Title */
 "Choose a domain" = "Kies een domein";
 
@@ -1528,12 +1524,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliks";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Sluit";
 
 /* Close account action label */
@@ -5479,22 +5473,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the publish settings view */
 "Publish" = "Publiceren";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "Publicatiedatum";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Direct publiceren";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
+/* Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Nu publiceren";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publiceer een bericht";
-
-/* Immediately publish button title */
-"Publish immediately" = "Onmiddellijk publiceren";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publiceer pagina op:";
@@ -5986,9 +5975,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Planning";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Nu inplannen";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6800,7 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -6897,6 +6882,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tik om je site te bekijken";
+
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "Tik om de website van Gravatar in een externe browser te openen";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "Taak voltooid.";
@@ -7345,7 +7333,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titel";
@@ -7778,6 +7765,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Update site pictogram";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Het kan even duren voordat updates met je Gravatar-profiel worden gesynchroniseerd.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Staafgrafiek wordt bijgewerkt om reacties te tonen.";
 
@@ -7795,6 +7785,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "Updaten";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Als je je avatar, naam en beschrijving hier aanpast, worden deze ook bijgewerkt op alle sites waarop het Gravatar-profiel wordt gebruikt.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Bijwerken...";
@@ -8003,8 +7996,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Weergaven en bezoekers";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Zichtbaarheid";
 
@@ -8745,6 +8737,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Jouw sites";
 
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "Je WordPress.com-profiel wordt mogelijk gemaakt door Gravatar.";
+
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Je WordPress.com site ondersteunt het gebruik van Accelerated Mobile Pages, een initiatief van Google die de laadtijd versnelt op mobiele apparaten.";
 
@@ -9325,6 +9320,9 @@ Example: Reply to Pamela Nguyen */
 "example.com" = "voorbeeld.nl";
 
 /* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Afbeeldingen selecteren";
+
+/* Bottom toolbar title in the selection mode */
 "externalMediaPicker.toolbarViewSelected" = "Geselecteerde weergeven (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
@@ -9497,9 +9495,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ wordt over %2$@ verplaatst";
-
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "We stappen binnen een paar dagen over naar Jetpack.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ worden binnenkort verplaatst";
@@ -10161,6 +10156,15 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d keer delen op social media resterend";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "Categorieën";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "Publiceerdatum";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "Inplannen";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10200,6 +10204,9 @@ Example: 27 social shares remaining in the next 30 days */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
 
+/* Post publish date picker */
+"publishDatePicker.title" = "Publiceerdatum";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Negeren";
 
@@ -10208,6 +10215,9 @@ Example: 27 social shares remaining in the next 30 days */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Je bent ingelogd!";
+
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Selecteer %@ om inhoud van abonnementen te bekijken en je abonnementen te beheren.";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "De blog %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
@@ -10273,8 +10283,19 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs ophalen ...";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d tags";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opent de lijst met filters";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Geliket";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Resetten";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
@@ -10745,6 +10766,36 @@ but tapping on this button will remove their like from the post. */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Niet genoeg activiteit. Keer nog eens terug wanneer je site meer bezoekers heeft gehad!";
 
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "Staafgrafiek waarin het aantal opmerkingen tijdens de geselecteerde periode staan weergegeven.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Staafgrafiek waarin het aantal likes tijdens de geselecteerde periode staat weergegeven.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "Staafgrafiek waarin het aantal weergaven tijdens de geselecteerde periode staat weergegeven.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "Staafgrafiek waarin het aantal bezoekers tijdens de geselecteerde periode staat weergegeven.";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "%@ meer dan de afgelopen maand\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "%@ minder dan de afgelopen maand\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "%@ meer dan de afgelopen 7 dagen\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "%@ minder dan de afgelopen 7 dagen\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "%@ meer dan het afgelopen jaar\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "%@ minder dan het afgelopen jaar\n";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Negeren";
 
@@ -10885,6 +10936,9 @@ but tapping on this button will remove their like from the post. */
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "beste tips";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "Controleer of je op het juiste account bent ingelogd";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "onbekende url";

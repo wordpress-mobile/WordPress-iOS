@@ -4495,9 +4495,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Moving to the Jetpack app in a few days.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
 

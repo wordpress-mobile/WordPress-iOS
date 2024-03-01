@@ -11,7 +11,11 @@ final class SiteStatsPeriodViewModel: Observable {
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: any StatsPeriodStoreProtocol
     private var lastRequestedDate: Date
-    private var lastRequestedPeriod: StatsPeriodUnit
+    private var lastRequestedPeriod: StatsPeriodUnit {
+        didSet {
+            SiteStatsDashboardPreferences.setSelected(periodUnit: lastRequestedPeriod)
+        }
+    }
     private var periodReceipt: Receipt?
     private var changeReceipt: Receipt?
     private typealias Style = WPStyleGuide.Stats
@@ -359,7 +363,8 @@ private extension SiteStatsPeriodViewModel {
             chartData: barChartData,
             chartStyling: barChartStyling,
             period: lastRequestedPeriod,
-            unit: chartBarsUnit(from: lastRequestedPeriod)
+            unit: chartBarsUnit(from: lastRequestedPeriod),
+            siteStatsPeriodDelegate: periodDelegate
         )
 
         tableRows.append(row)

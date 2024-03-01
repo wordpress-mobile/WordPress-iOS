@@ -1,7 +1,7 @@
 steps:
   - label: Finalize Release
     plugins:
-      - automattic/a8c-ci-toolkit#2.18.2
+      - automattic/a8c-ci-toolkit#3.1.0
     # The finalization needs to run on macOS because of localization linting
     agents:
         queue: mac

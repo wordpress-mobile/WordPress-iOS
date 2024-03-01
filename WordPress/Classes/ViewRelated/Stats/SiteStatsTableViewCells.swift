@@ -47,6 +47,7 @@ struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {
     let statSection: StatSection? = nil
     let period: StatsPeriodUnit
     let unit: StatsPeriodUnit
+    weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
 
     static let cell: ImmuTableCell = {
         return ImmuTableCell.class(CellType.self)
@@ -56,7 +57,7 @@ struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {
 
         guard let cell = cell as? CellType else { return }
 
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, unit: unit)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, unit: unit, siteStatsPeriodDelegate: siteStatsPeriodDelegate)
     }
 
     static func == (lhs: StatsTrafficBarChartRow, rhs: StatsTrafficBarChartRow) -> Bool {

@@ -51,7 +51,7 @@ end
 
 def wordpress_kit
   # pod 'WordPressKit', '~> 13.1'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '7c01ab3f347d16c083239ce9f2945636e7fd4611'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '40d6a9f4928b470d73a5ade7ff1842a29e80cef8'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -117,8 +117,8 @@ abstract_target 'Apps' do
   pod 'Starscream', '~> 4.0'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
-  pod 'AlamofireImage', '3.5.2'
-  pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+  pod 'AlamofireImage', '~> 4.0'
+  pod 'AlamofireNetworkActivityIndicator', '~> 3.0'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
@@ -140,8 +140,8 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.1'
-  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'fa06fca7178b268d382d91861752b3be0729e8a8'
+  # pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.1'
+  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: '000cbf2b3b1644b224eb46f14f1cfc609103f686'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
@@ -280,8 +280,18 @@ target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
 end
 
+## Tools
+## ===================
+##
+
+def swiftlint_version
+  require 'yaml'
+
+  YAML.load_file('.swiftlint.yml')['swiftlint_version']
+end
+
 abstract_target 'Tools' do
-  pod 'SwiftLint', '~> 0.50'
+  pod 'SwiftLint', swiftlint_version
 end
 
 # Static Frameworks:

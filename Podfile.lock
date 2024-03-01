@@ -1,9 +1,9 @@
 PODS:
-  - Alamofire (4.8.2)
-  - AlamofireImage (3.5.2):
-    - Alamofire (~> 4.8)
-  - AlamofireNetworkActivityIndicator (2.4.0):
-    - Alamofire (~> 4.8)
+  - Alamofire (5.8.1)
+  - AlamofireImage (4.3.0):
+    - Alamofire (~> 5.8)
+  - AlamofireNetworkActivityIndicator (3.1.0):
+    - Alamofire (~> 5.1)
   - AppCenter (5.0.3):
     - AppCenter/Analytics (= 5.0.3)
     - AppCenter/Crashes (= 5.0.3)
@@ -26,7 +26,7 @@ PODS:
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
   - Gridicons (1.2.0)
-  - Gutenberg (1.112.0)
+  - Gutenberg (1.114.0)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
@@ -71,7 +71,6 @@ PODS:
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
   - WordPressKit (13.1.0):
-    - Alamofire (~> 4.8.0)
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
@@ -95,8 +94,8 @@ PODS:
   - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
-  - AlamofireImage (= 3.5.2)
-  - AlamofireNetworkActivityIndicator (~> 2.4)
+  - AlamofireImage (~> 4.0)
+  - AlamofireNetworkActivityIndicator (~> 3.0)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
   - Automattic-Tracks-iOS (~> 3.0)
@@ -106,7 +105,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.112.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.114.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -117,10 +116,10 @@ DEPENDENCIES:
   - Reachability (= 3.2)
   - Starscream (~> 4.0)
   - SVProgressHUD (= 2.2.5)
-  - SwiftLint (~> 0.50)
+  - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (>= 9.0.1, ~> 9.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `7c01ab3f347d16c083239ce9f2945636e7fd4611`)
+  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `000cbf2b3b1644b224eb46f14f1cfc609103f686`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `40d6a9f4928b470d73a5ade7ff1842a29e80cef8`)
   - WordPressShared (~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
@@ -128,7 +127,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressAuthenticator
     - WordPressShared
   trunk:
     - Alamofire
@@ -174,23 +172,29 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.112.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.114.0.podspec
+  WordPressAuthenticator:
+    :commit: 000cbf2b3b1644b224eb46f14f1cfc609103f686
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 7c01ab3f347d16c083239ce9f2945636e7fd4611
+    :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  WordPressAuthenticator:
+    :commit: 000cbf2b3b1644b224eb46f14f1cfc609103f686
+    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
   WordPressKit:
-    :commit: 7c01ab3f347d16c083239ce9f2945636e7fd4611
+    :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
-  AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
-  AlamofireNetworkActivityIndicator: 9acc3de3ca6645bf0efed462396b0df13dd3e7b8
+  Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
+  AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
+  AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
   Automattic-Tracks-iOS: baa126f98d2ce26fd54ee2534bef6e2d46480a5c
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
@@ -199,7 +203,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: ba97dd36571958f64108233a692e6057f5010dc2
+  Gutenberg: 0f7cae5102b7966424c3b448a31554c486ab009d
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -217,8 +221,8 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: 0891ba77c788044d32fe67a4d0435fdd598cecbd
-  WordPressKit: c1ba7b4f531693a0914f676423808fdffd820d81
+  WordPressAuthenticator: ba69878bfa1368636e92d29fcfb5bd1e0a11a3ef
+  WordPressKit: f446e322a67949d760629ed430589975ca5b9d71
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -231,6 +235,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: df05b91f0efd79fc4cf7269403f857144c3a73e6
+PODFILE CHECKSUM: a5f578243c785e0c38eb87f15a7c1063db575bee
 
 COCOAPODS: 1.14.2

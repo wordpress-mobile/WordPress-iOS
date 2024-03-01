@@ -1227,6 +1227,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
                 .layoutGridBlock: false,
                 .tiledGalleryBlock: false,
                 .videoPressBlock: false,
+                .videoPressV5Support: false,
                 .unsupportedBlockEditor: false,
                 .canEnableUnsupportedBlockEditor: false,
                 .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
@@ -1248,6 +1249,8 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .layoutGridBlock: post.blog.supports(.layoutGrid),
             .tiledGalleryBlock: post.blog.supports(.tiledGallery),
             .videoPressBlock: post.blog.supports(.videoPress),
+            .videoPressV5Support:
+                post.blog.supports(.videoPressV5),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
             .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
