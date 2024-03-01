@@ -22,6 +22,7 @@ final class SiteStatsPeriodViewModelTests: XCTestCase {
             periodDelegate: SiteStatsPeriodDelegateMock(),
             referrerDelegate: SiteStatsReferrerDelegateMock()
         )
+        sut.addListeners()
     }
 
     override func tearDownWithError() throws {
