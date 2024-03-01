@@ -20,7 +20,7 @@ struct StatsTrafficDatePickerView: View {
                     .foregroundColor(Color.DS.Foreground.primary)
                     .dynamicTypeSize(...maxDynamicTypeSize)
                 Image(systemName: "chevron.down")
-                    .font(.system(size: 8))
+                    .font(.caption2)
                     .foregroundColor(Color.DS.Foreground.secondary)
                     .dynamicTypeSize(...maxDynamicTypeSize)
 
