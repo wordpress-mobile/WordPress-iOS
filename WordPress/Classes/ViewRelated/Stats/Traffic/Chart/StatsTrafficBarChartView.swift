@@ -11,11 +11,10 @@ final class StatsTrafficBarChartView: BarChartView {
     private struct Constants {
         static let intrinsicHeight          = CGFloat(175)
         static let topOffsetSansLegend      = Length.Padding.single
-        static let trailingOffset           = Length.Padding.large
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
-        static let labelFont                = UIFont.systemFont(ofSize: 10)
+        static var labelFont                = { WPStyleGuide.fontForTextStyle(.caption2, symbolicTraits: [], maximumPointSize: 18) }
         static let tickLineHeight           = CGFloat(8)
     }
 
@@ -122,7 +121,15 @@ private extension StatsTrafficBarChartView {
         dataSet.axisDependency = .right
         dataSet.highlightEnabled = false
         barChartData.barChartData.barWidth = Constants.barWidth
-        xAxis.setLabelCount(dataSet.count, force: false)
+        xAxis.setLabelCount(labelCount(dataSet), force: false)
+    }
+
+    private func labelCount(_ dataSet: BarChartDataSet) -> Int {
+        if UIApplication.shared.preferredContentSizeCategory >= .extraExtraLarge {
+            return Int(ceil(Double(dataSet.count) / 2))
+        }
+
+        return dataSet.count
     }
 
     func configureChartViewBaseProperties() {
@@ -134,7 +141,7 @@ private extension StatsTrafficBarChartView {
         xAxis.drawGridLinesEnabled = false
         xAxis.drawLabelsEnabled = true
         xAxis.labelPosition = .bottom
-        xAxis.labelFont = Constants.labelFont
+        xAxis.labelFont = Constants.labelFont()
         xAxis.labelTextColor = .init(color: styling.labelColor)
         xAxis.valueFormatter = styling.xAxisValueFormatter
         xAxis.avoidFirstLastClippingEnabled = false
@@ -150,15 +157,23 @@ private extension StatsTrafficBarChartView {
         rightAxis.gridLineWidth = Constants.gridLineWidth
         rightAxis.axisMinimum = 0.0
         rightAxis.drawLabelsEnabled = true
-        rightAxis.labelFont = Constants.labelFont
+        rightAxis.labelFont = Constants.labelFont()
         rightAxis.labelPosition = .outsideChart
         rightAxis.labelAlignment = .left
         rightAxis.labelTextColor = .init(color: styling.labelColor)
         rightAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         rightAxis.valueFormatter = styling.yAxisValueFormatter
         extraTopOffset = Constants.topOffsetSansLegend
-        rightAxis.minWidth = Constants.trailingOffset
-        rightAxis.maxWidth = Constants.trailingOffset
+        rightAxis.minWidth = trailingOffset()
+        rightAxis.maxWidth = trailingOffset()
+    }
+
+    private func trailingOffset() -> CGFloat {
+        if UIApplication.shared.preferredContentSizeCategory >= .extraExtraLarge {
+            return Length.Padding.max
+        } else {
+            return Length.Padding.large
+        }
     }
 
     func configureYAxisMaximum() {
