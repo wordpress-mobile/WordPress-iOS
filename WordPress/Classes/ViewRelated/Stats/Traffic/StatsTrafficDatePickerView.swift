@@ -4,6 +4,8 @@ import DesignSystem
 struct StatsTrafficDatePickerView: View {
     @ObservedObject var viewModel: StatsTrafficDatePickerViewModel
 
+    private let maxDynamicTypeSize: DynamicTypeSize = .xxxLarge
+
     var body: some View {
         HStack {
             Menu {
@@ -17,9 +19,11 @@ struct StatsTrafficDatePickerView: View {
                     Text(viewModel.period.label)
                         .style(TextStyle.bodySmall(.emphasized))
                         .foregroundColor(Color.DS.Foreground.primary)
+                        .dynamicTypeSize(...maxDynamicTypeSize)
                     Image(systemName: "chevron.down")
-                        .font(.system(size: 8))
+                        .font(.caption2)
                         .foregroundColor(Color.DS.Foreground.secondary)
+                        .dynamicTypeSize(...maxDynamicTypeSize)
                 }
                 .padding(.vertical, Length.Padding.single)
                 .padding(.horizontal, Length.Padding.double)
@@ -40,6 +44,7 @@ struct StatsTrafficDatePickerView: View {
                 .style(TextStyle.bodySmall(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
+                .dynamicTypeSize(...maxDynamicTypeSize)
 
             Spacer().frame(width: Length.Padding.split)
 
@@ -53,6 +58,7 @@ struct StatsTrafficDatePickerView: View {
                         .flipsForRightToLeftLayoutDirection(true)
                         .padding(.vertical, Length.Padding.double)
                         .contentShape(Rectangle())
+                        .dynamicTypeSize(...maxDynamicTypeSize)
                 }
                 .padding(.trailing, Length.Padding.single)
 
@@ -69,6 +75,7 @@ struct StatsTrafficDatePickerView: View {
                         .flipsForRightToLeftLayoutDirection(true)
                         .padding(.vertical, Length.Padding.double)
                         .contentShape(Rectangle())
+                        .dynamicTypeSize(...maxDynamicTypeSize)
                 }.disabled(isNextDisabled)
             }.padding(.trailing, Length.Padding.medium)
 
