@@ -52,7 +52,7 @@ class SiteStatsInsightsViewModel: Observable {
          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?,
          insightsStore: StatsInsightsStore,
          pinnedItemStore: SiteStatsPinnedItemStore?,
-         periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
+         periodStore: StatsPeriodStore = StatsPeriodStore()) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
         self.insightsToShow = insightsToShow

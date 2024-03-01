@@ -4,7 +4,7 @@ final class ReferrerDetailsTableViewController: UITableViewController {
     private var data: StatsTotalRowData
     private lazy var tableHandler = ImmuTableViewHandler(takeOver: self)
     private lazy var viewModel = ReferrerDetailsViewModel(data: data, delegate: self, referrersDelegate: self)
-    private let periodStore = StoreContainer.shared.statsPeriod
+    private let periodStore = StatsPeriodStore()
 
     init(data: StatsTotalRowData) {
         self.data = data

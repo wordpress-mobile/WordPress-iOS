@@ -34,7 +34,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         return SiteStatsPinnedItemStore(siteId: siteID)
     }()
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore = StatsInsightsStore()
 
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false

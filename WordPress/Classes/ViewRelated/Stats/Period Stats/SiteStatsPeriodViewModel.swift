@@ -22,7 +22,7 @@ final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Constructor
 
-    init(store: any StatsPeriodStoreProtocol = StoreContainer.shared.statsPeriod,
+    init(store: any StatsPeriodStoreProtocol = StatsPeriodStore(),
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,

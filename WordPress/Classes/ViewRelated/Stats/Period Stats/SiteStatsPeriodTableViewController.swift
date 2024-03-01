@@ -26,7 +26,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private let store = StoreContainer.shared.statsPeriod
+    private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel!
