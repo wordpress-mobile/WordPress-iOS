@@ -114,8 +114,7 @@ extension DashboardStatsCardCell: BlogDashboardCardConfigurable {
         WPAnalytics.track(.dashboardCardItemTapped,
                           properties: ["type": DashboardCard.todaysStats.rawValue],
                           blog: blog)
-        StatsViewController.show(for: blog, from: sourceController)
-        WPAppAnalytics.track(.statsAccessed, withProperties: [WPAppAnalyticsKeyTabSource: "dashboard", WPAppAnalyticsKeyTapSource: "todays_stats_card"], with: blog)
+        RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(for: blog, source: .todayStatsCard, tab: .days, date: nil)
     }
 
     private func showNudgeHint(for blog: Blog, from sourceController: UIViewController) {

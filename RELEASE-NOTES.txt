@@ -1,14 +1,19 @@
 24.4
 -----
+* [***] [Jetpack-only] Improved Notifications experience with richer UI elements and interactions
 * [**] [Jetpack-only] Block editor: Introduce VideoPress v5 support, to fix issues using video block with dotcom and Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6634]
+* [*] Block editor: Prevent crash when autoscrolling to blocks [https://github.com/WordPress/gutenberg/pull/59110]
+* [*] Block editor: Remove opacity change when images are being uploaded [https://github.com/WordPress/gutenberg/pull/59264]
+* [*] Block editor: Media & Text blocks correctly show an error message when the attached video upload fails [https://github.com/WordPress/gutenberg/pull/59288]
 * [**] [internal] Refactored .org REST API calls. [#22612]
+* [**] [internal] Update loading images in Reader posts list and Posts list. [#22707]
 
 24.3
 -----
 * [***] [internal] Refactored websocket connections to Pinghub. [#22611]
-
 * [**] Multiple pre-publishing sheet fixes and improvements [#22606]
 * [*] Gravatar: Adds informative new view about Gravatar to the profile editing page. [#22615]
+* [*] [internal][WordPress-only] Updates Jetpack banners and badges copy for consistency [#20123]
 
 24.2
 -----

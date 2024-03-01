@@ -30,10 +30,14 @@ class CommentTableHeaderView: UITableViewHeaderFooterView, Reusable {
     init(title: String,
          subtitle: Subtitle,
          showsDisclosureIndicator: Bool = false,
-         reuseIdentifier: String? = CommentTableHeaderView.defaultReuseID) {
-        let headerView = CommentHeaderView(title: title,
-                                           subtitle: subtitle,
-                                           showsDisclosureIndicator: showsDisclosureIndicator)
+         reuseIdentifier: String? = CommentTableHeaderView.defaultReuseID,
+         action: @escaping () -> Void) {
+        let headerView = CommentHeaderView(
+            title: title,
+            subtitle: subtitle,
+            showsDisclosureIndicator: showsDisclosureIndicator,
+            action: action
+        )
         hostingController = .init(rootView: headerView)
         super.init(reuseIdentifier: reuseIdentifier)
         configureView()
@@ -91,16 +95,20 @@ private extension CommentTableHeaderView {
 
 private struct CommentHeaderView: View {
 
-    @State var title = String()
-    @State var subtitle: CommentTableHeaderView.Subtitle = .post
-    @State var showsDisclosureIndicator = true
+    @State var title: String
+    @State var subtitle: CommentTableHeaderView.Subtitle
+    @State var showsDisclosureIndicator: Bool
+
+    let action: () -> Void
 
     var body: some View {
-        HStack {
-            text
-            Spacer()
-            if showsDisclosureIndicator {
-                disclosureIndicator
+        Button(action: action) {
+            HStack {
+                text
+                Spacer()
+                if showsDisclosureIndicator {
+                    disclosureIndicator
+                }
             }
         }
         .padding(EdgeInsets(top: 10, leading: 16, bottom: 10, trailing: 16))

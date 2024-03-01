@@ -32,24 +32,14 @@ extension NSNotification.Name {
         guard let post = post else {
             return .init()
         }
-
-        if FeatureFlag.commentModerationUpdate.enabled {
-            let headerView = CommentTableHeaderView(title: post.titleForDisplay(),
-                                                    subtitle: .commentThread,
-                                                    showsDisclosureIndicator: true)
-            headerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTapped)))
-            return headerView
+        let headerView = CommentTableHeaderView(
+            title: post.titleForDisplay(),
+            subtitle: .commentThread,
+            showsDisclosureIndicator: allowsPushingPostDetails
+        ) { [weak self] in
+            self?.handleHeaderTapped()
         }
-
-        let cell = CommentHeaderTableViewCell()
-        cell.backgroundColor = .systemBackground
-        cell.configure(for: .thread, subtitle: post.titleForDisplay(), showsDisclosureIndicator: allowsPushingPostDetails)
-        cell.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleHeaderTapped)))
-
-        // the table view does not render separators for the section header views, so we need to create one.
-        cell.contentView.addBottomBorder(withColor: .separator, leadingMargin: tableView.separatorInset.left)
-
-        return cell
+        return headerView
     }
 
     func configureContentCell(

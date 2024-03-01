@@ -108,7 +108,7 @@ extern NSUInteger const WPTopLevelHierarchicalCommentsPerPage;
 - (NSArray *)topLevelComments:(NSUInteger)number forPost:(ReaderPost *)post;
 
 // Counts and returns the number of full pages of hierarchcial comments synced for a post.
-// A partial set does not count toward the total number of pages. 
+// A partial set does not count toward the total number of pages.
 - (NSInteger)numberOfHierarchicalPagesSyncedforPost:(ReaderPost *)post;
 
 
