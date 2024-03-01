@@ -120,14 +120,12 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `000cbf2b3b1644b224eb46f14f1cfc609103f686`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `40d6a9f4928b470d73a5ade7ff1842a29e80cef8`)
-  - WordPressShared (~> 2.3)
+  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `0a14bc96e22f097eca99eeccf37b5de11fa62612`)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
-  https://github.com/wordpress-mobile/cocoapods-specs.git:
-    - WordPressShared
   trunk:
     - Alamofire
     - AlamofireImage
@@ -179,6 +177,9 @@ EXTERNAL SOURCES:
   WordPressKit:
     :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :commit: 0a14bc96e22f097eca99eeccf37b5de11fa62612
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -190,6 +191,9 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressShared:
+    :commit: 0a14bc96e22f097eca99eeccf37b5de11fa62612
+    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
@@ -223,7 +227,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: ba69878bfa1368636e92d29fcfb5bd1e0a11a3ef
   WordPressKit: f446e322a67949d760629ed430589975ca5b9d71
-  WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
+  WordPressShared: f99faa127509b666d2f8b931989a900e2fd9d10d
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -235,6 +239,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: a5f578243c785e0c38eb87f15a7c1063db575bee
+PODFILE CHECKSUM: 70c703d9dea1af3e9a7d9dd82484925dcab05711
 
 COCOAPODS: 1.14.2
