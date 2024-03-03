@@ -76,7 +76,7 @@ final class PostRepository {
     }
 
     /// Uploads the changes to the given post to the server and deletes the
-    /// uploaded local revision afterward. If the post has an associated
+    /// uploaded local revision afterward. If the post doesn't have an associated
     /// remote ID, creates a new post.
     ///
     /// - note: This method is a low-level primitive for syncing the latest
