@@ -21,7 +21,8 @@ import WordPressFlux
     fileprivate lazy var backgroundSession: URLSession = {
         let configuration = URLSessionConfiguration.background(withIdentifier: self.backgroundSessionIdentifier)
         configuration.sharedContainerIdentifier = self.appGroup
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        // Using the `main` queue because main context is used in the `URLSessionDelegate` implemention.
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: .main)
         return session
     }()
 
