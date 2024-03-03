@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-05 08:23:32+0000 */
+/* Translation-Revision-Date: 2024-02-29 12:54:40+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: cs_CZ */
@@ -1850,6 +1850,12 @@
 
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nelze se připojit k webu WordPress. Na této adrese není platný web WordPress. Zkontrolujte adresu webu (URL), kterou jste zadali.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Při pokusu o přístup ke koncovému bodu XMLRPC vašeho webu jsme obdrželi chybu 403. Ten aplikace potřebuje, aby mohla komunikovat s vaším webem. Kontaktujte prosím svého poskytovatele hostingu, aby tento problém vyřešil.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Váš hostitel blokuje požadavky POST a aplikace je potřebuje, aby mohla komunikovat s vaším webem. Obraťte se na poskytovatele hostingu, aby tento problém vyřešil.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Značky se nepodařilo načíst.";
@@ -8457,6 +8463,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Máte 1 skrytou WordPress stránku.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Ke svému plánu máte bezplatnou roční registraci domény";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Máte na svém webu aktivní upgrade na prémium. Zrušte tento upgrade před smazáním vašeho webu.";

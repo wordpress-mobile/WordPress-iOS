@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-22 17:04:14+0000 */
+/* Translation-Revision-Date: 2024-02-29 14:24:46+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: ro */
@@ -5584,7 +5584,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Recipient" = "Destinatar";
 
 /* Verb. Text label. Tapping attempts to reconnect a third-party sharing service to the user's blog. */
-"Reconnect" = "Reconectare";
+"Reconnect" = "Reconectează";
 
 /* Message shwon to confirm a publicize connection has been successfully reconnected. */
 "Reconnected" = "Reconectat";
