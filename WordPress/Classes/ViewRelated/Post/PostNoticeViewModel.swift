@@ -4,25 +4,17 @@ enum PostNoticeUserInfoKey {
     static let postID = "post_id"
 }
 
+/// - note: Deprecated (kahu-offline-mode) (See PostCoordinator+Notices)
 struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator
     private let autoUploadInteractor = PostAutoUploadInteractor()
-    private let isFirstTimePublish: Bool
     private let isInternetReachable: Bool
-    private var isActionHidden = false
 
-    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isFirstTimePublish: Bool? = nil, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
+    init(post: AbstractPost, postCoordinator: PostCoordinator = PostCoordinator.shared, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
         self.post = post
         self.postCoordinator = postCoordinator
-        self.isFirstTimePublish = isFirstTimePublish ?? post.isFirstTimePublish
         self.isInternetReachable = isInternetReachable
-    }
-
-    static func makeFailureNotice(for post: AbstractPost, error: Error) -> Notice {
-        var model = PostNoticeViewModel(post: post, isInternetReachable: (error as? URLError)?.code == .notConnectedToInternet)
-        model.isActionHidden = true
-        return model.failureNotice
     }
 
     /// Returns the Notice represented by this view model.
@@ -54,22 +46,20 @@ struct PostNoticeViewModel {
     }
 
     private var failureNotice: Notice {
-        let failureAction = isActionHidden ? nil : self.failureAction
+        let failureAction = self.failureAction
 
         return Notice(title: failureTitle,
                       message: message,
                       feedbackType: .error,
                       notificationInfo: notificationInfo,
-                      actionTitle: failureAction?.title,
+                      actionTitle: failureAction.title,
                       actionHandler: { _ in
-            if let failureAction {
-                switch failureAction {
-                case .cancel:
-                    self.cancelAutoUpload()
-                case .retry:
-                    self.retryUpload()
-                }
-            }
+                        switch failureAction {
+                        case .cancel:
+                            self.cancelAutoUpload()
+                        case .retry:
+                            self.retryUpload()
+                        }
         })
     }
 
@@ -98,7 +88,7 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
         default:
-            if isFirstTimePublish {
+            if page.isFirstTimePublish {
                 return NSLocalizedString("Page published", comment: "Title of notification displayed when a page has been successfully published.")
             } else {
                 return NSLocalizedString("Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
@@ -117,7 +107,7 @@ struct PostNoticeViewModel {
         case .pending:
             return NSLocalizedString("Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
         default:
-            if isFirstTimePublish {
+            if post.isFirstTimePublish {
                 return NSLocalizedString("Post published", comment: "Title of notification displayed when a post has been successfully published.")
             } else {
                 return NSLocalizedString("Post updated", comment: "Title of notification displayed when a post has been successfully updated.")

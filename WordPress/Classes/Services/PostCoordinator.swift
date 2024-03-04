@@ -128,31 +128,31 @@ class PostCoordinator: NSObject {
         }
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository._upload(parameters, for: post)
+            let post = try await repository._upload(parameters, for: post)
             didPublish(post)
-
-            // TODO: The post is not updated by the time this method is called. Refactor this to ensure _upload returns something we could work with immediatelly (kahu-offline-mode)
-            // let notice = PostNoticeViewModel.makeSuccessNotice(for: post, isFirstTimePublish: true)
-            // actionDispatcherFacade.dispatch(NoticeAction.post(notice))
+            show(PostCoordinator.makePublishSuccessNotice(for: post))
         } catch {
-            let notice = PostNoticeViewModel.makeFailureNotice(for: post, error: error)
-            actionDispatcherFacade.dispatch(NoticeAction.post(notice))
-
+            show(PostCoordinator.makePublishFailureNotice(for: post, error: error))
             throw error
         }
     }
 
+    @MainActor
     private func didPublish(_ post: AbstractPost) {
         if post.status == .publish {
             QuickStartTourGuide.shared.complete(tour: QuickStartPublishTour(), silentlyForBlog: post.blog)
         }
-        if post.isScheduled() {
+        if post.status == .scheduled {
             notifyNewPostScheduled()
-        } else if post.isPublished() {
+        } else if post.status == .publish {
             notifyNewPostPublished()
         }
         SearchManager.shared.indexItem(post)
         AppRatingUtility.shared.incrementSignificantEvent()
+    }
+
+    private func show(_ notice: Notice) {
+        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
     func moveToDraft(_ post: AbstractPost) {

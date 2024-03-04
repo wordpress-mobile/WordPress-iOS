@@ -69,6 +69,8 @@ final class PostRepository {
     /// uploaded. Managing media is not the responsibility of `PostRepository.`
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
+    ///
+    /// - parameter post: The revision of the post.
     @MainActor
     func _upload(_ post: AbstractPost) async throws {
         let remotePost = PostHelper.remotePost(with: post)
@@ -86,10 +88,11 @@ final class PostRepository {
     /// uploaded. Managing media is not the responsibility of `PostRepository.`
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
-    @MainActor
-    func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws {
+    ///
+    /// - parameter post: The revision of the post.
+    @discardableResult @MainActor
+    func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws -> AbstractPost {
         let service = try getRemoteService(for: post.blog)
-
         let uploadedPost: RemotePost
         if let postID = post.postID, postID.intValue > 0 {
             uploadedPost = try await service.update(parameters)
@@ -97,17 +100,21 @@ final class PostRepository {
             uploadedPost = try await service.create(parameters)
         }
 
-        let postID = TaggedManagedObjectID(post)
-        try await coreDataStack.performAndSave { context in
-            var post = try context.existingObject(with: postID)
-            if post.isRevision(), let original = post.original {
-                original.deleteRevision()
-                post = original
-            }
-            PostHelper.update(post, with: uploadedPost, in: context)
-            PostService(managedObjectContext: context)
-                .updateMediaFor(post: post, success: {}, failure: { _ in })
+        let post = deleteRevision(for: post)
+        let context = coreDataStack.mainContext
+        PostHelper.update(post, with: uploadedPost, in: context)
+        PostService(managedObjectContext: context)
+            .updateMediaFor(post: post, success: {}, failure: { _ in })
+        ContextManager.shared.save(context)
+        return post
+    }
+
+    private func deleteRevision(for post: AbstractPost) -> AbstractPost {
+        if post.isRevision(), let original = post.original {
+            original.deleteRevision()
+            return original
         }
+        return post
     }
 
     /// Permanently delete the given post from local database and the post's WordPress site.
