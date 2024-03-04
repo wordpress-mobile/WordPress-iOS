@@ -2,7 +2,6 @@ import UIKit
 import Gutenberg
 import Aztec
 import WordPressFlux
-import Kanvas
 import React
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
