@@ -1,17 +1,9 @@
-//
-//  PostPostViewController.swift
-//  WordPress
-//
-//  Created by Nate Heagy on 2016-11-02.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import UIKit
 import WordPressShared
 import Gridicons
 import WordPressUI
 
-class PostPostViewController: UIViewController {
+final class PostPublishSuccessViewController: UIViewController {
 
     @objc private(set) var post: Post?
     @objc var revealPost = false

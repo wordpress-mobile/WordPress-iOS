@@ -13,10 +13,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Post Post View Controller-->
+        <!--Post Publish Success View Controller-->
         <scene sceneID="rg5-ZQ-2J9">
             <objects>
-                <viewController storyboardIdentifier="PostPostViewController" id="0ZV-gF-7z9" customClass="PostPostViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostPublishSuccessViewController" id="0ZV-gF-7z9" customClass="PostPublishSuccessViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T6C-gu-aFL"/>
                         <viewControllerLayoutGuide type="bottom" id="8Oz-au-Onc"/>
@@ -35,10 +35,10 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="636" height="540"/>
                                                 <subviews>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IBk-Np-qMf">
-                                                        <rect key="frame" x="0.0" y="212" width="636" height="116"/>
+                                                        <rect key="frame" x="0.0" y="213" width="636" height="114"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kn-tC-4Xg">
-                                                                <rect key="frame" x="0.0" y="0.0" width="636" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="636" height="28"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="28" id="GcR-J5-grU"/>
                                                                 </constraints>
@@ -46,13 +46,13 @@
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Published just now on" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IEW-y3-Pzp">
-                                                                <rect key="frame" x="0.0" y="42" width="636" height="18"/>
+                                                                <rect key="frame" x="0.0" y="40" width="636" height="18"/>
                                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                                                 <color key="textColor" systemColor="secondaryLabelColor"/>
                                                                 <nil key="highlightedColor"/>
                                                             </label>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rKW-qs-6cA">
-                                                                <rect key="frame" x="0.0" y="72" width="636" height="44"/>
+                                                                <rect key="frame" x="0.0" y="70" width="636" height="44"/>
                                                                 <subviews>
                                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="yOQ-OH-S9P">
                                                                         <rect key="frame" x="0.0" y="4" width="36" height="36"/>

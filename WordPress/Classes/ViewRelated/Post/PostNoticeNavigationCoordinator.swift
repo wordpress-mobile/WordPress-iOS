@@ -39,7 +39,7 @@ class PostNoticeNavigationCoordinator {
                 return
         }
 
-        let viewController = UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
+        let viewController = UIStoryboard(name: "PostPublishSuccessViewController", bundle: nil).instantiateViewController(withIdentifier: "PostPublishSuccessViewController") as! PostPublishSuccessViewController
         viewController.setup(post: post)
         presenter.present(viewController, animated: true)
     }
