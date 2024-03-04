@@ -274,7 +274,6 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            insightsTableViewController.refreshInsights()
         case .traffic:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],

@@ -877,9 +877,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
         [self.tableView layoutIfNeeded];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 
-        self.highlightedIndexPath = indexPath;
+        // Ensure that the indexPath exists before scrolling to it.
+        if (indexPath.section >=0
+            && indexPath.row >=0
+            && indexPath.section < self.tableView.numberOfSections
+            && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
+        {
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            self.highlightedIndexPath = indexPath;
+        }
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;

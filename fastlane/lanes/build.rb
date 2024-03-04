@@ -444,14 +444,13 @@ platform :ios do
 
   def upload_build_to_testflight(whats_new_path:, distribution_groups:)
     upload_to_testflight(
-      skip_waiting_for_build_processing: true,
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
       changelog: File.read(whats_new_path),
       distribute_external: true,
+      groups: distribution_groups,
       # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
-      reject_build_waiting_for_review: true,
-      groups: distribution_groups
+      reject_build_waiting_for_review: true
     )
   end
 

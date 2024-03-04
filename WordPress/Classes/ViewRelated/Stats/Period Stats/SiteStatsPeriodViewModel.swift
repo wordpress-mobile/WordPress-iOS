@@ -22,7 +22,7 @@ final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Constructor
 
-    init(store: any StatsPeriodStoreProtocol = StoreContainer.shared.statsPeriod,
+    init(store: any StatsPeriodStoreProtocol = StatsPeriodStore(),
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,
@@ -32,13 +32,13 @@ final class SiteStatsPeriodViewModel: Observable {
         self.store = store
         self.lastRequestedDate = StatsPeriodHelper().endDate(from: selectedDate, period: selectedPeriod)
         self.lastRequestedPeriod = selectedPeriod
-
-        changeReceipt = store.onChange { [weak self] in
-            self?.emitChange()
-        }
     }
 
-    func startFetchingOverview() {
+    func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
+        lastRequestedDate = StatsPeriodHelper().endDate(from: date, period: period)
+        lastRequestedPeriod = period
+
+        periodReceipt = nil
         periodReceipt = store.query(
             .trafficOverviewData(
                 .init(
@@ -51,6 +51,21 @@ final class SiteStatsPeriodViewModel: Observable {
             )
         )
     }
+
+    // MARK: - Listeners
+
+    func addListeners() {
+        changeReceipt = store.onChange { [weak self] in
+            self?.emitChange()
+        }
+    }
+
+    func removeListeners() {
+        changeReceipt = nil
+        periodReceipt = nil
+    }
+
+    // MARK: - Loading
 
     func isFetchingChart() -> Bool {
         return store.isFetchingSummary
@@ -264,25 +279,6 @@ final class SiteStatsPeriodViewModel: Observable {
         default:
             return .idle
         }
-    }
-
-    // MARK: - Refresh Data
-
-    func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        lastRequestedDate = StatsPeriodHelper().endDate(from: date, period: period)
-        lastRequestedPeriod = period
-        periodReceipt = nil
-        periodReceipt = store.query(
-            .trafficOverviewData(
-                .init (
-                    date: lastRequestedDate,
-                    period: lastRequestedPeriod,
-                    chartBarsUnit: chartBarsUnit(from: lastRequestedPeriod),
-                    chartBarsLimit: chartBarsLimit(for: lastRequestedPeriod),
-                    chartTotalsLimit: chartTotalsLimit()
-                )
-            )
-        )
     }
 
     // MARK: - Chart Date

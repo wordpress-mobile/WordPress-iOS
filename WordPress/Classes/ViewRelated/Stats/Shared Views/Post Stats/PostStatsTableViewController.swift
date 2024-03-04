@@ -22,7 +22,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
-    private let store = StoreContainer.shared.statsPeriod
+    private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {

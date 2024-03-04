@@ -37,60 +37,58 @@ class ReaderCardService {
             self.service.fetchCards(for: slugs,
                                     page: self.pageHandle(isFirstPage: isFirstPage),
                                     refreshCount: refreshCount,
-                               success: { [weak self] cards, pageHandle in
+                                    success: { [weak self] cards, pageHandle in
+                guard let self else {
+                    return
+                }
+                var updatedCards = cards
+                if isFirstPage && updatedCards.first?.type == .interests && updatedCards.count > 2 {
+                    // Move the first tags recommendation card to a lower position
+                    updatedCards.move(fromOffsets: IndexSet(integer: 0), toOffset: 3)
+                }
 
-                                guard let self = self else {
-                                    return
+                self.pageHandle = pageHandle
+
+                self.coreDataStack.performAndSave({ context in
+                    if isFirstPage {
+                        self.pageNumber = 1
+                        self.removeAllCards(in: context)
+                    } else {
+                        self.pageNumber += 1
+                    }
+
+                    updatedCards.enumerated().forEach { index, remoteCard in
+                        let card = ReaderCard(context: context, from: remoteCard)
+
+                        // Assign each interest an endpoint
+                        card?
+                            .topics?
+                            .array
+                            .compactMap { $0 as? ReaderTagTopic }
+                            .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
+
+                        // Assign each site an endpoint URL if needed
+                        card?
+                            .sites?
+                            .array
+                            .compactMap { $0 as? ReaderSiteTopic }
+                            .forEach {
+                                let path = $0.path
+                                // Sites coming from the cards API only have a path and not a full url
+                                // Once we save the model locally it will be a full URL, so we don't
+                                // want to reapply this logic
+                                if !path.hasPrefix("http") {
+                                    $0.path = self.siteInfoService.endpointURLString(path: path)
                                 }
+                            }
 
-                                self.pageHandle = pageHandle
-
-                                self.coreDataStack.performAndSave({ context in
-                                    if isFirstPage {
-                                        self.pageNumber = 1
-                                        self.removeAllCards(in: context)
-                                    } else {
-                                        self.pageNumber += 1
-                                    }
-
-                                    cards.enumerated().forEach { index, remoteCard in
-                                        if isFirstPage && index == 0 && remoteCard.type == .interests {
-                                            // Removes displaying the tags recommendation card
-                                            // first in the Discover feed
-                                            return
-                                        }
-
-                                        let card = ReaderCard(context: context, from: remoteCard)
-
-                                        // Assign each interest an endpoint
-                                        card?
-                                            .topics?
-                                            .array
-                                            .compactMap { $0 as? ReaderTagTopic }
-                                            .forEach { $0.path = self.followedInterestsService.path(slug: $0.slug) }
-
-                                        // Assign each site an endpoint URL if needed
-                                        card?
-                                            .sites?
-                                            .array
-                                            .compactMap { $0 as? ReaderSiteTopic }
-                                            .forEach {
-                                                let path = $0.path
-                                                // Sites coming from the cards API only have a path and not a full url
-                                                // Once we save the model locally it will be a full URL, so we don't
-                                                // want to reapply this logic
-                                                if !path.hasPrefix("http") {
-                                                    $0.path = self.siteInfoService.endpointURLString(path: path)
-                                                }
-                                            }
-
-                                        // To keep the API order
-                                        card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
-                                    }
-                                }, completion: {
-                                    let hasMore = pageHandle != nil
-                                    success(cards.count, hasMore)
-                                }, on: .main)
+                        // To keep the API order
+                        card?.sortRank = Double((self.pageNumber * Constants.paginationMultiplier) + index)
+                    }
+                }, completion: {
+                    let hasMore = pageHandle != nil
+                    success(cards.count, hasMore)
+                }, on: .main)
             }, failure: { error in
                 failure(error)
             })
