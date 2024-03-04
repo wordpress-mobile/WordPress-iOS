@@ -41,6 +41,7 @@ class PostNoticeNavigationCoordinator {
 
         let viewController = UIStoryboard(name: "PostPublishSuccessViewController", bundle: nil).instantiateViewController(withIdentifier: "PostPublishSuccessViewController") as! PostPublishSuccessViewController
         viewController.setup(post: post)
+        viewController.modalPresentationStyle = .formSheet
         presenter.present(viewController, animated: true)
     }
 
