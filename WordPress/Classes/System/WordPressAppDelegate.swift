@@ -978,13 +978,10 @@ extension WordPressAppDelegate {
 extension WordPressAppDelegate {
 
     func autoSignInUITestSite() {
-        let launchArguments = ProcessInfo.processInfo.arguments
-        guard let optIndex = launchArguments.firstIndex(of: "-ui-test-select-wpcom-site"),
-              optIndex + 1 < launchArguments.count else {
+        guard let wpComSiteAddress = UserDefaults.standard.string(forKey: "ui-test-select-wpcom-site") else {
             return
         }
 
-        let wpComSiteAddress = launchArguments[optIndex + 1]
         let service = WordPressComSyncService()
         service.syncWPCom(authToken: "valid_token", isJetpackLogin: true, onSuccess: { account in
             if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
