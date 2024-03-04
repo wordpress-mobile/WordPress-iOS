@@ -63,19 +63,19 @@ PODS:
   - WordPress-Aztec-iOS (1.19.9)
   - WordPress-Editor-iOS (1.19.9):
     - WordPress-Aztec-iOS (= 1.19.9)
-  - WordPressAuthenticator (9.0.1):
+  - WordPressAuthenticator (9.0.2):
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
-    - WordPressKit (~> 13.0)
+    - WordPressKit (~> 14.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (13.1.0):
+  - WordPressKit (14.0.0):
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
-  - WordPressShared (2.3.0)
+  - WordPressShared (2.3.1)
   - WordPressUI (1.15.0)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
@@ -118,14 +118,17 @@ DEPENDENCIES:
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.9)
-  - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `000cbf2b3b1644b224eb46f14f1cfc609103f686`)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `40d6a9f4928b470d73a5ade7ff1842a29e80cef8`)
-  - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `0a14bc96e22f097eca99eeccf37b5de11fa62612`)
+  - WordPressAuthenticator (>= 9.0.2, ~> 9.0)
+  - WordPressKit (~> 14.0)
+  - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
 SPEC REPOS:
+  https://github.com/wordpress-mobile/cocoapods-specs.git:
+    - WordPressAuthenticator
+    - WordPressKit
   trunk:
     - Alamofire
     - AlamofireImage
@@ -154,6 +157,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressShared
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -171,29 +175,11 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.114.0.podspec
-  WordPressAuthenticator:
-    :commit: 000cbf2b3b1644b224eb46f14f1cfc609103f686
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressShared:
-    :commit: 0a14bc96e22f097eca99eeccf37b5de11fa62612
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  WordPressAuthenticator:
-    :commit: 000cbf2b3b1644b224eb46f14f1cfc609103f686
-    :git: https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git
-  WordPressKit:
-    :commit: 40d6a9f4928b470d73a5ade7ff1842a29e80cef8
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressShared:
-    :commit: 0a14bc96e22f097eca99eeccf37b5de11fa62612
-    :git: https://github.com/wordpress-mobile/WordPress-iOS-Shared.git
 
 SPEC CHECKSUMS:
   Alamofire: 3ca42e259043ee0dc5c0cdd76c4bc568b8e42af7
@@ -225,9 +211,9 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
-  WordPressAuthenticator: ba69878bfa1368636e92d29fcfb5bd1e0a11a3ef
-  WordPressKit: f446e322a67949d760629ed430589975ca5b9d71
-  WordPressShared: f99faa127509b666d2f8b931989a900e2fd9d10d
+  WordPressAuthenticator: d906a1005febb28de9f5c3a802736ca0850307f6
+  WordPressKit: 6fbe0528c43df471a73de17909413a1e42f862b1
+  WordPressShared: 04c6d51441bb8fa29651075b3a5536c90ae89c76
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
@@ -239,6 +225,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 70c703d9dea1af3e9a7d9dd82484925dcab05711
+PODFILE CHECKSUM: e3e8f913d1e22d005cc0c351141a3055d6f23cca
 
 COCOAPODS: 1.14.2

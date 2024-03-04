@@ -1,3 +1,9 @@
-We’ve made several tweaks to the pre-publishing sheet. You might notice changes like smoother screen transitions, a simplified date picker, and cleaner settings when you’re publishing on your iPad.
+* [***] Improved Notifications experience with richer UI elements and interactions
+* [**] Block editor: Introduce VideoPress v5 support, to fix issues using video block with dotcom and Jetpack sites [https://github.com/wordpress-mobile/gutenberg-mobile/pull/6634]
+* [*] Block editor: Prevent crash when autoscrolling to blocks [https://github.com/WordPress/gutenberg/pull/59110]
+* [*] Block editor: Remove opacity change when images are being uploaded [https://github.com/WordPress/gutenberg/pull/59264]
+* [*] Block editor: Media & Text blocks correctly show an error message when the attached video upload fails [https://github.com/WordPress/gutenberg/pull/59288]
+* [**] [internal] Refactored .org REST API calls. [#22612]
+* [**] [internal] Update loading images in Reader posts list and Posts list. [#22707]
+[***] Stats: Introducing Traffic tab, delivering improved graphs, and combining Days/Weeks/Months/Years tabs into one, behind a feature flag. [#22746]
 
-We also updated the info section of your user profile that talks about your Gravatar. (Not sure what that is? You’re in for a Grava-treat.)
