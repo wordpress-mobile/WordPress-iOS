@@ -24,15 +24,6 @@ class PreviewWebKitViewController: WebKitViewController {
         }
     }
 
-    lazy var publishButton: UIBarButtonItem = {
-        let publishButton = UIBarButtonItem(title: Constants.publishButtonTitle,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(PreviewWebKitViewController.publishButtonPressed(_:)))
-        publishButton.setTitleTextAttributes([NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .title2), NSAttributedString.Key.foregroundColor: Constants.publishButtonColor], for: .normal)
-        return publishButton
-    }()
-
     lazy var previewButton: UIBarButtonItem = {
         let button = UIBarButtonItem(image: UIImage(named: "icon-devices"), style: .plain, target: self, action: #selector(PreviewWebKitViewController.previewButtonPressed(_:)))
         button.title = NSLocalizedString("Preview Device", comment: "Title for web preview device switching button")
@@ -173,7 +164,7 @@ class PreviewWebKitViewController: WebKitViewController {
             }
         case .urlOnly:
             if canPublish {
-                items = [publishButton, space, previewButton]
+                items = [space, previewButton]
             } else {
                 items = [shareButton, space, safariButton, space, previewButton]
             }
@@ -183,30 +174,6 @@ class PreviewWebKitViewController: WebKitViewController {
     }
 
     // MARK: Button Actions
-
-    @objc private func publishButtonPressed(_ sender: UIBarButtonItem) {
-        let title = NSLocalizedString("Are you sure you want to publish?", comment: "Title of the message shown when the user taps Publish in the post list.")
-
-        let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = NSLocalizedString("Publish", comment: "Button shown when the author is asked for publishing confirmation.")
-
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(cancelTitle)
-        alertController.addDefaultActionWithTitle(publishTitle) { [unowned self] _ in
-            guard let post = self.post else { return }
-            PostCoordinator.shared.publish(post)
-
-            if let editorVC = (self.presentingViewController?.presentingViewController as? EditPostViewController) {
-                editorVC.closeEditor(true, from: self)
-            } else {
-                self.dismiss(animated: true, completion: nil)
-            }
-        }
-
-        present(alertController, animated: true)
-    }
 
     @objc private func previewButtonPressed(_ sender: UIBarButtonItem) {
         let popoverContentController = PreviewDeviceSelectionViewController()
@@ -263,10 +230,6 @@ class PreviewWebKitViewController: WebKitViewController {
         static let deviceLabelBackgroundColor = UIColor.text.withAlphaComponent(0.8)
 
         static let noPreviewTitle = NSLocalizedString("No Preview URL available", comment: "missing preview URL for blog post preview")
-
-        static let publishButtonTitle = NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
-
-        static let publishButtonColor = UIColor.primary
 
         static let blankURL = URL(string: "about:blank")
     }

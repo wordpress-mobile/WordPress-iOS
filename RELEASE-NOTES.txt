@@ -2,6 +2,7 @@
 -----
 * [*] [internal] Block editor: Remove code associated to Story block [#22758]
 * [*] Remove "Edit" button from "Post Published" screen [#22762]
+* [*] Remove "Publish" button from "Preview" screen [#22763]
 
 24.4
 -----
