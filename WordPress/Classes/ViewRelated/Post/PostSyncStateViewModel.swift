@@ -29,10 +29,6 @@ final class PostSyncStateViewModel {
         isEditable
     }
 
-    var isShowingIcon: Bool {
-        state == .offlineChanges || state == .failed
-    }
-
     var isShowingIndicator: Bool {
         state == .syncing
     }

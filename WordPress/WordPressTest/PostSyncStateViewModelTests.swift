@@ -15,7 +15,6 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         expect(viewModel.state).to(equal(.idle))
         expect(viewModel.isEditable).to(beTrue())
         expect(viewModel.isShowingEllipsis).to(beTrue())
-        expect(viewModel.isShowingIcon).to(beFalse())
         expect(viewModel.isShowingIndicator).to(beFalse())
         expect(viewModel.iconInfo).to(beNil())
     }
@@ -31,7 +30,6 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         expect(viewModel.state).to(equal(.syncing))
         expect(viewModel.isEditable).to(beFalse())
         expect(viewModel.isShowingEllipsis).to(beFalse())
-        expect(viewModel.isShowingIcon).to(beFalse())
         expect(viewModel.isShowingIndicator).to(beTrue())
         expect(viewModel.iconInfo).to(beNil())
     }
@@ -47,7 +45,6 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         expect(viewModel.state).to(equal(.offlineChanges))
         expect(viewModel.isEditable).to(beTrue())
         expect(viewModel.isShowingEllipsis).to(beTrue())
-        expect(viewModel.isShowingIcon).to(beTrue())
         expect(viewModel.isShowingIndicator).to(beFalse())
         expect(viewModel.iconInfo).toNot(beNil())
     }
@@ -63,7 +60,6 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         expect(viewModel.state).to(equal(.failed))
         expect(viewModel.isEditable).to(beTrue())
         expect(viewModel.isShowingEllipsis).to(beTrue())
-        expect(viewModel.isShowingIcon).to(beTrue())
         expect(viewModel.isShowingIndicator).to(beFalse())
         expect(viewModel.iconInfo).toNot(beNil())
     }

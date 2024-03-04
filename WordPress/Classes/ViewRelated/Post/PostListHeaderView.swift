@@ -37,7 +37,7 @@ final class PostListHeaderView: UIView {
         configureIcon(with: syncStateViewModel)
 
         ellipsisButton.isHidden = !syncStateViewModel.isShowingEllipsis
-        icon.isHidden = !syncStateViewModel.isShowingIcon
+        icon.isHidden = syncStateViewModel.iconInfo == nil
         indicator.isHidden = !syncStateViewModel.isShowingIndicator
 
         if syncStateViewModel.isShowingIndicator {
