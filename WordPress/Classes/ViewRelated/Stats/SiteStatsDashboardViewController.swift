@@ -96,7 +96,9 @@ class SiteStatsDashboardViewController: UIViewController {
 
         let currentPeriod = SiteStatsDashboardPreferences.getSelectedPeriodUnit() ?? .day
 
-        return SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
+        let viewController = SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
+        viewController.bannerView = jetpackBannerView
+        return viewController
     }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
@@ -118,7 +120,6 @@ class SiteStatsDashboardViewController: UIViewController {
         configureJetpackBanner()
         configureInsightsTableView()
         configurePeriodTableViewControllerDeprecated()
-        configureTrafficTableViewController()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
@@ -139,10 +140,6 @@ class SiteStatsDashboardViewController: UIViewController {
 
     private func configurePeriodTableViewControllerDeprecated() {
         periodTableViewControllerDeprecated.bannerView = jetpackBannerView
-    }
-
-    private func configureTrafficTableViewController() {
-        trafficTableViewController.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
@@ -277,7 +274,6 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-            insightsTableViewController.refreshInsights()
         case .traffic:
             if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],

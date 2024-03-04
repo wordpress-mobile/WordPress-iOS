@@ -18,7 +18,6 @@ enum NotificationKind: String {
     case login          = "push_auth"
     case viewMilestone  = "view_milestone"
     case unknown        = "unknown"
-    case reblog         = "reblog"
 }
 
 extension NotificationKind {

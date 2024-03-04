@@ -19,15 +19,15 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore = StatsInsightsStore()
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StoreContainer.shared.statsPeriod
+    private let periodStore = StatsPeriodStore()
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
-    private let revampStore = StoreContainer.shared.statsRevamp
+    private let revampStore = StatsRevampStore()
     private var revampChangeReceipt: Receipt?
 
     private(set) var selectedDate: Date?

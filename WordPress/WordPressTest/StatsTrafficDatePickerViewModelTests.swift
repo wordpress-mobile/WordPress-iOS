@@ -30,6 +30,20 @@ final class StatsTrafficDatePickerViewModelTests: XCTestCase {
         viewModel.goToPreviousPeriod()
         XCTAssertEqual(aMonthEarlier, viewModel.date)
     }
+
+    func testGoToNextPeriod_nextDateAfterCurrentDate() {
+        let date = Date("2024-01-20")
+        let currentDateGetter: SiteCurrentDateGetter = { date }
+        viewModel = StatsTrafficDatePickerViewModel(period: .day, date: date, currentDateGetter: currentDateGetter)
+
+        viewModel.period = .month
+        viewModel.goToPreviousPeriod()
+        XCTAssertEqual(Date("2023-12-20"), viewModel.date)
+
+        viewModel.period = .year
+        viewModel.goToNextPeriod()
+        XCTAssertEqual(date, viewModel.date, "Date shouldn't go beyond the current site date")
+    }
 }
 
 private extension Date {

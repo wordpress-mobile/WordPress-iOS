@@ -1767,6 +1767,8 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
             return @"notification";
         case BlogDetailsNavigationSourceShortcut:
             return @"shortcut";
+        case BlogDetailsNavigationSourceTodayStatsCard:
+            return @"todays_stats_card";
         default:
             return @"";
     }

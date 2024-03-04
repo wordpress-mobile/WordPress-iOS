@@ -4,6 +4,8 @@ import DesignSystem
 struct StatsTrafficDatePickerView: View {
     @ObservedObject var viewModel: StatsTrafficDatePickerViewModel
 
+    private let maxDynamicTypeSize: DynamicTypeSize = .xxxLarge
+
     var body: some View {
         HStack {
             Menu {
@@ -13,23 +15,28 @@ struct StatsTrafficDatePickerView: View {
                     })
                 }
             } label: {
-                Text(viewModel.period.label)
-                    .style(TextStyle.bodySmall(.emphasized))
-                    .foregroundColor(Color.DS.Foreground.primary)
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 8))
-                    .foregroundColor(Color.DS.Foreground.secondary)
-
+                HStack {
+                    Text(viewModel.period.label)
+                        .style(TextStyle.bodySmall(.emphasized))
+                        .foregroundColor(Color.DS.Foreground.primary)
+                        .dynamicTypeSize(...maxDynamicTypeSize)
+                    Image(systemName: "chevron.down")
+                        .font(.caption2)
+                        .foregroundColor(Color.DS.Foreground.secondary)
+                        .dynamicTypeSize(...maxDynamicTypeSize)
+                }
+                .padding(.vertical, Length.Padding.single)
+                .padding(.horizontal, Length.Padding.double)
+                .background(Color.DS.Background.secondary)
+                .clipShape(RoundedRectangle(cornerRadius: Length.Radius.max))
+                .overlay(
+                    RoundedRectangle(cornerRadius: Length.Radius.max)
+                        .strokeBorder(.clear, lineWidth: 0)
+                )
+                .padding(.vertical, Length.Padding.single)
+                .padding(.horizontal, Length.Padding.double)
             }
             .menuStyle(.borderlessButton)
-            .padding(.vertical, Length.Padding.single)
-            .padding(.horizontal, Length.Padding.double)
-            .background(Color.DS.Background.secondary)
-            .clipShape(RoundedRectangle(cornerRadius: Length.Radius.max))
-            .overlay(
-                RoundedRectangle(cornerRadius: Length.Radius.max)
-                    .strokeBorder(.clear, lineWidth: 0)
-            )
 
             Spacer()
 
@@ -37,35 +44,42 @@ struct StatsTrafficDatePickerView: View {
                 .style(TextStyle.bodySmall(.emphasized))
                 .foregroundColor(Color.DS.Foreground.primary)
                 .lineLimit(1)
+                .dynamicTypeSize(...maxDynamicTypeSize)
 
             Spacer().frame(width: Length.Padding.split)
 
-            Button(action: {
-                viewModel.goToPreviousPeriod()
-            }) {
-                Image(systemName: "chevron.left")
-                    .imageScale(.small)
-                    .foregroundColor(Color.DS.Foreground.secondary)
-                    .flipsForRightToLeftLayoutDirection(true)
-            }
-            .padding(.trailing, Length.Padding.single)
+            HStack {
+                Button(action: {
+                    viewModel.goToPreviousPeriod()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .imageScale(.small)
+                        .foregroundColor(Color.DS.Foreground.secondary)
+                        .flipsForRightToLeftLayoutDirection(true)
+                        .padding(.vertical, Length.Padding.double)
+                        .contentShape(Rectangle())
+                        .dynamicTypeSize(...maxDynamicTypeSize)
+                }
+                .padding(.trailing, Length.Padding.single)
 
-            let isNextDisabled = !viewModel.isNextPeriodAvailable
-            let enabledColor = Color.DS.Foreground.secondary
-            let disabledColor = enabledColor.opacity(0.5)
+                let isNextDisabled = !viewModel.isNextPeriodAvailable
+                let enabledColor = Color.DS.Foreground.secondary
+                let disabledColor = enabledColor.opacity(0.5)
 
-            Button(action: {
-                viewModel.goToNextPeriod()
-            }) {
-                Image(systemName: "chevron.right")
-                    .imageScale(.small)
-                    .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
-                    .flipsForRightToLeftLayoutDirection(true)
-            }
-            .disabled(isNextDisabled)
-        }.padding(.vertical, Length.Padding.single)
-            .padding(.horizontal, Length.Padding.double)
-            .background(Color.DS.Background.primary)
+                Button(action: {
+                    viewModel.goToNextPeriod()
+                }) {
+                    Image(systemName: "chevron.right")
+                        .imageScale(.small)
+                        .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
+                        .flipsForRightToLeftLayoutDirection(true)
+                        .padding(.vertical, Length.Padding.double)
+                        .contentShape(Rectangle())
+                        .dynamicTypeSize(...maxDynamicTypeSize)
+                }.disabled(isNextDisabled)
+            }.padding(.trailing, Length.Padding.medium)
+
+        }.background(Color.DS.Background.primary)
             .overlay(
                 Rectangle()
                     .frame(height: Length.Border.thin)

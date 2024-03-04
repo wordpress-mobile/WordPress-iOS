@@ -26,7 +26,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private let store = StoreContainer.shared.statsPeriod
+    private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
     private var viewModel: SiteStatsPeriodViewModel!
@@ -69,9 +69,6 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
                                              selectedPeriod: datePickerViewModel.period,
                                              periodDelegate: self,
                                              referrerDelegate: self)
-        addViewModelListeners()
-        viewModel.startFetchingOverview()
-
         Publishers.CombineLatest(datePickerViewModel.$date, datePickerViewModel.$period)
             .sink(receiveValue: { [weak self] _, _ in
                 DispatchQueue.main.async {
@@ -83,10 +80,17 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if !isMovingToParent {
-            addViewModelListeners()
-            viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
-        }
+
+        addViewModelListeners()
+        viewModel.addListeners()
+        viewModel.refreshTrafficOverviewData(withDate: datePickerViewModel.date, forPeriod: datePickerViewModel.period)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeViewModelListeners()
+        viewModel.removeListeners()
     }
 
     override func initTableView() {

@@ -48,7 +48,7 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
 
     // MARK: - Constructor
 
-    init(store: StatsPeriodStore = StoreContainer.shared.statsPeriod,
+    init(store: StatsPeriodStore = StatsPeriodStore(),
          selectedDate: Date,
          selectedPeriod: StatsPeriodUnit,
          periodDelegate: SiteStatsPeriodDelegate,

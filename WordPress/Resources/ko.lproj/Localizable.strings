@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-22 10:54:09+0000 */
+/* Translation-Revision-Date: 2024-02-27 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9629,9 +9629,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%2$@에서 %1$@ 이동 중";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "며칠 후 젯팩 앱이 이동됩니다.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "곧 %@ 이동 예정";
 
@@ -10460,6 +10457,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "카테고리";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "닫기";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "제목";
 
@@ -10468,6 +10468,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "발행일";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "발행 위치";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "일정";

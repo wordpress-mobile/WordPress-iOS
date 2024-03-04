@@ -535,7 +535,11 @@ private extension StatsPeriodStore {
             return
         }
 
-        let totalsOperation = PeriodOperation(service: service, for: params.period, unit: params.period, date: params.date, limit: params.chartTotalsLimit) { [weak self] (totalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+        // Backend doesn't accept a future date when fetching totals in some cases
+        // https://github.com/Automattic/jetpack/issues/36117
+        let totalsOperationDate = min(params.date, StatsDataHelper.currentDateForSite())
+
+        let totalsOperation = PeriodOperation(service: service, for: params.period, unit: params.period, date: totalsOperationDate, limit: params.chartTotalsLimit) { [weak self] (totalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Traffic: Error fetching totals summary: \(String(describing: error?.localizedDescription))")
             }

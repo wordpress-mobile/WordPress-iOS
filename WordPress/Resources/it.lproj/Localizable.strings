@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-22 13:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-26 18:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: it */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9632,9 +9632,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ si sta trasferendo in %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Spostamento nell'app Jetpack in pochi giorni.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ si trasferiranno presto";
 
@@ -10224,6 +10221,9 @@ Example: Reply to Pamela Nguyen */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Invia feedback";
 
 /* Badge for page cells */
+"pageList.badgeHomepage" = "Home page";
+
+/* Badge for page cells */
 "pageList.badgeLocalChanges" = "Modifiche locali";
 
 /* Badge for page cells */
@@ -10478,8 +10478,14 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d condivisioni sui social rimanenti";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Chiudi";
+
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Pubblicazione";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "In pubblicazione su";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Pianifica";

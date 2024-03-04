@@ -16,11 +16,11 @@ class SiteStatsDetailsViewModel: Observable {
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore = StatsInsightsStore()
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StoreContainer.shared.statsPeriod
+    private let periodStore = StatsPeriodStore()
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-21 12:54:10+0000 */
+/* Translation-Revision-Date: 2024-02-24 16:14:23+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9644,9 +9644,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ flyttar om %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Flyttar till Jetpack-appen om några dagar.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ flyttar snart";
 
@@ -10502,6 +10499,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Kategorier";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Stäng";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
@@ -10513,6 +10513,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Publiceringsdatum";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publicerar till";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Schemalägg";
@@ -11377,6 +11380,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Stapeldiagram som visar antalet kommentarer för vald period.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Stapeldiagram som visar antalet gillamarkeringar för den valda perioden.";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
 "stats.traffic.accessibilityLabel.views" = "Stapeldiagram som visar antalet visningar för vald period.";
