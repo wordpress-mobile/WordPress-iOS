@@ -28,7 +28,7 @@ protocol PublishingEditor where Self: UIViewController {
     var alertBarButtonItem: UIBarButtonItem? { get }
 
     /// Closure to be executed when the editor gets closed.
-    var onClose: ((_ changesSaved: Bool, _ shouldShowPostPost: Bool) -> Void)? { get set }
+    var onClose: ((_ changesSaved: Bool) -> Void)? { get set }
 
     /// Return the current html in the editor
     func getHTML() -> String
@@ -535,7 +535,7 @@ extension PublishingEditor {
         if let onClose = onClose {
             // if this closure exists, the presentation of the Blogging Reminders flow (if needed)
             // needs to happen in the closure.
-            onClose(didSave, false)
+            onClose(didSave)
         } else if isModal(), let controller = presentingViewController {
             controller.dismiss(animated: true) {
                 if presentBloggingReminders {

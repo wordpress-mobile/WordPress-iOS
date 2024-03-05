@@ -460,7 +460,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private func buttonPublishTapped() {
         didTapPublish = true
 
-        if FeatureFlag.offlineMode.enabled {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
             publishPost()
         } else {
             let completion = getCompletion()

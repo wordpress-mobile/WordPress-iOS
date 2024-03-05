@@ -1,17 +1,9 @@
-//
-//  PostPostViewController.swift
-//  WordPress
-//
-//  Created by Nate Heagy on 2016-11-02.
-//  Copyright © 2016 WordPress. All rights reserved.
-//
-
 import UIKit
 import WordPressShared
 import Gridicons
 import WordPressUI
 
-class PostPostViewController: UIViewController {
+final class PostPublishSuccessViewController: UIViewController {
 
     @objc private(set) var post: Post?
     @objc var revealPost = false
@@ -22,20 +14,13 @@ class PostPostViewController: UIViewController {
     @IBOutlet var siteNameLabel: UILabel!
     @IBOutlet var siteUrlLabel: UILabel!
     @IBOutlet var shareButton: FancyButton!
-    @IBOutlet var editButton: FancyButton!
     @IBOutlet var viewButton: FancyButton!
     @IBOutlet var navBar: UINavigationBar!
     @IBOutlet var postInfoView: UIView!
     @IBOutlet var actionsStackView: UIStackView!
     @IBOutlet var shadeView: UIView!
     @IBOutlet var shareButtonWidth: NSLayoutConstraint!
-    @IBOutlet var editButtonWidth: NSLayoutConstraint!
     @IBOutlet var viewButtonWidth: NSLayoutConstraint!
-    @objc var onClose: (() -> ())?
-    @objc var reshowEditor: (() -> ())?
-    @objc var preview: (() -> ())?
-    /// Set to `true` to hide the edit button from the view.
-    var hideEditButton = false
 
     init() {
         super.init(nibName: nil, bundle: nil)
@@ -80,8 +65,6 @@ class PostPostViewController: UIViewController {
         shareButton.tintColor = .white
 
         shareButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 8)
-        editButton.setTitle(NSLocalizedString("Edit Post", comment: "Button label for editing a post"), for: .normal)
-        editButton.accessibilityIdentifier = "editPostButton"
         viewButton.setTitle(NSLocalizedString("View Post", comment: "Button label for viewing a post"), for: .normal)
         viewButton.accessibilityIdentifier = "viewPostButton"
 
@@ -113,12 +96,10 @@ class PostPostViewController: UIViewController {
         shadeView.alpha = WPAlphaFull * 0.5
         postInfoView.alpha = WPAlphaZero
         viewButton.alpha = WPAlphaZero
-        editButton.alpha = WPAlphaZero
         shareButton.alpha = WPAlphaZero
 
         let animationScaleBegin: CGFloat = -0.75
         shareButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
-        editButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
         viewButtonWidth.constant = shareButton.frame.size.width * animationScaleBegin
         view.layoutIfNeeded()
 
@@ -140,11 +121,6 @@ class PostPostViewController: UIViewController {
             UIView.animate(withDuration: 0.2, delay: animationDuration * 0.5, options: .curveEaseOut, animations: {
                 self.shareButton.alpha = WPAlphaFull
                 self.shareButtonWidth.constant = 0
-                self.actionsStackView.layoutIfNeeded()
-                })
-            UIView.animate(withDuration: 0.2, delay: animationDuration * 0.6, options: .curveEaseOut, animations: {
-                self.editButton.alpha = WPAlphaFull
-                self.editButtonWidth.constant = 0
                 self.actionsStackView.layoutIfNeeded()
                 })
             UIView.animate(withDuration: 0.2, delay: animationDuration * 0.7, options: .curveEaseOut, animations: {
@@ -182,7 +158,6 @@ class PostPostViewController: UIViewController {
         siteUrlLabel.text = post.blog.displayURL as String?
         siteUrlLabel.accessibilityIdentifier = "siteUrl"
         siteIconView.downloadSiteIcon(for: post.blog)
-        editButton.isHidden = hideEditButton
         let isPrivate = !post.blog.visible
         if isPrivate {
             shareButton.isHidden = true
@@ -197,26 +172,28 @@ class PostPostViewController: UIViewController {
     }
 
     @IBAction func shareTapped() {
-        guard let post = post else {
-            return
-        }
+        guard let post = post else { return }
 
         WPAnalytics.track(.postEpilogueShare)
         let sharingController = PostSharingController()
         sharingController.sharePost(post, fromView: shareButton, inViewController: self)
     }
 
-    @IBAction func editTapped() {
-        WPAnalytics.track(.postEpilogueEdit)
-        reshowEditor?()
-    }
-
     @IBAction func viewTapped() {
+        guard let post = post else { return }
+
         WPAnalytics.track(.postEpilogueView)
-        preview?()
+
+        let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
+        controller.trackOpenEvent()
+        let navWrapper = LightNavigationController(rootViewController: controller)
+        if traitCollection.userInterfaceIdiom == .pad {
+            navWrapper.modalPresentationStyle = .fullScreen
+        }
+        present(navWrapper, animated: true)
     }
 
     @IBAction func doneTapped() {
-        onClose?()
+        presentingViewController?.dismiss(animated: true)
     }
 }

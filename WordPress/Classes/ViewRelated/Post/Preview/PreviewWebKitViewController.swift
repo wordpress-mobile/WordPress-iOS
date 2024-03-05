@@ -199,7 +199,7 @@ class PreviewWebKitViewController: WebKitViewController {
             PostCoordinator.shared.publish(post)
 
             if let editorVC = (self.presentingViewController?.presentingViewController as? EditPostViewController) {
-                editorVC.closeEditor(true, showPostEpilogue: false, from: self)
+                editorVC.closeEditor(true, from: self)
             } else {
                 self.dismiss(animated: true, completion: nil)
             }

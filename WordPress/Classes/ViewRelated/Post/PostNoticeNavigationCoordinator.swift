@@ -39,12 +39,10 @@ class PostNoticeNavigationCoordinator {
                 return
         }
 
-        let editor = EditPostViewController(post: post)
-        editor.modalPresentationStyle = .fullScreen
-        editor.openWithPostPost = true
-        editor.onClose = { _ in
-        }
-        presenter.present(editor, animated: true)
+        let viewController = UIStoryboard(name: "PostPublishSuccessViewController", bundle: nil).instantiateViewController(withIdentifier: "PostPublishSuccessViewController") as! PostPublishSuccessViewController
+        viewController.setup(post: post)
+        viewController.modalPresentationStyle = .formSheet
+        presenter.present(viewController, animated: true)
     }
 
     static func retryPostUpload(with userInfo: NSDictionary) {
