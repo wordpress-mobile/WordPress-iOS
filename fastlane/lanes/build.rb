@@ -5,7 +5,7 @@ SENTRY_PROJECT_SLUG_WORDPRESS = 'wordpress-ios'
 SENTRY_PROJECT_SLUG_JETPACK = 'jetpack-ios'
 APPCENTER_OWNER_NAME = 'automattic'
 APPCENTER_OWNER_TYPE = 'organization'
-CONCURRENT_SIMULATORS = 2
+CONCURRENT_SIMULATORS = 3
 
 # Shared options to use when invoking `gym` / `build_app`.
 #
