@@ -82,7 +82,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .siteMonitoring:
             return false
         case .syncPublishing:
-            return false
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -140,7 +140,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .siteMonitoring:
             return "site_monitoring"
         case .syncPublishing:
-            return "sync_publishing"
+            /// - warning: Work-in-progress (kahu-offline-mode)
+            return "_sync_publishing"
         }
     }
 
