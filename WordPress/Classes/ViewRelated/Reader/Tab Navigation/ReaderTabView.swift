@@ -155,6 +155,19 @@ extension ReaderTabView {
         self.filteredTabs.append((index: selectedIndex, topic: selectedTopic))
     }
 
+    /// Disables the `scrollsToTop` property for the scroll views created from SwiftUI.
+    /// To preserve the native scroll-to-top behavior when the status bar is tapped, there
+    func disableScrollsToTop() {
+        var viewsToTraverse = navigationMenu.subviews
+        while viewsToTraverse.count > 0 {
+            let subview = viewsToTraverse.removeFirst()
+            if let scrollView = subview as? UIScrollView {
+                scrollView.scrollsToTop = false
+            }
+            viewsToTraverse.append(contentsOf: subview.subviews)
+        }
+    }
+
     private func updateMenuDisplay(hidden: Bool) {
         guard isMenuHidden != hidden else { return }
 
@@ -212,6 +225,7 @@ extension ReaderTabView: ReaderNavigationMenuDelegate {
 
     func scrollViewDidScroll(_ scrollView: UIScrollView, velocity: CGPoint) {
         let isContentOffsetNearTop = scrollView.contentOffset.y < scrollView.frame.height / 2
+        let isContentOffsetAtTop = scrollView.contentOffset.y == .zero
         let isUserScrollingDown = velocity.y < -400
         let isUserScrollingUp = velocity.y > 400
 
@@ -220,6 +234,13 @@ extension ReaderTabView: ReaderNavigationMenuDelegate {
         }
 
         if isMenuHidden && isUserScrollingUp {
+            updateMenuDisplay(hidden: false)
+        }
+
+        // Handles the native scroll-to-top behavior (by tapping the status bar).
+        // Somehow the `scrollViewDidScrollToTop` method is not called in the view controller
+        // containing the scroll view, so we'll need to put a custom logic here instead.
+        if isMenuHidden && isContentOffsetAtTop {
             updateMenuDisplay(hidden: false)
         }
 
