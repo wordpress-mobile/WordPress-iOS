@@ -124,7 +124,6 @@ public class ReaderScreen: ScreenObject {
 
     @discardableResult
     public func getLastPost() throws -> XCUIElement {
-        // Crash from testViewPostInSafari
         guard let post = app.cells.lastMatch else { throw UIElementNotFoundError(message: "ReaderScreen: No posts loaded") }
         scrollDownUntilElementIsFullyVisible(element: post)
         return post
