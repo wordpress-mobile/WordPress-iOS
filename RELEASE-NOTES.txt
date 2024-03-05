@@ -1,6 +1,7 @@
 24.5
 -----
 * [*] [internal] Block editor: Remove code associated to Story block [#22758]
+* [**] [internal] Block editor: Upgrade React Native to version 0.73.3 [#22588]
 
 24.4
 -----
