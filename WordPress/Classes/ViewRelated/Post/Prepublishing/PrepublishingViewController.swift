@@ -178,7 +178,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         updatePublishButtonLabel()
 
-        if FeatureFlag.offlineMode.enabled {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
             updatePublishButtonState()
             mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
                 self?.updatePublishButtonState()
