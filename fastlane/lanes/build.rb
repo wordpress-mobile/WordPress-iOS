@@ -116,9 +116,7 @@ platform :ios do
       result_bundle: true,
       output_types: '',
       fail_build: false,
-      parallel_testing: parallel_testing_value,
-      concurrent_workers: CONCURRENT_SIMULATORS,
-      max_concurrent_simulators: CONCURRENT_SIMULATORS
+      parallel_testing: parallel_testing_value
     )
 
     trainer(path: lane_context[SharedValues::SCAN_GENERATED_XCRESULT_PATH], fail_build: true)
