@@ -1,0 +1,3 @@
+Hemos realizado varios ajustes a la hoja previa a la publicación. Verás cambios como transiciones de pantalla más fluidas, un selector de fecha simplificado y ajustes más claros si vas a publicar en un iPad.
+
+También hemos actualizado la sección de información de tu perfil de usuario que describe tu gravatar. (¿No sabes muy bien de lo que te hablamos? Te espera una "gravasorpresa").

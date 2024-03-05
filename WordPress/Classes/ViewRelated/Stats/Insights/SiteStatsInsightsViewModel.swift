@@ -34,14 +34,15 @@ class SiteStatsInsightsViewModel: Observable {
         return !pinnedItemStore.shouldShow(item)
     }
 
-    private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
     private typealias Style = WPStyleGuide.Stats
 
     weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
 
-    private var mostRecentChartData: StatsSummaryTimeIntervalData?
+    private var mostRecentChartData: StatsSummaryTimeIntervalData? {
+        periodStore.getSummary()
+    }
 
     private var selectedViewsVisitorsSegment: StatsSegmentedControlData.Segment = .views
 
@@ -52,7 +53,7 @@ class SiteStatsInsightsViewModel: Observable {
          viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?,
          insightsStore: StatsInsightsStore,
          pinnedItemStore: SiteStatsPinnedItemStore?,
-         periodStore: StatsPeriodStore = StoreContainer.shared.statsPeriod) {
+         periodStore: StatsPeriodStore = StatsPeriodStore()) {
         self.siteStatsInsightsDelegate = insightsDelegate
         self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
         self.insightsToShow = insightsToShow
@@ -65,29 +66,7 @@ class SiteStatsInsightsViewModel: Observable {
         // Exclude today's data for weekly insights
         self.lastRequestedDate = StatsDataHelper.yesterdayDateForSite()
         self.lastRequestedPeriod = StatsPeriodUnit.day
-
-        insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
-            self?.emitChange()
-        }
-
-        periodChangeReceipt = self.periodStore.onChange { [weak self] in
-            self?.updateMostRecentChartData(self?.periodStore.getSummary())
-            self?.emitChange()
-        }
     }
-
-    func fetchInsights() {
-        insightsReceipt = insightsStore.query(.insights)
-    }
-
-    func startFetchingPeriodOverview() {
-        periodReceipt = periodStore.query(.allCachedPeriodData(date: lastRequestedDate, period: lastRequestedPeriod, unit: lastRequestedPeriod))
-        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
-                period: lastRequestedPeriod,
-                forceRefresh: true))
-    }
-
-    // MARK: - Refresh Data
 
     /// This method will trigger a refresh of insights data, provided that we're not already
     /// performing a refresh and that we haven't refreshed within the last 5 minutes.
@@ -95,8 +74,41 @@ class SiteStatsInsightsViewModel: Observable {
     /// of a pull to refresh action), you can pass a `forceRefresh` value of `true` here.
     ///
     func refreshInsights(forceRefresh: Bool = false) {
+        loadCachedInsights()
+
+        /// Refresh Insights data if needed
         ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))
+
         startFetchingPeriodOverview()
+    }
+
+    private func loadCachedInsights() {
+        insightsReceipt = nil
+        insightsReceipt = insightsStore.query(.insights)
+    }
+
+    private func startFetchingPeriodOverview() {
+        periodStore.actionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: lastRequestedDate,
+                period: lastRequestedPeriod,
+                forceRefresh: true))
+    }
+
+    // MARK: - Listeners
+
+    func addListeners() {
+        insightsChangeReceipt = self.insightsStore.onChange { [weak self] in
+            self?.emitChange()
+        }
+
+        periodChangeReceipt = self.periodStore.onChange { [weak self] in
+            self?.emitChange()
+        }
+    }
+
+    func removeListeners() {
+        periodChangeReceipt = nil
+        insightsChangeReceipt = nil
+        insightsReceipt = nil
     }
 
     // MARK: - Table Model
@@ -766,20 +778,6 @@ private extension SiteStatsInsightsViewModel {
                        dataSubtitle: "",
                        totalCount: totalCount,
                        dataRows: followersData ?? [])
-    }
-
-    func updateMostRecentChartData(_ periodSummary: StatsSummaryTimeIntervalData?) {
-        if mostRecentChartData == nil,
-           let periodSummary = periodSummary,
-           periodSummary.periodEndDate >= lastRequestedDate.normalizedDate() {
-            mostRecentChartData = periodSummary
-        } else if let mostRecentChartData = mostRecentChartData,
-                  let periodSummary = periodSummary,
-                  mostRecentChartData.periodEndDate == periodSummary.periodEndDate {
-            self.mostRecentChartData = periodSummary
-        } else if let periodSummary = periodSummary, let chartData = mostRecentChartData, periodSummary.periodEndDate > chartData.periodEndDate {
-            mostRecentChartData = chartData
-        }
     }
 }
 

@@ -1,4 +1,5 @@
 import Foundation
+import WordPressKit
 
 final class PostRepository {
 
@@ -10,7 +11,8 @@ final class PostRepository {
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
 
-    init(coreDataStack: CoreDataStackSwift, remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+    init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
     }
@@ -22,14 +24,7 @@ final class PostRepository {
     ///   - blogID: The blog that has the post.
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
-        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
-            let blog = try context.existingObject(with: blogID)
-            return remoteFactory.forBlog(blog)
-        }
-
-        guard let remote else {
-            throw PostRepository.Error.remoteAPIUnavailable
-        }
+        let remote = try await getRemoteService(forblogID: blogID)
 
         let remotePost: RemotePost? = try await withCheckedThrowingContinuation { continuation in
             remote.getPostWithID(
@@ -61,6 +56,65 @@ final class PostRepository {
 
             return .init(post)
         }
+    }
+
+    /// Uploads the changes to the given post to the server and deletes the
+    /// uploaded local revision afterward. If the post doesn't have an associated
+    /// remote ID, creates a new post.
+    ///
+    /// - note: This method is a low-level primitive for syncing the latest
+    /// post date to the server.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    ///
+    /// - parameter post: The revision of the post.
+    @MainActor
+    func _upload(_ post: AbstractPost) async throws {
+        let remotePost = PostHelper.remotePost(with: post)
+        try await _upload(remotePost, for: post)
+    }
+
+    /// Uploads the changes to the given post to the server and deletes the
+    /// uploaded local revision afterward. If the post doesn't have an associated
+    /// remote ID, creates a new post.
+    ///
+    /// - note: This method is a low-level primitive for syncing the latest
+    /// post date to the server.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    ///
+    /// - parameter post: The revision of the post.
+    @discardableResult @MainActor
+    func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws -> AbstractPost {
+        let service = try getRemoteService(for: post.blog)
+        let uploadedPost: RemotePost
+        if let postID = post.postID, postID.intValue > 0 {
+            uploadedPost = try await service.update(parameters)
+        } else {
+            uploadedPost = try await service.create(parameters)
+        }
+
+        let post = deleteRevision(for: post)
+        let context = coreDataStack.mainContext
+        PostHelper.update(post, with: uploadedPost, in: context)
+        PostService(managedObjectContext: context)
+            .updateMediaFor(post: post, success: {}, failure: { _ in })
+        ContextManager.shared.save(context)
+        return post
+    }
+
+    private func deleteRevision(for post: AbstractPost) -> AbstractPost {
+        if post.isRevision(), let original = post.original {
+            original.deleteRevision()
+            return original
+        }
+        return post
     }
 
     /// Permanently delete the given post from local database and the post's WordPress site.
@@ -229,7 +283,26 @@ final class PostRepository {
             PostHelper.update(post, with: updatedRemotePost, in: context)
         }
     }
+}
 
+private extension PostRepository {
+    func getRemoteService(forblogID blogID: TaggedManagedObjectID<Blog>) async throws -> PostServiceRemote {
+        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
+            let blog = try context.existingObject(with: blogID)
+            return remoteFactory.forBlog(blog)
+        }
+        guard let remote else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+        return remote
+    }
+
+    func getRemoteService(for blog: Blog) throws -> PostServiceRemote {
+        guard let remote = remoteFactory.forBlog(blog) else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+        return remote
+    }
 }
 
 // MARK: - Posts/Pages List

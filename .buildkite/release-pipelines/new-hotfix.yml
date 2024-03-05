@@ -1,0 +1,21 @@
+steps:
+  - label: New Hotfix Deployment
+    plugins:
+      - automattic/a8c-ci-toolkit#3.1.0
+    # The beta needs to run on macOS because it uses genstrings under the hood
+    agents:
+        queue: mac
+    env:
+      IMAGE_ID: xcode-15.1
+    command: |
+      echo '--- :git: Configure Git for release management'
+      .buildkite/commands/configure-git-for-release-management.sh
+
+      echo '--- :ruby: Setup Ruby tools'
+      install_gems
+
+      echo '--- :closed_lock_with_key: Access secrets'
+      bundle exec fastlane run configure_apply
+
+      echo '--- :shipit: Start new hotfix'
+      bundle exec fastlane new_hotfix_release skip_confirm:true version:"$VERSION"

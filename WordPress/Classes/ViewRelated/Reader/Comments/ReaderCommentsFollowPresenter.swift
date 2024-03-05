@@ -16,7 +16,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
     private let post: ReaderPost
     private weak var delegate: ReaderCommentsFollowPresenterDelegate?
-    private unowned let presentingViewController: UIViewController
+    private weak var presentingViewController: UIViewController?
     private let followCommentsService: FollowCommentsService?
 
     // MARK: - Initialization
@@ -50,7 +50,7 @@ class ReaderCommentsFollowPresenter: NSObject {
                 DispatchQueue.main.async {
                     generator.notificationOccurred(.error)
                     let noticeTitle = newIsSubscribed ? Messages.followFail : Messages.unfollowFail
-                    self?.presentingViewController.displayNotice(title: noticeTitle)
+                    self?.presentingViewController?.displayNotice(title: noticeTitle)
                     self?.informDelegateFollowComplete(success: false)
                 }
                 return
@@ -62,7 +62,7 @@ class ReaderCommentsFollowPresenter: NSObject {
 
                 guard newIsSubscribed else {
                     let noticeTitle = newIsSubscribed ? Messages.followSuccess : Messages.unfollowSuccess
-                    self?.presentingViewController.displayNotice(title: noticeTitle)
+                    self?.presentingViewController?.displayNotice(title: noticeTitle)
                     return
                 }
 
@@ -78,7 +78,7 @@ class ReaderCommentsFollowPresenter: NSObject {
             DispatchQueue.main.async {
                 generator.notificationOccurred(.error)
                 let noticeTitle = newIsSubscribed ? Messages.subscribeFail : Messages.unsubscribeFail
-                self?.presentingViewController.displayNotice(title: noticeTitle)
+                self?.presentingViewController?.displayNotice(title: noticeTitle)
                 self?.informDelegateFollowComplete(success: false)
             }
         }
@@ -130,11 +130,11 @@ private extension ReaderCommentsFollowPresenter {
 
             guard canUndo else {
                 let title = ReaderHelpers.noticeTitle(forAction: action, success: true)
-                self.presentingViewController.displayNotice(title: title)
+                self.presentingViewController?.displayNotice(title: title)
                 return
             }
 
-            self.presentingViewController.displayActionableNotice(
+            self.presentingViewController?.displayActionableNotice(
                 title: Messages.promptTitle,
                 message: Messages.promptMessage,
                 actionTitle: Messages.undoActionTitle,
@@ -144,13 +144,16 @@ private extension ReaderCommentsFollowPresenter {
         }, failure: { [weak self] error in
             DDLogError("Reader Comments: error toggling notification status: \(String(describing: error)))")
             let title = ReaderHelpers.noticeTitle(forAction: action, success: false)
-            self?.presentingViewController.displayNotice(title: title)
+            self?.presentingViewController?.displayNotice(title: title)
             completion?(false)
             self?.informDelegateNotificationComplete(success: false)
         })
     }
 
     func showBottomSheet(sourceView: UIView? = nil, sourceBarButtonItem: UIBarButtonItem? = nil) {
+        guard let presentingViewController else {
+            return
+        }
         let sheetViewController = ReaderCommentsNotificationSheetViewController(isNotificationEnabled: post.receivesCommentNotifications, delegate: self)
         let bottomSheet = BottomSheetViewController(childViewController: sheetViewController)
         bottomSheet.show(from: presentingViewController, sourceView: sourceView, sourceBarButtonItem: sourceBarButtonItem)
@@ -201,6 +204,10 @@ private extension ReaderCommentsFollowPresenter {
     }
 
     func sourceForTracks() -> String {
+        guard let presentingViewController else {
+            return AnalyticsSource.unknown.description()
+        }
+
         if presentingViewController is ReaderCommentsViewController {
             return AnalyticsSource.comments.description()
         }

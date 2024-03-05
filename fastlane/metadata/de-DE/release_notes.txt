@@ -1,1 +1,3 @@
-Wir haben ein Problem behoben, wodurch Bilder und andere Medien während des Uploads kurz verschwanden. Jetzt ist alles jederzeit sichtbar.
+Wir haben einige Optimierungen an der Vorveröffentlichungsseite vorgenommen. Wenn du auf deinem iPad veröffentlichst, wirst du vielleicht Änderungen wie z. B. sanftere Bildschirmübergänge, eine vereinfachte Datumsauswahl und sauberere Einstellungen bemerken.
+
+Außerdem haben wir den Info-Abschnitt deines Benutzerprofils aktualisiert, in dem es um deinen Gravatar geht. (Wenn du nicht weißt, was das ist, freu dich einfach über deinen Gravatar.)

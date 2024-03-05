@@ -406,8 +406,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Scroll the content to a given #hash
     ///
     func scroll(to hash: String) {
-        webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [unowned self] height, _ in
-            guard let height = height as? CGFloat else {
+        webView.evaluateJavaScript("document.getElementById('\(hash)').offsetTop", completionHandler: { [weak self] height, _ in
+            guard let self, let height = height as? CGFloat else {
                 return
             }
 
@@ -577,7 +577,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // Load the image
-        featuredImage.load { [unowned self] in
+        featuredImage.load { [weak self] in
+            guard let self else {
+                return
+            }
             self.hideLoading()
         }
     }

@@ -81,4 +81,15 @@ final class MockNotificationSyncMediator: NotificationSyncMediatorProtocol {
     func updateLastSeen(_ timestamp: String, completion: ((Error?) -> Void)?) {
         completion?(nil)
     }
+
+    func toggleLikeForPostNotification(isLike: Bool, postID: UInt, siteID: UInt, completion: @escaping (Result<Bool, Error>) -> Void) {
+        completion(.success(true))
+    }
+
+    func toggleLikeForCommentNotification(isLike: Bool,
+                                          commentID: UInt,
+                                          siteID: UInt,
+                                          completion: @escaping (Result<Bool, Swift.Error>) -> Void) {
+        completion(.success(true))
+    }
 }

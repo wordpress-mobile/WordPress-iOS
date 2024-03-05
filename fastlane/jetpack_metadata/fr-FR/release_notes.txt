@@ -1,0 +1,3 @@
+Nous avons procédé à plusieurs ajustements sur la feuille de pré-publication. Vous remarquerez des changements parmi lesquels des transitions plus fluides d’un écran à l’autre, un sélecteur de dates simplifié et des réglages plus clairs lorsque vous publiez sur votre iPad.
+
+Nous avons également mis à jour la section informations de votre profil utilisateur à propos de votre Gravatar. (Vous ne savez pas de quoi on parle ? On va vous Gravâter.)

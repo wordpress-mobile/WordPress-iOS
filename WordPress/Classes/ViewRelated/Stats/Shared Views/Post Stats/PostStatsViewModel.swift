@@ -16,7 +16,7 @@ class PostStatsViewModel: Observable {
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
-    private let store = StoreContainer.shared.statsPeriod
+    private let store = StatsPeriodStore()
     private var receipt: Receipt?
     private var changeReceipt: Receipt?
     private var postStats: StatsPostDetails?

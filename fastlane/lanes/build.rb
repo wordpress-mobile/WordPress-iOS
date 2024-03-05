@@ -166,7 +166,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: WORDPRESS_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
+      distribution_groups: ['Internal a8c Testers', 'Public Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -212,7 +215,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: JETPACK_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: JETPACK_RELEASE_NOTES_PATH,
+      distribution_groups: ['Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -255,14 +261,12 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
     )
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
+    upload_build_to_app_center(
+      name: 'WP-Internal',
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
+      release_notes: File.read(WORDPRESS_RELEASE_NOTES_PATH),
+      distribute_to_everyone: true
     )
 
     sentry_upload_dsym(
@@ -374,16 +378,12 @@ platform :ios do
       - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
     NOTES
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: appcenter_app_name,
+    upload_build_to_app_center(
+      name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
       release_notes:,
-      destinations: 'Collaborators',
-      notify_testers: false
+      distribute_to_everyone: false
     )
 
     # Upload dSYMs to Sentry
@@ -442,12 +442,35 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:)
+  def upload_build_to_testflight(whats_new_path:, distribution_groups:)
     upload_to_testflight(
-      skip_waiting_for_build_processing: true,
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
-      changelog: File.read(whats_new_path)
+      changelog: File.read(whats_new_path),
+      distribute_external: true,
+      groups: distribution_groups,
+      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
+      reject_build_waiting_for_review: true
+    )
+  end
+
+  def upload_build_to_app_center(
+    name:,
+    file:,
+    dsym:,
+    release_notes:,
+    distribute_to_everyone:
+  )
+    appcenter_upload(
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: name,
+      file:,
+      dsym:,
+      release_notes:,
+      destinations: distribute_to_everyone ? '*' : 'Collaborators',
+      notify_testers: false
     )
   end
 end
