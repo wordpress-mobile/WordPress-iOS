@@ -32,11 +32,3 @@ public extension XCTestCase {
     }
 
 }
-
-public struct UIElementNotFoundError: Error {
-    var message: String
-
-    init(message: String) {
-        self.message = message
-    }
-}
