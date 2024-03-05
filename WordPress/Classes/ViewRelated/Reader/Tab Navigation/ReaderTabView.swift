@@ -156,7 +156,8 @@ extension ReaderTabView {
     }
 
     /// Disables the `scrollsToTop` property for the scroll views created from SwiftUI.
-    /// To preserve the native scroll-to-top behavior when the status bar is tapped, there
+    /// To preserve the native scroll-to-top behavior when the status bar is tapped, there could only be
+    /// one scroll view on screen with the `scrollsToTop` property set to `true`.
     func disableScrollsToTop() {
         var viewsToTraverse = navigationMenu.subviews
         while viewsToTraverse.count > 0 {
