@@ -45,6 +45,9 @@ final class PostSyncStateViewModel {
     }
 
     var statusMessage: String? {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return nil
+        }
         switch state {
         case .offlineChanges:
             return Strings.offlineChanges

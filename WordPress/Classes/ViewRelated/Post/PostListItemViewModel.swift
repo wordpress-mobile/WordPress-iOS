@@ -62,12 +62,13 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
 private func makeContentString(for post: Post, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
     let title = post.titleForDisplay()
     let snippet = post.contentPreviewForDisplay()
+    let foregroundColor = syncStateViewModel.isEditable ? UIColor.text : UIColor.textTertiary
 
     let string = NSMutableAttributedString()
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: syncStateViewModel.isEditable ? UIColor.text : UIColor.textTertiary
+            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
@@ -80,7 +81,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: syncStateViewModel.isEditable ? UIColor.textSubtle : UIColor.textTertiary
+            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
