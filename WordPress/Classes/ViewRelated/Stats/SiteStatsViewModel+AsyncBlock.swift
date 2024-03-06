@@ -16,7 +16,7 @@ protocol AsyncBlocksLoadable {
     /// - Parameter block: The main block to display
     /// - Parameter loading: The loading block to display
     /// - Parameter error: The error block to display
-    func blocks<Value>(for blockType: RowType,
+    func blocks<Value>(for blockType: RowType...,
                        type: StatType,
                        status: StoreFetchingStatus,
                        checkingCache: CacheBlock?,
@@ -26,14 +26,14 @@ protocol AsyncBlocksLoadable {
 }
 
 extension AsyncBlocksLoadable where CurrentStore: StatsStoreCacheable, RowType == CurrentStore.StatsStoreType {
-    func blocks<Value>(for blockType: RowType,
+    func blocks<Value>(for blockType: RowType...,
                        type: StatType,
                        status: StoreFetchingStatus,
                        checkingCache: CacheBlock? = nil,
                        block: AsyncBlock<Value>,
                        loading: AsyncBlock<Value>,
                        error: AsyncBlock<Value>) -> Value {
-        let containsCachedData = checkingCache?() ?? currentStore.containsCachedData(for: blockType)
+        let containsCachedData = checkingCache?() ?? blockType.allSatisfy { currentStore.containsCachedData(for: $0) }
 
         if containsCachedData {
             return block()

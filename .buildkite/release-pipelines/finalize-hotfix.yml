@@ -1,0 +1,10 @@
+steps:
+  - label: Finalize Release
+    plugins:
+      - automattic/a8c-ci-toolkit#3.1.0
+    # The finalization needs to run on macOS because of localization linting
+    agents:
+        queue: mac
+    env:
+      IMAGE_ID: xcode-15.1
+    command: ".buildkite/commands/finalize-hotfix.sh $VERSION"

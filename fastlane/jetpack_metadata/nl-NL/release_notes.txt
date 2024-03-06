@@ -1,5 +1,3 @@
-Dear reader, we’ve added a new look and feel for content navigation and filtering. Now when you’re looking for posts to read, you can find the best and ignore the rest.
+We hebben wat aanpassingen gedaan aan het pre-publicatiesheet. Je kan wat veranderingen terugzien zoals soepelere schermtransities, een vereenvoudigde datumkiezer en een nettere instellingenweergave wanneer je vanaf je iPad publiceert.
 
-We fixed an issue that made images and other media blink away while being uploaded. Zo, geen verdwijntruc meer.
-
-Finally, we added new Site Monitoring menu items—including metrics, PHP logs, and web server logs—so you can keep a closer eye on your website. (Don’t worry, it’s not going anywhere.)
+We hebben ook het infogedeelte dat over je Gravatar gaat van je gebruikersprofiel bijgewerkt. (Weet je niet zo goed wat dat is? Nou, wees voorbereid op heel wat Grava-goeds.)

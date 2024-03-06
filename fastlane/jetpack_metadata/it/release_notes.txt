@@ -1,5 +1,3 @@
-Care lettrici e cari lettori, abbiamo aggiunto un nuovo aspetto per la navigazione e i filtri dei contenuti. Ora, quando cerchi articoli da leggere, trova sempre il meglio.
+Abbiamo apportato diverse modifiche alla scheda di pre-pubblicazione. Vedrai cambiamenti come transizioni più fluide tra le schermate, un selezionatore di date semplificato e impostazioni più pulite durante la pubblicazione su iPad.
 
-Abbiamo sistemato un problema che cancellava immagini e altri media durante il caricamento. Presto, niente più sparizioni.
-
-Infine, abbiamo aggiunto nuove voci di menu nel monitoraggio del sito, tra cui metriche, log PHP e log del server web, per permetterti di tenere d'occhio il tuo sito. (Non preoccuparti, non andrà da nessuna parte.)
+Abbiamo inoltre aggiornato la sezione info del profilo utente relativa al tuo Gravatar (Non sai cosa sia? Ti aspetta una Grava-coccola).

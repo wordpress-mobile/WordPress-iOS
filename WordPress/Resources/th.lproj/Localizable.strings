@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -238,8 +238,7 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "ควรระวัง";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "หมวดหมู่";
 
 /* Error popup title to indicate that there was no category title filled in. */
@@ -258,12 +257,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "การกด";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "ปิด";
 
 /* Settings: Close comments after X period */
@@ -1491,7 +1488,6 @@
 "Tagline" = "คำอธิบาย";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -1602,7 +1598,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "หัวข้อ";
@@ -1782,8 +1777,7 @@
    Today's Stats 'Views' label */
 "Views" = "การดู";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "การมองเห็นได้";
 

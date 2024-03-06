@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-11-25 14:35:47+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0-beta.3 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1296,8 +1296,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categories";
 
 /* Category menu item in share extension.
@@ -1422,9 +1421,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "Choose a Layout";
 
-/* Label for Publish date picker */
-"Choose a date" = "Choose a date";
-
 /* Select domain name. Title */
 "Choose a domain" = "Choose a domain";
 
@@ -1519,12 +1515,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Clicks";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Close";
 
 /* Close account action label */
@@ -5449,22 +5443,17 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for the publish settings view */
 "Publish" = "Publish";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "Publish Date";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publish Immediately";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
+/* Title of button allowing the user to immediately publish the post they are editing. */
 "Publish Now" = "Publish Now";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publish a post";
-
-/* Immediately publish button title */
-"Publish immediately" = "Publish immediately";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publish page on:";
@@ -5953,9 +5942,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Schedule";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Schedule Now";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6770,7 +6756,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -7315,7 +7300,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Title";
@@ -7973,8 +7957,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Views & Visitors";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Visibility";
 
@@ -9431,9 +9414,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
-
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Moving to the Jetpack app in a few days.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";

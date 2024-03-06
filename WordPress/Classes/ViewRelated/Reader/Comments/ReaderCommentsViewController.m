@@ -361,6 +361,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureKeyboardManager
 {
+    // The variable introduced because we cannot reuse the same constraint for the keyboard manager and the reply text view.
+    self.replyTextViewBottomConstraint = [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
     self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
                                                                   scrollView:self.tableView
                                                           dismissableControl:self.replyTextView
@@ -401,20 +403,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                                                       metrics:nil
                                                                         views:views]];
 
-    // ReplyTextView Constraints
-    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
-
-    self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.replyTextView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                     multiplier:1.0
-                                                                       constant:0.0];
-    self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
-
-    [self.view addConstraint:self.replyTextViewBottomConstraint];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.replyTextView.leadingAnchor],
+        [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.replyTextView.trailingAnchor],
+        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor]
+    ]];
 
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
@@ -884,9 +877,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
         [self.tableView layoutIfNeeded];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 
-        self.highlightedIndexPath = indexPath;
+        // Ensure that the indexPath exists before scrolling to it.
+        if (indexPath.section >=0
+            && indexPath.row >=0
+            && indexPath.section < self.tableView.numberOfSections
+            && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
+        {
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            self.highlightedIndexPath = indexPath;
+        }
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;

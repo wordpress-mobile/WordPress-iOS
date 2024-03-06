@@ -1,1 +1,3 @@
-Vi har åtgärdat ett problem som gjorde att bilder och annan media "blinkade" under uppladdning. Klart. Inget mer försvinnande.
+Vi har gjort flertalet justeringar av förpubliceringsarket. Du kommer att märka förändringar såsom mjukare skärmövergångar, en förenklad datumväljare och renare inställningar när du publicerar på din iPad.
+
+Vi har också uppdaterat informationssektionen för din användarprofil som berör din Gravatar. (Är du osäker på vad det är för något? Vänta bara.)

@@ -1,1 +1,3 @@
-Kami mengatasi masalah yang menyebabkan gambar dan media lain “berkedip” ketika diunggah. Dalam sekejap, tiada lagi yang tiba-tiba lenyap.
+Kami telah menerapkan beberapa perubahan pada lembar pra-publikasi. Anda mungkin melihat perubahan, seperti transisi layar yang lebih mulus, pemilih tanggal yang sederhana, dan pengaturan yang lebih rapi ketika memublikasikan di iPad.
+
+Kami juga memperbarui bagian info profil pengguna yang menjelaskan Gravatar Anda. (Penasaran? Nikmati serunya pengalaman menggunakan Gravatar!)

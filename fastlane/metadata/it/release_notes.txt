@@ -1,1 +1,3 @@
-Abbiamo sistemato un problema che cancellava immagini e altri media durante il caricamento. Presto, niente più sparizioni.
+Abbiamo apportato diverse modifiche alla scheda di pre-pubblicazione. Vedrai cambiamenti come transizioni più fluide tra le schermate, un selezionatore di date semplificato e impostazioni più pulite durante la pubblicazione su iPad.
+
+Abbiamo inoltre aggiornato la sezione info del profilo utente relativa al tuo Gravatar (Non sai cosa sia? Ti aspetta una Grava-coccola).

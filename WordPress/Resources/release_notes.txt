@@ -1,1 +1,5 @@
-We fixed an issue that made images and other media “blink” while being uploaded. Presto, no more disappearing act.
+* [*] Block editor: Prevent crash when autoscrolling to blocks [https://github.com/WordPress/gutenberg/pull/59110]
+* [*] Block editor: Remove opacity change when images are being uploaded [https://github.com/WordPress/gutenberg/pull/59264]
+* [*] Block editor: Media & Text blocks correctly show an error message when the attached video upload fails [https://github.com/WordPress/gutenberg/pull/59288]
+* [**] [internal] Refactored .org REST API calls. [#22612]
+* [**] [internal] Update loading images in Reader posts list and Posts list. [#22707]

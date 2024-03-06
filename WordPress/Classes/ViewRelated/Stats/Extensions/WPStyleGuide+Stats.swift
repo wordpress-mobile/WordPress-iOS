@@ -88,12 +88,12 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsCellValueTitle(_ label: UILabel) {
-            label.font = TextStyle.footnote.uiFont
+            label.font = UIFont.DS.font(.footnote)
             label.textColor = UIColor.DS.Foreground.secondary
         }
 
         static func configureLabelAsCellValue(_ label: UILabel) {
-            label.font = TextStyle.heading2.uiFont.semibold()
+            label.font = UIFont.DS.font(.heading2).semibold()
             label.textColor = UIColor.DS.Foreground.primary
         }
 

@@ -23,8 +23,7 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.3'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', tag: ''
+  pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
@@ -50,8 +49,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 13.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '92c1536724af8bb57ee677996919c2a9e37434e8'
+  pod 'WordPressKit', '~> 14.0'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -117,8 +116,8 @@ abstract_target 'Apps' do
   pod 'Starscream', '~> 4.0'
   pod 'SVProgressHUD', '2.2.5'
   pod 'ZendeskSupportSDK', '5.3.0'
-  pod 'AlamofireImage', '3.5.2'
-  pod 'AlamofireNetworkActivityIndicator', '~> 2.4'
+  pod 'AlamofireImage', '~> 4.0'
+  pod 'AlamofireNetworkActivityIndicator', '~> 3.0'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
@@ -140,8 +139,8 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  # pod 'WordPressAuthenticator', '~> 9.0'
-  pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: 'fa06fca7178b268d382d91861752b3be0729e8a8'
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.2'
+  # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
 
@@ -280,8 +279,18 @@ target 'WordPressUITests' do
   project 'WordPress/WordPress.xcodeproj'
 end
 
+## Tools
+## ===================
+##
+
+def swiftlint_version
+  require 'yaml'
+
+  YAML.load_file('.swiftlint.yml')['swiftlint_version']
+end
+
 abstract_target 'Tools' do
-  pod 'SwiftLint', '~> 0.50'
+  pod 'SwiftLint', swiftlint_version
 end
 
 # Static Frameworks:

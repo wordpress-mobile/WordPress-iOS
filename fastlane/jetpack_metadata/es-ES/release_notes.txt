@@ -1,5 +1,3 @@
-Hola. Hemos retocado el diseño y la funcionalidad para filtrar y explorar el contenido. Ahora, cuando busques publicaciones que te interese leer, podrás quedarte con las mejores e ignorar el resto.
+Hemos realizado varios ajustes a la hoja previa a la publicación. Verás cambios como transiciones de pantalla más fluidas, un selector de fecha simplificado y ajustes más claros si vas a publicar en un iPad.
 
-Hemos solucionado un error que provocaba que las imágenes y otros medios se desvanecieran mientras se cargaban. Listo, ya no volverán a desaparecer.
-
-Además, hemos añadido opciones nuevas en el menú de supervisión del sitio, como métricas, registros PHP y registros de servidor web. Todos estos elementos te permitirán hacer un escrutinio completo de tu sitio web. (No te preocupes, todo se quedará en su sitio).
+También hemos actualizado la sección de información de tu perfil de usuario que describe tu gravatar. (¿No sabes muy bien de lo que te hablamos? Te espera una "gravasorpresa").

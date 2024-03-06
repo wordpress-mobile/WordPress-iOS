@@ -4,7 +4,7 @@
 common_params:
   # Common plugin settings to use with the `plugins` key.
   - &common_plugins
-    - automattic/a8c-ci-toolkit#2.18.1
+    - automattic/a8c-ci-toolkit#3.1.0
     - automattic/git-s3-cache#1.1.4:
         bucket: "a8c-repo-mirrors"
         repo: "automattic/wordpress-ios/"

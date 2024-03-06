@@ -42,7 +42,7 @@
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bUe-f2-zzc" userLabel="Icon Super View">
                                             <rect key="frame" x="0.0" y="0.0" width="317" height="75"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="120" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="v3d-AD-Jsf" customClass="AnimationView" customModule="Lottie">
+                                                <view contentMode="scaleToFill" placeholderIntrinsicWidth="120" placeholderIntrinsicHeight="100" translatesAutoresizingMaskIntoConstraints="NO" id="v3d-AD-Jsf" customClass="LottieAnimationView" customModule="Lottie">
                                                     <rect key="frame" x="0.0" y="0.0" width="120" height="65"/>
                                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>

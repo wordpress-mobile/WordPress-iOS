@@ -1,6 +1,7 @@
 import Foundation
 import WordPressKit
 
+typealias StatsTrafficBarChartTabIndex = Int
 enum StatsTrafficBarChartTabs: Int, CaseIterable {
     case views = 0, visitors, likes, comments
 
@@ -16,6 +17,19 @@ enum StatsTrafficBarChartTabs: Int, CaseIterable {
             return \.likesCount
         case .comments:
             return \.commentsCount
+        }
+    }
+
+    var analyticsEvent: WPAnalyticsStat {
+        switch self {
+        case .views:
+            return .statsOverviewTypeTappedViews
+        case .visitors:
+            return .statsOverviewTypeTappedVisitors
+        case .likes:
+            return .statsOverviewTypeTappedLikes
+        case .comments:
+            return .statsOverviewTypeTappedComments
         }
     }
 }

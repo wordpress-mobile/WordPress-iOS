@@ -1,5 +1,3 @@
-Cher lecteur, chère lectrice, nous avons revu l’aspect et la convivialité de la navigation dans le contenu et des filtres. Désormais, lorsque vous cherchez des articles à lire, vous trouvez le meilleur et pouvez ignorer le reste.
+Nous avons procédé à plusieurs ajustements sur la feuille de pré-publication. Vous remarquerez des changements parmi lesquels des transitions plus fluides d’un écran à l’autre, un sélecteur de dates simplifié et des réglages plus clairs lorsque vous publiez sur votre iPad.
 
-Nous avons corrigé un problème qui faisait clignoter les images et autres médias lors de leur mise en ligne. Fini les « on me voit, on me voit plus ».
-
-Enfin, nous avons ajouté de nouveaux éléments au menu Surveillance du site (notamment des indicateurs, des journaux PHP et de serveur Web) pour vous permettre de garder un œil sur votre site. (Rassurez-vous, il ne va nulle part.)
+Nous avons également mis à jour la section informations de votre profil utilisateur à propos de votre Gravatar. (Vous ne savez pas de quoi on parle ? On va vous Gravâter.)

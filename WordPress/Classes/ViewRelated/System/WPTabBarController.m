@@ -49,8 +49,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
 
-@property (nonatomic, assign) BOOL shouldUseStaticScreens;
-
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
 @property (nonatomic, strong) UINavigationController *readerNavigationController;
@@ -356,7 +354,9 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 - (NSArray<UIViewController *> *)tabViewControllers
 {
-    if (self.shouldUseStaticScreens) {
+    BOOL isIPad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
+
+    if (self.shouldUseStaticScreens || !isIPad) {
         return @[
             self.mySitesCoordinator.rootViewController,
             self.readerNavigationController,
