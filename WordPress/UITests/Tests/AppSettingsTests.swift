@@ -6,10 +6,7 @@ final class AppSettingsTests: XCTestCase {
     @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
-        setUpTestSuite()
-
-        try LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail)
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
     }
 
     override func tearDownWithError() throws {

@@ -1,6 +1,5 @@
 {
   "scenarioName": "new_post_flow",
-  "requiredScenarioState": "initial_posts_list",
   "newScenarioState": "post_published",
   "request": {
     "method": "POST",

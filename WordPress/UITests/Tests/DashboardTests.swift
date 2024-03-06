@@ -4,23 +4,15 @@ import XCTest
 // These tests are Jetpack only.
 class DashboardTests: XCTestCase {
 
-    @MainActor
-    override func setUpWithError() throws {
-        try super.setUpWithError()
-        setUpTestSuite()
-
-        try LoginFlow
-            .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
-    }
-
     override func tearDownWithError() throws {
         takeScreenshotOfFailedTest()
         try super.tearDownWithError()
     }
 
+    @MainActor
     func testFreeToPaidCardNavigation() throws {
-        try LoginEpilogueScreen()
-            .continueWithSelectedSite(WPUITestCredentials.testWPcomFreeSite)
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomFreeSite)
+        try MySiteScreen()
             .scrollToFreeToPaidPlansCard()
             .verifyFreeToPaidPlansCard()
             .tapFreeToPaidPlansCard()
@@ -31,9 +23,10 @@ class DashboardTests: XCTestCase {
             .assertScreenIsLoaded()
     }
 
+    @MainActor
     func testPagesCardHeaderNavigation() throws {
-        try LoginEpilogueScreen()
-            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
+        try MySiteScreen()
             .scrollToPagesCard()
             .verifyPagesCard()
             .verifyPagesCard(hasPage: "Blog")
@@ -46,9 +39,10 @@ class DashboardTests: XCTestCase {
             .verifyPagesScreen(hasPage: "Cart")
     }
 
+    @MainActor
     func testActivityLogCardHeaderNavigation() throws {
-        try LoginEpilogueScreen()
-            .continueWithSelectedSite(WPUITestCredentials.testWPcomPaidSite)
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
+        try MySiteScreen()
             .scrollToActivityLogCard()
             .verifyActivityLogCard()
             .verifyActivityLogCard(hasActivityPartial: "Enabled Jetpack Social")
