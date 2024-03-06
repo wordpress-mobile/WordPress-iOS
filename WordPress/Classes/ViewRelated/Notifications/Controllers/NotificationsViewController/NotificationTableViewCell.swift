@@ -74,8 +74,13 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     private func postLikeInlineAction(viewModel: NotificationsViewModel,
                                       notification: NewPostNotification,
                                       parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
-        let action: () -> Void = { [weak self] in
-            guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
+        let action: () -> Void = { [weak self, weak parent] in
+            guard let self,
+                  let parent,
+                  let content = self.content,
+                  case let .regular(style) = content.style,
+                  let config = style.inlineAction
+            else {
                 return
             }
             parent.cancelNextUpdateAnimation()
@@ -92,8 +97,12 @@ final class NotificationTableViewCell: HostingTableViewCell<NotificationsTableVi
     private func commentLikeInlineAction(viewModel: NotificationsViewModel,
                                          notification: CommentNotification,
                                          parent: NotificationsViewController) -> NotificationsTableViewCellContent.InlineAction.Configuration {
-        let action: () -> Void = { [weak self] in
-            guard let self, let content = self.content, case let .regular(style) = content.style, let config = style.inlineAction else {
+        let action: () -> Void = { [weak self, weak parent] in
+            guard let self,
+                  let parent,
+                  let content = self.content,
+                  case let .regular(style) = content.style,
+                  let config = style.inlineAction else {
                 return
             }
             parent.cancelNextUpdateAnimation()
