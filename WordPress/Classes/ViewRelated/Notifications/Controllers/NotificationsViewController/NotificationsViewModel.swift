@@ -27,6 +27,7 @@ final class NotificationsViewModel {
     private let notificationMediator: NotificationSyncMediatorProtocol?
     private let analyticsTracker: AnalyticsEventTracking.Type
     private let crashLogger: CrashLogging
+    private let scheduler = Scheduler(seconds: 0.5)
 
     // MARK: - Callbacks
 
@@ -137,18 +138,20 @@ final class NotificationsViewModel {
 
         // Update liked status remotely
         let mainContext = contextManager.mainContext
-        notification.toggleLike(using: notificationMediator, isLike: newLikedStatus) { result in
-            mainContext.perform {
-                do {
-                    switch result {
-                    case .success(let liked):
-                        notification.liked = liked
-                        try mainContext.save()
-                    case .failure(let error):
-                        throw error
+        scheduler.debounce {
+            notification.toggleLike(using: notificationMediator, isLike: newLikedStatus) { result in
+                mainContext.perform {
+                    do {
+                        switch result {
+                        case .success(let liked):
+                            notification.liked = liked
+                            try mainContext.save()
+                        case .failure(let error):
+                            throw error
+                        }
+                    } catch {
+                        changes(oldLikedStatus)
                     }
-                } catch {
-                    changes(oldLikedStatus)
                 }
             }
         }
