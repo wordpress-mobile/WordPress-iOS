@@ -28,6 +28,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case statsTrafficTab
     case siteMonitoring
     case syncPublishing
+    case readerDiscoverEndpoint
 
     var defaultValue: Bool {
         switch self {
@@ -83,6 +84,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .syncPublishing:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .readerDiscoverEndpoint:
+            return true
         }
     }
 
@@ -142,6 +145,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .syncPublishing:
             /// - warning: Work-in-progress (kahu-offline-mode)
             return "_sync_publishing"
+        case .readerDiscoverEndpoint:
+            return "reader_discover_new_endpoint"
         }
     }
 
@@ -199,6 +204,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Site Monitoring"
         case .syncPublishing:
             return "Synchronous Publishing"
+        case .readerDiscoverEndpoint:
+            return "Reader Discover New Endpoint"
         }
     }
 
