@@ -39,7 +39,9 @@ class ReaderCardService {
                     return
                 }
                 var updatedCards = cards
-                if isFirstPage && updatedCards.first?.type == .interests && updatedCards.count > 2 {
+                let isCardTags = updatedCards.first?.type == .interests
+                let isCardSites = updatedCards.first?.type == .sites
+                if isFirstPage && (isCardTags || isCardSites) && updatedCards.count > 2 {
                     // Move the first tags recommendation card to a lower position
                     updatedCards.move(fromOffsets: IndexSet(integer: 0), toOffset: 3)
                 }
