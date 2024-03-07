@@ -195,6 +195,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        updateLeftBarButtonItem()
         setupFeaturedImage()
         updateFollowButtonState()
         toolbar.viewWillAppear()
@@ -1031,21 +1032,28 @@ private extension ReaderDetailViewController {
 private extension ReaderDetailViewController {
 
     func configureNavigationBar() {
-
         // If a Related post fails to load, disable the More and Share buttons as they won't do anything.
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
             shareButtonItem(enabled: enableRightBarButtons),
             safariButtonItem()
         ]
-
-        if !isModal() {
-            navigationItem.leftBarButtonItem = backButtonItem()
-        } else {
-            navigationItem.leftBarButtonItem = dismissButtonItem()
-        }
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
+    }
+
+    /// Updates the left bar button item based on the current view controller's context in the navigation stack.
+    /// If the view controller is presented modally and does not have a left bar button item, a dismiss button is set.
+    /// If the view controller is not the root of the navigation stack, a back button is set.
+    /// Otherwise, the left bar button item is cleared.
+    func updateLeftBarButtonItem() {
+        if isModal(), navigationItem.leftBarButtonItem == nil {
+            navigationItem.leftBarButtonItem = dismissButtonItem()
+        } else if navigationController?.viewControllers.first !== self {
+            navigationItem.leftBarButtonItem = backButtonItem()
+        } else {
+            navigationItem.leftBarButtonItem = nil
+        }
     }
 
     func backButtonItem() -> UIBarButtonItem {
