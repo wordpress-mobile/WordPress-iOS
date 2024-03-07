@@ -53,11 +53,11 @@ public class ReaderCard: NSManagedObject {
         case .post:
             post = ReaderPost.createOrReplace(fromRemotePost: remoteCard.post, for: nil, context: context)
         case .interests:
-            topics = NSOrderedSet(array: remoteCard.interests?.map {
+            topics = NSOrderedSet(array: remoteCard.interests?.prefix(5).map {
                 ReaderTagTopic.createOrUpdateIfNeeded(from: $0, context: context)
             } ?? [])
         case .sites:
-            sites = NSOrderedSet(array: remoteCard.sites?.map {
+            sites = NSOrderedSet(array: remoteCard.sites?.prefix(3).map {
                 ReaderSiteTopic.createIfNeeded(from: $0, context: context)
             } ?? [])
 
