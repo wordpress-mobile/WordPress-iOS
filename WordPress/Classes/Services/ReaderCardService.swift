@@ -34,10 +34,7 @@ class ReaderCardService {
             }
 
             let slugs = interests.map { $0.slug }
-            self.service.fetchCards(for: slugs,
-                                    page: self.pageHandle(isFirstPage: isFirstPage),
-                                    refreshCount: refreshCount,
-                                    success: { [weak self] cards, pageHandle in
+            let success: ([RemoteReaderCard], String?) -> Void = { [weak self] cards, pageHandle in
                 guard let self else {
                     return
                 }
@@ -89,10 +86,24 @@ class ReaderCardService {
                     let hasMore = pageHandle != nil
                     success(cards.count, hasMore)
                 }, on: .main)
-            }, failure: { error in
+            }
+            let failure: (Error?) -> Void = { error in
                 failure(error)
-            })
+            }
 
+            if RemoteFeatureFlag.readerDiscoverEndpoint.enabled() {
+                self.service.fetchStreamCards(for: slugs,
+                                              page: self.pageHandle(isFirstPage: isFirstPage),
+                                              refreshCount: refreshCount,
+                                              success: success,
+                                              failure: failure)
+            } else {
+                self.service.fetchCards(for: slugs,
+                                        page: self.pageHandle(isFirstPage: isFirstPage),
+                                        refreshCount: refreshCount,
+                                        success: success,
+                                        failure: failure)
+            }
         }
     }
 
