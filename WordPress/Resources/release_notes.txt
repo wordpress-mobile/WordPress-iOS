@@ -1,5 +1,5 @@
-* [*] Block editor: Prevent crash when autoscrolling to blocks [https://github.com/WordPress/gutenberg/pull/59110]
-* [*] Block editor: Remove opacity change when images are being uploaded [https://github.com/WordPress/gutenberg/pull/59264]
-* [*] Block editor: Media & Text blocks correctly show an error message when the attached video upload fails [https://github.com/WordPress/gutenberg/pull/59288]
-* [**] [internal] Refactored .org REST API calls. [#22612]
-* [**] [internal] Update loading images in Reader posts list and Posts list. [#22707]
+We made a few changes to the block editor.
+
+- The app won’t crash anymore when the editor auto-scrolls down to a block.
+- You’ll now see an error message when a video fails to upload to media and text blocks.
+- Images no longer appear partly transparent while they’re being uploaded. All color, all the time.

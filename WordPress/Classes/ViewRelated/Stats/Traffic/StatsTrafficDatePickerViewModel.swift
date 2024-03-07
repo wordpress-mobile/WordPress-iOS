@@ -41,7 +41,9 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
     func formattedCurrentPeriod() -> String {
         let dateFormatter = period.dateFormatter
         if period == .week, let week = StatsPeriodHelper().weekIncludingDate(date) {
-            return "\(dateFormatter.string(from: week.weekStart)) - \(dateFormatter.string(from: week.weekEnd))"
+            let weekEndFormatter = DateFormatter()
+            weekEndFormatter.setLocalizedDateFormatFromTemplate("MMM d, yyyy")
+            return "\(dateFormatter.string(from: week.weekStart)) - \(weekEndFormatter.string(from: week.weekEnd))"
         } else {
             return dateFormatter.string(from: date)
         }
@@ -60,11 +62,11 @@ private extension StatsPeriodUnit {
         let format: String
         switch self {
         case .day:
-            format = "MMMM d"
+            format = "MMMM d, yyyy"
         case .week:
             format = "MMM d"
         case .month:
-            format = "MMMM"
+            format = "MMMM, yyyy"
         case .year:
             format = "yyyy"
         }

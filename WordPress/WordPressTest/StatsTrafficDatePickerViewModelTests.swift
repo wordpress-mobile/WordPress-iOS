@@ -44,6 +44,27 @@ final class StatsTrafficDatePickerViewModelTests: XCTestCase {
         viewModel.goToNextPeriod()
         XCTAssertEqual(date, viewModel.date, "Date shouldn't go beyond the current site date")
     }
+
+    func testFormattedCurrentPeriod_yearIsIncludedInDayPeriod() {
+        let date = Date("2024-01-20")
+        let currentDateGetter: SiteCurrentDateGetter = { date }
+        viewModel = StatsTrafficDatePickerViewModel(period: .day, date: date, currentDateGetter: currentDateGetter)
+        XCTAssertEqual(viewModel.formattedCurrentPeriod(), "January 20, 2024")
+    }
+
+    func testFormattedCurrentPeriod_yearIsIncludedInWeekPeriod() {
+        let date = Date("2024-01-20")
+        let currentDateGetter: SiteCurrentDateGetter = { date }
+        viewModel = StatsTrafficDatePickerViewModel(period: .week, date: date, currentDateGetter: currentDateGetter)
+        XCTAssertEqual(viewModel.formattedCurrentPeriod(), "Jan 15 - Jan 21, 2024")
+    }
+
+    func testFormattedCurrentPeriod_yearIsIncludedInMonthPeriod() {
+        let date = Date("2024-01-20")
+        let currentDateGetter: SiteCurrentDateGetter = { date }
+        viewModel = StatsTrafficDatePickerViewModel(period: .month, date: date, currentDateGetter: currentDateGetter)
+        XCTAssertEqual(viewModel.formattedCurrentPeriod(), "January 2024")
+    }
 }
 
 private extension Date {
