@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1645,8 +1645,7 @@
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Nada encontrado.";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Definições de notificações";
 
@@ -1999,9 +1998,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicar imediatamente";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publicar agora";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -3107,7 +3103,7 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Tem de iniciar a sessão com uma conta WordPress.com para executar esta acção.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Parece que instalou um plugin para telemóvel de DudaMobile, que está a impedir a aplicação de se ligar ao seu blog.";
 
 /* Displayed in the Notification Settings View */

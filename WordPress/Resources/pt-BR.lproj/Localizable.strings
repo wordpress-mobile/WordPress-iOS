@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-02-21 21:32:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li palavras, %2$li caracteres";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bloco %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opções do bloco %s";
@@ -812,9 +816,6 @@
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Tem certeza de que deseja excluir permanentemente esse post?";
-
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Tem certeza de que deseja publicar agora?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
@@ -4036,9 +4037,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Domínio mapeado";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Marcar todas como lidas";
-
 /* Marks a notification as unread */
 "Mark Read" = "Marcar como lido";
 
@@ -4634,8 +4632,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabela de detalhes de notificação";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Configurações de notificações";
 
@@ -5376,9 +5373,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicar imediatamente";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publicar agora";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publique um post";
@@ -6866,7 +6860,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "A melhor forma de aprimorar sua escrita é fazer dela um hábito e compartilhá-la com outras pessoas. É aí que entram as sugestões!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "O certificado para este servidor é inválido. Você talvez esteja conectando a um servidor que está fingindo ser \"%@\", o que poderia colocar suas informações confidenciais em risco.";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8553,7 +8547,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Você respondeu esse comentário.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Parece que você instalou um plugin mobile proveniente de DudaMobile que está evitando o app de se conectar ao seu blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */

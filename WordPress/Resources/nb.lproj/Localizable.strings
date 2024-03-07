@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:38+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: nb_NO */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -161,6 +161,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tegn";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s-blokk";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokk-alternativer";
@@ -577,9 +581,6 @@
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Er du sikker på at du vil slette dette innlegget permanent?";
-
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Er du sikker på at du vil publisere nå?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
@@ -3141,8 +3142,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabell for varseldetaljer";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Varserinnstillinger";
 
@@ -3737,9 +3737,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publiser umiddelbart";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publiser nå";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publiser et innlegg";
@@ -4837,7 +4834,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Appen kjenner ikke igjen svaret fra serveren. Vennligst sjekk oppsettet på ditt nettsted.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikatet for denne serveren er ikke gyldig. Du kan potensielt koble til en server som later som den er «%@», som kan eksponere informasjon om deg.\n\nVil du stole på sertifikatet uansett?";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
@@ -6021,7 +6018,7 @@
    Text to look for */
 "You replied to this comment." = "Du svarte på denne kommentaren.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Det ser ut som du har installert en mobil-utvidelse fra DudaMobile som hindrer appen i å koble til bloggen din";
 
 /* Paragraph text that needs to be highlighted */

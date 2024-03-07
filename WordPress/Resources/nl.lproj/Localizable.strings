@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-26 04:29:18+0000 */
+/* Translation-Revision-Date: 2024-03-06 17:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: nl */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li woorden, %2$li karakters";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blokopties";
@@ -840,9 +844,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Weet je zeker dat je dit bericht permanent wilt verwijderen?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Weet je zeker dat je nu wilt publiceren?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Weet je zeker dat je wilt publiceren?";
@@ -964,6 +965,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Auto's";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Automatisch afspelen kan gebruiksproblemen veroorzaken voor sommige gebruikers.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische updates";
@@ -4123,9 +4127,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Toegewezen domein";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Alles als gelezen markeren";
-
 /* Marks a notification as unread */
 "Mark Read" = "Markeer als gelezen";
 
@@ -4733,8 +4734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Melding details tabel";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Meldingsinstellingen";
 
@@ -5478,9 +5478,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Direct publiceren";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Nu publiceren";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publiceer een bericht";
@@ -6983,7 +6980,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "De beste manier om een betere schrijver te worden, is door elke dag wat te schrijven en dat met anderen te delen - hier kunnen deze opdrachten je mee helpen!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8703,7 +8700,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Je hebt deze reactie beantwoord.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Het lijkt erop dat je een mobiele plugin van DudaMobile hebt geïnstalleerd die voorkomt dat de app zich kan verbinden met je blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10006,6 +10003,12 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Stuur feedback";
 
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Alles als gelezen markeren";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Menuknop navigatiebalk";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Startpagina";
 
@@ -10778,6 +10781,9 @@ with the filter chip button. */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Staafgrafiek waarin het aantal bezoekers tijdens de geselecteerde periode staat weergegeven.";
 
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Per dag";
+
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ meer dan de afgelopen maand\n";
 
@@ -11107,6 +11113,9 @@ with the filter chip button. */
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Limiet bereikt. Je kan het over 1 minuut nogmaals proberen. Als je het voor die tijd nog een keer probeert, duurt het alleen maar langer voordat de blokkering is opgeheven. Als je denkt dat dit een fout is, neem dan contact op met ondersteuning.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "De URL van de REST API van je site kon niet gevonden worden. De app heeft dat nodig om met je site te communiceren. Neem contact op met je host om dit probleem op te lossen.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Welkom bij de Jetpack app. Je kan de WordPress app verwijderen.";

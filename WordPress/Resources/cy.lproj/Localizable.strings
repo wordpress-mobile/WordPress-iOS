@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:03+0000 */
 /* Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n==2) ? 1 : (n != 8 && n != 11) ? 2 : 3; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: cy_GB */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1319,8 +1319,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabl Manylion Hysbysu";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Gosodiadau Hysbysu";
 
@@ -2100,7 +2099,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Nid yw'r ap yn gallu a adnabod ymateb y gweinydd. Gwiriwch ffurfweddiad eich gwefan.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Mae'r dystysgrif ar gyfer y gweinydd hwn yn annilys. Gall eich bod yn cysylltu â gweinydd sy'n esgus bod yn “%@” sy'n gallu peryglu eich gwybodaeth gyfrinachol.\n\nHoffech chi ymddiried yn y dystysgrif beth bynnag?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2559,7 +2558,7 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Rhaid eich bod wedi eich mewngofnodi i gyfrif WordPress.com i wneud hyn.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Mae'n ymddangos eich bod wedi gosod ategyn symudol o'r DudaMobile sy'n atal y ap thag cysylltu â'ch blog";
 
 /* Displayed in the Notification Settings View */

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-26 16:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-06 17:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li מילים, %2$li תווים";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "בלוק %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s אפשרויות הבלוק";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "ביקשת למחוק פוסט זה לצמיתות - האם ההחלטה סופית?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "האם ברצונך לפרסם כעת?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "האם ברצונך לפרסם?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "רכב";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "ניגון אוטומטי עלול לגרום לבעיות בשימוש אצל חלק מהמשתמשים.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "עדכונים אוטומטיים";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "דומיין ממופה";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "סימון כל ההודעות כ'נקרא'";
-
 /* Marks a notification as unread */
 "Mark Read" = "סימון כנקרא";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "טבלת פרטי הודעות";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "הגדרות התראות";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "פרסום מיידי";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "לפרסם כעת";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "פרסום פוסט";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "הדרך הטובה ביותר לשפר את יכולת הכתיבה היא ליצור הרגל לכתיבה ולשתף עם אחרים – כאן בדיוק נכנסות ההצעות!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "האישור עבור שרת זה אינו חוקי. ייתכן שאתה מתחבר לשרת שמתחזה ל-&quot;%@&quot;, מה שעלול לסכן את המידע הסודי שלך.\n\nלבטוח באישור בכל מקרה?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "כבר ענית לתגובה זו.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "נראה שהתקנת תוסף למכשירים ניידים מ-DudaMobile שמונע מהאפליקציה להתחבר לבלוג שלך";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10229,6 +10226,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "לשלוח משוב";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "כדאי לקרוא את הפוסט שלי: \"%@\":";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "כדאי לקרוא את הפוסט שלי:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "לסמן את כל ההודעות כ'נקרא'";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "הגדרות של הודעות";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "כפתור התפריט של סרגל הניווט";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "עמוד הבית";
 
@@ -10499,6 +10511,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "העלאת המדיה נכשלה";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "כותרת";
 
@@ -10571,6 +10586,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "תגיות";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "מעלה מדיה";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "נראות";
@@ -11372,6 +11390,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "הפוסט האחרון שלך %1$@ קיבל לייק %2$@.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "היום";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "תרשים עמודות שמשקף את כמות התגובות בתקופה שבחרת.";
 
@@ -11383,6 +11404,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "תרשים עמודות שמשקף את כמות המבקרים בתקופה שבחרת.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "לפי יום";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
@@ -11407,6 +11431,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ פחות לעומת השנה הקודמת\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "לפי חודש";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "לפי שבוע";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "לפי שנה";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "ביטול";
@@ -11764,6 +11797,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "הגעת למגבלה המותרת. אפשר לנסות שוב בעוד דקה אחת. ניסיון נוסף לפני כן רק יגדיל את זמן ההמתנה עד לביטול החסימה. אם לדעתך זוהי שגיאה, כדאי לפנות לתמיכה.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "לא הצלחנו למצוא את כתובת ה-URL של REST API לאתר שלך. כדי שהאפליקציה תוכל לבצע התקשרות עם האתר שלך, יש להפעיל אפשרות זו. יש ליצור קשר עם חברת האחסון שלך כדי לפתור בעיה זו.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "שמחים שהצטרפת לאפליקציה של Jetpack. אפשר להסיר את ההתקנה של האפליקציה של WordPress כעת.";

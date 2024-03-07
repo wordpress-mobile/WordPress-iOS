@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 22:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-06 09:54:14+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: ar */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li كلمات، %2$li أحرف";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "مكوّن [%s]";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "خيارات المكوِّن %s";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "هل أنت متأكد من رغبتك في حذف هذه المقالة نهائيًا؟";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "هل تريد بالتأكيد النشر الآن؟";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "هل أنت متأكد من رغبتك في النشر؟";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "السيارات";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "قد يتسبب التشغيل التلقائي في حدوث مشكلات متعلقة بإمكانية الاستخدام لدى بعض المستخدمين.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "تحديثات تلقائية";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "النطاق المعيّن";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "وضع علامة على الجميع بأنه مقروء";
-
 /* Marks a notification as unread */
 "Mark Read" = "وضع علامة مقروء";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "جدول تفاصيل التنبيهات";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "إعدادات التنبيهات";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "النشر في الحال";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "النشر الآن";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "نشر مقالة";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "تتمثَّل أفضل طريقة لتصبح كاتبًا أفضل في إنشاء عادة كتابة والمشاركة مع الآخرين - حيث تتوافر المطالبات!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "شهادة هذا الخادم غير صالحة. قد تكون مرتبطًا بخادم يبدو &quot;%@&quot; والذي قد يجعل معلوماتك السرية في خطر.\n\nهل تريد أن تثق في الشهادة على أية حال؟";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "لقد قمتَ بالرد على هذا التعليق.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "يبدو أنك قمت بتثبيت مكون إضافي للمحمول من DudaMobile الذي يمنع هذا التطبيق من الاتصال بالمدونة الخاصة بك";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10223,6 +10220,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "إرسال الملاحظات";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "التحقق من تدوينتي \"%@\":";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "التحقق من تدوينتي:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "وضع علامة على الجميع بأنه مقروء";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "إعدادات التنبيهات";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "زر قائمة شريط التنقل";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "الصفحة الرئيسية";
 
@@ -10487,6 +10499,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "إغلاق";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "فشل رفع الوسائط";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "العنوان";
 
@@ -10553,6 +10568,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "الوسوم";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "رفع الوسائط";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "إمكانية الرؤية";
@@ -11310,6 +11328,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "اليوم";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "رسم بياني شريطي يوضّح التعليقات للفترة المحددة.";
 
@@ -11321,6 +11342,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "رسم بياني شريطي يوضّح الزائرين للفترة المحددة.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "حسب اليوم";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ أعلى من الشهر السابق\n";
@@ -11339,6 +11363,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ أقل من العام السابق\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "حسب الشهر";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "حسب الأسبوع";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "حسب العام";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "تجاهُل";
@@ -11696,6 +11729,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "تم الوصول إلى الحد المسموح به. يمكنك المحاولة مرة أخرى في غضون دقيقة واحدة. ستؤدي المحاولة مرة أخرى قبل ذلك إلى زيادة الوقت الذي عليك انتظاره قبل رفع الحظر. إذا كنت تعتقد أن ذلك خطأ داخلي، فاتصل بالدعم.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "يتعذر العثور على عنوان URL لـ REST API في موقعك. يحتاج التطبيق إلى ذلك للاتصال بموقعك. يُرجى الاتصال بالمضيف لحل هذه المشكلة.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "مرحبًا في تطبيق Jetpack. يمكنك إلغاء تثبيت تطبيق ووردبريس.";

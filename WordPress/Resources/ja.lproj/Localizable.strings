@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 10:54:07+0000 */
+/* Translation-Revision-Date: 2024-03-06 09:54:13+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 単語、%2$li 文字";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%sブロック";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s ブロックオプション";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "この投稿を完全に削除してもよいですか ?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "今すぐ公開してもよいですか ?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "公開してもよいですか ?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "自動車";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "ユーザーによっては、自動再生を不便に感じる場合があります。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "マッピング済みドメイン";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "すべて「既読」としてマーク";
-
 /* Marks a notification as unread */
 "Mark Read" = "既読にする";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知詳細テーブル";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知設定";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "すぐに公開";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "今すぐ公開";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "投稿を公開";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "執筆の腕を磨くのに一番よい方法は、執筆習慣を身に付け、他の人と共有することです。そこでプロンプトの出番です !";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "このサーバーの証明書が無効です。「%@」を偽装しているサーバーに接続中の可能性があるため、機密情報が危険にさらされる恐れがあります。\n\nこの証明書をそのまま信頼しますか ?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "このコメントに返信しました。";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "アプリがブログに接続するのを防止するモバイルプラグインが DudaMobile からインストールされたようです";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10226,6 +10223,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "フィードバックを送る";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "私の投稿「%@」をぜひお読みください:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "私の投稿をぜひお読みください:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "すべてを既読にする";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "通知設定";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "ナビゲーションバーのメニューボタン";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "ホームページ";
 
@@ -10496,6 +10508,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack ソーシャル";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "メディアのアップロードに失敗";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "タイトル";
 
@@ -10568,6 +10583,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "タグ";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "メディアをアップロード中";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可視性";
@@ -11366,6 +11384,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "今日";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "選択した期間のコメントを表す棒グラフ。";
 
@@ -11377,6 +11398,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "選択した期間の訪問者を表す棒グラフ。";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "日別";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "先月と比べて%@人増加\n";
@@ -11395,6 +11419,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "去年と比べて%@人減少\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "月別";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "週別";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "年別";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";
@@ -11752,6 +11785,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "上限に達しました。 1分後に再度お試しください。 その前に試しても、禁止が解除されるまでの待機時間が長くなるだけです。 エラーの可能性がある場合、サポートにお問い合わせください。";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "サイトの REST API URL が見つかりませんでした。 これは、アプリからあなたのサイトと通信するために必要です。 ホスティングサービスに連絡して、この問題を解決してください。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Jetpack アプリへようこそ。WordPress アプリはアンインストールできます。";

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 14:54:07+0000 */
+/* Translation-Revision-Date: 2024-03-06 22:34:42+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kelime, %2$li karakter";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s blok seçenekleri";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Bu yazıyı kalıcı olarak silmek istediğinizden emin misiniz?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Şimdi yayınlamak istediğinizden emin misiniz?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Yayınlamak istediğinizden emin misiniz?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Otomotiv";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Otomatik oynatma, bazı kullanıcılar için kullanılabilirlik sorunlarına neden olabilir.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Otomatik güncellemeler";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Alan adını yönet";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Tümünü okundu olarak işaretle";
-
 /* Marks a notification as unread */
 "Mark Read" = "Okundu olarak işaretle";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Bildirim detayları tablosu";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Bildirim ayarları";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Hemen yayımla";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Şimdi yayımla";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Bir yazı yayınlayın";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Daha iyi bir yazar olmanın en iyi yolu, yazma alışkanlığı kazanmak ve başkalarıyla paylaşmaktır - işte burada Bilgiler devreye girer!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Bu sunucunun sertifikası geçersiz. “%@” taklidi yapan bir siteye bağlanıyor olabilirsiniz ki bu kişisel bilgilerinizin ele geçirilebilmesi açısından büyük bir risktir.\n\nSertifikaya güvenip devam etmek istiyor musunuz?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Bu yorumu yanıtladınız.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobilden uygulamanın bloğunuza bağlanmasını engelleyen bir eklenti yüklemiş görünüyorsunuz";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10223,6 +10220,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri Bildirim gönderin";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "\"%@\" gönderime göz atın:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Gönderime göz atın:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Tümünü Okundu Olarak İşaretle";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Bildirim Ayarları";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Gezinme Çubuğu Menü Düğmesi";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Ana sayfa";
 
@@ -10493,6 +10505,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Ortam dosyası yüklenemedi";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Başlık";
 
@@ -10565,6 +10580,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketler";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Ortam dosyası yükleniyor";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Görünürlük";
@@ -11362,6 +11380,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Son yazınız %1$@ %2$@ beğeni aldı.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Bugün";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Seçilen döneme ait Yorumları gösteren Çubuk Grafik.";
 
@@ -11373,6 +11394,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Seçilen döneme ait Ziyaretçileri gösteren Çubuk Grafik.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Güne göre";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
@@ -11397,6 +11421,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "Önceki yıldan %@ daha düşük\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Aya göre";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Haftaya göre";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Yıla göre";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Kapat";
@@ -11754,6 +11787,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Sınıra ulaşıldı. Bir (1) dakika içinde tekrar deneyebilirsiniz. Bu süre dolmadan önce tekrar denemek sadece yasağın kaldırılmasından önce geçecek sürenin uzamasına neden olur. Bunun bir hata olduğunu düşünüyorsanız desteğe başvurun.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Sitenizin REST API URL'si bulunamadı. Uygulama, sitenizle bağlantı kurabilmek için buna gereksinim duyuyor. Bu sorunu gidermek için sunucunuzla iletişim kurun.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Jetpack uygulamasına hoş geldiniz. WordPress uygulamasını kaldırabilirsiniz.";
