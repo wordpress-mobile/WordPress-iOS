@@ -54,7 +54,14 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         return String(format: Strings.Accessibility.exerptChunkFormat, excerpt)
     }()
 
-    return [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
+    var chunks: [String?]
+    if RemoteFeatureFlag.syncPublishing.enabled() {
+        chunks = [titleAndDateChunk, authorChunk, excerptChunk]
+    } else {
+        chunks = [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
+    }
+
+    return chunks
         .compactMap { $0 }
         .joined(separator: " ")
 }

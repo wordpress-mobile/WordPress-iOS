@@ -72,7 +72,9 @@ class PostCompactCell: UITableViewCell {
         WPStyleGuide.applyPostCardStyle(self)
         WPStyleGuide.applyPostProgressViewStyle(progressView)
         WPStyleGuide.configureLabel(timestampLabel, textStyle: .subheadline)
-        WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            WPStyleGuide.configureLabel(badgesLabel, textStyle: .subheadline)
+        }
 
         titleLabel.font = AppStyleGuide.prominentFont(textStyle: .headline, weight: .bold)
         titleLabel.adjustsFontForContentSizeCategory = true
@@ -142,6 +144,10 @@ class PostCompactCell: UITableViewCell {
     }
 
     private func configureStatus() {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            badgesLabel.isHidden = true
+            return
+        }
         guard let viewModel = viewModel else {
             return
         }
