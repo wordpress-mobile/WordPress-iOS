@@ -1,3 +1,0 @@
-We’ve made several tweaks to the pre-publishing sheet. You might notice changes like smoother screen transitions, a simplified date picker, and cleaner settings when you’re publishing on your iPad.
-
-We also updated the info section of your user profile that talks about your Gravatar. (Not sure what that is? You’re in for a Grava-treat).

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-06 22:33:17+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 区块";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "确定要永久删除此文章吗？";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "是否确定要立即发布？";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "确定要发布吗？";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "汽车";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "自动播放可能会给某些用户带来使用方面的问题。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -4126,9 +4130,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "已映射的域";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "全部标为已读";
-
 /* Marks a notification as unread */
 "Mark Read" = "标记为已读";
 
@@ -4736,8 +4737,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知详细信息表";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知设置";
 
@@ -5484,9 +5484,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "立即发布";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "立即发布";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "发布文章";
@@ -6992,7 +6989,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "优秀作家的良好养成方式是形成写作习惯并与他人共享 - 这正是提示功能的用武之处！";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此服务器的证书无效。您所连接的服务器伪装成了“%@”，这可能会给您的凭证信息带来危险。\n\n仍然信任此证书吗？";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "您回复了此评论。";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "您似乎安装了来自 DudaMobile 的移动插件，该插件会阻止应用程序连接到您的博客";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10223,6 +10220,12 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "发送反馈";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "查看我的文章 \"%@\"：";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "查看我的文章：";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "主页";
 
@@ -10565,6 +10568,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "标签";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "上传媒体";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可见性";
@@ -11755,6 +11761,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "到达上限。 您可以在 1 分钟后重试。 提前重试只会增加您在限制取消前必须要等待的时间。 如果您认为有错误，请联系支持人员。";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "无法找到您站点的 REST API URL。 应用程序需要由此与您的站点通信。 请联系您的托管服务提供商以解决此问题。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "欢迎使用 Jetpack app。您可以卸载 WordPress 应用。";

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: is */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1455,8 +1455,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tafla ítarupplýsinga tilkynninga";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Stillingar tilkynninga";
 
@@ -1749,9 +1748,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Birta strax";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Birta núna";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -2274,7 +2270,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Forritið gat ekki skilið svarið frá netþjóninum. Vinsamlegast yfirfarið stillingar á vefnum þínum.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Skírteinið fyrir þennan netþjón er ógilt. Þú gætir verið að tengjast við netþjón sem er að þykjast vera “%@” og gæti það ógnað upplýsingaöryggi þínu.\n\nViltu treysta skírteininu engu að síður?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2778,7 +2774,7 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Þú verður að vera skráð(ur) inn á WordPress.com aðgang til að framkvæma þessa aðgerð.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Svo virðist sem þú hafir sett inn farsímaviðbót frá DudaMobile sem kemur í veg fyrir að forritið geti tengst blogginu þínu";
 
 /* Displayed in the Notification Settings View */

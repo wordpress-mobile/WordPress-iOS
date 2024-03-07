@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-06 22:30:32+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 단어, %2$li 글자";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 블록";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 블록 옵션";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "이 글을 영구적으로 삭제하시겠습니까?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "지금 발행하시겠습니까?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "정말로 공개하시겠습니까?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "자동차";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "비디오를 자동 재생하면 일부 사용자에게 유용성 문제가 발생할 수 있습니다.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "매핑된 도메인";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "모두 읽음으로 표시";
-
 /* Marks a notification as unread */
 "Mark Read" = "읽음으로 표시";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "알림 세부정보 테이블";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "알림 설정";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "즉시 발행";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "지금 게시";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "글 게시";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "더 좋은 작가가 되는 가장 좋은 방법은 글쓰기를 습관화하고 다른 사람과 공유하는 것입니다. 그래서 프롬프트가 필요합니다!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "이 서버의 인증서가 올바르지 않습니다. “%@”(으)로 사칭한 서버에 연결 중일 수 있습니다. 기밀 정보가 노출될 수 있습니다.\n\n그래도 인증서를 신뢰하시겠어요?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8725,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "이 댓글에 답하였습니다.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobile에서 설치한 모바일 플러그인으로 인해 앱이 블로그에 연결할 수 없습니다.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10193,6 +10190,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "피드백 보내기";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "내 글 \"%@\" 확인:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "내 글 확인:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "모두 읽음으로 표시";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "알림 설정";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "탐색 표시줄 메뉴 버튼";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "홈페이지";
 
@@ -10460,6 +10472,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "닫기";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "미디어 업로드 실패";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "제목";
 
@@ -10532,6 +10547,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "태그";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "미디어 업로드하기";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "표시 여부";
@@ -11327,6 +11345,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "최신 글 %1$@에 %2$@개의 좋아요가 있습니다.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "오늘";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "선택한 기간의 댓글 수가 표시되는 막대그래프입니다.";
 
@@ -11338,6 +11359,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "선택한 기간의 방문자 수가 표시되는 막대그래프입니다.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "일 기준";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@(%3$@%%)";
@@ -11359,6 +11383,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "이전 연도보다 %@ 낮음\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "월 기준";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "주 기준";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "연도 기준";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
@@ -11713,6 +11746,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "제한에 도달했습니다. 1분 후에 다시 시도할 수 있습니다. 그 전에 다시 시도할 경우 제한이 해제될 때까지 기다려야 하는 시간이 늘어납니다. 오류라고 생각되면 지원 팀에 문의하세요.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "사이트의 REST API URL을 찾을 수 없습니다. 앱에서 회원님의 사이트와 통신하려면 이 정보가 필요합니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "젯팩 앱에 오신 것을 환영합니다. 워드프레스 앱을 제거하실 수 있습니다.";

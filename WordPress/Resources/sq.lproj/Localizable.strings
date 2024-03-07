@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-02-26 11:58:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li fjalë, %2$li shenja";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bllok %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Mundësi blloku %s";
@@ -842,9 +846,6 @@
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Jeni i sigurt se doni të fshihet përgjithmonë ky postim?";
-
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Jeni i sigurt se doni të botohet tani?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
@@ -4120,9 +4121,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Përkatësi e Përshoqëruar";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Vëru Krejt Shenjë Si të Lexuar";
-
 /* Marks a notification as unread */
 "Mark Read" = "Shënoje Si të Lexuar";
 
@@ -4730,8 +4728,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabelë Hollësish Njoftimesh";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Rregullime Njoftimesh";
 
@@ -5475,9 +5472,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Botoje Menjëherë";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Botoje Që Tani";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Botoni një postim";
@@ -6980,7 +6974,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Rruga më e mirë për t’u bërë një shkrues më i mirë është të krijohet një zakon shkrimi dhe dhënia e shkrimeve të tjerëve - këtu hyjnë në lojë Cytjet!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Dëshmia për këtë shërbyes është e pavlefshme. Mund të jeni duke u lidhur te një shërbyes që pretendon të jetë “%@”, gjë që do t’i vinte në rrezik të dhënat tuaja rezervat.\n\nDo të donit të besohej kjo dëshmi, sido që të jetë?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8713,7 +8707,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Iu përgjigjët këtij komenti.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Duket se keni instaluar një shtojcë celulari nga DudaMobile që e pengon aplikacionin të lidhet te blogu juaj";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
