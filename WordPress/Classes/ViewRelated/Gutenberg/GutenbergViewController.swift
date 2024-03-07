@@ -1387,7 +1387,5 @@ extension GutenbergViewController {
 }
 
 // Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
-extension GutenbergJSException.StacktraceLine: AutomatticTracks.StacktraceLine {}
-extension GutenbergJSException: AutomatticTracks.JSException {
-    public var jsStacktrace: [AutomatticTracks.StacktraceLine] { return self.stacktrace }
-}
+extension GutenbergJSException.StacktraceLine: AutomatticTracks.JSStacktraceLine {}
+extension GutenbergJSException: AutomatticTracks.JSException {}
