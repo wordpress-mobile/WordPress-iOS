@@ -454,6 +454,22 @@ platform :ios do
     )
   end
 
+  # Send a Slack message to the specified channel
+  #
+  # @param [String] channel The Slack channel to send the message to
+  # @param [String] message The message to send to the channel
+  #
+  def send_slack_message(message:, channel: '#build-and-ship')
+    slack(
+      username: 'WordPress Release Bot',
+      icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
+      slack_url: get_required_env('SLACK_WEBHOOK'),
+      channel:,
+      message:,
+      default_payloads: []
+    )
+  end
+
   def upload_build_to_app_center(
     name:,
     file:,
