@@ -287,7 +287,6 @@ platform :ios do
       build_version: build_code_current_internal,
       app_identifier: 'org.wordpress.internal'
     )
-
   end
 
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
@@ -442,6 +441,7 @@ platform :ios do
     buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
   # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/ParameterLists
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
