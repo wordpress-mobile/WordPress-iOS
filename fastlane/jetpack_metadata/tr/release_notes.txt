@@ -1,3 +1,0 @@
-Yayımlama öncesi sayfasında birkaç düzenleme yaptık. iPad'inizde yayımlarken daha pürüzsüz ekran geçişleri, basitleştirilmiş bir tarih seçici ve daha temiz ayarlar gibi değişiklikler fark edebilirsiniz.
-
-Ayrıca Gravatar'ınızdan bahseden kullanıcı profiliniz bölümünü de güncelledik. (Bunun ne olduğundan emin değil misiniz? Bu hoşunuza gidecek).
