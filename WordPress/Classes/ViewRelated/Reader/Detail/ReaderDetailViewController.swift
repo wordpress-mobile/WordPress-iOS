@@ -7,7 +7,7 @@ protocol ReaderDetailView: AnyObject {
     func render(_ post: ReaderPost)
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost])
     func showLoading()
-    func showError()
+    func showError(subtitle: String?)
     func showErrorWithWebAction()
     func scroll(to: String)
     func updateHeader()
@@ -384,11 +384,11 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Shown an error
-    func showError() {
+    func showError(subtitle: String?) {
         isLoadingWebView = false
         hideLoading()
 
-        displayLoadingView(title: LoadingText.errorLoadingTitle)
+        displayLoadingView(title: LoadingText.errorLoadingTitle, subtitle: subtitle)
     }
 
     /// Shown an error with a button to open the post on the browser
@@ -995,8 +995,8 @@ extension ReaderDetailViewController: WKNavigationDelegate {
 // MARK: - Error View Handling (NoResultsViewController)
 
 private extension ReaderDetailViewController {
-    func displayLoadingView(title: String, accessoryView: UIView? = nil) {
-        noResultsViewController.configure(title: title, accessoryView: accessoryView)
+    func displayLoadingView(title: String, subtitle: String? = nil, accessoryView: UIView? = nil) {
+        noResultsViewController.configure(title: title, subtitle: subtitle, accessoryView: accessoryView)
         showLoadingView()
     }
 

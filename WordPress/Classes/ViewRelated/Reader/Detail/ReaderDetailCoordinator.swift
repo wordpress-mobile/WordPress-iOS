@@ -333,8 +333,8 @@ class ReaderDetailCoordinator {
                                     success: { [weak self] post in
                                         self?.post = post
                                         self?.renderPostAndBumpStats()
-                                    }, failure: { [weak self] _ in
-                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                    }, failure: { [weak self] error in
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
                                         self?.reportPostLoadFailure()
                                     })
     }
@@ -350,9 +350,22 @@ class ReaderDetailCoordinator {
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
                                         DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
                                         self?.reportPostLoadFailure()
                                     })
+    }
+
+    private func showError(error: Error?) {
+        let errorMessage: String? = {
+            // Get error message from API response if provided.
+            if let error = error,
+               let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
+               !message.isEmpty {
+                return message
+            }
+            return nil
+        }()
+        self.view?.showError(subtitle: errorMessage)
     }
 
     private func renderPostAndBumpStats() {
