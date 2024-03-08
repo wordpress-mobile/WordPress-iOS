@@ -81,6 +81,9 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         }
     }
 
+    private let errorTitle = NSLocalizedString("Error loading the comment",
+                                               comment: "Text displayed when there is a failure loading notification comments.")
+
     // MARK: - Init
 
     init(notification: Notification,
@@ -229,14 +232,37 @@ private extension NotificationCommentDetailViewController {
 
                 self.fetchComment(self.commentID, completion: { [weak self] comment in
                     guard let comment = comment else {
-                        self?.showErrorView()
+                        self?.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
                         return
                     }
 
                     self?.comment = comment
+                }, failure: { [weak self] error in
+                    guard let self = self else {
+                        return
+                    }
+                    self.showErrorView(error: error)
                 })
+            }, failure: { [weak self] error in
+                guard let self = self else {
+                    return
+                }
+                self.showErrorView(error: error)
             })
         })
+    }
+
+    private func showErrorView(error: Error?) {
+        let errorMessage: String? = {
+            // Get error message from API response if provided.
+            if let error = error,
+               let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
+               !message.isEmpty {
+                return message
+            }
+            return nil
+        }()
+        self.showErrorView(title: self.errorTitle, subtitle: errorMessage)
     }
 
     func loadPostIfNeeded(completion: @escaping () -> Void) {
@@ -284,10 +310,10 @@ private extension NotificationCommentDetailViewController {
         return nil
     }
 
-    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
+    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void, failure: @escaping (Error?) -> Void) {
         guard let commentID = commentID else {
             DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
-            completion(nil)
+            failure(nil)
             return
         }
 
@@ -295,7 +321,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: blog, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -304,7 +330,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: post, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -312,7 +338,7 @@ private extension NotificationCommentDetailViewController {
         completion(nil)
     }
 
-    func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
+    func fetchParentCommentIfNeeded(completion: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         // If the comment has a parent and it is not cached, fetch it so the details header is correct.
         guard let parentID = notification.metaParentID,
               loadCommentFromCache(parentID) == nil else {
@@ -320,9 +346,7 @@ private extension NotificationCommentDetailViewController {
                   return
               }
 
-        fetchComment(parentID, completion: { _ in
-            completion()
-        })
+        fetchComment(parentID, completion: { _ in completion() }, failure: { failure($0) })
     }
 
     struct Constants {
@@ -344,16 +368,16 @@ private extension NotificationCommentDetailViewController {
         }
     }
 
-    func showErrorView() {
+    func showErrorView(title: String, subtitle: String?) {
         if let commentDetailViewController = commentDetailViewController {
-            commentDetailViewController.showNoResultsView(title: NoResults.errorTitle,
-                                                          subtitle: NoResults.errorSubtitle,
+            commentDetailViewController.showNoResultsView(title: title,
+                                                          subtitle: subtitle,
                                                           imageName: NoResults.imageName)
         } else {
             hideNoResults()
             configureAndDisplayNoResults(on: view,
-                                         title: NoResults.errorTitle,
-                                         subtitle: NoResults.errorSubtitle,
+                                         title: title,
+                                         subtitle: subtitle,
                                          image: NoResults.imageName)
         }
     }
