@@ -6,9 +6,17 @@ import XCTest
 class PostCompactCellTests: CoreDataTestCase {
 
     var postCell: PostCompactCell!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     override func setUp() {
+        super.setUp()
         postCell = postCellFromNib()
+        try? featureFlags.override(RemoteFeatureFlag.syncPublishing, withValue: false)
+    }
+
+    override func tearDown() {
+        try? featureFlags.override(RemoteFeatureFlag.syncPublishing, withValue: RemoteFeatureFlag.syncPublishing.originalValue)
+        super.tearDown()
     }
 
     func testShowImageWhenAvailable() {

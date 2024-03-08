@@ -6,10 +6,18 @@ import XCTest
 class PostCompactCellGhostableTests: CoreDataTestCase {
 
     var postCell: PostCompactCell!
+    private let featureFlags = FeatureFlagOverrideStore()
 
     override func setUp() {
+        super.setUp()
         postCell = postCellFromNib()
         postCell.ghostAnimationWillStart()
+        try? featureFlags.override(RemoteFeatureFlag.syncPublishing, withValue: false)
+    }
+
+    override func tearDown() {
+        try? featureFlags.override(RemoteFeatureFlag.syncPublishing, withValue: RemoteFeatureFlag.syncPublishing.originalValue)
+        super.tearDown()
     }
 
     func testIsNotInteractive() {
