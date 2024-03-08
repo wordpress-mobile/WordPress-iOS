@@ -48,7 +48,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
-@property (nonatomic) BOOL failedToFetchComments;
+@property (nonatomic, strong) NSError *fetchCommentsError;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
@@ -449,21 +449,22 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (NSString *)noResultsTitleText
 {
-    // Let's just display the same message, for consistency's sake
-    if (self.isLoadingPost || self.syncHelper.isSyncing) {
-        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
-    }
     // If we couldn't fetch the comments lets let the user know
-    if (self.failedToFetchComments) {
+    if (self.fetchCommentsError != nil) {
         return NSLocalizedString(@"There has been an unexpected error while loading the comments.", @"Message shown when comments for a post can not be loaded.");
     }
-    return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    // Let's just display the same message, for consistency's sake
+    else if (self.isLoadingPost || self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    } else {
+        return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    }
 }
 
 - (UIView *)noResultsAccessoryView
 {
     UIView *loadingAccessoryView = nil;
-    if (self.isLoadingPost || self.syncHelper.isSyncing) {
+    if ((self.isLoadingPost || self.syncHelper.isSyncing) && self.fetchCommentsError == nil) {
         loadingAccessoryView = [NoResultsViewController loadingAccessoryView];
     }
     return loadingAccessoryView;
@@ -791,15 +792,24 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
+    NSString *image = nil;
+    NSString *subtitle = nil;
+    if (self.fetchCommentsError != nil) {
+        image = @"wp-illustration-reader-empty";
+        NSString *message = self.fetchCommentsError.userInfo[@"WordPressComRestApiErrorMessageKey"];
+        if (message != nil && ![message isEqualToString:@""]) {
+            subtitle = message;
+        }
+    }
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
                                      attributedTitle:nil
                                    noConnectionTitle:nil
                                          buttonTitle:nil
-                                            subtitle:nil
+                                            subtitle:subtitle
                                 noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
-                                               image:nil
+                                               image:image
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
 
@@ -995,7 +1005,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    self.failedToFetchComments = NO;
+    self.fetchCommentsError = nil;
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber * __unused totalComments) {
@@ -1009,7 +1019,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    self.failedToFetchComments = NO;
+    self.fetchCommentsError = nil;
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
@@ -1034,7 +1044,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
 {
-    self.failedToFetchComments = YES;
+    self.fetchCommentsError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
     [self.activityFooter stopAnimating];
     [self refreshTableViewAndNoResultsView];
 }
@@ -1055,6 +1065,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
+        self.fetchCommentsError = error;
+        [self.activityFooter stopAnimating];
+        [self refreshTableViewAndNoResultsView];
     }];
 }
 
