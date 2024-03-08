@@ -205,9 +205,10 @@ class PostBuilder {
         return self
     }
 
-    func build() -> Post {
+    func build(_ customize: ((Post) -> Void)? = nil) -> Post {
         // TODO: Enable this assertion once we can ensure that the post's MOC isn't being deallocated after the `PostBuilder` is
         // assert(post.managedObjectContext != nil)
+        customize?(post)
         return post
     }
 }

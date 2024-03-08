@@ -25,19 +25,9 @@ final class PostRepository {
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
         let remote = try await getRemoteService(forblogID: blogID)
-
-        let remotePost: RemotePost? = try await withCheckedThrowingContinuation { continuation in
-            remote.getPostWithID(
-                postID,
-                success: { continuation.resume(returning: $0) },
-                failure: { continuation.resume(throwing: $0!) }
-            )
-        }
-
-        guard let remotePost else {
+        guard let remotePost = try await remote.post(withID: postID) else {
             throw PostRepository.Error.postNotFound
         }
-
         return try await coreDataStack.performAndSave { context in
             let blog = try context.existingObject(with: blogID)
 
@@ -71,25 +61,6 @@ final class PostRepository {
     /// - warning: Work-in-progress (kahu-offline-mode)
     ///
     /// - parameter post: The revision of the post.
-    @MainActor
-    func _upload(_ post: AbstractPost) async throws {
-        let remotePost = PostHelper.remotePost(with: post)
-        try await _upload(remotePost, for: post)
-    }
-
-    /// Uploads the changes to the given post to the server and deletes the
-    /// uploaded local revision afterward. If the post doesn't have an associated
-    /// remote ID, creates a new post.
-    ///
-    /// - note: This method is a low-level primitive for syncing the latest
-    /// post date to the server.
-    ///
-    /// - warning: Before publishing, ensure that the media for the post got
-    /// uploaded. Managing media is not the responsibility of `PostRepository.`
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
-    ///
-    /// - parameter post: The revision of the post.
     @discardableResult @MainActor
     func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws -> AbstractPost {
         let service = try getRemoteService(for: post.blog)
@@ -108,6 +79,103 @@ final class PostRepository {
         ContextManager.shared.save(context)
         return post
     }
+
+    // TOOD: Docs
+    /// This method uploads the latest revision of the post (if present) and
+    /// also patches it with the (optional) parameters.
+    ///
+    /// For example, if you have a draft with un-synced changes and you want to
+    /// publish it, all you need to do is the following:
+    ///
+    /// TBD: If this is a new post and it was never synced, the post is created.
+    /// If it's a changed post, it sends only the diff.
+    ///
+    /// ```swift
+    ///
+    /// ```
+    ///
+    /// **Applying Revision**
+    ///
+    /// TBD
+    ///
+    /// TBD: how deletion works
+    /// TBD: how conflict resolution works
+    ///
+    /// Saves the changes on the main context, so they are immediatelly available
+    /// the moment this method returns.
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @MainActor
+    func _save(post: AbstractPost, with parameters: RemotePostUpdateParameters? = nil) async throws {
+        let original = post.original ?? post
+
+        // TODO: make parameters from revision
+        let parameters = parameters ?? RemotePostUpdateParameters()
+
+        let service = try getRemoteService(for: post.blog)
+        let context = coreDataStack.mainContext
+
+        let uploadedPost: RemotePost
+        if let postID = post.postID, postID.intValue > 0 {
+            do {
+                uploadedPost = try await service.patchPost(withID: postID, parameters: parameters)
+            } catch {
+                guard (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String == "old-revision" else {
+                    throw error
+                }
+                guard let remotePost = try await service.post(withID: postID) else {
+                    // TODO: what happens if post got permanently deleted?
+                    throw URLError(.resourceUnavailable)
+                }
+
+                // TODO: check if post still exists
+                // TODO: Update this demo to use a standalone Post Settings screen
+
+                if let original = post.original {
+                    // Consolidate the changes
+
+                    // TODO: Add a better way to do that; should ideally be done automatically so that adding new fields won't require any changes to this code.
+                    var diff: [String: Any] = [:]
+                    if original.wp_slug != post.wp_slug {
+                        diff["wp_slug"] = post.wp_slug
+                    }
+                    PostHelper.update(original, with: remotePost, in: context)
+                    PostHelper.update(post, with: remotePost, in: context)
+                    for (key, value) in diff {
+                        post.setValue(value, forKey: key)
+                    }
+                    ContextManager.shared.save(context)
+
+                    if remotePost.content != original.content && diff["content"] != nil {
+                        // TODO: Throw an error and let the user resolve it.
+                        // This is the only time we need to resolve the conflict manually.
+                        throw URLError(.unknown)
+                    }
+
+                    // TODO: This is not the best way to re-create the parameters.
+                    // It only works when updating a post and not changing its status.
+                    let parameters2 = PostHelper.remotePost(with: post)
+                    uploadedPost = try await service.update(parameters2)
+                } else {
+                    // TODO: programmatic error? fallback?
+                    throw URLError(.unknown)
+                }
+            }
+        } else {
+            fatalError("How can we implement this?")
+//            uploadedPost = try await service.create(parameters)
+        }
+
+        // TODO: check if post still exists
+
+        let post = deleteRevision(for: post)
+        PostHelper.update(post, with: uploadedPost, in: context)
+        PostService(managedObjectContext: context)
+            .updateMediaFor(post: post, success: {}, failure: { _ in })
+        ContextManager.shared.save(context)
+    }
+
+    // TODO: should "publish" first upload the latest revision?
 
     private func deleteRevision(for post: AbstractPost) -> AbstractPost {
         if post.isRevision(), let original = post.original {
