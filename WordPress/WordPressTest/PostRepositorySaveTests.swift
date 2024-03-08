@@ -69,6 +69,54 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertEqual(post.status, .draft)
     }
 
+    // Scenario: user creates a new post and publishes it immediatelly.
+    func testSaveNewDraftAndPublish() async throws {
+        // GIVEN a draft post (never synced)
+        let creationDate = Date(timeIntervalSince1970: 1709852440)
+        let post = PostBuilder(mainContext, blog: blog).build {
+            $0.status = .draft
+            $0.authorID = 29043
+            $0.dateCreated = creationDate
+            $0.postTitle = "Hello"
+            $0.content = "content-1"
+        }
+        try mainContext.save()
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends the post content and amends the status
+            try validateRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "categories_by_id" : [
+
+              ],
+              "content" : "content-1",
+              "date" : "2024-03-07T23:00:40+0000",
+              "featured_image" : "",
+              "parent" : "false",
+              "password" : "",
+              "status" : "publish",
+              "sticky" : "false",
+              "title" : "Hello",
+              "type" : "post"
+            }
+            """)
+            var post = WordPressComPost.mock
+            post.status = PostStatusPublish
+            return try HTTPStubsResponse(value: post, statusCode: 201)
+        }
+
+        // WHEN publishing a post
+        let parameters = RemotePostUpdateParameters()
+        parameters.status = PostStatusPublish
+        try await repository._save(post, with: parameters)
+
+        // THEN the post was created
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertEqual(post.status, .publish)
+    }
+
     func testPublishUnsyncedPost() async throws {
         XCTFail()
     }

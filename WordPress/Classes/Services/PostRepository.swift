@@ -146,7 +146,9 @@ final class PostRepository {
                     if original.wp_slug != post.wp_slug {
                         diff["wp_slug"] = post.wp_slug
                     }
+                    // TODO: consolidate only in memory and wait until the action update?
                     PostHelper.update(original, with: remotePost, in: context)
+                    // TODO: get the latest value instead?
                     PostHelper.update(post, with: remotePost, in: context)
                     for (key, value) in diff {
                         post.setValue(value, forKey: key)
@@ -169,8 +171,9 @@ final class PostRepository {
                 }
             }
         } else {
-            let parameters = PostHelper.remotePost(with: latest)
-            uploadedPost = try await service.create(parameters)
+            let remotePost = PostHelper.remotePost(with: latest)
+            PostRepository.apply(parameters, to: remotePost)
+            uploadedPost = try await service.create(remotePost)
         }
 
         // TODO: check if post still exists
@@ -180,6 +183,29 @@ final class PostRepository {
         PostService(managedObjectContext: context)
             .updateMediaFor(post: post, success: {}, failure: { _ in })
         ContextManager.shared.save(context)
+    }
+
+    // TODO: A temporary solution for applying the diff
+    private static func apply(_ changes: RemotePostUpdateParameters, to post: RemotePost) {
+        if let status = changes.status {
+            post.status = status
+        }
+        if let date = changes.date {
+            post.date = date
+        }
+//        if let authorID = changes.authorID {
+//            post.authorID = authorID
+//        }
+        if let title = changes.title {
+            post.title = title
+        }
+        if let content = changes.content {
+            post.content = content
+        }
+        if let password = changes.password {
+            post.password = password
+        }
+        // TODO: Update remaining options
     }
 
     // TODO: should "publish" first upload the latest revision?
