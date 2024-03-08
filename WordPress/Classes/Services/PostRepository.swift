@@ -106,8 +106,9 @@ final class PostRepository {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _save(post: AbstractPost, with parameters: RemotePostUpdateParameters? = nil) async throws {
+    func _save(_ post: AbstractPost, with parameters: RemotePostUpdateParameters? = nil) async throws {
         let original = post.original ?? post
+        let latest = post.latest()
 
         // TODO: make parameters from revision
         let parameters = parameters ?? RemotePostUpdateParameters()
@@ -116,7 +117,13 @@ final class PostRepository {
         let context = coreDataStack.mainContext
 
         let uploadedPost: RemotePost
-        if let postID = post.postID, postID.intValue > 0 {
+        if let postID = original.postID, postID.intValue > 0 {
+
+            // TODO: When should we send if-not-modified-since?
+            if let date = original.dateModified {
+                parameters.ifNotModifiedSince = date
+            }
+
             do {
                 uploadedPost = try await service.patchPost(withID: postID, parameters: parameters)
             } catch {
@@ -162,8 +169,8 @@ final class PostRepository {
                 }
             }
         } else {
-            fatalError("How can we implement this?")
-//            uploadedPost = try await service.create(parameters)
+            let parameters = PostHelper.remotePost(with: latest)
+            uploadedPost = try await service.create(parameters)
         }
 
         // TODO: check if post still exists
