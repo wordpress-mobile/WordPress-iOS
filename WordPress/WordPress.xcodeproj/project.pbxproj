@@ -435,8 +435,8 @@
 		0C0D3B0E2A4C79DE0050A00D /* BlazeCampaignsStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */; };
 		0C1531FE2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */; };
 		0C1531FF2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */; };
-		0C1C083E2B9BF9A000E52F8C /* RemotePost+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1C083D2B9BF9A000E52F8C /* RemotePost+Diff.swift */; };
-		0C1C083F2B9BF9A000E52F8C /* RemotePost+Diff.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1C083D2B9BF9A000E52F8C /* RemotePost+Diff.swift */; };
+		0C1C083E2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */; };
+		0C1C083F2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */; };
 		0C1DB5FF2B095DA50028F200 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB5FE2B095DA50028F200 /* ImageView.swift */; };
 		0C1DB6002B095DA50028F200 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB5FE2B095DA50028F200 /* ImageView.swift */; };
 		0C1DB6082B0A419B0028F200 /* ImageDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */; };
@@ -6217,7 +6217,7 @@
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
 		0C0D3B0C2A4C79DE0050A00D /* BlazeCampaignsStream.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsStream.swift; sourceTree = "<group>"; };
 		0C1531FD2AE17140003CDE13 /* PostSearchViewModel+Highlighter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSearchViewModel+Highlighter.swift"; sourceTree = "<group>"; };
-		0C1C083D2B9BF9A000E52F8C /* RemotePost+Diff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemotePost+Diff.swift"; sourceTree = "<group>"; };
+		0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostRepository+Helpers.swift"; sourceTree = "<group>"; };
 		0C1DB5FE2B095DA50028F200 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		0C1DB6072B0A419B0028F200 /* ImageDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDecoder.swift; sourceTree = "<group>"; };
 		0C1DB60A2B0A9A570028F200 /* ImageDownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageDownloaderTests.swift; sourceTree = "<group>"; };
@@ -14456,7 +14456,7 @@
 				0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */,
 				8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */,
 				4A2C73F32A95856000ACE79E /* PostRepository.swift */,
-				0C1C083D2B9BF9A000E52F8C /* RemotePost+Diff.swift */,
+				0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */,
 				0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
@@ -22509,7 +22509,7 @@
 				0CD382832A4B699E00612173 /* DashboardBlazeCardCellViewModel.swift in Sources */,
 				7EBB4126206C388100012D98 /* StockPhotosService.swift in Sources */,
 				E17FEADA221494B2006E1D2D /* Blog+Analytics.swift in Sources */,
-				0C1C083E2B9BF9A000E52F8C /* RemotePost+Diff.swift in Sources */,
+				0C1C083E2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */,
 				E69551F61B8B6AE200CB8E4F /* ReaderStreamViewController+Helper.swift in Sources */,
 				F46039182B72A95D00D4FE12 /* NotificationsTableHeaderView.swift in Sources */,
 				E61084BE1B9B47BA008050C5 /* ReaderAbstractTopic.swift in Sources */,
@@ -24228,7 +24228,7 @@
 				C34E94BC28EDF80700D27A16 /* InfiniteScrollerViewDelegate.swift in Sources */,
 				FABB21072602FC2C00C8785C /* ReaderTableContent.swift in Sources */,
 				01E2580C2ACDC72C00F09666 /* PlanWizardContentViewModel.swift in Sources */,
-				0C1C083F2B9BF9A000E52F8C /* RemotePost+Diff.swift in Sources */,
+				0C1C083F2B9BF9A000E52F8C /* PostRepository+Helpers.swift in Sources */,
 				FABB21082602FC2C00C8785C /* SiteCreationHeaderData.swift in Sources */,
 				FABB21092602FC2C00C8785C /* WPAuthTokenIssueSolver.m in Sources */,
 				FABB210A2602FC2C00C8785C /* PageAutoUploadMessageProvider.swift in Sources */,

@@ -66,9 +66,9 @@ final class PostRepository {
         let service = try getRemoteService(for: post.blog)
         let uploadedPost: RemotePost
         if let postID = post.postID, postID.intValue > 0 {
-            uploadedPost = try await service.update(parameters)
+            uploadedPost = try await service._update(parameters)
         } else {
-            uploadedPost = try await service.create(parameters)
+            uploadedPost = try await service._create(parameters)
         }
 
         let post = deleteRevision(for: post)
@@ -97,6 +97,9 @@ final class PostRepository {
         /// in data, typically `content`. In most cases, the `save()` method
         /// will be able to merge the changes automatically.
         case conflict(latest: RemotePost)
+
+        /// Post was deleted on the remote, so no updates can be made.
+        case deleted
     }
 
     // TOOD: Docs
@@ -130,33 +133,30 @@ final class PostRepository {
     ///
     /// TODO: change the `overwrite` default to `false` when we are ready.
     @MainActor
-    func _save(_ post: AbstractPost, with changes: RemotePostUpdateParameters? = nil, overwrite: Bool = true) async throws {
+    func _save(_ post: AbstractPost, with changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
         let original = post.original ?? post
         let latest = post.latest()
-
-        // TODO: make parameters from revision
-        let changes = changes ?? RemotePostUpdateParameters()
 
         let service = try getRemoteService(for: post.blog)
         let context = coreDataStack.mainContext
 
         let uploadedPost: RemotePost
         if let postID = original.postID, postID.intValue > 0 {
-
-            let changes = {
-                let originalPost = PostHelper.remotePost(with: original)
-                let latestPost = PostHelper.remotePost(with: latest)
-                latestPost.apply(changes)
-                return latestPost.changes(from: originalPost)
+            // Create a diff between local revision and the target revision.
+            var changes = {
+                let parametersOriginal = RemotePostCreateParameters(post: original)
+                var parametersLatest = RemotePostCreateParameters(post: latest)
+                if let changes {
+                    parametersLatest.apply(changes)
+                }
+                return parametersLatest.changes(from: parametersOriginal)
             }()
-
-            // TODO: When should we send if-not-modified-since? only if content changes?
-            if !overwrite, let date = original.dateModified {
+            // Make sure the app never overwrites the content without the user approval.
+            if !overwrite, let date = original.dateModified, changes.content != nil {
                 changes.ifNotModifiedSince = date
             }
-
             do {
-                uploadedPost = try await service.patchPost(withID: postID, parameters: changes)
+                uploadedPost = try await service.patchPost(withID: postID.intValue, changes: changes)
             } catch {
                 guard (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String == "old-revision" else {
                     throw error
@@ -177,12 +177,14 @@ final class PostRepository {
                 // TODO: RemotePostUpdateParameters should really be a struct
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
-                uploadedPost = try await service.patchPost(withID: postID, parameters: changes)
+                uploadedPost = try await service.patchPost(withID: postID.intValue, changes: changes)
             }
         } else {
-            let remotePost = PostHelper.remotePost(with: latest)
-            remotePost.apply(changes)
-            uploadedPost = try await service.create(remotePost)
+            var parameters = RemotePostCreateParameters(post: latest)
+            if let changes {
+                parameters.apply(changes)
+            }
+            uploadedPost = try await service.createPost(with: parameters)
         }
 
         // TODO: check if post still exists
@@ -193,8 +195,9 @@ final class PostRepository {
         try context.save()
     }
 
+    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
+    func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
         let context = coreDataStack.mainContext
         PostHelper.update(post, with: revision, in: context)
         post._deleteRevision()
@@ -382,8 +385,12 @@ private extension PostRepository {
         return remote
     }
 
-    func getRemoteService(for blog: Blog) throws -> PostServiceRemote {
+    func getRemoteService(for blog: Blog) throws -> PostServiceRemoteExtended {
         guard let remote = remoteFactory.forBlog(blog) else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+        guard let remote = remote as? PostServiceRemoteExtended else {
+            assertionFailure("Expected the extended service to be available")
             throw PostRepository.Error.remoteAPIUnavailable
         }
         return remote

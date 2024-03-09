@@ -26,37 +26,29 @@ class PostRepositorySaveTests: CoreDataTestCase {
         HTTPStubs.removeAllStubs()
     }
 
-    // Scenario: user creates a new post and saves it as a draft.
+    // MARK: - New Draft
+
+    /// Scenario: user creates a new post and saves it as a draft.
     func testSaveNewDraft() async throws {
         // GIVEN a draft post (never synced)
-        let creationDate = Date(timeIntervalSince1970: 1709852440)
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
-            $0.dateCreated = creationDate
+            $0.dateCreated =  Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
             $0.content = "content-1"
         }
-        try mainContext.save()
 
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
-            // THEN the app sends the post content (not ideal)
+            // THEN the app sends only the required parameters
             try assertRequestBody(request, expected: """
             {
               "author" : 29043,
-              "categories_by_id" : [
-
-              ],
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
-              "featured_image" : "",
-              "parent" : "false",
-              "password" : "",
               "status" : "draft",
-              "sticky" : "false",
-              "title" : "Hello",
-              "type" : "post"
+              "title" : "Hello"
             }
             """)
             return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
@@ -70,18 +62,86 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertEqual(post.status, .draft)
     }
 
-    // Scenario: user creates a new post and publishes it immediatelly.
+    /// Scenario: user creates a new post, modifies every single possible
+    /// parameter, and saves it as a draft.
+    func testSaveNewPublishedPostSendingAllParameters() async throws {
+        // GIVEN a draft post (never synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.authorID = 29043
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+            $0.password = "1234"
+            $0.mt_excerpt = "excerpt-a"
+            $0.wp_slug = "slug-a"
+
+            let media = Media(context: mainContext)
+            media.blog = $0.blog
+            media.mediaID = 92
+            $0.featuredImage = media
+
+            $0.postFormat = "format-a"
+            $0.tags = "tag-1, tag-2 "
+
+            let category = PostCategory(context: mainContext)
+            category.categoryID = 53
+            category.blog = $0.blog
+            category.categoryName = "test-category"
+            $0.addCategories([category])
+
+            $0.isStickyPost = true
+        }
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends all the parameters
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "categories_by_id" : [
+                53
+              ],
+              "content" : "content-a",
+              "date" : "2024-03-07T23:00:40+0000",
+              "excerpt" : "excerpt-a",
+              "featured_image" : 92,
+              "format" : "format-a",
+              "password" : "1234",
+              "slug" : "slug-a",
+              "status" : "draft",
+              "sticky" : true,
+              "terms" : {
+                "post_tag" : [
+                  "tag-1",
+                  "tag-2"
+                ]
+              },
+              "title" : "Hello"
+            }
+            """)
+            return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+        }
+
+        // WHEN
+        try await repository._save(post)
+
+        // THEN the post was created
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertEqual(post.status, .draft)
+    }
+
+    /// Scenario: user creates a new post and publishes it immediatelly.
     func testSaveNewDraftAndPublish() async throws {
         // GIVEN a draft post (never synced)
         let creationDate = Date(timeIntervalSince1970: 1709852440)
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
         }
-        try mainContext.save()
 
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
@@ -89,18 +149,10 @@ class PostRepositorySaveTests: CoreDataTestCase {
             try assertRequestBody(request, expected: """
             {
               "author" : 29043,
-              "categories_by_id" : [
-
-              ],
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
-              "featured_image" : "",
-              "parent" : "false",
-              "password" : "",
               "status" : "publish",
-              "sticky" : "false",
-              "title" : "Hello",
-              "type" : "post"
+              "title" : "Hello"
             }
             """)
             var post = WordPressComPost.mock
@@ -109,36 +161,69 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN publishing a post
-        let parameters = RemotePostUpdateParameters()
-        parameters.status = PostStatusPublish
+        var parameters = RemotePostUpdateParameters()
+        parameters.status = Post.Status.publish.rawValue
         try await repository._save(post, with: parameters)
 
-        // THEN the post was created
+        // THEN the post is published
         XCTAssertEqual(post.postID, 974)
         XCTAssertEqual(post.status, .publish)
     }
 
-    func testPublishUnsyncedPost() async throws {
-        XCTFail()
+    /// Scenario: user creates a new post and schedules it.
+    func testSaveNewDraftAndSchedule() async throws {
+        // GIVEN a draft post (never synced)
+        let creationDate = Date(timeIntervalSince1970: 1709852440)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+            $0.dateCreated = creationDate
+            $0.postTitle = "Hello"
+            $0.content = "content-1"
+        }
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends the post content and amends the status
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "content" : "content-1",
+              "date" : "2024-03-07T23:00:40+0000",
+              "status" : "future",
+              "title" : "Hello"
+            }
+            """)
+            var post = WordPressComPost.mock
+            post.status = Post.Status.scheduled.rawValue
+            post.date = creationDate
+            return try HTTPStubsResponse(value: post, statusCode: 201)
+        }
+
+        // WHEN publishing a post
+        var parameters = RemotePostUpdateParameters()
+        parameters.status = Post.Status.scheduled.rawValue
+        try await repository._save(post, with: parameters)
+
+        // THEN the post is scheduled
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertEqual(post.status, .scheduled)
     }
 
-    func testScheduleUnsyncedPost() async throws {
-        // TODO: tset manually to make sure API accepts it
-        XCTFail()
-    }
+    // MARK: - Existing Post
 
-    func testPublishSyncedDraft() async throws {
+    /// Scenario: user quickly publishes an existing post.
+    func testSaveExistingPostAndPublish() async throws {
         // GIVEN a draft post (synced)
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
             $0.dateCreated = Date()
             $0.dateModified = Date()
             $0.postTitle = "Hello"
-            $0.content = #"<!-- wp:paragraph -->\n<p>World</p>\n<!-- /wp:paragraph -->"#
+            $0.content = "content-a"
         }
-        try mainContext.save()
 
         // GIVEN a server configured to accept a patch
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
@@ -148,39 +233,38 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "status" : "publish"
             }
             """)
-            let responseData = try Bundle.test.json(named: "remote-post")
-            return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
+            var post = WordPressComPost.mock
+            post.status = Post.Status.publish.rawValue
+            return try HTTPStubsResponse(value: post, statusCode: 202)
         }
 
         // WHEN publishing the post
-        let parameters = RemotePostUpdateParameters()
-        parameters.status = PostStatusPublish
+        var parameters = RemotePostUpdateParameters()
+        parameters.status = Post.Status.publish.rawValue
         try await repository._save(post, with: parameters)
 
         // THEN the post got published
         XCTAssertEqual(post.status, .publish)
     }
 
-    // Scenario: user opens an editor to edit an existing draft, updates it,
-    // and taps "Save".
-    func testSaveLocalRevision() async throws {
+    /// Scenario: user opens an editor to edit an existing draft, updates it,
+    /// and taps "Save".
+    func testSaveExistingPostWithLocalRevision() async throws {
         // GIVEN a draft post (synced)
-        let dateModified = Date(timeIntervalSince1970: 1709852440)
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
-            $0.dateCreated = dateModified
-            $0.dateModified = dateModified
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
-            $0.content = "<!-- wp:paragraph -->\n<p>World</p>\n<!-- /wp:paragraph -->"
+            $0.content = "content-a"
         }
 
         // GIVEN a local revision with an updated title
         let revision = post.createRevision()
         revision.postTitle = "new-title"
 
-        try mainContext.save()
         XCTAssertNotNil(post.revision, "Revision is missing")
 
         // GIVEN a server where the post
@@ -188,7 +272,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
             {
-              "if_not_modified_since" : "2024-03-07T23:00:40+0000",
               "title" : "new-title"
             }
             """)
@@ -208,17 +291,62 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertNil(revision.managedObjectContext)
     }
 
-    func testSaveLocalRevisionOverwriteParameter() async throws {
-        XCTFail("set revision.status to scheduled and move to draft instead")
+    /// Scenario: user opens an editor to edit an existing drafts, updates publish
+    /// date (persistent), then publishes a post but changes the publish date (memory).
+    func testSaveExistingPostAndPublishWhileChangingLocalRevision() async throws {
+        let dateCreated = Date(timeIntervalSince1970: 1709852440)
+
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = dateCreated
+            $0.dateModified = dateCreated
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a local revision with an updated title
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+        revision.dateCreated = dateCreated.addingTimeInterval(3)
+
+        // GIVEN a server configured to accept a patch
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update combining the values from
+            // the local revision and applying the update
+            try assertRequestBody(request, expected: """
+            {
+              "date" : "2024-03-07T23:00:45+0000",
+              "status" : "publish",
+              "title" : "title-b"
+            }
+            """)
+            var post = WordPressComPost.mock
+            post.title = "title-b"
+            post.status = Post.Status.publish.rawValue
+            post.date = dateCreated.addingTimeInterval(5)
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN publishing the post
+        var parameters = RemotePostUpdateParameters()
+        parameters.status = Post.Status.publish.rawValue
+        parameters.date = dateCreated.addingTimeInterval(5)
+        try await repository._save(post, with: parameters)
+
+        // THEN the post got published
+        XCTAssertEqual(post.status, .publish)
+        XCTAssertEqual(post.dateCreated, dateCreated.addingTimeInterval(5))
+        XCTAssertEqual(post.postTitle, "title-b")
     }
 
-    // MARK: - Diff
-
     /// Scenario: user changes all possible fields using a local revision.
-    func testSaveContentChangeEveryField() async throws {
+    func testSaveExistingPostWithLocalRevisionChangingAllFields() async throws {
         // GIVEN a draft post (synced)
         let dateModified = Date(timeIntervalSince1970: 1709852440)
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
@@ -229,7 +357,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN a local revision that updates all possible fields
-        let revision = {
+        let revision = try {
             let revision = post.createRevision()
             revision.status = .publish
             revision.dateCreated = dateModified.addingTimeInterval(10)
@@ -239,14 +367,18 @@ class PostRepositorySaveTests: CoreDataTestCase {
             revision.password = "123"
             revision.mt_excerpt = "excerpt-b"
             revision.wp_slug = "slug-b"
-            revision.featuredImage = MediaBuilder(mainContext).build {
-                $0.mediaID = 92
-            }
+            revision.featuredImage = {
+                let media = MediaBuilder(mainContext).build()
+                media.blog = post.blog
+                media.mediaID = 92
+                return media
+            }()
 
-            let post = try XCTUnwrap(revision as Post)
+            let post = try XCTUnwrap(revision as? Post)
             post.addCategories([{
-                let category = PostCategory(context: mainContext)
+                let category = PostCategory(context: self.mainContext)
                 category.categoryID = 53
+                category.blog = post.blog
                 category.categoryName = "test-category"
                 return category
             }()])
@@ -255,7 +387,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
             return revision
         }()
 
-        try mainContext.save()
         XCTAssertNotNil(post.revision, "Revision is missing")
 
         // GIVEN a server where the post
@@ -263,13 +394,25 @@ class PostRepositorySaveTests: CoreDataTestCase {
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
             {
+              "author" : 948,
+              "categories_by_id" : [
+                53
+              ],
+              "content" : "content-b",
+              "date" : "2024-03-07T23:00:50+0000",
+              "excerpt" : "excerpt-b",
+              "featured_image" : 92,
               "if_not_modified_since" : "2024-03-07T23:00:40+0000",
-              "title" : "new-title"
+              "password" : "123",
+              "slug" : "slug-b",
+              "status" : "publish",
+              "sticky" : true,
+              "title" : "title-b"
             }
             """)
 
             var post = WordPressComPost.mock
-            post.title = "new-title"
+            post.title = "title-b"
             return try HTTPStubsResponse(value: post, statusCode: 202)
         }
 
@@ -277,23 +420,122 @@ class PostRepositorySaveTests: CoreDataTestCase {
         try await repository._save(post)
 
         // THEN the title got updated
-        XCTAssertEqual(post.postTitle, "new-title")
+        XCTAssertEqual(post.postTitle, "title-b")
         // THEN the local revision got deleted
         XCTAssertNil(post.revision)
         XCTAssertNil(revision.managedObjectContext)
     }
 
-    // MARK: - 409 (Conflict)
+    /// Scenario: user edits a post that got trashed on the backend.
+    func testSaveExistingPostTrashedOnServer() async throws {
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a local revision with an updated title
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        XCTAssertNotNil(post.revision, "Revision is missing")
+
+        // GIVEN a server where the post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "title" : "title-b"
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.status = Post.Status.trash.rawValue
+            post.title = "title-b"
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN saving the post
+        try await repository._save(post)
+
+        // THEN post got updated and the status now reflects the status on backend
+        XCTAssertEqual(post.status, .trash)
+        XCTAssertEqual(post.postTitle, "title-b")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
+    // MARK: - Exising Post (404, Not Found)
+
+    /// Scenario: saving a post that was deleted on the remote.
+    func testSaveExistingPostDeletedOnRemote() async throws {
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a local revision with an updated title
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        XCTAssertNotNil(post.revision, "Revision is missing")
+
+        // GIVEN a server where the post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "title" : "title-b"
+            }
+            """)
+
+            return HTTPStubsResponse(data: "Not Found".data(using: .utf8)!, statusCode: 404, headers: nil)
+        }
+
+        // WHEN saving the post that was deleted on the backend
+        do {
+            try await repository._save(post)
+            XCTFail("Expected the save to fail")
+        } catch {
+            let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
+            switch error {
+            case .deleted:
+                // TODO: check what we could do
+                break
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        }
+
+        // THEN the post got deleted
+        XCTAssertNil(post.managedObjectContext)
+        // THEN the local revision got deleted
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
+    // MARK: - Existing Post (409, Conflict)
 
     /// Scenario: user edits post's content, but the client is behind and the
     /// server has a new content, resulting in a data conflict. The user is
     /// presented with a conflict resolution dialog and picks the remote revision.
-    func testSaveContentChangeClientBehindPickRemote() async throws {
+    func testSaveConflictContentChangeClientBehindPickRemote() async throws {
         // GIVEN a draft post (client behind, server has "content-c")
         let clientDateModified = Date(timeIntervalSince1970: 1709852440).addingTimeInterval(-30)
         let serverDateModified = Date(timeIntervalSince1970: 1709852440)
 
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
@@ -329,7 +571,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         var latest: RemotePost!
         do {
             // WHEN
-            try await repository._save(post, overwrite: false)
+            try await repository._save(post)
             XCTFail("Expected the request to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -341,7 +583,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN the user resolves a conflict by picking the server revision
-        try repository.resolveConflict(for: post, pickingRemoteRevision: latest)
+        try repository._resolveConflict(for: post, pickingRemoteRevision: latest)
 
         // THEN the content got updated to the server's version
         XCTAssertEqual(post.content, "content-c")
@@ -354,13 +596,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
     /// server has a new content, resulting in a data conflict. The user is
     /// presented with a conflict resolution dialog and picks the local revision
     /// and retries the save.
-    func testSaveContentChangeClientBehindPickLocal() async throws {
+    func testSaveConflictContentChangeClientBehindPickLocal() async throws {
         // GIVEN a draft post (client behind, server has "content-c")
         let clientDateModified = Date(timeIntervalSince1970: 1709852440)
         let serverDateModified = Date(timeIntervalSince1970: 1709852440)
             .addingTimeInterval(30)
 
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
@@ -428,7 +670,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         do {
             // WHEN
-            try await repository._save(post, overwrite: false)
+            try await repository._save(post)
             XCTFail("Expected the request to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -455,13 +697,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
     /// Scenario: user edits post's content, but the client is behind and the
     /// server has a new revision but it has the same content as the original
     /// local post, so the repository resolves the conflict automatically.
-    func testSaveContentChangeClientBehindNoConflict() async throws {
+    func testSaveConflictContentChangeClientBehindNoConflict() async throws {
         // GIVEN a draft post (client behind, server has "content-c")
         let clientDateModified = Date(timeIntervalSince1970: 1709852440)
         let serverDateModified = Date(timeIntervalSince1970: 1709852440)
             .addingTimeInterval(30)
 
-        let post = PostBuilder(mainContext, blog: blog).build {
+        let post = makePost {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
@@ -527,7 +769,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
-        try await repository._save(post, overwrite: false)
+        try await repository._save(post)
 
         // THEN the content got updated to the version from the local revision
         XCTAssertEqual(post.content, "content-b")
@@ -542,6 +784,14 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
 // MARK: - Helpers
 
+private extension PostRepositorySaveTests {
+    func makePost(_ customize: (Post) -> Void) -> Post {
+        let post = PostBuilder(mainContext, blog: blog).build()
+        customize(post)
+        return post
+    }
+}
+
 private func stub(condition: @escaping (URLRequest) -> Bool, _ response: @escaping (URLRequest) throws -> HTTPStubsResponse) {
     OHHTTPStubs.stub(condition: condition) { request in
         do {
@@ -553,14 +803,11 @@ private func stub(condition: @escaping (URLRequest) -> Bool, _ response: @escapi
     }
 }
 
-private func assertRequestBody(_ request: URLRequest, expected: String) throws {
+private func assertRequestBody(_ request: URLRequest, expected: String, file: StaticString = #file, line: UInt = #line) throws {
     let parameters = try request.getBodyParameters()
     let data = try JSONSerialization.data(withJSONObject: parameters, options: [.sortedKeys, .prettyPrinted])
-    let string = String(data: data, encoding: .utf8)
-    guard string == expected else {
-        XCTFail("Unexpected parameters: \(String(describing: string))")
-        throw PostRepositorySaveTestsError.unexpectedRequestBody(parameters, expected)
-    }
+    let string = try XCTUnwrap(String(data: data, encoding: .utf8))
+    XCTAssertEqual(string, expected, "Unexpected request parameters", file: file, line: line)
 }
 
 private extension URLRequest {

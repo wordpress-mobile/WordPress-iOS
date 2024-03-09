@@ -15,8 +15,7 @@ class MediaBuilder {
     /// - Returns: the new test media object.
     ///
     @discardableResult
-    func build(_ customize ((Media) -> Void) = { _ in }) -> Media {
-        customize(media)
+    func build() -> Media {
         return media
     }
 
