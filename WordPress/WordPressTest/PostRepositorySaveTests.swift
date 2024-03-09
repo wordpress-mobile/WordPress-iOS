@@ -164,12 +164,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
     // and taps "Save".
     func testSaveLocalRevision() async throws {
         // GIVEN a draft post (synced)
+        let dateModified = Date(timeIntervalSince1970: 1709852440)
         let post = PostBuilder(mainContext, blog: blog).build {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
-            $0.dateCreated = Date()
-            $0.dateModified = Date()
+            $0.dateCreated = dateModified
+            $0.dateModified = dateModified
             $0.postTitle = "Hello"
             $0.content = "<!-- wp:paragraph -->\n<p>World</p>\n<!-- /wp:paragraph -->"
         }
@@ -186,11 +187,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
             // THEN the app sends a partial update
             try validateRequestBody(request, expected: """
             {
+              "if_not_modified_since" : "2024-03-07T23:00:40+0000",
               "title" : "new-title"
             }
             """)
 
-            // GIVEN a server
             var post = WordPressComPost.mock
             post.title = "new-title"
             return try HTTPStubsResponse(value: post, statusCode: 202)
@@ -201,9 +202,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // THEN the title got updated
         XCTAssertEqual(post.postTitle, "new-title")
-        // THEN the local revision got updated
+        // THEN the local revision got deleted
         XCTAssertNil(post.revision)
-        XCTAssertTrue(revision.isDeleted)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
+    func testSaveLocalRevisionOverwriteParameter() async throws {
+        XCTFail("set revision.status to scheduled and move to draft instead")
     }
 
 //    func testSpotUpdateDraftClientBehind() async throws {
@@ -262,7 +267,9 @@ private func stub(condition: @escaping (URLRequest) -> Bool, _ response: @escapi
 private func validateRequestBody(_ request: URLRequest, expected: String) throws {
     let parameters = try request.getBodyParameters()
     let data = try JSONSerialization.data(withJSONObject: parameters, options: [.sortedKeys, .prettyPrinted])
-    guard String(data: data, encoding: .utf8) == expected else {
+    let string = String(data: data, encoding: .utf8)
+    guard string == expected else {
+        XCTFail("Unexpected parameters: \(string)")
         throw PostRepositorySaveTestsError.unexpectedRequestBody(parameters, expected)
     }
 }
