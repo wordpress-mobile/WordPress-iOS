@@ -9,6 +9,9 @@ extension RemotePost {
         if self.title != other.title {
             changes.title = self.title
         }
+        if self.content != other.content {
+            changes.content = self.content
+        }
         return changes
     }
 

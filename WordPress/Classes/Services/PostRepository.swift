@@ -89,6 +89,16 @@ final class PostRepository {
         return post
     }
 
+    enum PostSaveError: Swift.Error {
+        /// A conflict between the client and the server versions is detected.
+        /// To resolve this error, consolidate and save the changes, and retry.
+        ///
+        /// - note: This error is only thrown in case there is an actual conflict
+        /// in data, typically `content`. In most cases, the `save()` method
+        /// will be able to merge the changes automatically.
+        case conflict(latest: RemotePost)
+    }
+
     // TOOD: Docs
     /// This method uploads the latest revision of the post (if present) and
     /// also patches it with the (optional) parameters.
@@ -113,7 +123,12 @@ final class PostRepository {
     /// Saves the changes on the main context, so they are immediatelly available
     /// the moment this method returns.
     ///
+    /// - parameters:
+    ///   - overwrite: Set to `true` to overwrite the values on the server.
+    ///
     /// - warning: Work-in-progress (kahu-offline-mode)
+    ///
+    /// TODO: change the `overwrite` default to `false` when we are ready.
     @MainActor
     func _save(_ post: AbstractPost, with changes: RemotePostUpdateParameters? = nil, overwrite: Bool = true) async throws {
         let original = post.original ?? post
@@ -135,8 +150,8 @@ final class PostRepository {
                 return latestPost.diff(from: originalPost)
             }()
 
-            // TODO: When should we send if-not-modified-since?
-            if let date = original.dateModified {
+            // TODO: When should we send if-not-modified-since? only if content changes?
+            if !overwrite, let date = original.dateModified {
                 changes.ifNotModifiedSince = date
             }
 
@@ -146,42 +161,23 @@ final class PostRepository {
                 guard (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String == "old-revision" else {
                     throw error
                 }
+                // TODO: check what happens on 404
                 guard let remotePost = try await service.post(withID: postID) else {
-                    // TODO: what happens if post got permanently deleted?
-                    throw URLError(.resourceUnavailable)
+                    throw URLError(.unknown)
                 }
 
                 // TODO: check if post still exists
                 // TODO: Update this demo to use a standalone Post Settings screen
 
-                // Consolidate the changes
-
-                // TODO: Add a better way to do that; should ideally be done automatically so that adding new fields won't require any changes to this code.
-                var diff: [String: Any] = [:]
-                if original.wp_slug != post.wp_slug {
-                    diff["wp_slug"] = post.wp_slug
-                }
-                // TODO: consolidate only in memory and wait until the action update?
-                PostHelper.update(original, with: remotePost, in: context)
-                // TODO: get the latest value instead?
-                PostHelper.update(post, with: remotePost, in: context)
-                for (key, value) in diff {
-                    post.setValue(value, forKey: key)
-                }
-                try context.save()
-
-                if remotePost.content != original.content && diff["content"] != nil {
-                    // TODO: Throw an error and let the user resolve it.
-                    // This is the only time we need to resolve the conflict manually.
-                    throw URLError(.unknown)
+                if latest.content != original.content && remotePost.content != original.content {
+                    // The conflict in `content` can be resolved only manually
+                    throw PostSaveError.conflict(latest: remotePost)
                 }
 
-                // TODO: this is broken
-                // TODO: This is not the best way to re-create the parameters.
-                // It only works when updating a post and not changing its status.
-                let parameters2 = PostHelper.remotePost(with: post)
-                uploadedPost = try await service.update(parameters2)
-
+                // TODO: RemotePostUpdateParameters should really be a struct
+                // There is no conflict, so go ahead and overwrite the changes
+                changes.ifNotModifiedSince = nil
+                uploadedPost = try await service.patchPost(withID: postID, parameters: changes)
             }
         } else {
             let remotePost = PostHelper.remotePost(with: latest)
@@ -194,6 +190,15 @@ final class PostRepository {
         PostHelper.update(original, with: uploadedPost, in: context)
         PostService(managedObjectContext: context)
             .updateMediaFor(post: original, success: {}, failure: { _ in })
+        try context.save()
+    }
+
+    @MainActor
+    func resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
+        let context = coreDataStack.mainContext
+        PostHelper.update(post, with: revision, in: context)
+        post._deleteRevision()
+        ContextManager.shared.saveContextAndWait(context)
         try context.save()
     }
 

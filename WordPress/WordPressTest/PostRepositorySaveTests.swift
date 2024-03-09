@@ -3,6 +3,7 @@ import OHHTTPStubs
 
 @testable import WordPress
 
+@MainActor
 class PostRepositorySaveTests: CoreDataTestCase {
     private var blog: Blog!
     private var repository: PostRepository!
@@ -41,7 +42,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
             // THEN the app sends the post content (not ideal)
-            try validateRequestBody(request, expected: """
+            try assertRequestBody(request, expected: """
             {
               "author" : 29043,
               "categories_by_id" : [
@@ -85,7 +86,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
             // THEN the app sends the post content and amends the status
-            try validateRequestBody(request, expected: """
+            try assertRequestBody(request, expected: """
             {
               "author" : 29043,
               "categories_by_id" : [
@@ -142,7 +143,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server configured to accept a patch
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
-            try validateRequestBody(request, expected: """
+            try assertRequestBody(request, expected: """
             {
               "status" : "publish"
             }
@@ -185,7 +186,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server where the post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
-            try validateRequestBody(request, expected: """
+            try assertRequestBody(request, expected: """
             {
               "if_not_modified_since" : "2024-03-07T23:00:40+0000",
               "title" : "new-title"
@@ -211,45 +212,261 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTFail("set revision.status to scheduled and move to draft instead")
     }
 
-//    func testSpotUpdateDraftClientBehind() async throws {
-//        // GIVEN a draft post (client behind)
-//        let clientDateModified = Date().addingTimeInterval(-30)
-//        let serverDateModified = Date()
-//
-//        let post = PostBuilder(mainContext, blog: blog).build {
-//            $0.status = .draft
-//            $0.postID = 974
-//            $0.authorID = 29043
-//            $0.dateCreated = Date().addingTimeInterval(-60)
-//            $0.dateModified = clientDateModified
-//            $0.postTitle = "Hello"
-//            $0.content = "<!-- wp:paragraph -->\n<p>World</p>\n<!-- /wp:paragraph -->"
-//        }
-//        try mainContext.save()
-//
-//        // GIVEN a server where the post is ahead and has a new content
-//        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
-//            let ifNotModifiedSince = try request.getIfNotModifiedSince()
-//            if  ifNotModifiedSince < serverDateModified {
-//                return HTTPStubsResponse(jsonObject: [
-//                    "error": "old-revision",
-//                    "message": "There is a revision of this post that is more recent."
-//                ], statusCode: 409, headers: nil)
-//            }
-//            // THEN the app sends a partial update
-//            try validateRequestBody(request, expected: ["status": "publish"])
-//            let responseData = try Bundle.test.json(named: "remote-post")
-//            return HTTPStubsResponse(data: responseData, statusCode: 200, headers: nil)
-//        }
-//
-//        // WHEN spot-updating a post
-//        let parameters = RemotePostUpdateParameters()
-//        parameters.title = "new-title"
-//        try await repository._save(post, with: parameters)
-//
-//        // THEN the post got published
-//        XCTAssertEqual(post.status, .publish)
-//    }
+    // MARK: - 409 (Conflict)
+
+    /// Scenario: user edits post's content, but the client is behind and the
+    /// server has a new content, resulting in a data conflict. The user is
+    /// presented with a conflict resolution dialog and picks the remote revision.
+    func testSaveContentChangeClientBehindPickRemote() async throws {
+        // GIVEN a draft post (client behind, server has "content-c")
+        let clientDateModified = Date(timeIntervalSince1970: 1709852440).addingTimeInterval(-30)
+        let serverDateModified = Date(timeIntervalSince1970: 1709852440)
+
+        let post = PostBuilder(mainContext, blog: blog).build {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = clientDateModified
+            $0.dateModified = clientDateModified
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a modified content
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        try mainContext.save()
+
+        // GIVEN a server where the post is ahead and has a new content
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            let ifNotModifiedSince = try request.getIfNotModifiedSince()
+            XCTAssert(ifNotModifiedSince < serverDateModified)
+            return HTTPStubsResponse(jsonObject: [
+                "error": "old-revision",
+                "message": "There is a revision of this post that is more recent."
+            ], statusCode: 409, headers: nil)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            var post = WordPressComPost.mock
+            post.modified = serverDateModified
+            post.content = "content-c"
+            return try HTTPStubsResponse(value: post, statusCode: 200)
+        }
+
+        var latest: RemotePost!
+        do {
+            // WHEN
+            try await repository._save(post, overwrite: false)
+            XCTFail("Expected the request to fail")
+        } catch {
+            let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
+            // THEN expect a `.conlict` error
+            switch error {
+            case .conflict(let value):
+                latest = value
+            }
+        }
+
+        // WHEN the user resolves a conflict by picking the server revision
+        try repository.resolveConflict(for: post, pickingRemoteRevision: latest)
+
+        // THEN the content got updated to the server's version
+        XCTAssertEqual(post.content, "content-c")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
+    /// Scenario: user edits post's content, but the client is behind and the
+    /// server has a new content, resulting in a data conflict. The user is
+    /// presented with a conflict resolution dialog and picks the local revision
+    /// and retries the save.
+    func testSaveContentChangeClientBehindPickLocal() async throws {
+        // GIVEN a draft post (client behind, server has "content-c")
+        let clientDateModified = Date(timeIntervalSince1970: 1709852440)
+        let serverDateModified = Date(timeIntervalSince1970: 1709852440)
+            .addingTimeInterval(30)
+
+        let post = PostBuilder(mainContext, blog: blog).build {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = clientDateModified
+            $0.dateModified = clientDateModified
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a modified content
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        try mainContext.save()
+
+        // GIVEN server revision that's ahead and has new `title` and `content`
+        let serverPost = {
+            var post = WordPressComPost.mock
+            post.modified = serverDateModified
+            // WHEN server also has new tilte
+            post.title = "title-c"
+            post.content = "content-c"
+            return post
+        }()
+
+        var requestCount = 0
+        // GIVEN a server where the post is ahead and has a new content
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            requestCount += 1
+
+            if requestCount == 1 {
+                // THEN the first request contains an `if_not_modified_since` parameter
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-b",
+                  "if_not_modified_since" : "2024-03-07T23:00:40+0000"
+                }
+                """)
+                // GIVEN the first request fails with 409 (Conflict)
+                let ifNotModifiedSince = try request.getIfNotModifiedSince()
+                XCTAssertTrue(ifNotModifiedSince < serverDateModified)
+                return HTTPStubsResponse(jsonObject: [
+                    "error": "old-revision",
+                    "message": "There is a revision of this post that is more recent."
+                ], statusCode: 409, headers: nil)
+            }
+            if requestCount == 2 {
+                // THEN the second request contains only the delta
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-b"
+                }
+                """)
+                var serverPost = serverPost
+                serverPost.content = "content-b"
+                return try HTTPStubsResponse(value: serverPost, statusCode: 200)
+            }
+
+            throw URLError(.unknown)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            try HTTPStubsResponse(value: serverPost, statusCode: 200)
+        }
+
+        do {
+            // WHEN
+            try await repository._save(post, overwrite: false)
+            XCTFail("Expected the request to fail")
+        } catch {
+            let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
+            // THEN expect a `.conlict` error
+            switch error {
+            case .conflict:
+                break
+            }
+        }
+
+        // WHEN the user picks the remote version and overwrites what's on the remote
+        try await repository._save(post, overwrite: true)
+
+        // THEN the content got updated to the version from the local revision
+        XCTAssertEqual(post.content, "content-b")
+        // THEN the rest of the changes are consolidated on the server and the
+        // new changes made elsewhere are not overwritten thanks to the detla update
+        XCTAssertEqual(post.postTitle, "title-c")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
+    /// Scenario: user edits post's content, but the client is behind and the
+    /// server has a new revision but it has the same content as the original
+    /// local post, so the repository resolves the conflict automatically.
+    func testSaveContentChangeClientBehindNoConflict() async throws {
+        // GIVEN a draft post (client behind, server has "content-c")
+        let clientDateModified = Date(timeIntervalSince1970: 1709852440)
+        let serverDateModified = Date(timeIntervalSince1970: 1709852440)
+            .addingTimeInterval(30)
+
+        let post = PostBuilder(mainContext, blog: blog).build {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = clientDateModified
+            $0.dateModified = clientDateModified
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a modified content
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        try mainContext.save()
+
+        // GIVEN server revision that's ahead and has a new `title` but
+        // the `content` is the same as the local original post
+        let serverPost = {
+            var post = WordPressComPost.mock
+            post.modified = serverDateModified
+            post.title = "title-c"
+            post.content = "content-a"
+            return post
+        }()
+
+        var requestCount = 0
+        // GIVEN a server where the post is ahead and has a new content
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            requestCount += 1
+
+            if requestCount == 1 {
+                // THEN the first request contains an `if_not_modified_since` parameter
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-b",
+                  "if_not_modified_since" : "2024-03-07T23:00:40+0000"
+                }
+                """)
+                // GIVEN the first request fails with 409 (Conflict)
+                let ifNotModifiedSince = try request.getIfNotModifiedSince()
+                XCTAssertTrue(ifNotModifiedSince < serverDateModified)
+                return HTTPStubsResponse(jsonObject: [
+                    "error": "old-revision",
+                    "message": "There is a revision of this post that is more recent."
+                ], statusCode: 409, headers: nil)
+            }
+            if requestCount == 2 {
+                // THEN the second request contains only the delta
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-b"
+                }
+                """)
+                var serverPost = serverPost
+                serverPost.content = "content-b"
+                return try HTTPStubsResponse(value: serverPost, statusCode: 200)
+            }
+
+            throw URLError(.unknown)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            try HTTPStubsResponse(value: serverPost, statusCode: 200)
+        }
+
+        try await repository._save(post, overwrite: false)
+
+        // THEN the content got updated to the version from the local revision
+        XCTAssertEqual(post.content, "content-b")
+        // THEN the rest of the changes are consolidated on the server and the
+        // new changes made elsewhere are not overwritten thanks to the detla update
+        XCTAssertEqual(post.postTitle, "title-c")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
 }
 
 // MARK: - Helpers
@@ -259,17 +476,18 @@ private func stub(condition: @escaping (URLRequest) -> Bool, _ response: @escapi
         do {
             return try response(request)
         } catch {
+            XCTFail("Unexpected error: \(error)")
             return HTTPStubsResponse(error: error)
         }
     }
 }
 
-private func validateRequestBody(_ request: URLRequest, expected: String) throws {
+private func assertRequestBody(_ request: URLRequest, expected: String) throws {
     let parameters = try request.getBodyParameters()
     let data = try JSONSerialization.data(withJSONObject: parameters, options: [.sortedKeys, .prettyPrinted])
     let string = String(data: data, encoding: .utf8)
     guard string == expected else {
-        XCTFail("Unexpected parameters: \(string)")
+        XCTFail("Unexpected parameters: \(String(describing: string))")
         throw PostRepositorySaveTestsError.unexpectedRequestBody(parameters, expected)
     }
 }

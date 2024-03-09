@@ -148,6 +148,7 @@ extension AbstractPost {
     }
 
     /// This version doesn't block the current thread.
+    ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     func _deleteRevision() {
         if let revision {
