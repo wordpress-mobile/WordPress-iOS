@@ -212,6 +212,77 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTFail("set revision.status to scheduled and move to draft instead")
     }
 
+    // MARK: - Diff
+
+    /// Scenario: user changes all possible fields using a local revision.
+    func testSaveContentChangeEveryField() async throws {
+        // GIVEN a draft post (synced)
+        let dateModified = Date(timeIntervalSince1970: 1709852440)
+        let post = PostBuilder(mainContext, blog: blog).build {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = dateModified
+            $0.dateModified = dateModified
+            $0.postTitle = "Hello"
+            $0.content = "<!-- wp:paragraph -->\n<p>World</p>\n<!-- /wp:paragraph -->"
+        }
+
+        // GIVEN a local revision that updates all possible fields
+        let revision = {
+            let revision = post.createRevision()
+            revision.status = .publish
+            revision.dateCreated = dateModified.addingTimeInterval(10)
+            revision.authorID = 948
+            revision.postTitle = "title-b"
+            revision.content = "content-b"
+            revision.password = "123"
+            revision.mt_excerpt = "excerpt-b"
+            revision.wp_slug = "slug-b"
+            revision.featuredImage = MediaBuilder(mainContext).build {
+                $0.mediaID = 92
+            }
+
+            let post = try XCTUnwrap(revision as Post)
+            post.addCategories([{
+                let category = PostCategory(context: mainContext)
+                category.categoryID = 53
+                category.categoryName = "test-category"
+                return category
+            }()])
+            post.isStickyPost = true
+
+            return revision
+        }()
+
+        try mainContext.save()
+        XCTAssertNotNil(post.revision, "Revision is missing")
+
+        // GIVEN a server where the post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "if_not_modified_since" : "2024-03-07T23:00:40+0000",
+              "title" : "new-title"
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.title = "new-title"
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN saving the post
+        try await repository._save(post)
+
+        // THEN the title got updated
+        XCTAssertEqual(post.postTitle, "new-title")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
     // MARK: - 409 (Conflict)
 
     /// Scenario: user edits post's content, but the client is behind and the

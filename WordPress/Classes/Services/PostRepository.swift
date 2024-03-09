@@ -147,7 +147,7 @@ final class PostRepository {
                 let originalPost = PostHelper.remotePost(with: original)
                 let latestPost = PostHelper.remotePost(with: latest)
                 latestPost.apply(changes)
-                return latestPost.diff(from: originalPost)
+                return latestPost.changes(from: originalPost)
             }()
 
             // TODO: When should we send if-not-modified-since? only if content changes?
