@@ -163,7 +163,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing a post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
-        try await repository._save(post, with: parameters)
+        try await repository._save(post, changes: parameters)
 
         // THEN the post is published
         XCTAssertEqual(post.postID, 974)
@@ -203,11 +203,55 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing a post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.scheduled.rawValue
-        try await repository._save(post, with: parameters)
+        try await repository._save(post, changes: parameters)
 
         // THEN the post is scheduled
         XCTAssertEqual(post.postID, 974)
         XCTAssertEqual(post.status, .scheduled)
+    }
+
+    /// Scenario: user creates a new post and saves it as a draft, but there
+    /// is no network connection.
+    func testSaveNewDraftAndPublishWhenNotConnectedToInternet() async throws {
+        // GIVEN a draft post (never synced)
+        let creationDate = Date(timeIntervalSince1970: 1709852440)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+            $0.dateCreated = creationDate
+            $0.postTitle = "Hello"
+            $0.content = "content-1"
+        }
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends the post content and amends the status
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "content" : "content-1",
+              "date" : "2024-03-07T23:00:40+0000",
+              "status" : "publish",
+              "title" : "Hello"
+            }
+            """)
+            return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        // WHEN publishing a post
+        var parameters = RemotePostUpdateParameters()
+        parameters.status = Post.Status.publish.rawValue
+        do {
+            try await repository._save(post, changes: parameters)
+            XCTFail("Expected the save to fail")
+        } catch {
+            let error = try XCTUnwrap(error as? URLError)
+            XCTAssertEqual(error.code, .notConnectedToInternet)
+        }
+
+        // THEN the post wasn't published
+        XCTAssertEqual(post.postID, -1)
+        XCTAssertEqual(post.status, .draft)
     }
 
     // MARK: - Existing Post
@@ -241,7 +285,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing the post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
-        try await repository._save(post, with: parameters)
+        try await repository._save(post, changes: parameters)
 
         // THEN the post got published
         XCTAssertEqual(post.status, .publish)
@@ -334,7 +378,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
         parameters.date = dateCreated.addingTimeInterval(5)
-        try await repository._save(post, with: parameters)
+        try await repository._save(post, changes: parameters)
 
         // THEN the post got published
         XCTAssertEqual(post.status, .publish)
@@ -501,7 +545,10 @@ class PostRepositorySaveTests: CoreDataTestCase {
             }
             """)
 
-            return HTTPStubsResponse(data: "Not Found".data(using: .utf8)!, statusCode: 404, headers: nil)
+            return try HTTPStubsResponse(value: [
+                "error": "unknown_post",
+                "message": "Unknown post"
+            ], statusCode: 404)
         }
 
         // WHEN saving the post that was deleted on the backend
@@ -512,7 +559,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
             switch error {
             case .deleted:
-                // TODO: check what we could do
                 break
             default:
                 XCTFail("Unexpected error: \(error)")
@@ -579,6 +625,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             switch error {
             case .conflict(let value):
                 latest = value
+            default:
+                XCTFail("Unexpected error")
             }
         }
 
@@ -678,6 +726,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             switch error {
             case .conflict:
                 break
+            default:
+                XCTFail("Unexpected error")
             }
         }
 

@@ -4,7 +4,6 @@ import WordPressKit
 final class PostRepository {
 
     enum Error: Swift.Error {
-        case postNotFound
         case remoteAPIUnavailable
     }
 
@@ -25,9 +24,7 @@ final class PostRepository {
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
         let remote = try await getRemoteService(forblogID: blogID)
-        guard let remotePost = try await remote.post(withID: postID) else {
-            throw PostRepository.Error.postNotFound
-        }
+        let remotePost = try await remote.post(withID: postID)
         return try await coreDataStack.performAndSave { context in
             let blog = try context.existingObject(with: blogID)
 
@@ -91,118 +88,130 @@ final class PostRepository {
 
     enum PostSaveError: Swift.Error {
         /// A conflict between the client and the server versions is detected.
-        /// To resolve this error, consolidate and save the changes, and retry.
+        /// The app needs to consolidate the changes and retry.
         ///
         /// - note: This error is only thrown in case there is an actual conflict
         /// in data, typically `content`. In most cases, the `save()` method
         /// will be able to merge the changes automatically.
         case conflict(latest: RemotePost)
 
-        /// Post was deleted on the remote, so no updates can be made.
+        /// Post was deleted on the remote and can not be updated.
         case deleted
     }
 
-    // TOOD: Docs
-    /// This method uploads the latest revision of the post (if present) and
-    /// also patches it with the (optional) parameters.
+    /// Saves the changes made to the given post on the server or creates a new
+    /// post if it doesn't exist on the remote.
     ///
-    /// For example, if you have a draft with un-synced changes and you want to
-    /// publish it, all you need to do is the following:
+    /// There are three ways to modify a post:
     ///
-    /// TBD: If this is a new post and it was never synced, the post is created.
-    /// If it's a changed post, it sends only the diff.
+    /// - Create a revision using ``AbstractPost/createRevision()`` and edit it.
+    /// The revisions can be saved to a database and uploaded later.
+    /// - Pass the changes directly using ``RemotePostUpdateParameters``. These
+    /// changes are saved to the database only _after_ the upload.
+    /// - A combination of both
     ///
-    /// ```swift
+    /// For both revisions and the changes passed directly, the app sends only
+    /// the delta, making sure that it doesn't overwrite any of the other fields.
     ///
-    /// ```
+    /// - important: Make sure the media used in the post is uploaded before
+    /// calling this method.
     ///
-    /// **Applying Revision**
-    ///
-    /// TBD
-    ///
-    /// TBD: how deletion works
-    /// TBD: how conflict resolution works
-    ///
-    /// Saves the changes on the main context, so they are immediatelly available
-    /// the moment this method returns.
+    /// - throws: This method throws a ``PostSaveError`` error for scenarios that
+    /// require special handling or an error from the underlying system.
     ///
     /// - parameters:
-    ///   - overwrite: Set to `true` to overwrite the values on the server.
+    ///   - post: The post to be synced. It doesn't matter whether you pass
+    ///   the original version of the post or the revision.
+    ///   - changes: A set of (optional) changes to be applied on top of the post
+    ///   or its latest revision.
+    ///   - overwrite: Set to `true` to overwrite the values on the server and
+    ///   ignore the ``PostSaveError/conflict(latest:)`` error.
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     ///
-    /// TODO: change the `overwrite` default to `false` when we are ready.
+    /// TODO: update to support XML-RPC (error code, etc)
     @MainActor
-    func _save(_ post: AbstractPost, with changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
+    func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
+        let original = post.original ?? post
+
+        let uploadedPost: RemotePost
+        var isCreated = false
+        if let postID = original.postID, postID.intValue > 0 {
+            uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
+        } else {
+            isCreated = true
+            uploadedPost = try await _create(post, changes: changes)
+        }
+
+        let context = coreDataStack.mainContext
+        original._deleteRevision()
+        PostHelper.update(original, with: uploadedPost, in: context)
+        if isCreated {
+            PostService(managedObjectContext: context)
+                .updateMediaFor(post: original, success: {}, failure: { _ in })
+        }
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
+    @MainActor
+    private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
+        let service = try getRemoteService(for: post.blog)
+        var parameters = RemotePostCreateParameters(post: post.latest())
+        if let changes {
+            parameters.apply(changes)
+        }
+        return try await service.createPost(with: parameters)
+    }
+
+    @MainActor
+    private func _patch(_ post: AbstractPost, postID: NSNumber, changes: RemotePostUpdateParameters?, overwrite: Bool) async throws -> RemotePost {
+        let service = try getRemoteService(for: post.blog)
         let original = post.original ?? post
         let latest = post.latest()
 
-        let service = try getRemoteService(for: post.blog)
-        let context = coreDataStack.mainContext
+        // Create a diff between local revision and the target revision.
+        var changes = RemotePostUpdateParameters.changes(from: original, to: latest, with: changes)
 
-        let uploadedPost: RemotePost
-        if let postID = original.postID, postID.intValue > 0 {
-            // Create a diff between local revision and the target revision.
-            var changes = {
-                let parametersOriginal = RemotePostCreateParameters(post: original)
-                var parametersLatest = RemotePostCreateParameters(post: latest)
-                if let changes {
-                    parametersLatest.apply(changes)
-                }
-                return parametersLatest.changes(from: parametersOriginal)
-            }()
-            // Make sure the app never overwrites the content without the user approval.
-            if !overwrite, let date = original.dateModified, changes.content != nil {
-                changes.ifNotModifiedSince = date
-            }
-            do {
-                uploadedPost = try await service.patchPost(withID: postID.intValue, changes: changes)
-            } catch {
-                guard (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String == "old-revision" else {
-                    throw error
-                }
-                // TODO: check what happens on 404
-                guard let remotePost = try await service.post(withID: postID) else {
-                    throw URLError(.unknown)
-                }
-
-                // TODO: check if post still exists
-                // TODO: Update this demo to use a standalone Post Settings screen
-
-                if latest.content != original.content && remotePost.content != original.content {
-                    // The conflict in `content` can be resolved only manually
-                    throw PostSaveError.conflict(latest: remotePost)
-                }
-
-                // TODO: RemotePostUpdateParameters should really be a struct
-                // There is no conflict, so go ahead and overwrite the changes
-                changes.ifNotModifiedSince = nil
-                uploadedPost = try await service.patchPost(withID: postID.intValue, changes: changes)
-            }
-        } else {
-            var parameters = RemotePostCreateParameters(post: latest)
-            if let changes {
-                parameters.apply(changes)
-            }
-            uploadedPost = try await service.createPost(with: parameters)
+        // Make sure the app never overwrites the content without the user approval.
+        if !overwrite, let date = original.dateModified, changes.content != nil {
+            changes.ifNotModifiedSince = date
         }
 
-        // TODO: check if post still exists
-        original._deleteRevision()
-        PostHelper.update(original, with: uploadedPost, in: context)
-        PostService(managedObjectContext: context)
-            .updateMediaFor(post: original, success: {}, failure: { _ in })
-        try context.save()
+        do {
+            return try await service.patchPost(withID: postID.intValue, changes: changes)
+        } catch {
+            guard let error = RemotePostUpdateError(error) else {
+                throw error
+            }
+            switch error {
+            case .conflict:
+                // Fetch the latest post to consolidate the changes
+                let remotePost = try await service.post(withID: postID)
+                if latest.content != original.content && remotePost.content != original.content {
+                    // The conflict in content can be resolved only manually
+                    throw PostSaveError.conflict(latest: remotePost)
+                }
+                // There is no conflict, so go ahead and overwrite the changes
+                changes.ifNotModifiedSince = nil
+                return try await service.patchPost(withID: postID.intValue, changes: changes)
+            case .notFound:
+                // Delete the post from the local database
+                let context = coreDataStack.mainContext
+                context.deleteObject(original)
+                ContextManager.shared.saveContextAndWait(context)
+
+                throw PostRepository.PostSaveError.deleted
+            }
+        }
     }
 
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
         let context = coreDataStack.mainContext
-        PostHelper.update(post, with: revision, in: context)
         post._deleteRevision()
+        PostHelper.update(post, with: revision, in: context)
         ContextManager.shared.saveContextAndWait(context)
-        try context.save()
     }
 
     /// Permanently delete the given post from local database and the post's WordPress site.
