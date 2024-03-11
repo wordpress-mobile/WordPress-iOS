@@ -131,9 +131,9 @@ abstract_target 'Apps' do
 
   # Production
 
-  # pod 'Automattic-Tracks-iOS', '~> 3.0'
+  pod 'Automattic-Tracks-iOS', '~> 3.3'
   # While in PR
-  pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: 'add/sentry-js-exception'
+  # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development
   # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 

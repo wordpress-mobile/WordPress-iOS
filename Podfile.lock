@@ -14,7 +14,7 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (5.0.3):
     - AppCenter/Core
-  - Automattic-Tracks-iOS (3.2.0):
+  - Automattic-Tracks-iOS (3.3.0):
     - Sentry (~> 8.0)
     - Sodium (>= 0.9.1)
     - UIDeviceIdentifier (~> 2.0)
@@ -98,7 +98,7 @@ DEPENDENCIES:
   - AlamofireNetworkActivityIndicator (~> 3.0)
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
-  - Automattic-Tracks-iOS (from `https://github.com/Automattic/Automattic-Tracks-iOS.git`, branch `add/sentry-js-exception`)
+  - Automattic-Tracks-iOS (~> 3.3)
   - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
   - Down (~> 0.6.6)
@@ -134,6 +134,7 @@ SPEC REPOS:
     - AlamofireImage
     - AlamofireNetworkActivityIndicator
     - AppCenter
+    - Automattic-Tracks-iOS
     - CocoaLumberjack
     - CropViewController
     - Down
@@ -169,9 +170,6 @@ SPEC REPOS:
     - ZIPFoundation
 
 EXTERNAL SOURCES:
-  Automattic-Tracks-iOS:
-    :branch: add/sentry-js-exception
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -179,9 +177,6 @@ EXTERNAL SOURCES:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-39749cc4fcc1176074c1550e3645ae814a174750.podspec
 
 CHECKOUT OPTIONS:
-  Automattic-Tracks-iOS:
-    :commit: d3694e8a352f8cac3f3c26f73125614408c01abc
-    :git: https://github.com/Automattic/Automattic-Tracks-iOS.git
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
@@ -191,14 +186,14 @@ SPEC CHECKSUMS:
   AlamofireImage: 843953fa97bee5f561cf05d83abd759e590b068d
   AlamofireNetworkActivityIndicator: 6564782bd7b9e6c430ae67d9277af01907b01ca4
   AppCenter: a4070ec3d4418b5539067a51f57155012e486ebd
-  Automattic-Tracks-iOS: baa126f98d2ce26fd54ee2534bef6e2d46480a5c
+  Automattic-Tracks-iOS: fc307762052ec20b733ae76363d1387a9d93d6a5
   CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 9926783a31efe04e7b72729c76f897e187974a91
+  Gutenberg: c5967e2a09cdd9358e71d2506f10bbbb8aad9d84
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -230,6 +225,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 0b1acbd2a6c822646627ded7f6aa4e7e03076cac
+PODFILE CHECKSUM: e85bd1f26f3aacf5429ef8eb55c0f328a6174e7e
 
 COCOAPODS: 1.14.2
