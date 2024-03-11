@@ -245,8 +245,9 @@ class PostRepositorySaveTests: CoreDataTestCase {
             try await repository._save(post, changes: parameters)
             XCTFail("Expected the save to fail")
         } catch {
-            let error = try XCTUnwrap(error as? URLError)
-            XCTAssertEqual(error.code, .notConnectedToInternet)
+            let error = try XCTUnwrap((error as NSError).underlyingErrors.first)
+            let urlError = try XCTUnwrap(error as? URLError)
+            XCTAssertEqual(urlError.code, .notConnectedToInternet)
         }
 
         // THEN the post wasn't published
@@ -536,7 +537,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         XCTAssertNotNil(post.revision, "Revision is missing")
 
-        // GIVEN a server where the post
+        // GIVEN a server where the post was deleted
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
@@ -830,6 +831,77 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertNil(post.revision)
         XCTAssertNil(revision.managedObjectContext)
     }
+
+    // MARK: - XMLRPC
+
+    /// Scenario: saving a post that was deleted on the remote.
+    func testSaveExistingPostDeletedOnRemoteWithXMLRPC() async throws {
+        // GIVEN a self-hosted site
+        configureSelfHostedSite()
+
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a local revision with an updated title
+        let revision = post.createRevision()
+        revision.postTitle = "title-b"
+
+        XCTAssertNotNil(post.revision, "Revision is missing")
+
+        // GIVEN a server where the post
+        stub(condition: { _ in true }) { request in
+            // THEN the app sends a partial update
+            XCTAssertEqual(request.getBodyString(), #"<?xml version="1.0"?><methodCall><methodName>metaWeblog.editPost</methodName><params><param><value><i4>974</i4></value></param><param><value><string>test</string></value></param><param><value><string>test</string></value></param><param><value><struct><member><name>title</name><value><string>title-b</string></value></member></struct></value></param></params></methodCall>"#)
+
+            return HTTPStubsResponse(data: """
+            <methodResponse>
+              <fault>
+                <value>
+                  <struct>
+                    <member>
+                      <name>faultCode</name>
+                      <value><int>404</int></value>
+                    </member>
+                    <member>
+                      <name>faultString</name>
+                      <value><string>Invalid post ID.</string></value>
+                    </member>
+                  </struct>
+                </value>
+              </fault>
+            </methodResponse>
+            """.data(using: .utf8)!, statusCode: 200, headers: [
+                "Content-Type": "text/xml; charset=UTF-8"
+            ])
+        }
+
+        // WHEN saving the post that was deleted on the backend
+        do {
+            try await repository._save(post)
+            XCTFail("Expected the save to fail")
+        } catch {
+            let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
+            switch error {
+            case .deleted:
+                break
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        }
+
+        // THEN the post got deleted
+        XCTAssertNil(post.managedObjectContext)
+        // THEN the local revision got deleted
+        XCTAssertNil(revision.managedObjectContext)
+    }
 }
 
 // MARK: - Helpers
@@ -839,6 +911,13 @@ private extension PostRepositorySaveTests {
         let post = PostBuilder(mainContext, blog: blog).build()
         customize(post)
         return post
+    }
+
+    func configureSelfHostedSite() {
+        blog.account = nil
+        blog.xmlrpc = "https://example.com/xmlrpc.php"
+        blog.username = "test"
+        blog.password = "test"
     }
 }
 
@@ -870,6 +949,10 @@ private extension URLRequest {
             throw PostRepositorySaveTestsError.invalidRequestBody(data)
         }
         return parameters
+    }
+
+    func getBodyString() -> String? {
+        httpBodyStream?.read().flatMap { String(bytes: $0, encoding: .utf8) }
     }
 
     func getIfNotModifiedSince() throws -> Date {

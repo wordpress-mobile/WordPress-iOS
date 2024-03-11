@@ -144,7 +144,7 @@ final class PostRepository {
         }
 
         let context = coreDataStack.mainContext
-        original._deleteRevision()
+        original.deleteRevision()
         PostHelper.update(original, with: uploadedPost, in: context)
         if isCreated {
             PostService(managedObjectContext: context)
@@ -178,9 +178,9 @@ final class PostRepository {
         }
 
         do {
-            return try await service.patchPost(withID: postID.intValue, changes: changes)
+            return try await service.patchPost(withID: postID.intValue, parameters: changes)
         } catch {
-            guard let error = RemotePostUpdateError(error) else {
+            guard let error = error as? PostServiceRemoteUpdatePostError else {
                 throw error
             }
             switch error {
@@ -193,7 +193,7 @@ final class PostRepository {
                 }
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
-                return try await service.patchPost(withID: postID.intValue, changes: changes)
+                return try await service.patchPost(withID: postID.intValue, parameters: changes)
             case .notFound:
                 // Delete the post from the local database
                 let context = coreDataStack.mainContext
@@ -209,7 +209,7 @@ final class PostRepository {
     @MainActor
     func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
         let context = coreDataStack.mainContext
-        post._deleteRevision()
+        post.deleteRevision()
         PostHelper.update(post, with: revision, in: context)
         ContextManager.shared.saveContextAndWait(context)
     }

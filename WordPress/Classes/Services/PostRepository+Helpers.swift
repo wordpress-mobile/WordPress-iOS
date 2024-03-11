@@ -50,22 +50,3 @@ extension RemotePostUpdateParameters {
         return parametersLatest.changes(from: parametersOriginal)
     }
 }
-
-enum RemotePostUpdateError {
-    /// 409 (Conflict)
-    case conflict
-    /// 404 (Not Found)
-    case notFound
-
-    init?(_ error: Error) {
-        let userInfo = (error as NSError).userInfo
-        guard let code = userInfo[WordPressComRestApi.ErrorKeyErrorCode] as? String else {
-            return nil
-        }
-        switch code {
-        case "old-revision": self = .conflict
-        case "unknown_post": self = .notFound
-        default: return nil
-        }
-    }
-}

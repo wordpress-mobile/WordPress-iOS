@@ -146,16 +146,4 @@ extension AbstractPost {
     func hasPermanentFailedMedia() -> Bool {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
     }
-
-    /// This version doesn't block the current thread.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
-    func _deleteRevision() {
-        if let revision {
-            managedObjectContext?.delete(revision)
-            willChangeValue(for: \.revision)
-            setPrimitiveValue(nil, forKey: "revision")
-            didChangeValue(for: \.revision)
-        }
-    }
 }
