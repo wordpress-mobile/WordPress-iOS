@@ -169,6 +169,13 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      release_version: release_version_current,
+      build_version: build_code_current,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
+    )
+
     next unless options[:create_release]
 
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
@@ -216,6 +223,13 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      release_version: release_version_current,
+      build_version: build_code_current,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
   end
 
@@ -266,6 +280,13 @@ platform :ios do
       project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
+
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      release_version: release_version_current_internal,
+      build_version: build_code_current_internal,
+      app_identifier: 'org.wordpress.internal'
+    )
   end
 
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
@@ -283,7 +304,8 @@ platform :ios do
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
       app_icon: ':wordpress:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      app_identifier: 'org.wordpress.alpha'
     )
   end
 
@@ -302,7 +324,8 @@ platform :ios do
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
       app_icon: ':jetpack:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      app_identifier: 'com.jetpack.alpha'
     )
   end
 
@@ -334,7 +357,8 @@ platform :ios do
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
   # rubocop:disable Metrics/AbcSize
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:)
+  # rubocop:disable Metrics/ParameterLists
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:, app_identifier:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
@@ -385,6 +409,13 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug:,
+      release_version: release_version_current,
+      build_version: build_number,
+      app_identifier:
+    )
+
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
@@ -410,6 +441,7 @@ platform :ios do
     buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
   # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/ParameterLists
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
@@ -463,5 +495,42 @@ platform :ios do
       destinations: distribute_to_everyone ? '*' : 'Collaborators',
       notify_testers: false
     )
+  end
+
+  def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
+    # The bundle and source map files are the same for all architectures.
+    gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, 'Pods/Gutenberg/Frameworks/Gutenberg.xcframework/ios-arm64/Gutenberg.framework')
+
+    Dir.mktmpdir do |sourcemaps_folder|
+      # It's important that the bundle and source map files have specific names, otherwise, Sentry
+      # won't symbolicate the stack traces.
+      FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
+      FileUtils.cp(File.join(gutenberg_bundle, 'App.composed.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
+
+      # To generate the full release version string to attach the source maps, we need to specify:
+      # - App identifier
+      # - Release version
+      # - Build version
+      # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
+      # Here are a couple of examples:
+      # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
+      # - App Store build: org.wordpress@24.1+24.1.0.3
+
+      sentry_upload_sourcemap(
+        auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+        org_slug: SENTRY_ORG_SLUG,
+        project_slug: sentry_project_slug,
+        version: release_version,
+        dist: build_version,
+        build: build_version,
+        app_identifier:,
+        # When the React native bundle is generated, the source map file references
+        # include the local machine path, with the `rewrite` and `strip_common_prefix`
+        # options Sentry automatically strips this part.
+        rewrite: true,
+        strip_common_prefix: true,
+        sourcemap: sourcemaps_folder
+      )
+    end
   end
 end

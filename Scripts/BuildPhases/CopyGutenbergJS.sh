@@ -13,6 +13,7 @@ DEST="$CONFIGURATION_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"
 # Update the matching .inputs.xcfilelist when changing these
 XCFRAMEWORK_BUNDLE_ROOT="$PODS_XCFRAMEWORKS_BUILD_DIR/Gutenberg/Gutenberg.framework"
 PODS_BUNDLE_ROOT="$PODS_ROOT/Gutenberg/bundle/ios"
+LOCAL_BUNDLE="$PODS_ROOT/../../gutenberg-mobile/bundle/ios"
 
 BUNDLE_FILE="$DEST/main.jsbundle"
 BUNDLE_ASSETS="$DEST/assets/"
@@ -23,6 +24,10 @@ if [[ -d $XCFRAMEWORK_BUNDLE_ROOT ]]; then
 elif [[ -d $PODS_BUNDLE_ROOT ]]; then
   cp "$PODS_BUNDLE_ROOT/App.js" "$BUNDLE_FILE"
   cp -r "$PODS_BUNDLE_ROOT/assets" "$BUNDLE_ASSETS"
+elif [[ -d $LOCAL_BUNDLE ]]; then
+  echo "warning: Using local bundle."
+  cp "$LOCAL_BUNDLE/App.js" "$BUNDLE_FILE"
+  cp -r "$LOCAL_BUNDLE/assets" "$BUNDLE_ASSETS"
 else
   if [[ "$CONFIGURATION" = *Debug* ]]; then
     echo "warning: Could not find Gutenberg bundle in either XCFramework or Pods. But running in Debug configuration so will assume you are working with a local version of Gutenberg."
