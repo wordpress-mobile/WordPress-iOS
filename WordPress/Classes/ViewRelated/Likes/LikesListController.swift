@@ -191,21 +191,15 @@ class LikesListController: NSObject {
             self.isFirstLoad = false
             self.isLoadingContent = false
             self.trackUsersToExclude()
-        }, failure: { [weak self] error in
-            guard let self = self else {
-                return
-            }
-
+        }, failure: { error in
             let errorMessage: String? = {
-                // Get error message from API response if provided.
-                if let error = error,
-                   let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
-                   !message.isEmpty {
-                    return message
+                guard let error = error as? NSError,
+                      error.domain == WordPressComRestApiEndpointError.errorDomain,
+                      error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                    return nil
                 }
-                return nil
+                return Strings.fetchLikesFromPrivateBlogErrorMessage
             }()
-
             self.isLoadingContent = false
             self.delegate?.showErrorView(title: self.errorTitle, subtitle: errorMessage)
         })
@@ -419,6 +413,14 @@ private extension LikesListController {
         static let headerSectionIndex = 0
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
+    }
+
+    struct Strings {
+        static let fetchLikesFromPrivateBlogErrorMessage = NSLocalizedString(
+            "likesListViewController.likesList.privateBlogErrorMessage",
+            value: "You have no access to the private blog.",
+            comment: "Error message that informs likes from a private blog cannot be fetched."
+        )
     }
 
 }
