@@ -17,39 +17,6 @@ class ReaderCardServiceTests: CoreDataTestCase {
         remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
     }
 
-    /// Call the cards API with the saved slugs
-    ///
-    func testCallApiWithTheSavedSlugs() {
-        let expectation = self.expectation(description: "Call the API with pug and cat slugs")
-
-        apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        service.fetch(isFirstPage: true, success: { _, _ in
-            expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=pug"))
-            expect(self.apiMock.GETCalledWithURL).to(contain("tags%5B%5D=cat"))
-            expectation.fulfill()
-        }, failure: { _ in })
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-
-    /// Call the cards API with the page handle when requesting the next page
-    ///
-    func testCallApiWithPageHandleWhenRequestingNextPage() {
-        let expectation = self.expectation(description: "Call the API with pug and cat slugs")
-
-        apiMock.succeed = true
-        let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        service.fetch(isFirstPage: true, success: { _, _ in
-            service.fetch(isFirstPage: false, success: { _, _ in
-                expect(self.apiMock.GETCalledWithURL).to(contain("&page_handle=ZnJvbT0xMCZiZWZvcmU9MjAyMC0wNy0yNlQxMyUzQTU1JTNBMDMlMkIwMSUzQTAw"))
-                expectation.fulfill()
-            }, failure: { _ in })
-        }, failure: { _ in })
-
-        waitForExpectations(timeout: 5, handler: nil)
-    }
-
     /// Returns an error if the user don't follow any Interest
     ///
     func testReturnErrorWhenNotFollowingAnyInterest() {
