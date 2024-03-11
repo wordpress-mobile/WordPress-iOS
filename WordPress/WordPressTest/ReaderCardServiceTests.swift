@@ -6,22 +6,19 @@ import Nimble
 
 class ReaderCardServiceTests: CoreDataTestCase {
 
-    private var remoteService: ReaderPostServiceRemote!
+    private var remoteService: ReaderPostServiceRemoteMock!
     private var followedInterestsService: ReaderFollowedInterestsServiceMock!
-    private var apiMock: WordPressComMockRestApi!
 
     override func setUp() {
         super.setUp()
-        apiMock = WordPressComMockRestApi()
         followedInterestsService = ReaderFollowedInterestsServiceMock(context: mainContext)
-        remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
+        remoteService = ReaderPostServiceRemoteMock()
     }
 
     /// Returns an error if the user don't follow any Interest
     ///
     func testReturnErrorWhenNotFollowingAnyInterest() {
         let expectation = self.expectation(description: "Error when now following interests")
-        apiMock.succeed = true
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
         followedInterestsService.returnInterests = false
 
@@ -40,7 +37,6 @@ class ReaderCardServiceTests: CoreDataTestCase {
         let expectation = self.expectation(description: "10 reader cards should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        apiMock.succeed = true
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces()))
@@ -57,7 +53,6 @@ class ReaderCardServiceTests: CoreDataTestCase {
         let expectation = self.expectation(description: "8 cards with posts should be returned")
 
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        apiMock.succeed = true
 
         service.fetch(isFirstPage: true, success: { _, _ in
             let cards = try? self.mainContext.fetch(NSFetchRequest(entityName: ReaderCard.classNameWithoutNamespaces())) as? [ReaderCard]
@@ -72,9 +67,8 @@ class ReaderCardServiceTests: CoreDataTestCase {
     ///
     func testFailure() {
         let expectation = self.expectation(description: "Failure callback should be called")
-
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        apiMock.succeed = false
+        remoteService.shouldCallFailure = true
 
         service.fetch(isFirstPage: true, success: { _, _ in }, failure: { error in
             expect(error).toNot(beNil())
@@ -88,9 +82,7 @@ class ReaderCardServiceTests: CoreDataTestCase {
     ///
     func testFirstPageClean() {
         let expectation = self.expectation(description: "Only 10 cards should be returned")
-
         let service = ReaderCardService(service: remoteService, coreDataStack: contextManager, followedInterestsService: followedInterestsService)
-        apiMock.succeed = true
 
         service.fetch(isFirstPage: false, success: { _, _ in
             // Fetch again, this time the 1st page
@@ -109,28 +101,45 @@ class ReaderCardServiceTests: CoreDataTestCase {
     }
 }
 
-class WordPressComMockRestApi: WordPressComRestApi {
-    var succeed = false
-    var GETCalledWithURL: String?
+final class ReaderPostServiceRemoteMock: ReaderCardServiceRemote {
 
-    override func GET(_ URLString: String, parameters: [String: AnyObject]?, success: @escaping WordPressComRestApi.SuccessResponseBlock, failure: @escaping WordPressComRestApi.FailureReponseBlock) -> Progress? {
-        GETCalledWithURL = URLString
-        guard
-            let fileURL: URL = Bundle.main.url(forResource: "reader-cards-success.json", withExtension: nil),
-            let data: Data = try? Data(contentsOf: fileURL),
-            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []) as AnyObject
-        else {
-            return Progress()
-        }
+    var shouldCallFailure = false
 
-        if succeed {
-            success(jsonObject, nil)
-        } else {
-            failure(NSError(domain: "", code: -1, userInfo: nil), nil)
-        }
-
-        return Progress()
+    func fetchStreamCards(for topics: [String],
+                          page: String?,
+                          sortingOption: WordPressKit.ReaderSortingOption,
+                          refreshCount: Int?,
+                          count: Int?,
+                          success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
+                          failure: @escaping (any Error) -> Void) {
+        mockFetch(success: success, failure: failure)
     }
+
+    func fetchCards(for topics: [String],
+                    page: String?,
+                    sortingOption: WordPressKit.ReaderSortingOption,
+                    refreshCount: Int?,
+                    success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
+                    failure: @escaping (any Error) -> Void) {
+        mockFetch(success: success, failure: failure)
+    }
+
+    func mockFetch(success: @escaping ([WordPressKit.RemoteReaderCard], String?) -> Void,
+                   failure: @escaping (any Error) -> Void) {
+        guard !shouldCallFailure else {
+            failure(NSError(code: -1, domain: "", description: ""))
+            return
+        }
+
+        guard let fileUrl = Bundle.main.url(forResource: "reader-cards.json", withExtension: nil),
+              let data = try? Data(contentsOf: fileUrl),
+              let cards = try? JSONDecoder().decode([RemoteReaderCard].self, from: data) else {
+            XCTFail("Error setting up mock data")
+            return
+        }
+        success(cards, nil)
+    }
+
 }
 
 private class ReaderFollowedInterestsServiceMock: ReaderFollowedInterestsService {

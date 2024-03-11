@@ -1,7 +1,28 @@
 import Foundation
 
+protocol ReaderCardServiceRemote {
+
+    func fetchStreamCards(for topics: [String],
+                          page: String?,
+                          sortingOption: ReaderSortingOption,
+                          refreshCount: Int?,
+                          count: Int?,
+                          success: @escaping ([RemoteReaderCard], String?) -> Void,
+                          failure: @escaping (Error) -> Void)
+
+    func fetchCards(for topics: [String],
+                    page: String?,
+                    sortingOption: ReaderSortingOption,
+                    refreshCount: Int?,
+                    success: @escaping ([RemoteReaderCard], String?) -> Void,
+                    failure: @escaping (Error) -> Void)
+
+}
+
+extension ReaderPostServiceRemote: ReaderCardServiceRemote { }
+
 class ReaderCardService {
-    private let service: ReaderPostServiceRemote
+    private let service: ReaderCardServiceRemote
 
     private let coreDataStack: CoreDataStack
 
@@ -14,7 +35,7 @@ class ReaderCardService {
     /// Used only internally to order the cards
     private var pageNumber = 1
 
-    init(service: ReaderPostServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
+    init(service: ReaderCardServiceRemote = ReaderPostServiceRemote.withDefaultApi(),
          coreDataStack: CoreDataStack = ContextManager.shared,
          followedInterestsService: ReaderFollowedInterestsService? = nil,
          siteInfoService: ReaderSiteInfoService? = nil) {
@@ -96,12 +117,15 @@ class ReaderCardService {
             if RemoteFeatureFlag.readerDiscoverEndpoint.enabled() {
                 self.service.fetchStreamCards(for: slugs,
                                               page: self.pageHandle(isFirstPage: isFirstPage),
+                                              sortingOption: .noSorting,
                                               refreshCount: refreshCount,
+                                              count: nil,
                                               success: success,
                                               failure: failure)
             } else {
                 self.service.fetchCards(for: slugs,
                                         page: self.pageHandle(isFirstPage: isFirstPage),
+                                        sortingOption: .noSorting,
                                         refreshCount: refreshCount,
                                         success: success,
                                         failure: failure)
