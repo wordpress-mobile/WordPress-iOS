@@ -219,34 +219,25 @@ private extension NotificationCommentDetailViewController {
         showLoadingView()
 
         loadPostIfNeeded(completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-            self?.fetchParentCommentIfNeeded(completion: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
+            self.fetchParentCommentIfNeeded(completion: {
                 if let comment = self.loadCommentFromCache(self.commentID) {
                     self.comment = comment
                     return
                 }
-
-                self.fetchComment(self.commentID, completion: { [weak self] comment in
+                self.fetchComment(self.commentID, completion: { comment in
                     guard let comment = comment else {
-                        self?.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
+                        self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
                         return
                     }
-
-                    self?.comment = comment
-                }, failure: { [weak self] error in
-                    guard let self = self else {
-                        return
-                    }
+                    self.comment = comment
+                }, failure: { error in
                     self.showErrorView(error: error)
                 })
-            }, failure: { [weak self] error in
-                guard let self = self else {
-                    return
-                }
+            }, failure: { error in
                 self.showErrorView(error: error)
             })
         })
@@ -254,13 +245,12 @@ private extension NotificationCommentDetailViewController {
 
     private func showErrorView(error: Error?) {
         let errorMessage: String? = {
-            // Get error message from API response if provided.
-            if let error = error,
-               let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
-               !message.isEmpty {
-                return message
+            guard let error = error as? NSError,
+                  error.domain == WordPressComRestApiEndpointError.errorDomain,
+                  error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                return nil
             }
-            return nil
+            return Strings.fetchCommentDetailsFromPrivateBlogErrorMessage
         }()
         self.showErrorView(title: self.errorTitle, subtitle: errorMessage)
     }
@@ -407,6 +397,14 @@ private extension NotificationCommentDetailViewController {
             case .readerComments(let vc): return vc
             }
         }
+    }
+
+    struct Strings {
+        static let fetchCommentDetailsFromPrivateBlogErrorMessage = NSLocalizedString(
+            "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage",
+            value: "You have no access to the private blog.",
+            comment: "Error message that informs comment details from a private blog cannot be fetched."
+        )
     }
 
 }
