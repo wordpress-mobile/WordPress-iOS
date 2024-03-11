@@ -119,11 +119,7 @@ DEPENDENCIES:
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 9.0.2, ~> 9.0)
-<<<<<<< HEAD
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `755fb4a101aed61be11bc85e9cd81784ad2d5f2d`)
-=======
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, branch `task/update-post-endpoints`)
->>>>>>> 3841ddb65b (Install WordPressKit from branch)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `32ab230f647bae46a869dea285f5045c56b51add`)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
@@ -221,11 +217,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: fbebd569c61baa252b3f5058c0a2a9a6ada686bb
   WordPress-Editor-iOS: bda9f7f942212589b890329a0cb22547311749ef
   WordPressAuthenticator: d906a1005febb28de9f5c3a802736ca0850307f6
-<<<<<<< HEAD
   WordPressKit: 689dcd3a65ec76bb7aac03c023c16bc40504736f
-=======
-  WordPressKit: 3d39853f98d29f0151c5c69a6a0befa33e5fce62
->>>>>>> 3841ddb65b (Install WordPressKit from branch)
   WordPressShared: 04c6d51441bb8fa29651075b3a5536c90ae89c76
   WordPressUI: a491454affda3b0fb812812e637dc5e8f8f6bd06
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -238,10 +230,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-<<<<<<< HEAD
-PODFILE CHECKSUM: dd8f18ac2b7e0cb449f3091881bcf54474f4d36c
-=======
-PODFILE CHECKSUM: 1a12a421ff577ec5208fa6c99235da218bd5db93
->>>>>>> 3841ddb65b (Install WordPressKit from branch)
+PODFILE CHECKSUM: 3814567efbbc6402bffeb63f0d1fa6241ce37f4a
 
 COCOAPODS: 1.14.2
