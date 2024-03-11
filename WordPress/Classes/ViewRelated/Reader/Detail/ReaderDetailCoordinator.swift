@@ -357,13 +357,12 @@ class ReaderDetailCoordinator {
 
     private func showError(error: Error?) {
         let errorMessage: String? = {
-            // Get error message from API response if provided.
-            if let error = error,
-               let message = (error as NSError).userInfo[WordPressComRestApi.ErrorKeyErrorMessage] as? String,
-               !message.isEmpty {
-                return message
+            guard let error = error as? NSError,
+                  error.domain == WordPressComRestApiEndpointError.errorDomain,
+                  error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                return nil
             }
-            return nil
+            return Strings.fetchDetailFromPrivateBlogErrorMessage
         }()
         self.view?.showError(subtitle: errorMessage)
     }
@@ -790,4 +789,18 @@ extension ReaderDetailCoordinator {
             coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLKey)
         }
     }
+}
+
+// MARK: - Private Definitions
+
+private extension ReaderDetailCoordinator {
+
+    struct Strings {
+        static let fetchDetailFromPrivateBlogErrorMessage = NSLocalizedString(
+            "readerDetailCoordinator.readerDetail.privateBlogErrorMessage",
+            value: "You have no access to the private blog.",
+            comment: "Error message that informs reader detail from a private blog cannot be fetched."
+        )
+    }
+
 }
