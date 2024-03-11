@@ -325,7 +325,7 @@ private class ReaderDetailViewMock: UIViewController, ReaderDetailView {
         didCallRenderWithPost = post
     }
 
-    func showError() {
+    func showError(subtitle: String?) {
         didCallShowError = true
     }
 
