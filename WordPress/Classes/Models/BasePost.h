@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  BOOL flag set to true if the post is first time published.
+
+ - note: Deprecated (kahu-offline-mode)
  */
 @property (nonatomic, assign) BOOL isFirstTimePublish;
 
