@@ -183,13 +183,22 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? build_code_current : release_version_current
-    create_release(
+    build_code = build_code_current
+    release_version = release_version_current
+
+    version = options[:beta_release] ? build_code : release_version
+    release_url = create_release(
       repository: GITHUB_REPO,
       version:,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
+    )
+
+    send_slack_message(
+      message: <<~MSG
+        :wpicon-blue: :applelogo: WordPress iOS `#{release_version} (#{build_code})` is available for testing and [a GitHub release draft](#{release_url}) has been created.
+      MSG
     )
 
     FileUtils.rm_rf(archive_zip_path)
