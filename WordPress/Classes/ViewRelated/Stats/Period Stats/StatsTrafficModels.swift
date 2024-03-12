@@ -8,7 +8,15 @@ struct StatsTrafficSection: Hashable {
     }
 }
 
-protocol StatsHashableImmuTableRow: ImmuTableRow, Hashable {
+protocol HashableImmutableRow: ImmuTableRow, Hashable {}
+
+extension HashableImmutableRow {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(String(describing: type(of: self)))
+    }
+}
+
+protocol StatsHashableImmuTableRow: HashableImmutableRow {
     var statSection: StatSection? { get }
 }
 
