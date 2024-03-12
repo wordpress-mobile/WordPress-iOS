@@ -1,0 +1,5 @@
+Hemos realizado algunos cambios en el editor de bloques.
+
+- La aplicación ya no se bloquea cuando el editor se desplaza automáticamente a un bloque.
+- Ahora verás un mensaje de error cuando un vídeo no se cargue en los bloques de medios y texto.
+- Las imágenes ya no aparecen parcialmente transparentes mientras se cargan.
