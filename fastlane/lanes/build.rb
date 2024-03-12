@@ -471,8 +471,8 @@ platform :ios do
 
   # Send a Slack message to the specified channel
   #
-  # @param [String] channel The Slack channel to send the message to
   # @param [String] message The message to send to the channel
+  # @param [String] channel The Slack channel to send the message to
   #
   def send_slack_message(message:, channel: '#build-and-ship')
     slack(
