@@ -1,0 +1,8 @@
+Der Stats-Bildschirm hat einen neuen Traffic-Tab. Profitiere von besseren Diagrammen und greife an einem zentralen Ort auf all deine historischen Daten zu. Du hast richtig gelesen: Es gibt Daten für Tage … und Wochen, und Monate und Jahre.
+
+Die Benachrichtigungen wurden aufgehübscht und haben nun ein glänzenderes, benutzerfreundlicheres Design. Außerdem haben wir einige Änderungen am Block-Editor vorgenommen.
+
+- Wir haben Support für VideoPress v5 hinzugefügt, wodurch du von einer besseren Performance in deinen Videoblöcken profitieren solltest.
+- Die App stürzt nicht mehr ab, wenn der Editor automatisch herunter zu einem Block scrollt. Schön, wenn man sich auf jemanden verlassen kann, oder?
+- Ab sofort wird dir eine Fehlermeldung angezeigt, wenn ein Video nicht auf Medien- und Text-Blöcke hochgeladen werden kann.
+- Bilder werden während des Uploads nicht mehr teils transparent angezeigt. Ist das nicht (farben-)prächtig?

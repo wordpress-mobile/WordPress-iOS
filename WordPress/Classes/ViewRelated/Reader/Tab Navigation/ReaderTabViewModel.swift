@@ -206,7 +206,7 @@ extension ReaderTabViewModel {
         var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
 
         if !selectedStream.shouldHideTagFilter {
-            filters.append(ReaderTagTopic.filterProvider())
+            filters.insert(ReaderTagTopic.filterProvider(), at: 0)
         }
 
         streamFilters = filters

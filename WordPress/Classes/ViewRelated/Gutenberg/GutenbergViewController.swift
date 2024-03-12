@@ -3,6 +3,7 @@ import Gutenberg
 import Aztec
 import WordPressFlux
 import React
+import AutomatticTracks
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -1295,6 +1296,12 @@ extension GutenbergViewController: PostEditorNavigationBarManagerDelegate {
         }
     }
 
+    func gutenbergDidRequestLogException(_ exception: GutenbergJSException, with callback: @escaping () -> Void) {
+        DispatchQueue.main.async {
+            WordPressAppDelegate.crashLogging?.logJavaScriptException(exception, callback: callback)
+        }
+    }
+
     func navigationBarManager(_ manager: PostEditorNavigationBarManager, closeWasPressed sender: UIButton) {
         requestHTML(for: .close)
     }
@@ -1378,3 +1385,7 @@ extension GutenbergViewController {
         })
     }
 }
+
+// Extend Gutenberg JavaScript exception struct to conform the protocol defined in the Crash Logging service
+extension GutenbergJSException.StacktraceLine: AutomatticTracks.JSStacktraceLine {}
+extension GutenbergJSException: AutomatticTracks.JSException {}
