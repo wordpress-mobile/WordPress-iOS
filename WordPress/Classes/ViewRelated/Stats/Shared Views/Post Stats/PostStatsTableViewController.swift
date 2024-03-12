@@ -25,8 +25,8 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: self)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: self)
     }()
 
     // MARK: - View
@@ -152,7 +152,7 @@ private extension PostStatsTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         refreshControl?.endRefreshing()
 
         if viewModel.fetchDataHasFailed() {
@@ -173,7 +173,7 @@ private extension PostStatsTableViewController {
 
         viewModel.refreshPostStats(postID: postID, selectedDate: selectedDate)
         if forceUpdate {
-            tableHandler.viewModel = viewModel.tableViewModel()
+            tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         }
     }
 
