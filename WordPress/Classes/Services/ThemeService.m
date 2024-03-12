@@ -482,7 +482,7 @@ const NSInteger ThemeOrderTrailing = 9999;
     }
     theme.popularityRank = remoteTheme.popularityRank;
     theme.previewUrl = remoteTheme.previewUrl;
-    BOOL availableFree = remoteTheme.purchased.boolValue || [remoteTheme.tier isEqualToString:@"free"];
+    BOOL availableFree = remoteTheme.purchased.boolValue || ![remoteTheme.type isEqualToString:@"managed-external"];
     theme.premium = @(!availableFree);
     theme.price = remoteTheme.price;
     theme.purchased = remoteTheme.purchased;

@@ -183,7 +183,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: a70d2f4860824fac6ca44dfca3be5f16a0884965
+    :commit: de182826562ffa48748d11f55f62c54850c767a4
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
