@@ -183,13 +183,22 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? build_code_current : release_version_current
-    create_release(
+    build_code = build_code_current
+    release_version = release_version_current
+
+    version = options[:beta_release] ? build_code : release_version
+    release_url = create_release(
       repository: GITHUB_REPO,
       version:,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
+    )
+
+    send_slack_message(
+      message: <<~MSG
+        :wpicon-blue: :applelogo: WordPress iOS `#{release_version} (#{build_code})` is available for testing and [a GitHub release draft](#{release_url}) has been created.
+      MSG
     )
 
     FileUtils.rm_rf(archive_zip_path)
@@ -225,6 +234,12 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    send_slack_message(
+      message: <<~MSG
+        :jetpack: :applelogo: Jetpack iOS `#{release_version_current} (#{build_code_current})` is available for testing.
+      MSG
     )
   end
 
@@ -451,6 +466,22 @@ platform :ios do
       groups: distribution_groups,
       # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
       reject_build_waiting_for_review: true
+    )
+  end
+
+  # Send a Slack message to the specified channel
+  #
+  # @param [String] message The message to send to the channel
+  # @param [String] channel The Slack channel to send the message to
+  #
+  def send_slack_message(message:, channel: '#build-and-ship')
+    slack(
+      username: 'WordPress Release Bot',
+      icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
+      slack_url: get_required_env('SLACK_WEBHOOK'),
+      channel:,
+      message:,
+      default_payloads: []
     )
   end
 
