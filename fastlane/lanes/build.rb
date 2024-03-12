@@ -235,6 +235,12 @@ platform :ios do
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
+
+    send_slack_message(
+      message: <<~MSG
+        :jetpack: :applelogo: Jetpack iOS `#{release_version_current} (#{build_code_current})` is available for testing.
+      MSG
+    )
   end
 
   # Builds the "WordPress Internal" app and uploads it to App Center
