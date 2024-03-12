@@ -20,6 +20,17 @@ enum PrepublishingIdentifier {
     }
 }
 
+enum PrepublishingSheetResult {
+    /// The user confirms that they want to publish (legacy behavior).
+    ///
+    /// - note: Deprecated (kahu-offline-mode)
+    case confirmed
+    /// The sheet published the post (new behavior)
+    case published
+    /// The user cancelled.
+    case cancelled
+}
+
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let post: Post
     let identifiers: [PrepublishingIdentifier]
@@ -42,12 +53,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
 
-    enum CompletionResult {
-        case completed(AbstractPost)
-        case dismissed
-    }
-
-    private let completion: (CompletionResult) -> ()
+    private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.
     private var options = [PrepublishingOption]()
@@ -74,7 +80,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
-         completion: @escaping (CompletionResult) -> (),
+         completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
@@ -178,7 +184,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         updatePublishButtonLabel()
 
-        if FeatureFlag.offlineMode.enabled {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
             updatePublishButtonState()
             mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
                 self?.updatePublishButtonState()
@@ -235,7 +241,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             if post.status == .publishPrivate, let originalStatus = post.original?.status {
                 post.status = originalStatus
             }
-            completion(.dismissed)
+            getCompletion()?(.cancelled)
         }
     }
 
@@ -331,6 +337,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
         WPStyleGuide.configureTableViewTextCell(cell)
         cell.delegate = self
+    }
+
+    /// Returns the completion closure and sets it to nil to make sure the screen
+    /// only calls it once.
+    private func getCompletion() -> ((PrepublishingSheetResult) -> Void)? {
+        let completion = self.completion
+        self.completion = nil
+        return completion
     }
 
     // MARK: - Title
@@ -445,9 +459,46 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func buttonPublishTapped() {
         didTapPublish = true
-        navigationController?.dismiss(animated: true) {
-            WPAnalytics.track(.editorPostPublishNowTapped)
-            self.completion(.completed(self.post))
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            publishPost()
+        } else {
+            let completion = getCompletion()
+            navigationController?.dismiss(animated: true) {
+                WPAnalytics.track(.editorPostPublishNowTapped)
+                completion?(.confirmed)
+            }
+        }
+    }
+
+    private func publishPost() {
+        setLoading(true)
+        Task {
+            do {
+                try await PostCoordinator.shared._publish(post)
+                getCompletion()?(.published)
+            } catch {
+                setLoading(false)
+                publishButtonViewModel.state = .default
+            }
+        }
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        publishButtonViewModel.state = isLoading ? .loading : .default
+        isModalInPresentation = isLoading
+        view.isUserInteractionEnabled = !isLoading
+
+        var subviews: [UIView] = [view]
+        while let view = subviews.popLast() {
+            switch view {
+            case let control as UIControl:
+                control.isEnabled = !isLoading
+            case let cell as UITableViewCell:
+                isLoading ? cell.disable() : cell.enable()
+            default:
+                subviews += view.subviews
+            }
         }
     }
 

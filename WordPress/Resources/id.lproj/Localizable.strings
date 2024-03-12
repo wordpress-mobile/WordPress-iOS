@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 09:54:07+0000 */
+/* Translation-Revision-Date: 2024-03-06 11:54:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li kata, %2$li karakter";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s pilihan blok";
@@ -837,9 +841,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Anda yakin ingin menghapus pos ini secara permanen?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Anda yakin ingin memublikasikan sekarang?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Anda yakin ingin memublikasikan?";
@@ -961,6 +962,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Otomotif";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Memutar otomatis video dapat menyebabkan masalah kemudahan penggunaan bagi beberapa pengguna.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Pembaruan otomatis";
@@ -4123,9 +4127,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Domain Dipetakan";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Tandai Semua Sebagai Sudah Dibaca";
-
 /* Marks a notification as unread */
 "Mark Read" = "Tandai Sudah Dibaca";
 
@@ -4733,8 +4734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabel Detail Pemberitahuan";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Pengaturan Pemberitahuan";
 
@@ -5481,9 +5481,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Terbitkan Segera";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publikasikan Sekarang";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publikasikan Pos";
@@ -6989,7 +6986,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Cara terbaik untuk menjadi penulis yang baik adalah membangun kebiasaan menulis dan membaginya dengan yang lain - Itulah saat Prompts muncul!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Sertifikat untuk server ini tidak sah. Anda mungkin tersambung dengan server yang menyamar sebagai “%@” yang bisa membuat informasi rahasia Anda beresiko,\n\nApakah Anda ingin mempercayai sertifikat itu?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8722,7 +8719,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Anda membalas komentar ini.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Tampaknya Anda telah menginstal plugin seluler dari DudaMobile yang membuat aplikasi tidak dapat tersambung ke blog Anda";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10223,6 +10220,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Lihat pos saya \"%@\":";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Lihat pos saya:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Tandai Semua sebagai Sudah Dibaca";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Pengaturan Pemberitahuan";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Tombol Menu Bilah Navigasi";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Beranda";
 
@@ -10490,6 +10502,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Tutup";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Gagal mengunggah media";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Judul";
 
@@ -10562,6 +10577,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Tag";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Mengunggah media";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Visibilitas";
@@ -11363,6 +11381,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Pos terbaru Anda %1$@ disukai %2$@ kali.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Hari ini";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Diagram Batang Jumlah Komentar untuk periode terpilih.";
 
@@ -11374,6 +11395,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Diagram Batang Jumlah Pengunjung untuk periode terpilih.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Menurut hari";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ lebih tinggi dari bulan sebelumnya\n";
@@ -11392,6 +11416,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ lebih rendah dari tahun sebelumnya\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Menurut bulan";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Menurut minggu";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Menurut tahun";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Tutup";
@@ -11746,6 +11779,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Batas tercapai. Anda dapat mencoba lagi setelah 1 menit. Mencoba lagi sebelum waktu yang ditentukan hanya akan menambah waktu tunggu sebelum pemblokiran dicabut. Jika Anda merasa bahwa ini adalah kesalahan, hubungi pusat bantuan kami.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Tidak dapat menemukan URL REST API situs Anda. Aplikasi ini memerlukannya untuk berkomunikasi dengan situs Anda. Hubungi host Anda untuk mengatasi masalah ini.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Selamat datang di aplikasi Jetpack. Anda dapat menghapus instalan aplikasi WordPress.";

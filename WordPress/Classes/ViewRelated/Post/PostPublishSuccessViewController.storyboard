@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina5_5" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -13,10 +13,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Post Post View Controller-->
+        <!--Post Publish Success View Controller-->
         <scene sceneID="rg5-ZQ-2J9">
             <objects>
-                <viewController storyboardIdentifier="PostPostViewController" id="0ZV-gF-7z9" customClass="PostPostViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PostPublishSuccessViewController" id="0ZV-gF-7z9" customClass="PostPublishSuccessViewController" customModule="WordPress" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="T6C-gu-aFL"/>
                         <viewControllerLayoutGuide type="bottom" id="8Oz-au-Onc"/>
@@ -29,13 +29,13 @@
                                 <rect key="frame" x="29" y="52" width="349" height="646"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="JGq-VA-WZT">
-                                        <rect key="frame" x="0.0" y="0.0" width="636" height="650"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="636" height="634"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbN-Zr-116">
-                                                <rect key="frame" x="0.0" y="0.0" width="636" height="474"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="636" height="524"/>
                                                 <subviews>
                                                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="IBk-Np-qMf">
-                                                        <rect key="frame" x="0.0" y="179" width="636" height="116"/>
+                                                        <rect key="frame" x="0.0" y="204" width="636" height="116"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5kn-tC-4Xg">
                                                                 <rect key="frame" x="0.0" y="0.0" width="636" height="30"/>
@@ -115,7 +115,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="22" translatesAutoresizingMaskIntoConstraints="NO" id="LUm-wG-tAL">
-                                                <rect key="frame" x="0.0" y="474" width="636" height="176"/>
+                                                <rect key="frame" x="0.0" y="524" width="636" height="110"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Mew-dP-u74" customClass="FancyButton" customModule="WordPressUI">
                                                         <rect key="frame" x="0.0" y="0.0" width="636" height="44"/>
@@ -132,20 +132,8 @@
                                                             <action selector="shareTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="qhf-Zm-wdL"/>
                                                         </connections>
                                                     </button>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wfC-rz-tLa" customClass="FancyButton" customModule="WordPressUI">
-                                                        <rect key="frame" x="0.0" y="66" width="636" height="44"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="44" id="vDI-tK-HOm"/>
-                                                        </constraints>
-                                                        <state key="normal" title="Edit Post">
-                                                            <color key="titleColor" systemColor="labelColor"/>
-                                                        </state>
-                                                        <connections>
-                                                            <action selector="editTapped" destination="0ZV-gF-7z9" eventType="touchUpInside" id="nBy-5P-2fK"/>
-                                                        </connections>
-                                                    </button>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WGH-Vv-Uun" customClass="FancyButton" customModule="WordPressUI">
-                                                        <rect key="frame" x="0.0" y="132" width="636" height="44"/>
+                                                        <rect key="frame" x="0.0" y="66" width="636" height="44"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="44" id="r9K-HZ-toB"/>
                                                         </constraints>
@@ -160,7 +148,6 @@
                                                 <constraints>
                                                     <constraint firstItem="Mew-dP-u74" firstAttribute="width" secondItem="LUm-wG-tAL" secondAttribute="width" id="5Oy-Ww-uC8"/>
                                                     <constraint firstItem="WGH-Vv-Uun" firstAttribute="width" secondItem="LUm-wG-tAL" secondAttribute="width" id="Fse-OC-ZlS"/>
-                                                    <constraint firstItem="wfC-rz-tLa" firstAttribute="width" secondItem="LUm-wG-tAL" secondAttribute="width" id="mjG-Ox-i6I"/>
                                                 </constraints>
                                                 <variation key="heightClass=compact" spacing="14"/>
                                             </stackView>
@@ -170,7 +157,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="JGq-VA-WZT" secondAttribute="trailing" id="CJa-9K-wJn"/>
-                                    <constraint firstAttribute="bottom" secondItem="JGq-VA-WZT" secondAttribute="bottom" id="FFd-k3-WLp"/>
+                                    <constraint firstAttribute="bottom" secondItem="JGq-VA-WZT" secondAttribute="bottom" constant="16" id="FFd-k3-WLp"/>
                                     <constraint firstItem="JGq-VA-WZT" firstAttribute="leading" secondItem="HyV-qN-PlX" secondAttribute="leading" id="Fdd-3n-i2i"/>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="650" id="Ilz-Uv-Yh3"/>
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="650" id="Kek-wg-9p8"/>
@@ -178,7 +165,7 @@
                                 </constraints>
                             </view>
                             <navigationBar contentMode="scaleToFill" barStyle="black" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQW-wc-apn">
-                                <rect key="frame" x="0.0" y="0.0" width="700" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="700" height="44"/>
                                 <color key="barTintColor" systemColor="systemBackgroundColor"/>
                                 <items>
                                     <navigationItem id="cdd-ao-D6H"/>
@@ -216,8 +203,6 @@
                     <size key="freeformSize" width="700" height="750"/>
                     <connections>
                         <outlet property="actionsStackView" destination="LUm-wG-tAL" id="Om1-7d-dF7"/>
-                        <outlet property="editButton" destination="wfC-rz-tLa" id="xSU-f1-aKT"/>
-                        <outlet property="editButtonWidth" destination="mjG-Ox-i6I" id="a3y-wm-nY9"/>
                         <outlet property="navBar" destination="FQW-wc-apn" id="t2u-nV-BzI"/>
                         <outlet property="postInfoView" destination="IBk-Np-qMf" id="tDx-xa-pR2"/>
                         <outlet property="postStatusLabel" destination="IEW-y3-Pzp" id="JYO-pb-LZ5"/>
@@ -242,7 +227,7 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

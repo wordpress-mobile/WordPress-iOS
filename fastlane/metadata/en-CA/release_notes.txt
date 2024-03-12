@@ -1,0 +1,5 @@
+We made a few changes to the block editor.
+
+- The app won’t crash any more when the editor auto-scrolls down to a block.
+- You’ll now see an error message when a video fails to upload to media and text blocks.
+- Images no longer appear partly transparent while they’re being uploaded. All colour, all the time.

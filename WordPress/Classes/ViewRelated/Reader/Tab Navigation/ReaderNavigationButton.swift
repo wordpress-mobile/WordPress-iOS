@@ -39,24 +39,29 @@ struct ReaderNavigationButton: View {
     }
 
     private func menuLabel(for item: ReaderTabItem) -> some View {
-        HStack(spacing: 4.0) {
-            item.image
-                .frame(width: 24.0, height: 24.0)
-                .foregroundColor(Colors.primary)
-            Text(item.title)
-                .foregroundStyle(Colors.primary)
-                .font(.subheadline.weight(.semibold))
-                .minimumScaleFactor(0.1) // prevents the text from truncating while in transition.
-                .frame(minHeight: 24.0)
-            Image("reader-menu-chevron-down")
-                .frame(width: 16.0, height: 16.0)
-                .foregroundColor(Colors.primary)
+        /// There's a bug/unexpected behavior with how `SwiftUI.Menu`'s label "twitches" when it's animated.
+        /// Using `ZStack` is a hack to prevent the "container" view from twitching during animation.
+        ZStack {
+            // This is used for the background component.
+            Capsule().fill(Colors.background)
+
+            HStack(spacing: 4.0) {
+                item.image
+                    .frame(width: 24.0, height: 24.0)
+                    .foregroundColor(Colors.primary)
+                Text(item.title)
+                    .foregroundStyle(Colors.primary)
+                    .font(.subheadline.weight(.semibold))
+                    .minimumScaleFactor(0.1) // prevents the text from truncating while in transition.
+                    .frame(minHeight: 24.0)
+                Image("reader-menu-chevron-down")
+                    .frame(width: 16.0, height: 16.0)
+                    .foregroundColor(Colors.primary)
+            }
+            .padding(.vertical, 6.0)
+            .padding(.leading, item.image == nil ? 16.0 : 8.0)
+            .padding(.trailing, 12.0)
         }
-        .padding(.vertical, 6.0)
-        .padding(.leading, item.image == nil ? 16.0 : 8.0)
-        .padding(.trailing, 12.0)
-        .background(Colors.background)
-        .clipShape(Capsule())
     }
 
     private func menuButton(for item: ReaderTabItem) -> some View {

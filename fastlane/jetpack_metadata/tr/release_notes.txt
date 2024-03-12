@@ -1,3 +1,8 @@
-Yayımlama öncesi sayfasında birkaç düzenleme yaptık. iPad'inizde yayımlarken daha pürüzsüz ekran geçişleri, basitleştirilmiş bir tarih seçici ve daha temiz ayarlar gibi değişiklikler fark edebilirsiniz.
+İstatistikler ekranına yeni Trafik sekmesi eklendi. Daha iyi grafikler ve geçmiş verilere daha iyi erişim elde edin, hem de aynı yerden. Günler, hatta haftalar, aylar ve yıllar öncesine giden verileriniz var.
 
-Ayrıca Gravatar'ınızdan bahseden kullanıcı profiliniz bölümünü de güncelledik. (Bunun ne olduğundan emin değil misiniz? Bu hoşunuza gidecek).
+Bildirimler iyileştirildi, daha güzel görünen ve kolay kullanım sağlayan bir tasarıma yükseltildi. Ayrıca blok düzenleyicide de birkaç değişiklik yaptık.
+
+- VideoPress v5 için destek ekledik, böylece video bloklarınızda daha iyi bir performans elde edersiniz.
+- Düzenleyici, bir blokta otomatik olarak ekranı aşağıya kaydırdığında artık çökme sorunu olmaz. Artık sizi yarı yolda bırakmayacak.
+- Artık bir ortam veya metin blokuna video yüklenmesi başarısız olursa bir hata mesajı görürsünüz.
+- Artık görseller yüklenirken kısmen şeffaf görünmez. Görseller her zaman tamamen renkli olur.

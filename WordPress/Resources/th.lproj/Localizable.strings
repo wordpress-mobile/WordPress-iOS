@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:56+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: th */
 
 /* Label displaying the author and post title for a Comment. %1$@ is a placeholder for the author. %2$@ is a placeholder for the post title. */
@@ -918,8 +918,7 @@
    Title of a button that cancels enabling notifications when tapped */
 "Not Now" = "ไม่ใช่ในตอนนี้";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "การตั้งค่าการเตือน";
 
@@ -1534,7 +1533,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "แอพไม่สามารถจดจำการตอบสนองของเซิร์ฟเวอร์ กรุณา ตรวจสอบการตั้งค่าเว็บของคุณ";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "การรับรองสำหรับเซิร์ฟเวอร์นี้ใช้งานไม่ได้ คุณอาจจะเชื่อมต่อกับเซิร์ฟเวอร์ที่แกล้งทำเป็น “%@” ซึ่งสามารถทำให้ข้อความความลับของคุณอยู่ในความเสี่ยง\n\nคุณต้องการที่จะเชื่อมั่นการรับรองนี้อยู่หรือไม่?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */

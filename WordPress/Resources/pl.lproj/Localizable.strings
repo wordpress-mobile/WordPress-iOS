@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-25 07:12:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: pl */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1817,8 +1817,7 @@
 /* Shown when user is loading Menu item options and no items are available, such as posts, pages, etc. */
 "Nothing found." = "Niczego nie znaleziono.";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Ustawienia powiadomień";
 
@@ -2145,9 +2144,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Opublikuj natychmiast";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Opublikuj teraz";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -2740,7 +2736,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "The basics" = "Podstawy";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certyfikat tego serwera jest nieprawidłowy. Być może łączysz się z serwerem, który podszywa się pod “%@”, co może być zagrożeniem dla twoich prywatnych informacji.";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */

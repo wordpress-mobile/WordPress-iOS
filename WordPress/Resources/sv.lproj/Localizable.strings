@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-24 16:14:23+0000 */
+/* Translation-Revision-Date: 2024-03-04 12:46:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li ord, %2$li tecken";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Block av typen %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Inställningar för blocket %s";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Är du säker på att du vill radera detta inlägg permanent?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Är du säker på att du vill publicera nu?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Är du säker på att du vill publicera?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Fordon";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Automatisk uppspelning kan orsaka användbarhetsproblem för vissa användare.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatiska uppdateringar";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Ompekad domän";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Markera allt som läst";
-
 /* Marks a notification as unread */
 "Mark Read" = "Markera som läst";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Notisinformationstabell";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Notisinställningar";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicera direkt";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publicera nu";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publicera ett inlägg";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Det bästa sättet att bli en bättre skribent är att börja skriva regelbundet och visa för andra – och det är här bloggningspåminnelserna kommer in i bilden!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikatet för denna server är ogiltigt. Du kanske ansluter till en server som utger sig för att vara ”%@”, vilket kan försätta din konfidentiella information i fara.\n\nVill du lita på certifikatet ändå?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8728,7 +8725,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Du svarade på denna kommentar.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Det verkar som att du har installerat ett mobiltillägg från DudaMobile som förhindrar att appen ansluter till din blogg";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10235,6 +10232,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Skicka feedback";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Kolla in mitt inlägg ”%@”:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Kolla in mitt inlägg:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Markera allt som läst";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Aviseringsinställningar";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Navigeringslistens menyknapp";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Startsida";
 
@@ -10505,6 +10517,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Misslyckades att ladda upp media";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Rubrik";
 
@@ -10577,6 +10592,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketter";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Laddar upp media";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Synlighet";
@@ -11378,6 +11396,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Idag";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Stapeldiagram som visar antalet kommentarer för vald period.";
 
@@ -11389,6 +11410,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Stapeldiagram som visar antalet besökare för vald period.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Efter dag";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
@@ -11413,6 +11437,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ lägre än föregående år\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Efter månad";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Efter vecka";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Efter år";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Avfärda";
@@ -11770,6 +11803,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Gräns uppnådd. Du kan försöka igen om en minut. Att försöka igen innan dess kommer bara att öka den tid du måste vänta innan begränsningen upphävs. Om du tror att det här är fel, kontakta supporten.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Kunde inte hitta din webbplats REST API-URL. Appen behöver det för att kunna kommunicera med din webbplats. Kontakta ditt webbhotell för att lösa detta problem.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Välkommen till Jetpack-appen. Du kan avinstallera WordPress-appen.";

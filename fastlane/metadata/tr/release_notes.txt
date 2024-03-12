@@ -1,3 +1,5 @@
-Yayımlama öncesi sayfasında birkaç düzenleme yaptık. iPad'inizde yayımlarken daha pürüzsüz ekran geçişleri, basitleştirilmiş bir tarih seçici ve daha temiz ayarlar gibi değişiklikler fark edebilirsiniz.
+Blok düzenleyicide birkaç değişiklik yaptık.
 
-Ayrıca Gravatar'ınızdan bahseden kullanıcı profiliniz bölümünü de güncelledik. (Bunun ne olduğundan emin değil misiniz? Bu hoşunuza gidecek).
+- Düzenleyici, bir blokta otomatik olarak ekranı aşağıya kaydırdığında artık çökme sorunu olmaz.
+- Artık bir ortam veya metin blokuna video yüklenmesi başarısız olursa bir hata mesajı görürsünüz.
+- Artık görseller yüklenirken kısmen şeffaf görünmez. Görseller her zaman tamamen renkli olur.

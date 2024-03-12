@@ -92,7 +92,7 @@ class EditPageViewController: UIViewController {
 
     private func show(_ editor: EditorViewController) {
         editor.entryPoint = entryPoint
-        editor.onClose = { [weak self] _, _ in
+        editor.onClose = { [weak self] _ in
             // Dismiss navigation controller
             self?.dismiss(animated: true) {
                 // Dismiss self

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-25 18:55:36+0000 */
+/* Translation-Revision-Date: 2024-03-04 08:15:35+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li Wörter, %2$li Zeichen";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s blockieren";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s Blockoptionen";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Bist du sicher, dass du diesen Beitrag endgültig löschen möchtest?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Bist du sicher, dass du jetzt veröffentlichen möchtest?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Bist du sicher, dass du veröffentlichen möchtest?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Automobil";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Die automatische Wiedergabe kann bei einigen Benutzern zu Problemen bei der Benutzerfreundlichkeit führen.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Automatische Updates";
@@ -4129,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Gemappte Domain";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Alle als gelesen markieren";
-
 /* Marks a notification as unread */
 "Mark Read" = "Als gelesen markieren";
 
@@ -4739,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabelle für Benachrichtigungsdetails";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Benachrichtigungseinstellungen";
 
@@ -5487,9 +5487,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Sofort veröffentlichen";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Jetzt veröffentlichen";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Beitrag veröffentlichen";
@@ -6995,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Wenn du deine Schreibkünste verbessern willst, kreiere deinen eigenen Schreibstil und teile ihn mit anderen – und dabei helfen dir unsere Themenvorschläge!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Das Zertifikat für diesen Server ist ungültig. Möglicherweise stellst du eine Verbindung zu einem Server her, der vorgibt, „%@“ zu sein, wodurch deine vertraulichen Daten gefährdet werden könnten.\n\nMöchtest du dem Zertifikat trotzdem vertrauen?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8728,7 +8725,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Du hast auf diesen Kommentar geantwortet.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Du hast anscheinend ein Mobil-Plugin von DudaMobile installiert, welche die App davon abhält, sich mit deinem Blog zu verbinden.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10235,6 +10232,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Feedback senden";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Schau dir meinen Beitrag „%@“ an:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Schau dir meinen Beitrag an:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Alle als gelesen markieren";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Benachrichtigungs-Einstellungen";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Menü-Button der Navigationsleiste";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Homepage";
 
@@ -10505,6 +10517,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Das Hochladen von Medien ist fehlgeschlagen";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titel";
 
@@ -10577,6 +10592,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Schlagwörter";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Hochladen von Medien";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Sichtbarkeit";
@@ -11378,6 +11396,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Dein neuester Beitrag %1$@ hat %2$@ Like erhalten.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Heute";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Balkendiagramm, das die Kommentare für den ausgewählten Zeitraum darstellt.";
 
@@ -11389,6 +11410,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Balkendiagramm, das die Besucher für den ausgewählten Zeitraum darstellt.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Nach Tag";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
@@ -11413,6 +11437,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ weniger als im Vorjahr\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Nach Monat";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Nach Woche";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Nach Jahr";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Verwerfen";
@@ -11770,6 +11803,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Das Limit wurde erreicht. In einer Minute kannst du es erneut versuchen. Ein früherer Versuch verlängert nur die Wartezeit, bis die Sperre aufgehoben wird. Wenn Du einen Fehler vermutest, kontaktiere den Support.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Die REST-API-URL deiner Website konnte nicht gefunden werden. Die App braucht sie, um mit deiner Website zu kommunizieren. Wende dich an deinen Hoster, um dieses Problem zu lösen.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Willkommen bei der Jetpack-App. Du kannst die WordPress-App deinstallieren.";

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-27 09:54:07+0000 */
+/* Translation-Revision-Date: 2024-03-06 11:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 個字、%2$li 個字元";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 區塊";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 區塊選項";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "你確定要永久刪除此文章？";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "是否確定要立即發佈？";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "確定要發表？";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "汽車";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "自動播放可能會導致某些使用者無法使用。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自動更新";
@@ -4126,9 +4130,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "對應網域";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "將全部標示為已讀";
-
 /* Marks a notification as unread */
 "Mark Read" = "標記為已讀";
 
@@ -4736,8 +4737,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知詳細資訊表";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知設定";
 
@@ -5484,9 +5484,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "立刻發佈";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "立即發表";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "發表文章";
@@ -6992,7 +6989,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "想成為更好的撰稿人，最佳方法是養成寫作習慣並與他人分享 - 這就是「提示」的功用！";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此伺服器的憑證無效。你可能正連線至冒充為「%@」的伺服器，而這可能洩漏你的機密資料。\n\n是否仍然要信任憑證？";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8722,7 +8719,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "你已回覆此留言。";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "你似乎安裝了 DudaMobile 的行動版外掛程式，導致應用程式無法連接至你的網誌";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10226,6 +10223,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "傳送意見回饋";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "查看我的貼文「%@」：";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "查看我的貼文：";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "將全部標示為已讀";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "通知設定";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "導覽列選單按鈕";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "首頁";
 
@@ -10493,6 +10505,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "關閉";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "無法上傳媒體";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "標題";
 
@@ -10565,6 +10580,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "標籤";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "正在上傳媒體";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可見度";
@@ -11363,6 +11381,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "你的最新文章 %1$@ 已獲得 %2$@ 次按讚。";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "今天";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "顯示所選期間留言情況的長條圖。";
 
@@ -11374,6 +11395,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "顯示所選期間訪客人數的長條圖。";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "依天";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ 較前一個月高\n";
@@ -11392,6 +11416,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ 較前一年低\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "依月";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "依週";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "依年份";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "關閉";
@@ -11749,6 +11782,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "已達限制。 請於 1 分鐘後再試。 如果在這段時間結束前即重試，將使等候時間再度延長。 如果你覺得這是錯誤，請聯絡支援團隊。";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "找不到網站的 REST API URL。 此應用程式需要該 URL 才能與你的網站通訊。 請聯絡你的主機服務提供者，以解決此問題。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "歡迎使用 Jetpack 應用程式。";

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -1516,8 +1516,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Таблица с детайли за известията";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Настройки за известяване";
 
@@ -1821,9 +1820,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Публикуване веднага";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Публикуване";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -2350,7 +2346,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Приложението не разпознава отговора на сървъра. Проверете конфигурацията на сайта си.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Сертификатът на този сървър е невалиден. Възможно е да се свързвате със сървър който се преструва че е \"%@\", което да изложи ваша конфиденциална информация на риск.\n\nСигурни ли сте, че искате да се доверите на този сертификат?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2831,7 +2827,7 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "За да извършите това действие, влезте в профила си в WordPress.com.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Изглежда, че сте инсталирали мобилно разширение от DudaMobile, което пречи на приложението да се свърже с вашия блог.";
 
 /* Displayed in the Notification Settings View */

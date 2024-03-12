@@ -6,10 +6,8 @@ class EditorAztecTests: XCTestCase {
 
     @MainActor
     override func setUpWithError() throws {
-        setUpTestSuite()
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
 
-        try LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail)
         try EditorFlow
             .toggleBlockEditor(to: .off)
             .goBackToMySite()

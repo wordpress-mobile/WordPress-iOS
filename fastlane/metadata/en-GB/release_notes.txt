@@ -1,3 +1,5 @@
-We’ve made several tweaks to the pre-publishing sheet. You might notice changes like smoother screen transitions, a simplified date picker, and cleaner settings when you’re publishing on your iPad.
+We made a few changes to the block editor.
 
-We also updated the info section of your user profile that talks about your Gravatar. (Not sure what that is? You’re in for a Grava-treat).
+– The app won’t crash anymore when the editor auto-scrolls down to a block.
+– You’ll now see an error message when a video fails to upload to media and text blocks.
+– Images no longer appear partly transparent while they’re being uploaded. All colour, all the time.

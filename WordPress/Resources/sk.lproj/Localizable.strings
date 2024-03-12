@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -386,9 +386,6 @@
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Naozaj chcete natrvalo odtrániť článok?";
-
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Naozaj chcete teraz publikovať?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
@@ -2250,8 +2247,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailná tabuľka notifikácií";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Nastavenia upozornení";
 
@@ -2670,9 +2666,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Zverejniť okamžite";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publikovať";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publikujte príspevok";
@@ -3487,7 +3480,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikácia nemôže rozpoznať odpoveď servera. Skontrolujte konfiguráciu na vašej webovej stránke.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pre tento server je neplatný. Môžete sa pripájať na server, ktorý sa len tvári, že je \"%@\", a to môže ohroziť vaše dôverné informácie.\n\nChcete aj tak dôverovať tomuto certifikátu?";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
@@ -4375,7 +4368,7 @@
    Text to look for */
 "You replied to this comment." = "Odpovedali ste na tento komentár.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že ste nainštalovali mobilní plugin DudaMobile. Ten zabraňuje aplikácií prepojiť sa s vašou webovou stránkou. ";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */

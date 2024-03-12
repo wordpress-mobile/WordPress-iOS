@@ -28,7 +28,6 @@ class PreviewWebKitViewControllerTests: CoreDataTestCase {
         let vc = PreviewWebKitViewController(post: post, previewURL: nil, source: "test_draft_toolbar")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertTrue(items.contains(vc.publishButton), "Preview toolbar for draft should contain publish button.")
         XCTAssertFalse(items.contains(vc.safariButton),
                        "Preview toolbar for draft should not contain Safari button.")
         XCTAssertFalse(items.contains(vc.backButton), "Preview toolbar for draft should not contain back button.")
@@ -59,7 +58,6 @@ class PreviewWebKitViewControllerTests: CoreDataTestCase {
         let vc = PreviewWebKitViewController(post: page, previewURL: nil, source: "test_site_page")
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")
         XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for page should contain Safari button.")
         XCTAssertTrue(items.contains(vc.backButton), "Preview toolbar for page should contain back button.")
         XCTAssertTrue(items.contains(vc.forwardButton), "Preview toolbar for page should contain forward button.")
@@ -71,7 +69,6 @@ class PreviewWebKitViewControllerTests: CoreDataTestCase {
         let vc = PreviewWebKitViewController(configuration: config)
         let items = vc.toolbarItems(linkBehavior: vc.linkBehavior)
 
-        XCTAssertFalse(items.contains(vc.publishButton), "Preview toolbar for page should not contain publish button.")
         XCTAssertTrue(items.contains(vc.safariButton), "Preview toolbar for page should contain Safari button.")
         XCTAssertTrue(items.contains(vc.backButton), "Preview toolbar for page should contain back button.")
         XCTAssertTrue(items.contains(vc.forwardButton), "Preview toolbar for page should contain forward button.")

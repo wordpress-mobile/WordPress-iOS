@@ -1,3 +1,5 @@
-Wir haben einige Optimierungen an der Vorveröffentlichungsseite vorgenommen. Wenn du auf deinem iPad veröffentlichst, wirst du vielleicht Änderungen wie z. B. sanftere Bildschirmübergänge, eine vereinfachte Datumsauswahl und sauberere Einstellungen bemerken.
+Wir haben ein paar Änderungen am Block-Editor vorgenommen.
 
-Außerdem haben wir den Info-Abschnitt deines Benutzerprofils aktualisiert, in dem es um deinen Gravatar geht. (Wenn du nicht weißt, was das ist, freu dich einfach über deinen Gravatar.)
+- Die App stürzt nicht mehr ab, wenn der Editor automatisch herunter zu einem Block scrollt.
+- Ab sofort wird dir eine Fehlermeldung angezeigt, wenn ein Video nicht auf Medien- und Text-Blöcke hochgeladen werden kann.
+- Bilder werden während des Uploads nicht mehr teils transparent angezeigt. Ist das nicht (farben-)prächtig?

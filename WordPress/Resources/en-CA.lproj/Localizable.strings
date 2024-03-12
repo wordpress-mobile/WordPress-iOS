@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-11-25 14:35:47+0000 */
+/* Translation-Revision-Date: 2024-03-10 17:08:00+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: en_CA */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li words, %2$li characters";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s block";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s block options";
@@ -618,6 +622,9 @@
    Title of the drafts filter. This filter shows a list of draft posts. */
 "All" = "All";
 
+/* Information about redeeming domain credit on site dashboard. */
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "All WordPress.com annual plans include a custom domain name. Register your free domain now.";
+
 /* An option in a list. Automatically approve all comments */
 "All comments" = "All comments";
 
@@ -680,6 +687,12 @@
 
 /* No comment provided by engineer. */
 "Alternatively, you can convert the content to blocks." = "Alternatively, you can convert the content to blocks.";
+
+/* No comment provided by engineer. */
+"Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Alternatively, you can detach and edit this block separately by tapping “Detach”.";
+
+/* translators: Alternative option included in a warning related to having blocks deeply nested. */
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatively, you can flatten the content by ungrouping the block.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatively, you may enter the password for this account.";
@@ -834,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Are you sure you want to permanently delete this post?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Are you sure you want to publish now?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Are you sure you want to publish?";
@@ -958,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Automotive";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Autoplay may cause usability issues for some users.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
@@ -1098,6 +1111,9 @@
 
 /* No comment provided by engineer. */
 "Blocks menu" = "Blocks menu";
+
+/* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "Blocks nested deeper than %d levels may not render properly in the mobile editor.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1889,6 +1905,15 @@
 
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered.";
+
+/* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Couldn't load tags.";
@@ -2947,6 +2972,9 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "File type";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "File type not supported as a media file.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & Television";
 
@@ -3038,11 +3066,20 @@
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
 
+/* translators: %1$s: Font size name e.g. Small */
+"Font Size, %1$s" = "Font Size, %1$s";
+
 /* Food site intent topic */
 "Food" = "Food";
 
 /* An example tag used in the login prologue screens. */
 "Football" = "Football";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using the web editor." = "For this reason, we recommend editing the block using the web editor.";
+
+/* translators: Recommendation included in a warning related to having blocks deeply nested. */
+"For this reason, we recommend editing the block using your web browser." = "For this reason, we recommend editing the block using your web browser.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain.";
@@ -4096,9 +4133,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Mapped Domain";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
-
 /* Marks a notification as unread */
 "Mark Read" = "Mark Read";
 
@@ -4395,6 +4429,12 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Describes a status of a plugin */
 "Needs Update" = "Needs Update";
+
+/* No comment provided by engineer. */
+"Network connection lost, working offline" = "Network connection lost, working offline";
+
+/* No comment provided by engineer. */
+"Network connection re-established" = "Network connection re-established";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "New";
@@ -4700,8 +4740,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Notification Details Table";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Notification Settings";
 
@@ -5449,9 +5488,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publish Immediately";
 
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publish Now";
-
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publish a post";
 
@@ -5852,6 +5888,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Button label to open web page in Safari */
 "Safari" = "Safari";
+
+/* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
+"Sandbox Store" = "Sandbox Store";
 
 /* Menus save button title
    Save Action
@@ -6853,6 +6892,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tap to view your site";
 
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "Tap to visit the Gravatar website in an external browser";
+
 /* A hint about the completed guided tour. */
 "Task complete." = "Task complete.";
 
@@ -6950,7 +6992,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7732,6 +7774,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Update site icon";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Updates might take some time to sync with your Gravatar profile.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Updates the bar chart to show comments.";
 
@@ -7749,6 +7794,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "Updating";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Updating…";
@@ -8013,6 +8061,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Waiting for Google to complete…";
+
+/* No comment provided by engineer. */
+"Waiting for connection" = "Waiting for connection";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8323,6 +8374,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "What is Gravatar?";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "What is WordPress.com?";
 
@@ -8473,6 +8527,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";
 
+/* No comment provided by engineer. */
+"Working Offline" = "Working Offline";
+
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "World map showing views by country.";
 
@@ -8609,6 +8666,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "You have 1 hidden WordPress site.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "You have a free one-year domain registration with your plan.";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site.";
 
@@ -8665,7 +8725,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "You replied to this comment.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -8698,6 +8758,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Your Sites";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "Your WordPress.com profile is powered by Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.";
@@ -8834,6 +8897,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* This is the string we display when prompting the user to review the WordPress app */
 "appRatings.wordpress.prompt" = "What do you think about WordPress?";
 
+/* Option to enable the optimization of images when uploading. */
+"appSettings.media.imageOptimizationRow" = "Optimize Images";
+
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "High";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Low";
+
+/* Indicates an image will use maximum quality when uploaded. */
+"appSettings.media.imageQuality.maximum" = "Maximum";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Medium";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Quality";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Image Quality";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audio file";
 
@@ -8945,6 +9029,46 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "Copy URL";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "Visit site";
+
+/* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
+"bloganuary.dashboard.card.button.learnMore" = "Learn more";
+
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "For the month of January, blogging prompts will come from Bloganuary — our community challenge to build a blogging habit for the new year.";
+
+/* Title for the Bloganuary dashboard card while Bloganuary is running. */
+"bloganuary.dashboard.card.runningTitle" = "Bloganuary is here!";
+
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary is coming!";
+
+/* Title of a button that calls the user to enable the Blogging Prompts feature. */
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Turn on blogging prompts";
+
+/* Title of a button that will dismiss the Bloganuary modal when tapped.
+Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
+"bloganuary.learnMore.modal.button.promptsEnabled" = "Let’s go!";
+
+/* The second line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.second" = "Publish your response.";
+
+/* The third line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.description.third" = "Read other bloggers’ responses to get inspiration and make new connections.";
+
+/* The first line of the description shown in the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.descriptions.first" = "Receive a new prompt to inspire you each day.";
+
+/* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
+"bloganuary.learnMore.modal.footer.addition" = "To join Bloganuary you need to enable Blogging Prompts.";
+
+/* An informative excerpt shown in a subtler tone. */
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary will use Daily Blogging Prompts to send you topics for the month of January.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "Join our month-long writing challenge";
+
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "Dismiss";
 
@@ -8953,6 +9077,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Rate as helpful";
+
+/* Title for the checkout view */
+"checkout.title" = "Checkout";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "comment";
@@ -9104,8 +9231,41 @@ Example: Reply to Pamela Nguyen */
 /* Title for the View stats button in the More menu */
 "dashboardCard.stats.viewStats" = "View stats";
 
+/* Debug menu item title */
+"debugMenu.analytics" = "Analytics";
+
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Boolean User Defaults";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Boolean User Defaults";
+
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Feature Flags";
+
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "Reader CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Default URL";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Add a custom CSS URL here to be loaded in Reader. If you're running Calypso locally this can be something like: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Current Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Default Value";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.overridenValue" = "Remote Config";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Remote Config Value";
+
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Reset";
 
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
@@ -9113,6 +9273,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Remove current quick start tour menu item */
 "debugMenu.removeQuickStart" = "Remove Current Tour";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Logging";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Quick Start";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Settings";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Developer";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Weekly Roundup";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Hide this";
@@ -9128,6 +9303,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The expired label of the domain card in All Domains screen. */
 "domain.management.card.expired.label" = "Expired";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Never expires";
 
 /* The renews label of the domain card in All Domains screen. */
 "domain.management.card.renews.label" = "Renews";
@@ -9222,6 +9400,15 @@ Example: Reply to Pamela Nguyen */
 /* The text to display for paid domains in 'Site Creation > Choose a domain' screen */
 "domain.suggestions.row.yearly" = "per year";
 
+/* Help button */
+"domainSelection.helpButton.title" = "Help";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Domains purchased on this site will redirect to %1$@";
+
+/* Search domain - Title for the Suggested domains screen */
+"domainSelection.search.title" = "Search domains";
+
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Checkout";
 
@@ -9255,6 +9442,15 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "example.com";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Add";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Select Images";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarViewSelected" = "View Selected (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Campaign Details";
@@ -9354,6 +9550,36 @@ Example: Reply to Pamela Nguyen */
 
 /* (placeholder) Help the user enter a URL into the field */
 "http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (URL)";
+
+/* The message for the first feedback alert */
+"in-app.feedback.alert.message" = "Are you enjoying the Jetpack mobile app?";
+
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Not really";
+
+/* The title for the first feedback alert */
+"in-app.feedback.alert.title" = "Your feedback matters";
+
+/* The 'yes' button title for the first feedback alert */
+"in-app.feedback.alert.yes" = "It's great";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.message" = "Thanks for helping us improve the app.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback sent";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Would you like to share more details with us?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Not now";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Help us improve";
+
+/* The 'yes' button for the negative feedback alert */
+"in-app.feedback.negative.alert.yes" = "Sure";
 
 /* Sentence to justify why the app is asking permission from the user to use their camera. */
 "infoplist.NSCameraUsageDescription" = "To take photos or videos to use in your posts.";
@@ -9703,6 +9929,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "Deleted!";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "All";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Documents";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Images";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Videos";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Delete";
 
@@ -9742,6 +9983,12 @@ Example: Reply to Pamela Nguyen */
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Dismiss";
 
+/* Error message when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.message" = "Your media could not be exported. If the problem persists you can contact us via the Me > Help & Support screen.";
+
+/* Error title when picked media cannot be imported into stories. */
+"mediaPicker.failedMediaExportAlert.title" = "Failed Media Export";
+
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "This app needs permission to access the Camera to capture new media, please change the privacy settings if you wish to allow this.";
 
@@ -9775,6 +10022,12 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Take Video";
 
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ of %2$@";
+
+/* Max image size in pixels (e.g. 300x300px) */
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
+
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "It looks like you still have the WordPress app installed.";
 
@@ -9795,6 +10048,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Primary description in the migration done screen. */
 "migration.done.primaryDescription" = "We’ve transferred all your data and settings. Everything is right where you left it.";
+
+/* Secondary description (second paragraph) in the migration done screen. */
+"migration.done.secondaryDescription" = "It's time to continue your WordPress journey on the Jetpack app!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Thanks for switching to Jetpack!";
@@ -9844,6 +10100,9 @@ Example: Reply to Pamela Nguyen */
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Welcome to Jetpack!";
 
+/* Primary button title in the migration done screen. */
+"migrationDone.actions.primaryTitle" = "Let's go";
+
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "The Jetpack app has all the WordPress app’s functionality, and now exclusive access to Stats, Reader, Notifications and more.";
 
@@ -9870,6 +10129,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Maintenance";
+
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Site Monitoring";
 
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Social";
@@ -9919,6 +10181,42 @@ Example: Reply to Pamela Nguyen */
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "You don't have any sites";
 
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Add site";
+
+/* Button that reveals more site actions */
+"mySite.siteActions.button" = "Site Actions";
+
+/* Accessibility hint for button used to show more site actions */
+"mySite.siteActions.hint" = "Tap to show more site actions";
+
+/* Menu title for the personalize home option */
+"mySite.siteActions.personalizeHome" = "Personalize home";
+
+/* Menu title for the share site option */
+"mySite.siteActions.shareSite" = "Share site";
+
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "Change site icon";
+
+/* Menu title for the change site title option */
+"mySite.siteActions.siteTitle" = "Change site title";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Switch site";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "Visit site";
+
+/* A no results message displayed on the atomic logs screen. */
+"noLogs.empty" = "No log entries within this time range";
+
+/* A generic error message displayed on the atomic logs screen. */
+"noLogs.error" = "An error occurred";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Retry";
+
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Dismiss";
 
@@ -9933,6 +10231,21 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Send feedback";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Check out my post \"%@\":";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Check out my post:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Mark All As Read";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Notification Settings";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Navigation Bar Menu Button";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Homepage";
@@ -10024,6 +10337,30 @@ Example: Reply to Pamela Nguyen */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "phone number";
 
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "End Date";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Severity";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Start Date";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Deprecated";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Fatal Error";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "User";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Warning";
+
+/* Title for the plan selection view */
+"planSelection.title" = "Plans";
+
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "Created %@";
 
@@ -10059,6 +10396,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Trash";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Delete";
 
 /* Title for the 'Share' post list row swipe action */
 "postList.swipeActionShare" = "Share";
@@ -10168,6 +10508,33 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d social shares remaining";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "Categories";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Close";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Failed to upload media";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "Title";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "Publish";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "Publish Date";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publishing to";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "Schedule";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10223,8 +10590,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "Tags";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Uploading media";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "Visibility";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "View all responses";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@ of %2$@";
+
+/* Retry button title */
+"publishButton.retry" = "Retry";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "Now";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "Publish Date";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Dismiss";
@@ -10235,8 +10623,38 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "You're logged in!";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Try selecting %@ to view subscribed content and manage your subscriptions.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Subscriptions";
+
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "More";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ posts • %2$@ subscribers";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Shows the blog's posts.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Problem loading blogs";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Fetching blogs...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "No blogs found matching %@ in your language.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "No blogs found";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ subscribers";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
@@ -10275,11 +10693,189 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label for the 'Save Post' button when a post has been saved. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Saved Post";
 
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "You are already subscribed to this blog.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Edit";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filter by blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filter by tag";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Search for a blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "No blog subscriptions";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Subscribe to a tag and you’ll be able to see the best posts from it here.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Subscribe to a tag";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Suggested tags";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "No tags";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Subscribing to new tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Suggested tags";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Fetching blogs...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blogs";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Tags";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d Blogs";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d Blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Tags";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d Tags";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d Tag";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Tags";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtered by %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Opens the filter list";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Liked";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Lists";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Reset";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Saved";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Search";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Subscriptions";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Search";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader Settings";
+
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Discover Blogs";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Subscribe to blogs in Discover and you’ll see their latest posts here. Or search for a blog that you like already.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "No blog subscriptions";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "This blog has not posted anything yet. Try back later.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "The blogs in this list have not posted anything recently.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Manage Blogs";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Recent posts from blogs and sites you subscribe to will appear here.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Go to Subscriptions";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "You can subscribe to posts on a specific blog by subscribing to it.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Add a blog";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Unable to block blog";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blocked blog";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Subscribed to blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Could not unsubscribe from blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Could not unsubscribe from blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Unsubscribed from blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Unable to turn off blog notifications";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Turned off blog notifications";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Unable to turn on blog notifications";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Enable blog notifications?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Turned on blog notifications";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "this blog";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Unable to subscribe to blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Subscribed to %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Unable to unsubscribe from blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Unsubscribed from blog";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10317,8 +10913,17 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility hint for the site header on the reader post card cell */
 "reader.post.header.accessibility.hint" = "Opens the site details for the post.";
 
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Block this blog";
+
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Block this user";
+
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Turn off blog notifications";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Turn on blog notifications";
 
 /* The title of a button that removes a saved post. */
 "reader.post.menu.remove.post" = "Remove Saved Post";
@@ -10328,6 +10933,75 @@ but tapping on this button will remove their like from the post. */
 
 /* The title of a button that saves a post. */
 "reader.post.menu.save.post" = "Save";
+
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Subscribe to blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Unsubscribe from blog";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Manage Blogs";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Once you create a WordPress.com blog, you can reblog content that you like to your own blog.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "No available WordPress.com blogs";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blogs";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Subscribing to new tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Subscribe to tags";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "No new tags to subscribe to";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Choose your tags";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Subscribes to the tag.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Subscribe";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "Blog URL";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Enter the URL of a blog to subscribe to";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Subscribed";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Blogs to subscribe to";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Add a Tag";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Add Tag";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Add any tag";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Add a Tag";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Discover more tags";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Unsubscribe from %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Unsubscribe";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Back";
@@ -10443,6 +11117,30 @@ but tapping on this button will remove their like from the post. */
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "YourSiteName.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Other domains for %1$@";
+
+/* A section title which displays a row with a free WP.com domain */
+"site.domains.freeDomainSection.title" = "Your Free WordPress.com domain";
+
+/* Description for the first domain purchased with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.description" = "Get a free one-year domain registration or transfer with any annual paid plan.";
+
+/* Title of the card that starts the purchase of the first domain with a paid plan. */
+"site.domains.freeDomainWithPaidPlan.title" = "Get your domain";
+
+/* Footer of the primary site section in the Domains Dashboard. */
+"site.domains.primaryDomain" = "Your primary site address is what visitors will see in their address bar when visiting your website.";
+
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Primary domain";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Just search for a domain";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Upgrade to a plan";
+
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
 
@@ -10467,8 +11165,71 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "Select media.";
 
+/* Accessibility hint for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityHint" = "Tap to view media in full screen";
+
+/* Accessibility label for media item preview for user's viewing an item in their media library */
+"siteMediaItem.contentViewAccessibilityLabel" = "Preview media";
+
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Add";
+
+/* Button selection media in media picker */
+"siteMediaPicker.deselect" = "Deselect";
+
+/* Button selection media in media picker */
+"siteMediaPicker.select" = "Select";
+
 /* Media screen navigation title */
 "siteMediaPicker.title" = "Media";
+
+/* Site Monitoring log entry details navigation title */
+"siteMonitoring.entryDetailsTitle" = "Log Entry";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Cached";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "File";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP Host";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Kind";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyLine" = "Line";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Name";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Referrer";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestTime" = "Request Time";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyRequestURL" = "Request URL";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyResponseBodySize" = "Response Size";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Timestamp";
+
+/* Title for metrics screen. */
+"siteMonitoring.metrics" = "Metrics";
+
+/* Title for PHP logs screen. */
+"siteMonitoring.phpLogs" = "PHP Logs";
+
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web Server Logs";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Privacy";
@@ -10532,6 +11293,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter auto-sharing is no longer available due to Twitter's changes in terms and pricing.";
+
+/* Title of Traffic stats tab. */
+"stats.dashboard.tab.traffic" = "Traffic";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsLastDays" = "Last 7-days";
@@ -10632,8 +11396,71 @@ but tapping on this button will remove their like from the post. */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Your latest post %1$@ has received %2$@ like.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Today";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "Bar Chart depicting Comments for the selected period.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Bar Chart depicting Likes for the selected period.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "Bar Chart depicting Views for selected period";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "Bar Chart depicting Visitors for the selected period.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "By day";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "%@ higher than the previous month\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "%@ lower than the previous month\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "%@ higher than the previous 7-days\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "%@ lower than the previous 7-days\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "%@ higher than the previous year\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "%@ lower than the previous year\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "By month";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "By week";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "By year";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Dismiss";
+
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Photos provided by Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Search to find free photos to add to your Media Library!";
+
+/* The button title for the Submit button in the In-App Feedback screen */
+"submit.feedback.submit.button" = "Submit";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In this conversation";
@@ -10779,11 +11606,20 @@ but tapping on this button will remove their like from the post. */
 /* View title for Help & Support page. */
 "support.title" = "Help";
 
+/* Title for placeholder in Tenor picker */
+"tenor.welcomeMessage" = "Search to find GIFs to add to your Media Library!";
+
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "these items will be deleted:";
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "top tips";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "Check that you are logged into the correct account";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "Site not found";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "unknown url";
@@ -10799,6 +11635,18 @@ but tapping on this button will remove their like from the post. */
 
 /* Verb. Dismiss the web view screen. */
 "webKit.button.dismiss" = "Dismiss";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "End Date";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterRequestType" = "Request type";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Start Date";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
 
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "All-Time Posts & Most Views";
@@ -10932,6 +11780,9 @@ but tapping on this button will remove their like from the post. */
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
 
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Something went wrong, please try again later.";
+
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Switch to the Jetpack app";
 
@@ -10949,6 +11800,12 @@ but tapping on this button will remove their like from the post. */
 
 /* Jetpack Plugin Modal title in WordPress */
 "wordpress.jetpack.plugin.modal.title" = "Sorry, this site isn't supported by the WordPress app";
+
+/* Message to show when a request for a WP.com API endpoint is throttled */
+"wordpresskit.api.message.endpoint_throttled" = "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Couldn't find your site's REST API URL. The app needs that in order to communicate with your site. Contact your host to solve this problem.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Welcome to the Jetpack app. You can uninstall the WordPress app.";

@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-10-05 08:23:32+0000 */
+/* Translation-Revision-Date: 2024-02-29 12:54:40+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: cs_CZ */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li slov, %2$li znaků";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s blok";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s možnosti bloku";
@@ -812,9 +816,6 @@
 
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Opravdu chcete trvale smazat tento příspěvek?";
-
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Opravdu chcete publikovat hned?";
 
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
@@ -1850,6 +1851,12 @@
 
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nelze se připojit k webu WordPress. Na této adrese není platný web WordPress. Zkontrolujte adresu webu (URL), kterou jste zadali.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Při pokusu o přístup ke koncovému bodu XMLRPC vašeho webu jsme obdrželi chybu 403. Ten aplikace potřebuje, aby mohla komunikovat s vaším webem. Kontaktujte prosím svého poskytovatele hostingu, aby tento problém vyřešil.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodařilo se připojit. Váš hostitel blokuje požadavky POST a aplikace je potřebuje, aby mohla komunikovat s vaším webem. Obraťte se na poskytovatele hostingu, aby tento problém vyřešil.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags." = "Značky se nepodařilo načíst.";
@@ -4018,9 +4025,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Zmapované domény";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Označit vše jako přečtené";
-
 /* Marks a notification as unread */
 "Mark Read" = "Označit jako přečtené";
 
@@ -4616,8 +4620,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailní tabulka notifikací";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Nastavení upozornění";
 
@@ -5349,9 +5352,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publikovat okamžitě";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publikovat";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publikovat příspěvek";
@@ -6833,7 +6833,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Nejlepší způsob, jak se stát lepším spisovatelem, je vybudovat si návyk na psaní a sdílet ho s ostatními – to je místo, kde přicházejí výzvy!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pro tento server je neplatný. Ty by mohly být připojení k serveru, který předstírá, že je \"%@\", což by mohlo ohrozit vaše důvěrné informace.\n\nBudete přesto důvěřovat certifikátu?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8458,6 +8458,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "Máte 1 skrytou WordPress stránku.";
 
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Ke svému plánu máte bezplatnou roční registraci domény";
+
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Máte na svém webu aktivní upgrade na prémium. Zrušte tento upgrade před smazáním vašeho webu.";
 
@@ -8514,7 +8517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Odpověděli jste na tento komentář.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že jste nainstalovali mobilní plugin DudaMobile. Ten zabraňuje aplikaci propojit se s vaší webovou stránkou. ";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */

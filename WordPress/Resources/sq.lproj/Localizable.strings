@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-26 11:58:13+0000 */
+/* Translation-Revision-Date: 2024-03-07 10:32:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0-beta.3 */
+/* Generator: GlotPress/4.0.0-rc.1 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li fjalë, %2$li shenja";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bllok %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Mundësi blloku %s";
@@ -843,9 +847,6 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Jeni i sigurt se doni të fshihet përgjithmonë ky postim?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Jeni i sigurt se doni të botohet tani?";
-
 /* Title of the message shown when the user taps Publish in the post list.
    Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Jeni i sigurt se doni të botohet?";
@@ -967,6 +968,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Biznes Automobilistik";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Vetëluajtja mund të shkaktojë probleme përdorimi për disa përdorues.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Vetëpërditësime";
@@ -4120,9 +4124,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Përkatësi e Përshoqëruar";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Vëru Krejt Shenjë Si të Lexuar";
-
 /* Marks a notification as unread */
 "Mark Read" = "Shënoje Si të Lexuar";
 
@@ -4730,8 +4731,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabelë Hollësish Njoftimesh";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Rregullime Njoftimesh";
 
@@ -5475,9 +5475,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Botoje Menjëherë";
-
-/* Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Botoje Që Tani";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Botoni një postim";
@@ -6980,7 +6977,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Rruga më e mirë për t’u bërë një shkrues më i mirë është të krijohet një zakon shkrimi dhe dhënia e shkrimeve të tjerëve - këtu hyjnë në lojë Cytjet!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Dëshmia për këtë shërbyes është e pavlefshme. Mund të jeni duke u lidhur te një shërbyes që pretendon të jetë “%@”, gjë që do t’i vinte në rrezik të dhënat tuaja rezervat.\n\nDo të donit të besohej kjo dëshmi, sido që të jetë?";
 
 /* Message informing the user that posts page cannot be edited */
@@ -8713,7 +8710,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Iu përgjigjët këtij komenti.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Duket se keni instaluar një shtojcë celulari nga DudaMobile që e pengon aplikacionin të lidhet te blogu juaj";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -10214,6 +10211,21 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Dërgoni përshtypje";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Shihni postimin tim “%@”:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Shihni postimin tim";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Vëru Krejt Shenjë Si të Lexuar";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Rregullime Njoftimesh";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Buton Menuje Shtylle Lëvizjesh";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Faqe hyrëse";
 
@@ -10481,6 +10493,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Ngarkimi i medias dështoi";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titull";
 
@@ -10553,6 +10568,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketa";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Po ngarkohet media";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Dukshmëri";
@@ -11354,6 +11372,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Sot";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Grafik Me Shtylla që tregon Komente për periudhën e përzgjedhur.";
 
@@ -11365,6 +11386,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Grafik Me Shtylla që tregon Vizitorë për periudhën e përzgjedhur.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Sipas ditësh";
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
 "stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
@@ -11389,6 +11413,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ më ulët se viti i kaluar\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Sipas muajsh";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Sipas javësh";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Sipas vitesh";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";
@@ -11746,6 +11779,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "U mbërrit në kufi. Mund të riprovoni pas 1 minute. Riprovimi më herët vetëm se do të shtojë kohën që ju duhet të prisni, para se të hiqet ndalimi. Nëse mendoni se bëhet fjalë për gabim, lidhuni me asistencën.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "S’u gjet dot URL API REST e sajtit tuaj. Aplikacionit i duhet kjo, që të mund të komunikojë me sajtin tuaj. Që të zgjidhni këtë problem, lidhuni me strehuesin e sajtit tuaj.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Mirë se vini te aplikacioni Jetpack. Mund të çinstaloni aplikacionin WordPress.";

@@ -1,3 +1,5 @@
-Hemos hecho varios ajustes en la hoja de prepublicación. Puede que notes cambios como transiciones de pantalla más suaves, un selector de fechas simplificado y ajustes más limpios cuando publiques en tu iPad.
+Hemos realizado algunos cambios en el editor de bloques.
 
-También hemos actualizado la sección de información de tu perfil de usuario que habla de tu Gravatar. (¿No estás seguro de lo que es? Te espera un Grava-tratamiento).
+- La aplicación ya no se bloquea cuando el editor se desplaza automáticamente a un bloque.
+- Ahora verás un mensaje de error cuando un vídeo no se cargue en los bloques de medios y texto.
+- Las imágenes ya no aparecen parcialmente transparentes mientras se cargan.
