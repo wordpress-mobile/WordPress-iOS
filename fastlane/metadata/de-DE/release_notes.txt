@@ -1,0 +1,5 @@
+Wir haben ein paar Änderungen am Block-Editor vorgenommen.
+
+- Die App stürzt nicht mehr ab, wenn der Editor automatisch herunter zu einem Block scrollt.
+- Ab sofort wird dir eine Fehlermeldung angezeigt, wenn ein Video nicht auf Medien- und Text-Blöcke hochgeladen werden kann.
+- Bilder werden während des Uploads nicht mehr teils transparent angezeigt. Ist das nicht (farben-)prächtig?
