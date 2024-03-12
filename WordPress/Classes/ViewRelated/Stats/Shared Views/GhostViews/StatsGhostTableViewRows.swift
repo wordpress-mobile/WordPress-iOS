@@ -108,6 +108,7 @@ struct StatsGhostDetailRow: StatsRowGhostable {
     var hideTopBorder = false
     var isLastRow = false
     var enableTopPadding = false
+    var index: Int = 0
 
     func configureCell(_ cell: UITableViewCell) {
         DispatchQueue.main.async {

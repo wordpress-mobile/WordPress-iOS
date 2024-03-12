@@ -673,7 +673,7 @@ struct PostStatsEmptyCellHeaderRow: HashableImmutableRow {
 
 // MARK: - Detail Rows
 
-struct DetailDataRow: ImmuTableRow {
+struct DetailDataRow: HashableImmutableRow {
 
     typealias CellType = DetailDataCell
 
@@ -698,9 +698,15 @@ struct DetailDataRow: ImmuTableRow {
                        hideIndentedSeparator: hideIndentedSeparator,
                        hideFullSeparator: hideFullSeparator)
     }
+
+    static func == (lhs: DetailDataRow, rhs: DetailDataRow) -> Bool {
+        return lhs.rowData == rhs.rowData &&
+            lhs.hideIndentedSeparator == rhs.hideIndentedSeparator &&
+            lhs.hideFullSeparator == rhs.hideFullSeparator
+    }
 }
 
-struct DetailExpandableRow: ImmuTableRow {
+struct DetailExpandableRow: HashableImmutableRow {
 
     typealias CellType = DetailDataCell
 
@@ -730,9 +736,16 @@ struct DetailExpandableRow: ImmuTableRow {
                        expanded: expanded)
 
     }
+
+    static func == (lhs: DetailExpandableRow, rhs: DetailExpandableRow) -> Bool {
+        return lhs.rowData == rhs.rowData &&
+            lhs.hideIndentedSeparator == rhs.hideIndentedSeparator &&
+            lhs.hideFullSeparator == rhs.hideFullSeparator &&
+            lhs.expanded == rhs.expanded
+    }
 }
 
-struct DetailExpandableChildRow: ImmuTableRow {
+struct DetailExpandableChildRow: HashableImmutableRow {
 
     typealias CellType = DetailDataCell
 
@@ -760,10 +773,16 @@ struct DetailExpandableChildRow: ImmuTableRow {
                        isChildRow: true,
                        showChildRowImage: showImage)
     }
+
+    static func == (lhs: DetailExpandableChildRow, rhs: DetailExpandableChildRow) -> Bool {
+        return lhs.rowData == rhs.rowData &&
+            lhs.hideIndentedSeparator == rhs.hideIndentedSeparator &&
+            lhs.hideFullSeparator == rhs.hideFullSeparator &&
+            lhs.showImage == rhs.showImage
+    }
 }
 
-struct DetailSubtitlesHeaderRow: ImmuTableRow {
-
+struct DetailSubtitlesHeaderRow: HashableImmutableRow {
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -782,9 +801,14 @@ struct DetailSubtitlesHeaderRow: ImmuTableRow {
 
         cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
     }
+
+    static func == (lhs: DetailSubtitlesHeaderRow, rhs: DetailSubtitlesHeaderRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle
+    }
 }
 
-struct DetailSubtitlesCountriesHeaderRow: ImmuTableRow {
+struct DetailSubtitlesCountriesHeaderRow: HashableImmutableRow {
 
     typealias CellType = CountriesCell
 
@@ -804,10 +828,14 @@ struct DetailSubtitlesCountriesHeaderRow: ImmuTableRow {
 
         cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
     }
+
+    static func == (lhs: DetailSubtitlesCountriesHeaderRow, rhs: DetailSubtitlesCountriesHeaderRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle
+    }
 }
 
-struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
-
+struct DetailSubtitlesTabbedHeaderRow: HashableImmutableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -831,6 +859,12 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
                        showTotalCount: showTotalCount,
                        selectedIndex: selectedIndex,
                        forDetails: true)
+    }
+
+    static func == (lhs: DetailSubtitlesTabbedHeaderRow, rhs: DetailSubtitlesTabbedHeaderRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData &&
+            lhs.showTotalCount == rhs.showTotalCount &&
+            lhs.selectedIndex == rhs.selectedIndex
     }
 }
 
