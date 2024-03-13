@@ -1,0 +1,5 @@
+Blok düzenleyicide birkaç değişiklik yaptık.
+
+- Düzenleyici, bir blokta otomatik olarak ekranı aşağıya kaydırdığında artık çökme sorunu olmaz.
+- Artık bir ortam veya metin blokuna video yüklenmesi başarısız olursa bir hata mesajı görürsünüz.
+- Artık görseller yüklenirken kısmen şeffaf görünmez. Görseller her zaman tamamen renkli olur.

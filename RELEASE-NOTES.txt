@@ -4,6 +4,7 @@
 * [**] [internal] Block editor: Upgrade React Native to version 0.73.3 [#22588]
 * [*] Remove "Edit" button from "Post Published" screen [#22762]
 * [*] Remove "Publish" button from "Preview" screen [#22763]
+* [**] Block editor: Add error boundary components and exception logging [#22655]
 
 24.4
 -----
