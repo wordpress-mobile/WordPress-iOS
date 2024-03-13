@@ -19,7 +19,9 @@ steps:
       - label: "🛠 WordPress Prototype Build"
         command: ".buildkite/commands/prototype-build-wordpress.sh"
         env: *common_env
-        plugins: *common_plugins
+        plugins:
+          - automattic/a8c-ci-toolkit#3.1.0
+          - automattic/git-partial-clone#trunk
         if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
