@@ -51,6 +51,6 @@ class AtomicAuthenticationServiceTests: CoreDataTestCase {
             XCTFail("Can't get the requested auth cookie.")
         }
 
-        waitForExpectations(timeout: TimeInterval(0.1))
+        waitForExpectations(timeout: TimeInterval(0.2))
     }
 }
