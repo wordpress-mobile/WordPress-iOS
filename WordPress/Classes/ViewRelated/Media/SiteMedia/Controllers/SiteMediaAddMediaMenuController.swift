@@ -20,12 +20,17 @@ final class SiteMediaAddMediaMenuController: NSObject, PHPickerViewControllerDel
             UIMenu(options: [.displayInline], children: [
                 menu.makeCameraAction(delegate: self),
                 makeDocumentPickerAction(from: viewController)
-            ]),
-            UIMenu(options: [.displayInline], children: [
-                menu.makeStockPhotos(blog: blog, delegate: self),
-                menu.makeFreeGIFAction(blog: blog, delegate: self)
             ])
         ]
+        let freeMediaActions: [UIAction] = [
+            menu.makeStockPhotos(blog: blog, delegate: self),
+            menu.makeFreeGIFAction(blog: blog, delegate: self)
+        ].compactMap { $0 }
+        if !freeMediaActions.isEmpty {
+            children += [
+                UIMenu(options: [.displayInline], children: freeMediaActions)
+            ]
+        }
         if let quotaUsageDescription = blog.quotaUsageDescription {
             children += [
                 UIAction(subtitle: quotaUsageDescription, handler: { _ in })
