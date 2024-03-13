@@ -1,13 +1,5 @@
 import Foundation
 
-struct StatsTrafficSection: Hashable {
-    let periodType: PeriodType
-
-    init(periodType: PeriodType) {
-        self.periodType = periodType
-    }
-}
-
 protocol HashableImmutableRow: ImmuTableRow, Hashable {}
 
 extension HashableImmutableRow {
