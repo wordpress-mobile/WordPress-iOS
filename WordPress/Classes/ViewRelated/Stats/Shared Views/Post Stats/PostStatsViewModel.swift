@@ -290,17 +290,8 @@ private extension PostStatsViewModel {
     }
 
     func blocks(for state: StoreFetchingStatus, block: () -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
-        struct PostStatsSection: Hashable {
-            let rows: [AnyHashableImmuTableRow]
-        }
-
         if postStats != nil {
-            var snapshot = ImmuTableDiffableDataSourceSnapshot()
-            let rows = block().map { AnyHashableImmuTableRow(immuTableRow: $0) }
-            let section = PostStatsSection(rows: rows)
-            snapshot.appendSections([section])
-            snapshot.appendItems(rows, toSection: section)
-            return snapshot
+            return .singleSectionSnapshot(block())
         }
 
         var rows = [any HashableImmutableRow]()
@@ -323,11 +314,6 @@ private extension PostStatsViewModel {
             return ImmuTableDiffableDataSourceSnapshot()
         }
 
-        var snapshot = ImmuTableDiffableDataSourceSnapshot()
-        let hashableRows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
-        let section = PostStatsSection(rows: hashableRows)
-        snapshot.appendSections([section])
-        snapshot.appendItems(hashableRows, toSection: section)
-        return snapshot
+        return .singleSectionSnapshot(rows)
     }
 }

@@ -1,10 +1,6 @@
 import Foundation
 import WordPressFlux
 
-struct SiteStatsDetailsSection: Hashable {
-    let rows: [AnyHashableImmuTableRow]
-}
-
 /// The view model used by SiteStatsDetailTableViewController to show
 /// all data for a selected stat.
 ///
@@ -981,18 +977,9 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
-    func snapshotFromRows(_ rows: [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
-        var snapshot = ImmuTableDiffableDataSourceSnapshot()
-        let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
-        let section = SiteStatsDetailsSection(rows: rows)
-        snapshot.appendSections([section])
-        snapshot.appendItems(rows, toSection: section)
-        return snapshot
-    }
-
     func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
         if insightsStore.containsCachedData(for: row.type) {
-            return snapshotFromRows(rowsBlock())
+            return .singleSectionSnapshot(rowsBlock())
         }
 
         var rows = [any HashableImmutableRow]()
@@ -1006,7 +993,7 @@ private extension SiteStatsDetailsViewModel {
             break
         }
 
-        return snapshotFromRows(rows)
+        return .singleSectionSnapshot(rows)
     }
 
     func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
@@ -1031,7 +1018,7 @@ private extension SiteStatsDetailsViewModel {
             break
         }
 
-        return snapshotFromRows(rows)
+        return .singleSectionSnapshot(rows)
     }
 
     func getGhostSequence() -> [any HashableImmutableRow] {

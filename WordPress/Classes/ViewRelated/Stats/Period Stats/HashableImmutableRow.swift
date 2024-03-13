@@ -24,3 +24,20 @@ extension StatsHashableImmuTableRow {
         hasher.combine(String(describing: type(of: self)))
     }
 }
+
+// MARK: - Helpers
+
+struct AnyHashableSectionWithRows: Hashable {
+    let rows: [AnyHashableImmuTableRow]
+}
+
+extension ImmuTableDiffableDataSourceSnapshot {
+    static func singleSectionSnapshot(_ rows: [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
+        let section = AnyHashableSectionWithRows(rows: rows)
+        snapshot.appendSections([section])
+        snapshot.appendItems(rows, toSection: section)
+        return snapshot
+    }
+}
