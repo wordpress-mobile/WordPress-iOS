@@ -32,12 +32,30 @@ struct AnyHashableSectionWithRows: Hashable {
 }
 
 extension ImmuTableDiffableDataSourceSnapshot {
+    mutating func addSection(_ rows: [any HashableImmutableRow]) {
+        let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
+        let section = AnyHashableSectionWithRows(rows: rows)
+        appendSections([section])
+        appendItems(rows, toSection: section)
+    }
+
     static func singleSectionSnapshot(_ rows: [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
         let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
         let section = AnyHashableSectionWithRows(rows: rows)
         snapshot.appendSections([section])
         snapshot.appendItems(rows, toSection: section)
+        return snapshot
+    }
+
+    static func multiSectionSnapshot(_ rows: [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        let rows = rows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
+        for row in rows {
+            let section = AnyHashableSectionWithRows(rows: [row])
+            snapshot.appendSections([section])
+            snapshot.appendItems([row], toSection: section)
+        }
         return snapshot
     }
 }
