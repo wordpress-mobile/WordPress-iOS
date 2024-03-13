@@ -743,7 +743,8 @@ private extension SiteStatsPeriodViewModel {
         case .day, .week:
             return 7
         case .month:
-            return 5
+            // 6 to cover all possible weeks that could fall into one month's range
+            return 6
         case .year:
             return 12
         }
