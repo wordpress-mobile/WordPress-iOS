@@ -170,13 +170,13 @@ final class MediaImageService {
 
     /// Generates a thumbnail from a local asset and saves it in cache.
     private func localThumbnail(for media: SafeMedia, size: ImageSize) async -> UIImage? {
-        guard let url = await generateLocalThumbnail(for: media, size: size) else {
+        guard let (url, _) = await generateLocalThumbnail(for: media, size: size) else {
             return nil
         }
         return try? await ImageDecoder.makeImage(from: url)
     }
 
-    private func generateLocalThumbnail(for media: SafeMedia, size: ImageSize) async -> URL? {
+    private func generateLocalThumbnail(for media: SafeMedia, size: ImageSize) async -> (URL, MediaExport)? {
         guard let sourceURL = media.absoluteLocalURL else {
             return nil
         }
@@ -192,7 +192,7 @@ final class MediaImageService {
             return nil
         }
         try? FileManager.default.moveItem(at: export.url, to: thumbnailURL)
-        return thumbnailURL
+        return (thumbnailURL, export)
     }
 
     @MainActor
@@ -206,12 +206,28 @@ final class MediaImageService {
 
     /// - warning: This method was added only for backward-compatability with
     /// the editor that relies on using URLs for displaying the preview thumbnail
-    /// while the image is loaded.
+    /// while the image is loaded. There is no guarantee that the URL will
+    /// still be available after a period of time.
     public func getThumbnailURL(for media: Media, _ completion: @escaping (URL?) -> Void) {
         let media = SafeMedia(media)
         Task {
-            let url = await generateLocalThumbnail(for: media, size: .large)
-            completion(url)
+            guard let (thumbnailURL, export) = await generateLocalThumbnail(for: media, size: .large) else {
+                return completion(nil)
+            }
+
+            // Fixes the following React Native issue https://github.com/facebook/react-native/issues/42234
+            // where it'll fail to display local images with no path extension.
+            //
+            // This workaround creates a temporary symlink that has a file extension.
+            let tempDirectoryURL = URL(fileURLWithPath: NSTemporaryDirectory())
+                .appendingPathComponent("org.automattic.MediaImageServiceSymlinks", isDirectory: true)
+            try? FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
+
+            let symlink = tempDirectoryURL
+                .appendingPathComponent(export.url.lastPathComponent)
+            try FileManager.default.createSymbolicLink(at: symlink, withDestinationURL: thumbnailURL)
+
+            completion(symlink)
         }
     }
 
