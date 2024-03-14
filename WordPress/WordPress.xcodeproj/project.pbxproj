@@ -284,6 +284,8 @@
 		08216FD51CDBF96000304BA7 /* MenuItemTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */; };
 		0822C3F52BA1EA2100C53B50 /* BlogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0822C3F22BA1EA2000C53B50 /* BlogListView.swift */; };
 		0822C3F62BA1EA2100C53B50 /* BlogListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0822C3F22BA1EA2000C53B50 /* BlogListView.swift */; };
+		0822C3FD2BA20DAF00C53B50 /* SiteSwitcherReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0822C3FC2BA20DAF00C53B50 /* SiteSwitcherReducer.swift */; };
+		0822C3FE2BA20DAF00C53B50 /* SiteSwitcherReducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0822C3FC2BA20DAF00C53B50 /* SiteSwitcherReducer.swift */; };
 		08240C2F2AB8A2DD00E7AEA8 /* AllDomainsListCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08240C2D2AB8A2DD00E7AEA8 /* AllDomainsListCardView.swift */; };
 		082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 082635BA1CEA69280088030C /* MenuItemsViewController.m */; };
 		0828D7FA1E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0828D7F91E6E09AE00C7C7D4 /* WPAppAnalytics+Media.swift */; };
@@ -6040,6 +6042,7 @@
 		08216FC61CDBF96000304BA7 /* MenuItemTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemTypeViewController.h; sourceTree = "<group>"; };
 		08216FC71CDBF96000304BA7 /* MenuItemTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemTypeViewController.m; sourceTree = "<group>"; };
 		0822C3F22BA1EA2000C53B50 /* BlogListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlogListView.swift; sourceTree = "<group>"; };
+		0822C3FC2BA20DAF00C53B50 /* SiteSwitcherReducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteSwitcherReducer.swift; sourceTree = "<group>"; };
 		08240C2D2AB8A2DD00E7AEA8 /* AllDomainsListCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListCardView.swift; sourceTree = "<group>"; };
 		082635B91CEA69280088030C /* MenuItemsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemsViewController.h; sourceTree = "<group>"; };
 		082635BA1CEA69280088030C /* MenuItemsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuItemsViewController.m; sourceTree = "<group>"; };
@@ -18355,6 +18358,7 @@
 		FA73D7E72798766300DF24B3 /* Site Picker */ = {
 			isa = PBXGroup;
 			children = (
+				0822C3FC2BA20DAF00C53B50 /* SiteSwitcherReducer.swift */,
 				FA73D7E42798765B00DF24B3 /* SitePickerViewController.swift */,
 				FAAEFADF2B1E29F0004AE802 /* SitePickerViewController+SiteActions.swift */,
 				FA73D7E827987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift */,
@@ -24161,6 +24165,7 @@
 				FE4DC5A8293A84E6008F322F /* MigrationDeepLinkRouter.swift in Sources */,
 				77DFF0892B68386800FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */,
 				80DB57992AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
+				0822C3FE2BA20DAF00C53B50 /* SiteSwitcherReducer.swift in Sources */,
 				FA4B203629A786460089FE68 /* BlazeEventsTracker.swift in Sources */,
 				FABB20EA2602FC2C00C8785C /* ActivityTypeSelectorViewController.swift in Sources */,
 				FABB20EB2602FC2C00C8785C /* ActivityActionsParser.swift in Sources */,

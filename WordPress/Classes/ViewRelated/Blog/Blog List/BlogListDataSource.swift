@@ -293,8 +293,8 @@ private extension BlogListDataSource {
 
 // MARK: - Data
 
-private extension BlogListDataSource {
-    var sections: [[Blog]] {
+extension BlogListDataSource {
+    private var sections: [[Blog]] {
         if let sections = cachedSections {
             return sections
         }
