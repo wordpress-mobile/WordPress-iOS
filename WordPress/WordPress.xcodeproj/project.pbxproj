@@ -2336,9 +2336,9 @@
 		8BAD53D6241922B900230F4B /* WPAnalyticsEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */; };
 		8BADF16524801BCE005AD038 /* ReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF16424801BCE005AD038 /* ReaderWebView.swift */; };
 		8BB185C624B5FB8500A4CCE8 /* ReaderCardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185C524B5FB8500A4CCE8 /* ReaderCardService.swift */; };
-		8BB185CC24B6058600A4CCE8 /* reader-cards-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards-success.json */; };
+		8BB185CC24B6058600A4CCE8 /* reader-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards.json */; };
 		8BB185CE24B62CE100A4CCE8 /* ReaderCardServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185CD24B62CE100A4CCE8 /* ReaderCardServiceTests.swift */; };
-		8BB185CF24B62D7600A4CCE8 /* reader-cards-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards-success.json */; };
+		8BB185CF24B62D7600A4CCE8 /* reader-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards.json */; };
 		8BB185D224B63D5F00A4CCE8 /* ReaderCardsStreamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */; };
 		8BB185D524B66FE600A4CCE8 /* ReaderCard+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */; };
 		8BB185D624B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BB185D424B66FE600A4CCE8 /* ReaderCard+CoreDataClass.swift */; };
@@ -4116,7 +4116,7 @@
 		FABB1FD92602FC2C00C8785C /* oswald_upper.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0625DF2F7700C9654B /* oswald_upper.ttf */; };
 		FABB1FDB2602FC2C00C8785C /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
 		FABB1FDC2602FC2C00C8785C /* PostingActivityDay.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9826AE8721B5C73400C851FA /* PostingActivityDay.xib */; };
-		FABB1FDD2602FC2C00C8785C /* reader-cards-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards-success.json */; };
+		FABB1FDD2602FC2C00C8785C /* reader-cards.json in Resources */ = {isa = PBXBuildFile; fileRef = 8BB185CB24B6058600A4CCE8 /* reader-cards.json */; };
 		FABB1FDF2602FC2C00C8785C /* ReaderRelatedPostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */; };
 		FABB1FE52602FC2C00C8785C /* RevisionOperation.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A2B28F62192121F00458F2A /* RevisionOperation.xib */; };
 		FABB1FE82602FC2C00C8785C /* TitleBadgeDisclosureCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E66E2A681FE432BB00788F22 /* TitleBadgeDisclosureCell.xib */; };
@@ -7691,7 +7691,7 @@
 		8BAD53D5241922B900230F4B /* WPAnalyticsEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPAnalyticsEvent.swift; sourceTree = "<group>"; };
 		8BADF16424801BCE005AD038 /* ReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderWebView.swift; sourceTree = "<group>"; };
 		8BB185C524B5FB8500A4CCE8 /* ReaderCardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardService.swift; sourceTree = "<group>"; };
-		8BB185CB24B6058600A4CCE8 /* reader-cards-success.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "reader-cards-success.json"; sourceTree = "<group>"; };
+		8BB185CB24B6058600A4CCE8 /* reader-cards.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = "reader-cards.json"; sourceTree = "<group>"; };
 		8BB185CD24B62CE100A4CCE8 /* ReaderCardServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardServiceTests.swift; sourceTree = "<group>"; };
 		8BB185D024B63D1600A4CCE8 /* ReaderCardsStreamViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCardsStreamViewController.swift; sourceTree = "<group>"; };
 		8BB185D324B66FE500A4CCE8 /* ReaderCard+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ReaderCard+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -17028,7 +17028,7 @@
 				E1E4CE0E1774531500430844 /* misteryman.jpg */,
 				B58CE5DD1DC1284C004AA81D /* Notifications */,
 				93C8829A1EEB18D700227A59 /* plugin_redirect.html */,
-				8BB185CB24B6058600A4CCE8 /* reader-cards-success.json */,
+				8BB185CB24B6058600A4CCE8 /* reader-cards.json */,
 				93C8829B1EEB18D700227A59 /* rsd.xml */,
 				93594BD4191D2F5A0079E6B2 /* stats-batch.json */,
 				08B832411EC130D60079808D /* test-gif.gif */,
@@ -19465,7 +19465,7 @@
 				F5A34D0F25DF2F7F00C9654B /* oswald_upper.ttf in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
-				8BB185CC24B6058600A4CCE8 /* reader-cards-success.json in Resources */,
+				8BB185CC24B6058600A4CCE8 /* reader-cards.json in Resources */,
 				17222D8C261DDDF90047B163 /* black-classic-icon-app-83.5x83.5@2x.png in Resources */,
 				172F06BA2865C04F00C78FD4 /* spectrum-'22-icon-app-60x60@3x.png in Resources */,
 				FAC086D825EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib in Resources */,
@@ -19830,7 +19830,7 @@
 				93C882A21EEB18D700227A59 /* html_page_with_link_to_rsd.html in Resources */,
 				0C6C4CD62A4F0AEE0049E762 /* blaze-search-page-2.json in Resources */,
 				D848CC0520FF062100A9038F /* notifications-user-content-meta.json in Resources */,
-				8BB185CF24B62D7600A4CCE8 /* reader-cards-success.json in Resources */,
+				8BB185CF24B62D7600A4CCE8 /* reader-cards.json in Resources */,
 				7E4A772320F7BE94001C706D /* activity-log-comment-content.json in Resources */,
 				E12BE5EE1C5235DB000FD5CA /* get-me-settings-v1.1.json in Resources */,
 				933D1F6C1EA7A3AB009FB462 /* TestingMode.storyboard in Resources */,
@@ -20008,7 +20008,7 @@
 				F46597F528E669D400D5F49A /* spectrum-on-white-icon-app-76@2x.png in Resources */,
 				FABB1FDB2602FC2C00C8785C /* xhtmlValidatorTemplate.xhtml in Resources */,
 				FABB1FDC2602FC2C00C8785C /* PostingActivityDay.xib in Resources */,
-				FABB1FDD2602FC2C00C8785C /* reader-cards-success.json in Resources */,
+				FABB1FDD2602FC2C00C8785C /* reader-cards.json in Resources */,
 				FABB1FDF2602FC2C00C8785C /* ReaderRelatedPostsCell.xib in Resources */,
 				FABB1FE52602FC2C00C8785C /* RevisionOperation.xib in Resources */,
 				FABB1FE82602FC2C00C8785C /* TitleBadgeDisclosureCell.xib in Resources */,

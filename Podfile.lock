@@ -119,7 +119,7 @@ DEPENDENCIES:
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.9)
   - WordPressAuthenticator (>= 9.0.2, ~> 9.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `c8a72a7a0ea8d34f58b6f7edbd7d8c6e726b1923`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `98f4a4d9076e0b5817b38b25c88daa6c11a97c2b`)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
@@ -175,7 +175,7 @@ EXTERNAL SOURCES:
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.115.0-alpha5.podspec
   WordPressKit:
-    :commit: c8a72a7a0ea8d34f58b6f7edbd7d8c6e726b1923
+    :commit: 98f4a4d9076e0b5817b38b25c88daa6c11a97c2b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
@@ -183,7 +183,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: c8a72a7a0ea8d34f58b6f7edbd7d8c6e726b1923
+    :commit: 98f4a4d9076e0b5817b38b25c88daa6c11a97c2b
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
@@ -230,6 +230,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 58fc7af7ffce7cbcd3e87cc4b38ef38f91de4d38
+PODFILE CHECKSUM: e28be3788044195cb4e996c4842ee2329cb8508f
 
 COCOAPODS: 1.14.2
