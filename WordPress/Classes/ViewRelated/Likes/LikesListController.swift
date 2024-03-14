@@ -418,7 +418,7 @@ private extension LikesListController {
     struct Strings {
         static let fetchLikesFromPrivateBlogErrorMessage = NSLocalizedString(
             "likesListViewController.likesList.privateBlogErrorMessage",
-            value: "You have no access to the private blog.",
+            value: "You don't have permission to view this private blog.",
             comment: "Error message that informs likes from a private blog cannot be fetched."
         )
     }

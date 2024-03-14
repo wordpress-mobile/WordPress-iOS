@@ -798,7 +798,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         image = @"wp-illustration-reader-empty";
         NSError *error = self.fetchCommentsError;
         if (error && [error.domain isEqualToString:WordPressComRestApiErrorDomain] && error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
-            subtitle = NSLocalizedString(@"You have no access to the private blog.",
+            subtitle = NSLocalizedString(@"You don't have permission to view this private blog.",
                                           @"Error message that informs reader comments from a private blog cannot be fetched.");
 
         }

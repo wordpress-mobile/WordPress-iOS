@@ -402,7 +402,7 @@ private extension NotificationCommentDetailViewController {
     struct Strings {
         static let fetchCommentDetailsFromPrivateBlogErrorMessage = NSLocalizedString(
             "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage",
-            value: "You have no access to the private blog.",
+            value: "You don't have permission to view this private blog.",
             comment: "Error message that informs comment details from a private blog cannot be fetched."
         )
     }
