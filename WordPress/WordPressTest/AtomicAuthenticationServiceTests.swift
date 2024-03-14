@@ -38,14 +38,12 @@ class AtomicAuthenticationServiceTests: CoreDataTestCase {
 
         atomicService.getAuthCookie(siteID: siteID, success: { cookie in
             XCTAssertEqual(cookie.name, "wordpress_logged_in_39d5e8179c238764ac288442f27d091b")
+            XCTAssertEqual(cookie.value, "johndoe|1544455667|KwKSrAKJsqIWCTtt2QImT3hFTgHuzDOaMprlWWZXQeQ|7f0a75827e7f72ce645ec817ac9a2ab58735e95752494494cc463d1ad5853add")
+            XCTAssertEqual(cookie.domain, "testingblog.wordpress.com")
+            XCTAssertEqual(cookie.path, "/")
+            XCTAssertEqual(cookie.expiresDate, Date(timeIntervalSince1970: 1584511597))
 
-            if cookie.value == "johndoe|1544455667|KwKSrAKJsqIWCTtt2QImT3hFTgHuzDOaMprlWWZXQeQ|7f0a75827e7f72ce645ec817ac9a2ab58735e95752494494cc463d1ad5853add"
-                && cookie.domain == "testingblog.wordpress.com"
-                && cookie.path == "/"
-                && cookie.expiresDate == Date(timeIntervalSince1970: 1584511597) {
-
-                successExpectation.fulfill()
-            }
+            successExpectation.fulfill()
         }) { _ in
             XCTFail("Can't get the requested auth cookie.")
         }
