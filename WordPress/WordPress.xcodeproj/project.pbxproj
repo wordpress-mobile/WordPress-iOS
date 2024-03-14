@@ -840,6 +840,8 @@
 		1D19C56629C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D19C56529C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D91080729F847A2003F9A5E /* MediaServiceUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */; };
+		1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */; };
+		1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */; };
 		1E0462162566938300EB98EF /* GutenbergFileUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */; };
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
 		1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */; };
@@ -9686,6 +9688,7 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
 				A1C54EBE8C34FFD5015F8FC9 /* Pods_Apps_WordPress.framework in Frameworks */,
@@ -9810,6 +9813,7 @@
 				0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
+				1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
 				3F44DD58289C379C006334CD /* Lottie in Frameworks */,
 				FABB262F2602FC2C00C8785C /* CoreMedia.framework in Frameworks */,
@@ -18905,6 +18909,7 @@
 				0CD9FB882AFA71C2009D9C7A /* DGCharts */,
 				3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCE2B28E53400747E21 /* DesignSystem */,
+				1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -19165,6 +19170,7 @@
 				0CD9FB862AFA71B9009D9C7A /* DGCharts */,
 				3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCC2B28E52B00747E21 /* DesignSystem */,
+				1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -19384,6 +19390,7 @@
 				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
+				1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -30654,6 +30661,14 @@
 				minimumVersion = 1.1.2;
 			};
 		};
+		1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.7.1;
+			};
+		};
 		3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Nimble";
@@ -30732,6 +30747,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */;
 			productName = AutomatticAbout;
+		};
+		1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+		1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftSoup;
 		};
 		24CE2EB0258D687A0000C297 /* WordPressFlux */ = {
 			isa = XCSwiftPackageProductDependency;
