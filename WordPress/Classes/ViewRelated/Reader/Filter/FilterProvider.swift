@@ -40,6 +40,9 @@ class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
 
     /// Closure block that's responsible for populating the items for this `FilterProvider`.
     ///
+    /// The `localOnly` parameter provides information for the closure on whether the fetch should happen
+    /// locally or remotely, but whether this parameter is honored or not depends on the actual implementation.
+    ///
     /// - Parameters:
     ///     - localOnly: Specifies whether the fetch process should happen locally or remotely.
     ///     - completion: The closure to be called once the fetching process completes.
@@ -104,8 +107,9 @@ class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
 
 extension FilterProvider: ReaderTopicObserverDelegate {
     func readerTopicDidChange() {
-        // Important: We should ensure that the data is only refreshed from local store.
-        // Pulling the data from remote will cause the observer to react and trigger another refresh.
+        // TODO: Revisit and think of better approach.
+        // IMPORTANT — This is a workaround. At this stage, we need to ensure that the data is *only* refreshed
+        // from the local store, because pulling from remote will trigger the observer again and causing a loop!
         refresh(localOnly: true)
     }
 }
