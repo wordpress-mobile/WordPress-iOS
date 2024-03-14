@@ -1,6 +1,6 @@
 import WordPressFlux
 
-class FilterProvider: Identifiable, Observable, FilterTabBarItem {
+class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
 
     let id: UUID = UUID()
 
@@ -38,7 +38,7 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
         }
     }
 
-    typealias Provider = (@escaping (Result<[TableDataItem], Error>) -> Void) -> Void
+    typealias Provider = (Bool, @escaping (Result<[TableDataItem], Error>) -> Void) -> Void
 
     let accessibilityIdentifier: String
     let cellClass: UITableViewCell.Type
@@ -46,6 +46,9 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
     let emptyTitle: String
     let section: ReaderManageScenePresenter.TabbedSection
     let siteType: SiteOrganizationType?
+
+    /// Notifies when there are changes made to the `ReaderAbstractTopic` model depended by this provider.
+    let observer: ReaderTopicObserving?
 
     private let titleFunc: (State?) -> String
     private let provider: Provider
@@ -59,7 +62,8 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
          emptyTitle: String,
          section: ReaderManageScenePresenter.TabbedSection,
          provider: @escaping Provider,
-         siteType: SiteOrganizationType? = nil) {
+         siteType: SiteOrganizationType? = nil,
+         observer: ReaderTopicObserving? = nil) {
 
         titleFunc = title
         self.accessibilityIdentifier = accessibilityIdentifier
@@ -69,11 +73,15 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
         self.section = section
         self.provider = provider
         self.siteType = siteType
+        self.observer = observer
+
+        super.init()
+        self.observer?.delegate = self
     }
 
-    func refresh() {
+    func refresh(localOnly: Bool = false) {
         state = .loading
-        provider() { [weak self] result in
+        provider(localOnly) { [weak self] result in
             switch result {
             case .success(let items):
                 self?.state = .ready(items)
@@ -89,7 +97,15 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
     }
 }
 
-extension FilterProvider: Equatable {
+extension FilterProvider: ReaderTopicObserverDelegate {
+    func readerTopicDidChange() {
+        // Important: We should ensure that the data is only refreshed from local store.
+        // Pulling the data from remote will cause the observer to react and trigger another refresh.
+        refresh(localOnly: true)
+    }
+}
+
+extension FilterProvider {
     static func == (lhs: FilterProvider, rhs: FilterProvider) -> Bool {
         return lhs.title == rhs.title
     }
@@ -144,10 +160,12 @@ extension ReaderSiteTopic {
                               emptyTitle: emptyTitle,
                               section: .sites,
                               provider: tableProvider,
-                              siteType: siteType)
+                              siteType: siteType,
+                              observer: ReaderTopicChangeObserver<ReaderSiteTopic>())
     }
 
-    private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
+    private static func tableProvider(localOnly: Bool = false,
+                                      completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
         let completionBlock: (Result<[ReaderSiteTopic], Error>) -> Void = { result in
             let itemResult = result.map { sites in
                 sites.map { topic in
@@ -163,7 +181,10 @@ extension ReaderSiteTopic {
         }
 
         fetchStoredFollowedSites(completion: completionBlock)
-        fetchFollowedSites(completion: completionBlock)
+
+        if !localOnly {
+            fetchFollowedSites(completion: completionBlock)
+        }
     }
 
     /// Fetch sites from remote service
@@ -288,10 +309,12 @@ extension ReaderTagTopic {
                               reuseIdentifier: FilterProvider.ReuseIdentifiers.tags,
                               emptyTitle: emptyTitle,
                               section: .tags,
-                              provider: tableProvider)
+                              provider: tableProvider,
+                              observer: ReaderTopicChangeObserver<ReaderTagTopic>())
     }
 
-    private static func tableProvider(completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
+    private static func tableProvider(localOnly: Bool = false,
+                                      completion: @escaping (Result<[TableDataItem], Error>) -> Void) {
         fetchFollowedTags(completion: { result in
             let itemResult = result.map { tags in
                 tags.map { topic in
