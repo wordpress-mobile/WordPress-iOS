@@ -51,4 +51,9 @@ import Foundation
 
         return topic
     }
+
+    @objc func toggleFollowing(_ isFollowing: Bool) {
+        following = isFollowing
+        showInMenu = (following || isRecommended)
+    }
 }

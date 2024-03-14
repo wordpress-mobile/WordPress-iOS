@@ -270,11 +270,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     // Optimistically unfollow the topic
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        ReaderTagTopic *topicInContext = [context existingObjectWithID:topic.objectID error:nil];
-        topicInContext.following = NO;
-        if (!topicInContext.isRecommended) {
-            topicInContext.showInMenu = NO;
-        }
+        ReaderTagTopic *tagTopicInContext = [context existingObjectWithID:topic.objectID error:nil];
+        [tagTopicInContext toggleFollowing:NO];
     }];
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
@@ -326,6 +323,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 [self selectTopicWithID:topicID inContext:context];
+
+                // mark tag topic as followed
+                ReaderTagTopic *tag = [ReaderTagTopic lookupWithTagID:topicID inContext:context];
+                if (tag) {
+                    [tag toggleFollowing:YES];
+                }
+
             } completion:success onQueue:dispatch_get_main_queue()];
         } failure:failure];
     } failure:^(NSError *error) {
@@ -384,10 +388,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Optimistically update and save
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * __unused context) {
         ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
-        topicInContext.following = !oldFollowingValue;
-        if (topicInContext.following) {
-            topicInContext.showInMenu = YES;
-        }
+        [topicInContext toggleFollowing:!oldFollowingValue];
     }];
 
     // Define failure block
