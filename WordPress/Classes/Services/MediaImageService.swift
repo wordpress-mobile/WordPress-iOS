@@ -161,7 +161,7 @@ final class MediaImageService {
         let mediaID = mediaID.objectID.uriRepresentation().lastPathComponent
         return try? mediaFileManager.makeLocalMediaURL(
             withFilename: "\(mediaID)-\(size.rawValue)-thumbnail",
-            fileExtension: nil, // We don't know ahead of time
+            fileExtension: "jpeg", // We don't know ahead of time
             incremented: false
         )
     }
