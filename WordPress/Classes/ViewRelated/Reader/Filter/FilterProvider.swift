@@ -38,7 +38,12 @@ class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
         }
     }
 
-    typealias Provider = (Bool, @escaping (Result<[TableDataItem], Error>) -> Void) -> Void
+    /// Closure block that's responsible for populating the items for this `FilterProvider`.
+    ///
+    /// - Parameters:
+    ///     - localOnly: Specifies whether the fetch process should happen locally or remotely.
+    ///     - completion: The closure to be called once the fetching process completes.
+    typealias Provider = (_ localOnly: Bool, _ completion: @escaping (Result<[TableDataItem], Error>) -> Void) -> Void
 
     let accessibilityIdentifier: String
     let cellClass: UITableViewCell.Type
