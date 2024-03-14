@@ -404,7 +404,7 @@ class PostCoordinator: NSObject {
 
         // File block can upload any kind of media.
         let gutenbergFileProcessor = GutenbergFileUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-        gutenbergProcessors.append(gutenbergFileProcessor)
+        gutenbergBlockProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
