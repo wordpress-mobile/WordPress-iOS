@@ -408,7 +408,7 @@ class PostCoordinator: NSObject {
 
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
-            gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
+            gutenbergBlockProcessors.append(gutenbergImgPostUploadProcessor)
 
             let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
             gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
