@@ -3,6 +3,7 @@ import WordPressFlux
 import WordPressShared
 import SwiftUI
 import SVProgressHUD
+import DesignSystem
 
 final class SitePickerViewController: UIViewController {
 
@@ -92,20 +93,46 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         showSiteTitleSettings()
     }
 
+//    - (void)configureDataSource
+//    {
+//        self.dataSource = [BlogListDataSource new];
+//        self.dataSource.shouldShowDisclosureIndicator = NO;
+//        self.dataSource.shouldHideSelfHostedSites = self.configuration.shouldHideSelfHostedSites;
+//        self.dataSource.shouldHideBlogsNotSupportingDomains = self.configuration.shouldHideBlogsNotSupportingDomains;
+//
+//        __weak __typeof(self) weakSelf = self;
+//        self.dataSource.visibilityChanged = ^(Blog *blog, BOOL visible) {
+//            [weakSelf setVisible:visible forBlog:blog];
+//        };
+//        self.dataSource.dataChanged = ^{
+//            if (weakSelf.visible) {
+//                [weakSelf dataChanged];
+//            }
+//        };
+//    }
+
     func siteSwitcherTapped() {
-        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
+        // Utilize existing DataSource class to fetch blogs.
+        let config = BlogListConfiguration.defaultConfig
+        let dataSource = BlogListDataSource()
+        dataSource.shouldHideSelfHostedSites = config.shouldHideSelfHostedSites
+        dataSource.shouldHideBlogsNotSupportingDomains = config.shouldHideBlogsNotSupportingDomains
 
-        blogListController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self else { return }
-            self.switchToBlog(selectedBlog)
-            controller.dismiss(animated: true) {
-                self.onBlogListDismiss?()
-            }
-        }
-
-        let navigationController = UINavigationController(rootViewController: blogListController)
-        navigationController.modalPresentationStyle = .formSheet
-        present(navigationController, animated: true)
+        let hostingController = UIHostingController(rootView: SiteSwitcherView(pinnedDomains: ["https://alpavanoglu.wordpress.com"]))
+        present(hostingController, animated: true)
+//        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
+//
+//        blogListController.blogSelected = { [weak self] controller, selectedBlog in
+//            guard let self else { return }
+//            self.switchToBlog(selectedBlog)
+//            controller.dismiss(animated: true) {
+//                self.onBlogListDismiss?()
+//            }
+//        }
+//
+//        let navigationController = UINavigationController(rootViewController: blogListController)
+//        navigationController.modalPresentationStyle = .formSheet
+//        present(navigationController, animated: true)
 
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
