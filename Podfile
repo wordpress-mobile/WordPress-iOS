@@ -333,7 +333,7 @@ post_install do |installer|
 
   acknowledgements = 'Acknowledgments'
   markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-  rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+  rendered_html = Commonmarker.to_html(markdown)
   styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>
