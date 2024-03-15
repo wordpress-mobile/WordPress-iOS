@@ -122,7 +122,7 @@ class NotificationSettingsViewController: UIViewController {
 
         if AppConfiguration.showsFollowedSitesSettings {
             dispatchGroup.enter()
-            siteService.fetchFollowedSites(success: {
+            siteService.fetchAllFollowedSites(success: {
                 dispatchGroup.leave()
             }, failure: { (error) in
                 dispatchGroup.leave()
