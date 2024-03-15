@@ -123,7 +123,6 @@ class PostCoordinator: NSObject {
         var parameters = RemotePostUpdateParameters()
         if post.status == .draft {
             parameters.status = Post.Status.publish.rawValue
-            parameters.date = Date()
         } else {
             // Publish according to the currrent post settings: private, scheduled, etc.
         }
