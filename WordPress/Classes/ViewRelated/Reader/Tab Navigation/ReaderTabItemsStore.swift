@@ -103,7 +103,7 @@ extension ReaderTabItemsStore {
     }
 
     private func fetchFollowedSites() {
-        service.fetchFollowedSites(success: {
+        service.fetchAllFollowedSites(success: {
         }, failure: { (error) in
             let actualError = error ?? ReaderTopicsConstants.remoteServiceError
             DDLogError("Could not sync sites: \(String(describing: actualError))")
