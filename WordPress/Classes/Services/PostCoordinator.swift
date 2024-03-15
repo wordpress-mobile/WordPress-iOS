@@ -119,16 +119,17 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _publish(_ post: AbstractPost) async throws {
-        let parameters = PostHelper.remotePost(with: post)
+        let post = post.original ?? post
+        var parameters = RemotePostUpdateParameters()
         if post.status == .draft {
-            parameters.status = PostStatusPublish
+            parameters.status = Post.Status.publish.rawValue
             parameters.date = Date()
         } else {
             // Publish according to the currrent post settings: private, scheduled, etc.
         }
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            let post = try await repository._upload(parameters, for: post)
+            try await repository._save(post, changes: parameters)
             didPublish(post)
             show(PostCoordinator.makePublishSuccessNotice(for: post))
         } catch {
