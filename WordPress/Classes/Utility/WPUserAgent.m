@@ -17,10 +17,10 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
         [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
         
         if ([NSThread isMainThread]){
-            _defaultUserAgent = [WKWebView userAgent];
+            _defaultUserAgent = [self webViewUserAgent];
         } else {
             dispatch_sync(dispatch_get_main_queue(), ^{
-                _defaultUserAgent = [WKWebView userAgent];
+                _defaultUserAgent = [self webViewUserAgent];
             });
         }
         if (storeCurrentUA) {
