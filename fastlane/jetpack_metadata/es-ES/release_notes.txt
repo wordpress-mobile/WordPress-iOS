@@ -1,0 +1,8 @@
+La pantalla Estadísticas tiene una pestaña Tráfico nueva. Crea mejores gráficos y accede a tus datos históricos, todo desde un mismo lugar. Y es que acumulas datos a diario, cada semana, todos los meses e incluso durante años.
+
+Las notificaciones se han rediseñado y son ahora más fáciles de usar y visualmente más atractivas. También hemos realizado algunos cambios en el editor de bloques.
+
+- Hemos añadido compatibilidad para VideoPress v5, por lo que apreciarás el rendimiento mejorado para tus bloques de vídeo.
+- La aplicación ya no se cerrará cuando el editor baje automáticamente a un bloque. Ni tú te rindes, ni nosotros te defraudamos.
+- Ahora verás un mensaje de error cuando haya algún problema al subir un vídeo a medios y bloques de texto.
+- Las imágenes ya no se irán volviendo transparentes mientras se están subiendo. Todo en color, durante todo el tiempo.
