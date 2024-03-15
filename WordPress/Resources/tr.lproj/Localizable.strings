@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-06 22:34:42+0000 */
+/* Translation-Revision-Date: 2024-03-13 06:41:37+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-rc.1 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: tr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -623,7 +623,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "All" = "Tümü";
 
 /* Information about redeeming domain credit on site dashboard. */
-"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Tüm WordPress.com yıllık paketleri kişisel bir alan adı içerir. Ücretsiz alan adınızı hemen kaydedin.";
+"All WordPress.com annual plans include a custom domain name. Register your free domain now." = "Tüm WordPress.com yıllık paketlerinde kişisel bir etki alanı adı bulunur. Ücretsiz etki alanınızı şimdi kaydedin.";
 
 /* An option in a list. Automatically approve all comments */
 "All comments" = "Tüm yorumlar";
@@ -692,7 +692,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Alternatively, you can detach and edit this block separately by tapping “Detach”." = "Alternatif olarak \"Ayır\" seçeneğine dokunarak bu bloku ayırabilir ve ayrı ayrı düzenleyebilirsiniz.";
 
 /* translators: Alternative option included in a warning related to having blocks deeply nested. */
-"Alternatively, you can flatten the content by ungrouping the block." = "Alternatif olarak bloku gruplamadan çıkararak içeriği düzleştirebilirsiniz.";
+"Alternatively, you can flatten the content by ungrouping the block." = "Alternatif olarak blok gruplamasını kaldırarak içeriği düzleştirebilirsiniz.";
 
 /* Instruction text to explain to help users type their password instead of using magic link login option. */
 "Alternatively, you may enter the password for this account." = "Alternatif olarak, bu hesabın şifresini girebilirsiniz.";
@@ -1113,7 +1113,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Blocks menu" = "Bloklar menüsü";
 
 /* translators: Warning related to having blocks deeply nested. %d: The deepest nesting level. */
-"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "%d seviyelerinden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün şekilde oluşmayabilir.";
+"Blocks nested deeper than %d levels may not render properly in the mobile editor." = "%d düzeyden daha derin bir şekilde iç içe geçmiş bloklar, mobil düzenleyicide düzgün görüntülenmeyebilir.";
 
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
@@ -1907,7 +1907,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "WordPress siteye bağlanılamıyor. Bu adreste geçerli bir WordPress sitesi yok. Girdiğiniz site adresini (URL) kontrol edin.";
 
 /* Message to show to user when he tries to add a self-hosted site with RSD link present, but xmlrpc is missing. */
-"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Gerekli XML-RPC yordamları sunucuda bulunmuyor. Sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
+"Couldn't connect. Required XML-RPC methods are missing on the server. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Gerekli XML-RPC yordamları sunucuda bulunmuyor. Sorunu çözmek için lütfen barındırma hizmeti sağlayıcınızla görüşün.";
 
 /* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
 "Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Bağlantı kurulamadı. Sitenizin XMLRPC uç noktasına erişmeye çalışırken 403 hatasını aldık. Uygulama, sitenizle bağlantı kurabilmek için buna gereksinim duyuyor. Sorunu çözmek için lütfen barındırma sağlayıcınızla iletişime geçin.";
@@ -2973,7 +2973,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "File type" = "Dosya tipi";
 
 /* No comment provided by engineer. */
-"File type not supported as a media file." = "File type not supported as a media file.";
+"File type not supported as a media file." = "Dosya türü bir ortam dosyası olarak desteklenmiyor.";
 
 /* Film & Television site intent topic */
 "Film & Television" = "Film ve Televizyon";
@@ -3067,7 +3067,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Font Size" = "Font Boyutu";
 
 /* translators: %1$s: Font size name e.g. Small */
-"Font Size, %1$s" = "Yazı tipi boyutu %1$s";
+"Font Size, %1$s" = "Yazı boyutu, %1$s";
 
 /* Food site intent topic */
 "Food" = "Yiyecek";
@@ -3076,10 +3076,10 @@ translators: %s: Block name e.g. \"Image block\" */
 "Football" = "Futbol";
 
 /* translators: Recommendation included in a warning related to having blocks deeply nested. */
-"For this reason, we recommend editing the block using the web editor." = "Bu nedenle, bloku web düzenleyicinizi kullanarak düzenlemenizi öneririz.";
+"For this reason, we recommend editing the block using the web editor." = "Bu nedenle, bloğu İnternet düzenleyicisini kullanarak düzenlemenizi öneririz.";
 
 /* translators: Recommendation included in a warning related to having blocks deeply nested. */
-"For this reason, we recommend editing the block using your web browser." = "Bu nedenle, bloku web tarayıcınızı kullanarak düzenlemenizi öneririz.";
+"For this reason, we recommend editing the block using your web browser." = "Bu nedenle, bloğu tarayıcınızı kullanarak düzenlemenizi öneririz.";
 
 /* Register Domain - Domain contact information section header description */
 "For your convenience, we have pre-filled your WordPress.com contact information. Please review to be sure it’s the correct information you want to use for this domain." = "Size kolaylık olması için, WordPress.com iletişim bilgilerinizi önceden doldurduk. Lütfen bu bilgilerin bu alan adında kullanmak istediğiniz doğru bilgiler olduğundan emin olmak için gözden geçirin.";
@@ -4431,10 +4431,10 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Needs Update" = "Güncellenmesi gerekiyor";
 
 /* No comment provided by engineer. */
-"Network connection lost, working offline" = "Network connection lost, working offline";
+"Network connection lost, working offline" = "Ağ bağlantısı kesildi, çevrim dışı çalışıyor";
 
 /* No comment provided by engineer. */
-"Network connection re-established" = "Network connection re-established";
+"Network connection re-established" = "Ağ bağlantısı yeniden kuruldu";
 
 /* Header of section in Plugin Directory showing newest plugins */
 "New" = "Yeni";
@@ -5890,7 +5890,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 "Safari" = "Safari";
 
 /* Title of a row displayed on the debug screen used to configure the sandbox store use in the App. */
-"Sandbox Store" = "Sandbox Store'u kullanın";
+"Sandbox Store" = "Sandbox Store";
 
 /* Menus save button title
    Save Action
@@ -6893,7 +6893,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap to view your site" = "Sitenizi görüntülemek için dokunun";
 
 /* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
-"Tap to visit the Gravatar website in an external browser" = "Gravatar web sitesini harici bir tarayıcıda ziyaret etmek için dokunun";
+"Tap to visit the Gravatar website in an external browser" = "Gravatar sitesini bir dış tarayıcı ile açmak için dokunun";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "Görev tamamlandı.";
@@ -7445,7 +7445,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Traffic" = "Trafik";
 
 /* Describes a domain that was transferred from elsewhere to wordpress.com */
-"Transferred Domain" = "Aktarılan Alan Adı";
+"Transferred Domain" = "Aktarılan etki alanı";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "Transform %s to" = "%s öğesini şuna dönüştür:";
@@ -7775,7 +7775,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Update Site Icon" = "Site Simgesini Güncelle";
 
 /* A notice message that's shown after the user updates their profile information. */
-"Updates might take some time to sync with your Gravatar profile." = "Güncellemelerin Gravatar profilinizle senkronize olması biraz zaman alabilir.";
+"Updates might take some time to sync with your Gravatar profile." = "Güncellemelerin Gravatar profilinizle eşitlenmesi biraz zaman alabilir.";
 
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Yorumları göstermek için çubuk grafiği günceller.";
@@ -8063,7 +8063,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Waiting for Google to complete…" = "Tamamlanması için Google bekleniyor…";
 
 /* No comment provided by engineer. */
-"Waiting for connection" = "Bağlantı bekleniyor";
+"Waiting for connection" = "Bağlantı kurulması bekleniyor";
 
 /* Text while the webauthn signature is being verified
    Text while waiting for a security key challenge */
@@ -8528,7 +8528,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Work With Us" = "Bizimle Çalışın";
 
 /* No comment provided by engineer. */
-"Working Offline" = "Çevrimdışı çalışın";
+"Working Offline" = "Çevrim dışı çalışıyor";
 
 /* Accessibility label for the Stats' world map. */
 "World map showing views by country." = "Ülkelere göre görünümlerini gösteren dünya haritası.";
@@ -8665,6 +8665,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that all of their sites are currently hidden (singular) */
 "You have 1 hidden WordPress site." = "1 gizli WordPress siteniz mevcut.";
+
+/* Description for the first domain purchased with a paid plan. */
+"You have a free one-year domain registration with your plan." = "Planınıza ücretsiz bir yıllık alan adı kaydı dahildir.";
 
 /* Message alert when attempting to delete site with purchases */
 "You have active premium upgrades on your site. Please cancel your upgrades prior to deleting your site." = "Sitenizde premium yükseltmeleri etkinleştirdiniz. Sitenizi silmeden önce yükseltmelerinizi iptal edin.";
@@ -8895,7 +8898,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "appRatings.wordpress.prompt" = "WordPress hakkında ne düşünüyorsunuz?";
 
 /* Option to enable the optimization of images when uploading. */
-"appSettings.media.imageOptimizationRow" = "Görselleri İyileştir";
+"appSettings.media.imageOptimizationRow" = "Görselleri iyileştir";
 
 /* Indicates an image will use high quality when uploaded. */
 "appSettings.media.imageQuality.high" = "Yüksek";
@@ -8904,7 +8907,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "appSettings.media.imageQuality.low" = "Düşük";
 
 /* Indicates an image will use maximum quality when uploaded. */
-"appSettings.media.imageQuality.maximum" = "Maksimum";
+"appSettings.media.imageQuality.maximum" = "En fazla";
 
 /* Indicates an image will use medium quality when uploaded. */
 "appSettings.media.imageQuality.medium" = "Orta";
@@ -8913,7 +8916,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "appSettings.media.imageQuality.title" = "Kalite";
 
 /* Title for the image quality settings option. */
-"appSettings.media.imageQualityRow" = "Görsel Kalitesi";
+"appSettings.media.imageQualityRow" = "Görsel kalitesi";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
@@ -9027,10 +9030,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "blogHeader.actionCopyURL" = "Adresi Kopyala";
 
 /* Context menu button title */
-"blogHeader.actionVisitSite" = "Siteyi ziyaret et";
+"blogHeader.actionVisitSite" = "Siteye git";
 
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
-"bloganuary.dashboard.card.button.learnMore" = "Daha fazla bilgi edinin";
+"bloganuary.dashboard.card.button.learnMore" = "Ayrıntılı bilgi alın";
 
 /* Short description for the Bloganuary event, shown right below the title. */
 "bloganuary.dashboard.card.description" = "Yeni yılda blog yazma alışkanlığı oluşturmayı hedefleyen topluluk etkinliğimiz Bloganuary'den Ocak ayı boyunca blog istemleri alacaksınız.";
@@ -9049,7 +9052,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "bloganuary.learnMore.modal.button.promptsEnabled" = "Başlayalım!";
 
 /* The second line of the description shown in the Bloganuary modal sheet. */
-"bloganuary.learnMore.modal.description.second" = "Yanıtınızı yayımlayın.";
+"bloganuary.learnMore.modal.description.second" = "Yanıtınızı yayınlayın.";
 
 /* The third line of the description shown in the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.description.third" = "İlham almak ve yeni bağlantılar kurmak için diğer blog yazarlarının yanıtlarını okuyun.";
@@ -9058,10 +9061,10 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "bloganuary.learnMore.modal.descriptions.first" = "Her gün size ilham verecek yeni istemler alın.";
 
 /* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
-"bloganuary.learnMore.modal.footer.addition" = "Bloganuary'ye katılmak için Blog İstemlerini etkinleştirmeniz gerekir.";
+"bloganuary.learnMore.modal.footer.addition" = "Bloganuary'ye katılmak için blog istemlerini açmalısınız.";
 
 /* An informative excerpt shown in a subtler tone. */
-"bloganuary.learnMore.modal.footer.text" = "Bloganuary Ocak ayı boyunca size konular göndermek için Günlük Blog İstemlerini kullanacak.";
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary Ocak ayı boyunca size konular göndermek için günlük blog istemlerini kullanacak.";
 
 /* The headline text of the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.headline" = "Bir ay sürecek yazma etkinliğimize katılın";
@@ -9229,34 +9232,37 @@ Example: Reply to Pamela Nguyen */
 "dashboardCard.stats.viewStats" = "İstatistikleri Görüntüle";
 
 /* Debug menu item title */
-"debugMenu.analytics" = "Analizler";
+"debugMenu.analytics" = "İstatistikler";
 
 /* Boolean User Defaults debug menu item */
-"debugMenu.booleanUserDefaults" = "Boole Kullanıcı Varsayılanları";
+"debugMenu.booleanUserDefaults" = "Boolean kullanıcı varsayılanları";
 
 /* Boolean User Defaults Debug Menu screen title */
-"debugMenu.booleanUserDefaults.title" = "Boole Kullanıcı Varsayılanları";
+"debugMenu.booleanUserDefaults.title" = "Boolean kullanıcı varsayılanları";
 
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Özellik bayrakları";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
-"debugMenu.readerCellTitle" = "Okuyucu CSS URLsi";
+"debugMenu.readerCellTitle" = "Okuyucu CSS adresi";
 
 /* Placeholder for the reader CSS URL */
-"debugMenu.readerDefaultURL" = "Varsayılan URL";
+"debugMenu.readerDefaultURL" = "Varsayılan adres";
 
 /* Hint for the reader CSS URL field */
-"debugMenu.readerHit" = "Reader'a yüklenmek üzere buraya özel bir CSS URL'si ekleyin. Calypso'yu yerel olarak çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+"debugMenu.readerHit" = "Okuyucuya yüklenecek özel CSS adresini buraya yazın. Yerel olarak Calypso çalıştırıyorsanız şu şekilde olabilir: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
 
 /* Remote Config Debug Menu section title */
-"debugMenu.remoteConfig.defaultValue" = "Varsayılan Değer";
+"debugMenu.remoteConfig.currentValue" = "Geçerli değer";
 
 /* Remote Config Debug Menu section title */
-"debugMenu.remoteConfig.overridenValue" = "Uzaktan Yapılandırma";
+"debugMenu.remoteConfig.defaultValue" = "Varsayılan değer";
 
 /* Remote Config Debug Menu section title */
-"debugMenu.remoteConfig.remoteConfigValue" = "Uzaktan Yapılandırma";
+"debugMenu.remoteConfig.overridenValue" = "Uzak yapılandırma";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.remoteConfigValue" = "Uzak yapılandırma değeri";
 
 /* Remote Config Debug Menu reset button title */
 "debugMenu.remoteConfig.reset" = "Sıfırla";
@@ -9269,7 +9275,10 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.removeQuickStart" = "Mevcut Turu Kaldır";
 
 /* Debug Menu section title */
-"debugMenu.section.logging" = "Logging";
+"debugMenu.section.logging" = "Günlük kaydı";
+
+/* Debug Menu section title */
+"debugMenu.section.quickStart" = "Hızlı başlangıç";
 
 /* Debug Menu section title */
 "debugMenu.section.settings" = "Ayarlar";
@@ -9278,7 +9287,7 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.title" = "Geliştirici";
 
 /* Weekly Roundup debug menu item */
-"debugMenu.weeklyRoundup" = "Haftalık Özet";
+"debugMenu.weeklyRoundup" = "Haftalık özet";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Bunu gizle";
@@ -9394,8 +9403,11 @@ Example: Reply to Pamela Nguyen */
 /* Help button */
 "domainSelection.helpButton.title" = "Yardım";
 
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "Bu siteden satın alınan etki alanları %1$@ üzerine yönlendirilir";
+
 /* Search domain - Title for the Suggested domains screen */
-"domainSelection.search.title" = "Alan adı arayın";
+"domainSelection.search.title" = "Etki alanı ara";
 
 /* Title for the checkout screen. */
 "domains.checkout.title" = "Ödeme";
@@ -9435,10 +9447,10 @@ Example: Reply to Pamela Nguyen */
 "externalMediaPicker.add" = "Ekle";
 
 /* Bottom toolbar title in the selection mode */
-"externalMediaPicker.toolbarSelectItemsPrompt" = "Görselleri seç";
+"externalMediaPicker.toolbarSelectItemsPrompt" = "Görselleri seçin";
 
 /* Bottom toolbar title in the selection mode */
-"externalMediaPicker.toolbarViewSelected" = "Seçileni görüntüle (%@)";
+"externalMediaPicker.toolbarViewSelected" = "Seçilmişi görüntüle (%@)";
 
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Kampanya Ayrıntıları";
@@ -9558,13 +9570,13 @@ Example: Reply to Pamela Nguyen */
 "in-app.feedback.confirmation.notice.title" = "Geri bildirim gönderildi";
 
 /* The message for the negative feedback alert */
-"in-app.feedback.negative.alert.message" = "Bizimle daha fazla ayrıntı paylaşmak ister misiniz?";
+"in-app.feedback.negative.alert.message" = "Bizimle daha fazla bilgi paylaşmak ister misiniz?";
 
 /* The 'no' button for the negative feedback alert */
 "in-app.feedback.negative.alert.no" = "Şimdi değil";
 
 /* The title for the negative feedback alert */
-"in-app.feedback.negative.alert.title" = "Geliştirmemize yardım edin";
+"in-app.feedback.negative.alert.title" = "Geliştirmemize yardımcı olun";
 
 /* The 'yes' button for the negative feedback alert */
 "in-app.feedback.negative.alert.yes" = "Tamam";
@@ -9918,7 +9930,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.deletionSuccessMessage" = "Silindi!";
 
 /* The name of the media filter */
-"mediaLibrary.filterAll" = "Hepsi";
+"mediaLibrary.filterAll" = "Tümü";
 
 /* The name of the media filter */
 "mediaLibrary.filterAudio" = "Ses";
@@ -9927,7 +9939,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.filterDocuments" = "Belgeler";
 
 /* The name of the media filter */
-"mediaLibrary.filterImages" = "Resimler";
+"mediaLibrary.filterImages" = "Görseller";
 
 /* The name of the media filter */
 "mediaLibrary.filterVideos" = "Videolar";
@@ -9972,10 +9984,10 @@ Example: Reply to Pamela Nguyen */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Kapat";
 
 /* Error message when picked media cannot be imported into stories. */
-"mediaPicker.failedMediaExportAlert.message" = "Ortamınız dışa aktarılamadı. Sorun tekrar ederse lütfen Ben > Yardım ve Destek ekranından bizimle iletişim kurun.";
+"mediaPicker.failedMediaExportAlert.message" = "Ortamınız dışa aktarılamadı. Sorun sürerse lütfen Ben > Yardım ve destek bölümünden bizimle görüşün.";
 
 /* Error title when picked media cannot be imported into stories. */
-"mediaPicker.failedMediaExportAlert.title" = "Ortam Dışa Aktarılamadı";
+"mediaPicker.failedMediaExportAlert.title" = "Ortam dışa aktarılamadı";
 
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Bu uygulama yeni görsel yakalamak için Kamera’ya erişim izni istiyor, buna izin vermek istiyorsanız lütfen gizlilik ayarlarını değiştirin.";
@@ -10014,7 +10026,7 @@ Example: Reply to Pamela Nguyen */
 "mediaPreview.NofM" = "%1$@ \/ %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
-"mediaSizeSlider.valueFormat" = "%1$d × %2$d piksel";
+"mediaSizeSlider.valueFormat" = "%1$d × %2$d px";
 
 /* The description in the Delete WordPress screen */
 "migration.deleteWordpress.description" = "Görünüşe göre WordPress uygulaması hala yüklü.";
@@ -10038,7 +10050,7 @@ Example: Reply to Pamela Nguyen */
 "migration.done.primaryDescription" = "Tüm verilerinizi ve ayarlarınızı aktardık. Her şey bıraktığınız yerde.";
 
 /* Secondary description (second paragraph) in the migration done screen. */
-"migration.done.secondaryDescription" = "Jetpack uygulamasındaki WordPress yolculuğunuza devam etme vakti.";
+"migration.done.secondaryDescription" = "Jetpack uygulamasıyla WordPress yolculuğunuzu sürdürme zamanı!";
 
 /* Title of the migration done screen. */
 "migration.done.title" = "Jetpack'e geçtiğiniz için teşekkürler!";
@@ -10089,7 +10101,7 @@ Example: Reply to Pamela Nguyen */
 "migration.welcome.title" = "Jetpack'e hoş geldiniz.";
 
 /* Primary button title in the migration done screen. */
-"migrationDone.actions.primaryTitle" = "Haydi başlayalım";
+"migrationDone.actions.primaryTitle" = "Başlayalım";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.description" = "Jetpack uygulaması, WordPress uygulamasının tüm işlevlerine ve artık İstatistikler, Okuyucu, Bildirimler ve daha fazlasına özel erişime sahiptir.";
@@ -10119,7 +10131,7 @@ Example: Reply to Pamela Nguyen */
 "my-site.menu.maintenance.section.title" = "Bakım";
 
 /* Title for the site monitoring row in the blog details screen */
-"my-site.menu.site-monitoring.row.title" = "Site İzleme";
+"my-site.menu.site-monitoring.row.title" = "Site izleme";
 
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Sosyal";
@@ -10170,16 +10182,16 @@ Example: Reply to Pamela Nguyen */
 "mySite.noSites.title" = "Hiçbir siteniz yok";
 
 /* Menu title for the add site option */
-"mySite.siteActions.addSite" = "Site ekleyin";
+"mySite.siteActions.addSite" = "Site ekle";
 
 /* Button that reveals more site actions */
-"mySite.siteActions.button" = "Site eylemleri";
+"mySite.siteActions.button" = "Site işlemleri";
 
 /* Accessibility hint for button used to show more site actions */
-"mySite.siteActions.hint" = "Daha fazla site eylemi göstermek için dokunun";
+"mySite.siteActions.hint" = "Diğer site işlemlerini görüntülemek için dokunun";
 
 /* Menu title for the personalize home option */
-"mySite.siteActions.personalizeHome" = "Ana sayfayı kişiselleştir";
+"mySite.siteActions.personalizeHome" = "Giriş sayfasını kişiselleştir";
 
 /* Menu title for the share site option */
 "mySite.siteActions.shareSite" = "Siteyi paylaş";
@@ -10194,16 +10206,16 @@ Example: Reply to Pamela Nguyen */
 "mySite.siteActions.switchSite" = "Site değiştir";
 
 /* Menu title for the visit site option */
-"mySite.siteActions.visitSite" = "Siteyi ziyaret et";
+"mySite.siteActions.visitSite" = "Siteye git";
 
 /* A no results message displayed on the atomic logs screen. */
-"noLogs.empty" = "Bu zaman aralığında günlük girdisi yok";
+"noLogs.empty" = "Bu zaman aralığında bir günlük kaydı yok";
 
 /* A generic error message displayed on the atomic logs screen. */
-"noLogs.error" = "Bir hata oluştu";
+"noLogs.error" = "Bir sorun çıktı";
 
 /* Button title for the retry button on the atomic logs screen. */
-"noLogs.retry" = "Tekrar dene";
+"noLogs.retry" = "Yeniden dene";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
@@ -10221,19 +10233,19 @@ Example: Reply to Pamela Nguyen */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri Bildirim gönderin";
 
 /* Message to use along with the post URL when sharing a post */
-"notifications.share.messageWithPost" = "\"%@\" gönderime göz atın:";
+"notifications.share.messageWithPost" = "\"%@\" yazıma bakın:";
 
 /* Message to use along with the post URL when sharing a post */
-"notifications.share.messageWithoutPost" = "Gönderime göz atın:";
+"notifications.share.messageWithoutPost" = "Yazıma bakın:";
 
 /* Marks all notifications under the filter as read */
-"notificationsViewController.navigationBar.action.markAllAsRead" = "Tümünü Okundu Olarak İşaretle";
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Tümünü okundu olarak işaretle";
 
 /* Link to Notification Settings section */
-"notificationsViewController.navigationBar.action.settings" = "Bildirim Ayarları";
+"notificationsViewController.navigationBar.action.settings" = "Bildirim ayarları";
 
 /* Accessibility label for the navigation bar menu button */
-"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Gezinme Çubuğu Menü Düğmesi";
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Gezinme çubuğu menü düğmesi";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Ana sayfa";
@@ -10326,19 +10338,19 @@ Example: Reply to Pamela Nguyen */
 "phone number" = "telefon numarası";
 
 /* A title for the filter on the PHP logs screen */
-"phpLogs.filterEndDate" = "Bitiş Tarihi";
+"phpLogs.filterEndDate" = "Bitiş tarihi";
 
 /* A title for the filter on the PHP logs screen */
 "phpLogs.filterSeverity" = "Tehdit düzeyi";
 
 /* A title for the filter on the PHP logs screen */
-"phpLogs.filterStartDate" = "Başlangıç Tarihi";
+"phpLogs.filterStartDate" = "Başlangıç tarihi";
 
 /* A title for the log severity level */
-"phpLogs.severityDeprecated" = "Kullanımdan kaldırıldı";
+"phpLogs.severityDeprecated" = "Kullanımdan kaldırılmış";
 
 /* A title for the log severity level */
-"phpLogs.severityFatalError" = "Kritik Hata";
+"phpLogs.severityFatalError" = "Kritik hata";
 
 /* A title for the log severity level */
 "phpLogs.severityUser" = "Kullanıcı";
@@ -10512,13 +10524,13 @@ Example: Reply to Pamela Nguyen */
 "prepublishing.postTitle" = "Başlık";
 
 /* Primary button label in the pre-publishing sheet */
-"prepublishing.publish" = "Yayımla";
+"prepublishing.publish" = "Yayınla";
 
 /* Label for a cell in the pre-publishing sheet */
-"prepublishing.publishDate" = "Yayımlama Tarihi";
+"prepublishing.publishDate" = "Yayınlanma tarihi";
 
 /* Label in the header in the pre-publishing sheet */
-"prepublishing.publishingTo" = "Şuraya yayımlanıyor:";
+"prepublishing.publishingTo" = "Şuraya yayınlanıyor:";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Zamanla";
@@ -10594,13 +10606,13 @@ Tapping on this row allows the user to edit the sharing message. */
 "publishButton.progress" = "%1$@\/%2$@";
 
 /* Retry button title */
-"publishButton.retry" = "Tekrar dene";
+"publishButton.retry" = "Yeniden dene";
 
 /* The Now button that clears the date selection */
 "publishDatePicker.now" = "Şimdi";
 
 /* Post publish date picker */
-"publishDatePicker.title" = "Yayımlama Tarihi";
+"publishDatePicker.title" = "Yayınlanma tarihi";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Kapat";
@@ -10612,7 +10624,7 @@ Tapping on this row allows the user to edit the sharing message. */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Oturum açtınız!";
 
 /* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
-"quick.start.reader.2.subscriptions.base" = "Abone olunan içerikleri görüntülemek ve aboneliklerinizi yönetmek için %@ öğesini seçmeyi deneyin.";
+"quick.start.reader.2.subscriptions.base" = "Abone olunan içerikleri görüntülemek ve aboneliklerinizi yönetmek için %@ seçmeyi deneyin.";
 
 /* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
 "quick.start.reader.2.subscriptions.target" = "Abonelikler";
@@ -10621,28 +10633,28 @@ Tapping on this row allows the user to edit the sharing message. */
 "quickStart.moreMenu" = "Daha Fazla";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
-"reader.blocked.blog.message" = "%@ adlı blog artık okuyucunuzda görünmeyecek. Geri almak için dokunun.";
+"reader.blocked.blog.message" = "%@ bloğu artık okuyucunuzda görüntülenmeyecek. Geri almak için dokunun.";
 
 /* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
-"reader.blog.header.values" = "%1$@ gönderi • %2$@ takipçi";
+"reader.blog.header.values" = "%1$@ yazı • %2$@ abone";
 
 /* Accessibility hint for the blog name and URL button on Reader's Post Details. */
-"reader.blog.name.accessibility.hint" = "Blogtaki gönderileri gösterir.";
+"reader.blog.name.accessibility.hint" = "Blog yazılarını görüntüler.";
 
 /* Error message title informing the user that a search for sites in the Reader could not be loaded. */
-"reader.blog.search.loading.error" = "Bloglar yüklenirken problem oluştu";
+"reader.blog.search.loading.error" = "Bloglar yüklenirken sorun çıktı";
 
 /* A brief prompt when the user is searching for blogs in the Reader. */
 "reader.blog.search.loading.title" = "Bloglar alınıyor...";
 
 /* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
-"reader.blog.search.no.results.message.format" = "Dilinizde %@ ile eşleşen blog bulunamadı.";
+"reader.blog.search.no.results.message.format" = "Dilinizde %@ ile eşleşen bir blog bulunamadı.";
 
 /* A message title */
-"reader.blog.search.no.results.title" = "Hiç blog bulunamadı";
+"reader.blog.search.no.results.title" = "Herhangi bir blog bulunamadı";
 
 /* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
-"reader.blog.stream.subscribers" = "%@ takipçi";
+"reader.blog.stream.subscribers" = "%@ abone";
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Sitedeki gönderileri gösterir";
@@ -10682,40 +10694,40 @@ but tapping on this button will remove their like from the post. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Kaydedilen Gönderi";
 
 /* Error message informing the user that they are already following a blog in their reader. */
-"reader.error.already.subscribed.message" = "Bu blogu zaten takip ediyorsunuz";
+"reader.error.already.subscribed.message" = "Bu bloğa zaten abonesiniz";
 
 /* Title for a button that allows user to edit their subscribed list from the filter sheet */
 "reader.filterSheet.button.edit" = "Düzenle";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
-"reader.filterSheet.byBlog.title" = "Bloga göre filtrele";
+"reader.filterSheet.byBlog.title" = "Bloğa göre süz";
 
 /* Title for a filter sheet on the Reader to filter the stream by tag */
-"reader.filterSheet.byTag.title" = "Etikete göre filtrele";
+"reader.filterSheet.byTag.title" = "Etikete göre süz";
 
 /* Body text for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.body" = "Keşfet bölümünden blogları takip ettiğinizde en son gönderiler burada görünür. Zaten sevdiğiniz bir blogu da arayabilirsiniz.";
+"reader.filterSheet.empty.blogs.body" = "Keşfet bölümünden bloglara abone olduğunuzda son yazılar burada görüntülenir. Zaten sevdiğiniz bir blogu da arayabilirsiniz.";
 
 /* Search blogs button text for an empty filter sheet on the Reader */
 "reader.filterSheet.empty.blogs.search" = "Blog arayın";
 
 /* Title for an empty filter sheet on the Reader for blogs */
-"reader.filterSheet.empty.blogs.title" = "Takip edilen blog yok";
+"reader.filterSheet.empty.blogs.title" = "Abone olunmuş bir blog yok";
 
 /* Body text for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.body" = "Bir etiketi takip ettiğinizde en iyi gönderiler burada görünür.";
+"reader.filterSheet.empty.tags.body" = "Bir etikete abone olduğunuzda en iyi yazılar burada görüntülenir.";
 
 /* Subscribe to a tag button text for an empty filter sheet on the Reader */
-"reader.filterSheet.empty.tags.subscribe" = "Bir etiketi takip edin";
+"reader.filterSheet.empty.tags.subscribe" = "Bir etikete abone ol";
 
 /* Suggested tags button text for an empty filter sheet on the Reader */
 "reader.filterSheet.empty.tags.suggested" = "Önerilen etiketler";
 
 /* Title for an empty filter sheet on the Reader for tags */
-"reader.filterSheet.empty.tags.title" = "Etiket yok";
+"reader.filterSheet.empty.tags.title" = "Herhangi bir etiket yok";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Yeni etiketler takip ediliyor...";
+"reader.filterSheet.select.tags.loading" = "Yeni etiketlere abone olunuyor...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Önerilen etiketler";
@@ -10731,7 +10743,11 @@ but tapping on this button will remove their like from the post. */
 
 /* Plural button title to filter the Reader stream by blog.
 %1$d is a placeholder for the number of blogs. */
-"reader.navigation.filter.blog.plural" = "%1$d Blog";
+"reader.navigation.filter.blog.plural" = "%1$d blog";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d blog";
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
@@ -10739,11 +10755,11 @@ This is displayed when we don't know the number of blogs yet. */
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.plural" = "%1$d Etiket";
+"reader.navigation.filter.tag.plural" = "%1$d etiket";
 
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
-"reader.navigation.filter.tag.singular" = "%1$d Etiket";
+"reader.navigation.filter.tag.singular" = "%1$d etiket";
 
 /* Button title to filter the Reader stream by tag.
 This is displayed when we don't know the number of tags yet. */
@@ -10751,29 +10767,29 @@ This is displayed when we don't know the number of tags yet. */
 
 /* Accessibility label for when the user has an active filter.
 This informs the user that the currently displayed stream is being filtered. */
-"reader.navigation.menu.activeFilter.a11y.label" = "%1$@ tarafından filtrelendi";
+"reader.navigation.menu.activeFilter.a11y.label" = "%1$@ ile süzüldü";
 
 /* Accessibility hint that informs the user that the filter list will be opened when they interact
 with the filter chip button. */
-"reader.navigation.menu.filter.a11y.hint" = "Filtre listesini açar";
+"reader.navigation.menu.filter.a11y.hint" = "Süzgeç listesini açar";
 
 /* Reader navigation menu item for the Liked filter */
-"reader.navigation.menu.liked" = "Beğenildi";
+"reader.navigation.menu.liked" = "Beğenilen";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Listeler";
 
 /* Accessibility label for the Close icon button, to reset the active filter. */
-"reader.navigation.menu.reset.a11y.label" = "Sıfırlayın";
+"reader.navigation.menu.reset.a11y.label" = "Sıfırla";
 
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Kaydedildi";
 
 /* Accessibility label for the Search icon. */
-"reader.navigation.menu.search.a11y.label" = "Arayın";
+"reader.navigation.menu.search.a11y.label" = "Ara";
 
 /* Reader navigation menu item for the Subscriptions filter */
-"reader.navigation.menu.subscriptions" = "Takipler";
+"reader.navigation.menu.subscriptions" = "Abonelikler";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Arama";
@@ -10782,65 +10798,65 @@ with the filter chip button. */
 "reader.navigation.settings.button.label" = "Okuyucu Ayarları";
 
 /* Title for button on the no followed blogs result screen */
-"reader.no.blogs.button" = "Blogları Keşfedin";
+"reader.no.blogs.button" = "Blogları keşfedin";
 
 /* Subtitle for the no followed blogs result screen */
-"reader.no.blogs.subtitle" = "Keşfet bölümünden blogları takip ettiğinizde en son gönderiler burada görünür. Zaten sevdiğiniz bir blogu da arayabilirsiniz.";
+"reader.no.blogs.subtitle" = "Keşfet bölümünden bloglara abone olduğunuzda son yazılar burada görüntülenir. Zaten sevdiğiniz bir blogu da arayabilirsiniz.";
 
 /* Title for the no followed blogs result screen */
-"reader.no.blogs.title" = "Takip edilen blog yok";
+"reader.no.blogs.title" = "Abone olunmuş bir blog yok";
 
 /* Message shown when the reader finds no posts for the chosen blog */
-"reader.no.results.blog.response.message" = "Bu blogda henüz hiçbir gönderi paylaşılmadı. Daha sonra tekrar deneyin.";
+"reader.no.results.blog.response.message" = "Bu blogda henüz bir yazı paylaşılmamış. Bir süre sonra yeniden deneyin.";
 
 /* Message shown when the reader finds no posts for the chosen list */
-"reader.no.results.list.response.message" = "Bu listedeki bloglarda yakın zamanda herhangi bir gönderi paylaşılmadı";
+"reader.no.results.list.response.message" = "Bu listedeki bloglarda yakın zamanda bir yazı paylaşılmamış";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
-"reader.no.results.manage.blogs" = "Blogları Yönetin";
+"reader.no.results.manage.blogs" = "Blog yönetimi";
 
 /* A message explaining the Following topic in the reader */
-"reader.no.results.response.message" = "Takip ettiğiniz blog ve sitelerden en güncel yazılar burada görüntülenir.";
+"reader.no.results.response.message" = "Abone olduğunuz blog ve sitelerdeki son yazılar burada görüntülenir.";
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
-"reader.no.results.subscriptions.button" = "Takiplere git";
+"reader.no.results.subscriptions.button" = "Aboneliklere git";
 
 /* No Sites View Label
    No Topics View Label */
-"reader.no.tags.action" = "Bir blogu takip ederek bu blogdaki gönderileri takip edebilirsiniz.";
+"reader.no.tags.action" = "Bir bloğa abone olarak bu blogdaki yazılara abone olabilirsiniz.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Blog ekle";
 
 /* Notice title when blocking a blog fails. */
-"reader.notice.blog.blocked.failure" = "Blog engellenemiyor";
+"reader.notice.blog.blocked.failure" = "Blog engellenemedi";
 
 /* Notice title when blocking a site succeeds. */
 "reader.notice.blog.blocked.success" = "Blog engellendi";
 
 /* User subscribed to a blog. */
-"reader.notice.blog.subscribe.success" = "Blog takip ediliyor";
+"reader.notice.blog.subscribe.success" = "Bloğa abone olundu";
 
 /* Title of a prompt. */
-"reader.notice.blog.unsubscribe.error" = "Blogu takip etmek bırakılamadı";
+"reader.notice.blog.unsubscribe.error" = "Blog aboneliğinden ayrılınamadı";
 
 /* Title of a prompt. */
-"reader.notice.blog.unsubscribed.error" = "Blogu takip etmek bırakılamadı";
+"reader.notice.blog.unsubscribed.error" = "Blog aboneliğinden ayrılınamadı";
 
 /* User unsubscribed from a blog. */
-"reader.notice.blog.unsubscribed.success" = "Blog artık takip edilmiyor";
+"reader.notice.blog.unsubscribed.success" = "Blog aboneliğinden ayrılındı";
 
 /* Notice title when turning blog notifications off fails. */
-"reader.notice.disable.notification.failure" = "Blog bildirimleri kapatılamıyor";
+"reader.notice.disable.notification.failure" = "Blog bildirimleri kapatılamadı";
 
 /* Notice title when turning blog notifications off succeeds. */
 "reader.notice.disable.notification.success" = "Blog bildirimleri kapatıldı";
 
 /* Notice title when turning blog notifications on fails. */
-"reader.notice.enable.notification.failure" = "Blog bildirimleri açılamıyor";
+"reader.notice.enable.notification.failure" = "Blog bildirimleri açılamadı";
 
 /* Message prompting user to enable blog notifications. */
-"reader.notice.enable.notification.prompt" = "Blog bildirimleri etkinleştirilsin mi?";
+"reader.notice.enable.notification.prompt" = "Blog bildirimleri açılsın mı?";
 
 /* Notice title when turning blog notifications on succeeds. */
 "reader.notice.enable.notification.success" = "Blog bildirimleri açıldı";
@@ -10850,16 +10866,16 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.notice.subscribe.blog.unknown" = "bu blog";
 
 /* Notice title when subscribing to a blog fails. */
-"reader.notice.subscribe.failure" = "Blog takip edilemiyor";
+"reader.notice.subscribe.failure" = "Bloğa abone olunamadı";
 
 /* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
-"reader.notice.subscribe.success" = "%1$@ takip ediliyor";
+"reader.notice.subscribe.success" = "%1$@ bloğuna abone olundu";
 
 /* Notice title when unsubscribing to a blog fails. */
-"reader.notice.unsubscribe.failure" = "Blogu takip etmek bırakılamadı";
+"reader.notice.unsubscribe.failure" = "Blog aboneliğinden ayrılınamadı";
 
 /* Notice title when unfollowing a blog succeeds. */
-"reader.notice.unsubscribe.success" = "Blog artık takip edilmiyor";
+"reader.notice.unsubscribe.success" = "Blog aboneliğinden ayrılındı";
 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
@@ -10898,7 +10914,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.header.accessibility.hint" = "Gönderinin site ayrıntılarını açar.";
 
 /* The title of a button that triggers blocking a blog from the user's reader. */
-"reader.post.menu.block.blog" = "Bu blogu engelle";
+"reader.post.menu.block.blog" = "Bu bloğu engelle";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bu kullanıcıyı engelle";
@@ -10919,52 +10935,52 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.post.menu.save.post" = "Kaydet";
 
 /* Verb. An option to subscribe to a blog. */
-"reader.post.menu.subscribe.blog" = "Blogu takip et";
+"reader.post.menu.subscribe.blog" = "Bloga abone ol";
 
 /* Verb. An option to unsubscribe from a blog. */
-"reader.post.menu.unsubscribe.blog" = "Blogu takip etmeyi bırak";
+"reader.post.menu.unsubscribe.blog" = "Blog aboneliğinden ayrıl";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
-"reader.reblog.manage.blogs" = "Blogları Yönetin";
+"reader.reblog.manage.blogs" = "Blog yönetimi";
 
 /* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.subtitle" = "Bir WordPress.com blogu oluşturduktan sonra, beğendiğiniz içeriği kendi blogunuza yeniden bloglayabilirsiniz.";
 
 /* A short message that informs the user no WordPress.com blogs could be found. */
-"reader.reblog.no.blogs.title" = "Kullanılabilir WordPress.com blogu yok";
+"reader.reblog.no.blogs.title" = "Kullanılabilecek bir WordPress.com blogu yok";
 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Bloglar";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Yeni etiketler takip ediliyor...";
+"reader.select.interests.loading" = "Yeni etiketlere abone olunuyor...";
 
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Etiketleri takip edin";
+"reader.select.interests.title" = "Etiketlere abone ol";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Takip edilecek yeni etiket yok";
+"reader.select.tags.no.results.title" = "Abone olunacak yeni bir etiket yok";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Etiketlerinizi seçin";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Etiketi takip eder.";
+"reader.subscribe.button.accessibility.hint" = "Etikete abone olur.";
 
 /* Verb. Button title. Subscribes to a new blog. */
-"reader.subscribe.button.title" = "Takip et";
+"reader.subscribe.button.title" = "Abone ol";
 
 /* The accessibility label for the followed blogs search field */
-"reader.subscribed.blogs.search.accessibility.label" = "Blog URL’si";
+"reader.subscribed.blogs.search.accessibility.label" = "Blog adresi";
 
 /* Placeholder text prompting the user to type the name of the URL they would like to follow. */
-"reader.subscribed.blogs.search.placeholder" = "Takip edilecek bir blogun URL'sini girin";
+"reader.subscribed.blogs.search.placeholder" = "Abone olunacak bir adres ya da blog yazın";
 
 /* Verb. Button title. The user is subscribed to a blog. */
-"reader.subscribed.button.title" = "Takip ediliyor";
+"reader.subscribed.button.title" = "Abone olunmuş";
 
 /* A suggestion of topics the user might want to subscribe to */
-"reader.suggested.blogs.title" = "Takip edilecek bloglar";
+"reader.suggested.blogs.title" = "Abone olunacak bloglar";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Etiket ekle";
@@ -10979,13 +10995,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.tags.add.tag.title" = "Etiket ekle";
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
-"reader.tags.discover.more.tags" = "Daha fazlası etiket keşfet";
+"reader.tags.discover.more.tags" = "Daha fazla etiket keşfet";
 
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "%@ etiketini takip etmeyi bırak";
+"reader.tags.unsubscribe.accessibility.label" = "%@ etiketinin aboneliğinden ayrıl";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
-"reader.unsubscribe.button" = "Takip etmeyi bırak";
+"reader.unsubscribe.button" = "Abonelikten ayrıl";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Geri";
@@ -11102,25 +11118,25 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "site.creation.domain.tooltip.site.name" = "SiteAdi.com";
 
 /* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
-"site.domains.domainSection.title" = "Other domains for %1$@";
+"site.domains.domainSection.title" = "%1$@ için diğer etki alanları";
 
 /* A section title which displays a row with a free WP.com domain */
-"site.domains.freeDomainSection.title" = "Ücretsiz WordPress.com alan adı";
+"site.domains.freeDomainSection.title" = "Ücretsiz WordPress.com etki alanınız";
 
 /* Description for the first domain purchased with a paid plan. */
-"site.domains.freeDomainWithPaidPlan.description" = "Yıllık ücretli paketlerden herhangi biriyle bir yıllık ücretsiz alan adı kaydı veya transferi hakkı edinin.";
+"site.domains.freeDomainWithPaidPlan.description" = "Yıllık ücretli paketlerden biriyle bir yıllık ücretsiz etki alanı kayıt ya da aktarım hakkı kazanın.";
 
 /* Title of the card that starts the purchase of the first domain with a paid plan. */
-"site.domains.freeDomainWithPaidPlan.title" = "Size ait bir alan adı.";
+"site.domains.freeDomainWithPaidPlan.title" = "Etki alanınızı alın";
 
 /* Footer of the primary site section in the Domains Dashboard. */
-"site.domains.primaryDomain" = "Birincil site adresiniz, web sitenizi ziyaret edenlerin adres çubuğunda görecekleri adrestir.";
+"site.domains.primaryDomain" = "Birincil site adresiniz, sitenizi ziyaret edenlerin adres çubuğunda görecekleri adrestir.";
 
 /* Primary domain label, used in the site address section of the Domains Dashboard. */
-"site.domains.primaryDomain.title" = "Birincil alan adı";
+"site.domains.primaryDomain.title" = "Birincil etki alanı";
 
 /* Title for a button that opens domain purchasing flow. */
-"site.domains.purchaseDirectly.buttons.title" = "Sadece alan adı arayacağım";
+"site.domains.purchaseDirectly.buttons.title" = "Yalnızca bir etki alanı ara";
 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Ücretli bir pakete geç";
@@ -11159,7 +11175,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMediaPicker.add" = "Ekle";
 
 /* Button selection media in media picker */
-"siteMediaPicker.deselect" = "Seçimi kaldır";
+"siteMediaPicker.deselect" = "Bırak";
 
 /* Button selection media in media picker */
 "siteMediaPicker.select" = "Seç";
@@ -11168,22 +11184,22 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMediaPicker.title" = "Ortam";
 
 /* Site Monitoring log entry details navigation title */
-"siteMonitoring.entryDetailsTitle" = "Günlük Girdisi";
+"siteMonitoring.entryDetailsTitle" = "Günlük kaydı";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyCached" = "Önbelleğe Eklendi";
+"siteMonitoring.metadataKeyCached" = "Ön bellekte";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyFile" = "Dosya";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyHTTPHost" = "HTTP Barındırma Sağlayıcısı";
+"siteMonitoring.metadataKeyHTTPHost" = "HTTP sunucusu";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyKind" = "Tür";
+"siteMonitoring.metadataKeyKind" = "Çeşit";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyLine" = "Hat";
+"siteMonitoring.metadataKeyLine" = "Satır";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyName" = "Ad";
@@ -11192,13 +11208,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMonitoring.metadataKeyReferrer" = "Yönlendiren";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyRequestTime" = "Talep Zamanı";
+"siteMonitoring.metadataKeyRequestTime" = "İstek zamanı";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyRequestURL" = "Talep URL'si";
+"siteMonitoring.metadataKeyRequestURL" = "İstek adresi";
 
 /* Site Monitoring details screen metadata key */
-"siteMonitoring.metadataKeyResponseBodySize" = "Yanıt Boyutu";
+"siteMonitoring.metadataKeyResponseBodySize" = "Yanıt boyutu";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyStatus" = "Durum";
@@ -11210,10 +11226,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "siteMonitoring.metrics" = "Ölçümler";
 
 /* Title for PHP logs screen. */
-"siteMonitoring.phpLogs" = "PHP Günlükleri";
+"siteMonitoring.phpLogs" = "PHP günlükleri";
 
 /* Title for web server log screen. */
-"siteMonitoring.webServerLogs" = "Web Sunucusu Günlükleri";
+"siteMonitoring.webServerLogs" = "Site sunucusu günlükleri";
 
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Gizlilik";
@@ -11384,16 +11400,16 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.period.todayCard.title" = "Bugün";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
-"stats.traffic.accessibilityLabel.comments" = "Seçilen döneme ait Yorumları gösteren Çubuk Grafik.";
+"stats.traffic.accessibilityLabel.comments" = "Seçilmiş dönemdeki yorumları gösteren çubuk grafik.";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
-"stats.traffic.accessibilityLabel.likes" = "Seçilen döneme ait Beğenileri gösteren Çubuk Grafik.";
+"stats.traffic.accessibilityLabel.likes" = "Seçilmiş dönemdeki beğenileri gösteren çubuk grafik.";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
-"stats.traffic.accessibilityLabel.views" = "Seçilen döneme ait Görüntülemeleri gösteren Çubuk Grafik.";
+"stats.traffic.accessibilityLabel.views" = "Seçilmiş dönemdeki gösterimleri gösteren çubuk grafik.";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
-"stats.traffic.accessibilityLabel.visitors" = "Seçilen döneme ait Ziyaretçileri gösteren Çubuk Grafik.";
+"stats.traffic.accessibilityLabel.visitors" = "Seçilmiş dönemdeki ziyaretçileri gösteren çubuk grafik.";
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Güne göre";
@@ -11435,10 +11451,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stockPhotos.strings.dismiss" = "Kapat";
 
 /* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
-"stockPhotos.subtitle" = "Pexels tarafından sağlanan fotoğraflar";
+"stockPhotos.subtitle" = "Pexels tarafından sunulan fotoğraflar";
 
 /* Title for placeholder in Free Photos */
-"stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın";
+"stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın!";
 
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Gönder";
@@ -11591,7 +11607,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "support.title" = "Yardım";
 
 /* Title for placeholder in Tenor picker */
-"tenor.welcomeMessage" = "Ortam kitaplığınıza eklemek için GIF arayın";
+"tenor.welcomeMessage" = "Ortam kitaplığınıza eklemek için GIF arayın!";
 
 /* Header of delete screen section listing things that will be deleted. */
 "these items will be deleted:" = "bu ögeler silinecekler:";
@@ -11600,7 +11616,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "top tips" = "en iyi ipuçları";
 
 /* Message for error notice shown if the app can't find a specific site belonging to the user */
-"universalLink.qrCodeMedia.error.message" = "Doğru hesapta oturum açtığınızı kontrol edin";
+"universalLink.qrCodeMedia.error.message" = "Doğru hesapla oturum açtığınızdan emin olun";
 
 /* Title for error notice shown if the app can't find a specific site belonging to the user */
 "universalLink.qrCodeMedia.error.title" = "Site bulunamadı";
@@ -11621,13 +11637,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "webKit.button.dismiss" = "Kapat";
 
 /* A title for the filter on the PHP logs screen */
-"webServerLogs.filterEndDate" = "Bitiş Tarihi";
+"webServerLogs.filterEndDate" = "Bitiş tarihi";
 
 /* A title for the filter on the PHP logs screen */
-"webServerLogs.filterRequestType" = "Talep türü";
+"webServerLogs.filterRequestType" = "İstek türü";
 
 /* A title for the filter on the PHP logs screen */
-"webServerLogs.filterStartDate" = "Başlangıç Tarihi";
+"webServerLogs.filterStartDate" = "Başlangıç tarihi";
 
 /* A title for the filter on the PHP logs screen */
 "webServerLogs.filterStatus" = "Durum";
@@ -11765,7 +11781,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wordpress, sites, site, blogs, blog" = "wordpress, siteler, site, bloglar, blog";
 
 /* Error message that describes an unknown error had occured */
-"wordpress-api.error.unknown" = "Bir yanlışlık oldu, lütfen daha sonra tekrar deneyin.";
+"wordpress-api.error.unknown" = "Bir sorun çıktı. Lütfen bir süre sonra yeniden deneyin.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Jetpack uygulamasına geçiş yapın";
@@ -11789,7 +11805,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "wordpresskit.api.message.endpoint_throttled" = "Sınıra ulaşıldı. Bir (1) dakika içinde tekrar deneyebilirsiniz. Bu süre dolmadan önce tekrar denemek sadece yasağın kaldırılmasından önce geçecek sürenin uzamasına neden olur. Bunun bir hata olduğunu düşünüyorsanız desteğe başvurun.";
 
 /* Message to show to user when the app can't find WordPress.org REST API URL. */
-"wordpresskit.org-rest-api.not-found" = "Sitenizin REST API URL'si bulunamadı. Uygulama, sitenizle bağlantı kurabilmek için buna gereksinim duyuyor. Bu sorunu gidermek için sunucunuzla iletişim kurun.";
+"wordpresskit.org-rest-api.not-found" = "Sitenizin REST API adresi bulunamadı. Uygulama, sitenizle bağlantı kurabilmek için buna gerek duyuyor. Bu sorunu gidermek için barındırma hizmeti sağlayıcınızla görüşün.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Jetpack uygulamasına hoş geldiniz. WordPress uygulamasını kaldırabilirsiniz.";
