@@ -30,7 +30,7 @@ struct AvatarsView: View {
             case .double:
                 return 5
             case .triple:
-                return Length.Padding.split/2
+                return .DS.Padding.split/2
             }
         }
     }
@@ -98,16 +98,16 @@ struct AvatarsView: View {
     ) -> some View {
         ZStack(alignment: .center) {
             avatar(url: tertiaryURL)
-                .padding(.trailing, Length.Padding.medium * scale)
+                .padding(.trailing, .DS.Padding.medium * scale)
             avatar(url: secondaryURL)
                 .avatarBorderOverlay()
-                .offset(y: -Length.Padding.split * scale)
-                .padding(.bottom, Length.Padding.split/2 * scale)
+                .offset(y: -.DS.Padding.split * scale)
+                .padding(.bottom, .DS.Padding.split/2 * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay()
-                .padding(.leading, Length.Padding.medium * scale)
+                .padding(.leading, .DS.Padding.medium * scale)
         }
-        .padding(.top, Length.Padding.split)
+        .padding(.top, .DS.Padding.split)
     }
 }
 
