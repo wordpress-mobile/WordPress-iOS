@@ -120,7 +120,7 @@ platform :ios do
       end
     end
 
-    setfrozentag(repository: GITHUB_REPO, milestone: new_version)
+    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
@@ -406,7 +406,7 @@ platform :ios do
 
     version = release_version_current
     remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
-    setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
+    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
@@ -579,9 +579,9 @@ def create_release_management_pull_request(release_version:, base_branch:, title
   #
   # PR URLs are in the format github.com/org/repo/pull/id
   pr_number = File.basename(pr_url)
-  update_pull_requests_milestone(
+  update_assigned_milestone(
     repository: GITHUB_REPO,
-    pr_numbers: [pr_number],
+    numbers: [pr_number],
     to_milestone: release_version
   )
 
