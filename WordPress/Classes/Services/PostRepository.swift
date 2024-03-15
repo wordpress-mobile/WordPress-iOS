@@ -45,7 +45,7 @@ final class PostRepository {
         }
     }
 
-    enum PostSaveError: Swift.Error {
+    enum PostSaveError: Swift.Error, LocalizedError {
         /// A conflict between the client and the server versions is detected.
         /// The app needs to consolidate the changes and retry.
         ///
@@ -55,7 +55,17 @@ final class PostRepository {
         case conflict(latest: RemotePost)
 
         /// Post was deleted on the remote and can not be updated.
-        case deleted
+        case deleted(post: RemotePost)
+
+        var errorDescription: String? {
+            switch self {
+            case .conflict:
+                return NSLocalizedString("postSaveErrorMessage.conflict", value: "The content was modified on another device", comment: "Error message: content was modified on another device")
+            case .deleted(let post):
+                let format = NSLocalizedString("postSaveErrorMessage.deleted", value: "\"%@\" was permanently deleted and can no longer be updated", comment: "Error message: item permanently deleted")
+                return String(format: format, post.title ?? "–")
+            }
+        }
     }
 
     /// Saves the changes made to the given post on the server or creates a new
@@ -155,11 +165,8 @@ final class PostRepository {
                 return try await service.patchPost(withID: postID.intValue, parameters: changes)
             case .notFound:
                 // Delete the post from the local database
-                let context = coreDataStack.mainContext
-                context.deleteObject(original)
-                ContextManager.shared.saveContextAndWait(context)
-
-                throw PostRepository.PostSaveError.deleted
+                let details = PostHelper.remotePost(with: original)
+                throw PostRepository.PostSaveError.deleted(post: details)
             }
         }
     }

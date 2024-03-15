@@ -467,33 +467,50 @@ extension PublishingEditor {
 
         mapUIContentToPostAndSave(immediate: true)
 
-        consolidateChangesIfPostIsNew()
-
-        PostCoordinator.shared.save(post,
-                                    defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
-            guard let self = self else {
-                return
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            Task { @MainActor in
+                do {
+                    self.post = try await PostCoordinator.shared._update(post)
+                    if dismissWhenDone {
+                        self.dismissOrPopView()
+                    } else {
+                        self.createRevisionOfPost()
+                    }
+                } catch {
+                    // Do nothing
+                }
+                self.postEditorStateContext.updated(isBeingPublished: false)
+                await SVProgressHUD.dismiss()
             }
-            self.postEditorStateContext.updated(isBeingPublished: false)
-            SVProgressHUD.dismiss()
+        } else {
+            consolidateChangesIfPostIsNew()
 
-            let generator = UINotificationFeedbackGenerator()
-            generator.prepare()
+            PostCoordinator.shared.save(post,
+                                        defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
+                guard let self = self else {
+                    return
+                }
+                self.postEditorStateContext.updated(isBeingPublished: false)
+                SVProgressHUD.dismiss()
 
-            switch result {
-            case .success(let uploadedPost):
-                self.post = uploadedPost
+                let generator = UINotificationFeedbackGenerator()
+                generator.prepare()
 
-                generator.notificationOccurred(.success)
-            case .failure(let error):
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-                generator.notificationOccurred(.error)
-            }
+                switch result {
+                case .success(let uploadedPost):
+                    self.post = uploadedPost
 
-            if dismissWhenDone {
-                self.dismissOrPopView()
-            } else {
-                self.createRevisionOfPost()
+                    generator.notificationOccurred(.success)
+                case .failure(let error):
+                    DDLogError("Error publishing post: \(error.localizedDescription)")
+                    generator.notificationOccurred(.error)
+                }
+
+                if dismissWhenDone {
+                    self.dismissOrPopView()
+                } else {
+                    self.createRevisionOfPost()
+                }
             }
         }
     }
