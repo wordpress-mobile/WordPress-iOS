@@ -86,6 +86,8 @@ class RootViewCoordinator {
         windowManager?.show(loginViewController, completion: completion)
         wordPressAuthenticator.track(.openedLogin)
         self.rootViewPresenter = nil
+
+        WordPressAppDelegate.shared?.autoSignInUITestSite()
     }
 
     func showPostSignUpTabForNoSites() {

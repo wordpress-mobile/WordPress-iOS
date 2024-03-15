@@ -11,7 +11,6 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
-    case offlineMode
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -38,8 +37,6 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
-        case .offlineMode:
-            return false
         }
     }
 
@@ -80,8 +77,6 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
-        case .offlineMode:
-            return "Offline Mode (Sync Issues)"
         }
     }
 }

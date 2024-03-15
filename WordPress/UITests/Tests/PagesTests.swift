@@ -5,12 +5,8 @@ class PageTests: XCTestCase {
 
     @MainActor
     override func setUp() async throws {
-        setUpTestSuite()
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomFreeSite)
         try await WireMock.setUpScenario(scenario: "new_page_flow")
-
-        try LoginFlow
-            .loginWithoutSelectingSite(email: WPUITestCredentials.testWPcomUserEmail)
-            .continueWithSelectedSite(WPUITestCredentials.testWPcomFreeSite)
     }
 
     override func tearDown() async throws {

@@ -96,11 +96,9 @@ private extension ReaderDetailLikesView {
     func updateSummaryLabel() {
         switch (displaysSelfAvatar, totalLikes) {
         case (true, 0):
-            summaryLabel.attributedText = highlightedText(SummaryLabelFormats.onlySelf)
+            summaryLabel.attributedText = NSAttributedString(string: SummaryLabelFormats.onlySelf)
         case (true, 1):
-            summaryLabel.attributedText = highlightedText(SummaryLabelFormats.singularWithSelf)
-        case (true, _) where totalLikes > 1:
-            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.pluralWithSelf, totalLikes))
+            summaryLabel.attributedText = highlightedText(String(format: SummaryLabelFormats.plural, 2))
         case (false, 1):
             summaryLabel.attributedText = highlightedText(SummaryLabelFormats.singular)
         default:
@@ -147,6 +145,10 @@ private extension ReaderDetailLikesView {
         guard gesture.state == .ended else {
             return
         }
+        if displaysSelfAvatar && totalLikes == 0 {
+            // Only the current user liked the post
+            return
+        }
 
         delegate?.didTapLikesView()
     }
@@ -157,22 +159,23 @@ private extension ReaderDetailLikesView {
     }
 
     struct SummaryLabelFormats {
-        static let onlySelf = NSLocalizedString("_You_ like this.",
-                                                comment: "Describes that the current user is the only one liking a post."
-                                                    + " The underscores denote underline and is not displayed.")
-        static let singularWithSelf = NSLocalizedString("_You and another blogger_ like this.",
-                                                        comment: "Describes that the current user and one other user like a post."
-                                                            + " The underscores denote underline and is not displayed.")
-        static let pluralWithSelf = NSLocalizedString("_You and %1$d bloggers_ like this.",
-                                                      comment: "Plural format string for displaying the number of post likes, including the like from the current user."
-                                                        + " %1$d is the number of likes, excluding the like by current user."
-                                                        + " The underscores denote underline and is not displayed.")
-        static let singular = NSLocalizedString("_One blogger_ likes this.",
-                                                comment: "Describes that only one user likes a post. "
-                                                    + " The underscores denote underline and is not displayed.")
-        static let plural = NSLocalizedString("_%1$d bloggers_ like this.",
-                                              comment: "Plural format string for displaying the number of post likes."
-                                                + " %1$d is the number of likes. The underscores denote underline and is not displayed.")
+        static let onlySelf = NSLocalizedString(
+            "reader.detail.likes.self",
+            value: "You like this.",
+            comment: "Describes that the current user is the only one liking a post."
+        )
+        static let singular = NSLocalizedString(
+            "reader.detail.likes.single",
+            value: "_1 like_",
+            comment: "Describes that only one user likes a post. "
+            + " The underscores denote underline and is not displayed."
+        )
+        static let plural = NSLocalizedString(
+            "reader.detail.likes.plural",
+            value: "_%1$d likes_",
+            comment: "Plural format string for displaying the number of post likes."
+            + " %1$d is the number of likes. The underscores denote underline and is not displayed."
+        )
     }
 
     func highlightedText(_ text: String) -> NSAttributedString {
@@ -183,11 +186,10 @@ private extension ReaderDetailLikesView {
         let lastPart = labelParts.last ?? ""
 
         let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.secondaryLabel]
-        let underlineAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary,
-                                                                  .underlineStyle: NSUnderlineStyle.single.rawValue]
+        let highlightedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary]
 
         let attributedString = NSMutableAttributedString(string: firstPart, attributes: foregroundAttributes)
-        attributedString.append(NSAttributedString(string: countPart, attributes: underlineAttributes))
+        attributedString.append(NSAttributedString(string: countPart, attributes: highlightedAttributes))
         attributedString.append(NSAttributedString(string: lastPart, attributes: foregroundAttributes))
 
         return attributedString

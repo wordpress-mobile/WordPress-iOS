@@ -1,7 +1,7 @@
 {
   "request": {
     "method": "GET",
-    "urlPath": "/wpcom/v2/read/tags/cards"
+    "urlPattern": "\/wpcom\/v2\/read\/tags\/cards.*|\/wpcom\/v2\/read\/streams\/discover.*"
   },
   "response": {
     "status": 200,

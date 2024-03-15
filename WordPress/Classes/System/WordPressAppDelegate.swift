@@ -972,3 +972,26 @@ extension WordPressAppDelegate {
     }
 
 }
+
+// MARK: - UI Test Support
+
+extension WordPressAppDelegate {
+
+    func autoSignInUITestSite() {
+        guard let wpComSiteAddress = UserDefaults.standard.string(forKey: "ui-test-select-wpcom-site") else {
+            return
+        }
+
+        let service = WordPressComSyncService()
+        service.syncWPCom(authToken: "valid_token", isJetpackLogin: true, onSuccess: { account in
+            if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
+                self.windowManager.showUI(for: blog)
+            } else {
+                fatalError("Can't find blog: \(wpComSiteAddress)")
+            }
+        }, onFailure: {
+            fatalError("Can't sync blogs: \($0)")
+        })
+    }
+
+}

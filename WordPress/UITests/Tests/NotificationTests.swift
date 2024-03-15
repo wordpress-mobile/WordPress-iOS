@@ -16,10 +16,8 @@ class NotificationTests: XCTestCase {
 
     @MainActor
     override func setUp() async throws {
-        setUpTestSuite()
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
         try await WireMock.setUpScenario(scenario: "comment_flow")
-
-        try LoginFlow.login(email: WPUITestCredentials.testWPcomUserEmail)
     }
 
     override func tearDownWithError() throws {

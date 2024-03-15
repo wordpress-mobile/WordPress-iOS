@@ -49,8 +49,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 14.0'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', '~> 14.0'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '755fb4a101aed61be11bc85e9cd81784ad2d5f2d'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -131,7 +131,7 @@ abstract_target 'Apps' do
 
   # Production
 
-  pod 'Automattic-Tracks-iOS', '~> 3.0'
+  pod 'Automattic-Tracks-iOS', '~> 3.3'
   # While in PR
   # pod 'Automattic-Tracks-iOS', git: 'https://github.com/Automattic/Automattic-Tracks-iOS.git', branch: ''
   # Local Development

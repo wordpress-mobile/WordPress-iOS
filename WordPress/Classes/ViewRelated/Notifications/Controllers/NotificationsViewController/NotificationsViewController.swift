@@ -89,6 +89,13 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
     ///
     internal var jetpackLoginViewController: JetpackLoginViewController? = nil
 
+    /// Boolean indicating whether the split view controller is collapsed.
+    /// Default is `true` if the view controller isn't embedded inside a split view controller
+    ///
+    override var splitViewControllerIsHorizontallyCompact: Bool {
+        return splitViewController?.isCollapsed ?? true
+    }
+
     /// Timestamp of the most recent note before updates
     /// Used to count notifications to show the second notifications prompt
     ///
@@ -341,11 +348,7 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
               let note = tableViewHandler.resultsController?.managedObject(atUnsafe: indexPath) as? Notification else {
             return UITableViewCell()
         }
-        if splitViewControllerIsHorizontallyCompact {
-            cell.selectionStyle = .none
-        } else {
-            cell.selectionStyle = .default
-        }
+        cell.selectionStyle = splitViewControllerIsHorizontallyCompact ? .none : .default
         cell.accessibilityHint = Self.accessibilityHint(for: note)
         if let deletionRequest = notificationDeletionRequests[note.objectID] {
             cell.configure(with: note, deletionRequest: deletionRequest, parent: self) { [weak self] in
@@ -1283,6 +1286,7 @@ private extension NotificationsViewController {
         // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
         guard let indexPath = tableViewHandler.resultsController?.indexPath(forObject: notification),
               indexPath != tableView.indexPathForSelectedRow,
+              0..<tableView.numberOfSections ~= indexPath.section,
               0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
                   return
               }
