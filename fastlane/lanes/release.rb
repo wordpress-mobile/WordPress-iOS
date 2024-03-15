@@ -107,7 +107,12 @@ platform :ios do
     attempts = 0
     begin
       attempts += 1
-      set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+      copy_branch_protection(
+        repository: GITHUB_REPO,
+        from_branch: DEFAULT_BRANCH,
+        to_branch: release_branch_name,
+        github_token: get_required_env('GITHUB_TOKEN')
+      )
     rescue StandardError => e
       if attempts < 2
         sleep_time = 5
