@@ -1,0 +1,5 @@
+Abbiamo apportato alcune modifiche all'editor a blocchi.
+
+- L'app non si blocca più quando l'editor scorre automaticamente verso il basso fino a un blocco.
+- Ora vedrai un messaggio di errore quando non è possibile caricare un video su media e blocchi di testo.
+- Le immagini non appaiono più parzialmente trasparenti mentre vengono caricate. Tutto a colori, sempre.

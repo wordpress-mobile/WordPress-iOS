@@ -1,0 +1,5 @@
+Nous avons apporté quelques changements à l’éditeur de blocs.
+
+- L’application ne plantera plus lorsque l’éditeur fait automatiquement défiler un bloc.
+- Désormais, vous verrez un message d’erreur lorsque le chargement d’une vidéo dans un bloc Média ou Paragraphe échoue.
+- Les images ne seront plus partiellement transparentes lors de leur mise en ligne. De la couleur, partout, tout le temps.

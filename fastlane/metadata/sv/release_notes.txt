@@ -1,0 +1,5 @@
+Vi har gjort några ändringar i blockredigeraren.
+
+- Appen kommer inte längre att krascha när redigeraren automatiskt bläddrar ner till ett block.
+- Du kommer nu att se ett felmeddelande när en videouppladdning till ett media- och textblock misslyckas.
+- Bilder kommer inte längre att visas som delvis transparenta medan de laddas upp. Helt i färg, hela tiden.
