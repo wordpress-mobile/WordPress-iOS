@@ -155,12 +155,12 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
-    func _update(_ post: AbstractPost) async throws -> AbstractPost {
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
         let post = post.original ?? post
         do {
             let isExistingPost = post.hasRemote()
             // TODO: Set overwrite to false once conflict resolution support is added
-            try await PostRepository()._save(post, overwrite: true)
+            try await PostRepository()._save(post, changes: changes, overwrite: true)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
