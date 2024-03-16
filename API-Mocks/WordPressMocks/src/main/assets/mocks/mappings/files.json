@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "urlPattern": "/.*([A-z0-9]*\\.[A-z]{1,6})"
+    },
+    "response": {
+        "status": 200,
+        "bodyFileName": "../__files{{request.url}}",
+        "headers": {
+            "Content-Type": "text/html"
+        }
+    }
+}
