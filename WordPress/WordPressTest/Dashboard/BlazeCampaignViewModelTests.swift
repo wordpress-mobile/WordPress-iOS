@@ -12,7 +12,7 @@ final class BlazeCampaignViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.imageURL, URL(string: "https://i0.wp.com/public-api.wordpress.com/wpcom/v2/wordads/dsp/api/v1/dsp/creatives/56259/image?w=600&zoom=2"))
 
         // Then stats are displayed
-        XCTAssertEqual(viewModel.impressions, "1,000")
+        XCTAssertEqual(viewModel.impressions, 1_000.abbreviatedString())
         XCTAssertEqual(viewModel.clicks, "235")
         XCTAssertTrue(viewModel.isShowingStats)
     }
