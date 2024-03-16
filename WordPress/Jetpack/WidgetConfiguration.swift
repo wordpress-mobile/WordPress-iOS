@@ -23,6 +23,7 @@ import Foundation
                 case lockScreenAllTimeViews = "JetpackLockScreenWidgetAllTimeViews"
                 case lockScreenAllTimeViewsVisitors = "JetpackLockScreenWidgetAllTimeViewsVisitors"
                 case lockScreenAllTimePostsBestViews = "JetpackLockScreenWidgetAllTimePostsBestViews"
+                case lockScreenThisWeekViews = "JetpackLockScreenWidgetThisWeekViews"
 
                 var countKey: String {
                     return rawValue + "Properties"

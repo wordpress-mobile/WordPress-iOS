@@ -38,6 +38,7 @@ import WidgetKit
         case lockScreenTodayViewsWidget = "widget_today_views_lockscreen"
         case lockScreenTodayLikesCommentsWidget = "widget_today_likes_comments_lockscreen"
         case lockScreenTodayViewsVisitorsWidget = "widget_today_views_visitors_lockscreen"
+        case lockScreenThisWeekViewsWidget = "widget_this_week_views_lockscreen"
         case lockScreenAllTimeViewsWidget = "widget_all_time_views_lockscreen"
         case lockScreenAllTimeViewsVisitorsWidget = "widget_all_time_views_visitors_lockscreen"
         case lockScreenAllTimePostsBestViewsWidget = "widget_all_time_posts_best_views_lockscreen"
@@ -62,6 +63,8 @@ import WidgetKit
                  return .lockScreenAllTimeViewsVisitorsWidget
              case .lockScreenAllTimePostsBestViews:
                  return .lockScreenAllTimePostsBestViewsWidget
+            case .lockScreenThisWeekViews:
+                return .lockScreenThisWeekViewsWidget
             }
         }
     }
