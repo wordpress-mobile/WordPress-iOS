@@ -119,6 +119,9 @@ final class PostRepository {
             PostService(managedObjectContext: context)
                 .updateMediaFor(post: original, success: {}, failure: { _ in })
         }
+        /// - warning: Work-in-progress (kahu-offline-mode)
+        // TODO: Remove when it's no longer needed
+        original.remoteStatus = AbstractPostRemoteStatus.sync
         ContextManager.shared.saveContextAndWait(context)
     }
 
