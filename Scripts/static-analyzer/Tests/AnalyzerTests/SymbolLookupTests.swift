@@ -1,0 +1,115 @@
+import XCTest
+import IndexStoreDB
+
+@testable import Analyzer
+
+class SymbolLookupTests: XCTestCase {
+
+    func testLookupSymbols() throws {
+        let support = TestSupport()
+
+        let code = """
+            import Foundation
+            func foo<T>(a: Int, b: Bool, c: String, d: T) -> NSArray {
+                fatalError("Unimplemented")
+            }
+            func bar() {
+                _ = foo(a: 0, b: false, c: "", d: 1.0)
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let symbols = navigator.lookupSymbols(name: "foo(a:b:c:d:)", in: support.sourceFile)
+        XCTAssertEqual(symbols.count, 1)
+
+        let symbol = try XCTUnwrap(symbols.first)
+        let callSites = navigator.callSites(of: USR(rawValue: symbol.usr)!)
+        XCTAssertEqual(callSites.count, 1)
+    }
+
+    func testLookupExpression() throws {
+        let support = TestSupport()
+
+        let code = """
+            import Foundation
+            func foo<T>(a: Int, b: Bool, c: String, d: T) -> NSArray {
+                fatalError("Unimplemented")
+            }
+            func bar() {
+                _ = foo(a: 0, b: false, c: "", d: 1.0)
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let symbols = navigator.lookupSymbols(name: "foo(a:b:c:d:)", in: support.sourceFile)
+        XCTAssertEqual(symbols.count, 1)
+
+        let symbol = try XCTUnwrap(symbols.first)
+        let callSites = navigator.callSites(of: USR(rawValue: symbol.usr)!)
+        XCTAssertEqual(callSites.count, 1)
+
+        let location = SymbolLocation(path: support.sourceFile.pathString, moduleName: "", line: 6, utf8Column: 10)
+        let expressions = try navigator.expressions(at: location).map { $0.type }
+        XCTAssertTrue(expressions.contains("(Int, Bool, String, Double) -> NSArray"))
+    }
+
+    func testLookupInstanceMethod() throws {
+        let support = TestSupport()
+        let code = """
+            protocol ProtocolA {
+                func map(_ transform: Any) -> Any
+            }
+            func foo(p: ProtocolA) {
+              _ = p.map(0)
+            }
+            func bar(p: ProtocolA) {
+              _ = p.map("")
+            }
+            func baz() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+
+        let proto = try navigator.resolveType(named: "ProtocolA")
+
+        let mapFuncs = navigator.lookupInstanceMethods(named: "map(_:)", of: proto)
+        XCTAssertEqual(mapFuncs.count, 1)
+        let mapFunc = try XCTUnwrap(mapFuncs.first)
+
+        let mapCallSites = navigator.callSites(of: mapFunc)
+        XCTAssertEqual(mapCallSites.count, 2)
+        let lines = mapCallSites.map { $0.line }
+        XCTAssertEqual(Set(lines), [5, 8])
+    }
+
+    func testLookupInstanceMethod_InComplexTypes() throws {
+        let support = TestSupport()
+        let code = """
+            func foo() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+        let arrayType = try navigator.resolveType(named: "Array")
+        let mapFuncs = navigator.lookupInstanceMethods(named: "map(_:)", of: arrayType)
+        XCTAssertFalse(mapFuncs.isEmpty)
+
+        let callSites = mapFuncs.flatMap { navigator.callSites(of: $0) }
+        XCTAssertEqual(callSites.count, 1)
+    }
+
+    func testLookupInstanceMethod_UnusedFunction() throws {
+        let support = TestSupport()
+        let code = """
+            func foo() {
+              _ = [1, 2, 3].map { $0 * 2}
+            }
+            """
+        let navigator = try support.navigator(forSourceCode: code)
+        let arrayType = try navigator.resolveType(named: "Array")
+        let mapFuncs = navigator.lookupInstanceMethods(named: "flatMap(_:)", of: arrayType)
+        XCTAssertTrue(mapFuncs.isEmpty)
+    }
+
+}
