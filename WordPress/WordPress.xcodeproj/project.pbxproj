@@ -1353,6 +1353,8 @@
 		4A5FC0462B97BB4B0067F525 /* UIElementNotFoundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5FC0452B97BB4B0067F525 /* UIElementNotFoundError.swift */; };
 		4A690C152BA791B100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A690C162BA791B200A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
+		4A690C182BA794C800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */; };
+		4A690C192BA794CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */; };
 		4A76A4BB29D4381100AABF4B /* CommentService+LikesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */; };
 		4A76A4BD29D43BFD00AABF4B /* CommentService+MorderationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */; };
 		4A76A4BF29D4F0A500AABF4B /* reader-post-comments-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */; };
@@ -7002,6 +7004,7 @@
 		4A5DE7372B0D511900363171 /* PageTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageTree.swift; sourceTree = "<group>"; };
 		4A5FC0452B97BB4B0067F525 /* UIElementNotFoundError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIElementNotFoundError.swift; sourceTree = "<group>"; };
 		4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		4A76A4BA29D4381000AABF4B /* CommentService+LikesTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+LikesTests.swift"; sourceTree = "<group>"; };
 		4A76A4BC29D43BFD00AABF4B /* CommentService+MorderationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CommentService+MorderationTests.swift"; sourceTree = "<group>"; };
 		4A76A4BE29D4F0A500AABF4B /* reader-post-comments-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "reader-post-comments-success.json"; sourceTree = "<group>"; };
@@ -13129,6 +13132,7 @@
 				74D6DA91202B669100A0E1FE /* WordPressDraftActionExtension-Internal.entitlements */,
 				74E44AD72031ED2300556205 /* WordPressDraft-Lumberjack.m */,
 				74E44AD82031ED2300556205 /* WordPressDraftPrefix.pch */,
+				4A690C172BA794C300A8E0C5 /* PrivacyInfo.xcprivacy */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -19762,6 +19766,7 @@
 				741AF3A2202F3DC400C771A5 /* ShareExtension.storyboard in Resources */,
 				986FF29C214196A5005B28EC /* NoResults.storyboard in Resources */,
 				433840C922C2BA6400CB13F8 /* AppImages.xcassets in Resources */,
+				4A690C192BA794CD00A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				435B762C2297484200511813 /* ColorPalette.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -19786,6 +19791,7 @@
 				8096219428E561A800940A5D /* AppImages.xcassets in Resources */,
 				8096217828E55C9400940A5D /* MainInterface.storyboard in Resources */,
 				8096217A28E55C9400940A5D /* WordPressShare.js in Resources */,
+				4A690C182BA794C800A8E0C5 /* PrivacyInfo.xcprivacy in Resources */,
 				8096217B28E55C9400940A5D /* ShareExtension.storyboard in Resources */,
 				8096217C28E55C9400940A5D /* NoResults.storyboard in Resources */,
 				8096217D28E55C9400940A5D /* AppImages.xcassets in Resources */,
