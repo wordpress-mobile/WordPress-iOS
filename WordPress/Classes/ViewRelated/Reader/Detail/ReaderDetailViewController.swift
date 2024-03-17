@@ -544,6 +544,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Webview is scroll is done by it's superview
         webView.scrollView.isScrollEnabled = false
+
+        webView.displaySetting = displaySetting
+
+        view.backgroundColor = displaySetting.color.background
     }
 
     /// Configure the webview
@@ -567,7 +571,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 guard let webViewHeight = webViewHeight as? CGFloat else {
                     self?.webViewHeight.constant = height
                     return
-                }
+            }
 
                 self?.webViewHeight.constant = min(height, webViewHeight)
             })
@@ -662,6 +666,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureCommentsTable() {
+        commentsTableView.separatorStyle = .none
+        commentsTableView.backgroundColor = .clear
         commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
@@ -673,6 +679,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureRelatedPosts() {
         relatedPostsTableView.isScrollEnabled = false
         relatedPostsTableView.separatorStyle = .none
+        relatedPostsTableView.backgroundColor = .clear
 
         relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
@@ -885,6 +892,10 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         let post = relatedPosts[indexPath.section].posts[indexPath.row]
         cell.configure(for: post)
+
+        // TODO: Reader customization: override to transparent background
+        cell.backgroundColor = .clear
+
         return cell
     }
 
@@ -899,6 +910,9 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
 
         header.titleLabel.text = title
+
+        // TODO: Reader customization: override to transparent background
+        header.backgroundColorView.backgroundColor = .clear
 
         return header
     }

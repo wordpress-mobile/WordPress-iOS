@@ -14,7 +14,10 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
+    // TODO: Remove in favor of the display setting.
     var usesSansSerifStyle = false
+
+    var displaySetting: ReaderDisplaySetting = .default
 
     /// Make the webview transparent
     ///
@@ -202,24 +205,27 @@ class ReaderWebView: WKWebView {
     /// Maps app colors to CSS colors to be applied in the webview
     ///
     private func cssColors() -> String {
-        return """
-            @media (prefers-color-scheme: dark) {
-                \(mappedCSSColors(.dark))
-            }
+        if displaySetting.color.adaptsToInterfaceStyle {
+            return """
+                @media (prefers-color-scheme: dark) {
+                    \(mappedCSSColors(.dark))
+                }
 
-            @media (prefers-color-scheme: light) {
-                \(mappedCSSColors(.light))
-            }
-        """
+                @media (prefers-color-scheme: light) {
+                    \(mappedCSSColors(.light))
+                }
+            """
+        }
+
+        // doesn't matter what interface style we pass here because the colors are fixed either way.
+        return mappedCSSColors(.light)
     }
 
     private func mappedCSSColors(_ style: UIUserInterfaceStyle) -> String {
         let trait = UITraitCollection(userInterfaceStyle: style)
-        UIColor(light: .muriel(color: .gray, .shade40),
-                dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString()
         return """
             :root {
-              --color-text: #\(UIColor.text.color(for: trait).hexString() ?? "");
+              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexString() ?? "");
               --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
               --color-neutral-5: #\(UIColor(light: .muriel(color: .gray, .shade5),
                             dark: .muriel(color: .gray, .shade80)).color(for: trait).hexString() ?? "");
