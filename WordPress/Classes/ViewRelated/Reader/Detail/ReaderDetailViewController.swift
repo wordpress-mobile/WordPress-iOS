@@ -167,6 +167,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private var tooltipPresenter: TooltipPresenter?
 
+    // Reader customization model
+    private lazy var displaySettingStore: ReaderDisplaySettingStore = {
+        return .init()
+    }()
+
+    // Convenient access to the underlying structure
+    private var displaySetting: ReaderDisplaySetting {
+        displaySettingStore.setting
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
