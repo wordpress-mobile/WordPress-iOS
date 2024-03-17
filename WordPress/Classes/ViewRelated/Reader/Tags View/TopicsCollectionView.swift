@@ -33,6 +33,7 @@ class TopicsCollectionView: DynamicHeightCollectionView {
 
     func commonInit() {
         collectionViewLayout = ReaderInterestsCollectionViewFlowLayout()
+        backgroundColor = .clear
 
         coordinator = ReaderTopicCollectionViewCoordinator(collectionView: self, topics: topics)
         coordinator?.delegate = self
