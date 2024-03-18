@@ -5607,6 +5607,8 @@
 		FE34ACDC2B17AA9400108B3C /* BloganuaryOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */; };
 		FE39C135269C37C900EFB827 /* ListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FE39C133269C37C900EFB827 /* ListTableViewCell.xib */; };
 		FE39C136269C37C900EFB827 /* ListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE39C134269C37C900EFB827 /* ListTableViewCell.swift */; };
+		FE3AB90F2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3AB90E2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift */; };
+		FE3AB9102BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3AB90E2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift */; };
 		FE3D057E26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */; };
 		FE3D058026C3E0F2002A51B0 /* share-app-link-success.json in Resources */ = {isa = PBXBuildFile; fileRef = FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */; };
 		FE3D058326C419C4002A51B0 /* ShareAppContentPresenter+TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */; };
@@ -9502,6 +9504,7 @@
 		FE34ACD92B17AA6C00108B3C /* BloganuaryOverlayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloganuaryOverlayViewController.swift; sourceTree = "<group>"; };
 		FE39C133269C37C900EFB827 /* ListTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListTableViewCell.xib; sourceTree = "<group>"; };
 		FE39C134269C37C900EFB827 /* ListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListTableViewCell.swift; sourceTree = "<group>"; };
+		FE3AB90E2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderDisplaySettingViewController.swift; sourceTree = "<group>"; };
 		FE3D057D26C3D5C1002A51B0 /* ShareAppContentPresenterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareAppContentPresenterTests.swift; sourceTree = "<group>"; };
 		FE3D057F26C3E0F2002A51B0 /* share-app-link-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "share-app-link-success.json"; sourceTree = "<group>"; };
 		FE3D058126C40E66002A51B0 /* ShareAppContentPresenter+TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ShareAppContentPresenter+TableView.swift"; sourceTree = "<group>"; };
@@ -18688,6 +18691,7 @@
 			isa = PBXGroup;
 			children = (
 				FE6BF4DD2BA5C8760040A190 /* ReaderDisplaySetting.swift */,
+				FE3AB90E2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -21334,6 +21338,7 @@
 			files = (
 				F551E7F523F6EA3100751212 /* FloatingActionButton.swift in Sources */,
 				0CED20022B6809D600E6DD52 /* FilterCompactDatePicker.swift in Sources */,
+				FE3AB90F2BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift in Sources */,
 				B50C0C621EF42AF200372C65 /* TextList+WordPress.swift in Sources */,
 				B5722E421D51A28100F40C5E /* Notification.swift in Sources */,
 				1759F1801FE1460C0003EC81 /* NoticeView.swift in Sources */,
@@ -24401,6 +24406,7 @@
 				0C7762242AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */,
 				C383555A288B02B00062E402 /* JetpackBannerWrapperViewController.swift in Sources */,
 				0CD9CCA42AD831590044A33C /* PostSearchViewModel.swift in Sources */,
+				FE3AB9102BA86E35007ADD36 /* ReaderDisplaySettingViewController.swift in Sources */,
 				FABB21612602FC2C00C8785C /* ReaderShowAttributionAction.swift in Sources */,
 				FABB21622602FC2C00C8785C /* LinkSettingsViewController.swift in Sources */,
 				F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */,

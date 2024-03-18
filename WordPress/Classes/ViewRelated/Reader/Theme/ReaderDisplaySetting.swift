@@ -1,17 +1,45 @@
 import WordPressUI
+import WordPressShared
 
-struct ReaderDisplaySetting: Codable {
+struct ReaderDisplaySetting: Codable, Equatable {
 
     // MARK: Properties
 
     // The default display setting.
-    static let `default` = ReaderDisplaySetting(color: .sepia, font: .sans, size: .normal)
+    static let `default` = ReaderDisplaySetting(color: .system, font: .sans, size: .normal)
 
-    let color: Color
-    let font: Font
-    let size: Size
+    var color: Color
+    var font: Font
+    var size: Size
 
     // MARK: Methods
+
+    static func font(with font: Font,
+                     size: Size = .normal,
+                     textStyle: UIFont.TextStyle,
+                     weight: UIFont.Weight = .regular) -> UIFont {
+        let scale = size.scale
+        let metrics = UIFontMetrics(forTextStyle: textStyle)
+        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
+        let pointSize = descriptor.pointSize * scale
+
+        let uiFont = {
+            switch font {
+            case .serif:
+                return WPStyleGuide.serifFontForTextStyle(textStyle).withSize(pointSize)
+            case .mono:
+                return .monospacedSystemFont(ofSize: pointSize, weight: .regular)
+            default:
+                return .systemFont(ofSize: pointSize)
+            }
+        }()
+
+        return metrics.scaledFont(for: uiFont)
+    }
+
+    func font(with textStyle: UIFont.TextStyle, weight: UIFont.Weight = .regular) -> UIFont {
+        return Self.font(with: font, size: size, textStyle: textStyle, weight: weight)
+    }
 
     func toDictionary(_ encoder: JSONEncoder = JSONEncoder()) throws -> NSDictionary? {
         let data = try encoder.encode(self)
@@ -103,12 +131,27 @@ struct ReaderDisplaySetting: Codable {
     }
 
     // TODO: Determine the magnitude
-    enum Size: String, Codable, CaseIterable {
-        case smaller
-        case smallest
+    enum Size: Int, Codable, CaseIterable {
+        case smaller = -2
+        case small
         case normal
         case large
         case larger
+
+        var scale: Double {
+            switch self {
+            case .smaller:
+                return 0.75
+            case .small:
+                return 0.9
+            case .normal:
+                return 1.0
+            case .large:
+                return 1.15
+            case .larger:
+                return 1.25
+            }
+        }
     }
 
     // MARK: Codable
