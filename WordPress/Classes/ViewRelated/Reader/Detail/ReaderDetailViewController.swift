@@ -764,6 +764,31 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         coordinator?.openInBrowser()
     }
 
+    @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
+        let vc = ReaderDisplaySettingViewController()
+        let nav = UINavigationController(rootViewController: vc)
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = false
+        }
+
+        vc.navigationItem.rightBarButtonItem = .init(systemItem: .close,
+                                                     primaryAction: UIAction { [weak vc] _ in
+            vc?.navigationController?.dismiss(animated: true)
+        })
+
+        nav.navigationBar.isTranslucent = true
+        vc.edgesForExtendedLayout = .top
+
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        vc.navigationItem.standardAppearance = navAppearance
+        vc.navigationItem.scrollEdgeAppearance = navAppearance
+        vc.navigationItem.compactAppearance = navAppearance
+
+        navigationController?.present(nav, animated: true)
+    }
+
     /// A View Controller that displays a Post content.
     ///
     /// Use this method to present content for the user.
@@ -1061,7 +1086,8 @@ private extension ReaderDetailViewController {
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
             shareButtonItem(enabled: enableRightBarButtons),
-            safariButtonItem()
+            safariButtonItem(),
+            displaySettingButtonItem()
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -1102,6 +1128,15 @@ private extension ReaderDetailViewController {
 
     @objc func didTapDismissButton(_ sender: UIButton) {
         dismiss(animated: true)
+    }
+
+    func displaySettingButtonItem() -> UIBarButtonItem? {
+        guard let symbolImage = UIImage(systemName: "textformat") else {
+            return nil
+        }
+        let button = barButtonItem(with: symbolImage, action: #selector(didTapDisplaySettingButton(_:)))
+
+        return button
     }
 
     func safariButtonItem() -> UIBarButtonItem? {
