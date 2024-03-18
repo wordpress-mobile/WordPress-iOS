@@ -1,3 +1,7 @@
+24.6
+-----
+
+
 24.5
 -----
 * [*] [internal] Block editor: Remove code associated to Story block [#22758]
