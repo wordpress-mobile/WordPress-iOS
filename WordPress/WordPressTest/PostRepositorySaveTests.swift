@@ -516,6 +516,42 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertNil(revision.managedObjectContext)
     }
 
+    /// Scenario: user edits an existing post from Post Settings.
+    func testSaveExistingPostUpdateWithoutCreatingRevision() async throws {
+        // GIVEN a published post (synced)
+        let post = makePost {
+            $0.status = .publish
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "title-a"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a server where the post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "sticky" : true
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.sticky = true
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN saving the post with changes but without creating a new revision
+        var changes = RemotePostUpdateParameters()
+        changes.isSticky = true
+        try await repository._save(post, changes: changes)
+
+        // THEN post got updated
+        XCTAssertTrue(post.isStickyPost)
+    }
+
     // MARK: - Exising Post (404, Not Found)
 
     /// Scenario: saving a post that was deleted on the remote.
@@ -566,10 +602,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             }
         }
 
-        // THEN the post got deleted
-        XCTAssertNil(post.managedObjectContext)
-        // THEN the local revision got deleted
-        XCTAssertNil(revision.managedObjectContext)
+        // THEN the post is still in the database until the user taps OK and confirms
+        XCTAssertNotNil(post.managedObjectContext)
     }
 
     // MARK: - Existing Post (409, Conflict)
@@ -897,10 +931,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             }
         }
 
-        // THEN the post got deleted
-        XCTAssertNil(post.managedObjectContext)
-        // THEN the local revision got deleted
-        XCTAssertNil(revision.managedObjectContext)
+        // THEN the post is still in the database until the user taps OK and confirms
+        XCTAssertNotNil(post.managedObjectContext)
     }
 }
 
