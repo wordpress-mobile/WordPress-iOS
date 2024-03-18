@@ -3,7 +3,6 @@ import WordPressFlux
 import WordPressUI
 
 protocol PublishingEditor where Self: UIViewController {
-    //TODO: Add publishing things
     var post: AbstractPost { get set }
 
     var isUploadingMedia: Bool { get }
