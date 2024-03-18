@@ -49,8 +49,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 14.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '32ab230f647bae46a869dea285f5045c56b51add'
+  pod 'WordPressKit', '~> 14.1'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -333,7 +333,7 @@ post_install do |installer|
 
   acknowledgements = 'Acknowledgments'
   markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-  rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+  rendered_html = Commonmarker.to_html(markdown)
   styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>
