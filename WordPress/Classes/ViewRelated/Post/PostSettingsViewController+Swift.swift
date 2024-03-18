@@ -27,6 +27,10 @@ extension PostSettingsViewController {
             self?.didUpdateSettings()
         }.store(in: &cancellables)
         objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: apost.managedObjectContext)
+        }
     }
 
     private func didUpdateSettings() {
@@ -76,6 +80,16 @@ extension PostSettingsViewController {
                     self?.refreshNavigationBarButtons()
                 }
             }
+        }
+    }
+
+    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let deletedPosts = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        let original = self.apost.original ?? self.apost
+        if deletedPosts.contains(original) {
+            presentingViewController?.dismiss(animated: true)
         }
     }
 
