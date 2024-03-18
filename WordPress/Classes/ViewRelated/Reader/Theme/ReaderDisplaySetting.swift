@@ -5,7 +5,7 @@ struct ReaderDisplaySetting: Codable {
     // MARK: Properties
 
     // The default display setting.
-    static let `default` = ReaderDisplaySetting(color: .system, font: .sans, size: .normal)
+    static let `default` = ReaderDisplaySetting(color: .sepia, font: .sans, size: .normal)
 
     let color: Color
     let font: Font
@@ -55,6 +55,15 @@ struct ReaderDisplaySetting: Codable {
                 return .init(fromHex: 0xabaab2)
             case .oled:
                 return .text.color(for: .init(userInterfaceStyle: .dark))
+            }
+        }
+
+        var secondaryForeground: UIColor {
+            switch self {
+            case .system:
+                return .secondaryLabel
+            default:
+                return foreground.withAlphaComponent(0.6)
             }
         }
 

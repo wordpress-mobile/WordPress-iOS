@@ -77,8 +77,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
-    private lazy var header: UIView & ReaderDetailHeader = {
-        return ReaderDetailNewHeaderViewHost()
+    private lazy var header: ReaderDetailNewHeaderViewHost = {
+        return .init()
     }()
 
     /// Bottom toolbar
@@ -621,6 +621,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
+        header.displaySetting = displaySetting
         header.useCompatibilityMode = useCompatibilityMode
         header.delegate = coordinator
         headerContainerView.addSubview(header)

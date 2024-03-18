@@ -27,13 +27,19 @@ class ReaderDetailNewHeaderViewHost: UIView {
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
+    var displaySetting: ReaderDisplaySetting = .default {
+        didSet {
+            viewModel.displaySetting = displaySetting
+        }
+    }
+
     private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
     // TODO: Populate this with values from the ReaderPost.
     private lazy var viewModel: ReaderDetailHeaderViewModel = {
         $0.topicDelegate = self
         return $0
-    }(ReaderDetailHeaderViewModel())
+    }(ReaderDetailHeaderViewModel(displaySetting: displaySetting))
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -118,6 +124,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
     @Published var showsAuthorName: Bool = true
 
+    @Published var displaySetting: ReaderDisplaySetting
+
     var likeCountString: String? {
         guard let count = likeCount, count > 0 else {
             return nil
@@ -132,7 +140,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         return WPStyleGuide.commentCountForDisplay(count)
     }
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(displaySetting: ReaderDisplaySetting, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+        self.displaySetting = displaySetting
         self.coreDataStack = coreDataStack
     }
 
@@ -234,8 +243,12 @@ struct ReaderDetailNewHeaderView: View {
     /// Used for the inward border. We want the color to be inverted, such that the avatar can "preserve" its shape
     /// when the image has low or almost no contrast with the background (imagine white avatar on white background).
     var avatarInnerBorderColor: UIColor {
-        let color = UIColor.systemBackground
+        let color = viewModel.displaySetting.color.background
         return colorScheme == .light ? color.darkVariant() : color.lightVariant()
+    }
+
+    var primaryTextColor: UIColor {
+        viewModel.displaySetting.color.foreground
     }
 
     var innerBorderOpacity: CGFloat {
@@ -249,6 +262,7 @@ struct ReaderDetailNewHeaderView: View {
                 Text(postTitle)
                     .font(.title)
                     .fontWeight(.bold)
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
             }
@@ -270,7 +284,10 @@ struct ReaderDetailNewHeaderView: View {
             Spacer()
             ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
                                isEnabled: viewModel.isFollowButtonInteractive,
-                               size: .compact) {
+                               size: .compact,
+                               color: .init(followedText: Color(viewModel.displaySetting.color.foreground.withAlphaComponent(0.4)),
+                                            unfollowedText: Color(viewModel.displaySetting.color.background),
+                                            unfollowedBackground: Color(viewModel.displaySetting.color.foreground))) {
                 viewModel.didTapFollowButton()
             }
         }
@@ -286,7 +303,7 @@ struct ReaderDetailNewHeaderView: View {
                 Text(viewModel.siteName)
                     .font(.callout)
                     .fontWeight(.semibold)
-                    .foregroundStyle(.primary)
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(1)
                 authorAndTimestampView
             }
@@ -357,7 +374,7 @@ struct ReaderDetailNewHeaderView: View {
             }
         }
         .font(.footnote)
-        .foregroundStyle(.secondary)
+        .foregroundStyle(Color(viewModel.displaySetting.color.secondaryForeground))
     }
 
     var tagsView: some View {
@@ -377,12 +394,12 @@ struct ReaderDetailNewHeaderView: View {
             if viewModel.showsAuthorName {
                 Text(viewModel.authorName)
                     .font(.footnote)
-                    .foregroundColor(Color(.text))
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(1)
 
                 Text(" • ")
                     .font(.footnote)
-                    .foregroundColor(Color(.secondaryLabel))
+                    .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
                     .lineLimit(1)
                     .layoutPriority(1)
             }
@@ -400,7 +417,7 @@ struct ReaderDetailNewHeaderView: View {
     var timestampText: Text {
         Text(viewModel.relativePostTime)
             .font(.footnote)
-            .foregroundColor(Color(.secondaryLabel))
+            .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
     }
 }
 
