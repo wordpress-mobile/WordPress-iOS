@@ -532,39 +532,31 @@ platform :ios do
   end
 
   def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
-    # The bundle and source map files are the same for all architectures.
-    gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, 'Pods/Gutenberg/Frameworks/Gutenberg.xcframework/ios-arm64/Gutenberg.framework')
+    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
 
-    Dir.mktmpdir do |sourcemaps_folder|
-      # It's important that the bundle and source map files have specific names, otherwise, Sentry
-      # won't symbolicate the stack traces.
-      FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
-      FileUtils.cp(File.join(gutenberg_bundle, 'App.composed.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
+    # To generate the full release version string to attach the source maps, we need to specify:
+    # - App identifier
+    # - Release version
+    # - Build version
+    # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
+    # Here are a couple of examples:
+    # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
+    # - App Store build: org.wordpress@24.1+24.1.0.3
 
-      # To generate the full release version string to attach the source maps, we need to specify:
-      # - App identifier
-      # - Release version
-      # - Build version
-      # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
-      # Here are a couple of examples:
-      # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
-      # - App Store build: org.wordpress@24.1+24.1.0.3
-
-      sentry_upload_sourcemap(
-        auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-        org_slug: SENTRY_ORG_SLUG,
-        project_slug: sentry_project_slug,
-        version: release_version,
-        dist: build_version,
-        build: build_version,
-        app_identifier:,
-        # When the React native bundle is generated, the source map file references
-        # include the local machine path, with the `rewrite` and `strip_common_prefix`
-        # options Sentry automatically strips this part.
-        rewrite: true,
-        strip_common_prefix: true,
-        sourcemap: sourcemaps_folder
-      )
-    end
+    sentry_upload_sourcemap(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: sentry_project_slug,
+      version: release_version,
+      dist: build_version,
+      build: build_version,
+      app_identifier:,
+      # When the React native bundle is generated, the source map file references
+      # include the local machine path, with the `rewrite` and `strip_common_prefix`
+      # options Sentry automatically strips this part.
+      rewrite: true,
+      strip_common_prefix: true,
+      sourcemap: gutenberg_bundle_source_map_folder
+    )
   end
 end
