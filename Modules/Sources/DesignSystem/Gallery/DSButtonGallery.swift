@@ -11,6 +11,7 @@ struct DSButtonGallery: View {
                             ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
                                 DSButton(
                                     title: emphasis.title,
+                                    iconName: .checkmark,
                                     style: .init(
                                         emphasis: emphasis,
                                         size: size,
