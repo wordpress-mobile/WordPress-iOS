@@ -48,7 +48,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "draft",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
@@ -117,7 +118,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
                   "tag-2"
                 ]
               },
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
@@ -152,7 +154,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "publish",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             var post = WordPressComPost.mock
@@ -191,7 +194,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "future",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             var post = WordPressComPost.mock
@@ -232,7 +236,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "publish",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return HTTPStubsResponse(error: URLError(.notConnectedToInternet))

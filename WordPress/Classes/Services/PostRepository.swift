@@ -63,7 +63,8 @@ final class PostRepository {
                 return NSLocalizedString("postSaveErrorMessage.conflict", value: "The content was modified on another device", comment: "Error message: content was modified on another device")
             case .deleted(let post):
                 let format = NSLocalizedString("postSaveErrorMessage.deleted", value: "\"%@\" was permanently deleted and can no longer be updated", comment: "Error message: item permanently deleted")
-                return String(format: format, post.title ?? "–")
+                let untitled = NSLocalizedString("postSaveErrorMessage.postUntitled", value: "Untitled", comment: "A default value for an post without a title")
+                return String(format: format, post.title ?? untitled)
             }
         }
     }

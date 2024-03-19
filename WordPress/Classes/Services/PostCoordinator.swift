@@ -182,7 +182,7 @@ class PostCoordinator: NSObject {
                 break
             case .deleted:
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { _ in
-                    self.didPermanentlyDelete(post)
+                    self.handlePermanentlyDeleted(post)
                 }
             }
         } else {
@@ -191,7 +191,7 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func didPermanentlyDelete(_ post: AbstractPost) {
+    private func handlePermanentlyDeleted(_ post: AbstractPost) {
         let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
