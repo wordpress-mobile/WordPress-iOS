@@ -103,6 +103,9 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
 
 private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateViewModel, shouldHideAuthor: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
+    if RemoteFeatureFlag.syncPublishing.enabled() && post.status == .pending {
+        badges.append((Strings.Badges.pending, .warning))
+    }
     if RemoteFeatureFlag.syncPublishing.enabled() && post.isStickyPost && !post.isUploadingOrFailed {
         badges.append((Strings.Badges.sticky, nil))
     }
@@ -124,6 +127,11 @@ private enum Strings {
             "postList.badges.sticky",
             value: "Sticky",
             comment: "Label text that defines a post marked as sticky"
+        )
+        static let pending = NSLocalizedString(
+            "postList.badges.pending",
+            value: "Pending review",
+            comment: "Label text that defines a post marked as pending review"
         )
     }
 
