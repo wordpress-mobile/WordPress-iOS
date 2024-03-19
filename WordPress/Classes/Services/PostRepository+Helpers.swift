@@ -4,8 +4,10 @@ import WordPressKit
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
     init(post: AbstractPost) {
-        self.init(status: (post.status ?? .draft).rawValue)
-
+        self.init(
+            type: post is Post ? "post" : "page",
+            status: (post.status ?? .draft).rawValue
+        )
         date = post.dateCreated
         authorID = post.authorID?.intValue
         title = post.postTitle
@@ -39,9 +41,16 @@ private func makeTags(from tags: String) -> [String] {
 }
 
 extension RemotePostUpdateParameters {
+    var isEmpty: Bool {
+        self == RemotePostUpdateParameters()
+    }
+
     /// Returns a diff between the original and the latest revision with the
     /// changes applied on top.
-    static func changes(from original: AbstractPost, to latest: AbstractPost, with changes: RemotePostUpdateParameters?) -> RemotePostUpdateParameters {
+    static func changes(from original: AbstractPost, to latest: AbstractPost, with changes: RemotePostUpdateParameters? = nil) -> RemotePostUpdateParameters {
+        guard original !== latest else {
+            return changes ?? RemotePostUpdateParameters()
+        }
         let parametersOriginal = RemotePostCreateParameters(post: original)
         var parametersLatest = RemotePostCreateParameters(post: latest)
         if let changes {

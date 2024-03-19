@@ -11,11 +11,11 @@ extension PostEditor {
             settingsViewController = PostSettingsViewController(post: post)
         }
         settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
-        let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak self] _ in
+        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
             self?.navigationController?.dismiss(animated: true)
         }))
-        closeButton.accessibilityIdentifier = "close"
-        settingsViewController.navigationItem.leftBarButtonItem = closeButton
+        doneButton.accessibilityIdentifier = "close"
+        settingsViewController.navigationItem.rightBarButtonItem = doneButton
 
         let navigation = UINavigationController(rootViewController: settingsViewController)
         self.navigationController?.present(navigation, animated: true)

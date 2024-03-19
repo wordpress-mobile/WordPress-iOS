@@ -119,20 +119,20 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _publish(_ post: AbstractPost) async throws {
-        let parameters = PostHelper.remotePost(with: post)
+        let post = post.original ?? post
+        var parameters = RemotePostUpdateParameters()
         if post.status == .draft {
-            parameters.status = PostStatusPublish
-            parameters.date = Date()
+            parameters.status = Post.Status.publish.rawValue
         } else {
             // Publish according to the currrent post settings: private, scheduled, etc.
         }
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            let post = try await repository._upload(parameters, for: post)
+            try await repository._save(post, changes: parameters)
             didPublish(post)
-            show(PostCoordinator.makePublishSuccessNotice(for: post))
+            show(PostCoordinator.makeUploadSuccessNotice(for: post))
         } catch {
-            show(PostCoordinator.makePublishFailureNotice(for: post, error: error))
+            handleError(error, for: post)
             throw error
         }
     }
@@ -149,6 +149,52 @@ class PostCoordinator: NSObject {
         }
         SearchManager.shared.indexItem(post)
         AppRatingUtility.shared.incrementSignificantEvent()
+    }
+
+    /// Uploads the changes made to the post to the server.
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @discardableResult @MainActor
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
+        let post = post.original ?? post
+        do {
+            let isExistingPost = post.hasRemote()
+            // TODO: Set overwrite to false once conflict resolution support is added
+            try await PostRepository()._save(post, changes: changes, overwrite: true)
+            show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
+            return post
+        } catch {
+            handleError(error, for: post)
+            throw error
+        }
+    }
+
+    private func handleError(_ error: Error, for post: AbstractPost) {
+        guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            return
+        }
+        let alert = UIAlertController(title: Strings.uploadFailed, message: error.localizedDescription, preferredStyle: .alert)
+        if let error = error as? PostRepository.PostSaveError {
+            switch error {
+            case .conflict:
+                // TODO: Show conflict resolution dialog
+                alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
+                break
+            case .deleted:
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { _ in
+                    self.handlePermanentlyDeleted(post)
+                }
+            }
+        } else {
+            alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
+        }
+        topViewController.present(alert, animated: true)
+    }
+
+    private func handlePermanentlyDeleted(_ post: AbstractPost) {
+        let context = coreDataStack.mainContext
+        context.deleteObject(post)
+        ContextManager.shared.saveContextAndWait(context)
     }
 
     private func show(_ notice: Notice) {
@@ -676,4 +722,6 @@ private enum Strings {
     static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
     static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
     static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
+    static let uploadFailed = NSLocalizedString("postNotice.uploadFailed", value: "Upload failed", comment: "A post upload failed notification.")
+    static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
 }
