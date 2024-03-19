@@ -31,8 +31,14 @@ extension ReaderTopicService {
                     }
                     var allSites = sites
                     for await result in taskGroup {
-                        if case .success(let sites) = result {
+                        switch result {
+                        case .success(let sites):
                             allSites.append(contentsOf: sites)
+                        case .failure(let error):
+                            DispatchQueue.main.async {
+                                failure(error)
+                            }
+                            return
                         }
                     }
                     self.mergeFollowedSites(allSites, withSuccess: success)
