@@ -291,8 +291,8 @@ extension ReaderTagTopic {
             comment: "No Tags View Button Label"
         )
         let emptyActionTitle = NSLocalizedString(
-            "reader.no.tags.action",
-            value: "You can subscribe to posts on a specific subject by adding a tag.",
+            "reader.no.tags.follow.action",
+            value: "You can follow posts on a specific subject by adding a tag.",
             comment: "No Topics View Label"
         )
 

@@ -26,8 +26,8 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private struct Strings {
         static let noSearchResultsTitle = NSLocalizedString(
-            "reader.select.tags.no.results.title",
-            value: "No new tags to subscribe to",
+            "reader.select.tags.no.results.follow.title",
+            value: "No new tags to follow",
             comment: "Message shown when there are no new topics to follow."
         )
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
