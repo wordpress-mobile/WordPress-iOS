@@ -4,7 +4,7 @@
       "id" : "12D16962-D808-4F96-AF5E-9E4BCA4896F8",
       "name" : "Foundation",
       "options" : {
-
+        "maximumTestRepetitions" : 10
       }
     }
   ],
