@@ -113,6 +113,3 @@ WordPress/InfoPlist-internal.h
 
 # SwiftLint Remote Config Cache
 .swiftlint/RemoteConfigCache
-
-# Gutenberg extra bundle and source map files
-gutenberg/react-native-bundle-source-map
