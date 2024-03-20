@@ -1848,7 +1848,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPostListFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedPosts fromSource:source];
-    PostListViewController *controller = [PostListViewController controllerWithBlog:self.blog];
+    UIViewController *controller = [PostListViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
@@ -1858,7 +1858,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
 - (void)showPageListFromSource:(BlogDetailsNavigationSource)source
 {
     [self trackEvent:WPAnalyticsStatOpenedPages fromSource:source];
-    PageListViewController *controller = [PageListViewController controllerWithBlog:self.blog];
+    UIViewController *controller = [PageListViewController controllerWithBlog:self.blog];
     controller.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
     [self.presentationDelegate presentBlogDetailsViewController:controller];
 
@@ -2221,7 +2221,7 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
         statsView.blog = self.blog;
         return statsView;
     } else {
-        PostListViewController *postsView = [PostListViewController controllerWithBlog:self.blog];
+        UIViewController *postsView = [PostListViewController controllerWithBlog:self.blog];
         postsView.navigationItem.largeTitleDisplayMode = UINavigationItemLargeTitleDisplayModeNever;
         return postsView;
     }

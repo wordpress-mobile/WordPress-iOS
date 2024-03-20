@@ -4,7 +4,8 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 
-final class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+/// - note: Deprecated (kahu-offline-mode)
+final class DeprecatedPageListViewController: DeprecatedAbstractPostListViewController, UIViewControllerRestoration {
     private struct Constant {
         struct Size {
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
@@ -55,14 +56,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
     // MARK: - Convenience constructors
 
-    @objc class func controllerWithBlog(_ blog: Blog) -> UIViewController {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return DeprecatedPageListViewController.controllerWithBlog(blog)
-        }
-        return PageListViewController._controllerWithBlog(blog)
-    }
-
-    @objc private class func _controllerWithBlog(_ blog: Blog) -> PageListViewController {
+    @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
         vc.restorationClass = self
@@ -73,11 +67,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return DeprecatedPageListViewController.showForBlog(blog, from: sourceController)
-        }
-
-        let controller = PageListViewController._controllerWithBlog(blog)
+        let controller = PageListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
@@ -564,7 +554,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
 // MARK: - No Results Handling
 
-private extension PageListViewController {
+private extension DeprecatedPageListViewController {
 
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 

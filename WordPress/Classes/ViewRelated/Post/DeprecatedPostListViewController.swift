@@ -4,7 +4,8 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-final class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
+/// - note: Deprecated (kahu-offline-mode)
+final class DeprecatedPostListViewController: DeprecatedAbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
     static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
 
     /// If set, when the post list appear it will show the tab for this status
@@ -12,26 +13,15 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
 
     // MARK: - Convenience constructors
 
-    @objc class func controllerWithBlog(_ blog: Blog) -> UIViewController {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return DeprecatedPostListViewController.controllerWithBlog(blog)
-        }
-        return PostListViewController._controllerWithBlog(blog)
-    }
-
-    @objc private class func _controllerWithBlog(_ blog: Blog) -> PostListViewController {
-        let vc = PostListViewController()
+    @objc class func controllerWithBlog(_ blog: Blog) -> DeprecatedPostListViewController {
+        let vc = DeprecatedPostListViewController()
         vc.blog = blog
         vc.restorationClass = self
         return vc
     }
 
     static func showForBlog(_ blog: Blog, from sourceController: UIViewController, withPostStatus postStatus: BasePost.Status? = nil) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            return DeprecatedPostListViewController.showForBlog(blog, from: sourceController, withPostStatus: postStatus)
-        }
-
-        let controller = PostListViewController._controllerWithBlog(blog)
+        let controller = DeprecatedPostListViewController.controllerWithBlog(blog)
         controller.navigationItem.largeTitleDisplayMode = .never
         controller.initialFilterWithPostStatus = postStatus
         sourceController.navigationController?.pushViewController(controller, animated: true)
@@ -409,7 +399,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
 
 // MARK: - No Results Handling
 
-private extension PostListViewController {
+private extension DeprecatedPostListViewController {
 
     func handleRefreshNoResultsViewController(_ noResultsViewController: NoResultsViewController) {
 
