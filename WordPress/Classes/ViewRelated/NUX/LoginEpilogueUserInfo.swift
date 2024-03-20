@@ -40,9 +40,9 @@ extension LoginEpilogueUserInfo {
 
     /// Updates the Epilogue properties, given a GravatarProfile instance.
     ///
-    mutating func update(with profile: Gravatar.GravatarProfile) {
+    mutating func update(with profile: Gravatar.UserProfile) {
         gravatarUrl = profile.thumbnailUrl
-        fullName = profile.displayName
+        fullName = profile.displayName ?? ""
     }
 
     mutating func update(with socialUser: SocialUser) {
