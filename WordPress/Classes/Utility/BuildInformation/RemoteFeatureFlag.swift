@@ -83,7 +83,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .siteMonitoring:
             return false
         case .syncPublishing:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return false
         case .readerDiscoverEndpoint:
             return true
         }
