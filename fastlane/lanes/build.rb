@@ -532,7 +532,7 @@ platform :ios do
   end
 
   def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
-    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Gutenberg', 'react-native-bundle-source-map')
+    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
 
     # To generate the full release version string to attach the source maps, we need to specify:
     # - App identifier

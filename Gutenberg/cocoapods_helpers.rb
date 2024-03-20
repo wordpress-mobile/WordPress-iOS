@@ -11,7 +11,7 @@ GUTENBERG_CONFIG_PATH = File.join(__dir__, '..', 'Gutenberg', 'config.yml')
 
 # We skip the simulator architecture as we only need to extract the bundle and source map for installable builds.
 GUTENBERG_FRAMEWORK_FOLDER = File.join(__dir__, '..', 'Pods', 'Gutenberg', 'Frameworks', 'Gutenberg.xcframework', 'ios-arm64', 'Gutenberg.framework')
-GUTENBERG_BUNDLE_SOURCE_MAP_TARGET = File.join(__dir__, '..', 'Gutenberg', 'react-native-bundle-source-map')
+GUTENBERG_BUNDLE_SOURCE_MAP_TARGET = File.join(__dir__, '..', 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
 
 LOCAL_GUTENBERG_KEY = 'LOCAL_GUTENBERG'
 
