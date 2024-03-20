@@ -50,7 +50,7 @@ end
 
 def wordpress_kit
   # pod 'WordPressKit', '~> 14.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '98f4a4d9076e0b5817b38b25c88daa6c11a97c2b'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '518a4a53ecefe462610b79aff26fa91f74265656'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -333,7 +333,7 @@ post_install do |installer|
 
   acknowledgements = 'Acknowledgments'
   markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-  rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+  rendered_html = Commonmarker.to_html(markdown)
   styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>

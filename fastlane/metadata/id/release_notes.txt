@@ -1,0 +1,5 @@
+Kami menerapkan sejumlah perubahan di editor blok.
+
+- Aplikasi tidak akan mengalami crash lagi saat editor mengaktifkan fitur gulir otomatis ke blok.
+- Sekarang, pesan error akan muncul saat video gagal diunggah ke blok media dan teks.
+- Saat diunggah, gambar tak lagi transparan sebagian. Penuh warna, selamanya

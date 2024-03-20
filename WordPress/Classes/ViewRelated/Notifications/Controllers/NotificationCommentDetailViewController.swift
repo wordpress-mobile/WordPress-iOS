@@ -81,6 +81,9 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
         }
     }
 
+    private let errorTitle = NSLocalizedString("Error loading the comment",
+                                               comment: "Text displayed when there is a failure loading notification comments.")
+
     // MARK: - Init
 
     init(notification: Notification,
@@ -216,27 +219,40 @@ private extension NotificationCommentDetailViewController {
         showLoadingView()
 
         loadPostIfNeeded(completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-            self?.fetchParentCommentIfNeeded(completion: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
+            self.fetchParentCommentIfNeeded(completion: {
                 if let comment = self.loadCommentFromCache(self.commentID) {
                     self.comment = comment
                     return
                 }
-
-                self.fetchComment(self.commentID, completion: { [weak self] comment in
+                self.fetchComment(self.commentID, completion: { comment in
                     guard let comment = comment else {
-                        self?.showErrorView()
+                        self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
                         return
                     }
-
-                    self?.comment = comment
+                    self.comment = comment
+                }, failure: { error in
+                    self.showErrorView(error: error)
                 })
+            }, failure: { error in
+                self.showErrorView(error: error)
             })
         })
+    }
+
+    private func showErrorView(error: Error?) {
+        let errorMessage: String? = {
+            guard let error = error as? NSError,
+                  error.domain == WordPressComRestApiEndpointError.errorDomain,
+                  error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                return nil
+            }
+            return Strings.fetchCommentDetailsFromPrivateBlogErrorMessage
+        }()
+        self.showErrorView(title: self.errorTitle, subtitle: errorMessage)
     }
 
     func loadPostIfNeeded(completion: @escaping () -> Void) {
@@ -284,10 +300,10 @@ private extension NotificationCommentDetailViewController {
         return nil
     }
 
-    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
+    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void, failure: @escaping (Error?) -> Void) {
         guard let commentID = commentID else {
             DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
-            completion(nil)
+            failure(nil)
             return
         }
 
@@ -295,7 +311,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: blog, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -304,7 +320,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: post, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -312,7 +328,7 @@ private extension NotificationCommentDetailViewController {
         completion(nil)
     }
 
-    func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
+    func fetchParentCommentIfNeeded(completion: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         // If the comment has a parent and it is not cached, fetch it so the details header is correct.
         guard let parentID = notification.metaParentID,
               loadCommentFromCache(parentID) == nil else {
@@ -320,9 +336,7 @@ private extension NotificationCommentDetailViewController {
                   return
               }
 
-        fetchComment(parentID, completion: { _ in
-            completion()
-        })
+        fetchComment(parentID, completion: { _ in completion() }, failure: { failure($0) })
     }
 
     struct Constants {
@@ -344,16 +358,16 @@ private extension NotificationCommentDetailViewController {
         }
     }
 
-    func showErrorView() {
+    func showErrorView(title: String, subtitle: String?) {
         if let commentDetailViewController = commentDetailViewController {
-            commentDetailViewController.showNoResultsView(title: NoResults.errorTitle,
-                                                          subtitle: NoResults.errorSubtitle,
+            commentDetailViewController.showNoResultsView(title: title,
+                                                          subtitle: subtitle,
                                                           imageName: NoResults.imageName)
         } else {
             hideNoResults()
             configureAndDisplayNoResults(on: view,
-                                         title: NoResults.errorTitle,
-                                         subtitle: NoResults.errorSubtitle,
+                                         title: title,
+                                         subtitle: subtitle,
                                          image: NoResults.imageName)
         }
     }
@@ -383,6 +397,14 @@ private extension NotificationCommentDetailViewController {
             case .readerComments(let vc): return vc
             }
         }
+    }
+
+    struct Strings {
+        static let fetchCommentDetailsFromPrivateBlogErrorMessage = NSLocalizedString(
+            "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage",
+            value: "You don't have permission to view this private blog.",
+            comment: "Error message that informs comment details from a private blog cannot be fetched."
+        )
     }
 
 }
