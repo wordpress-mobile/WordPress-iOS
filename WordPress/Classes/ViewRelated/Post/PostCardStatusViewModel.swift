@@ -42,6 +42,17 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var status: String? {
+        guard RemoteFeature.enabled(.syncPublishing) else {
+            return _status
+        }
+        if !post.revisionChanges.isEmpty {
+            return Strings.unsavedChanges
+        }
+        return nil
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    private var _status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
@@ -264,4 +275,5 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 private enum Strings {
     static let movingPostToTrash = NSLocalizedString("post.movingToTrashStatusMessage", value: "Moving post to trash...", comment: "Status mesasge for post cells")
     static let deletingPostPermanently = NSLocalizedString("post.deletingPostPermanentlyStatusMessage", value: "Deleting post...", comment: "Status mesasge for post cells")
+    static let unsavedChanges = NSLocalizedString("post.unsavedChanges", value: "Unsaved changes", comment: "Status messsage for post cells when post has unsaved changes")
 }

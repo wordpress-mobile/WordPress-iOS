@@ -150,4 +150,14 @@ extension AbstractPost {
     func hasPermanentFailedMedia() -> Bool {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
     }
+
+    /// If there is a revision, returns a list of changes made in the revision.
+    var revisionChanges: RemotePostUpdateParameters {
+        let original = self.original ?? self
+        let latest = self.latest()
+        guard latest.isRevision() else {
+            return RemotePostUpdateParameters() // Empty
+        }
+        return RemotePostUpdateParameters.changes(from: original, to: latest)
+    }
 }
