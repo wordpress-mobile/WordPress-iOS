@@ -4,12 +4,14 @@ public struct DSButton: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
     private let title: String
+    private let iconName: IconName?
     private let style: DSButtonStyle
     @Binding private var isLoading: Bool
     private let action: (() -> Void)
 
     public init(
         title: String,
+        iconName: IconName? = nil,
         style: DSButtonStyle,
         isLoading: Binding<Bool> = .constant(false),
         action: @escaping () -> Void
@@ -17,6 +19,7 @@ public struct DSButton: View {
         self._isLoading = isLoading
         self.action = action
         self.title = title
+        self.iconName = iconName
         self.style = style
     }
 
@@ -58,7 +61,7 @@ public struct DSButton: View {
                     .tint(Color.white)
             } else {
                 if style.emphasis != .tertiary {
-                    buttonText
+                    buttonLabel
                         .padding(
                             .horizontal,
                             style.size == .small
@@ -66,7 +69,7 @@ public struct DSButton: View {
                             : Length.Padding.medium
                         )
                 } else {
-                    buttonText
+                    buttonLabel
                 }
             }
         }
@@ -75,6 +78,20 @@ public struct DSButton: View {
             ? Length.Padding.large
             : Length.Padding.max
         )
+    }
+
+    @ViewBuilder
+    private var buttonLabel: some View {
+        if let iconName {
+            HStack(alignment: .center, spacing: Length.Padding.half) {
+                Image.DS.icon(named: iconName)
+                    .imageScale(.small)
+                    .foregroundStyle(style.foregroundColor)
+                buttonText
+            }
+        } else {
+            buttonText
+        }
     }
 
     private var buttonText: some View {
@@ -94,6 +111,7 @@ public struct DSButton: View {
         case .tertiary:
             weight = .regular
         }
+
         return Text(title).style(textStyle(weight))
             .foregroundStyle(
                 style.foregroundColor
