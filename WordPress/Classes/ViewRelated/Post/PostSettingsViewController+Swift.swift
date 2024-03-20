@@ -30,11 +30,18 @@ extension PostSettingsViewController {
         apost.objectWillChange.sink { [weak self] in
             self?.didUpdateSettings()
         }.store(in: &cancellables)
-        objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         if RemoteFeatureFlag.syncPublishing.enabled() {
-            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: apost.managedObjectContext)
+            let originalPostID = (apost.original ?? apost).objectID
+
+            NotificationCenter.default
+                .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: apost.managedObjectContext)
+                .sink { [weak self] notification in
+                    self?.didChangeObjects(notification, originalPostID: originalPostID)
+                }.store(in: &cancellables)
         }
+
+        objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
     private func didUpdateSettings() {
@@ -109,12 +116,11 @@ extension PostSettingsViewController {
         presentingViewController?.dismiss(animated: true)
     }
 
-    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
+    private func didChangeObjects(_ notification: Foundation.Notification, originalPostID: NSManagedObjectID) {
         guard let userInfo = notification.userInfo else { return }
 
-        let deletedPosts = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
-        let original = self.apost.original ?? self.apost
-        if deletedPosts.contains(original) {
+        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
             presentingViewController?.dismiss(animated: true)
         }
     }
