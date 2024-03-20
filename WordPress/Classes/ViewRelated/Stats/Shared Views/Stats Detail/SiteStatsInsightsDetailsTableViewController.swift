@@ -237,8 +237,11 @@ private extension SiteStatsInsightsDetailsTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
     func clearExpandedRows() {
