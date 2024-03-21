@@ -15,13 +15,20 @@ struct BlogListView: View {
     @Binding private var isEditing: Bool
     @Binding private var pinnedDomains: Set<String>
     private let sites: [Site]
+    private let selectionCallback: ((String) -> Void)
 
-    init(sites: [Site], pinnedDomains: Binding<Set<String>>, isEditing: Binding<Bool>) {
+    init(
+        sites: [Site],
+        pinnedDomains: Binding<Set<String>>,
+        isEditing: Binding<Bool>,
+        selectionCallback: @escaping ((String) -> Void)
+    ) {
         self.sites = sites
         self._pinnedDomains = pinnedDomains
         self._isEditing = isEditing
+        self.selectionCallback = selectionCallback
     }
-    
+   
     var body: some View {
         List {
             pinnedSection
@@ -87,20 +94,30 @@ struct BlogListView: View {
     }
 
     private func siteHStack(site: Site) -> some View {
-        HStack(spacing: 0) {
-            AvatarsView(style: .single(site.imageURL))
-                .padding(.leading, Length.Padding.double)
-                .padding(.trailing, Length.Padding.split)
-
-            textsVStack(title: site.title, domain: site.domain)
-
-            Spacer()
-
+        Button {
             if isEditing {
-                pinIcon(
-                    domain: site.domain
-                )
-                .padding(.trailing, Length.Padding.double)
+                withAnimation {
+                    pinnedDomains = pinnedDomains.symmetricDifference([site.domain])
+                }
+            } else {
+                selectionCallback(site.domain)
+            }
+        } label: {
+            HStack(spacing: 0) {
+                AvatarsView(style: .single(site.imageURL))
+                    .padding(.leading, Length.Padding.double)
+                    .padding(.trailing, Length.Padding.split)
+
+                textsVStack(title: site.title, domain: site.domain)
+
+                Spacer()
+
+                if isEditing {
+                    pinIcon(
+                        domain: site.domain
+                    )
+                    .padding(.trailing, Length.Padding.double)
+                }
             }
         }
         .listRowSeparator(.hidden)
@@ -112,6 +129,7 @@ struct BlogListView: View {
                 trailing: 0
             )
         )
+        .listRowBackground(Color.DS.Background.primary)
     }
 
     private func textsVStack(title: String, domain: String) -> some View {
@@ -132,37 +150,14 @@ struct BlogListView: View {
     }
 
     private func pinIcon(domain: String) -> some View {
-        Button(action: {
-            withAnimation(.interactiveSpring) {
-                pinnedDomains = pinnedDomains.symmetricDifference([domain])
-            }
-        }, label: {
-            if pinnedDomains.contains(domain) {
-                Image(systemName: "pin.fill")
-                    .imageScale(.small)
-                    .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
-            } else {
-                Image(systemName: "pin")
-                    .imageScale(.small)
-                    .foregroundStyle(Color.DS.Foreground.secondary)
-            }
-        })
+        if pinnedDomains.contains(domain) {
+            Image(systemName: "pin.fill")
+                .imageScale(.small)
+                .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
+        } else {
+            Image(systemName: "pin")
+                .imageScale(.small)
+                .foregroundStyle(Color.DS.Foreground.secondary)
+        }
     }
-}
-
-#Preview {
-    BlogListView(
-        sites: [
-            .init(title: "Clay Chronicles",
-                  domain: "claychronicles.com",
-                  imageURL: URL(string: "https://picsum.photos/40/40")!
-                 ),
-            .init(title: "Culinary Wanderlust",
-                  domain: "culinarywanderlust.wordpress.com",
-                  imageURL: URL(string: "https://picsum.photos/40/40")!
-                 )
-        ], 
-        pinnedDomains: .constant([]), 
-        isEditing: .constant(true)
-    )
 }

@@ -3,9 +3,11 @@ import SwiftUI
 struct SiteSwitcherView: View {
     @State private var isEditing: Bool = false
     @State private var pinnedDomains: Set<String>
+    private let selectionCallback: ((String) -> Void)
 
-    init(pinnedDomains: Set<String>) {
+    init(pinnedDomains: Set<String>, selectionCallback: @escaping ((String) -> Void)) {
         self.pinnedDomains = pinnedDomains
+        self.selectionCallback = selectionCallback
     }
 
     var body: some View {
@@ -16,10 +18,11 @@ struct SiteSwitcherView: View {
                         .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
                     },
                     pinnedDomains: $pinnedDomains,
-                    isEditing: $isEditing
+                    isEditing: $isEditing,
+                    selectionCallback: selectionCallback
                 )
                 .toolbar {
-                    ellipsisButton
+                    editButton
                 }
                 .navigationTitle("Switch Site")
                 .navigationBarTitleDisplayMode(.inline)
@@ -29,7 +32,7 @@ struct SiteSwitcherView: View {
         }
     }
 
-    private var ellipsisButton: some View {
+    private var editButton: some View {
         Button(action: {
             isEditing.toggle()
         }, label: {
@@ -40,13 +43,4 @@ struct SiteSwitcherView: View {
                 )
         })
     }
-}
-
-#Preview {
-    SiteSwitcherView(
-        pinnedDomains: [
-            "claychronicles.com",
-            "historyunearthed.wordpress.com"
-        ]
-    )
 }

@@ -118,7 +118,25 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         dataSource.shouldHideSelfHostedSites = config.shouldHideSelfHostedSites
         dataSource.shouldHideBlogsNotSupportingDomains = config.shouldHideBlogsNotSupportingDomains
 
-        let hostingController = UIHostingController(rootView: SiteSwitcherView(pinnedDomains: ["https://alpavanoglu.wordpress.com"]))
+        var dismissAction: (() -> Void)? = nil
+        let hostingController = UIHostingController(
+            rootView: SiteSwitcherView(
+                pinnedDomains: ["https://alpavanoglu.wordpress.com"],
+                selectionCallback: { [weak self] selectedDomain in
+                    guard let selectedBlog = dataSource.filteredBlogs.first(where: { $0.url == selectedDomain }) else {
+                        return
+                    }
+                    self?.switchToBlog(selectedBlog)
+                    // Dismiss hosting controller with completion block
+                    dismissAction?()
+                }
+            )
+        )
+        dismissAction = {
+            hostingController.dismiss(animated: true) { [weak self] in
+                self?.onBlogListDismiss?()
+            }
+        }
         present(hostingController, animated: true)
 //        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
 //
