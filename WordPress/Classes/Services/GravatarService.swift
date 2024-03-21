@@ -7,9 +7,22 @@ import Gravatar
     case invalidAccountInfo
 }
 
+public protocol GravatarImageUploader {
+    @discardableResult
+    func upload(_ image: UIImage, email: String, accessToken: String) async throws -> URLResponse
+}
+
+extension AvatarService: GravatarImageUploader { }
+
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-open class GravatarService {
+public class GravatarService {
+
+    let imageUploader: GravatarImageUploader
+
+    init(imageUploader: GravatarImageUploader? = nil) {
+        self.imageUploader = imageUploader ?? AvatarService()
+    }
 
     /// This method fetches the Gravatar profile for the specified email address.
     ///
@@ -54,22 +67,16 @@ open class GravatarService {
 
         let email = accountEmail.trimmingCharacters(in: CharacterSet.whitespaces).lowercased()
 
-        let imageService = gravatarImageService()
-        imageService.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
-            if let theError = error {
-                DDLogError("GravatarService.uploadImage Error: \(theError)")
-            } else {
+        Task {
+            do {
+                try await imageUploader.upload(image, email: email, accessToken: accountToken)
                 DDLogInfo("GravatarService.uploadImage Success!")
+                completion?(nil)
+            } catch {
+                DDLogError("GravatarService.uploadImage Error: \(error)")
+                completion?(error)
             }
-
-            completion?(error)
         }
-    }
-
-    /// Overridden by tests for mocking.
-    ///
-    func gravatarImageService() -> ImageUploader {
-        return ImageService()
     }
 
     func gravatarServiceRemote() -> GravatarServiceRemote {
