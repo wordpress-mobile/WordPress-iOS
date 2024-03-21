@@ -1,7 +1,7 @@
 import Foundation
 import Aztec
 
-class GutenbergCoverUploadProcessor: Processor {
+class GutenbergCoverUploadProcessor: GutenbergProcessor {
     public typealias InnerBlockProcessor = (String) -> String?
 
     private struct CoverBlockKeys {
@@ -22,32 +22,23 @@ class GutenbergCoverUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var coverBlockProcessor = GutenbergBlockProcessor(for: CoverBlockKeys.name, replacer: { coverBlock in
-        guard let mediaID = coverBlock.attributes[CoverBlockKeys.id] as? Int,
-            mediaID == self.mediaUploadID else {
-                return nil
+    func process(_ blocks: [GutenbergParsedBlock]) {
+        blocks.filter { $0.name == "wp:cover" }.forEach { block in
+            guard let mediaID = block.attributes[CoverBlockKeys.id] as? Int,
+                mediaID == self.mediaUploadID else {
+                    return
+            }
+
+            block.attributes[CoverBlockKeys.id] = self.serverMediaID
+            block.attributes[CoverBlockKeys.url] = self.remoteURLString
+
+            if self.isVideo(block) {
+                self.processVideoTags(block)
+            }
+            else {
+                self.processDivTags(block)
+            }
         }
-        var block = "<!-- \(CoverBlockKeys.name) "
-
-        var attributes = coverBlock.attributes
-        attributes[CoverBlockKeys.id] = self.serverMediaID
-        attributes[CoverBlockKeys.url] = self.remoteURLString
-
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: [.sortedKeys]),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            block += jsonString
-        }
-
-        let innerProcessor = self.isVideo(attributes) ? self.videoUploadProcessor() : self.imgUploadProcessor()
-
-        block += " -->"
-        block += innerProcessor.process(coverBlock.content)
-        block += "<!-- /\(CoverBlockKeys.name) -->"
-        return block
-    })
-
-    func process(_ text: String) -> String {
-        return coverBlockProcessor.process(text)
     }
 }
 
@@ -59,13 +50,11 @@ extension GutenbergCoverUploadProcessor {
         static let backgroundImage = "background-image:url"
     }
 
-    private func imgUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: ImgHTMLKeys.name, replacer: { (div) in
-
-            guard let styleAttributeValue = div.attributes[ImgHTMLKeys.styleComponents]?.value,
-                case let .string(styleAttribute) = styleAttributeValue
-                else {
-                    return nil
+    private func processDivTags(_ block: GutenbergParsedBlock) {
+        let divTags = try? block.elements.select(ImgHTMLKeys.name)
+        divTags?.forEach { div in
+            guard let styleAttribute = try? div.attr(ImgHTMLKeys.styleComponents) else {
+                return
             }
 
             let range = styleAttribute.utf16NSRange(from: styleAttribute.startIndex ..< styleAttribute.endIndex)
@@ -74,7 +63,7 @@ extension GutenbergCoverUploadProcessor {
                                         options: [],
                                         range: range)
             guard matches.count == 1 else {
-                return nil
+                return
             }
 
             let style = "\(ImgHTMLKeys.backgroundImage)(\(self.remoteURLString))"
@@ -83,17 +72,8 @@ extension GutenbergCoverUploadProcessor {
                                                                        range: range,
                                                                        withTemplate: style)
 
-            var attributes = div.attributes
-            attributes.set(.string(updatedStyleAttribute), forKey: ImgHTMLKeys.styleComponents)
-
-            let attributeSerializer = ShortcodeAttributeSerializer()
-            var html = "<\(ImgHTMLKeys.name) "
-            html += attributeSerializer.serialize(attributes)
-            html += ">"
-            html += div.content ?? ""
-            html += "</\(ImgHTMLKeys.name)>"
-            return html
-        })
+            _ = try? div.attr(ImgHTMLKeys.styleComponents, updatedStyleAttribute)
+        }
     }
 
     private func localBackgroundImageRegex() -> NSRegularExpression {
@@ -109,23 +89,15 @@ extension GutenbergCoverUploadProcessor {
         static let source = "src"
     }
 
-    private func isVideo(_ attributes: [String: Any]) -> Bool {
-        guard let backgroundType = attributes[CoverBlockKeys.backgroundType] as? String else { return false }
+    private func isVideo(_ block: GutenbergParsedBlock) -> Bool {
+        guard let backgroundType = block.attributes[CoverBlockKeys.backgroundType] as? String else { return false }
         return backgroundType == CoverBlockKeys.videoType
     }
 
-    private func videoUploadProcessor() -> HTMLProcessor {
-        return HTMLProcessor(for: VideoHTMLKeys.name, replacer: { (video) in
-            var attributes = video.attributes
-            attributes.set(.string(self.remoteURLString), forKey: VideoHTMLKeys.source)
-
-            let attributeSerializer = ShortcodeAttributeSerializer()
-            var html = "<\(VideoHTMLKeys.name) "
-            html += attributeSerializer.serialize(attributes)
-            html += ">"
-            html += video.content ?? ""
-            html += "</\(VideoHTMLKeys.name)>"
-            return html
-        })
+    private func processVideoTags(_ block: GutenbergParsedBlock) {
+        let videoTags = try? block.elements.select(VideoHTMLKeys.name)
+        videoTags?.forEach { video in
+            _ = try? video.attr(VideoHTMLKeys.source, self.remoteURLString)
+        }
     }
 }

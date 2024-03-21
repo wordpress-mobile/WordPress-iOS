@@ -417,7 +417,7 @@ class PostCoordinator: NSObject {
             aztecProcessors.append(imgPostUploadProcessor)
 
             let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
+            gutenbergBlockProcessors.append(gutenbergCoverPostUploadProcessor)
 
             let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
@@ -427,7 +427,7 @@ class PostCoordinator: NSObject {
             gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
 
             let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
+            gutenbergBlockProcessors.append(gutenbergCoverPostUploadProcessor)
 
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             aztecProcessors.append(videoPostUploadProcessor)
