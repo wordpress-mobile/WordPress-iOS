@@ -1,6 +1,2 @@
-* [*] [internal] Block editor: Remove code associated to Story block [#22758]
-* [**] [internal] Block editor: Upgrade React Native to version 0.73.3 [#22588]
-* [*] Remove "Edit" button from "Post Published" screen [#22762]
-* [*] Remove "Publish" button from "Preview" screen [#22763]
-* [**] Block editor: Add error boundary components and exception logging [#22655]
-
+We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.
+We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.
