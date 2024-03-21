@@ -321,7 +321,10 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
-        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            DDLogError("ReaderSelectInterestsViewController: Requested for data at invalid row \(indexPath.row)")
+            return .init(frame: .zero)
+        }
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
                                                       isSelected: interest.isSelected)
@@ -339,12 +342,15 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            return
+        }
 
         if spotlightIsShown {
             spotlightIsShown = false
         }
 
-        dataSource.interest(for: indexPath.row).toggleSelected()
+        interest.toggleSelected()
         updateNextButtonState()
 
         UIView.animate(withDuration: 0) {
@@ -356,7 +362,9 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewFlowLayout
 extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            return .zero
+        }
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.cellLabelTitleFont
