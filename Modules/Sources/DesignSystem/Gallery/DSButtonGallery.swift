@@ -7,7 +7,7 @@ struct DSButtonGallery: View {
                 Section(size.title) {
                     HStack {
                         Spacer()
-                        VStack(spacing: Length.Padding.medium) {
+                        VStack(spacing: .DS.Padding.medium) {
                             ForEach(DSButtonStyle.Emphasis.allCases, id: \.title) { emphasis in
                                 DSButton(
                                     title: emphasis.title,
@@ -36,7 +36,7 @@ struct DSButtonGallery: View {
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
-                .listRowInsets(.init(top: Length.Padding.split, leading: 0, bottom: Length.Padding.split, trailing: 0))
+                .listRowInsets(.init(top: .DS.Padding.split, leading: 0, bottom: .DS.Padding.split, trailing: 0))
             }
             .navigationTitle("DSButton")
         }

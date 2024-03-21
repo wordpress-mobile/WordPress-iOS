@@ -44,7 +44,7 @@ public struct DSButton: View {
                 buttonContent
                     .contentShape(
                         RoundedRectangle(
-                            cornerRadius: Length.Radius.small
+                            cornerRadius: .DS.Radius.small
                         )
                     )
             }
@@ -65,8 +65,8 @@ public struct DSButton: View {
                         .padding(
                             .horizontal,
                             style.size == .small
-                            ? Length.Padding.split
-                            : Length.Padding.medium
+                            ? .DS.Padding.split
+                            : .DS.Padding.medium
                         )
                 } else {
                     buttonLabel
@@ -75,8 +75,8 @@ public struct DSButton: View {
         }
         .frame(
             height: style.size == .small
-            ? Length.Padding.large
-            : Length.Padding.max
+            ? .DS.Padding.large
+            : .DS.Padding.max
         )
     }
 
@@ -123,10 +123,10 @@ public struct DSButton: View {
     private var buttonBackground: some View {
         switch style.emphasis {
         case .primary:
-            RoundedRectangle(cornerRadius: Length.Radius.small)
+            RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
         case .secondary:
-            RoundedRectangle(cornerRadius: Length.Radius.small)
+            RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .stroke(Color.DS.Background.tertiary, lineWidth: 1)
                 .background(Color.clear)
 
@@ -169,7 +169,7 @@ struct DSButton_Previews: PreviewProvider {
                     ()
                 }
             )
-            .padding(.horizontal, Length.Padding.large)
+            .padding(.horizontal, .DS.Padding.large)
         }
     }
 }
