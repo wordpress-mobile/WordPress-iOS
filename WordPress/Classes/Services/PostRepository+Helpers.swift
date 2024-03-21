@@ -4,7 +4,10 @@ import WordPressKit
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
     init(post: AbstractPost) {
-        self.init(status: (post.status ?? .draft).rawValue)
+        self.init(
+            type: post is Post ? "post" : "page",
+            status: (post.status ?? .draft).rawValue
+        )
 
         date = post.dateCreated
         authorID = post.authorID?.intValue

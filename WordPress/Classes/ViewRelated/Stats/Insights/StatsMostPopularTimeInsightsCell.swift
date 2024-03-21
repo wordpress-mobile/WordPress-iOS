@@ -193,7 +193,7 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
 
 // MARK: - Data / View Model
 
-struct StatsMostPopularTimeData {
+struct StatsMostPopularTimeData: Equatable {
     var mostPopularDayTitle: String
     var mostPopularTimeTitle: String
     var mostPopularDay: String

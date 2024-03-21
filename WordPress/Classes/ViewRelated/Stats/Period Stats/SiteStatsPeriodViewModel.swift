@@ -1,6 +1,14 @@
 import Foundation
 import WordPressFlux
 
+struct StatsTrafficSection: Hashable {
+    let periodType: PeriodType
+
+    init(periodType: PeriodType) {
+        self.periodType = periodType
+    }
+}
+
 final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Properties
