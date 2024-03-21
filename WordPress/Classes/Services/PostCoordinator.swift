@@ -205,8 +205,7 @@ class PostCoordinator: NSObject {
         let post = post.original()
         do {
             let isExistingPost = post.hasRemote()
-            // TODO: Set overwrite to false once conflict resolution support is added
-            try await PostRepository()._save(post, changes: changes, overwrite: true)
+            try await PostRepository()._save(post, changes: changes)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
@@ -236,19 +235,45 @@ class PostCoordinator: NSObject {
         let alert = UIAlertController(title: Strings.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
-            case .conflict:
-                // TODO: Show conflict resolution dialog
-                alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
-                break
+            case .conflict(let latest):
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.handleVersionConflict(post: post, remoteRevision: latest, presentingController: topViewController)
+                }
             case .deleted:
-                alert.addDefaultActionWithTitle(Strings.buttonOK) { _ in
-                    self.handlePermanentlyDeleted(post)
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.handlePermanentlyDeleted(post)
                 }
             }
         } else {
             alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
         }
         topViewController.present(alert, animated: true)
+    }
+
+    private func handleVersionConflict(post: AbstractPost, remoteRevision: RemotePost, presentingController: UIViewController) {
+        /*
+        Send a GET request to pull the latest version of the post
+        IF original.content != RemotePost.content
+            Ask the user which version they want to keep
+            IF they keep local
+                Re-send POST request with a diff (skip if_not_modified_since to overwrite)
+            ELSE
+                Apply RemotePost to the original version and delete the local revision
+        ELSE
+            // False positive – the revision changed, but content didn't
+            Apply RemotePost to the original version and delete the local revision
+         */
+
+        showResolveConflictView(post: post, remoteRevision: remoteRevision)
+    }
+
+    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost) {
+        guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            return
+        }
+        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision)
+        let navigation = UINavigationController(rootViewController: controller)
+        topViewController.present(navigation, animated: true)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {

@@ -1,18 +1,27 @@
 import SwiftUI
+import UIKit
 import WordPressKit
 
 struct ResolveConflictView: View {
-    let currentVersion: PostVersion
-    let anotherVersion: PostVersion
+    let post: AbstractPost
+    let remoteRevision: RemotePost
+    var dismiss: (() -> Void)?
 
-    var selectedVersion: PostVersion?
+    private var currentVersion: PostVersion { .current(post) }
+    private var anotherVersion: PostVersion { .another(remoteRevision) }
+
+    @State private var selectedVersion: PostVersion?
 
     var body: some View {
         Form {
             Section {
                 Text(Strings.description)
-                PostVersionView(version: currentVersion)
-                PostVersionView(version: anotherVersion)
+                PostVersionView(version: currentVersion) {
+                    selectedVersion = $0.isSelected ? currentVersion : nil
+                }
+                PostVersionView(version: anotherVersion) {
+                    selectedVersion = $0.isSelected ? anotherVersion : nil
+                }
             }
         }
         .navigationTitle(Strings.Navigation.title)
@@ -20,21 +29,39 @@ struct ResolveConflictView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(Strings.Navigation.cancel) {
-                    // Cancel
+                    dismiss?()
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(Strings.Navigation.save) {
-                    // Save
-                }
+                    guard let selectedVersion else {
+                        dismiss?()
+                        return
+                    }
+                    saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
+                    dismiss?()
+                }.disabled(selectedVersion == nil)
             }
+        }
+    }
+
+    private func saveSelectedVersion(_ version: PostVersion, post: AbstractPost, remoteRevision: RemotePost) {
+        switch version {
+        case .current:
+            // TODO: Re-send POST request with a diff (skip if_not_modified_since to overwrite)
+            break
+        case .another:
+            // TODO: Apply RemotePost to the original version and delete the local revision
+            break
         }
     }
 }
 
 private struct PostVersionView: View {
     let version: PostVersion
-    var isSelected: Bool = false
+    let onButtonTap: (PostVersionView) -> Void
+
+    @State var isSelected = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -53,7 +80,8 @@ private struct PostVersionView: View {
             }
             Spacer()
             Button {
-                // Do something
+                isSelected.toggle()
+                onButtonTap(self)
             } label: {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .resizable()
@@ -74,9 +102,9 @@ private struct PostVersionView: View {
     }
 }
 
-enum PostVersion {
-    case current(local: AbstractPost)
-    case another(remote: RemotePost)
+private enum PostVersion {
+    case current(AbstractPost)
+    case another(RemotePost)
 
     var title: String {
         switch self {
@@ -87,11 +115,23 @@ enum PostVersion {
 
     var dateModifiedString: String {
         switch self {
-        case .current(let local):
-            return (local.dateModified ?? Date.now).toMediumString()
-        case .another(let remote):
-            return remote.dateModified.toMediumString()
+        case .current(let post):
+            return (post.dateModified ?? Date.now).mediumStringWithTime()
+        case .another(let remoteRevision):
+            return remoteRevision.dateModified.mediumStringWithTime()
         }
+    }
+}
+
+final class ResolveConflictViewController: UIHostingController<ResolveConflictView> {
+
+    init(post: AbstractPost, remoteRevision: RemotePost) {
+        super.init(rootView: .init(post: post, remoteRevision: remoteRevision))
+        rootView.dismiss = { self.dismiss(animated: true) }
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
