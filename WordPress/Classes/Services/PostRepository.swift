@@ -126,6 +126,24 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Patches the post but keeps the local revision if any.
+    ///
+    /// - note: This method can be used for quick edits for published posts where
+    /// revisions are used only for content.
+    @MainActor
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+        let original = post.original ?? post
+        guard let postID = original.postID, postID.intValue > 0 else {
+            assertionFailure("Trying to patch a non-existent post")
+            return
+        }
+        let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
+
+        let context = coreDataStack.mainContext
+        PostHelper.update(original, with: uploadedPost, in: context)
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)

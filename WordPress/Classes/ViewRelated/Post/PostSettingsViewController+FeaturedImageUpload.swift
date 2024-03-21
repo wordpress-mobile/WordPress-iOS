@@ -73,12 +73,12 @@ extension PostSettingsViewController {
         guard let media = MediaCoordinator.shared.addMedia(from: asset, to: apost) else {
             return
         }
-        self.apost.featuredImage = media
+        self.apost.featuredImage = try? self.apost.managedObjectContext?.existingObject(with: TaggedManagedObjectID(media))
         self.setupObservingOf(media: media)
     }
 
     @objc func setFeaturedImage(media: Media) {
-        apost.featuredImage = media
+        apost.featuredImage = try? self.apost.managedObjectContext?.existingObject(with: TaggedManagedObjectID(media))
         if !media.hasRemote {
             MediaCoordinator.shared.retryMedia(media)
             setupObservingOf(media: media)

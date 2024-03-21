@@ -66,12 +66,6 @@
 
 }
 
-- (void)save
-{
-    [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
-}
-
-
 #pragma mark - Getters/Setters
 
 - (void)setRemoteStatusNumber:(NSNumber *)remoteStatusNumber

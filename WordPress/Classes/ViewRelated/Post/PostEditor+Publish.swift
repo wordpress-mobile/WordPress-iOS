@@ -469,7 +469,7 @@ extension PublishingEditor {
         if RemoteFeatureFlag.syncPublishing.enabled() {
             Task { @MainActor in
                 do {
-                    self.post = try await PostCoordinator.shared._update(post)
+                    self.post = try await PostCoordinator.shared._save(post)
                     if dismissWhenDone {
                         self.dismissOrPopView()
                     } else {
