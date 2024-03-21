@@ -83,7 +83,7 @@ public struct DSButton: View {
     @ViewBuilder
     private var buttonLabel: some View {
         if let iconName {
-            HStack(alignment: .center, spacing: Length.Padding.half) {
+            HStack(alignment: .center, spacing: .DS.Padding.half) {
                 Image.DS.icon(named: iconName)
                     .imageScale(.small)
                     .foregroundStyle(style.foregroundColor)
