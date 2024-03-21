@@ -29,6 +29,31 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
     XCTAssertEqualObjects([WPUserAgent wordPressUserAgent], expectedUserAgent);
 }
 
+- (NSRegularExpression *)webkitUserAgentRegex
+{
+    NSError *error = nil;
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:@"^Mozilla/5\\.0 \\([a-zA-Z]+; CPU [\\sa-zA-Z]+ [_0-9]+ like Mac OS X\\) AppleWebKit/605\\.1\\.15 \\(KHTML, like Gecko\\) Mobile/15E148$" options:0 error:&error];
+    XCTAssertNil(error);
+    return regex;
+}
+
+- (void)testUserAgentFormat
+{
+    NSRegularExpression *regex = [self webkitUserAgentRegex];
+    NSString *userAgent = [WPUserAgent webViewUserAgent];
+    XCTAssertEqual([regex numberOfMatchesInString:userAgent options:0 range:NSMakeRange(0, userAgent.length)], 1);
+}
+
+// If this test fails, it may mean `WKWebView` uses a user agent with an unexpected format (see `webkitUserAgentRegex`)
+// and we may need to adjust `UserAgent.webkitUserAgent`'s implementation to match `WKWebView`'s user agent.
+- (void)testWKWebViewUserAgentFormat
+{
+    NSRegularExpression *regex = [self webkitUserAgentRegex];
+    // Please note: WKWebView's user agent may be different on different test device types.
+    NSString *userAgent = [self currentUserAgentFromWebView];
+    XCTAssertEqual([regex numberOfMatchesInString:userAgent options:0 range:NSMakeRange(0, userAgent.length)], 1);
+}
+
 - (void)testUseWordPressUserAgentInWebViews
 {
     NSString *defaultUA = [WPUserAgent defaultUserAgent];
