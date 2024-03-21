@@ -34,10 +34,8 @@ struct BlogListView: View {
             pinnedSection
             unPinnedSection
         }
-//        .scrollIndicators(.hidden)
         .listStyle(.grouped)
         .background(Color.DS.Background.primary)
-//        .scrollContentBackground(.hidden)
     }
 
     private func sectionHeader(title: String) -> some View {
@@ -119,7 +117,9 @@ struct BlogListView: View {
                     .padding(.trailing, Length.Padding.double)
                 }
             }
+            .padding(.vertical, Length.Padding.half)
         }
+        .buttonStyle(BlogListButtonStyle())
         .listRowSeparator(.hidden)
         .listRowInsets(
             .init(
@@ -159,5 +159,12 @@ struct BlogListView: View {
                 .imageScale(.small)
                 .foregroundStyle(Color.DS.Foreground.secondary)
         }
+    }
+}
+
+private struct BlogListButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? Color.DS.Background.secondary : Color.DS.Background.primary)
     }
 }
