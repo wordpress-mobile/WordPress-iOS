@@ -28,14 +28,25 @@ struct BlogListView: View {
         self._isEditing = isEditing
         self.selectionCallback = selectionCallback
     }
-   
+
     var body: some View {
-        List {
-            pinnedSection
-            unPinnedSection
+        if #available(iOS 16.0, *) {
+            contentVStack
+                .scrollContentBackground(.hidden)
+        } else {
+            contentVStack
         }
-        .listStyle(.grouped)
-        .background(Color.DS.Background.primary)
+    }
+
+    private var contentVStack: some View {
+        VStack {
+            List {
+                pinnedSection
+                unPinnedSection
+            }
+            .listStyle(.grouped)
+            addSiteButtonVStack
+        }
     }
 
     private func sectionHeader(title: String) -> some View {
@@ -56,7 +67,7 @@ struct BlogListView: View {
                 ForEach(
                     pinnedSites,
                     id: \.domain) { site in
-                        siteHStack(
+                        siteButton(
                             site: site
                         )
                     }
@@ -64,6 +75,13 @@ struct BlogListView: View {
                 sectionHeader(
                     title: "Pinned sites"
                 )
+                .listRowInsets(EdgeInsets(
+                    top: Length.Padding.medium,
+                    leading: Length.Padding.double,
+                    bottom: 0,
+                    trailing: Length.Padding.double)
+                )
+
             }
         }
     }
@@ -79,7 +97,7 @@ struct BlogListView: View {
                 ForEach(
                     unPinnedSites,
                     id: \.domain) { site in
-                        siteHStack(
+                        siteButton(
                             site: site
                         )
                     }
@@ -91,7 +109,7 @@ struct BlogListView: View {
         }
     }
 
-    private func siteHStack(site: Site) -> some View {
+    private func siteButton(site: Site) -> some View {
         Button {
             if isEditing {
                 withAnimation {
@@ -101,23 +119,7 @@ struct BlogListView: View {
                 selectionCallback(site.domain)
             }
         } label: {
-            HStack(spacing: 0) {
-                AvatarsView(style: .single(site.imageURL))
-                    .padding(.leading, Length.Padding.double)
-                    .padding(.trailing, Length.Padding.split)
-
-                textsVStack(title: site.title, domain: site.domain)
-
-                Spacer()
-
-                if isEditing {
-                    pinIcon(
-                        domain: site.domain
-                    )
-                    .padding(.trailing, Length.Padding.double)
-                }
-            }
-            .padding(.vertical, Length.Padding.half)
+            siteHStack(site: site)
         }
         .buttonStyle(BlogListButtonStyle())
         .listRowSeparator(.hidden)
@@ -130,6 +132,26 @@ struct BlogListView: View {
             )
         )
         .listRowBackground(Color.DS.Background.primary)
+    }
+
+    private func siteHStack(site: Site) -> some View {
+        HStack(spacing: 0) {
+            AvatarsView(style: .single(site.imageURL))
+                .padding(.leading, Length.Padding.double)
+                .padding(.trailing, Length.Padding.split)
+
+            textsVStack(title: site.title, domain: site.domain)
+
+            Spacer()
+
+            if isEditing {
+                pinIcon(
+                    domain: site.domain
+                )
+                .padding(.trailing, Length.Padding.double)
+            }
+        }
+        .padding(.vertical, Length.Padding.half)
     }
 
     private func textsVStack(title: String, domain: String) -> some View {
@@ -159,6 +181,18 @@ struct BlogListView: View {
                 .imageScale(.small)
                 .foregroundStyle(Color.DS.Foreground.secondary)
         }
+    }
+
+    private var addSiteButtonVStack: some View {
+        VStack(spacing: Length.Padding.medium) {
+            Divider()
+                .background(Color.DS.Foreground.secondary)
+            DSButton(title: "Add a site", style: .init(emphasis: .primary, size: .large)) {
+                // Add a site
+            }
+            .padding(.horizontal, Length.Padding.medium)
+        }
+        .background(Color.DS.Background.primary)
     }
 }
 
