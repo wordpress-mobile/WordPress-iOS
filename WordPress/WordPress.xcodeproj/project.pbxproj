@@ -5492,6 +5492,8 @@
 		FAC1B81F29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */; };
 		FAC1B82729B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */; };
 		FAC1B82829B1F1EE00E0C542 /* BlazePostPreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */; };
+		FACA34CE2BAACE3500163B21 /* ResolveConflictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA34CD2BAACE3500163B21 /* ResolveConflictView.swift */; };
+		FACA34CF2BAACE3500163B21 /* ResolveConflictView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACA34CD2BAACE3500163B21 /* ResolveConflictView.swift */; };
 		FACB36F11C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */; };
 		FACF66CA2ADD4703008C3E13 /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACF66C92ADD4703008C3E13 /* PostListCell.swift */; };
 		FACF66CB2ADD4703008C3E13 /* PostListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FACF66C92ADD4703008C3E13 /* PostListCell.swift */; };
@@ -9432,6 +9434,7 @@
 		FAC086D625EDFB1E00B94F2A /* ReaderRelatedPostsCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsCell.xib; sourceTree = "<group>"; };
 		FAC1B81D29B0C2AC00E0C542 /* BlazeOverlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeOverlayViewModel.swift; sourceTree = "<group>"; };
 		FAC1B82629B1F1EE00E0C542 /* BlazePostPreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazePostPreviewView.swift; sourceTree = "<group>"; };
+		FACA34CD2BAACE3500163B21 /* ResolveConflictView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResolveConflictView.swift; sourceTree = "<group>"; };
 		FACB36F01C5C2BF800C6DF4E /* ThemeWebNavigationDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThemeWebNavigationDelegate.swift; sourceTree = "<group>"; };
 		FACF66C92ADD4703008C3E13 /* PostListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListCell.swift; sourceTree = "<group>"; };
 		FACF66CC2ADD645C008C3E13 /* PostListHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostListHeaderView.swift; sourceTree = "<group>"; };
@@ -12818,6 +12821,7 @@
 				FAEC116D2AEBEEA600F9DA54 /* AbstractPostMenuViewModel.swift */,
 				FA141F262AEC1D9E00C9A653 /* PageMenuViewModel.swift */,
 				FAA5C90E2B7FC74C002E073B /* PostSyncStateViewModel.swift */,
+				FACA34CD2BAACE3500163B21 /* ResolveConflictView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -21772,6 +21776,7 @@
 				9A4697B221B002AD00468B64 /* RevisionDiffsPageManager.swift in Sources */,
 				4A9314E42979FA4700360232 /* PostCategory+Creation.swift in Sources */,
 				F5660D07235D114500020B1E /* CalendarCollectionView.swift in Sources */,
+				FACA34CE2BAACE3500163B21 /* ResolveConflictView.swift in Sources */,
 				7E3E7A6420E44ED60075D159 /* SubjectContentGroup.swift in Sources */,
 				E151C0C61F3889DF00710A83 /* PluginListRow.swift in Sources */,
 				8217380B1FE05EE600BEC94C /* BlogSettings+DateAndTimeFormat.swift in Sources */,
@@ -24422,6 +24427,7 @@
 				F46546292AED89790017E3D1 /* AllDomainsListEmptyView.swift in Sources */,
 				9856A39E261FC21E008D6354 /* UserProfileUserInfoCell.swift in Sources */,
 				FABB21632602FC2C00C8785C /* FeatureItemCell.swift in Sources */,
+				FACA34CF2BAACE3500163B21 /* ResolveConflictView.swift in Sources */,
 				C3FBF4E928AFEDF8003797DF /* JetpackBrandingAnalyticsHelper.swift in Sources */,
 				803C493C283A7C0C00003E9B /* QuickStartChecklistHeader.swift in Sources */,
 				FABB21642602FC2C00C8785C /* WPRichContentView.swift in Sources */,
