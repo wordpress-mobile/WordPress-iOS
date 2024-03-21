@@ -45,48 +45,7 @@ final class PostRepository {
         }
     }
 
-    /// Uploads the changes to the given post to the server and deletes the
-    /// uploaded local revision afterward. If the post doesn't have an associated
-    /// remote ID, creates a new post.
-    ///
-    /// - note: This method is a low-level primitive for syncing the latest
-    /// post date to the server.
-    ///
-    /// - warning: Before publishing, ensure that the media for the post got
-    /// uploaded. Managing media is not the responsibility of `PostRepository.`
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
-    ///
-    /// - parameter post: The revision of the post.
-    @discardableResult @MainActor
-    func _upload(_ parameters: RemotePost, for post: AbstractPost) async throws -> AbstractPost {
-        let service = try getRemoteService(for: post.blog)
-        let uploadedPost: RemotePost
-        if let postID = post.postID, postID.intValue > 0 {
-            uploadedPost = try await service._update(parameters)
-        } else {
-            uploadedPost = try await service._create(parameters)
-        }
-
-        let post = deleteRevision(for: post)
-        let context = coreDataStack.mainContext
-        PostHelper.update(post, with: uploadedPost, in: context)
-        PostService(managedObjectContext: context)
-            .updateMediaFor(post: post, success: {}, failure: { _ in })
-        ContextManager.shared.save(context)
-        return post
-    }
-
-    // TODO: delete
-    private func deleteRevision(for post: AbstractPost) -> AbstractPost {
-        if post.isRevision(), let original = post.original {
-            original.deleteRevision()
-            return original
-        }
-        return post
-    }
-
-    enum PostSaveError: Swift.Error {
+    enum PostSaveError: Swift.Error, LocalizedError {
         /// A conflict between the client and the server versions is detected.
         /// The app needs to consolidate the changes and retry.
         ///
@@ -96,7 +55,18 @@ final class PostRepository {
         case conflict(latest: RemotePost)
 
         /// Post was deleted on the remote and can not be updated.
-        case deleted
+        case deleted(post: RemotePost)
+
+        var errorDescription: String? {
+            switch self {
+            case .conflict:
+                return NSLocalizedString("postSaveErrorMessage.conflict", value: "The content was modified on another device", comment: "Error message: content was modified on another device")
+            case .deleted(let post):
+                let format = NSLocalizedString("postSaveErrorMessage.deleted", value: "\"%@\" was permanently deleted and can no longer be updated", comment: "Error message: item permanently deleted")
+                let untitled = NSLocalizedString("postSaveErrorMessage.postUntitled", value: "Untitled", comment: "A default value for an post without a title")
+                return String(format: format, post.title ?? untitled)
+            }
+        }
     }
 
     /// Saves the changes made to the given post on the server or creates a new
@@ -150,6 +120,9 @@ final class PostRepository {
             PostService(managedObjectContext: context)
                 .updateMediaFor(post: original, success: {}, failure: { _ in })
         }
+        /// - warning: Work-in-progress (kahu-offline-mode)
+        // TODO: Remove when it's no longer needed
+        original.remoteStatus = AbstractPostRemoteStatus.sync
         ContextManager.shared.saveContextAndWait(context)
     }
 
@@ -196,11 +169,8 @@ final class PostRepository {
                 return try await service.patchPost(withID: postID.intValue, parameters: changes)
             case .notFound:
                 // Delete the post from the local database
-                let context = coreDataStack.mainContext
-                context.deleteObject(original)
-                ContextManager.shared.saveContextAndWait(context)
-
-                throw PostRepository.PostSaveError.deleted
+                let details = PostHelper.remotePost(with: original)
+                throw PostRepository.PostSaveError.deleted(post: details)
             }
         }
     }

@@ -84,6 +84,10 @@ class EditPostViewController: UIViewController {
         modalTransitionStyle = .coverVertical
         restorationIdentifier = RestorationKey.viewController.rawValue
         restorationClass = EditPostViewController.self
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -118,6 +122,15 @@ class EditPostViewController: UIViewController {
             newPost.prepareForPrompt(prompt)
             post = newPost
             return newPost
+        }
+    }
+
+    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let deletedPosts = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if let post = self.post?.original ?? self.post, deletedPosts.contains(post) {
+            closeEditor(animated: true)
         }
     }
 

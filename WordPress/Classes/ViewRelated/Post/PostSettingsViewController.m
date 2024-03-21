@@ -179,7 +179,8 @@ FeaturedImageViewControllerDelegate>
     [super viewWillDisappear:animated];
 
     if (self.isStandalone) {
-        if (!self.isStandaloneEditorDismissingAfterSave) {
+        if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
+            // TODO: Implement it using a ViewModel or a child context to eliminate the risk of accidently saving the changes without uploading them
             [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
         }
     } else {
