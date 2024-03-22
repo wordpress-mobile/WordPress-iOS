@@ -26,6 +26,8 @@ class PostCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var pendingPostIDs: Set<NSManagedObjectID> = []
+
     private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
@@ -216,8 +218,31 @@ class PostCoordinator: NSObject {
     }
 
     func moveToDraft(_ post: AbstractPost) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            _moveToDraft(post)
+            return
+        }
+
+        var changes = RemotePostUpdateParameters()
+        changes.status = Post.Status.draft.rawValue
+        _performChanges(changes, for: post)
+    }
+
+    /// - note: Deprecated (kahu-offline-mode) (along with all related types)
+    private func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
+    }
+
+    /// Sets the post state to "updating" and performs the given changes.
+    private func _performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
+        Task { @MainActor in
+            let post = post.original()
+            setUpdating(true, for: post)
+            defer { setUpdating(false, for: post) }
+
+            try await self._update(post, changes: changes)
+        }
     }
 
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
@@ -580,6 +605,25 @@ class PostCoordinator: NSObject {
             let model = PostNoticeViewModel(post: post)
             self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
         }
+    }
+
+    // MARK: - State
+
+    func isUpdating(_ post: AbstractPost) -> Bool {
+        pendingPostIDs.contains(post.original().objectID)
+    }
+
+    @MainActor
+    private func setUpdating(_ isUpdating: Bool, for post: AbstractPost) {
+        let objectID = post.original().objectID
+        if isUpdating {
+            pendingPostIDs.insert(objectID)
+        } else {
+            pendingPostIDs.remove(objectID)
+        }
+        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
+            NSUpdatedObjectsKey: Set([post])
+        ])
     }
 
     // MARK: - Trash/Delete

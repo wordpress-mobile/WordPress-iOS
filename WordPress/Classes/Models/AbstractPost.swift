@@ -2,6 +2,10 @@ import Foundation
 
 extension AbstractPost {
 
+    func original() -> AbstractPost {
+        original?.original() ?? self
+    }
+
     // MARK: - Status
 
     @objc
