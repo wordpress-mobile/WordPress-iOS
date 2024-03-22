@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-06 22:30:32+0000 */
+/* Translation-Revision-Date: 2024-03-20 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: ko_KR */
@@ -847,8 +847,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "이 글을 영구적으로 삭제하시겠습니까?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "정말로 공개하시겠습니까?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1184,6 +1183,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "버튼 위치";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "오류 상세 정보 복사 버튼";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "글 텍스트 복사 버튼";
 
 /* Label for the post author in the post detail. */
 "By " = "작성자";
@@ -1841,7 +1846,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "클립보드에서 URL 복사, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "오류 상세 정보 복사";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "파일 URL 복사하기";
+
+/* No comment provided by engineer. */
+"Copy post text" = "글 텍스트 복사";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "이 앱으로부터 버전 복사하기";
@@ -2515,8 +2526,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "중재 키 편집";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "글 편집";
 
@@ -2770,6 +2780,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "프롬프트 로드 오류";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "댓글 로딩 중 오류 발생";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "댓글을 스팸으로 표시하는 중 오류가 발생했습니다.";
@@ -5474,8 +5487,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "공개";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6826,6 +6838,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "자세한 내용을 보려면 누르세요.";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "여기를 눌러 오류 상세 정보 복사";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "여기를 눌러 글 텍스트 복사";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "도움말을 보려면 여기를 탭";
 
 /* No comment provided by engineer. */
@@ -6974,9 +6992,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "사이트 제목은 웹 브라우저의 제목 표시줄에 보이고 대부분의 테마의 헤더에 보입니다.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "현재 회원님의 iPad에서 스토리 편집기를 사용할 수 없습니다. iPhone에서 스토리를 시도해 보세요.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL에 올바른 호스트가 없습니다.";
 
@@ -6997,6 +7012,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "최신 글 페이지의 콘텐츠는 자동으로 생성되며 편집할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "편집기에서 예기치 않은 오류가 발생했습니다.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "%1$@ 파일에 악성 코드 패턴이 있음";
@@ -7158,9 +7176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "위치 액세스 시도 중 문제가 발생했습니다. 나중에 다시 시도해 주세요.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "스토리 편집기에서 문제가 발생했습니다.  문제가 지속될 경우 내 계정 > 도움 & 지원 화면을 통해 문의할 수 있습니다.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7554,9 +7569,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "연결할 수 없음";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "스토리 편집기를 만들 수 없습니다.";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "게시글을 로드할 수 없습니다";
 
@@ -7737,9 +7749,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "지원되지 않음";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "지원되지 않는 기기";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "제목없음";
@@ -8616,6 +8625,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "언제든지 내 사이트, 설정, 블로깅에서 블로깅 프롬프트와 알림을 관리할 수 있습니다.";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "콘텐츠가 영향을 받는 때를 대비하여 글 텍스트를 복사할 수 있습니다. 디버깅할 오류 상세 정보를 복사하고 지원팀과 공유하세요.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "편집기의 웹 버전을 사용하여 이 블록을 편집하실 수 있습니다.";
 
 /* Discussion Settings: Footer Text */
@@ -8656,6 +8668,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "휴지통에 버린 글이 없습니다.";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "이 비공개 블로그를 볼 권한이 없습니다.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "숨겨진 워드프레스 사이트가 %lu개 있습니다.";
@@ -8854,21 +8869,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[댓글]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d명의 블로거_가 좋아합니다.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_1명의 블로거_가 좋아합니다.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_회원님과 %1$d명의 블로거_가 좋아합니다.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_회원님과 다른 블로거_가 좋아합니다.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_회원님_이 좋아합니다.";
 
 /* Age between dates equaling one day. */
 "a day" = "1일";
@@ -9860,6 +9860,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "좋아요";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
 
@@ -10178,6 +10181,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "개선 가능";
 
@@ -10352,6 +10358,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "오프라인 변경 사항";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "휴지통";
 
@@ -10363,6 +10372,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "보기";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "페이지 임시글 업로드됨";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "페이지 검토 대기 중";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "페이지 발행됨";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "페이지 예약됨";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "페이지 업데이트됨";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "글 임시글 업로드됨";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "글 검토 대기 중";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "글 발행됨";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "글 예약됨";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "글 업데이트됨";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "업로드 실패";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "보기";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "해제";
@@ -10613,6 +10658,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "사이트의 글 미리보기";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_좋아요 %1$d개_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "회원님이 좋아합니다.";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_좋아요 1개_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -10987,6 +11041,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "신규";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
 
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "도메인 이전";

@@ -386,8 +386,7 @@
 /* View title when editing a comment. */
 "Edit Comment" = "Rediger kommentar";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Rediger indlæg";
 
@@ -974,8 +973,7 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Offentlig";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
