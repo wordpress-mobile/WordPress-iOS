@@ -15,7 +15,6 @@ protocol EditorAnalyticsProperties: AnyObject {
 struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
-
         // Return early if a post is still uploading when the editor's requested.
         guard !PostCoordinator.shared.isUploading(post: post) else {
             presentAlertForPostBeingUploaded()

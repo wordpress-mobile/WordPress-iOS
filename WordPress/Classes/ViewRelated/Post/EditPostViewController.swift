@@ -149,27 +149,6 @@ class EditPostViewController: UIViewController {
         editor.postIsReblogged = postIsReblogged
         editor.entryPoint = entryPoint
         showEditor(editor)
-
-       showUnsaveChangesDialogIfNeeded(in: editor)
-    }
-
-    private func showUnsaveChangesDialogIfNeeded(in editor: EditorViewController) {
-        guard let post else { return }
-
-        let original = post.original ?? post
-        guard original.status != .draft, !post.revisionChanges.isEmpty else {
-            return
-        }
-        let alert = UIAlertController(title: Strings.dialogUnsavedChangesTitle, message: Strings.dialogUnsavedChangesMessage, preferredStyle: .alert)
-        alert.addAction(.init(title: Strings.dialogUnsavedChangesContinue, style: .default) { _ in
-            // Do nothing
-        })
-        alert.addAction(.init(title: Strings.dialogUnsavedChangesDiscard, style: .destructive) { _ in
-            editor.discardChanges()
-        })
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
-            editor.present(alert, animated: true)
-        }
     }
 
     private func showEditor(_ editor: EditorViewController) {
@@ -274,11 +253,4 @@ extension EditPostViewController: UIViewControllerRestoration {
             coder.encode(post.objectID.uriRepresentation(), forKey: RestorationKey.post.rawValue)
         }
     }
-}
-
-private enum Strings {
-    static let dialogUnsavedChangesTitle = NSLocalizedString("postEditor.unsavedChangesDialog.title", value: "Unsaved changes", comment: "Dialog for applying or discarding unsaved changes to the post")
-    static let dialogUnsavedChangesMessage = NSLocalizedString("postEditor.unsavedChangesDialog.message", value: "The post has unsaved changes. Would you like to continue editing them?", comment: "Dialog for applying or discarding unsaved changes to the post")
-    static let dialogUnsavedChangesContinue = NSLocalizedString("postEditor.unsavedChangesDialog.buttonContinue", value: "Continue Editing", comment: "Dialog for applying or discarding unsaved changes to the post")
-    static let dialogUnsavedChangesDiscard = NSLocalizedString("postEditor.unsavedChangesDialog.buttonDiscard", value: "Discard Changes", comment: "Dialog for applying or discarding unsaved changes to the post")
 }

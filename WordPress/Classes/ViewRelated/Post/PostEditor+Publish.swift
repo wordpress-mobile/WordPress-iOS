@@ -188,8 +188,8 @@ extension PublishingEditor {
                 dismissOrPopView()
             } catch {
                 postEditorStateContext.updated(isBeingPublished: false)
-                await SVProgressHUD.dismiss()
             }
+            await SVProgressHUD.dismiss()
         }
     }
 
@@ -550,11 +550,8 @@ extension PublishingEditor {
         alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
             self.discardAndDismiss()
         }
-        let changes = post.revisionChanges
-        if changes.content != nil { // Only suggest if there is an autosave
-            alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraftChanges, style: .default) { _ in
-                self.performAutosave()
-            }
+        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraftChanges, style: .default) { _ in
+            fatalError("TODO: save changes locally (kahu-offline-mode")
         }
         alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
         present(alert, animated: true, completion: nil)
