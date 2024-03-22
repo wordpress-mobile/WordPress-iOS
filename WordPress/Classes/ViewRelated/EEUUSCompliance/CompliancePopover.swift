@@ -7,14 +7,14 @@ struct CompliancePopover: View {
     var viewModel: CompliancePopoverViewModel
 
     var body: some View {
-        VStack(alignment: .leading, spacing: Length.Padding.double) {
+        VStack(alignment: .leading, spacing: .DS.Padding.double) {
             titleText
             subtitleText
             analyticsToggle
             footnote
             buttonsHStack
         }
-        .padding(Length.Padding.medium)
+        .padding(.DS.Padding.medium)
         .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -33,7 +33,7 @@ struct CompliancePopover: View {
         Toggle(Strings.toggleTitle, isOn: $viewModel.isAnalyticsEnabled)
             .foregroundColor(Color.DS.Foreground.primary)
             .toggleStyle(SwitchToggleStyle(tint: Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack)))
-            .padding(.vertical, Length.Padding.single)
+            .padding(.vertical, .DS.Padding.single)
     }
 
     private var footnote: some View {
@@ -43,10 +43,10 @@ struct CompliancePopover: View {
     }
 
     private var buttonsHStack: some View {
-        HStack(spacing: Length.Padding.single) {
+        HStack(spacing: .DS.Padding.single) {
             settingsButton
             saveButton
-        }.padding(.top, Length.Padding.medium)
+        }.padding(.top, .DS.Padding.medium)
     }
 
     private var settingsButton: some View {
@@ -54,14 +54,14 @@ struct CompliancePopover: View {
             self.viewModel.didTapSettings()
         }) {
             ZStack {
-                RoundedRectangle(cornerRadius: Length.Padding.single)
-                    .stroke(Color.DS.Background.tertiary, lineWidth: Length.Border.thin)
+                RoundedRectangle(cornerRadius: .DS.Padding.single)
+                    .stroke(Color.DS.Background.tertiary, lineWidth: .DS.Border.thin)
                 Text(Strings.settingsButtonTitle)
                     .font(.body)
             }
         }
         .foregroundColor(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
-        .frame(height: Length.Hitbox.minTappableLength)
+        .frame(height: .DS.Hitbox.minTappableLength)
     }
 
     private var saveButton: some View {
@@ -76,7 +76,7 @@ struct CompliancePopover: View {
             }
         }
         .foregroundColor(.white)
-        .frame(height: Length.Hitbox.minTappableLength)
+        .frame(height: .DS.Hitbox.minTappableLength)
     }
 }
 

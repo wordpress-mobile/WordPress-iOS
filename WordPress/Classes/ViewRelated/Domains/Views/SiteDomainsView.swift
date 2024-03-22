@@ -35,12 +35,12 @@ struct SiteDomainsView: View {
                     makeDomainsSections(blog: blog, sections: sections)
                 }
                 .listRowSeparator(.hidden)
-                //.listRowSpacing(Length.Padding.double) Re-enable when we update to Xcode 15
+                //.listRowSpacing(.DS.Padding.double) Re-enable when we update to Xcode 15
             case .message(let messageViewModel):
                 VStack {
                     HStack(alignment: .center) {
                         DomainsStateView(viewModel: messageViewModel)
-                            .padding(.horizontal, Length.Padding.double)
+                            .padding(.horizontal, .DS.Padding.double)
                     }
                 }
             case .loading:
@@ -220,7 +220,7 @@ private extension SiteDomainsView {
     }
 
     struct Metrics {
-        static let insets = EdgeInsets(.init(top: Length.Padding.double, leading: Length.Padding.double, bottom: Length.Padding.double, trailing: Length.Padding.double))
+        static let insets = EdgeInsets(.init(top: .DS.Padding.double, leading: .DS.Padding.double, bottom: .DS.Padding.double, trailing: .DS.Padding.double))
     }
 }
 

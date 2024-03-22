@@ -19,25 +19,25 @@ struct DomainPurchaseChoicesView: View {
 
     var body: some View {
         ScrollView {
-            VStack(alignment: .leading, spacing: Length.Padding.single) {
+            VStack(alignment: .leading, spacing: .DS.Padding.single) {
                 Text(Strings.header)
                     .font(.largeTitle.bold())
                 Text(Strings.subheader)
                     .foregroundStyle(Color.DS.Foreground.secondary)
-                    .padding(.bottom, Length.Padding.medium)
+                    .padding(.bottom, .DS.Padding.medium)
                 getDomainCard
-                    .padding(.bottom, Length.Padding.medium)
+                    .padding(.bottom, .DS.Padding.medium)
                 chooseSiteCard
-                    .padding(.bottom, Length.Padding.single)
+                    .padding(.bottom, .DS.Padding.single)
                 Text(Strings.footnote)
                     .foregroundStyle(Color.DS.Foreground.secondary)
                     .font(.subheadline)
                 Spacer()
             }
-            .padding(.top, Length.Padding.double)
+            .padding(.top, .DS.Padding.double)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.horizontal, Length.Padding.double)
+        .padding(.horizontal, .DS.Padding.double)
         .background(Color.DS.Background.primary)
         .onAppear {
             self.track(.purchaseDomainScreenShown)
@@ -80,15 +80,15 @@ struct DomainPurchaseChoicesView: View {
         isProgressViewActive: Bool,
         action: @escaping () -> Void
     ) -> some View {
-        VStack(alignment: .leading, spacing: Length.Padding.single) {
+        VStack(alignment: .leading, spacing: .DS.Padding.single) {
             Group {
                 Image(imageName)
                     .renderingMode(.template)
                     .resizable()
                     .foregroundStyle(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
                     .frame(width: Constants.imageLength, height: Constants.imageLength)
-                    .padding(.top, Length.Padding.double)
-                VStack(alignment: .leading, spacing: Length.Padding.single) {
+                    .padding(.top, .DS.Padding.double)
+                VStack(alignment: .leading, spacing: .DS.Padding.single) {
                     Text(title)
                         .font(.title2.bold())
                     Text(subtitle)
@@ -99,24 +99,24 @@ struct DomainPurchaseChoicesView: View {
                             .font(.body.bold())
                     }
                 }
-                .padding(.bottom, Length.Padding.single)
+                .padding(.bottom, .DS.Padding.single)
                 DSButton(
                     title: buttonTitle,
                     style: .init(emphasis: .primary, size: .large, isJetpack: AppConfiguration.isJetpack),
                     isLoading: isProgressViewActive ? $viewModel.isGetDomainLoading : .constant(false),
                     action: action
                 )
-                .padding(.bottom, Length.Padding.double)
+                .padding(.bottom, .DS.Padding.double)
                 .disabled(viewModel.isGetDomainLoading)
             }
-            .padding(.horizontal, Length.Padding.double)
+            .padding(.horizontal, .DS.Padding.double)
         }
         .background(Color.DS.Background.secondary)
         .clipShape(RoundedRectangle(cornerRadius: 8))
     }
 
     private var chooseSiteTexts: some View {
-        VStack(alignment: .leading, spacing: Length.Padding.single) {
+        VStack(alignment: .leading, spacing: .DS.Padding.single) {
             Text(Strings.chooseSiteTitle)
                 .font(.title2.bold())
             Text(Strings.chooseSiteSubtitle)

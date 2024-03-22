@@ -4,7 +4,7 @@ import DesignSystem
 struct PrimaryDomainView: View {
     var body: some View {
         Group {
-            HStack(spacing: Length.Padding.half) {
+            HStack(spacing: .DS.Padding.half) {
                 Image(systemName: "globe")
                     .font(.callout)
                     .foregroundStyle(Color.DS.Foreground.primary)
@@ -12,11 +12,11 @@ struct PrimaryDomainView: View {
                     .font(.callout)
                     .foregroundStyle(Color.DS.Foreground.primary)
             }
-            .padding(.vertical, Length.Padding.half)
-            .padding(.horizontal, Length.Padding.single)
+            .padding(.vertical, .DS.Padding.half)
+            .padding(.horizontal, .DS.Padding.single)
         }
         .background(Color.DS.Background.secondary)
-        .clipShape(RoundedRectangle(cornerRadius: Length.Radius.small))
+        .clipShape(RoundedRectangle(cornerRadius: .DS.Radius.small))
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Strings.primaryDomain)
     }

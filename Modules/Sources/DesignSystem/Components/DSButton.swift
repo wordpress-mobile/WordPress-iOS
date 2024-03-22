@@ -4,12 +4,14 @@ public struct DSButton: View {
     @Environment(\.isEnabled) private var isEnabled
     @Environment(\.colorScheme) private var colorScheme
     private let title: String
+    private let iconName: IconName?
     private let style: DSButtonStyle
     @Binding private var isLoading: Bool
     private let action: (() -> Void)
 
     public init(
         title: String,
+        iconName: IconName? = nil,
         style: DSButtonStyle,
         isLoading: Binding<Bool> = .constant(false),
         action: @escaping () -> Void
@@ -17,6 +19,7 @@ public struct DSButton: View {
         self._isLoading = isLoading
         self.action = action
         self.title = title
+        self.iconName = iconName
         self.style = style
     }
 
@@ -41,7 +44,7 @@ public struct DSButton: View {
                 buttonContent
                     .contentShape(
                         RoundedRectangle(
-                            cornerRadius: Length.Radius.small
+                            cornerRadius: .DS.Radius.small
                         )
                     )
             }
@@ -58,23 +61,37 @@ public struct DSButton: View {
                     .tint(Color.white)
             } else {
                 if style.emphasis != .tertiary {
-                    buttonText
+                    buttonLabel
                         .padding(
                             .horizontal,
                             style.size == .small
-                            ? Length.Padding.split
-                            : Length.Padding.medium
+                            ? .DS.Padding.split
+                            : .DS.Padding.medium
                         )
                 } else {
-                    buttonText
+                    buttonLabel
                 }
             }
         }
         .frame(
             height: style.size == .small
-            ? Length.Padding.large
-            : Length.Padding.max
+            ? .DS.Padding.large
+            : .DS.Padding.max
         )
+    }
+
+    @ViewBuilder
+    private var buttonLabel: some View {
+        if let iconName {
+            HStack(alignment: .center, spacing: .DS.Padding.half) {
+                Image.DS.icon(named: iconName)
+                    .imageScale(.small)
+                    .foregroundStyle(style.foregroundColor)
+                buttonText
+            }
+        } else {
+            buttonText
+        }
     }
 
     private var buttonText: some View {
@@ -94,6 +111,7 @@ public struct DSButton: View {
         case .tertiary:
             weight = .regular
         }
+
         return Text(title).style(textStyle(weight))
             .foregroundStyle(
                 style.foregroundColor
@@ -105,10 +123,10 @@ public struct DSButton: View {
     private var buttonBackground: some View {
         switch style.emphasis {
         case .primary:
-            RoundedRectangle(cornerRadius: Length.Radius.small)
+            RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .fill(style.backgroundColor.opacity(priamryDisabledOpacity))
         case .secondary:
-            RoundedRectangle(cornerRadius: Length.Radius.small)
+            RoundedRectangle(cornerRadius: .DS.Radius.small)
                 .stroke(Color.DS.Background.tertiary, lineWidth: 1)
                 .background(Color.clear)
 
@@ -151,7 +169,7 @@ struct DSButton_Previews: PreviewProvider {
                     ()
                 }
             )
-            .padding(.horizontal, Length.Padding.large)
+            .padding(.horizontal, .DS.Padding.large)
         }
     }
 }
