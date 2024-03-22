@@ -54,7 +54,14 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         return String(format: Strings.Accessibility.exerptChunkFormat, excerpt)
     }()
 
-    return [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
+    var chunks: [String?]
+    if RemoteFeatureFlag.syncPublishing.enabled() {
+        chunks = [titleAndDateChunk, authorChunk, excerptChunk]
+    } else {
+        chunks = [titleAndDateChunk, authorChunk, stickyChunk, statusChunk, excerptChunk]
+    }
+
+    return chunks
         .compactMap { $0 }
         .joined(separator: " ")
 }
@@ -96,6 +103,12 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
 
 private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateViewModel, shouldHideAuthor: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
+    if RemoteFeatureFlag.syncPublishing.enabled() && post.status == .pending {
+        badges.append((Strings.Badges.pending, .warning))
+    }
+    if RemoteFeatureFlag.syncPublishing.enabled() && post.isStickyPost && !post.isUploadingOrFailed {
+        badges.append((Strings.Badges.sticky, nil))
+    }
     if let statusMessage = syncStateViewModel.statusMessage {
         badges.append((statusMessage, nil))
     } else if let date = AbstractPostHelper.getLocalizedStatusWithDate(for: post) {
@@ -109,6 +122,18 @@ private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateV
 }
 
 private enum Strings {
+    enum Badges {
+        static let sticky = NSLocalizedString(
+            "postList.badges.sticky",
+            value: "Sticky",
+            comment: "Label text that defines a post marked as sticky"
+        )
+        static let pending = NSLocalizedString(
+            "postList.badges.pending",
+            value: "Pending review",
+            comment: "Label text that defines a post marked as pending review"
+        )
+    }
 
     enum Accessibility {
         static let titleAndDateChunkFormat = NSLocalizedString(
@@ -134,5 +159,11 @@ private enum Strings {
             value: "Sticky.",
             comment: "Accessibility label for a sticky post in the post list."
         )
+    }
+}
+
+private extension Post {
+    var isUploadingOrFailed: Bool {
+        MediaCoordinator.shared.isUploadingMedia(for: self) || isFailed || remoteStatus == .pushing
     }
 }

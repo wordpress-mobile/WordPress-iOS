@@ -65,9 +65,11 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
             imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
         }
 
-        statusLabel.text = viewModel.status
-        statusLabel.textColor = viewModel.statusColor
-        statusLabel.isHidden = viewModel.status.isEmpty
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            statusLabel.text = viewModel.status
+            statusLabel.textColor = viewModel.statusColor
+            statusLabel.isHidden = viewModel.status.isEmpty
+        }
 
         contentView.isUserInteractionEnabled = viewModel.isEnabled
 
@@ -94,9 +96,11 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         mainStackView.translatesAutoresizingMaskIntoConstraints = false
         mainStackView.addArrangedSubviews([
             headerView,
-            contentStackView,
-            statusLabel
+            contentStackView
         ])
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            mainStackView.addArrangedSubview(statusLabel)
+        }
         mainStackView.spacing = 4
         mainStackView.isLayoutMarginsRelativeArrangement = true
         mainStackView.directionalLayoutMargins = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
@@ -126,6 +130,9 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
     }
 
     private func setupStatusLabel() {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            return
+        }
         statusLabel.translatesAutoresizingMaskIntoConstraints = false
         statusLabel.adjustsFontForContentSizeCategory = true
         statusLabel.numberOfLines = 1
