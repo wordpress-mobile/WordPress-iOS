@@ -133,9 +133,13 @@ extension PublishingEditor {
         case .schedule, .publish:
             showPrepublishingSheet(for: action, analyticsStat: analyticsStat)
         case .saveAsDraft:
-            fatalError("Not implemented (show PrepubishingVC)")
+            performSaveDraftAction()
         case .update:
-            fatalError("Not implemented (show PrepubishingVC)")
+            if (post.original ?? post).status == .draft {
+                performSaveDraftAction()
+            } else {
+                performUpdatePostAction()
+            }
         case .submitForReview:
             /// - note: Work-in-progress (kahu-offline-mode)
             fatalError("Not implemented (show PrepubishingVC)")
@@ -164,6 +168,27 @@ extension PublishingEditor {
             case .cancelled:
                 self.publishingDismissed()
                 WPAnalytics.track(.editorPostPublishDismissed)
+            }
+        }
+    }
+
+    private func performSaveDraftAction() {
+        PostCoordinator.shared.save(post)
+        dismissOrPopView()
+    }
+
+    private func performUpdatePostAction() {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show()
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        Task { @MainActor in
+            do {
+                try await PostCoordinator.shared._save(post)
+                dismissOrPopView()
+            } catch {
+                postEditorStateContext.updated(isBeingPublished: false)
+                await SVProgressHUD.dismiss()
             }
         }
     }
@@ -384,32 +409,36 @@ extension PublishingEditor {
             return _cancelEditing()
         }
 
-        // TODO: this is not correct
-        // TODO: add "Cancel" to unsaved changes dialog
-        guard !post.revisionChanges.isEmpty else {
-            dismissOrPopView()
-            return
-        }
-
-        if !post.hasRemote() {
+        if (post.original ?? post).status == .draft {
             if post.isEmpty {
                 discardAndDismiss()
             } else {
-                showCloseConfirmationAlert()
+                /// TODO: remove the use of remoteStatus
+                if post.remoteStatus == .local {
+                    showCloseNewDraftConfirmationAlert()
+                } else {
+                    if !post.revisionChanges.isEmpty {
+                        showCloseExistingDraftConfirmationAlert()
+                    } else {
+                        dismissOrPopView()
+                    }
+                }
             }
-        } else {
-            editorSession.end(outcome: .save)
-
-            let original = (post.original ?? post)
-            if original.status == .draft {
-                /// - warning: Work-in-progress (kahu-offline-mode)
-                /// TODO: replace with a new save
-                PostCoordinator.shared.save(post)
-            } else {
-                // Keep the unsaved changes
-            }
-            dismissOrPopView()
+            return
         }
+
+        editorSession.end(outcome: .save)
+
+        let original = (post.original ?? post)
+        if original.status == .draft {
+            /// - warning: Work-in-progress (kahu-offline-mode)
+            /// TODO: replace with a new save
+            PostCoordinator.shared.save(post)
+        } else {
+            // TODO: show alert
+            // Keep the unsaved changes
+        }
+        dismissOrPopView()
     }
 
     private func discardAndDismiss() {
@@ -498,12 +527,29 @@ extension PublishingEditor {
         return postDeleted
     }
 
-    private func showCloseConfirmationAlert() {
-        let alert = UIAlertController(title: Strings.closeDialogTitle, message: nil, preferredStyle: .actionSheet)
+    private func showCloseNewDraftConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
-        alert.addCancelActionWithTitle(Strings.closeDialogCancel)
-        alert.addDestructiveActionWithTitle(Strings.closeDialogDiscard) { _ in
+        alert.addCancelActionWithTitle(Strings.closeDraftAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeDraftAlertDelete) { _ in
             self.discardAndDismiss()
+        }
+        alert.addActionWithTitle(PostEditorAction.saveAsDraft.publishActionLabel, style: .default) { _ in
+            self.performSaveDraftAction()
+        }
+        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func showCloseExistingDraftConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.accessibilityIdentifier = "post-has-changes-alert"
+        alert.addCancelActionWithTitle(Strings.closeDraftAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeDraftAlertDeleteChanges) { _ in
+            self.discardAndDismiss()
+        }
+        alert.addActionWithTitle(Strings.closeDraftAlertSaveDraft, style: .default) { _ in
+            self.performSaveDraftAction()
         }
         alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
         present(alert, animated: true, completion: nil)
@@ -595,50 +641,32 @@ extension PublishingEditor {
 
         mapUIContentToPostAndSave(immediate: true)
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            Task { @MainActor in
-                do {
-                    self.post = try await PostCoordinator.shared._save(post)
-                    if dismissWhenDone {
-                        self.dismissOrPopView()
-                    } else {
-                        self.createRevisionOfPost()
-                    }
-                } catch {
-                    // Do nothing
-                }
-                self.postEditorStateContext.updated(isBeingPublished: false)
-                await SVProgressHUD.dismiss()
+        consolidateChangesIfPostIsNew()
+
+        PostCoordinator.shared.save(post, defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
+            guard let self = self else {
+                return
             }
-        } else {
-            consolidateChangesIfPostIsNew()
+            self.postEditorStateContext.updated(isBeingPublished: false)
+            SVProgressHUD.dismiss()
 
-            PostCoordinator.shared.save(post,
-                                        defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
-                guard let self = self else {
-                    return
-                }
-                self.postEditorStateContext.updated(isBeingPublished: false)
-                SVProgressHUD.dismiss()
+            let generator = UINotificationFeedbackGenerator()
+            generator.prepare()
 
-                let generator = UINotificationFeedbackGenerator()
-                generator.prepare()
+            switch result {
+            case .success(let uploadedPost):
+                self.post = uploadedPost
 
-                switch result {
-                case .success(let uploadedPost):
-                    self.post = uploadedPost
+                generator.notificationOccurred(.success)
+            case .failure(let error):
+                DDLogError("Error publishing post: \(error.localizedDescription)")
+                generator.notificationOccurred(.error)
+            }
 
-                    generator.notificationOccurred(.success)
-                case .failure(let error):
-                    DDLogError("Error publishing post: \(error.localizedDescription)")
-                    generator.notificationOccurred(.error)
-                }
-
-                if dismissWhenDone {
-                    self.dismissOrPopView()
-                } else {
-                    self.createRevisionOfPost()
-                }
+            if dismissWhenDone {
+                self.dismissOrPopView()
+            } else {
+                self.createRevisionOfPost()
             }
         }
     }
@@ -788,9 +816,10 @@ struct PostEditorDebouncerConstants {
 }
 
 private enum Strings {
-    static let closeDialogTitle = NSLocalizedString("postEditor.closeDialog.title", value: "You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
-    static let closeDialogCancel = NSLocalizedString("postEditor.closeDialog.keepEditing", value: "Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
-    static let closeDialogDiscard = NSLocalizedString("postEditor.closeDialog.discard", value: "Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+    static let closeDraftAlertCancel = NSLocalizedString("postEditor.closeDraftAlert.keepEditing", value: "Keep Editing", comment: "Alert confirming closing a new draft")
+    static let closeDraftAlertDelete = NSLocalizedString("postEditor.closeDraftAlert.deleteDraft", value: "Delete Draft", comment: "Alert confirming closing a new draft")
+    static let closeDraftAlertDeleteChanges = NSLocalizedString("postEditor.closeDraftAlert.deleteChanges", value: "Delete Changes", comment: "Alert confirming closing a new draft")
+    static let closeDraftAlertSaveDraft = NSLocalizedString("postEditor.closeDraftAlert.saveeDraft", value: "Save Draft", comment: "Alert confirming closing a new draft")
 }
 
 private struct MediaUploadingAlert {

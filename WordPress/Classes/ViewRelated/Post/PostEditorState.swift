@@ -74,6 +74,7 @@ public enum PostEditorAction {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     var publishingActionLabel: String {
         switch self {
         case .publish:
