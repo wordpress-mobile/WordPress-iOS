@@ -12,7 +12,7 @@ final class PostSyncStateViewModel {
     private let isInternetReachable: Bool
 
     var state: State {
-        if post.remoteStatus == .pushing || PostCoordinator.shared.isDeleting(post) {
+        if post.remoteStatus == .pushing || PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
             return .syncing
         }
         if post.isFailed {
