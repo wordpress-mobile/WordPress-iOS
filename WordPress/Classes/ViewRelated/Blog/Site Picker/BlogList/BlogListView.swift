@@ -13,18 +13,17 @@ struct BlogListView: View {
     }
 
     @Binding private var isEditing: Bool
-    @Binding private var pinnedDomains: Set<String>
+    @State private var pinnedDomains: Set<String>?
     private let sites: [Site]
     private let selectionCallback: ((String) -> Void)
 
     init(
         sites: [Site],
-        pinnedDomains: Binding<Set<String>>,
         isEditing: Binding<Bool>,
         selectionCallback: @escaping ((String) -> Void)
     ) {
         self.sites = sites
-        self._pinnedDomains = pinnedDomains
+        self.pinnedDomains = BlogListReducer.pinnedDomains()
         self._isEditing = isEditing
         self.selectionCallback = selectionCallback
     }
@@ -39,14 +38,11 @@ struct BlogListView: View {
     }
 
     private var contentVStack: some View {
-        VStack {
-            List {
-                pinnedSection
-                unPinnedSection
-            }
-            .listStyle(.grouped)
-            addSiteButtonVStack
+        List {
+            pinnedSection
+            unPinnedSection
         }
+        .listStyle(.grouped)
     }
 
     private func sectionHeader(title: String) -> some View {
@@ -60,7 +56,7 @@ struct BlogListView: View {
     private var pinnedSection: some View {
         let pinnedSites = BlogListReducer.pinnedSites(
             allSites: sites,
-            pinnedDomains: pinnedDomains
+            pinnedDomains: pinnedDomains ?? []
         )
         if !pinnedSites.isEmpty {
             Section {
@@ -81,7 +77,6 @@ struct BlogListView: View {
                     bottom: 0,
                     trailing: Length.Padding.double)
                 )
-
             }
         }
     }
@@ -90,7 +85,7 @@ struct BlogListView: View {
     private var unPinnedSection: some View {
         let unPinnedSites = BlogListReducer.unPinnedSites(
             allSites: sites,
-            pinnedDomains: pinnedDomains
+            pinnedDomains: pinnedDomains ?? []
         )
         if !unPinnedSites.isEmpty {
             Section {
@@ -113,7 +108,8 @@ struct BlogListView: View {
         Button {
             if isEditing {
                 withAnimation {
-                    pinnedDomains = pinnedDomains.symmetricDifference([site.domain])
+                    BlogListReducer.togglePinnedDomain(domain: site.domain)
+                    pinnedDomains = BlogListReducer.pinnedDomains()
                 }
             } else {
                 selectionCallback(site.domain)
@@ -172,7 +168,7 @@ struct BlogListView: View {
     }
 
     private func pinIcon(domain: String) -> some View {
-        if pinnedDomains.contains(domain) {
+        if pinnedDomains?.contains(domain) == true {
             Image(systemName: "pin.fill")
                 .imageScale(.small)
                 .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
@@ -183,17 +179,6 @@ struct BlogListView: View {
         }
     }
 
-    private var addSiteButtonVStack: some View {
-        VStack(spacing: Length.Padding.medium) {
-            Divider()
-                .background(Color.DS.Foreground.secondary)
-            DSButton(title: "Add a site", style: .init(emphasis: .primary, size: .large)) {
-                // Add a site
-            }
-            .padding(.horizontal, Length.Padding.medium)
-        }
-        .background(Color.DS.Background.primary)
-    }
 }
 
 private struct BlogListButtonStyle: ButtonStyle {

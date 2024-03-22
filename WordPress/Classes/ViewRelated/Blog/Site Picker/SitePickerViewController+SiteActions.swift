@@ -73,7 +73,7 @@ extension SitePickerViewController {
 
     // MARK: - Add site
 
-    private func addSiteTapped() {
+    func addSiteTapped() {
         let canCreateWPComSite = defaultAccount() != nil
         let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
 
@@ -103,7 +103,7 @@ extension SitePickerViewController {
         actionSheet.popoverPresentationController?.sourceRect = sourceView.bounds
         actionSheet.popoverPresentationController?.permittedArrowDirections = .up
 
-        parent?.present(actionSheet, animated: true)
+        present(actionSheet, animated: true)
     }
 
     private func launchSiteCreation() {
