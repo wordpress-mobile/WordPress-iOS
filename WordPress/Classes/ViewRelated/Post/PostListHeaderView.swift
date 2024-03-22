@@ -79,6 +79,8 @@ final class PostListHeaderView: UIView {
             stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
         }
 
+        indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+
         stackView.spacing = 12
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false

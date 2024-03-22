@@ -92,6 +92,11 @@ extension PublishingEditor {
             analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    func performEditorAction(_ action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
+        fatalError()
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
@@ -303,6 +308,45 @@ extension PublishingEditor {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _cancelEditing()
+        }
+
+        // TODO: this is not correct
+        // TODO: add "Cancel" to unsaved changes dialog
+        guard !post.revisionChanges.isEmpty else {
+            dismissOrPopView()
+            return
+        }
+
+        if !post.hasRemote() {
+            if post.isEmpty {
+                discardAndDismiss()
+            } else {
+                showCloseConfirmationAlert()
+            }
+        } else {
+            editorSession.end(outcome: .save)
+
+            let original = (post.original ?? post)
+            if original.status == .draft {
+                /// - warning: Work-in-progress (kahu-offline-mode)
+                /// TODO: replace with a new save
+                PostCoordinator.shared.save(post)
+            } else {
+                // Keep the unsaved changes
+            }
+            dismissOrPopView()
+        }
+    }
+
+    private func discardAndDismiss() {
+        editorSession.end(outcome: .cancel)
+        discardUnsavedChangesAndUpdateGUI()
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    func _cancelEditing() {
         /// If a post is marked to be auto uploaded and can be saved, it means that the changes
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
@@ -322,6 +366,7 @@ extension PublishingEditor {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     private func resumeSaving() {
         post.shouldAttemptAutoUpload = false
         let action: PostEditorAction = post.status == .draft ? .update : .publish
@@ -381,6 +426,18 @@ extension PublishingEditor {
         return postDeleted
     }
 
+    private func showCloseConfirmationAlert() {
+        let alert = UIAlertController(title: Strings.closeDialogTitle, message: nil, preferredStyle: .actionSheet)
+        alert.view.accessibilityIdentifier = "post-has-changes-alert"
+        alert.addCancelActionWithTitle(Strings.closeDialogCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeDialogDiscard) { _ in
+            self.discardAndDismiss()
+        }
+        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
     func showPostHasChangesAlert() {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
@@ -650,6 +707,12 @@ extension PublishingEditor {
 
 struct PostEditorDebouncerConstants {
     static let autoSavingDelay = Double(0.5)
+}
+
+private enum Strings {
+    static let closeDialogTitle = NSLocalizedString("postEditor.closeDialog.title", value: "You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
+    static let closeDialogCancel = NSLocalizedString("postEditor.closeDialog.keepEditing", value: "Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
+    static let closeDialogDiscard = NSLocalizedString("postEditor.closeDialog.discard", value: "Discard", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
 }
 
 private struct MediaUploadingAlert {

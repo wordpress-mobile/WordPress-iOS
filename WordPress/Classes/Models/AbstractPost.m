@@ -490,6 +490,7 @@
 
 #pragma mark - Post
 
+/// - note: Deprecated (kahu-offline-mode)
 - (BOOL)canSave
 {
     NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];

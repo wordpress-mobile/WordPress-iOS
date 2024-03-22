@@ -160,4 +160,10 @@ extension AbstractPost {
         }
         return RemotePostUpdateParameters.changes(from: original, to: latest)
     }
+
+    var isEmpty: Bool {
+        let title = (postTitle ?? "").trimmingCharacters(in: .whitespaces)
+        let content = (content ?? "").trimmingCharacters(in: .whitespaces)
+        return title.isEmpty && content.isEmpty
+    }
 }

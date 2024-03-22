@@ -6,6 +6,7 @@ import WordPressShared
 /// None of the associated values should be (nor can be) accessed directly by the UI, only through the `PostEditorStateContext` instance.
 ///
 public enum PostEditorAction {
+    /// - note: Deprecated (kahu-offline-mode)
     case save
     case saveAsDraft
     case schedule

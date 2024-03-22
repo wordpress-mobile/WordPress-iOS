@@ -45,9 +45,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         guard RemoteFeature.enabled(.syncPublishing) else {
             return _status
         }
-        if !post.revisionChanges.isEmpty {
-            return Strings.unsavedChanges
-        }
         return nil
     }
 
@@ -275,5 +272,4 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 private enum Strings {
     static let movingPostToTrash = NSLocalizedString("post.movingToTrashStatusMessage", value: "Moving post to trash...", comment: "Status mesasge for post cells")
     static let deletingPostPermanently = NSLocalizedString("post.deletingPostPermanentlyStatusMessage", value: "Deleting post...", comment: "Status mesasge for post cells")
-    static let unsavedChanges = NSLocalizedString("post.unsavedChanges", value: "Unsaved changes", comment: "Status messsage for post cells when post has unsaved changes")
 }
