@@ -1,4 +1,5 @@
 import UIKit
+import AutomatticTracks
 import WordPressUI
 
 protocol ReaderDiscoverFlowDelegate: AnyObject {
@@ -322,7 +323,8 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
         }
 
         guard let interest = dataSource.interest(for: indexPath.row) else {
-            DDLogError("ReaderSelectInterestsViewController: Requested for data at invalid row \(indexPath.row)")
+            CrashLogging.main.logMessage("ReaderSelectInterestsViewController: Requested for data at invalid row",
+                                         properties: ["row": indexPath.row], level: .warning)
             return .init(frame: .zero)
         }
 
