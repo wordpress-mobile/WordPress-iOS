@@ -190,8 +190,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRemote;
 // Deletes post locally
 - (void)remove;
-// Save changes to disk
-- (void)save;
 
 // This property is used to indicate whether an app should attempt to automatically retry upload this post
 // the next time a internet connection is available.

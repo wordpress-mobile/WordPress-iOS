@@ -44,7 +44,7 @@ class EditorGutenbergTests: XCTestCase {
             .openPostSettings()
             .selectCategory(name: category)
             .addTag(name: tag)
-            .closePostSettings()
+            .savePostSettings()
             .postAndViewEpilogue(action: .publish)
             .verifyEpilogueDisplays(postTitle: postTitle, siteAddress: WPUITestCredentials.testWPcomPaidSite)
             .tapDone()
@@ -85,7 +85,7 @@ class EditorGutenbergTests: XCTestCase {
             .verifyPostSettings(hasImage: false)
             .setFeaturedImage()
             .verifyPostSettings(hasImage: true)
-            .closePostSettings()
+            .savePostSettings()
     }
 
     func testAddGalleryBlock() throws {

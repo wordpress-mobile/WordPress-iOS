@@ -155,7 +155,7 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
+    func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
         let post = post.original ?? post
         do {
             let isExistingPost = post.hasRemote()
@@ -163,6 +163,20 @@ class PostCoordinator: NSObject {
             try await PostRepository()._save(post, changes: changes, overwrite: true)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
+        } catch {
+            handleError(error, for: post)
+            throw error
+        }
+    }
+
+    /// Patches the post but keeps the local revision if any.
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @MainActor
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+        let post = post.original ?? post
+        do {
+            try await PostRepository()._update(post, changes: changes)
         } catch {
             handleError(error, for: post)
             throw error

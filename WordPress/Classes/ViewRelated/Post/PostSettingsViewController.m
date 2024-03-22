@@ -82,6 +82,8 @@ FeaturedImageViewControllerDelegate>
 
 @property (nonatomic, strong, readonly) BlogService *blogService;
 @property (nonatomic, strong, readonly) SharingService *sharingService;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *context;
+@property (nonatomic, strong, readonly) Blog *blog;
 
 #pragma mark - Properties: Reachability
 
@@ -104,7 +106,19 @@ FeaturedImageViewControllerDelegate>
 {
     self = [super initWithStyle:UITableViewStyleInsetGrouped];
     if (self) {
-        self.apost = aPost;
+        // Create a new child context to ensure none of the changes made here
+        // are saved to the database without a confirmation and to simplify diffing.
+        _context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        self.context.parentContext = aPost.managedObjectContext;
+        self.context.automaticallyMergesChangesFromParent = true;
+
+        AbstractPost *revision = [self.context existingObjectWithID:aPost.objectID error:nil];
+
+        self.apost = revision;
+        _snapshot = aPost;
+        // Important: all related services operation on the main viewContext
+        _blog = aPost.blog;
+
         self.unsupportedConnections = @[];
         self.enabledConnections = [NSMutableArray array];
     }
@@ -159,7 +173,7 @@ FeaturedImageViewControllerDelegate>
     // reachability callbacks to trigger before such initial setup completes.
     //
     [self setupReachability];
-    [self setupStandaloneEditor];
+    [self onViewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -172,22 +186,6 @@ FeaturedImageViewControllerDelegate>
     [self setupPublicizeConnections]; // Refresh in case the user disconnects from unsupported services.
     [self configureMetaSectionRows];
     [self reloadData];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if (self.isStandalone) {
-        if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
-            // TODO: Implement it using a ViewModel or a child context to eliminate the risk of accidently saving the changes without uploading them
-            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
-        }
-    } else {
-        [self.apost.managedObjectContext performBlock:^{
-            [self.apost.managedObjectContext save:nil];
-        }];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -236,7 +234,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)setupFormatsList
 {
-    self.formatsList = self.post.blog.sortedPostFormatNames;
+    self.formatsList = self.blog.sortedPostFormatNames;
 }
 
 - (void)setupPublicizeConnections
@@ -251,7 +249,7 @@ FeaturedImageViewControllerDelegate>
 
     NSMutableArray<PublicizeConnection *> *supportedConnections = [NSMutableArray new];
     NSMutableArray<PublicizeConnection *> *unsupportedConnections = [NSMutableArray new];
-    for (PublicizeConnection *connection in self.post.blog.sortedConnections) {
+    for (PublicizeConnection *connection in self.blog.sortedConnections) {
         if ([connection.service isEqualToString:twitterService.serviceID]) {
             [unsupportedConnections addObject:connection];
             continue;
@@ -287,7 +285,7 @@ FeaturedImageViewControllerDelegate>
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     dateFormatter.dateStyle = NSDateFormatterLongStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
-    dateFormatter.timeZone = [self.apost.blog timeZone];
+    dateFormatter.timeZone = [self.blog timeZone];
     self.postDateFormatter = dateFormatter;
 }
 
@@ -317,7 +315,7 @@ FeaturedImageViewControllerDelegate>
 {
     __weak __typeof(self) weakSelf = self;
 
-    [self.blogService syncPostFormatsForBlog:self.apost.blog success:^{
+    [self.blogService syncPostFormatsForBlog:self.blog success:^{
         [weakSelf setupFormatsList];
         completionBlock();
     } failure:^(NSError * _Nonnull __unused error) {
@@ -329,7 +327,7 @@ FeaturedImageViewControllerDelegate>
 - (void)syncPublicizeServices
 {
     __weak __typeof(self) weakSelf = self;
-    [self.sharingService syncPublicizeServicesForBlog:self.apost.blog success:^{
+    [self.sharingService syncPublicizeServicesForBlog:self.blog success:^{
         [weakSelf setupPublicizeConnections];
     } failure:nil];
 }
@@ -417,7 +415,7 @@ FeaturedImageViewControllerDelegate>
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
-    if (![self.apost.blog supports:BlogFeatureWPComRESTAPI] && !self.apost.blog.isAdmin) {
+    if (![self.blog supports:BlogFeatureWPComRESTAPI] && !self.blog.isAdmin) {
         [sections removeObject:stickyPostSection];
     }
 
@@ -630,7 +628,7 @@ FeaturedImageViewControllerDelegate>
         return 0;
     }
 
-    if (self.apost.blog.supportsPublicize && self.publicizeConnections.count > 0) {
+    if (self.blog.supportsPublicize && self.publicizeConnections.count > 0) {
         // One row per publicize connection plus an extra row for the publicze message
         return self.publicizeConnections.count + 1;
     }
@@ -1181,7 +1179,7 @@ FeaturedImageViewControllerDelegate>
     if (indexPath.row < self.publicizeConnections.count) {
         PublicizeConnection *connection = self.publicizeConnections[indexPath.row];
         if (connection.isBroken) {
-            SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.post.blog
+            SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.blog
                                                                                     publicizeConnection:connection];
             [self.navigationController pushViewController:controller animated:YES];
         } else {
@@ -1218,7 +1216,7 @@ FeaturedImageViewControllerDelegate>
     }
 
     PublicizeConnection *connection = self.unsupportedConnections[indexPath.row];
-    SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.apost.blog
+    SharingDetailViewController *controller = [[SharingDetailViewController alloc] initWithBlog:self.blog
                                                                             publicizeConnection:connection];
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -1294,9 +1292,8 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showCategoriesSelection
 {
-    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.post.blog
-                                                                                 currentSelection:[self.post.categories allObjects]
-                                                                                    selectionMode:CategoriesSelectionModePost];
+    NSSet<PostCategory *> *selection = [self findCategoriesForCategories:self.post.categories inContext:self.blog.managedObjectContext];
+    PostCategoriesViewController *controller = [[PostCategoriesViewController alloc] initWithBlog:self.blog currentSelection:selection.allObjects selectionMode:CategoriesSelectionModePost];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -1304,7 +1301,7 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showTagsPicker
 {
-    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags blog:self.post.blog];
+    PostTagPickerViewController *tagsPicker = [[PostTagPickerViewController alloc] initWithTags:self.post.tags blog:self.blog];
 
     tagsPicker.onValueChanged = ^(NSString * _Nonnull value) {
         [WPAnalytics trackEvent:WPAnalyticsEventEditorPostTagsChanged properties:@{@"via": @"settings"}];
@@ -1378,12 +1375,19 @@ FeaturedImageViewControllerDelegate>
 - (void)postCategoriesViewController:(PostCategoriesViewController *)controller didUpdateSelectedCategories:(NSSet *)categories
 {
     [WPAnalytics trackEvent:WPAnalyticsEventEditorPostCategoryChanged properties:@{@"via": @"settings"}];
+    self.post.categories = [self findCategoriesForCategories:categories inContext:self.context];
+}
 
-    // Save changes.
-    self.post.categories = [categories mutableCopy];
-    if (!self.isStandalone) {
-        [self.post save];
+- (NSSet<PostCategory *> *)findCategoriesForCategories:(NSSet<PostCategory *> *)categories inContext:(NSManagedObjectContext *)context {
+    NSMutableSet *categoriesInContext = [NSMutableSet new];
+    for (PostCategory *item in categories) {
+        PostCategory *category = [context existingObjectWithID:item.objectID error:nil];
+        NSAssert(category != nil, @"Failed to find the category in the context");
+        if (category) {
+            [categoriesInContext addObject:category];
+        }
     }
+    return categoriesInContext;
 }
 
 #pragma mark - PostFeaturedImageCellDelegate

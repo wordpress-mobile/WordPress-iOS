@@ -47,8 +47,8 @@ public class EditorPostSettings: ScreenObject {
         $0.buttons.containing(.staticText, identifier: "1").element
     }
 
-    private let closeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars.buttons["close"]
+    private let saveButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.navigationBars.buttons["save"]
     }
 
     private let backButtonGetter: (XCUIApplication) -> XCUIElement? = {
@@ -59,7 +59,7 @@ public class EditorPostSettings: ScreenObject {
     var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
     var dateSelector: XCUIElement { dateSelectorGetter(app) }
-    var closeButton: XCUIElement { closeButtonGetter(app) }
+    var saveButton: XCUIElement { saveButtonGetter(app) }
     var backButton: XCUIElement? { backButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
     var firstCalendarDayButton: XCUIElement { firstCalendarDayButtonGetter(app) }
@@ -135,8 +135,8 @@ public class EditorPostSettings: ScreenObject {
     }
 
     @discardableResult
-    public func closePostSettings() throws -> BlockEditorScreen {
-        closeButton.tap()
+    public func savePostSettings() throws -> BlockEditorScreen {
+        saveButton.tap()
 
         return try BlockEditorScreen()
     }

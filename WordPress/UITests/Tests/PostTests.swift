@@ -25,7 +25,7 @@ class PostTests: XCTestCase {
             .openPostSettings()
             .updatePublishDateToFutureDate()
             .closePublishDateSelector()
-            .closePostSettings()
+            .savePostSettings()
             .post(action: .schedule)
 
         try MySiteScreen()

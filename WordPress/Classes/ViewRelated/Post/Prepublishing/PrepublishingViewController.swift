@@ -556,7 +556,6 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
              return
         }
         post.categories = categories
-        post.save()
     }
 }
 

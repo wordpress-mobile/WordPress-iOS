@@ -4,23 +4,27 @@ import Combine
 import WordPressKit
 
 extension PostSettingsViewController {
+    static func make(for post: AbstractPost) -> PostSettingsViewController {
+        if let post = post as? Post {
+            return PostSettingsViewController(post: post.latest())
+        } else {
+            return PageSettingsViewController(post: post)
+        }
+    }
+
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let viewController = PostSettingsViewController(post: post.latest())
+        let viewController = PostSettingsViewController.make(for: post)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
         navigation.navigationBar.isTranslucent = true // Reset to default
         presentingViewController.present(navigation, animated: true)
     }
 
-    @objc func setupStandaloneEditor() {
-        guard isStandalone else { return }
-
+    @objc func onViewDidLoad() {
         configureDefaultNavigationBarAppearance()
 
         refreshNavigationBarButtons()
         navigationItem.rightBarButtonItem?.isEnabled = false
-
-        objc_setAssociatedObject(self, &PostSettingsViewController.postSnapshotKey, RemotePostCreateParameters(post: apost), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 
         var cancellables: [AnyCancellable] = []
         apost.objectWillChange.sink { [weak self] in
@@ -34,15 +38,17 @@ extension PostSettingsViewController {
     }
 
     private func didUpdateSettings() {
-        guard let snapshot else { return }
-        let changes = RemotePostCreateParameters(post: apost).changes(from: snapshot)
         navigationItem.rightBarButtonItem?.isEnabled = !changes.isEmpty
     }
 
     private func refreshNavigationBarButtons() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonCancelTapped))
+        let buttonCancel = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonCancelTapped))
+        buttonCancel.accessibilityLabel = "cancel"
+        navigationItem.leftBarButtonItem = buttonCancel
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(buttonSaveTapped))
+        let buttonSave = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(buttonSaveTapped))
+        buttonSave.accessibilityLabel = "save"
+        navigationItem.rightBarButtonItem = buttonSave
     }
 
     @objc private func buttonCancelTapped() {
@@ -50,37 +56,57 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonSaveTapped() {
-        navigationItem.rightBarButtonItem = .activityIndicator
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _buttonSaveTapped()
+        }
 
+        guard isStandalone else {
+            saveChangesToParentContext()
+            presentingViewController?.dismiss(animated: true)
+            return
+        }
+
+        navigationItem.rightBarButtonItem = .activityIndicator
         setEnabled(false)
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            guard let snapshot else {
-                return assertionFailure("Snapshot missing")
-            }
-            Task { @MainActor in
-                do {
-                    let changes = RemotePostCreateParameters(post: apost).changes(from: snapshot)
-                    try await PostCoordinator.shared._update(apost, changes: changes)
-                    presentingViewController?.dismiss(animated: true)
-                } catch {
-                    setEnabled(true)
-                    refreshNavigationBarButtons()
+        Task { @MainActor in
+            do {
+                let original = (snapshot.original ?? snapshot)
+                if original.status == .draft {
+                    saveChangesToParentContext()
+                    // TODO: Replace with new PostRepository._save
+                    PostCoordinator.shared.save(original)
+                } else {
+                    try await PostCoordinator.shared._update(original, changes: changes)
                 }
-            }
-        } else {
-            PostCoordinator.shared.save(apost) { [weak self] result in
-                switch result {
-                case .success:
-                    self?.isStandaloneEditorDismissingAfterSave = true
-                    self?.presentingViewController?.dismiss(animated: true)
-                case .failure:
-                    self?.setEnabled(true)
-                    SVProgressHUD.showError(withStatus: Strings.errorMessage)
-                    self?.refreshNavigationBarButtons()
-                }
+                presentingViewController?.dismiss(animated: true)
+            } catch {
+                setEnabled(true)
+                refreshNavigationBarButtons()
+
             }
         }
+    }
+
+    /// Returns a diff from the snapshot to the updated version of the post.
+    private var changes: RemotePostUpdateParameters {
+        RemotePostUpdateParameters.changes(from: snapshot, to: apost)
+    }
+
+    private func saveChangesToParentContext() {
+        do {
+            try self.apost.managedObjectContext?.save()
+        } catch {
+            // Should never happen
+            WordPressAppDelegate.crashLogging?.logError(error)
+        }
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    private func _buttonSaveTapped() {
+        saveChangesToParentContext()
+        PostCoordinator.shared.save(apost)
+        presentingViewController?.dismiss(animated: true)
     }
 
     @objc private func didChangeObjects(_ notification: Foundation.Notification) {
@@ -93,17 +119,14 @@ extension PostSettingsViewController {
         }
     }
 
-    private var snapshot: RemotePostCreateParameters? {
-        objc_getAssociatedObject(self, &PostSettingsViewController.postSnapshotKey) as? RemotePostCreateParameters
-    }
-
     private func setEnabled(_ isEnabled: Bool) {
+        navigationItem.leftBarButtonItem?.isEnabled = isEnabled
+        isModalInPresentation = !isEnabled
         tableView.tintAdjustmentMode = isEnabled ? .automatic : .dimmed
         tableView.isUserInteractionEnabled = isEnabled
     }
 
     private static var cancellablesKey: UInt8 = 0
-    private static var postSnapshotKey: UInt8 = 0
 }
 
 private enum Strings {
