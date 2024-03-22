@@ -6,6 +6,11 @@ extension AbstractPost {
         original?.original() ?? self
     }
 
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    var isNewDraft: Bool {
+        !hasRemote() && remoteStatus != .syncNeeded
+    }
+
     // MARK: - Status
 
     @objc
@@ -153,7 +158,7 @@ extension AbstractPost {
 
     /// If there is a revision, returns a list of changes made in the revision.
     var revisionChanges: RemotePostUpdateParameters {
-        let original = self.original ?? self
+        let original = self.original()
         let latest = self.latest()
         guard latest.isRevision() else {
             return RemotePostUpdateParameters() // Empty

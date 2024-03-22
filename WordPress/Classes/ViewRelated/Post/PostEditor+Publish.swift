@@ -135,14 +135,14 @@ extension PublishingEditor {
         case .saveAsDraft:
             performSaveDraftAction()
         case .update:
-            if (post.original ?? post).status == .draft {
+            if post.original().status == .draft {
                 performSaveDraftAction()
             } else {
                 performUpdatePostAction()
             }
         case .submitForReview:
-            /// - note: Work-in-progress (kahu-offline-mode)
-            fatalError("Not implemented (show PrepubishingVC)")
+            // TODO: Show Prepublishing VC
+            fatalError("Not implemented (kahu-offline-mode)")
         case .save, .continueFromHomepageEditing:
             assertionFailure("No longer used and supported")
             assertionFailure("No longer used and supported")
@@ -191,6 +191,11 @@ extension PublishingEditor {
                 await SVProgressHUD.dismiss()
             }
         }
+    }
+
+    private func performAutosave() {
+        // TODO: create an autosave and delete local revision
+        fatalError("Not implemented (kahu-offline-mode)")
     }
 
     /// - note: Deprecated (kahu-offline-mode)
@@ -409,36 +414,19 @@ extension PublishingEditor {
             return _cancelEditing()
         }
 
-        if (post.original ?? post).status == .draft {
-            if post.isEmpty {
-                discardAndDismiss()
+        guard !post.revisionChanges.isEmpty else {
+            return discardAndDismiss()
+        }
+
+        if post.original().status == .draft {
+            if post.isNewDraft {
+                showCloseNewDraftConfirmationAlert()
             } else {
-                /// TODO: remove the use of remoteStatus
-                if post.remoteStatus == .local {
-                    showCloseNewDraftConfirmationAlert()
-                } else {
-                    if !post.revisionChanges.isEmpty {
-                        showCloseExistingDraftConfirmationAlert()
-                    } else {
-                        dismissOrPopView()
-                    }
-                }
+                showCloseExistingDraftConfirmationAlert()
             }
-            return
-        }
-
-        editorSession.end(outcome: .save)
-
-        let original = (post.original ?? post)
-        if original.status == .draft {
-            /// - warning: Work-in-progress (kahu-offline-mode)
-            /// TODO: replace with a new save
-            PostCoordinator.shared.save(post)
         } else {
-            // TODO: show alert
-            // Keep the unsaved changes
+            showClosePublishedPostConfirmationAlert()
         }
-        dismissOrPopView()
     }
 
     private func discardAndDismiss() {
@@ -530,11 +518,11 @@ extension PublishingEditor {
     private func showCloseNewDraftConfirmationAlert() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
-        alert.addCancelActionWithTitle(Strings.closeDraftAlertCancel)
-        alert.addDestructiveActionWithTitle(Strings.closeDraftAlertDelete) { _ in
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { _ in
             self.discardAndDismiss()
         }
-        alert.addActionWithTitle(PostEditorAction.saveAsDraft.publishActionLabel, style: .default) { _ in
+        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
             self.performSaveDraftAction()
         }
         alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
@@ -544,12 +532,29 @@ extension PublishingEditor {
     private func showCloseExistingDraftConfirmationAlert() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
-        alert.addCancelActionWithTitle(Strings.closeDraftAlertCancel)
-        alert.addDestructiveActionWithTitle(Strings.closeDraftAlertDeleteChanges) { _ in
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
             self.discardAndDismiss()
         }
-        alert.addActionWithTitle(Strings.closeDraftAlertSaveDraft, style: .default) { _ in
+        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
             self.performSaveDraftAction()
+        }
+        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func showClosePublishedPostConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.accessibilityIdentifier = "post-has-changes-alert"
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
+            self.discardAndDismiss()
+        }
+        let changes = post.revisionChanges
+        if changes.content != nil { // Only suggest if there is an autosave
+            alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraftChanges, style: .default) { _ in
+                self.performAutosave()
+            }
         }
         alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
         present(alert, animated: true, completion: nil)
@@ -816,10 +821,11 @@ struct PostEditorDebouncerConstants {
 }
 
 private enum Strings {
-    static let closeDraftAlertCancel = NSLocalizedString("postEditor.closeDraftAlert.keepEditing", value: "Keep Editing", comment: "Alert confirming closing a new draft")
-    static let closeDraftAlertDelete = NSLocalizedString("postEditor.closeDraftAlert.deleteDraft", value: "Delete Draft", comment: "Alert confirming closing a new draft")
-    static let closeDraftAlertDeleteChanges = NSLocalizedString("postEditor.closeDraftAlert.deleteChanges", value: "Delete Changes", comment: "Alert confirming closing a new draft")
-    static let closeDraftAlertSaveDraft = NSLocalizedString("postEditor.closeDraftAlert.saveeDraft", value: "Save Draft", comment: "Alert confirming closing a new draft")
+    static let closeConfirmationAlertCancel = NSLocalizedString("postEditor.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
+    static let closeConfirmationAlertDelete = NSLocalizedString("postEditor.closeConfirmationAlert.discardDraft", value: "Discard Draft", comment: "Button in an alert confirming discaring a new draft")
+    static let closeConfirmationAlertDiscardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
+    static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
+    static let closeConfirmationAlertSaveDraftChanges = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraftChanges", value: "Save Draft Changes", comment: "Button in an alert confirming saving draft changes to an existing published post")
 }
 
 private struct MediaUploadingAlert {
