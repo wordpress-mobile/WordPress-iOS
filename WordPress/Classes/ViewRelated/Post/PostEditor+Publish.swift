@@ -83,17 +83,89 @@ extension PublishingEditor {
         }
     }
 
-    func handlePublishButtonTap() {
+    func handlePrimaryActionButtonTap() {
         let action = self.postEditorStateContext.action
 
-        publishPost(
-            action: action,
-            dismissWhenDone: action.dismissesEditor,
-            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            publishPost(
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+                analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+            return
+        }
+
+        performEditorAction(action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
+    }
+
+    func handleSecondaryActionButtonTap() {
+        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
+            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
+            let error = NSError(domain: EditorError.errorDomain, code: EditorError.expectedSecondaryAction.rawValue, userInfo: nil)
+            WordPressAppDelegate.crashLogging?.logError(error)
+            return
+        }
+
+        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
+
+        let publishPostClosure = { [unowned self] in
+            guard RemoteFeatureFlag.syncPublishing.enabled() else {
+                publishPost(action: action, dismissWhenDone: action.dismissesEditor, analyticsStat: secondaryStat)
+                return
+            }
+            performEditorAction(action, analyticsStat: secondaryStat)
+        }
+
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: publishPostClosure)
+        } else {
+            publishPostClosure()
+        }
     }
 
     func performEditorAction(_ action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
-        fatalError()
+        if action == .publish {
+            WPAnalytics.track(.editorPostPublishTap)
+        }
+
+        mapUIContentToPostAndSave(immediate: true)
+
+        switch action {
+        case .schedule, .publish:
+            showPrepublishingSheet(for: action, analyticsStat: analyticsStat)
+        case .saveAsDraft:
+            fatalError("Not implemented (show PrepubishingVC)")
+        case .update:
+            fatalError("Not implemented (show PrepubishingVC)")
+        case .submitForReview:
+            /// - note: Work-in-progress (kahu-offline-mode)
+            fatalError("Not implemented (show PrepubishingVC)")
+        case .save, .continueFromHomepageEditing:
+            assertionFailure("No longer used and supported")
+            assertionFailure("No longer used and supported")
+        }
+    }
+
+    private func showPrepublishingSheet(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
+        displayPublishConfirmationAlert(for: action) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .confirmed:
+                assertionFailure("Not used when .syncPublishing is enabled")
+                break
+            case .published:
+                self.emitPostSaveEvent()
+                if let analyticsStat {
+                    self.trackPostSave(stat: analyticsStat)
+                }
+                self.editorSession.end(outcome: action.analyticsEndOutcome)
+
+                let presentBloggingReminders = JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+                self.dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
+            case .cancelled:
+                self.publishingDismissed()
+                WPAnalytics.track(.editorPostPublishDismissed)
+            }
+        }
     }
 
     /// - note: Deprecated (kahu-offline-mode)
@@ -703,6 +775,12 @@ extension PublishingEditor {
     func uploadFailureNotice(action: PostEditorAction) -> Notice {
         return Notice(title: action.publishingErrorLabel, tag: uploadFailureNoticeTag)
     }
+}
+
+private enum EditorError: Int {
+    case expectedSecondaryAction = 1
+
+    static let errorDomain = "PostEditor.errorDomain"
 }
 
 struct PostEditorDebouncerConstants {

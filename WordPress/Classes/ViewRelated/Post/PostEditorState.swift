@@ -15,6 +15,7 @@ public enum PostEditorAction {
     case submitForReview
     case continueFromHomepageEditing
 
+    /// - note: Deprecated (kahu-offline-mode)
     var dismissesEditor: Bool {
         switch self {
         case .publish, .schedule, .submitForReview:
@@ -24,6 +25,7 @@ public enum PostEditorAction {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     var isAsync: Bool {
         switch self {
         case .publish, .schedule, .submitForReview:
