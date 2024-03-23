@@ -71,7 +71,7 @@ class FilterSheetViewController: UIViewController {
 
     private lazy var editButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle(Strings.editButtonTitle, for: .normal)
+        button.setTitle(Strings.manageButtonTitle, for: .normal)
         button.tintColor = .label
         button.titleLabel?.adjustsFontForContentSizeCategory = true
 
@@ -169,10 +169,10 @@ private extension FilterSheetViewController {
             value: "Subscribing to new tags...",
             comment: "Label displayed to the user while loading their selected interests"
         )
-        static let editButtonTitle = NSLocalizedString(
-            "reader.filterSheet.button.edit",
-            value: "Edit",
-            comment: "Title for a button that allows user to edit their subscribed list from the filter sheet"
+        static let manageButtonTitle = NSLocalizedString(
+            "reader.filterSheet.button.manage",
+            value: "Manage",
+            comment: "Title for a button that allows user to manage their subscribed list from the filter sheet"
         )
     }
 
