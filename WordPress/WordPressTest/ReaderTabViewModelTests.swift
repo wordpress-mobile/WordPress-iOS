@@ -174,7 +174,6 @@ extension ReaderTabViewModelTests {
                        cellClass: UITableViewCell.self,
                        reuseIdentifier: "Cell",
                        emptyTitle: "Test",
-                       emptyActionTitle: "Test",
                        section: .sites) { completion in
             completion(.success([]))
         }

@@ -165,8 +165,8 @@ private extension FilterSheetViewController {
             comment: "Screen title. Reader select interests title label text."
         )
         static let selectInterestsLoading = NSLocalizedString(
-            "reader.filterSheet.select.tags.loading",
-            value: "Subscribing to new tags...",
+            "reader.filterSheet.select.tags.following",
+            value: "Following new tags...",
             comment: "Label displayed to the user while loading their selected interests"
         )
         static let manageButtonTitle = NSLocalizedString(
