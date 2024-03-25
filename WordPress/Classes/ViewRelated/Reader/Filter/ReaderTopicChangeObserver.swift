@@ -29,9 +29,14 @@ class ReaderTopicChangeObserver<Topic: ReaderAbstractTopic>: NSObject, ReaderTop
     }
 
     @objc private func handleObjectsChange(_ notification: Foundation.Notification) {
-        // Skip if `Topic` is not included in the notification payload.
-        guard let updated = notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>,
-              updated.firstIndex(where: { $0 is Topic }) != nil else {
+        // Check for objects with type `Topic` within the Notification.
+        let notificationContainsTopic = [notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>,
+                                         notification.userInfo?[NSRefreshedObjectsKey] as? Set<NSManagedObject>]
+                                     .compactMap { set in set?.firstIndex(where: { $0 is Topic }) }
+                                     .count > 0
+
+        // Skip if `Topic` is not included at all in the notification payload.
+        guard notificationContainsTopic else {
             return
         }
 
