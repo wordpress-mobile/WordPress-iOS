@@ -51,7 +51,7 @@ class GutenbergContentParserTests: XCTestCase {
 
     func testParserSingleBlockToString() {
         let parser = GutenbergContentParser(for: singleBlock)
-        XCTAssertEqual(parser.toString(), singleBlock, "Parsed content should match the original")
+        XCTAssertEqual(parser.html(), singleBlock, "Parsed content should match the original")
     }
 
     func testParserNestedBlock() {
@@ -121,7 +121,7 @@ class GutenbergContentParserTests: XCTestCase {
 
     func testParserNestedBlockToString() {
         let parser = GutenbergContentParser(for: nestedBlock)
-        XCTAssertEqual(parser.toString(), nestedBlock, "Parsed content should match the original")
+        XCTAssertEqual(parser.html(), nestedBlock, "Parsed content should match the original")
     }
 
     func testParserModifyAttribute() {
@@ -154,7 +154,7 @@ class GutenbergContentParserTests: XCTestCase {
         <!-- /wp:parent-block -->
         """
 
-        XCTAssertEqual(parser.toString(), expectedResult, "Parsed content should contain modifications")
+        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain modifications")
     }
 
     func testParserModifyHTML() {
@@ -187,6 +187,6 @@ class GutenbergContentParserTests: XCTestCase {
         <!-- /wp:parent-block -->
         """
 
-        XCTAssertEqual(parser.toString(), expectedResult, "Parsed content should contain modifications")
+        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain modifications")
     }
 }

@@ -76,7 +76,7 @@ public class GutenbergContentParser {
         traverseChildNodes(element: htmlContent)
     }
 
-    public func toString() -> String {
+    public func html() -> String {
         return (try? self.htmlDocument?.body()?.html()) ?? ""
     }
 
