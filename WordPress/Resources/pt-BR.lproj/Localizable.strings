@@ -817,8 +817,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Tem certeza de que deseja excluir permanentemente esse post?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Tem certeza de que deseja publicar?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -2452,8 +2451,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Editar chave de moderação";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editar post";
 
@@ -5360,8 +5358,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Público";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6842,9 +6839,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "O título do site é exibido na barra de título do navegador e também no cabeçalho da maioria dos temas.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "O editor de Stories não está disponível no momento para seu iPad. Se possível, tente editar as Stories em um iPhone.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Está faltando um host válido no URL.";
 
@@ -7026,9 +7020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ocorreu um erro ao tentar acessar sua localização. Por favor, tente novamente mais tarde.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Ocorreu um problema no editor de Stories. Caso o problema persista, entre em contato conosco por meio da tela Eu > Ajuda e suporte.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7416,9 +7407,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Não foi possível conectar";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Não foi possível abrir o editor de criação de histórias";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os posts";
 
@@ -7593,9 +7581,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "Não compatível";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Dispositivo não suportado";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Sem título";
@@ -8676,21 +8661,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMENTÁRIO]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d blogueiros_ curtiram isso.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Um blogueiro_ curtiu isso.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Você e %1$d blogueiros_ curtiram isto.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Você e outro blogueiro_ curtiram isso.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Você_ curtiu isto.";
 
 /* Age between dates equaling one day. */
 "a day" = "um dia";

@@ -44,7 +44,6 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
     let cellClass: UITableViewCell.Type
     let reuseIdentifier: String
     let emptyTitle: String
-    let emptyActionTitle: String
     let section: ReaderManageScenePresenter.TabbedSection
     let siteType: SiteOrganizationType?
 
@@ -58,7 +57,6 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
          cellClass: UITableViewCell.Type,
          reuseIdentifier: String,
          emptyTitle: String,
-         emptyActionTitle: String,
          section: ReaderManageScenePresenter.TabbedSection,
          provider: @escaping Provider,
          siteType: SiteOrganizationType? = nil) {
@@ -68,7 +66,6 @@ class FilterProvider: Identifiable, Observable, FilterTabBarItem {
         self.cellClass = cellClass
         self.reuseIdentifier = reuseIdentifier
         self.emptyTitle = emptyTitle
-        self.emptyActionTitle = emptyActionTitle
         self.section = section
         self.provider = provider
         self.siteType = siteType
@@ -139,18 +136,12 @@ extension ReaderSiteTopic {
             value: "Add a blog",
             comment: "No Tags View Button Label"
         )
-        let emptyActionTitle = NSLocalizedString(
-            "reader.no.tags.action",
-            value: "You can subscribe to posts on a specific blog by subscribing to it.",
-            comment: "No Sites View Label"
-        )
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "SitesFilterTab",
                               cellClass: SiteTableViewCell.self,
                               reuseIdentifier: FilterProvider.ReuseIdentifiers.blogs,
                               emptyTitle: emptyTitle,
-                              emptyActionTitle: emptyActionTitle,
                               section: .sites,
                               provider: tableProvider,
                               siteType: siteType)
@@ -290,18 +281,12 @@ extension ReaderTagTopic {
             value: "Add a tag",
             comment: "No Tags View Button Label"
         )
-        let emptyActionTitle = NSLocalizedString(
-            "reader.no.tags.action",
-            value: "You can subscribe to posts on a specific subject by adding a tag.",
-            comment: "No Topics View Label"
-        )
 
         return FilterProvider(title: titleFunction,
                               accessibilityIdentifier: "TagsFilterTab",
                               cellClass: UITableViewCell.self,
                               reuseIdentifier: FilterProvider.ReuseIdentifiers.tags,
                               emptyTitle: emptyTitle,
-                              emptyActionTitle: emptyActionTitle,
                               section: .tags,
                               provider: tableProvider)
     }

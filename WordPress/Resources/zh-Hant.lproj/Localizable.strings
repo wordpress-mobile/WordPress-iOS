@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-06 11:54:10+0000 */
+/* Translation-Revision-Date: 2024-03-20 12:54:10+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: zh_TW */
@@ -847,8 +847,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "你確定要永久刪除此文章？";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "確定要發表？";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1184,6 +1183,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "按鈕位置";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "複製錯誤詳細資料的按鈕";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "複製文章文字的按鈕";
 
 /* Label for the post author in the post detail. */
 "By " = "By ";
@@ -1841,7 +1846,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "從剪貼簿複製 URL，%s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "複製錯誤詳細資料";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "複製檔案 URL";
+
+/* No comment provided by engineer. */
+"Copy post text" = "複製文章文字";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "複製此應用程式的版本";
@@ -2515,8 +2526,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "編輯審核關鍵字";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "編輯文章";
 
@@ -2767,6 +2777,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "錯誤載入提示";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "載入留言時發生錯誤";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "將留言標示為垃圾時發生錯誤。";
@@ -5471,8 +5484,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公開";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6823,6 +6835,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "點選以瞭解詳細資訊。";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "點選此處即可複製錯誤詳細資料";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "點選此處即可複製文章文字";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "點選此處顯示說明";
 
 /* No comment provided by engineer. */
@@ -6971,9 +6989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "網站標題會顯示在網頁瀏覽器的標題列中，且會顯示在大部分佈景主題的頁首中。";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "你的 iPad 目前無法使用限時動態編輯器。 請嘗試在 iPhone 上使用限時動態功能。";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "網址缺少有效的主機。";
 
@@ -6994,6 +7009,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "最新文章頁面的內容由系統自動產生，無法編輯。";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "編輯器發生未知錯誤";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "檔案 %1$@ 包含惡意程式碼模式";
@@ -7155,9 +7173,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "嘗試存取你的位置時發生問題。請稍後再試一次。";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "限時動態編輯器發生問題。  如果問題持續發生，請透過「我」> 「說明與支援」畫面聯絡我們。";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7551,9 +7566,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "無法連線";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "無法建立限時動態編輯器";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "無法載入文章";
 
@@ -7734,9 +7746,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "不支援的使用者";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "不支援的裝置";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "無標題";
@@ -8613,6 +8622,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "你可以隨時前往「我的網站」>「設定」>「撰寫網誌」控制網誌提示和提醒";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "為預防內容受影響，你可以複製文章文字。 複製錯誤詳細資料，以便除錯並與支援團隊分享。";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "你可以使用網頁版編輯器來編輯此區塊。";
 
 /* Discussion Settings: Footer Text */
@@ -8653,6 +8665,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "你沒有任何已移至垃圾桶的文章";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "你沒有檢視此私人網誌的權限。";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "你有 %lu 個隱藏的 WordPress 網站。";
@@ -8851,21 +8866,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[留言]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d 位部落客_說這個讚。";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "一位部落客說這個讚。";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_你和 %1$d 位部落客_都說這個讚。";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "你和另一位部落客都說這個讚。";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_你_說這個讚。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";
@@ -9866,6 +9866,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "喜歡";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "已標示為垃圾訊息";
 
@@ -10211,6 +10214,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "有待改善";
 
@@ -10385,6 +10391,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@，%2$@。";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "離線變更";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "垃圾桶";
 
@@ -10396,6 +10405,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "檢視";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "已上傳頁面草稿";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "頁面待審中";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "頁面已發表";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "頁面已排程";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "頁面已更新";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "已上傳文章草稿";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "文章待審中";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "文章已發表";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "文章已排程";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "文章已更新";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "上傳失敗";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "檢視";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "關閉";
@@ -10646,6 +10691,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "檢視網站的文章";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d 個讚_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "你說這個讚。";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 個讚_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -11020,6 +11074,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新增";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
 
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "轉移網域";
