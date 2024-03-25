@@ -302,21 +302,16 @@ private extension LoginEpilogueTableViewController {
         }
     }
 
-    nonisolated
     func fetchGravatarProfile(with profile: UserProfile, completion: @escaping (LoginEpilogueUserInfo?) -> ()) async {
         let service = ProfileService()
         let epilogueInfo = LoginEpilogueUserInfo(profile: profile)
         do {
             let gravatarProfile = try await service.fetch(withEmail: profile.email)
             let updatedInfo = epilogueInfo.updating(with: gravatarProfile)
-            await MainActor.run {
-                completion(updatedInfo)
-            }
+            completion(updatedInfo)
         } catch {
             print("Error: \(error)")
-            await MainActor.run {
-                completion(nil)
-            }
+            completion(nil)
         }
     }
 }
