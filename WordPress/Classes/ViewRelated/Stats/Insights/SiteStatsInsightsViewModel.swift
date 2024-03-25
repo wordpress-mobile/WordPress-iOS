@@ -350,8 +350,8 @@ class SiteStatsInsightsViewModel: Observable {
         return insightsStore.containsCachedData(for: insightsToShow)
     }
 
-    func annualInsightsYear() -> Int? {
-        return insightsStore.getAnnualAndMostPopularTime()?.annualInsightsYear
+    func annualInsightsYear() -> String? {
+        return insightsStore.getAnnualAndMostPopularTime()?.years?.last?.year
     }
 
     func updateInsightsToShow(insights: [InsightType]) {
@@ -661,33 +661,32 @@ private extension SiteStatsInsightsViewModel {
     }
 
     func createAnnualRows() -> [StatsTwoColumnRowData] {
-
-        guard let annualInsights = insightsStore.getAnnualAndMostPopularTime(),
-            annualInsights.annualInsightsTotalPostsCount > 0 else {
-                return []
+        guard let annualInsights = insightsStore.getAnnualAndMostPopularTime()?.years?.last,
+              annualInsights.totalPosts > 0 else {
+            return []
         }
 
         var dataRows = [StatsTwoColumnRowData]()
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.year,
-                                                   leftColumnData: String(annualInsights.annualInsightsYear),
+                                                   leftColumnData: annualInsights.year,
                                                    rightColumnName: AnnualSiteStats.totalPosts,
-                                                   rightColumnData: annualInsights.annualInsightsTotalPostsCount.abbreviatedString()))
+                                                   rightColumnData: annualInsights.totalPosts.abbreviatedString()))
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalComments,
-                                                   leftColumnData: annualInsights.annualInsightsTotalCommentsCount.abbreviatedString(),
+                                                   leftColumnData: annualInsights.totalComments.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.commentsPerPost,
-                                                   rightColumnData: annualInsights.annualInsightsAverageCommentsCount.abbreviatedString()))
+                                                   rightColumnData: annualInsights.averageComments.abbreviatedString()))
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalLikes,
-                                                   leftColumnData: annualInsights.annualInsightsTotalLikesCount.abbreviatedString(),
+                                                   leftColumnData: annualInsights.totalLikes.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.likesPerPost,
-                                                   rightColumnData: annualInsights.annualInsightsAverageLikesCount.abbreviatedString()))
+                                                   rightColumnData: annualInsights.averageLikes.abbreviatedString()))
 
         dataRows.append(StatsTwoColumnRowData.init(leftColumnName: AnnualSiteStats.totalWords,
-                                                   leftColumnData: annualInsights.annualInsightsTotalWordsCount.abbreviatedString(),
+                                                   leftColumnData: annualInsights.totalWords.abbreviatedString(),
                                                    rightColumnName: AnnualSiteStats.wordsPerPost,
-                                                   rightColumnData: annualInsights.annualInsightsAverageWordsCount.abbreviatedString()))
+                                                   rightColumnData: annualInsights.averageWords.abbreviatedString()))
 
         return dataRows
 

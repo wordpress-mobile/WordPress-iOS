@@ -20,6 +20,11 @@ final class StatsInsightsCache {
         cache[key] = value
     }
 
+    func hasValue(record: Record, siteID: NSNumber) -> Bool {
+        let key = CacheKey(record: record, siteID: siteID)
+        return cache[key] != nil
+    }
+
     func removeAll() {
         cache.removeAll()
     }
