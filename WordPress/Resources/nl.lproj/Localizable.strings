@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-06 17:54:10+0000 */
+/* Translation-Revision-Date: 2024-03-22 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: nl */
@@ -844,8 +844,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Weet je zeker dat je dit bericht permanent wilt verwijderen?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Weet je zeker dat je wilt publiceren?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1838,7 +1837,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "Kopieer URL van het klembord, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Foutdetails kopiëren";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Kopieer bestands URL";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Berichttekst kopiëren";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Kopieer de versie van deze app";
@@ -2512,8 +2517,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Moderatiesleutel bewerken";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Bewerk bericht";
 
@@ -2767,6 +2771,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Fout bij laden van opdrachten";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Fout bij opmerking laden";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Fout bij het markeren van reactie als spam.";
@@ -5465,8 +5472,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Openbaar";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6814,6 +6820,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "Tik voor meer detail.";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "Tik hier om de foutdetails te kopiëren";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Tik hier om de berichttekst te kopiëren";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "Tik hier om help te tonen";
 
 /* No comment provided by engineer. */
@@ -6962,9 +6974,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "De site titel wordt getoont in de titelbalk van een web browser en wordt getoont in de header van de meeste thema's.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "De verhaal-editor is op dit moment niet beschikbaar voor je iPad. Probeer verhalen op je iPhone.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "De URL heeft geen geldige host.";
 
@@ -6985,6 +6994,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "De inhoud van je laatste berichten pagina is automatisch gegenereerd en kan niet bewerkt worden.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "De editor is op een onverwacht probleem gestuit";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Het bestand %1$@ bevat een kwaadaardig codepatroon";
@@ -7146,9 +7158,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Er is een probleem opgetreden bij het ophalen van je locatie. Probeer het later opnieuw.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Er was een probleem met de verhaal editor.  Als het probleem zich blijft voordoen, kun je contact met ons opnemen via het scherm Mij > Help & Support.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7542,9 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Verbinding niet mogelijk";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Kan geen verhalen-editor maken";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Kan berichten niet laden";
 
@@ -7725,9 +7731,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "Niet ondersteund";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Niet-ondersteund apparaat";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Zonder titel";
@@ -8594,6 +8597,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Je kunt blogmeldingen en -herinneringen te allen tijde beheren via Mijn site, Instellingen, Bloggen";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Je kan je berichttekst kopiëren als de fout betrekking heeft op je content. Kopieer de foutdetails om te debuggen en te delen met de ondersteuning.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Je kunt dit blok bewerken met behulp van de web versie van de editor.";
 
 /* Discussion Settings: Footer Text */
@@ -8634,6 +8640,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Je hebt geen berichten in de prullenbak";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "Je hebt geen toestemming om dit privéblog te bekijken.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Je hebt %lu verborgen WordPress-sites.";
@@ -8832,21 +8841,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[REACTIE]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ vinden dit leuk.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Eén blogger_ vindt dit leuk.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Jij en %1$d bloggers_ vinden dit leuk.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Jij en een andere blogger_ vinden dit leuk.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Je_ vindt dit leuk.";
 
 /* Age between dates equaling one day. */
 "a day" = "een dag";
@@ -9727,6 +9721,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "vind ik leuk";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "Je hebt geen toestemming om dit privéblog te bekijken.";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "gemarkeerd als spam";
 
@@ -9991,6 +9988,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Je hebt geen toestemming om dit privéblog te bekijken.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Kan beter";
 
@@ -10095,6 +10095,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Weergave";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Pagina bijgewerkt";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Bericht bijgewerkt";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "Weergeven";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Negeren";
@@ -10243,6 +10252,12 @@ Example: 27 social shares remaining in the next 30 days */
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Bekijkt berichten van de site";
 
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d likes_";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 like_";
+
 /* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
 but tapping on this button will add a Like to the post. */
 "reader.detail.toolbar.like.button.a11y.hint" = "Vindt dit bericht leuk.";
@@ -10258,6 +10273,9 @@ but tapping on this button will remove their like from the post. */
 
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "reader.detail.toolbar.saved.button.a11y.hint" = "Bewaart dit bericht niet meer.";
+
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "U bent al geabonneerd op deze blog";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filteren op blog";
@@ -10492,6 +10510,9 @@ with the filter chip button. */
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nieuw";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Je hebt geen toestemming om dit privéblog te bekijken.";
 
 /* The title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.title" = "Looking to transfer a domain you already own?";

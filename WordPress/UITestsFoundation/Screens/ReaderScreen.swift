@@ -39,12 +39,12 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Dismiss"]
     }
 
-    private let subscribeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Subscribe"]
+    private let followButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Follow"]
     }
 
-    private let subscribedButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Subscribed"]
+    private let followingButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Following"]
     }
 
     private let subscriptionsMenuButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -55,7 +55,7 @@ public class ReaderScreen: ScreenObject {
         $0.buttons["Likes"]
     }
 
-    private let topicCellButtonGetter: (XCUIApplication) -> XCUIElement = {
+    private let tagCellButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.cells["topics-card-cell-button"]
     }
 
@@ -80,8 +80,8 @@ public class ReaderScreen: ScreenObject {
     var discoverButton: XCUIElement { discoverButtonGetter(app) }
     var dismissButton: XCUIElement { dismissButtonGetter(app) }
     var firstPostLikeButton: XCUIElement { firstPostLikeButtonGetter(app) }
-    var subscribeButton: XCUIElement { subscribeButtonGetter(app) }
-    var subscribedButton: XCUIElement { subscribedButtonGetter(app) }
+    var followButton: XCUIElement { followButtonGetter(app) }
+    var followingButton: XCUIElement { followingButtonGetter(app) }
     var subscriptionsMenuButton: XCUIElement { subscriptionsMenuButtonGetter(app) }
     var likesTabButton: XCUIElement { likesTabButtonGetter(app) }
     var noResultsView: XCUIElement { noResultsViewGetter(app) }
@@ -90,7 +90,7 @@ public class ReaderScreen: ScreenObject {
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var savePostButton: XCUIElement { savePostButtonGetter(app) }
     var savedButton: XCUIElement { savedButtonGetter(app) }
-    var topicCellButton: XCUIElement { topicCellButtonGetter(app) }
+    var tagCellButton: XCUIElement { tagCellButtonGetter(app) }
     var visitButton: XCUIElement { visitButtonGetter(app) }
     var ghostLoading: XCUIElement { ghostLoadingGetter(app) }
 
@@ -159,21 +159,21 @@ public class ReaderScreen: ScreenObject {
         (try? ReaderScreen().isLoaded) ?? false
     }
 
-    public func selectTopic() -> Self {
-        topicCellButton.firstMatch.tap()
+    public func selectTag() -> Self {
+        tagCellButton.firstMatch.tap()
 
         return self
     }
 
-    public func verifyTopicLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
+    public func verifyTagLoaded(file: StaticString = #file, line: UInt = #line) -> Self {
         XCTAssertTrue(readerButton.waitForExistence(timeout: 3), file: file, line: line)
-        XCTAssertTrue(subscribeButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followButton.waitForExistence(timeout: 3), file: file, line: line)
 
         return self
     }
 
-    public func subscribeToTopic() -> Self {
-        waitForExistenceAndTap(subscribeButton, timeout: 3)
+    public func followTag() -> Self {
+        waitForExistenceAndTap(followButton, timeout: 3)
 
         return self
     }
@@ -222,9 +222,9 @@ public class ReaderScreen: ScreenObject {
     }
 
     @discardableResult
-    public func verifyTopicSubscribed(file: StaticString = #file, line: UInt = #line) -> Self {
-        XCTAssertTrue(subscribedButton.waitForExistence(timeout: 3), file: file, line: line)
-        XCTAssertTrue(subscribedButton.isSelected, file: file, line: line)
+    public func verifyTagFollowed(file: StaticString = #file, line: UInt = #line) -> Self {
+        XCTAssertTrue(followingButton.waitForExistence(timeout: 3), file: file, line: line)
+        XCTAssertTrue(followingButton.isSelected, file: file, line: line)
 
         return self
     }

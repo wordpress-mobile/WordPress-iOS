@@ -33,13 +33,13 @@ struct DynamicDashboardCard: View {
     }
 
     var body: some View {
-        VStack(spacing: Length.Padding.single) {
+        VStack(spacing: .DS.Padding.single) {
             featureImage
             rowsVStack
             actionHStack
         }
-        .padding(.bottom, Length.Padding.single)
-        .padding(.horizontal, Length.Padding.double)
+        .padding(.bottom, .DS.Padding.single)
+        .padding(.horizontal, .DS.Padding.double)
     }
 
     @ViewBuilder
@@ -58,7 +58,7 @@ struct DynamicDashboardCard: View {
             }
             .clipShape(
                 RoundedRectangle(
-                    cornerRadius: Length.Radius.small
+                    cornerRadius: .DS.Radius.small
                 )
             )
         }
@@ -66,9 +66,9 @@ struct DynamicDashboardCard: View {
 
     @ViewBuilder
     var rowsVStack: some View {
-        VStack(spacing: Length.Padding.single) {
+        VStack(spacing: .DS.Padding.single) {
             ForEach(input.rows) { row in
-                HStack(alignment: .center, spacing: Length.Padding.split) {
+                HStack(alignment: .center, spacing: .DS.Padding.split) {
                     if let imageURL = row.imageURL {
                         AsyncImage(url: imageURL) { phase in
                             switch phase {

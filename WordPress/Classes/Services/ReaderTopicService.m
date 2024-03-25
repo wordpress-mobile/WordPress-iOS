@@ -555,23 +555,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
-    ReaderSiteTopic * __block siteTopic = nil;
-
-    [self.coreDataStack.mainContext performBlockAndWait:^{
-        if (isFeed) {
-            siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.coreDataStack.mainContext];
-        } else {
-            siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.coreDataStack.mainContext];
-        }
-    }];
-
-    if (siteTopic) {
-        if (success) {
-            success(siteTopic.objectID, siteTopic.following);
-        }
-        return;
-    }
-
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
@@ -580,6 +563,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         NSManagedObjectID * __block topicObjectID = nil;
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderSiteTopic *siteTopic = nil;
+            if (isFeed) {
+                siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:context];
+            } else {
+                siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+            }
+            if (siteTopic) {
+                [context deleteObject:siteTopic];
+            }
+
             ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:context];
             [context obtainPermanentIDsForObjects:@[topic] error:nil];
             topicObjectID = topic.objectID;
@@ -588,7 +581,17 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        if (failure) {
+        ReaderSiteTopic * __block siteTopic = nil;
+        [self.coreDataStack.mainContext performBlockAndWait:^{
+            if (isFeed) {
+                siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.coreDataStack.mainContext];
+            } else {
+                siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.coreDataStack.mainContext];
+            }
+        }];
+        if (siteTopic && success) {
+            success(siteTopic.objectID, siteTopic.following);
+        } else if (failure) {
             failure(error);
         }
     }];

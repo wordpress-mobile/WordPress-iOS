@@ -312,6 +312,14 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
+        /// Navigation bar is only updated in light interface style, so that the tint color can be reverted
+        /// to the original color after scrolling past the featured image.
+        ///
+        /// In case of dark mode, the navigation bar tint color will always be kept white.
+        guard traitCollection.userInterfaceStyle == .light else {
+            return
+        }
+
         let fullProgress = (offset / heightConstraint.constant)
         let progress = fullProgress.clamp(min: 0, max: 1)
 
@@ -319,12 +327,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
                                             to: Styles.endTintColor,
                                             with: progress)
 
-        if traitCollection.userInterfaceStyle == .light {
-            currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
-        } else {
-            currentStatusBarStyle = .lightContent
-        }
-
+        currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
         navBarTintColor = tintColor
     }
 

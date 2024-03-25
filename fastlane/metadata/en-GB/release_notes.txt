@@ -1,5 +1,2 @@
-We made a few changes to the block editor.
-
-– The app won’t crash anymore when the editor auto-scrolls down to a block.
-– You’ll now see an error message when a video fails to upload to media and text blocks.
-– Images no longer appear partly transparent while they’re being uploaded. All colour, all the time.
+We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.
+We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.
