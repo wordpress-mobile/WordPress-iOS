@@ -50,7 +50,7 @@ def wordpress_ui
 end
 
 def gravatar
-  pod 'Gravatar', path: '../Gravatar-SDK-iOS', :testspecs => ['Tests']
+  pod 'Gravatar', path: '../Gravatar-SDK-iOS', :testspecs => ['GravatarTests']
 end
 
 def wordpress_kit

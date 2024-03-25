@@ -25,8 +25,8 @@ PODS:
   - Down (0.6.6)
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
-  - Gravatar (0.1.0)
-  - Gravatar/Tests (0.1.0)
+  - Gravatar (0.1.1)
+  - Gravatar/GravatarTests (0.1.1)
   - Gridicons (1.2.0)
   - Gutenberg (1.112.0)
   - JTAppleCalendar (8.0.5)
@@ -109,7 +109,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
   - Gravatar (from `../Gravatar-SDK-iOS`)
-  - Gravatar/Tests (from `../Gravatar-SDK-iOS`)
+  - Gravatar/GravatarTests (from `../Gravatar-SDK-iOS`)
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.112.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
@@ -211,7 +211,7 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
-  Gravatar: c1f9a90f226f4afbb66d0993b9cb7a8d30443cff
+  Gravatar: 2bab855f4d344c2fe3e8982ebaa22b5f42051674
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   Gutenberg: ba97dd36571958f64108233a692e6057f5010dc2
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
@@ -245,6 +245,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: e59dbf3750a02c7a3e9cc0b2180a656815a0eaac
+PODFILE CHECKSUM: b9231d5f4652f478e79897eb92e356c7d1e31617
 
 COCOAPODS: 1.14.2
