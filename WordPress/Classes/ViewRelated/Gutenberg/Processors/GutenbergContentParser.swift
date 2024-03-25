@@ -3,7 +3,6 @@ import SwiftSoup
 
 public class GutenbergParsedBlock {
     public let name: String
-    public var comment: SwiftSoup.Comment
     public var elements: Elements
     public var blocks: [GutenbergParsedBlock]
     public weak var parentBlock: GutenbergParsedBlock?
@@ -31,13 +30,14 @@ public class GutenbergParsedBlock {
         }
     }
 
-    private var attributesData: String
-
     public var content: String {
         get {
             (try? elements.outerHtml()) ?? ""
         }
     }
+
+    private var comment: SwiftSoup.Comment
+    private var attributesData: String
 
     public init?(comment: SwiftSoup.Comment, parentBlock: GutenbergParsedBlock? = nil) {
         let data = comment.getData().trim()
@@ -60,13 +60,60 @@ public class GutenbergParsedBlock {
     }
 }
 
+/// Parses content generated in the Gutenberg editor to allow modifications.
+///
+/// # Parse content
+///
+/// ```
+/// let block = """
+/// <!-- wp:block {"id":1} -->
+/// <div class="wp-block"><p>Hello world!</p></div>
+/// <!-- /wp:block -->
+/// """
+/// let parser = GutenbergContentParser(for: block)
+/// ```
+///
+/// # Get blocks
+///
+/// ```
+/// let galleryBlocks = parser.blocks.filter { $0.name == "wp:gallery" }
+/// let nestedImageBlocks = galleryBlocks.blocks.filter { $0.name == "wp:image" }
+/// ```
+///
+/// > Note: All parsed blocks are in the list, including nested blocks.
+///
+/// ```
+/// let allImageBlocks = parser.blocks.filter { $0.name == "wp:gallery" }
+/// ```
+///
+/// # Modify an attribute
+///
+/// ```
+/// let block = parser.blocks[0]
+/// block.attributes["newId"] = 1001
+/// ```
+///
+/// # Modify HTML
+///
+/// ```
+/// let block = parser.blocks[0]
+/// try! block.elements.select("img").first()?.attr("src", "remote-url")
+/// ```
+///
+/// More information about querying HTML can be found in [SwiftSoap documentation](https://github.com/scinfu/SwiftSoup?tab=readme-ov-file#use-selector-syntax-to-find-elements).
+///
+/// # Generate HTML content
+///
+/// ```
+/// let contentHTML = parser.html()
+/// ```
+///
 public class GutenbergContentParser {
-    public var originalContent: String
-    public let htmlDocument: Document?
     public var blocks: [GutenbergParsedBlock]
 
+    private let htmlDocument: Document?
+
     public init(for content: String) {
-        self.originalContent = content
         self.htmlDocument = try? SwiftSoup.parseBodyFragment(content).outputSettings(OutputSettings().prettyPrint(pretty: false))
         self.blocks = []
 
