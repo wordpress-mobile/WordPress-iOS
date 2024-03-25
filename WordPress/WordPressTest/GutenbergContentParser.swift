@@ -36,22 +36,22 @@ class GutenbergContentParserTests: XCTestCase {
         let parser = GutenbergContentParser(for: singleBlock)
         let blocks = parser.blocks
 
-        let expectedImageBlockContent = """
+        let expectedBlockContent = """
         <div class="wp-block"><p>Hello world!</p></div>
         """
 
         XCTAssertEqual(blocks.count, 1, "Should return one block")
 
         XCTAssertEqual(blocks[0].name, "wp:block", "Name should match block's name")
-        XCTAssertEqual(blocks[0].content, expectedImageBlockContent, "Content should match block's content")
+        XCTAssertEqual(blocks[0].content, expectedBlockContent, "Content should match block's content")
         XCTAssertEqual(blocks[0].attributes.count, 1, "Attributes should contain one item")
         XCTAssertEqual(blocks[0].attributes["id"] as? Int, 1, "Id attribute matches block's attribute")
         XCTAssertEqual(blocks[0].blocks.count, 0, "Shouldn't contain nested blocks")
     }
 
-    func testParserSingleBlockToString() {
+    func testParserSingleBlockToHTML() {
         let parser = GutenbergContentParser(for: singleBlock)
-        XCTAssertEqual(parser.html(), singleBlock, "Parsed content should match the original")
+        XCTAssertEqual(parser.html(), singleBlock, "Parsed content should match the original HTML")
     }
 
     func testParserNestedBlock() {
@@ -86,13 +86,11 @@ class GutenbergContentParserTests: XCTestCase {
         <figure class="wp-block"><p>This is another nested block.</p></figure>
         """
 
-        XCTAssertEqual(blocks.count, 3, "Parsing should return all blocks flatten")
-
         let parentBlock = blocks[0]
-        let nestedBlock1 = blocks[0].blocks[0]
-        let nestedBlock2 = blocks[0].blocks[1]
+        let nestedBlock1 = parentBlock.blocks[0]
+        let nestedBlock2 = parentBlock.blocks[1]
 
-        XCTAssertEqual(blocks.count, 3, "Should return three blocks")
+        XCTAssertEqual(blocks.count, 3, "Should return parent block and nested blocks")
         XCTAssertEqual(blocks[1].content, nestedBlock1.content, "Nested block is present at root level")
         XCTAssertEqual(blocks[2].content, nestedBlock2.content, "Nested block is present at root level")
 
@@ -100,7 +98,7 @@ class GutenbergContentParserTests: XCTestCase {
         XCTAssertEqual(parentBlock.content, expectedParentBlockContent, "Content should match block's content")
         XCTAssertEqual(parentBlock.attributes.count, 1, "Attributes should contain one item")
         XCTAssertEqual(parentBlock.attributes["name"] as? String, "parent", "Name attribute matches block's attribute")
-        XCTAssertEqual(parentBlock.blocks.count, 2, "Should contain two nested blocks")
+        XCTAssertEqual(parentBlock.blocks.count, 2, "Should contain nested blocks")
 
         XCTAssertEqual(nestedBlock1.name, "wp:nested-block", "Name should match block's name")
         XCTAssertEqual(nestedBlock1.content, expectedNestedBlock1Content, "Content should match block's content")
@@ -108,7 +106,7 @@ class GutenbergContentParserTests: XCTestCase {
         XCTAssertEqual(nestedBlock1.attributes["id"] as? Int, 1, "Id attribute matches block's attribute")
         XCTAssertEqual(nestedBlock1.attributes["name"] as? String, "block1", "Name attribute matches block's attribute")
         XCTAssertEqual(nestedBlock1.blocks.count, 0, "Shouldn't contain nested blocks")
-        XCTAssertEqual(nestedBlock1.parentBlock?.content, parentBlock.content, "Should have a parent block and matches parent content")
+        XCTAssertEqual(nestedBlock1.parentBlock?.content, parentBlock.content, "Should have a parent block and matches parent's content")
 
         XCTAssertEqual(nestedBlock2.name, "wp:nested-block", "Name should match block's name")
         XCTAssertEqual(nestedBlock2.content, expectedNestedBlock2Content, "Content should match block's content")
@@ -116,22 +114,23 @@ class GutenbergContentParserTests: XCTestCase {
         XCTAssertEqual(nestedBlock2.attributes["id"] as? Int, 2, "Id attribute matches block's attribute")
         XCTAssertEqual(nestedBlock2.attributes["name"] as? String, "block2", "Name attribute matches block's attribute")
         XCTAssertEqual(nestedBlock2.blocks.count, 0, "Shouldn't contain nested blocks")
-        XCTAssertEqual(nestedBlock2.parentBlock?.content, parentBlock.content, "Should have a parent block and matches parent content")
+        XCTAssertEqual(nestedBlock2.parentBlock?.content, parentBlock.content, "Should have a parent block and matches parent's content")
     }
 
-    func testParserNestedBlockToString() {
+    func testParserNestedBlockToHTML() {
         let parser = GutenbergContentParser(for: nestedBlock)
-        XCTAssertEqual(parser.html(), nestedBlock, "Parsed content should match the original")
+        XCTAssertEqual(parser.html(), nestedBlock, "Parsed content should match the original HTML")
     }
 
-    func testParserModifyAttribute() {
+    func testParserModifyAttributes() {
         let parser = GutenbergContentParser(for: nestedBlock)
         let blocks = parser.blocks
         let parentBlock = blocks[0]
+        parentBlock.attributes["name"] = "new-parent"
         parentBlock.attributes["newId"] = 1001
 
         let expectedResult = """
-        <!-- wp:parent-block {"name":"parent","newId":1001} -->
+        <!-- wp:parent-block {"name":"new-parent","newId":1001} -->
         <div class="wp-block parent-block">
             <div class="wrapper">
                 <h1>Title</h1>
@@ -154,7 +153,7 @@ class GutenbergContentParserTests: XCTestCase {
         <!-- /wp:parent-block -->
         """
 
-        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain modifications")
+        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain the modifications")
     }
 
     func testParserModifyHTML() {
@@ -187,6 +186,6 @@ class GutenbergContentParserTests: XCTestCase {
         <!-- /wp:parent-block -->
         """
 
-        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain modifications")
+        XCTAssertEqual(parser.html(), expectedResult, "Parsed content should contain the modifications")
     }
 }
