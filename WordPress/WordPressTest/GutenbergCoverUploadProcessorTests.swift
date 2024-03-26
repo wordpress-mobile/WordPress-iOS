@@ -60,9 +60,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResultContent = uploadedImgCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     func testMultipleCoverBlocksProcessor() {
@@ -77,9 +79,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResultContent = "\(coverBlock1) \(uploadedBlock) \(coverBlock2)"
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     func testNestedCoverBlockProcessor() {
@@ -91,9 +95,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResultContent = uploadedImgCoverBlock(innerBlock: uploadedNestedBlock, mediaID: 123)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     func testDeepNestedCoverBlockProcessor() {
@@ -107,9 +113,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResultContent = uploadedImgCoverBlock(innerBlock: innerBlockWithUploadedBlock, mediaID: 123)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     func testUpdateOuterCoverBlockProcessor() {
@@ -120,9 +128,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResultContent = uploadedImgCoverBlock(innerBlock: innerBlock, mediaID: mediaID)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     func testCoverBlockProcessorWithOtherAttributes() {
@@ -144,9 +154,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         """
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContentWithOtherAttributes)
 
-        XCTAssertEqual(resultContent, postResultContentWithOtherAttributes, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContentWithOtherAttributes)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContentWithOtherAttributes, "Post content should be updated correctly")
     }
 
     func testVideoCoverBlockProcessor() {
@@ -155,9 +167,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResult = uploadedVideoCoverBlock(innerBlock: paragraphBlock, mediaID: mediaID)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteVideoURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResult, "Post content should be updated correctly")
     }
 
     func testImageCoverInVideoCoverBlockProcessor() {
@@ -169,9 +183,11 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResult = uploadedVideoCoverBlock(innerBlock: uploadedImgCover, mediaID: 457)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteImgURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResult, "Post content should be updated correctly")
     }
 
     func testVideoCoverInImageCoverBlockProcessor() {
@@ -183,8 +199,10 @@ class GutenbergCoverUploadProcessorTests: XCTestCase {
         let postResult = uploadedImgCoverBlock(innerBlock: uploadedVideoCover, mediaID: 457)
 
         let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteVideoURLStr)
-        let resultContent = gutenbergCoverPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResult, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergCoverPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResult, "Post content should be updated correctly")
     }
 }
