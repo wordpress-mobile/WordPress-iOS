@@ -2,6 +2,7 @@
 -----
 * [**] Block editor: Highlight text fixes [https://github.com/WordPress/gutenberg/pull/57650]
 * [*] [Jetpack-only] Reader: Fix displaying stale site information [#22885]
+* [*] Improve performance of File block processor [#22897]
 
 24.5
 -----
