@@ -3,6 +3,7 @@ import WordPressFlux
 import WordPressShared
 import SwiftUI
 import SVProgressHUD
+import DesignSystem
 
 final class SitePickerViewController: UIViewController {
 
@@ -93,19 +94,27 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteSwitcherTapped() {
-        let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
-
-        blogListController.blogSelected = { [weak self] controller, selectedBlog in
-            guard let self else { return }
-            self.switchToBlog(selectedBlog)
-            controller.dismiss(animated: true) {
-                self.onBlogListDismiss?()
+        var dismissAction: (() -> Void)? = nil
+        let hostingController = UIHostingController(
+            rootView: SiteSwitcherView(
+                selectionCallback: { [weak self] selectedDomain in
+                    guard let selectedBlog = SiteSwitcherReducer.allBlogs().first(where: { $0.url == selectedDomain }) else {
+                        return
+                    }
+                    self?.switchToBlog(selectedBlog)
+                    // Dismiss hosting controller with completion block
+                    dismissAction?()
+                }, addSiteCallback: { [weak self] in
+                    self?.addSiteTapped()
+                }
+            )
+        )
+        dismissAction = {
+            hostingController.dismiss(animated: true) { [weak self] in
+                self?.onBlogListDismiss?()
             }
         }
-
-        let navigationController = UINavigationController(rootViewController: blogListController)
-        navigationController.modalPresentationStyle = .formSheet
-        present(navigationController, animated: true)
+        present(hostingController, animated: true)
 
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
