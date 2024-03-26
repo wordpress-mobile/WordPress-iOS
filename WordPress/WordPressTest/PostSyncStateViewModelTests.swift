@@ -24,7 +24,7 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .pushing)
             .build()
-        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: true)
+        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: true, isSyncPublishingEnabled: false)
 
         // When & Then
         expect(viewModel.state).to(equal(.uploading))
@@ -39,7 +39,7 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .failed)
             .build()
-        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: false)
+        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: false, isSyncPublishingEnabled: false)
 
         // When & Then
         expect(viewModel.state).to(equal(.offlineChanges))
@@ -54,7 +54,7 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .failed)
             .build()
-        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: true)
+        let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: true, isSyncPublishingEnabled: false)
 
         // When & Then
         expect(viewModel.state).to(equal(.failed))

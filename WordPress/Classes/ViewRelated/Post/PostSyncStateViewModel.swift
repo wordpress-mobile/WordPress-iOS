@@ -12,9 +12,18 @@ final class PostSyncStateViewModel {
 
     private let post: Post
     private let isInternetReachable: Bool
+    private let isSyncPublishingEnabled: Bool
+
+    init(post: Post,
+         isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
+         isSyncPublishingEnabled: Bool = RemoteFeature.enabled(.syncPublishing)) {
+        self.post = post
+        self.isInternetReachable = isInternetReachable
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
+    }
 
     var state: State {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard isSyncPublishingEnabled else {
             return _state
         }
 
@@ -72,7 +81,7 @@ final class PostSyncStateViewModel {
     }
 
     var statusMessage: String? {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard isSyncPublishingEnabled else {
             return nil
         }
         switch state {
@@ -82,17 +91,8 @@ final class PostSyncStateViewModel {
             return nil
         }
     }
-
-    init(post: Post, isInternetReachable: Bool = ReachabilityUtils.isInternetReachable()) {
-        self.post = post
-        self.isInternetReachable = isInternetReachable
-    }
 }
 
 private enum Strings {
-    static let offlineChanges = NSLocalizedString(
-        "postList.offlineChanges",
-        value: "Offline changes",
-        comment: "Label for a post in the post list. Indicates that the post has offline changes."
-    )
+    static let offlineChanges = NSLocalizedString("postList.offlineChanges", value: "Offline changes", comment: "Label for a post in the post list. Indicates that the post has offline changes.")
 }

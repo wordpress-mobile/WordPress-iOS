@@ -38,6 +38,7 @@ class PostCoordinator: NSObject {
     private let failedPostsFetcher: FailedPostsFetcher
 
     private let actionDispatcherFacade: ActionDispatcherFacade
+    private let isSyncPublishingEnabled: Bool
 
     // MARK: - Initializers
 
@@ -45,7 +46,8 @@ class PostCoordinator: NSObject {
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
+         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
@@ -55,6 +57,7 @@ class PostCoordinator: NSObject {
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
         self.actionDispatcherFacade = actionDispatcherFacade
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
 
         super.init()
 
@@ -642,10 +645,17 @@ class PostCoordinator: NSObject {
             case .ended:
                 let successHandler = {
                     self.updateReferences(to: media, in: post)
-                    // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                        self.removeObserver(for: post)
-                        completion(.success(post))
+                    if self.isSyncPublishingEnabled {
+                        if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
+                            self.removeObserver(for: post)
+                            completion(.success(post))
+                        }
+                    } else {
+                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                            self.removeObserver(for: post)
+                            completion(.success(post))
+                        }
                     }
                 }
                 switch media.mediaType {
@@ -670,7 +680,6 @@ class PostCoordinator: NSObject {
         }, forMediaFor: post)
     }
 
-    // TODO: make sure it works on all revisions
     private func updateReferences(to media: Media, in post: AbstractPost) {
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,
@@ -932,7 +941,7 @@ extension Foundation.Notification.Name {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard isSyncPublishingEnabled else {
             return
         }
         failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in

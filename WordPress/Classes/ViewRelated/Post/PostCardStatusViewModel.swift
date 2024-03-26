@@ -13,6 +13,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private let isInternetReachable: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
+    private let isSyncPublishingEnabled: Bool
 
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
@@ -33,16 +34,18 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     init(post: Post,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
+         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
+         isSyncPublishingEnabled: Bool = RemoteFeature.enabled(.syncPublishing)) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
         super.init()
     }
 
     var status: String? {
-        guard RemoteFeature.enabled(.syncPublishing) else {
+        guard isSyncPublishingEnabled else {
             return _status
         }
         return nil
@@ -125,6 +128,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var shouldHideProgressView: Bool {
+        if isSyncPublishingEnabled {
+            return true
+        }
         return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
@@ -172,7 +178,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if !RemoteFeatureFlag.syncPublishing.enabled() {
+        if !isSyncPublishingEnabled {
             if autoUploadInteractor.canRetryUpload(of: post) ||
                 autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
                 post.isFailed && isInternetReachable {

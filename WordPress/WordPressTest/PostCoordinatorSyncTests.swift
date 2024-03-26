@@ -18,9 +18,8 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
             .build()
         try mainContext.save()
 
-        mediaCoordinator = MediaCoordinator(
-            coreDataStack: contextManager)
-        coordinator = PostCoordinator(mediaCoordinator: mediaCoordinator, coreDataStack: contextManager)
+        mediaCoordinator = MediaCoordinator(coreDataStack: contextManager)
+        coordinator = PostCoordinator(mediaCoordinator: mediaCoordinator, coreDataStack: contextManager, isSyncPublishingEnabled: true)
     }
 
     override func tearDown() {
@@ -65,7 +64,6 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
             mock.content = content
             return try! HTTPStubsResponse(value: mock, statusCode: 201)
         }
-
         stub(condition: isPath("/rest/v1.1/sites/80511/media/new")) { request in
             HTTPStubsResponse(data: mediaResponse.data(using: .utf8)!, statusCode: 202, headers: [:])
         }
