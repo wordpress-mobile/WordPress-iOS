@@ -144,7 +144,7 @@ final class PostRepository {
         if revision.revision == nil {
             // No more revisions were created during the upload, so it's safe
             // to fully replace the local version with the remote data
-            PostHelper.update(post, with: remotePost, in: context)
+            PostHelper.update(post, with: remotePost, in: context, overwrite: true)
         } else {
             // We have to keep the local changes to make sure the delta can
             // still be computed accurately (a smarter algo could merge the changes)
@@ -160,7 +160,7 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
-    /// Patches the post but keeps the local revision if any.
+    /// Patches the post.
     ///
     /// - note: This method can be used for quick edits for published posts where
     /// revisions are used only for content.
@@ -174,7 +174,7 @@ final class PostRepository {
         let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
 
         let context = coreDataStack.mainContext
-        PostHelper.update(original, with: uploadedPost, in: context)
+        PostHelper.update(original, with: uploadedPost, in: context, overwrite: true)
         ContextManager.shared.saveContextAndWait(context)
     }
 
