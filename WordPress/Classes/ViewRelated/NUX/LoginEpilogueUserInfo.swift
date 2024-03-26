@@ -47,6 +47,11 @@ extension LoginEpilogueUserInfo {
         return copy
     }
 
+    mutating func update(with profile: GravatarProfile) {
+        self.gravatarUrl = profile.thumbnailUrl
+        self.fullName = profile.displayName
+    }
+
     mutating func update(with socialUser: SocialUser) {
         fullName = socialUser.fullName
         email = socialUser.email

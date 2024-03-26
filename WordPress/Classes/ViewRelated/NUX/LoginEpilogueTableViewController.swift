@@ -296,22 +296,18 @@ private extension LoginEpilogueTableViewController {
                 return
             }
 
-            Task { [weak self] in
-                await self?.fetchGravatarProfile(with: userProfile, completion: completion)
-            }
-        }
-    }
+            var epilogueInfo = LoginEpilogueUserInfo(profile: userProfile)
 
-    func fetchGravatarProfile(with profile: UserProfile, completion: @escaping (LoginEpilogueUserInfo?) -> ()) async {
-        let service = ProfileService()
-        let epilogueInfo = LoginEpilogueUserInfo(profile: profile)
-        do {
-            let gravatarProfile = try await service.fetch(withEmail: profile.email)
-            let updatedInfo = epilogueInfo.updating(with: gravatarProfile)
-            completion(updatedInfo)
-        } catch {
-            print("Error: \(error)")
-            completion(nil)
+            /// Load: Gravatar's Metadata
+            ///
+            let service = GravatarService()
+            service.fetchProfile(email: userProfile.email) { gravatarProfile in
+                if let gravatarProfile = gravatarProfile {
+                    epilogueInfo.update(with: gravatarProfile)
+                }
+
+                completion(epilogueInfo)
+            }
         }
     }
 }
