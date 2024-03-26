@@ -193,11 +193,6 @@ extension PublishingEditor {
         }
     }
 
-    private func performAutosave() {
-        // TODO: create an autosave and delete local revision
-        fatalError("Not implemented (kahu-offline-mode)")
-    }
-
     /// - note: Deprecated (kahu-offline-mode)
     func publishPost(
         action: PostEditorAction,
@@ -419,11 +414,7 @@ extension PublishingEditor {
         }
 
         if post.original().status == .draft {
-            if post.original().isNewDraft {
-                showCloseNewDraftConfirmationAlert()
-            } else {
-                showCloseExistingDraftConfirmationAlert()
-            }
+            showCloseDraftConfirmationAlert()
         } else {
             showClosePublishedPostConfirmationAlert()
         }
@@ -545,27 +536,12 @@ extension PublishingEditor {
         return postDeleted
     }
 
-    // TODO: cleanup
-
-    private func showCloseNewDraftConfirmationAlert() {
+    private func showCloseDraftConfirmationAlert() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.view.accessibilityIdentifier = "post-has-changes-alert"
         alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
-        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDelete) { _ in
-            self.discardAndDismiss()
-        }
-        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
-            self.performSaveDraftAction()
-        }
-        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
-        present(alert, animated: true, completion: nil)
-    }
-
-    private func showCloseExistingDraftConfirmationAlert() {
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.view.accessibilityIdentifier = "post-has-changes-alert"
-        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
-        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
+        let discardTitle = post.original().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
+        alert.addDestructiveActionWithTitle(discardTitle) { _ in
             self.discardAndDismiss()
         }
         alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
