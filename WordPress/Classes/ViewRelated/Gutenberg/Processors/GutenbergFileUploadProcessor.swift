@@ -30,7 +30,7 @@ class GutenbergFileUploadProcessor: GutenbergProcessor {
 
             // Update href of `a` tags
             let aTags = try? block.elements.select("a")
-            aTags?.forEach { try! $0.attr(FileBlockKeys.href, self.remoteURLString) }
+            aTags?.forEach { _ = try? $0.attr(FileBlockKeys.href, self.remoteURLString) }
         }
     }
 
