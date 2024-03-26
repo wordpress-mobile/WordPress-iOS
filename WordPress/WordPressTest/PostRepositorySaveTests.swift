@@ -1308,7 +1308,7 @@ private extension URLRequest {
     func getIfNotModifiedSince() throws -> Date {
         let parameters = try getBodyParameters()
         guard let value = parameters["if_not_modified_since"] as? String,
-              let date = NSDate.rfc3339DateFormatter().date(from: value) else {
+              let date = DateFormatter.wordPressCom.date(from: value) else {
             throw PostRepositorySaveTestsError.invalidRequest
         }
         return date
@@ -1398,12 +1398,22 @@ struct WordPressComAuthor: Hashable, Codable {
 
 private let decoder: JSONDecoder = {
     let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .formatted(NSDate.rfc3339DateFormatter())
+    decoder.dateDecodingStrategy = .formatted(.wordPressCom)
     return decoder
 }()
 
 private let encoder: JSONEncoder = {
     let encoder = JSONEncoder()
-    encoder.dateEncodingStrategy = .formatted(NSDate.rfc3339DateFormatter())
+    encoder.dateEncodingStrategy = .formatted(.wordPressCom)
     return encoder
 }()
+
+private extension DateFormatter {
+    static let wordPressCom: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"
+        formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0) as TimeZone
+        formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
+        return formatter
+    }()
+}
