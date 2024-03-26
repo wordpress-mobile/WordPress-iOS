@@ -2,6 +2,7 @@ import Foundation
 
 extension AbstractPost {
     /// Returns true if the post is a draft and has never been uploaded to the server.
+    /// - note: deprecated (kahu-offline-mode)
     var isLocalDraft: Bool {
         return self.isDraft() && !self.hasRemote()
     }
