@@ -1203,6 +1203,55 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertEqual(post.content, "content-b")
         XCTAssertNil(post.revision)
     }
+
+    /// Scenario: saved a new draft and opened an editor before it syncs.
+    func testSyncCreatedPostWithLocalRevision() async throws {
+        // GIVEN a new draft post (not synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+        }
+
+        // GIVEN a saved revision
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-a"
+        revision1.content = "content-a"
+        revision1.isSyncNeeded = true
+
+        // GIVEN a local revision
+        let revision2 = revision1._createRevision()
+        revision2.postTitle = "title-b"
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends only the required parameters
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "content" : "content-a",
+              "status" : "draft",
+              "title" : "title-a",
+              "type" : "post"
+            }
+            """)
+            var post = WordPressComPost.mock
+            post.excerpt = "hello"
+            return try HTTPStubsResponse(value: post, statusCode: 201)
+        }
+
+        // WHEN saving the post
+        try await repository.sync(post)
+
+        // THEN `postID` is saved to make sure new changes are saved using partial updates
+        XCTAssertEqual(post.postID, 974)
+
+        // THEN local revision is presereved
+        XCTAssertNotNil(post.revision)
+        XCTAssertEqual(post.revision?.postTitle, "title-b")
+
+        // THEN the rest of the post content is retained because we have a local revision
+        XCTAssertNil(post.mt_excerpt)
+    }
 }
 
 // MARK: - Helpers

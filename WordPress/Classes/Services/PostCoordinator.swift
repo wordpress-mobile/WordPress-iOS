@@ -61,7 +61,9 @@ class PostCoordinator: NSObject {
 
         super.init()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
+        if isSyncPublishingEnabled {
+            NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
+        }
     }
 
     /// Upload or update a post in the server.
@@ -226,13 +228,18 @@ class PostCoordinator: NSObject {
     }
 
     func moveToDraft(_ post: AbstractPost) {
+        guard isSyncPublishingEnabled else {
+            _moveToDraft(post)
+            return
+        }
+
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.draft.rawValue
         _performChanges(changes, for: post)
     }
 
     /// - note: Deprecated (kahu-offline-mode) (along with all related types)
-    func _moveToDraft(_ post: AbstractPost) {
+    private func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
     }
@@ -315,7 +322,9 @@ class PostCoordinator: NSObject {
         assert(post.isOriginal(), "Must be an original post")
 
         let objectID = post.objectID
-        let revision = post.getLatestRevisionNeedingSync()
+        guard let revision = post.getLatestRevisionNeedingSync() else {
+            return // Defensive code (should never happen)
+        }
 
         // Check if we need or can cancel the current operation.
         if let operation = syncOperations[objectID] {

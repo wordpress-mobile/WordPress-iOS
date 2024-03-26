@@ -6,10 +6,9 @@ extension AbstractPost {
         original?.original() ?? self
     }
 
-    // TODO: simplifuy this
-    /// - warning: Work-in-progress (kahu-offline-mode)
     var isNewDraft: Bool {
-        !original().hasRemote() && !(original?.revision?.isSyncNeeded ?? false)
+        assert(isOriginal(), "Must be called on the original")
+        return !hasRemote() && getLatestRevisionNeedingSync() == nil
     }
 
     // MARK: - Status
@@ -157,7 +156,8 @@ extension AbstractPost {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
     }
 
-    /// Returns a list of changes from the current post to the previous revision.
+    /// Returns the changes made in the current revision compared to the
+    /// previous revision or the original post if there is only one revision.
     var changes: RemotePostUpdateParameters {
         guard let original else {
             return RemotePostUpdateParameters() // Empty
@@ -179,7 +179,9 @@ extension AbstractPost {
 
     static let syncNeededKey = "sync-needed"
 
-    func getLatestRevisionNeedingSync() -> AbstractPost {
+    /// Returns the latest saved revisions that needs to be synced with the server.
+    /// Returns `nil` if there are no such revisions.
+    func getLatestRevisionNeedingSync() -> AbstractPost? {
         assert(original == nil, "Must be called on an original revision")
         var revision = self
         var current = self
@@ -188,6 +190,9 @@ extension AbstractPost {
                 revision = next
             }
             current = next
+        }
+        guard revision != self else {
+            return nil
         }
         return revision
     }

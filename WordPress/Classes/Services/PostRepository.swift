@@ -112,7 +112,10 @@ final class PostRepository {
     @MainActor
     func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
         assert(post.original == nil, "Must be called on an original post")
-        try await _sync(post, revision: revision ?? post.getLatestRevisionNeedingSync())
+        guard let revision = revision ?? post.getLatestRevisionNeedingSync() else {
+            return assertionFailure("Requires a revision")
+        }
+        try await _sync(post, revision: revision)
     }
 
     /// - parameter revision: The revision to upload (doesn't have to
@@ -137,7 +140,7 @@ final class PostRepository {
             }
         } else {
             isCreated = true
-            remotePost = try await _create(post, changes: changes)
+            remotePost = try await _create(revision, changes: changes)
         }
 
         let context = coreDataStack.mainContext
@@ -149,6 +152,7 @@ final class PostRepository {
             // We have to keep the local changes to make sure the delta can
             // still be computed accurately (a smarter algo could merge the changes)
             post.clone(from: revision)
+            post.postID = remotePost.postID // important!
         }
 
         post.deleteSyncedRevisions(until: revision)
@@ -181,7 +185,7 @@ final class PostRepository {
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
-        var parameters = RemotePostCreateParameters(post: post.latest())
+        var parameters = RemotePostCreateParameters(post: post)
         if let changes {
             parameters.apply(changes)
         }

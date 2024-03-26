@@ -35,7 +35,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-         isSyncPublishingEnabled: Bool = RemoteFeature.enabled(.syncPublishing)) {
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled

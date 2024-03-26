@@ -419,8 +419,7 @@ extension PublishingEditor {
         }
 
         if post.original().status == .draft {
-            // TODO: reset `status` if needed (kahu-offline-mode)
-            if post.isNewDraft {
+            if post.original().isNewDraft {
                 showCloseNewDraftConfirmationAlert()
             } else {
                 showCloseExistingDraftConfirmationAlert()
