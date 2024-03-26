@@ -5,6 +5,24 @@ struct SiteSwitcherView: View {
     @State private var isEditing: Bool = false
     private let selectionCallback: ((String) -> Void)
     private let addSiteCallback: (() -> Void)
+    @State private var searchText = ""
+    @State private var isSearching = false
+
+    var searchResults: [BlogListView.Site] {
+        if searchText.isEmpty {
+            return SiteSwitcherReducer.allBlogs().compactMap {
+                .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
+            }
+        } else {
+            return SiteSwitcherReducer.allBlogs()
+                .filter {
+                    $0.url!.lowercased().contains(searchText.lowercased()) || $0.title!.lowercased().contains(searchText.lowercased())
+                }
+                .compactMap {
+                    .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
+                }
+        }
+    }
 
     init(selectionCallback: @escaping ((String) -> Void),
         addSiteCallback: @escaping (() -> Void)) {
@@ -13,24 +31,34 @@ struct SiteSwitcherView: View {
     }
 
     var body: some View {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 17.0, *) {
             NavigationStack {
                 VStack {
                     blogListView
-                    addSiteButtonVStack
+                    if !isSearching {
+                        addSiteButtonVStack
+                    }
                 }
             }
+            .searchable(text: $searchText, isPresented: $isSearching)
         } else {
-            // Fallback on earlier versions
+            NavigationView {
+                VStack {
+                    blogListView
+                    if !isSearching {
+                        addSiteButtonVStack
+                    }
+                }
+            }
+            .searchable(text: $searchText)
         }
     }
 
     private var blogListView: some View {
         BlogListView(
-            sites: SiteSwitcherReducer.allBlogs().compactMap {
-                .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
-            },
+            sites: searchResults,
             isEditing: $isEditing,
+            isSearching: $isSearching,
             selectionCallback: selectionCallback
         )
         .toolbar {

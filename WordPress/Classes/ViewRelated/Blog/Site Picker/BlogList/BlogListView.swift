@@ -13,6 +13,7 @@ struct BlogListView: View {
     }
 
     @Binding private var isEditing: Bool
+    @Binding private var isSearching: Bool
     @State private var pinnedDomains: Set<String>?
     private let sites: [Site]
     private let selectionCallback: ((String) -> Void)
@@ -20,11 +21,13 @@ struct BlogListView: View {
     init(
         sites: [Site],
         isEditing: Binding<Bool>,
+        isSearching: Binding<Bool>,
         selectionCallback: @escaping ((String) -> Void)
     ) {
         self.sites = sites
         self.pinnedDomains = BlogListReducer.pinnedDomains()
         self._isEditing = isEditing
+        self._isSearching = isSearching
         self.selectionCallback = selectionCallback
     }
 
@@ -39,8 +42,14 @@ struct BlogListView: View {
 
     private var contentVStack: some View {
         List {
-            pinnedSection
-            unPinnedSection
+            if isSearching {
+                ForEach(sites, id: \.domain) { site in
+                        siteButton(site: site)
+                }
+            } else {
+                pinnedSection
+                unPinnedSection
+            }
         }
         .listStyle(.grouped)
     }
@@ -60,13 +69,9 @@ struct BlogListView: View {
         )
         if !pinnedSites.isEmpty {
             Section {
-                ForEach(
-                    pinnedSites,
-                    id: \.domain) { site in
-                        siteButton(
-                            site: site
-                        )
-                    }
+                ForEach(pinnedSites, id: \.domain) { site in
+                    siteButton(site: site)
+                }
             } header: {
                 sectionHeader(
                     title: "Pinned sites"
@@ -89,13 +94,9 @@ struct BlogListView: View {
         )
         if !unPinnedSites.isEmpty {
             Section {
-                ForEach(
-                    unPinnedSites,
-                    id: \.domain) { site in
-                        siteButton(
-                            site: site
-                        )
-                    }
+                ForEach(unPinnedSites, id: \.domain) { site in
+                    siteButton(site: site)
+                }
             } header: {
                 sectionHeader(
                     title: "All sites"
