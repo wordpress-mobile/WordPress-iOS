@@ -55,6 +55,10 @@ class PostCoordinator: NSObject {
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
         self.actionDispatcherFacade = actionDispatcherFacade
+
+        super.init()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
     }
 
     /// Upload or update a post in the server.
@@ -258,39 +262,42 @@ class PostCoordinator: NSObject {
         revision.isSyncNeeded = true
         ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
 
-        let post = revision.original()
-        Task {
-            await sync(post)
-        }
+        sync(revision.original())
     }
 
+    /// Represents an operation for syncing the post and updating it to the
+    /// revision the operation was initialized with.
     final class SyncOperation {
         let id: Int
         let post: AbstractPost
+        let revision: AbstractPost
+
         var error: Error?
         var state: State = .idle {
             didSet {
                 log("change state to \(state)")
             }
         }
-        var revision: AbstractPost?
+
+        var retryDelay: TimeInterval = 4
         weak var retryTimer: Timer?
 
         enum State {
             case idle
             case uploadingMedia
             case syncing
-            case failed
+            case cancelled
         }
 
-        private static var syncOperationId = 1
+        private static var nextId = 1
 
-        init(post: AbstractPost) {
+        init(post: AbstractPost, revision: AbstractPost) {
             self.post = post
-            self.id = SyncOperation.syncOperationId
-            SyncOperation.syncOperationId += 1
+            self.revision = revision
+            self.id = SyncOperation.nextId
+            SyncOperation.nextId += 1
 
-            self.log("created (postID: \(post.postID ?? -1), title: \(post.postTitle ?? "–"), entity: \(post)")
+            self.log("created  operation (postID: \(post.postID ?? -1), title: \(post.postTitle ?? "–"), entity: \(post)")
         }
 
         func log(_ string: String) {
@@ -302,80 +309,124 @@ class PostCoordinator: NSObject {
     // TODO: think about cancellation
     // TODO: restart automatically on network connectivity restart
 
-    @MainActor
-    func sync(_ post: AbstractPost) async {
+    func sync(_ post: AbstractPost) {
+        assert(Thread.isMainThread)
         assert(post.isOriginal(), "Must be an original post")
 
         let objectID = post.objectID
-        let operation = syncOperations[objectID] ?? SyncOperation(post: post)
-        syncOperations[objectID] = operation
-
-        operation.log("sync post: \(post.postID ?? -1) \(post.postTitle ?? "Untitled")\(post.objectID)")
-
         let revision = post.getLatestRevisionNeedingSync()
-        guard revision != operation.revision else {
-            return operation.log("already syncing the latest revision")
+
+        // Check if we need or can cancel the current operation.
+        if let operation = syncOperations[objectID] {
+            guard operation.revision != revision else {
+                return // Defensive code (should never happen)
+            }
+            switch operation.state {
+            case .idle:
+                operation.log("cancel idle operation")
+                operation.retryTimer?.invalidate()
+                operation.state = .cancelled
+            case .uploadingMedia:
+                let deleted = Set(operation.revision.media).subtracting(Set(revision.media))
+                for media in deleted {
+                    MediaCoordinator.shared.cancelUpload(of: media)
+                }
+                operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
+
+                operation.state = .cancelled
+                operation.log("cancel operation uploading media")
+            case .syncing:
+                operation.log("letting the current sync finish")
+                return // There is no way to safely cancel it
+            case .cancelled:
+                return assertionFailure("Should never happen")
+            }
         }
 
-        switch operation.state {
-        case .idle:
-            break // Continue upload
-        case .uploadingMedia:
-            // TODO: will it cancel revision?
-            let previous = Set(operation.revision?.media ?? [])
-            let deleted = previous.subtracting(Set(revision.media))
-            operation.log("cancel upload for media: \(deleted.map(\.filename))")
-            for media in deleted {
-                MediaCoordinator.shared.cancelUpload(of: media)
-            }
-        case .syncing:
-            operation.log("letting the current sync finish")
-        case .failed:
-            operation.log("cancelling current retry")
-            operation.retryTimer?.invalidate()
+        let operation = SyncOperation(post: post, revision: revision)
+        syncOperations[objectID] = operation
+
+        Task {
+            await performSync(operation)
+        }
+    }
+
+    @MainActor
+    private func performSync(_ operation: SyncOperation) async {
+        guard operation.state != .cancelled else {
+            return
         }
 
         operation.error = nil
-        postDidUpdateNotification(for: post)
+        postDidUpdateNotification(for: operation.post)
 
         do {
             // Upload media for the latest revision
-            operation.revision = revision
             operation.state = .uploadingMedia
-            try await uploadRemainingResources(for: revision)
+            try await uploadRemainingResources(for: operation.revision)
 
-            guard operation.revision == post.getLatestRevisionNeedingSync() else {
-                return operation.log("stopping because another revision")
+            guard operation.state != .cancelled else {
+                return operation.log("stopping after uploading media (cancelled)")
             }
 
             operation.state = .syncing
-            try await PostRepository(coreDataStack: coreDataStack)._sync(post)
+            try await PostRepository(coreDataStack: coreDataStack)
+                .sync(operation.post, revision: operation.revision)
 
-            // TODO: revision is `nil` at this point
-            if post.getLatestRevisionNeedingSync() == post {
-                syncOperations[objectID] = nil // Nothing to sync
-                operation.log("done, no more revisions to sync")
-            } else {
-                operation.log("done, but there are more revision to sync")
-                operation.state = .idle
-                Task {
-                    await sync(post) // Sync the next revision
-                }
+            operation.log("sync completed")
+            syncOperations[operation.post.objectID] = nil // Nothing to sync
+
+            if isSyncNeeded(for: operation.post) {
+                operation.log("more revision were need syncing")
+                sync(operation.post)
             }
         } catch {
             operation.log("failed with error: \(error)")
+
             if let error = error as? PostRepository.PostSaveError, case .deleted = error {
-                handlePermanentlyDeleted(post)
-                syncOperations[objectID] = nil
+                handlePermanentlyDeleted(operation.post)
+                syncOperations[operation.post.objectID] = nil
                 operation.log("post was permanently deleted")
-            } else {
-                operation.error = error
-                operation.state = .failed
-                postDidUpdateNotification(for: post)
+                return
             }
 
-            // TODO: schedule retry (+ check if post exists)
-            // TODO: add unit tests
+            operation.error = error
+            operation.state = .idle
+            let delay = operation.retryDelay
+            operation.retryDelay = min(32, operation.retryDelay + 4)
+            operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
+                self?.didRetryTimerFire(for: operation)
+            }
+            operation.log("scheduled retry with delay: \(delay)s.")
+
+            postDidUpdateNotification(for: operation.post)
+        }
+    }
+
+    private func didRetryTimerFire(for operation: SyncOperation) {
+        operation.log("retry timer fired")
+        Task {
+            await performSync(operation)
+        }
+    }
+
+    @objc private func didUpdateReachability(_ notification: Foundation.Notification) {
+        guard let reachable = notification.userInfo?[Foundation.Notification.reachabilityKey],
+              (reachable as? Bool) == true else {
+            return
+        }
+
+        for operation in syncOperations.values {
+            if operation.state == .idle,
+               let error = operation.error,
+               let urlError = (error as NSError).underlyingErrors.first as? URLError,
+               urlError.code == .notConnectedToInternet {
+                operation.retryTimer?.invalidate()
+                operation.log("connection is reachable – retrying now")
+                Task {
+                    await performSync(operation)
+                }
+            }
         }
     }
 
@@ -581,17 +632,10 @@ class PostCoordinator: NSObject {
             case .ended:
                 let successHandler = {
                     self.updateReferences(to: media, in: post)
-                    if RemoteFeatureFlag.syncPublishing.enabled() {
-                        if post.media.allSatisfy({ $0.mediaID != nil }) {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
-                    } else {
-                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
+                    // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                        self.removeObserver(for: post)
+                        completion(.success(post))
                     }
                 }
                 switch media.mediaType {

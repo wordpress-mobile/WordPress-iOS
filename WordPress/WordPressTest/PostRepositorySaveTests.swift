@@ -984,7 +984,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN it uploads the latest revision and applies the revision1 to the post
         XCTAssertEqual(post.postTitle, "title-c")
@@ -1012,7 +1012,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // WHEN
         revision3.isSyncNeeded = true
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN it uploads the latest revision
         XCTAssertEqual(post.postTitle, "title-d")
@@ -1062,7 +1062,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN it uploads the latest revision and applies the revision1 to the post
         XCTAssertEqual(post.content, "content-b")
@@ -1115,7 +1115,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // WHEN syncing remaining changes
         revision2.isSyncNeeded = true
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN it uploads the latest revision and ignores 409 because it's
         // false positive – the app made changes based on the latest content
@@ -1153,7 +1153,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN the post was created
         XCTAssertEqual(post.postID, 974)
@@ -1196,7 +1196,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._sync(post)
+        try await repository.sync(post)
 
         // THEN is gets the latest revision from the server but sends no changes
         XCTAssertEqual(post.postTitle, "title-a")

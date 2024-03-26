@@ -110,9 +110,9 @@ final class PostRepository {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _sync(_ post: AbstractPost) async throws {
+    func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
         assert(post.original == nil, "Must be called on an original post")
-        try await _sync(post, revision: post.getLatestRevisionNeedingSync())
+        try await _sync(post, revision: revision ?? post.getLatestRevisionNeedingSync())
     }
 
     /// - parameter revision: The revision to upload (doesn't have to
