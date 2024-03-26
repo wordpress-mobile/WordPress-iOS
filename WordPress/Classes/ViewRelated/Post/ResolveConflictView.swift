@@ -7,8 +7,8 @@ struct ResolveConflictView: View {
     let remoteRevision: RemotePost
     var dismiss: (() -> Void)?
 
-    private var currentVersion: PostVersion { .current(post) }
-    private var anotherVersion: PostVersion { .another(remoteRevision) }
+    private var localVersion: PostVersion { .local(post) }
+    private var remoteVersion: PostVersion { .remote(remoteRevision) }
 
     @State private var selectedVersion: PostVersion?
 
@@ -16,11 +16,11 @@ struct ResolveConflictView: View {
         Form {
             Section {
                 Text(Strings.description)
-                PostVersionView(version: currentVersion) {
-                    selectedVersion = $0.isSelected ? currentVersion : nil
+                PostVersionView(version: localVersion) {
+                    selectedVersion = $0.isSelected ? localVersion : nil
                 }
-                PostVersionView(version: anotherVersion) {
-                    selectedVersion = $0.isSelected ? anotherVersion : nil
+                PostVersionView(version: remoteVersion) {
+                    selectedVersion = $0.isSelected ? remoteVersion : nil
                 }
             }
         }
@@ -35,7 +35,7 @@ struct ResolveConflictView: View {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button(Strings.Navigation.save) {
                     guard let selectedVersion else {
-                        dismiss?()
+                        dismiss?() // This should never happen
                         return
                     }
                     saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
@@ -45,21 +45,24 @@ struct ResolveConflictView: View {
         }
     }
 
+    @MainActor
     private func saveSelectedVersion(_ version: PostVersion, post: AbstractPost, remoteRevision: RemotePost) {
         switch version {
-        case .current:
-            // TODO: Re-send POST request with a diff (skip if_not_modified_since to overwrite)
-            break
-        case .another:
-            // TODO: Apply RemotePost to the original version and delete the local revision
-            break
+        case .local:
+            Task {
+                try await PostCoordinator.shared._update(post, overwrite: true)
+            }
+        case .remote:
+            let coreDataStack = ContextManager.shared
+            let repository = PostRepository(coreDataStack: coreDataStack)
+            repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
         }
     }
 }
 
 private struct PostVersionView: View {
     let version: PostVersion
-    let onButtonTap: (PostVersionView) -> Void
+    let onVersionSelected: (PostVersionView) -> Void
 
     @State var isSelected = false
 
@@ -81,7 +84,7 @@ private struct PostVersionView: View {
             Spacer()
             Button {
                 isSelected.toggle()
-                onButtonTap(self)
+                onVersionSelected(self)
             } label: {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .resizable()
@@ -103,21 +106,21 @@ private struct PostVersionView: View {
 }
 
 private enum PostVersion {
-    case current(AbstractPost)
-    case another(RemotePost)
+    case local(AbstractPost)
+    case remote(RemotePost)
 
     var title: String {
         switch self {
-        case .current: return Strings.currentDevice
-        case .another: return Strings.anotherDevice
+        case .local: return Strings.currentDevice
+        case .remote: return Strings.anotherDevice
         }
     }
 
     var dateModifiedString: String {
         switch self {
-        case .current(let post):
+        case .local(let post):
             return (post.dateModified ?? Date.now).mediumStringWithTime()
-        case .another(let remoteRevision):
+        case .remote(let remoteRevision):
             return remoteRevision.dateModified.mediumStringWithTime()
         }
     }

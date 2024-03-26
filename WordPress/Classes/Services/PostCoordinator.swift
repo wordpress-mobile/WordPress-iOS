@@ -155,11 +155,11 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws -> AbstractPost {
         let post = post.original ?? post
         do {
             let isExistingPost = post.hasRemote()
-            try await PostRepository()._save(post, changes: changes)
+            try await PostRepository()._save(post, changes: changes, overwrite: overwrite)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
@@ -177,7 +177,7 @@ class PostCoordinator: NSObject {
             switch error {
             case .conflict(let latest):
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
-                    self?.handleVersionConflict(post: post, remoteRevision: latest, presentingController: topViewController)
+                    self?.handleVersionConflict(post: post, remoteRevision: latest)
                 }
             case .deleted:
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
@@ -190,23 +190,30 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func handleVersionConflict(post: AbstractPost, remoteRevision: RemotePost, presentingController: UIViewController) {
-        /*
-        Send a GET request to pull the latest version of the post
-        IF original.content != RemotePost.content
-            Ask the user which version they want to keep
-            IF they keep local
-                Re-send POST request with a diff (skip if_not_modified_since to overwrite)
-            ELSE
-                Apply RemotePost to the original version and delete the local revision
-        ELSE
-            // False positive – the revision changed, but content didn't
-            Apply RemotePost to the original version and delete the local revision
-         */
+    private func handleVersionConflict(post: AbstractPost, remoteRevision: RemotePost) {
+        Task { @MainActor in
+            do {
+                let repository = PostRepository(coreDataStack: coreDataStack)
+                let latest = try await repository.getRemotePost(withID: post.postID ?? 0, from: TaggedManagedObjectID(post.blog))
+                let original = post.original ?? post
+                if original.content != latest.content {
+                    showResolveConflictView(post: post, remoteRevision: latest)
+                } else { // False positive – the revision changed, but content didn't
+                    repository._resolveConflict(for: post, pickingRemoteRevision: latest)
+                }
+            } catch {
+                handleError(error, for: post)
+            }
+        }
+    }
 
+    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost) {
+        guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            return
+        }
         let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision)
         let navigation = UINavigationController(rootViewController: controller)
-        presentingController.present(navigation, animated: true)
+        topViewController.present(navigation, animated: true)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
