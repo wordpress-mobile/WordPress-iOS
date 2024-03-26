@@ -11,7 +11,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
 
     let postResultContent = """
 <!-- wp:image {"id":100} -->
-<figure class="wp-block-image"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100"/></figure>
+<figure class="wp-block-image"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100" /></figure>
 <!-- /wp:image -->
 """
 
@@ -21,9 +21,11 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
 
         let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-        let resultContent = gutenbergImgPostUploadProcessor.process(postContent)
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postContent)
+        gutenbergImgPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 
     let postMediaBlockContent = """
@@ -36,7 +38,7 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
 
     let postMediaBlockResultContent = """
     <!-- wp:media-text {"mediaId":100,"mediaType":"image"} -->
-    <div class="wp-block-media-text alignwide"><figure class="wp-block-media-text__media"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100"/></figure><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Content…","fontSize":"large"} -->
+    <div class="wp-block-media-text alignwide"><figure class="wp-block-media-text__media"><img src="http://www.wordpress.com/logo.jpg" alt="" class="wp-image-100" /></figure><div class="wp-block-media-text__content"><!-- wp:paragraph {"placeholder":"Content…","fontSize":"large"} -->
     <p class="has-large-font-size"></p>
     <!-- /wp:paragraph --></div></div>
     <!-- /wp:media-text -->
@@ -48,9 +50,11 @@ class GutenbergImgUploadProcessorTests: XCTestCase {
         let remoteURLStr = "http://www.wordpress.com/logo.jpg"
 
         let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-        let resultContent = gutenbergImgPostUploadProcessor.process(postMediaBlockContent)
 
-        XCTAssertEqual(resultContent, postMediaBlockResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: postMediaBlockContent)
+        gutenbergImgPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), postMediaBlockResultContent, "Post content should be updated correctly")
     }
 
 }
