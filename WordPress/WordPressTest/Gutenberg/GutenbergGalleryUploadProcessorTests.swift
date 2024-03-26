@@ -108,8 +108,6 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
             ImageUploadJob(uploadID: -701, serverID: 701, serverURL: "https://files.wordpress.com/701.jpg", mediaLink: "https://files.wordpress.com/?p=701"),
         ]
         for blockStart in idVariations {
-            var resultContent = blockStart + "\n" + postContent
-
             let parser = GutenbergContentParser(for: blockStart + "\n" + postContent)
 
             mediaJobs.forEach { mediaJob in
