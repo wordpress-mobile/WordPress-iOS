@@ -306,7 +306,7 @@ private extension LoginEpilogueTableViewController {
         let service = ProfileService()
         let epilogueInfo = LoginEpilogueUserInfo(profile: profile)
         do {
-            let gravatarProfile = try await service.fetch(withEmail: profile.email)
+            let gravatarProfile = try await service.fetch(with: .email(profile.email))
             let updatedInfo = epilogueInfo.updating(with: gravatarProfile)
             completion(updatedInfo)
         } catch {
