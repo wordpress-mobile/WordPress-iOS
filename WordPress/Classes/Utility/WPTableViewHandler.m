@@ -144,6 +144,12 @@ static CGFloat const DefaultCellHeight = 44.0;
     int i = 0;
     for (NSIndexPath *indexPath in visibleIndexPaths) {
         NSInteger index = [self.fetchedResultsIndexPathsBeforeChange indexOfObject:indexPath];
+        // Fixed a crash that was casued due to index out of bounds.
+        // `index` is calculated from `fetchedResultsIndexPathsBeforeChange` array
+        // but used in `fetchedResultsBeforeChange` array which is a misuse.
+        if (self.fetchedResultsBeforeChange.count <= index) {
+            break;
+        }
         NSManagedObject *obj = self.fetchedResultsBeforeChange[index];
         if (obj.isFault) {
             NSError *error;
