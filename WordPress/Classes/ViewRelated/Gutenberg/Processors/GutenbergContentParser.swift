@@ -77,7 +77,7 @@ public class GutenbergParsedBlock {
 ///
 /// ```
 /// let galleryBlocks = parser.blocks.filter { $0.name == "wp:gallery" }
-/// let nestedImageBlocks = galleryBlocks.blocks.filter { $0.name == "wp:image" }
+/// let nestedImageBlocks = galleryBlocks[0].blocks.filter { $0.name == "wp:image" }
 /// ```
 ///
 /// > Note: All parsed blocks are in the list, including nested blocks.

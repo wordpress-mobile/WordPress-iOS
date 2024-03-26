@@ -31,8 +31,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
     func processImgPostMediaUpload(_ element: Element) {
         let imgTags = try? element.select(ImageKeys.name)
         imgTags?.forEach {imgTag in
-            guard let imgClassAttributeValue = try? imgTag.attr(ImageKeys.classAttributes),
-                  case let imgClass = imgClassAttributeValue else {
+            guard let imgClass = try? imgTag.attr(ImageKeys.classAttributes) else {
                 return
             }
 
@@ -131,8 +130,8 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
                     self.linkToURL = self.mediaLink
                 }
                 processLinkPostMediaUpload(block)
-            } else if let element = block.elements.first() {
-                processImgPostMediaUpload(element)
+            } else {
+                block.elements.forEach { processImgPostMediaUpload($0) }
             }
         }
     }
