@@ -6,6 +6,8 @@ extension AbstractPost {
         original?.original() ?? self
     }
 
+    /// Returns `true` if the post was never uploaded to the remote and has
+    /// not revisions that were marked for syncing.
     var isNewDraft: Bool {
         assert(isOriginal(), "Must be called on the original")
         return !hasRemote() && getLatestRevisionNeedingSync() == nil
@@ -13,6 +15,7 @@ extension AbstractPost {
 
     // MARK: - Status
 
+    /// - note: deprecated (kahu-offline-mode)
     @objc
     var statusTitle: String? {
         guard let status = self.status else {
@@ -22,6 +25,7 @@ extension AbstractPost {
         return AbstractPost.title(for: status)
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
@@ -165,13 +169,8 @@ extension AbstractPost {
         return RemotePostUpdateParameters.changes(from: original, to: self)
     }
 
-    var isEmpty: Bool {
-        let title = (postTitle ?? "").trimmingCharacters(in: .whitespaces)
-        let content = (content ?? "").trimmingCharacters(in: .whitespaces)
-        return title.isEmpty && content.isEmpty
-    }
-
     // TODO: Replace with a new flag
+    /// - note: Work-in-progress (kahu-offline-mode)
     @objc var isSyncNeeded: Bool {
         get { confirmedChangesHash == AbstractPost.syncNeededKey }
         set { confirmedChangesHash = newValue ? AbstractPost.syncNeededKey : "" }

@@ -36,4 +36,42 @@ class AbstractPostTest: CoreDataTestCase {
         XCTAssertEqual(post.featuredImageURLForDisplay()?.absoluteString, "https://wp.me/awesome.png")
     }
 
+    func testGetLatestRevisionNeedingSync() {
+        // GIVEN a post with no revisions
+        let post = PostBuilder(mainContext).build()
+
+        // THEN
+        XCTAssertNil(post.getLatestRevisionNeedingSync())
+
+        // GIVEN a post with a revision that doesn't need sync
+        let revision1 = post._createRevision()
+
+        // THEN
+        XCTAssertNil(post.getLatestRevisionNeedingSync())
+
+        // GIVEN a post with a revision that needs sync
+        let revision2 = revision1._createRevision()
+        revision2.isSyncNeeded = true
+
+        // THEN
+        XCTAssertEqual(post.getLatestRevisionNeedingSync(), revision2)
+    }
+
+    func testDeleteSyncedRevisions() {
+        // GIVEN a post with three revisions
+        let post = PostBuilder(mainContext).build()
+        let revision1 = post._createRevision()
+        let revision2 = revision1._createRevision()
+        let revision3 = revision2._createRevision()
+
+        // WHEN
+        post.deleteSyncedRevisions(until: revision2)
+
+        // THEN
+        XCTAssertEqual(post.revision, revision3)
+        XCTAssertEqual(revision3.original, post)
+        XCTAssertTrue(revision1.isDeleted)
+        XCTAssertTrue(revision2.isDeleted)
+        XCTAssertFalse(revision3.isDeleted)
+    }
 }
