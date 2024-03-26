@@ -170,11 +170,11 @@ extension ReaderTabViewModelTests {
 
     private func makeFilterProvider() -> FilterProvider {
         return FilterProvider(title: { _ in "Test" },
-                       accessibilityIdentifier: "Test",
-                       cellClass: UITableViewCell.self,
-                       reuseIdentifier: "Cell",
-                       emptyTitle: "Test",
-                       section: .sites) { completion in
+                              accessibilityIdentifier: "Test",
+                              cellClass: UITableViewCell.self,
+                              reuseIdentifier: "Cell",
+                              emptyTitle: "Test",
+                              section: .sites) { _, completion in
             completion(.success([]))
         }
     }

@@ -66,7 +66,7 @@ class ReaderManageScenePresenter {
         }
 
         self.selectedSection = selectedSection
-        let navigationController = UINavigationController(rootViewController: makeViewController(onDismiss: completion))
+        let navigationController = UINavigationController(rootViewController: makeViewController())
         presentedViewController = navigationController
         viewController.present(navigationController, animated: true, completion: nil)
 
@@ -85,7 +85,7 @@ extension ReaderManageScenePresenter: ScenePresenter {
 // MARK: - Private helpers
 
 private extension ReaderManageScenePresenter {
-    func makeViewController(onDismiss: (() -> Void)? = nil) -> TabbedViewController {
+    func makeViewController() -> TabbedViewController {
         let tabbedItems = sections.map({ item in
             return item.tabbedItem
         })
@@ -95,7 +95,6 @@ private extension ReaderManageScenePresenter {
                 return
             }
 
-            onDismiss?()
             self.delegate?.didDismiss(presenter: self)
             NotificationCenter.default.post(name: .readerManageControllerWasDismissed, object: self)
             WPAnalytics.track(.readerManageViewDismissed)
