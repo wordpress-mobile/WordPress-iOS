@@ -18,17 +18,8 @@ final class PostListItemViewModel {
         self.imageURL = post.featuredImageURL
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.syncStateViewModel = PostSyncStateViewModel(post: post)
-
-        let displayedRevision: Post
-        let original = (post.original as? Post) ?? post
-        if RemoteFeatureFlag.syncPublishing.enabled(), original.status != .draft {
-            displayedRevision = original
-        } else {
-            displayedRevision = post
-        }
-
-        self.badges = makeBadgesString(for: displayedRevision, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
-        self.content = makeContentString(for: displayedRevision, syncStateViewModel: syncStateViewModel)
+        self.badges = makeBadgesString(for: post, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
+        self.content = makeContentString(for: post, syncStateViewModel: syncStateViewModel)
     }
 }
 

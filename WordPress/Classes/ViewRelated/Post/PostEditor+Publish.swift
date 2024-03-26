@@ -173,7 +173,7 @@ extension PublishingEditor {
     }
 
     private func performSaveDraftAction() {
-        PostCoordinator.shared.save(post)
+        PostCoordinator.shared.setNeedsSync(for: post)
         dismissOrPopView()
     }
 
@@ -414,11 +414,12 @@ extension PublishingEditor {
             return _cancelEditing()
         }
 
-        guard !post.revisionChanges.isEmpty else {
+        guard !post.changes.isEmpty else {
             return discardAndDismiss()
         }
 
         if post.original().status == .draft {
+            // TODO: reset `status` if needed (kahu-offline-mode)
             if post.isNewDraft {
                 showCloseNewDraftConfirmationAlert()
             } else {
@@ -468,9 +469,39 @@ extension PublishingEditor {
         dismissOrPopView(didSave: !postDeleted)
     }
 
-    // Returns true when the post is deleted
     @discardableResult
     func discardChanges() -> Bool {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _discardChanges()
+        }
+
+        guard let context = post.managedObjectContext else {
+            assertionFailure()
+            return true
+        }
+
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
+
+        // TODO: this is incorrect because there might still be media in the previous revision
+        cancelUploadOfAllMedia(for: post)
+
+        guard let original = post.original else {
+            assertionFailure("Editor works with revisions")
+            return true
+        }
+        // Original can be either an unsynced revision or an original post at this post
+        original.deleteRevision()
+        if original.isNewDraft {
+            context.delete(original)
+        }
+        ContextManager.shared.saveContextAndWait(context)
+        return true
+    }
+
+    // Returns true when the post is deleted
+    @discardableResult
+    func _discardChanges() -> Bool {
+
         var postDeleted = false
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
             return postDeleted
@@ -514,6 +545,8 @@ extension PublishingEditor {
         ContextManager.sharedInstance().saveContextAndWait(managedObjectContext)
         return postDeleted
     }
+
+    // TODO: cleanup
 
     private func showCloseNewDraftConfirmationAlert() {
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -746,8 +779,34 @@ extension PublishingEditor {
         debouncer.call(immediate: immediate)
     }
 
-    // TODO: Rip this out and put it into the PostService
     func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        }
+        guard let managedObjectContext = post.managedObjectContext else {
+            return assertionFailure()
+        }
+
+        assert(post.latest() == post, "Must be opened with the latest verison of the post")
+
+        if !(post.isRevision() && !post.isSyncNeeded) {
+            DDLogDebug("Creating new revision")
+            post = post._createRevision()
+        }
+
+        if loadAutosaveRevision {
+            DDLogDebug("Loading autosave")
+            post.postTitle = post.autosaveTitle
+            post.mt_excerpt = post.autosaveExcerpt
+            post.content = post.autosaveContent
+        }
+
+        ContextManager.sharedInstance().save(managedObjectContext)
+    }
+
+    // TODO: Rip this out and put it into the PostService
+    // - note: Deprecated (kahu-offline-mode)
+    func _createRevisionOfPost(loadAutosaveRevision: Bool = false) {
 
         if post.isLocalRevision, post.original?.postTitle == nil, post.original?.content == nil {
             // Editing a locally made revision has bit of weirdness in how autosave and

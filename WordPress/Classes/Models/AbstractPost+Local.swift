@@ -6,6 +6,7 @@ extension AbstractPost {
         return self.isDraft() && !self.hasRemote()
     }
 
+    /// - warning: deprecated (kahu-offline-mode)
     var isLocalRevision: Bool {
         return self.originalIsDraft() && self.isRevision() && self.remoteStatus == .local
     }

@@ -3,7 +3,9 @@ import Foundation
 final class PostSyncStateViewModel {
     enum State {
         case idle
-        case syncing
+        // Has unsynced changes
+        case unsynced
+        case uploading
         case offlineChanges
         case failed
     }
@@ -12,8 +14,33 @@ final class PostSyncStateViewModel {
     private let isInternetReachable: Bool
 
     var state: State {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _state
+        }
+
+        if let error = PostCoordinator.shared.syncError(for: post) {
+            if let saveError = error as? PostRepository.PostSaveError,
+               case .conflict = saveError {
+                return .failed // Terminal error
+            }
+            if let urlError = (error as NSError).underlyingErrors.first as? URLError,
+               urlError.code == .notConnectedToInternet {
+                return .offlineChanges // A better indicator on what's going on
+            }
+        }
+        if PostCoordinator.shared.isSyncNeeded(for: post) {
+            return .unsynced
+        }
+        if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
+            return .uploading
+        }
+        return .idle
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    private var _state: State {
         if post.remoteStatus == .pushing || PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
-            return .syncing
+            return .uploading
         }
         if post.isFailed {
             return isInternetReachable ? .failed : .offlineChanges
@@ -22,7 +49,7 @@ final class PostSyncStateViewModel {
     }
 
     var isEditable: Bool {
-        state == .idle || state == .offlineChanges || state == .failed
+        state != .uploading
     }
 
     var isShowingEllipsis: Bool {
@@ -30,7 +57,7 @@ final class PostSyncStateViewModel {
     }
 
     var isShowingIndicator: Bool {
-        state == .syncing
+        state == .uploading || state == .unsynced
     }
 
     var iconInfo: (image: UIImage?, color: UIColor)? {
@@ -39,7 +66,7 @@ final class PostSyncStateViewModel {
             return (UIImage(systemName: "wifi.slash"), UIColor.listIcon)
         case .failed:
             return (UIImage.gridicon(.notice), UIColor.error)
-        case .idle, .syncing:
+        case .idle, .uploading, .unsynced:
             return nil
         }
     }
@@ -51,7 +78,7 @@ final class PostSyncStateViewModel {
         switch state {
         case .offlineChanges:
             return Strings.offlineChanges
-        case .failed, .idle, .syncing:
+        case .failed, .idle, .uploading, .unsynced:
             return nil
         }
     }

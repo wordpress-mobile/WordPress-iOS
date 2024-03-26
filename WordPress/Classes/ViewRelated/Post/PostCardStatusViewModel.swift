@@ -172,14 +172,16 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if autoUploadInteractor.canRetryUpload(of: post) ||
-            autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
-            post.isFailed && isInternetReachable {
-            buttons.append(.retry)
-        }
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            if autoUploadInteractor.canRetryUpload(of: post) ||
+                autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
+                post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
 
-        if canCancelAutoUpload && !isInternetReachable {
-            buttons.append(.cancelAutoUpload)
+            if canCancelAutoUpload && !isInternetReachable {
+                buttons.append(.cancelAutoUpload)
+            }
         }
 
         if canPublish {

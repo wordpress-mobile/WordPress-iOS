@@ -6,9 +6,10 @@ extension AbstractPost {
         original?.original() ?? self
     }
 
+    // TODO: simplifuy this
     /// - warning: Work-in-progress (kahu-offline-mode)
     var isNewDraft: Bool {
-        !hasRemote() && remoteStatus != .syncNeeded
+        !original().hasRemote() && !(original?.revision?.isSyncNeeded ?? false)
     }
 
     // MARK: - Status
@@ -156,19 +157,55 @@ extension AbstractPost {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
     }
 
-    /// If there is a revision, returns a list of changes made in the revision.
-    var revisionChanges: RemotePostUpdateParameters {
-        let original = self.original()
-        let latest = self.latest()
-        guard latest.isRevision() else {
+    /// Returns a list of changes from the current post to the previous revision.
+    var changes: RemotePostUpdateParameters {
+        guard let original else {
             return RemotePostUpdateParameters() // Empty
         }
-        return RemotePostUpdateParameters.changes(from: original, to: latest)
+        return RemotePostUpdateParameters.changes(from: original, to: self)
     }
 
     var isEmpty: Bool {
         let title = (postTitle ?? "").trimmingCharacters(in: .whitespaces)
         let content = (content ?? "").trimmingCharacters(in: .whitespaces)
         return title.isEmpty && content.isEmpty
+    }
+
+    // TODO: Replace with a new flag.
+    @objc var isSyncNeeded: Bool {
+        get { confirmedChangesHash == "sync-needed" }
+        set { confirmedChangesHash = newValue ? "sync-needed" : "" }
+    }
+
+    func getLatestRevisionNeedingSync() -> AbstractPost {
+        assert(original == nil, "Must be called on an original revision")
+        var revision = self
+        var current = self
+        while let next = current.revision {
+            if next.isSyncNeeded {
+                revision = next
+            }
+            current = next
+        }
+        return revision
+    }
+
+    /// Deletes all of the synced revisions until and including the `latest`
+    /// one passed as a parameter.
+    func deleteSyncedRevisions(until latest: AbstractPost) {
+        assert(original == nil, "Must be called on an original revision")
+        let tail = latest.revision
+
+        var current = self
+        while current !== latest, let next = current.revision {
+            current.deleteRevision()
+            current = next
+        }
+
+        if let tail {
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(tail, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
     }
 }

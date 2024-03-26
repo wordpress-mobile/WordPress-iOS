@@ -647,7 +647,11 @@ class AbstractPostListViewController: UIViewController,
     @objc func moveToDraft(_ post: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
 
-        PostCoordinator.shared.moveToDraft(post)
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            PostCoordinator.shared.moveToDraft(post)
+        } else {
+            PostCoordinator.shared._moveToDraft(post)
+        }
     }
 
     @objc func viewPost(_ post: AbstractPost) {
