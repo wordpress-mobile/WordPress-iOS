@@ -1,7 +1,6 @@
 import Foundation
-import Aztec
 
-class GutenbergFileUploadProcessor: Processor {
+class GutenbergFileUploadProcessor: GutenbergProcessor {
     private struct FileBlockKeys {
         static var name = "wp:file"
         static var id = "id"
@@ -18,38 +17,24 @@ class GutenbergFileUploadProcessor: Processor {
         self.remoteURLString = remoteURLString
     }
 
-    lazy var fileHtmlProcessor = HTMLProcessor(for: "a", replacer: { (file) in
-        var attributes = file.attributes
+    func processFileBlocks(_ blocks: [GutenbergParsedBlock]) {
+        blocks.filter { $0.name == FileBlockKeys.name }.forEach { block in
+            guard let mediaID = block.attributes[FileBlockKeys.id] as? Int,
+                mediaID == self.mediaUploadID else {
+                    return
+            }
 
-        attributes.set(.string(self.remoteURLString), forKey: FileBlockKeys.href)
+            // Update attributes
+            block.attributes[FileBlockKeys.id] = self.serverMediaID
+            block.attributes[FileBlockKeys.href] = self.remoteURLString
 
-        var html = "<a "
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        html += attributeSerializer.serialize(attributes)
-        html += ">\(file.content ?? "")</a>"
-        return html
-    })
-
-    lazy var fileBlockProcessor = GutenbergBlockProcessor(for: FileBlockKeys.name, replacer: { fileBlock in
-        guard let mediaID = fileBlock.attributes[FileBlockKeys.id] as? Int,
-            mediaID == self.mediaUploadID else {
-                return nil
+            // Update href of `a` tags
+            let aTags = try? block.elements.select("a")
+            aTags?.forEach { _ = try? $0.attr(FileBlockKeys.href, self.remoteURLString) }
         }
-        var block = "<!-- \(FileBlockKeys.name) "
-        var attributes = fileBlock.attributes
-        attributes[FileBlockKeys.id] = self.serverMediaID
-        attributes[FileBlockKeys.href] = self.remoteURLString
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            block += jsonString
-        }
-        block += " -->"
-        block += self.fileHtmlProcessor.process(fileBlock.content)
-        block += "<!-- /\(FileBlockKeys.name) -->"
-        return block
-    })
+    }
 
-    func process(_ text: String) -> String {
-        return fileBlockProcessor.process(text)
+    func process(_ blocks: [GutenbergParsedBlock]) {
+        processFileBlocks(blocks)
     }
 }
