@@ -35,7 +35,8 @@ extension BasePost {
         case publish = "publish"
         case scheduled = "future"
         case trash = "trash"
-        case deleted = "deleted" // Returned by wpcom REST API when a post is permanently deleted.
+        /// Returned by wpcom REST API when a post is permanently deleted.
+        case deleted = "deleted"
     }
 
     @objc var featuredImageURL: URL? {

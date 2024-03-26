@@ -2,6 +2,7 @@ import Aztec
 import Foundation
 import WordPressKit
 import WordPressFlux
+import CocoaLumberjack
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
@@ -26,8 +27,8 @@ class PostCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var syncOperations: [NSManagedObjectID: SyncOperation] = [:]
     private var pendingPostIDs: Set<NSManagedObjectID> = []
-
     private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
@@ -178,7 +179,7 @@ class PostCoordinator: NSObject {
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         let post = post.original ?? post
         do {
-            try await PostRepository()._update(post, changes: changes)
+            try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
         } catch {
             handleError(error, for: post)
             throw error
@@ -218,18 +219,13 @@ class PostCoordinator: NSObject {
     }
 
     func moveToDraft(_ post: AbstractPost) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
-            _moveToDraft(post)
-            return
-        }
-
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.draft.rawValue
         _performChanges(changes, for: post)
     }
 
     /// - note: Deprecated (kahu-offline-mode) (along with all related types)
-    private func _moveToDraft(_ post: AbstractPost) {
+    func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
     }
@@ -242,6 +238,162 @@ class PostCoordinator: NSObject {
             defer { setUpdating(false, for: post) }
 
             try await self._update(post, changes: changes)
+        }
+    }
+
+    // MARK: - Sync (Drafts)
+
+    func isSyncNeeded(for post: AbstractPost) -> Bool {
+        post.original().revision?.isSyncNeeded ?? false
+    }
+
+    /// Saves the scratchpad in a local revision scheduled for sync with the server.
+    ///
+    /// - warning: This should only be used for draft posts.
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    func setNeedsSync(for revision: AbstractPost) {
+        assert(revision.isRevision(), "Must be used only on revisions")
+        assert(revision.original().status == .draft, "Must be used only with draft posts")
+        revision.isSyncNeeded = true
+        ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
+
+        let post = revision.original()
+        Task {
+            await sync(post)
+        }
+    }
+
+    final class SyncOperation {
+        let id: Int
+        let post: AbstractPost
+        var error: Error?
+        var state: State = .idle {
+            didSet {
+                log("change state to \(state)")
+            }
+        }
+        var revision: AbstractPost?
+        weak var retryTimer: Timer?
+
+        enum State {
+            case idle
+            case uploadingMedia
+            case syncing
+            case failed
+        }
+
+        private static var syncOperationId = 1
+
+        init(post: AbstractPost) {
+            self.post = post
+            self.id = SyncOperation.syncOperationId
+            SyncOperation.syncOperationId += 1
+
+            self.log("created (postID: \(post.postID ?? -1), title: \(post.postTitle ?? "–"), entity: \(post)")
+        }
+
+        func log(_ string: String) {
+            DDLogInfo("sync(\(id)) \(string)")
+        }
+    }
+
+    // TODO: start on app launch too + add queue (1 at a time?)
+    // TODO: think about cancellation
+    // TODO: restart automatically on network connectivity restart
+
+    @MainActor
+    func sync(_ post: AbstractPost) async {
+        assert(post.isOriginal(), "Must be an original post")
+
+        let objectID = post.objectID
+        let operation = syncOperations[objectID] ?? SyncOperation(post: post)
+        syncOperations[objectID] = operation
+
+        operation.log("sync post: \(post.postID ?? -1) \(post.postTitle ?? "Untitled")\(post.objectID)")
+
+        let revision = post.getLatestRevisionNeedingSync()
+        guard revision != operation.revision else {
+            return operation.log("already syncing the latest revision")
+        }
+
+        switch operation.state {
+        case .idle:
+            break // Continue upload
+        case .uploadingMedia:
+            // TODO: will it cancel revision?
+            let previous = Set(operation.revision?.media ?? [])
+            let deleted = previous.subtracting(Set(revision.media))
+            operation.log("cancel upload for media: \(deleted.map(\.filename))")
+            for media in deleted {
+                MediaCoordinator.shared.cancelUpload(of: media)
+            }
+        case .syncing:
+            operation.log("letting the current sync finish")
+        case .failed:
+            operation.log("cancelling current retry")
+            operation.retryTimer?.invalidate()
+        }
+
+        operation.error = nil
+        postDidUpdateNotification(for: post)
+
+        do {
+            // Upload media for the latest revision
+            operation.revision = revision
+            operation.state = .uploadingMedia
+            try await uploadRemainingResources(for: revision)
+
+            guard operation.revision == post.getLatestRevisionNeedingSync() else {
+                return operation.log("stopping because another revision")
+            }
+
+            operation.state = .syncing
+            try await PostRepository(coreDataStack: coreDataStack)._sync(post)
+
+            // TODO: revision is `nil` at this point
+            if post.getLatestRevisionNeedingSync() == post {
+                syncOperations[objectID] = nil // Nothing to sync
+                operation.log("done, no more revisions to sync")
+            } else {
+                operation.log("done, but there are more revision to sync")
+                operation.state = .idle
+                Task {
+                    await sync(post) // Sync the next revision
+                }
+            }
+        } catch {
+            operation.log("failed with error: \(error)")
+            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
+                handlePermanentlyDeleted(post)
+                syncOperations[objectID] = nil
+                operation.log("post was permanently deleted")
+            } else {
+                operation.error = error
+                operation.state = .failed
+                postDidUpdateNotification(for: post)
+            }
+
+            // TODO: schedule retry (+ check if post exists)
+            // TODO: add unit tests
+        }
+    }
+
+    func syncError(for post: AbstractPost) -> Error? {
+        syncOperations[post.original().objectID]?.error
+    }
+
+    @MainActor
+    private func postDidUpdateNotification(for post: AbstractPost) {
+        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [NSUpdatedObjectsKey: Set([post])])
+    }
+
+    // MARK: - Upload Resources
+
+    @MainActor
+    private func uploadRemainingResources(for post: AbstractPost) async throws {
+        _ = try await withUnsafeThrowingContinuation { continuation in
+            self.prepareToSave(post, then: continuation.resume(with:))
         }
     }
 
@@ -429,10 +581,17 @@ class PostCoordinator: NSObject {
             case .ended:
                 let successHandler = {
                     self.updateReferences(to: media, in: post)
-                    // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                    if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                        self.removeObserver(for: post)
-                        completion(.success(post))
+                    if RemoteFeatureFlag.syncPublishing.enabled() {
+                        if post.media.allSatisfy({ $0.mediaID != nil }) {
+                            self.removeObserver(for: post)
+                            completion(.success(post))
+                        }
+                    } else {
+                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
+                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
+                            self.removeObserver(for: post)
+                            completion(.success(post))
+                        }
                     }
                 }
                 switch media.mediaType {
@@ -457,6 +616,7 @@ class PostCoordinator: NSObject {
         }, forMediaFor: post)
     }
 
+    // TODO: make sure it works on all revisions
     private func updateReferences(to media: Media, in post: AbstractPost) {
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,

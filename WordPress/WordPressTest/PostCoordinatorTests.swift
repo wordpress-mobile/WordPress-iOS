@@ -245,7 +245,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
         let postCoordinator = PostCoordinator(mainService: postServiceMock)
 
-        postCoordinator.moveToDraft(post)
+        postCoordinator._moveToDraft(post)
 
         expect(post.status).to(equal(.draft))
     }

@@ -27,7 +27,7 @@ final class PostSyncStateViewModelTests: CoreDataTestCase {
         let viewModel = PostSyncStateViewModel(post: post, isInternetReachable: true)
 
         // When & Then
-        expect(viewModel.state).to(equal(.syncing))
+        expect(viewModel.state).to(equal(.uploading))
         expect(viewModel.isEditable).to(beFalse())
         expect(viewModel.isShowingEllipsis).to(beFalse())
         expect(viewModel.isShowingIndicator).to(beTrue())

@@ -92,9 +92,10 @@ final class PostListHeaderView: UIView {
             return
         }
         NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: 24),
-            icon.heightAnchor.constraint(equalToConstant: 24)
+            icon.widthAnchor.constraint(equalToConstant: 22),
+            icon.heightAnchor.constraint(equalToConstant: 22)
         ])
+        icon.contentMode = .scaleAspectFit
     }
 
     private func setupEllipsisButton() {

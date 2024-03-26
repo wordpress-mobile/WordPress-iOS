@@ -5,21 +5,6 @@
 #import "BasePost.h"
 @import WordPressKit;
 
-@interface AbstractPost ()
-
-/**
- The following pair of properties is used to confirm that the post we'll be trying to automatically retry uploading,
- hasn't changed since user has tapped on "confirm", and that we're not suddenly trying to auto-upload a post that the user
- might have already forgotten about.
-
- The public-facing counterparts of those is the `shouldAttemptAutoUpload` property.
- */
-
-@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
-@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
-
-@end
-
 @implementation AbstractPost
 
 @dynamic blog;
@@ -145,8 +130,13 @@
         return self.revision;
     }
 
+    return [self _createRevision];
+}
+
+- (AbstractPost *)_createRevision {
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
     [post cloneFrom:self];
+    post.isSyncNeeded = NO;
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
     post.isFeaturedImageChanged = self.isFeaturedImageChanged;
@@ -187,14 +177,6 @@
     return self;
 }
 
-- (void)updateRevision
-{
-    if ([self isRevision]) {
-        [self cloneFrom:self.original];
-        self.isFeaturedImageChanged = self.original.isFeaturedImageChanged;
-    }
-}
-
 - (BOOL)isRevision
 {
     return (![self isOriginal]);
@@ -232,7 +214,6 @@
 
     return original;
 }
-
 
 #pragma mark - Helpers
 
