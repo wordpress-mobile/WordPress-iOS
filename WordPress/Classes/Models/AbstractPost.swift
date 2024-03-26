@@ -171,11 +171,13 @@ extension AbstractPost {
         return title.isEmpty && content.isEmpty
     }
 
-    // TODO: Replace with a new flag.
+    // TODO: Replace with a new flag
     @objc var isSyncNeeded: Bool {
-        get { confirmedChangesHash == "sync-needed" }
-        set { confirmedChangesHash = newValue ? "sync-needed" : "" }
+        get { confirmedChangesHash == AbstractPost.syncNeededKey }
+        set { confirmedChangesHash = newValue ? AbstractPost.syncNeededKey : "" }
     }
+
+    static let syncNeededKey = "sync-needed"
 
     func getLatestRevisionNeedingSync() -> AbstractPost {
         assert(original == nil, "Must be called on an original revision")

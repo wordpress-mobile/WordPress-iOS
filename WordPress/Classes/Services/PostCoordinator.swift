@@ -262,7 +262,8 @@ class PostCoordinator: NSObject {
         revision.isSyncNeeded = true
         ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
 
-        sync(revision.original())
+        let original = revision.original()
+        Task { await sync(original) }
     }
 
     /// Represents an operation for syncing the post and updating it to the
@@ -305,11 +306,8 @@ class PostCoordinator: NSObject {
         }
     }
 
-    // TODO: start on app launch too + add queue (1 at a time?)
-    // TODO: think about cancellation
-    // TODO: restart automatically on network connectivity restart
-
-    func sync(_ post: AbstractPost) {
+    @MainActor
+    func sync(_ post: AbstractPost) async {
         assert(Thread.isMainThread)
         assert(post.isOriginal(), "Must be an original post")
 
@@ -346,9 +344,7 @@ class PostCoordinator: NSObject {
         let operation = SyncOperation(post: post, revision: revision)
         syncOperations[objectID] = operation
 
-        Task {
-            await performSync(operation)
-        }
+        await performSync(operation)
     }
 
     @MainActor
@@ -378,7 +374,7 @@ class PostCoordinator: NSObject {
 
             if isSyncNeeded(for: operation.post) {
                 operation.log("more revision were need syncing")
-                sync(operation.post)
+                Task { await sync(operation.post) }
             }
         } catch {
             operation.log("failed with error: \(error)")
@@ -427,6 +423,20 @@ class PostCoordinator: NSObject {
                     await performSync(operation)
                 }
             }
+        }
+    }
+
+    func scheduleSync() {
+        let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+        request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
+        do {
+            let revisions = try coreDataStack.mainContext.fetch(request)
+            let originals = Set(revisions.map { $0.original() })
+            for post in originals {
+                Task { await sync(post) }
+            }
+        } catch {
+            DDLogError("failed to scheduled sync: \(error)")
         }
     }
 
@@ -922,6 +932,9 @@ extension Foundation.Notification.Name {
 
 extension PostCoordinator: Uploader {
     func resume() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
         failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
             guard let self = self else {
                 return
