@@ -91,7 +91,7 @@ PODS:
   - ZendeskSupportSDK (5.3.0):
     - ZendeskMessagingSDK (~> 3.8.2)
     - ZendeskSupportProvidersSDK (~> 5.3.0)
-  - ZIPFoundation (0.9.18)
+  - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
   - AlamofireImage (~> 4.0)
@@ -123,7 +123,7 @@ DEPENDENCIES:
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
-  - ZIPFoundation (~> 0.9.8)
+  - ZIPFoundation (= 0.9.16)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
@@ -223,8 +223,8 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: ebced171fd1f4eb57760e8537d8cfa6a450122be
   ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
-  ZIPFoundation: fa9ae5af13b7cf168245f24d1c672a4fb972e37f
+  ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: fe40f3befb57201c814b956688187e9595f34f20
+PODFILE CHECKSUM: 90ee5f33a5d3b4270124d7a10e2315ef6ace2204
 
 COCOAPODS: 1.15.2
