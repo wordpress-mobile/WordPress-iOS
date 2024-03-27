@@ -105,6 +105,13 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                 }
                 insightsReceipt = insightsStore.query(storeQuery)
 
+                if let date = selectedDate, let period = selectedPeriod {
+                    periodChangeReceipt = periodStore.onChange { [weak self] in
+                        self?.emitChange()
+                    }
+                    periodReceipt = periodStore.query(.allCachedPeriodData(date: date, period: period, unit: period))
+                }
+
                 refreshComments()
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
