@@ -100,19 +100,20 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     return
                 }
 
+                let selectedDate = selectedDate ?? StatsDataHelper.yesterdayDateForSite()
+                let selectedPeriod = selectedPeriod ?? .day
+
                 insightsChangeReceipt = insightsStore.onChange { [weak self] in
                     self?.emitChange()
                 }
                 insightsReceipt = insightsStore.query(storeQuery)
 
-                if let date = selectedDate, let period = selectedPeriod {
-                    periodChangeReceipt = periodStore.onChange { [weak self] in
-                        self?.emitChange()
-                    }
-                    periodReceipt = periodStore.query(.allCachedPeriodData(date: date, period: period, unit: period))
+                periodChangeReceipt = periodStore.onChange { [weak self] in
+                    self?.emitChange()
                 }
+                periodReceipt = periodStore.query(.allCachedPeriodData(date: selectedDate, period: selectedPeriod, unit: selectedPeriod))
 
-                refreshComments()
+                refreshComments(date: selectedDate, period: selectedPeriod)
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -554,7 +555,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(StatsRevampStoreAction.refreshLikesTotals(date: date))
     }
 
-    func refreshComments() {
+    func refreshComments(date: Date, period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .timeIntervalsSummary(date: date, period: period)))
         ActionDispatcher.dispatch(InsightAction.refreshComments)
     }
 
