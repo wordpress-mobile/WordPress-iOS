@@ -69,7 +69,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         }
 
         // WHEN
-        let expectation = self.expectation(forNotification: .postCoordinatorDidFinishSync, object: coordinator)
+        let expectation = self.expectation(forNotification: .postCoordinatorDidFinishSyncOperation, object: coordinator)
         coordinator.setNeedsSync(for: revision1)
         wait(for: [expectation], timeout: 0.5)
 
@@ -99,7 +99,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         }
 
         // WHEN
-        let expectation = self.expectation(forNotification: .postCoordinatorDidFinishSync, object: coordinator) { notification in
+        let expectation = self.expectation(forNotification: .postCoordinatorDidFinishSyncOperation, object: coordinator) { notification in
             guard let operation = notification.userInfo?[PostCoordinator.operationUserInfoKey] as? PostCoordinator.SyncOperation else {
                 XCTFail("Missing user info")
                 return false
@@ -155,11 +155,96 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
             }
             return true
         }
-        let expectationSyncFinished = self.expectation(forNotification: .postCoordinatorDidFinishSync, object: coordinator)
+        let expectationSyncFinished = self.expectation(forNotification: .postCoordinatorDidFinishSyncOperation, object: coordinator)
         coordinator.setNeedsSync(for: revision1)
         wait(for: [expectationSyncFailed, expectationSyncFinished], timeout: 0.5)
 
         // THEN post got synced
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertNil(post.revision)
+    }
+
+    // MARK: - Sync and Wait
+
+    /// Scenario: user taps "Publish" on a draft that has unsaved changes.
+    func testSyncAndWait() async throws {
+        // GIVEN a draft post that needs sync
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.authorID = 29043
+
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.content = "content-a"
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision1)
+        try await coordinator.waitForSync(post)
+
+        // THEN post got synced
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertNil(post.revision)
+    }
+
+    /// Scenario: create and save a revision with a failing image upload. Re-open
+    /// the editor, delete the image, and try to sync.
+    func testSyncAndWaitWithRemovedImage() async throws {
+        // GIVEN a draft post
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.authorID = 29043
+        post.postTitle = "title-a"
+
+        // GIVEN a post with a image block with media that needs upload
+        let media = MediaBuilder(mainContext).build()
+        media.remoteStatus = .failed
+        media.blog = post.blog
+        media.mediaType = .image
+        media.filename = "test-image.jpg"
+        media.absoluteLocalURL = try MediaImageServiceTests.makeLocalURL(forResource: "test-image", fileExtension: "jpg")
+
+        // important otherwise MediaService will use temporary objectID and fail
+        try mainContext.save()
+
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.media = [media]
+        let uploadID = media.gutenbergUploadID
+        revision1.content = "<!-- wp:image {\"id\":\(uploadID),\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"file:///path/thumbnail-15.jpeg\" class=\"wp-image-\(uploadID)\"/></figure>\n<!-- /wp:image -->"
+
+        // GIVEN
+        let expectation = self.expectation(description: "started-media-request")
+        stub(condition: isPath("/rest/v1.1/sites/80511/media/new")) { _ in
+            let response = HTTPStubsResponse(error: URLError(.unknown))
+            expectation.fulfill()
+            response.responseTime = 10
+            return response
+        }
+
+        // WHEN
+        coordinator.setNeedsSync(for: revision1)
+        await fulfillment(of: [expectation], timeout: 2)
+
+        let revision2 = post._createRevision()
+        revision2.media = []
+        revision2.content = "empty"
+
+        #warning("this does not work because MediaCoordinator are tied to the original post")
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
+            try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+        }
+
+        coordinator.setNeedsSync(for: revision2)
+        try await coordinator.waitForSync(post)
+
+        // THEN post got synced without waiting for the image to be uploaded
         XCTAssertEqual(post.postID, 974)
         XCTAssertNil(post.revision)
     }

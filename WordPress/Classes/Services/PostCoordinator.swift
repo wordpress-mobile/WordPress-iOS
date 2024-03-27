@@ -350,7 +350,7 @@ class PostCoordinator: NSObject {
                 // for the media still present in the revision.
                 let deleted = Set(operation.revision.media).subtracting(Set(revision.media))
                 for media in deleted {
-                    MediaCoordinator.shared.cancelUpload(of: media)
+                    mediaCoordinator.cancelUpload(of: media)
                 }
                 if !deleted.isEmpty {
                     operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
@@ -373,20 +373,21 @@ class PostCoordinator: NSObject {
     }
 
     private func resumeSyncOperation(_ operation: SyncOperation) {
-        guard operation.state == .idle, !operation.isCancelled else {
-            return operation.log("can't resume an operation in \(operation.state) state")
-        }
-        Task {
-            await _resumeSyncOperation(operation)
-        }
+        Task { await _resumeSyncOperation(operation) }
     }
 
     @MainActor
     private func _resumeSyncOperation(_ operation: SyncOperation) async {
+        guard operation.state == .idle, !operation.isCancelled else {
+            return operation.log("can't resume an operation in \(operation.state) state")
+        }
+
         if operation.error != nil {
             operation.error = nil
             postDidUpdateNotification(for: operation.post)
         }
+        operation.retryTimer?.invalidate()
+
         do {
             operation.state = .uploadingMedia
             try await uploadRemainingResources(for: operation.revision)
@@ -399,41 +400,45 @@ class PostCoordinator: NSObject {
             try await PostRepository(coreDataStack: coreDataStack)
                 .sync(operation.post, revision: operation.revision)
 
-            didFinishSyncOperation(operation)
+            didSucceedSync(operation)
         } catch {
-            guard !operation.isCancelled else {
-                return operation.log("stopping – got cancelled")
-            }
-
-            operation.log("failed with error: \(error)")
-            operation.error = error
-            operation.state = .idle
-
-            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
-                handlePermanentlyDeleted(operation.post)
-                operation.state = .finished
-                syncOperations[operation.post.objectID] = nil
-                operation.log("post was permanently deleted")
-            } else {
-                let delay = operation.nextRetryDelay
-                operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-                    self?.didRetryTimerFire(for: operation)
-                }
-                operation.log("scheduled retry with delay: \(delay)s.")
-                postDidUpdateNotification(for: operation.post)
-            }
+            didFailSync(operation, error: error)
         }
+
+        NotificationCenter.default.post(name: .postCoordinatorDidFinishSyncOperation, object: self, userInfo: [PostCoordinator.operationUserInfoKey: operation])
     }
 
-    private func didFinishSyncOperation(_ operation: SyncOperation) {
+    private func didSucceedSync(_ operation: SyncOperation) {
         operation.log("operation completed")
         operation.state = .finished
         syncOperations[operation.post.objectID] = nil
-        NotificationCenter.default.post(name: .postCoordinatorDidFinishSync, object: self, userInfo: [PostCoordinator.operationUserInfoKey: operation])
 
         if PostCoordinator.isSyncNeeded(for: operation.post) {
             operation.log("more revisions need syncing")
             scheduleSync(for: operation.post)
+        }
+    }
+
+    private func didFailSync(_ operation: SyncOperation, error: Error) {
+        guard !operation.isCancelled else {
+            return operation.log("stopping – got cancelled")
+        }
+        operation.log("failed with error: \(error)")
+        operation.error = error
+        operation.state = .idle
+
+        if let error = error as? PostRepository.PostSaveError, case .deleted = error {
+            handlePermanentlyDeleted(operation.post)
+            operation.state = .finished
+            syncOperations[operation.post.objectID] = nil
+            operation.log("post was permanently deleted")
+        } else {
+            let delay = operation.nextRetryDelay
+            operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
+                self?.didRetryTimerFire(for: operation)
+            }
+            operation.log("scheduled retry with delay: \(delay)s.")
+            postDidUpdateNotification(for: operation.post)
         }
     }
 
@@ -451,7 +456,6 @@ class PostCoordinator: NSObject {
             if let error = operation.error,
                let urlError = (error as NSError).underlyingErrors.first as? URLError,
                urlError.code == .notConnectedToInternet {
-                operation.retryTimer?.invalidate()
                 operation.log("connection is reachable – retrying now")
                 resumeSyncOperation(operation)
             }
@@ -477,9 +481,77 @@ class PostCoordinator: NSObject {
         syncOperations[post.original().objectID]?.error
     }
 
-    @MainActor
     private func postDidUpdateNotification(for post: AbstractPost) {
         NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [NSUpdatedObjectsKey: Set([post])])
+    }
+
+    #warning("update docs")
+
+    /// Waits until the post syncs to the latest revision.
+    ///
+    /// - note: If the operation has previously failed and is waiting for a
+    /// retry, performs a retry without waiting.
+    ///
+    /// - warning: If more revisions are added during after the call is made,
+    /// it'll still finish.
+    ///
+    /// - parameter timeout: The default value is 60 seconds.
+    func waitForSync(_ post: AbstractPost, timeout: TimeInterval = 60) async throws {
+        guard let latestID = post.getLatestRevisionNeedingSync()?.objectID else {
+            return // Nothing to sync
+        }
+        var olderRevisionIDs = Set(post.allRevisions.filter(\.isSyncNeeded).map(\.objectID))
+        olderRevisionIDs.remove(latestID)
+
+//        let revisionIDs = post.allRevisions.map(\.objectID)
+//        guard let expectedIndex = revisionIDs.firstIndex(of: latestID) else {
+//            return // Should never happen
+//        }
+        // Tap into the sync operation notifications and wait until the most
+//        let value = NotificationCenter.default
+//            .notifications(named: .postCoordinatorDidFinishSyncOperation, object: self)
+//            .compactMap { notification -> SyncOperation? in
+//                guard let operation = notification.userInfo?[PostCoordinator.operationUserInfoKey] as? SyncOperation else {
+//                    assertionFailure("Operation is missing from the user info")
+//                    return nil
+//                }
+//                guard let index = revisionIDs.firstIndex(of: operation.revision.objectID) else {
+//                    return operation // The revision was added after the `sync` was called
+//                }
+//                guard index >= expectedIndex else {
+//                    return nil
+//                }
+//                return operation
+//            }
+//            .first { _ in true }
+
+        if let operation = syncOperations[post.objectID] {
+            resumeSyncOperation(operation) // Quick retry
+        }
+
+        let operation = await NotificationCenter.default
+            .publisher(for: Foundation.Notification.Name.postCoordinatorDidFinishSyncOperation, object: self)
+            .compactMap { notification -> SyncOperation? in
+                guard let operation = notification.userInfo?[PostCoordinator.operationUserInfoKey] as? SyncOperation else {
+                    assertionFailure("Operation is missing from the user info")
+                    return nil
+                }
+                guard !olderRevisionIDs.contains(operation.revision.objectID) else {
+                    return nil // Skip operation for older revisions
+                }
+                return operation
+            }
+            .first()
+            .timeout(.seconds(timeout), scheduler: DispatchQueue.main)
+            .values
+            .first { _ in true }
+
+        guard let operation else {
+            throw URLError(.unknown) // This should never happen
+        }
+        if let error = operation.error {
+            throw error
+        }
     }
 
     // MARK: - Upload Resources
@@ -968,8 +1040,11 @@ extension Foundation.Notification.Name {
     /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key.
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
 
-    /// Contains a set of updated operatino under the ``PostCoordinator/operationUserInfoKey`` key.
-    static let postCoordinatorDidFinishSync = Foundation.Notification.Name("org.automattic.postCoordinatorDidFinishSync")
+    /// The notification sent by ``PostCoordinator`` when the sync operation
+    /// completes a sync operation. If the operation fails, it'll contain an error.
+    ///
+    /// Contains a set of updated operation under the ``PostCoordinator/operationUserInfoKey`` key.
+    static let postCoordinatorDidFinishSyncOperation = Foundation.Notification.Name("org.automattic.postCoordinatorDidFinishSyncOperation")
 }
 
 extension PostCoordinator {
