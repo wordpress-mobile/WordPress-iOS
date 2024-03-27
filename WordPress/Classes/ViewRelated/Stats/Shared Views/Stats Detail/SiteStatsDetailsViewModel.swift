@@ -147,14 +147,14 @@ class SiteStatsDetailsViewModel: Observable {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
         guard let statSection = statSection,
             let detailsDelegate = detailsDelegate else {
-                return ImmuTable.Empty
+                return ImmuTableDiffableDataSourceSnapshot()
         }
 
         if fetchDataHasFailed() {
-            return ImmuTable.Empty
+            return ImmuTableDiffableDataSourceSnapshot()
         }
 
         switch statSection {
@@ -162,7 +162,7 @@ class SiteStatsDetailsViewModel: Observable {
             let status = statSection == .insightsFollowersWordPress ? insightsStore.allDotComFollowersStatus : insightsStore.allEmailFollowersStatus
             let type: InsightType = statSection == .insightsFollowersWordPress ? .allDotComFollowers : .allEmailFollowers
             return insightsImmuTable(for: (type, status)) {
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 let selectedIndex = statSection == .insightsFollowersWordPress ? 0 : 1
                 let wpTabData = tabDataForFollowerType(.insightsFollowersWordPress)
                 let emailTabData = tabDataForFollowerType(.insightsFollowersEmail)
@@ -180,7 +180,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .insightsCommentsAuthors, .insightsCommentsPosts:
            return insightsImmuTable(for: (.allComments, insightsStore.allCommentsInsightStatus)) {
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 let selectedIndex = statSection == .insightsCommentsAuthors ? 0 : 1
                 let authorsTabData = tabDataForCommentType(.insightsCommentsAuthors)
                 let postsTabData = tabDataForCommentType(.insightsCommentsPosts)
@@ -198,7 +198,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .insightsTagsAndCategories:
             return insightsImmuTable(for: (.allTagsAndCategories, insightsStore.allTagsAndCategoriesStatus)) {
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.insightsTagsAndCategories.itemSubtitle,
                                                      dataSubtitle: StatSection.insightsTagsAndCategories.dataSubtitle))
                 rows.append(contentsOf: tagsAndCategoriesRows())
@@ -210,7 +210,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodPostsAndPages:
             return periodImmuTable(for: periodStore.topPostsAndPagesStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                           dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle))
                 rows.append(contentsOf: postsAndPagesRows(for: status))
@@ -218,7 +218,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodSearchTerms:
             return periodImmuTable(for: periodStore.topSearchTermsStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                      dataSubtitle: StatSection.periodSearchTerms.dataSubtitle))
                 rows.append(contentsOf: searchTermsRows(for: status))
@@ -226,7 +226,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodVideos:
             return periodImmuTable(for: periodStore.topVideosStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                      dataSubtitle: StatSection.periodVideos.dataSubtitle))
                 rows.append(contentsOf: videosRows(for: status))
@@ -234,7 +234,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodClicks:
             return periodImmuTable(for: periodStore.topClicksStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                      dataSubtitle: StatSection.periodClicks.dataSubtitle))
                 rows.append(contentsOf: clicksRows(for: status))
@@ -242,7 +242,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodAuthors:
             return periodImmuTable(for: periodStore.topAuthorsStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                      dataSubtitle: StatSection.periodAuthors.dataSubtitle))
                 rows.append(contentsOf: authorsRows(for: status))
@@ -250,7 +250,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodReferrers:
             return periodImmuTable(for: periodStore.topReferrersStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                      dataSubtitle: StatSection.periodReferrers.dataSubtitle))
                 rows.append(contentsOf: referrersRows(for: status))
@@ -258,7 +258,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodCountries:
             return periodImmuTable(for: periodStore.topCountriesStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 let map = countriesMap()
                 if !map.data.isEmpty {
                     rows.append(CountriesMapRow(countriesMap: map))
@@ -270,14 +270,14 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .periodPublished:
             return periodImmuTable(for: periodStore.topPublishedStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: "", dataSubtitle: ""))
                 rows.append(contentsOf: publishedRows(for: status))
                 return rows
             }
         case .periodFileDownloads:
             return periodImmuTable(for: periodStore.topFileDownloadsStatus) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                      dataSubtitle: StatSection.periodFileDownloads.dataSubtitle))
                 rows.append(contentsOf: fileDownloadsRows(for: status))
@@ -285,7 +285,7 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .postStatsMonthsYears:
             return periodImmuTable(for: periodStore.postStatsFetchingStatuses(for: postID)) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsMonthsYears.itemSubtitle,
                                                               dataSubtitle: StatSection.postStatsMonthsYears.dataSubtitle))
                 rows.append(contentsOf: postStatsRows(status: status))
@@ -293,14 +293,14 @@ class SiteStatsDetailsViewModel: Observable {
             }
         case .postStatsAverageViews:
             return periodImmuTable(for: periodStore.postStatsFetchingStatuses(for: postID)) { status in
-                var rows = [ImmuTableRow]()
+                var rows = [any HashableImmutableRow]()
                 rows.append(DetailSubtitlesCountriesHeaderRow(itemSubtitle: StatSection.postStatsAverageViews.itemSubtitle,
                                                               dataSubtitle: StatSection.postStatsAverageViews.dataSubtitle))
                 rows.append(contentsOf: postStatsRows(forAverages: true, status: status))
                 return rows
             }
         default:
-            return ImmuTable.Empty
+            return ImmuTableDiffableDataSourceSnapshot()
         }
     }
 
@@ -529,7 +529,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Tags and Categories
 
-    func tagsAndCategoriesRows() -> [ImmuTableRow] {
+    func tagsAndCategoriesRows() -> [any HashableImmutableRow] {
         return expandableDataRowsFor(tagsAndCategoriesRowData())
     }
 
@@ -670,7 +670,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Clicks
 
-    func clicksRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+    func clicksRows(for status: StoreFetchingStatus) -> [any HashableImmutableRow] {
         return expandableDataRowsFor(clicksRowData(), status: status)
     }
 
@@ -690,7 +690,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Authors
 
-    func authorsRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+    func authorsRows(for status: StoreFetchingStatus) -> [any HashableImmutableRow] {
         return expandableDataRowsFor(authorsRowData(), status: status)
     }
 
@@ -712,7 +712,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Referrers
 
-    func referrersRows(for status: StoreFetchingStatus) -> [ImmuTableRow] {
+    func referrersRows(for status: StoreFetchingStatus) -> [any HashableImmutableRow] {
         return expandableDataRowsFor(referrersRowData(), status: status)
     }
 
@@ -801,7 +801,7 @@ private extension SiteStatsDetailsViewModel {
 
     // MARK: - Post Stats
 
-    func postStatsRows(forAverages: Bool = false, status: StoreFetchingStatus) -> [ImmuTableRow] {
+    func postStatsRows(forAverages: Bool = false, status: StoreFetchingStatus) -> [any HashableImmutableRow] {
         return expandableDataRowsFor(postStatsRowData(forAverages: forAverages), status: status)
     }
 
@@ -856,8 +856,8 @@ private extension SiteStatsDetailsViewModel {
         return detailDataRows
     }
 
-    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], status: StoreFetchingStatus = .idle) -> [ImmuTableRow] {
-        var detailDataRows = [ImmuTableRow]()
+    func expandableDataRowsFor(_ rowsData: [StatsTotalRowData], status: StoreFetchingStatus = .idle) -> [any HashableImmutableRow] {
+        var detailDataRows = [any HashableImmutableRow]()
 
         for (idx, rowData) in rowsData.enumerated() {
 
@@ -977,15 +977,12 @@ private extension SiteStatsDetailsViewModel {
         return StatsDataHelper.expandedRowLabelsDetails[statSection]?.contains(rowData.name) ?? false
     }
 
-    func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [ImmuTableRow]) -> ImmuTable {
+    func insightsImmuTable(for row: (type: InsightType, status: StoreFetchingStatus), rowsBlock: () -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
         if insightsStore.containsCachedData(for: row.type) {
-            return ImmuTable(sections: [
-                ImmuTableSection(
-                    rows: rowsBlock())
-            ])
+            return .singleSectionSnapshot(rowsBlock())
         }
 
-        var rows = [ImmuTableRow]()
+        var rows = [any HashableImmutableRow]()
 
         switch row.status {
         case .loading, .idle:
@@ -996,14 +993,11 @@ private extension SiteStatsDetailsViewModel {
             break
         }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: rows)
-        ])
+        return .singleSectionSnapshot(rows)
     }
 
-    func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [ImmuTableRow]) -> ImmuTable {
-        var rows = [ImmuTableRow]()
+    func periodImmuTable(for status: StoreFetchingStatus, rowsBlock: (StoreFetchingStatus) -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
+        var rows = [any HashableImmutableRow]()
 
         switch status {
         case .loading, .idle:
@@ -1024,20 +1018,18 @@ private extension SiteStatsDetailsViewModel {
             break
         }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: rows)
-        ])
+        return .singleSectionSnapshot(rows)
     }
 
-    func getGhostSequence() -> [ImmuTableRow] {
-        var rows = [ImmuTableRow]()
+    func getGhostSequence() -> [any HashableImmutableRow] {
+        var rows = [any HashableImmutableRow]()
         rows.append(StatsGhostTopHeaderImmutableRow())
         rows.append(contentsOf: (Constants.Sequence.rows).map { index in
             let isLastRow = index == Constants.Sequence.maxRowCount
             return StatsGhostDetailRow(hideTopBorder: true,
                                        isLastRow: isLastRow,
-                                       enableTopPadding: true)
+                                       enableTopPadding: true,
+                                       index: index)
         })
         return rows
     }
