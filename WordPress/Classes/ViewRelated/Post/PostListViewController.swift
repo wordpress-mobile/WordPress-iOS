@@ -109,12 +109,22 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     // MARK: - Notifications
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
             return
         }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post)
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter { indexPath in
+            guard let sections = fetchResultsController.sections, sections.indices.contains(indexPath.section) else {
+                return false
+            }
+
+            let sectionInfo = sections[indexPath.section]
+            if indexPath.row < sectionInfo.numberOfObjects {
+                let post = fetchResultsController.object(at: indexPath)
+                return updatedObjects.contains(post)
+            } else {
+                return false
+            }
         }
         if !updatedIndexPaths.isEmpty {
             tableView.beginUpdates()
