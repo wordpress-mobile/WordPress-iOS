@@ -475,8 +475,16 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         setLoading(true)
         Task {
             do {
+                // TODO: check that we are sending correct post instance
+                let original = post.original ?? post
                 try await PostCoordinator.shared._publish(post)
-                getCompletion()?(.published)
+                // TODO: remove alerts & cleanup
+                // TODO: hide navigation button
+                let view = PostNoticePublishSuccessView(post: original) {
+                    self.getCompletion()?(.published)
+                }
+                let host = UIHostingController(rootView: view)
+                navigationController?.pushViewController(host, animated: true)
             } catch {
                 setLoading(false)
                 publishButtonViewModel.state = .default
