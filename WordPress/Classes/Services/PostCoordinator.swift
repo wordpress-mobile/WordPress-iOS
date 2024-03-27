@@ -69,6 +69,8 @@ class PostCoordinator: NSObject {
     /// Upload or update a post in the server.
     ///
     /// - Parameter forceDraftIfCreating Please see `PostService.uploadPost:forceDraftIfCreating`.
+    ///
+    /// - note: deprecated (kahu-offline-mode)
     func save(_ postToSave: AbstractPost,
               automatedRetry: Bool = false,
               forceDraftIfCreating: Bool = false,
@@ -257,8 +259,9 @@ class PostCoordinator: NSObject {
 
     // MARK: - Sync (Drafts)
 
-    func isSyncNeeded(for post: AbstractPost) -> Bool {
-        post.original().revision?.isSyncNeeded ?? false
+    /// Returns `true` if post has any revisions that need to be synced.
+    static func isSyncNeeded(for post: AbstractPost) -> Bool {
+        post.original().getLatestRevisionNeedingSync() != nil
     }
 
     /// Saves the scratchpad in a local revision scheduled for sync with the server.
@@ -273,7 +276,7 @@ class PostCoordinator: NSObject {
         ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
 
         let original = revision.original()
-        Task { await sync(original) }
+        scheduleSync(for: original)
     }
 
     /// Represents an operation for syncing the post and updating it to the
@@ -285,12 +288,14 @@ class PostCoordinator: NSObject {
 
         var error: Error?
         var state: State = .idle {
-            didSet {
-                log("change state to \(state)")
-            }
+            didSet { log("change state to \(state)") }
         }
 
-        var retryDelay: TimeInterval = 4
+        var nextRetryDelay: TimeInterval {
+            retryDelay = min(5, retryDelay * 1.5)
+            return retryDelay
+        }
+        private var retryDelay: TimeInterval = 0
         weak var retryTimer: Timer?
 
         enum State {
@@ -298,6 +303,7 @@ class PostCoordinator: NSObject {
             case uploadingMedia
             case syncing
             case cancelled
+            case finished
         }
 
         private static var nextId = 1
@@ -316,8 +322,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    @MainActor
-    func sync(_ post: AbstractPost) async {
+    private func scheduleSync(for post: AbstractPost) {
         assert(Thread.isMainThread)
         assert(post.isOriginal(), "Must be an original post")
 
@@ -348,25 +353,27 @@ class PostCoordinator: NSObject {
             case .syncing:
                 operation.log("letting the current sync finish")
                 return // There is no way to safely cancel it
-            case .cancelled:
-                return assertionFailure("Should never happen")
+            case .cancelled, .finished:
+                return assertionFailure("Should never happen (should be removed from the dictionary)")
             }
         }
 
         let operation = SyncOperation(post: post, revision: revision)
         syncOperations[objectID] = operation
 
-        await performSync(operation)
+        Task { await resumeSyncOperation(operation) }
     }
 
     @MainActor
-    private func performSync(_ operation: SyncOperation) async {
-        guard operation.state != .cancelled else {
-            return
+    private func resumeSyncOperation(_ operation: SyncOperation) async {
+        guard operation.state == .idle else {
+            return operation.log("can't resume an operation in \(operation.state) state")
         }
 
-        operation.error = nil
-        postDidUpdateNotification(for: operation.post)
+        if operation.error != nil {
+            operation.error = nil
+            postDidUpdateNotification(for: operation.post)
+        }
 
         do {
             // Upload media for the latest revision
@@ -381,41 +388,43 @@ class PostCoordinator: NSObject {
             try await PostRepository(coreDataStack: coreDataStack)
                 .sync(operation.post, revision: operation.revision)
 
-            operation.log("sync completed")
-            syncOperations[operation.post.objectID] = nil // Nothing to sync
+            didFinishOperation(operation)
 
-            if isSyncNeeded(for: operation.post) {
-                operation.log("more revision were need syncing")
-                Task { await sync(operation.post) }
+            if PostCoordinator.isSyncNeeded(for: operation.post) {
+                operation.log("more revisions need syncing")
+                scheduleSync(for: operation.post)
             }
         } catch {
             operation.log("failed with error: \(error)")
+            operation.error = error
+            operation.state = .idle
 
             if let error = error as? PostRepository.PostSaveError, case .deleted = error {
                 handlePermanentlyDeleted(operation.post)
-                syncOperations[operation.post.objectID] = nil
+                didFinishOperation(operation)
                 operation.log("post was permanently deleted")
                 return
             }
 
-            operation.error = error
-            operation.state = .idle
-            let delay = operation.retryDelay
-            operation.retryDelay = min(32, operation.retryDelay + 4)
+            let delay = operation.nextRetryDelay
             operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
                 self?.didRetryTimerFire(for: operation)
             }
             operation.log("scheduled retry with delay: \(delay)s.")
-
             postDidUpdateNotification(for: operation.post)
         }
     }
 
+    private func didFinishOperation(_ operation: SyncOperation) {
+        operation.log("operation completed")
+        operation.state = .finished
+        syncOperations[operation.post.objectID] = nil
+        NotificationCenter.default.post(name: .postCoordinatorDidFinishSync, object: self, userInfo: [PostCoordinator.operationUserInfoKey: operation])
+    }
+
     private func didRetryTimerFire(for operation: SyncOperation) {
         operation.log("retry timer fired")
-        Task {
-            await performSync(operation)
-        }
+        Task { await resumeSyncOperation(operation) }
     }
 
     @objc private func didUpdateReachability(_ notification: Foundation.Notification) {
@@ -423,21 +432,18 @@ class PostCoordinator: NSObject {
               (reachable as? Bool) == true else {
             return
         }
-
         for operation in syncOperations.values {
-            if operation.state == .idle,
-               let error = operation.error,
+            if let error = operation.error,
                let urlError = (error as NSError).underlyingErrors.first as? URLError,
                urlError.code == .notConnectedToInternet {
                 operation.retryTimer?.invalidate()
                 operation.log("connection is reachable – retrying now")
-                Task {
-                    await performSync(operation)
-                }
+                Task { await resumeSyncOperation(operation) }
             }
         }
     }
 
+    /// Schedules sync for all the posts with revisions that need syncing.
     func scheduleSync() {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
         request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
@@ -445,7 +451,7 @@ class PostCoordinator: NSObject {
             let revisions = try coreDataStack.mainContext.fetch(request)
             let originals = Set(revisions.map { $0.original() })
             for post in originals {
-                Task { await sync(post) }
+                scheduleSync(for: post)
             }
         } catch {
             DDLogError("failed to scheduled sync: \(error)")
@@ -944,8 +950,15 @@ private struct Constants {
 }
 
 extension Foundation.Notification.Name {
-    /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key
+    /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key.
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
+
+    /// Contains a set of updated operatino under the ``PostCoordinator/operationUserInfoKey`` key.
+    static let postCoordinatorDidFinishSync = Foundation.Notification.Name("org.automattic.postCoordinatorDidFinishSync")
+}
+
+extension PostCoordinator {
+    static let operationUserInfoKey = "operationUserInfoKey"
 }
 
 // MARK: - Automatic Uploads
