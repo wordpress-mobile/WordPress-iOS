@@ -42,7 +42,7 @@ extension LoginEpilogueUserInfo {
     ///
     func updating(with profile: Gravatar.UserProfile) -> LoginEpilogueUserInfo {
         var copy = self
-        copy.gravatarUrl = profile.thumbnailUrl
+        copy.gravatarUrl = profile.thumbnailURLString
         copy.fullName = profile.displayName ?? ""
         return copy
     }
