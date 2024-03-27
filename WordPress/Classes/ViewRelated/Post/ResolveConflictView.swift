@@ -5,6 +5,7 @@ import WordPressKit
 struct ResolveConflictView: View {
     let post: AbstractPost
     let remoteRevision: RemotePost
+    let postCoordinator: PostCoordinator
     var dismiss: (() -> Void)?
 
     private var localVersion: PostVersion { .local(post) }
@@ -49,13 +50,12 @@ struct ResolveConflictView: View {
     private func saveSelectedVersion(_ version: PostVersion, post: AbstractPost, remoteRevision: RemotePost) {
         switch version {
         case .local:
-            Task {
-                try await PostCoordinator.shared._update(post, overwrite: true)
-            }
+            postCoordinator.notifyConflictResolvedPickingLocalRevision()
         case .remote:
             let coreDataStack = ContextManager.shared
             let repository = PostRepository(coreDataStack: coreDataStack)
             repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
+            postCoordinator.notifyConflictResolvedPickingRemoteRevision(for: post)
         }
     }
 }
@@ -128,8 +128,12 @@ private enum PostVersion {
 
 final class ResolveConflictViewController: UIHostingController<ResolveConflictView> {
 
-    init(post: AbstractPost, remoteRevision: RemotePost) {
-        super.init(rootView: .init(post: post, remoteRevision: remoteRevision))
+    init(
+        post: AbstractPost,
+        remoteRevision: RemotePost,
+        postCoordinator: PostCoordinator = PostCoordinator.shared
+    ) {
+        super.init(rootView: .init(post: post, remoteRevision: remoteRevision, postCoordinator: postCoordinator))
         rootView.dismiss = { self.dismiss(animated: true) }
     }
 

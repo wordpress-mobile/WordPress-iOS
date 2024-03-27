@@ -83,19 +83,22 @@ extension PublishingEditor {
         }
     }
 
-    func handlePublishButtonTap() {
+    func handlePublishButtonTap(overwrite: Bool = false) {
         let action = self.postEditorStateContext.action
 
         publishPost(
             action: action,
             dismissWhenDone: action.dismissesEditor,
-            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat,
+            overwrite: overwrite
+        )
     }
 
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
-        analyticsStat: WPAnalyticsStat?
+        analyticsStat: WPAnalyticsStat?,
+        overwrite: Bool = false
     ) {
         mapUIContentToPostAndSave(immediate: true)
 
@@ -172,7 +175,7 @@ extension PublishingEditor {
             if action.isAsync || dismissWhenDone {
                 self.asyncUploadPost(action: action)
             } else {
-                self.uploadPost(action: action, dismissWhenDone: dismissWhenDone)
+                self.uploadPost(action: action, dismissWhenDone: dismissWhenDone, overwrite: overwrite)
             }
 
             // Track as significant event for App Rating calculations
@@ -459,7 +462,7 @@ extension PublishingEditor {
 
     /// Shows the publishing overlay and starts the publishing process.
     ///
-    fileprivate func uploadPost(action: PostEditorAction, dismissWhenDone: Bool) {
+    fileprivate func uploadPost(action: PostEditorAction, dismissWhenDone: Bool, overwrite: Bool) {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: action.publishingActionLabel)
         postEditorStateContext.updated(isBeingPublished: true)
@@ -469,7 +472,7 @@ extension PublishingEditor {
         if RemoteFeatureFlag.syncPublishing.enabled() {
             Task { @MainActor in
                 do {
-                    self.post = try await PostCoordinator.shared._update(post)
+                    self.post = try await PostCoordinator.shared._update(post, overwrite: overwrite)
                     if dismissWhenDone {
                         self.dismissOrPopView()
                     } else {

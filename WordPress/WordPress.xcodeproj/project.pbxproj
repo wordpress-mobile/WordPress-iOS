@@ -4002,6 +4002,8 @@
 		FA3FCD542B640C2D009B9740 /* View+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA3FCD522B640C2D009B9740 /* View+Helpers.swift */; };
 		FA4ADAD81C50687400F858D7 /* SiteManagementService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */; };
 		FA4ADADA1C509FE400F858D7 /* SiteManagementServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */; };
+		FA4AF99F2BB4741500481803 /* PostCoordinator+ResolveConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AF99E2BB4741500481803 /* PostCoordinator+ResolveConflict.swift */; };
+		FA4AF9A02BB4741500481803 /* PostCoordinator+ResolveConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4AF99E2BB4741500481803 /* PostCoordinator+ResolveConflict.swift */; };
 		FA4B202F29A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
 		FA4B203029A619130089FE68 /* BlazeFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */; };
 		FA4B203529A786460089FE68 /* BlazeEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */; };
@@ -9347,6 +9349,7 @@
 		FA41070D263957C000E90EBF /* JetpackBackupOptionsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackBackupOptionsScreen.swift; sourceTree = "<group>"; };
 		FA4ADAD71C50687400F858D7 /* SiteManagementService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementService.swift; sourceTree = "<group>"; };
 		FA4ADAD91C509FE400F858D7 /* SiteManagementServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SiteManagementServiceTests.swift; sourceTree = "<group>"; };
+		FA4AF99E2BB4741500481803 /* PostCoordinator+ResolveConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+ResolveConflict.swift"; sourceTree = "<group>"; };
 		FA4B202E29A619130089FE68 /* BlazeFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeFlowCoordinator.swift; sourceTree = "<group>"; };
 		FA4B203429A786460089FE68 /* BlazeEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeEventsTracker.swift; sourceTree = "<group>"; };
 		FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+Blaze.swift"; sourceTree = "<group>"; };
@@ -10967,7 +10970,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -14459,6 +14462,7 @@
 				FF0D8145205809C8000EE505 /* PostCoordinator.swift */,
 				0CC21C6B2B95220E003BDB4A /* PostCoordinator+Notices.swift */,
 				8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */,
+				FA4AF99E2BB4741500481803 /* PostCoordinator+ResolveConflict.swift */,
 				4A2C73F32A95856000ACE79E /* PostRepository.swift */,
 				0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */,
 				0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */,
@@ -19379,7 +19383,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -20980,11 +20984,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -21179,13 +21183,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22715,6 +22719,7 @@
 				3F09CCAA2428FF8300D00A8C /* ReaderTabView.swift in Sources */,
 				9808655C203D079B00D58786 /* EpilogueUserInfoCell.swift in Sources */,
 				08216FD41CDBF96000304BA7 /* MenuItemTypeSelectionView.m in Sources */,
+				FA4AF99F2BB4741500481803 /* PostCoordinator+ResolveConflict.swift in Sources */,
 				43B0BA962229927F00328C69 /* WordPressAppDelegate+openURL.swift in Sources */,
 				803BB980295957CF00B3F6D6 /* WPTabBarController+RootViewPresenter.swift in Sources */,
 				176DEEE91D4615FE00331F30 /* WPSplitViewController.swift in Sources */,
@@ -25442,6 +25447,7 @@
 				FABB24542602FC2C00C8785C /* StoriesIntroViewController.swift in Sources */,
 				FABB24552602FC2C00C8785C /* WPStyleGuide+Suggestions.m in Sources */,
 				FABB24562602FC2C00C8785C /* SiteStatsInsightsViewModel.swift in Sources */,
+				FA4AF9A02BB4741500481803 /* PostCoordinator+ResolveConflict.swift in Sources */,
 				0C71959C2A3CA582002EA18C /* SiteSettingsRelatedPostsView.swift in Sources */,
 				FACF66CE2ADD645C008C3E13 /* PostListHeaderView.swift in Sources */,
 				FABB24572602FC2C00C8785C /* CheckmarkTableViewCell.swift in Sources */,
@@ -29747,7 +29753,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = "${VERSION_SHORT}";
+				MARKETING_VERSION = 24.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -29816,7 +29822,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = "${VERSION_SHORT}";
+				MARKETING_VERSION = 24.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -29884,7 +29890,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = "${VERSION_SHORT}";
+				MARKETING_VERSION = 24.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
@@ -29951,7 +29957,7 @@
 					"@executable_path/Frameworks",
 				);
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				MARKETING_VERSION = "${VERSION_SHORT}";
+				MARKETING_VERSION = 24.7;
 				OTHER_CFLAGS = (
 					"$(inherited)",
 					"-Wno-format-security",
