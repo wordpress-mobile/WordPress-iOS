@@ -37,7 +37,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
     private lazy var tableHandler: ImmuTableDiffableViewHandler = {
-        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
+        return ImmuTableDiffableViewHandler(takeOver: self, with: nil)
     }()
 
     init(date: Date, period: StatsPeriodUnit) {

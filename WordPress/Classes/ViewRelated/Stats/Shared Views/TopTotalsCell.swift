@@ -42,6 +42,12 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     private weak var postStatsDelegate: PostStatsDelegate?
     private typealias Style = WPStyleGuide.Stats
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        addDefaultTotalRows(toStackView: rowsStackView)
+    }
+
     // MARK: - Configure
 
     func configure(itemSubtitle: String? = nil,
@@ -71,39 +77,28 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.forDetails = forDetails
 
         if !forDetails {
-            addRows(dataRows,
-                    toStackView: rowsStackView,
-                    forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+            if rowsStackView.arrangedSubviews.isEmpty {
+                addDefaultTotalRows(toStackView: rowsStackView)
+            }
+            configureTotalRows(
+                dataRows,
+                inStackView: rowsStackView,
+                forType: siteStatsPeriodDelegate != nil ? .period : .insights,
+                configuration: .init(
                     limitRowsDisplayed: limitRowsDisplayed,
                     rowDelegate: self,
                     referrerDelegate: self,
-                    viewMoreDelegate: self)
-
+                    viewMoreDelegate: self
+                )
+            )
             initChildRows()
+        } else {
+            rowsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
         }
 
         setSubtitleVisibility()
         applyStyles()
         prepareForVoiceOver()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-
-        rowsStackView.arrangedSubviews.forEach { subview in
-
-            // Remove granchild rows
-            if let row = subview as? StatsTotalRow {
-                removeChildRowsForRow(row)
-            }
-
-            // Remove child rows
-            if let childView = subview as? StatsChildRowsView {
-                removeRowsFromStackView(childView.rowsStackView)
-            }
-        }
-
-        removeRowsFromStackView(rowsStackView)
     }
 
     private enum Metrics {

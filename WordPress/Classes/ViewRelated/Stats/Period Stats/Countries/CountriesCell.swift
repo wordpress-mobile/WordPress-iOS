@@ -21,6 +21,12 @@ class CountriesCell: StatsBaseCell, NibLoadable {
     private typealias Style = WPStyleGuide.Stats
     private var forDetails = false
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+
+        addDefaultTotalRows(toStackView: rowsStackView)
+    }
+
     // MARK: - Configure
 
     func configure(itemSubtitle: String,
@@ -38,20 +44,26 @@ class CountriesCell: StatsBaseCell, NibLoadable {
         bottomSeparatorLine.isHidden = forDetails
 
         if !forDetails {
-        addRows(dataRows,
-                toStackView: rowsStackView,
+            if rowsStackView.arrangedSubviews.isEmpty {
+                addDefaultTotalRows(toStackView: rowsStackView)
+            }
+            configureTotalRows(
+                dataRows,
+                inStackView: rowsStackView,
                 forType: .period,
-                limitRowsDisplayed: true,
-                viewMoreDelegate: self)
+                configuration: .init(
+                    limitRowsDisplayed: true,
+                    rowDelegate: nil,
+                    referrerDelegate: nil,
+                    viewMoreDelegate: self
+                )
+            )
+        } else {
+            removeRowsFromStackView(rowsStackView)
         }
 
         setSubtitleVisibility()
         applyStyles()
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        removeRowsFromStackView(rowsStackView)
     }
 }
 
