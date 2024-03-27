@@ -51,7 +51,7 @@ extension SiteStatsBaseTableViewController: TableViewContainer, UITableViewDataS
     }
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return Length.Padding.double
+        return .DS.Padding.double
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

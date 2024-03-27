@@ -270,11 +270,8 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 {
     // Optimistically unfollow the topic
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-        ReaderTagTopic *topicInContext = [context existingObjectWithID:topic.objectID error:nil];
-        topicInContext.following = NO;
-        if (!topicInContext.isRecommended) {
-            topicInContext.showInMenu = NO;
-        }
+        ReaderTagTopic *tagTopicInContext = [context existingObjectWithID:topic.objectID error:nil];
+        [tagTopicInContext toggleFollowing:NO];
     }];
 
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
@@ -326,6 +323,13 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
             [WPAnalytics trackReaderStat:WPAnalyticsStatReaderTagFollowed properties:properties];
             [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
                 [self selectTopicWithID:topicID inContext:context];
+
+                // mark tag topic as followed
+                ReaderTagTopic *tag = [ReaderTagTopic lookupWithTagID:topicID inContext:context];
+                if (tag) {
+                    [tag toggleFollowing:YES];
+                }
+
             } completion:success onQueue:dispatch_get_main_queue()];
         } failure:failure];
     } failure:^(NSError *error) {
@@ -384,10 +388,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     // Optimistically update and save
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext * __unused context) {
         ReaderTagTopic *topicInContext = (ReaderTagTopic *)[self.coreDataStack.mainContext existingObjectWithID:tagTopic.objectID error:nil];
-        topicInContext.following = !oldFollowingValue;
-        if (topicInContext.following) {
-            topicInContext.showInMenu = YES;
-        }
+        [topicInContext toggleFollowing:!oldFollowingValue];
     }];
 
     // Define failure block
@@ -555,23 +556,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
                        success:(void (^)(NSManagedObjectID *objectID, BOOL isFollowing))success
                        failure:(void (^)(NSError *error))failure
 {
-    ReaderSiteTopic * __block siteTopic = nil;
-
-    [self.coreDataStack.mainContext performBlockAndWait:^{
-        if (isFeed) {
-            siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.coreDataStack.mainContext];
-        } else {
-            siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.coreDataStack.mainContext];
-        }
-    }];
-
-    if (siteTopic) {
-        if (success) {
-            success(siteTopic.objectID, siteTopic.following);
-        }
-        return;
-    }
-
     ReaderTopicServiceRemote *remoteService = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
     [remoteService fetchSiteInfoForSiteWithID:siteID isFeed:isFeed success:^(RemoteReaderSiteInfo *siteInfo) {
         if (!success) {
@@ -580,6 +564,16 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         NSManagedObjectID * __block topicObjectID = nil;
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
+            ReaderSiteTopic *siteTopic = nil;
+            if (isFeed) {
+                siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:context];
+            } else {
+                siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
+            }
+            if (siteTopic) {
+                [context deleteObject:siteTopic];
+            }
+
             ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:context];
             [context obtainPermanentIDsForObjects:@[topic] error:nil];
             topicObjectID = topic.objectID;
@@ -588,7 +582,17 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
         } onQueue:dispatch_get_main_queue()];
     } failure:^(NSError *error) {
         DDLogError(@"%@ error fetching site info for site with ID %@: %@", NSStringFromSelector(_cmd), siteID, error);
-        if (failure) {
+        ReaderSiteTopic * __block siteTopic = nil;
+        [self.coreDataStack.mainContext performBlockAndWait:^{
+            if (isFeed) {
+                siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:self.coreDataStack.mainContext];
+            } else {
+                siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:self.coreDataStack.mainContext];
+            }
+        }];
+        if (siteTopic && success) {
+            success(siteTopic.objectID, siteTopic.following);
+        } else if (failure) {
             failure(error);
         }
     }];

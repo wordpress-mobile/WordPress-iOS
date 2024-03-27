@@ -32,7 +32,7 @@ import WordPressShared
     @objc open func configureHeader(_ topic: ReaderAbstractTopic) {
         titleLabel.text = topic.title.split(separator: "-").map { $0.capitalized }.joined(separator: " ")
         followButton.isSelected = topic.following
-        WPStyleGuide.applyReaderFollowButtonStyle(followButton)
+        WPStyleGuide.applyTagsReaderButtonStyle(followButton)
     }
 
     @objc open func enableLoggedInFeatures(_ enable: Bool) {

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-06 11:54:11+0000 */
+/* Translation-Revision-Date: 2024-03-20 10:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: id */
@@ -841,8 +841,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Anda yakin ingin menghapus pos ini secara permanen?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Anda yakin ingin memublikasikan?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1178,6 +1177,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "Posisi tombol";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "Tombol untuk menyalin detail error";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Tombol untuk menyalin teks pos";
 
 /* Label for the post author in the post detail. */
 "By " = "Oleh ";
@@ -1835,7 +1840,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "Salin URL dari papan klip, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Salin detail error";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Salin URL file";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Salin teks pos";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Salin versi dari aplikasi ini";
@@ -2509,8 +2520,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Sunting Kunci Moderasi";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Sunting Postingan";
 
@@ -2764,6 +2774,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Terjadi error saat memuat petunjuk";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Error saat memuat komentar";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Error menandai komentar sebagai spam.";
@@ -5468,8 +5481,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publik";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6820,6 +6832,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "ketuk untuk detail selengkapnya.";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "Ketuk di sini untuk menyalin detail error";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Ketuk di sini untuk menyalin teks pos";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "Ketuk di sini untuk menampilkan bantuan";
 
 /* No comment provided by engineer. */
@@ -6968,9 +6986,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Judul Situs ditampilkan di bilah judul perambah web dan ditampilkan pada header sebagian besar tema.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Editor Cerita belum tersedia untuk iPad Anda. Silakan coba Cerita di iPhone Anda.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL tidak menemukan host yang valid.";
 
@@ -6991,6 +7006,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Konten halaman pos terbaru Anda dibuat secara otomatis dan tidak dapat disunting.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "Editor mengalami error tak terduga";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "File %1$@ berisi pola kode berbahaya";
@@ -7152,9 +7170,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ada masalah saat mencoba mengakses lokasi Anda. Harap coba lagi nanti.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Terjadi masalah dengan editor Cerita.  Jika masalah berlanjut, Anda dapat menghubungi kami melalui layar Saya > Bantuan & Dukungan.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7548,9 +7563,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Tidak Dapat Terhubung";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Tidak dapat Membuat Editor Cerita";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Tidak Dapat Memuat Pos.";
 
@@ -7731,9 +7743,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "Tidak didukung";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Perangkat Tidak Didukung";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Tak Berjudul";
@@ -8613,6 +8622,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Anda dapat mengendalikan Prompt dan Pengingat Blogging kapan pun di Situs Saya, Pengaturan, Blogging";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Anda dapat menyalin teks pos seandainya konten Anda terdampak. Salin detail error untuk di-debug dan dibagikan kepada dukungan.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Anda dapat mengedit blok ini menggunakan editor versi web.";
 
 /* Discussion Settings: Footer Text */
@@ -8653,6 +8665,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Anda tidak memiliki pos yang dibuang";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Anda memiliki %lu situs WordPress tersembunyi.";
@@ -8851,21 +8866,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENTAR]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d blogger_ menyukai ini.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Satu blogger_ menyukai ini.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Anda dan %1$d blogger_ menyukai ini.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Anda dan seorang blogger lainnya_ menyukai ini.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Anda_ menyukai ini.";
 
 /* Age between dates equaling one day. */
 "a day" = "satu hari";
@@ -9863,6 +9863,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "suka";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "ditandai sebagai spam";
 
@@ -10208,6 +10211,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Dapat disempurnakan";
 
@@ -10382,6 +10388,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Perubahan offline";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Tempat Sampah";
 
@@ -10393,6 +10402,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Lihat";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Konsep halaman diunggah";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Halaman menunggu peninjauan";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Halaman diterbitkan";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Halaman dijadwalkan";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Halaman diperbarui";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Konsep pos diunggah";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Pos menunggu peninjauan";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Pos diterbitkan";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Pos dijadwalkan";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Pos diperbarui";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "Unggahan gagal";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "Lihat";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Tutup";
@@ -10643,6 +10688,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Melihat pos dari situs";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d suka_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "Anda menyukai ini.";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 suka_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -11020,6 +11074,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Baru";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
 
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "Transfer domain";

@@ -41,6 +41,7 @@ import CocoaLumberjack
     /// - Returns: A matching search phrase or nil.
     ///
     private func findSuggestion(forPhrase phrase: String, in context: NSManagedObjectContext) -> ReaderSearchSuggestion? {
+        let phrase = NSRegularExpression.escapedPattern(for: phrase)
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ReaderSearchSuggestion")
         fetchRequest.predicate = NSPredicate(format: "searchPhrase MATCHES[cd] %@", phrase)
 
