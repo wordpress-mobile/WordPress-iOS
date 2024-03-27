@@ -298,11 +298,12 @@ class PostCoordinator: NSObject {
         private var retryDelay: TimeInterval = 0
         weak var retryTimer: Timer?
 
+        var isCancelled = false
+
         enum State {
             case idle
             case uploadingMedia
             case syncing
-            case cancelled
             case finished
         }
 
@@ -322,109 +323,123 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// Checks if there are any new revisions to upload and what's the current
+    /// sync state and acts accordingly.
     private func scheduleSync(for post: AbstractPost) {
         assert(Thread.isMainThread)
         assert(post.isOriginal(), "Must be an original post")
 
-        let objectID = post.objectID
         guard let revision = post.getLatestRevisionNeedingSync() else {
-            return // Defensive code (should never happen)
+            return
         }
 
-        // Check if we need or can cancel the current operation.
-        if let operation = syncOperations[objectID] {
+        if let operation = syncOperations[post.objectID] {
+            // If there is a current sync operation running and it doesn't target
+            // the latest revision, then try to cancel it.
             guard operation.revision != revision else {
-                return // Defensive code (should never happen)
+                return // Already syncing to the latest revision
             }
             switch operation.state {
             case .idle:
-                operation.log("cancel idle operation")
+                // It's safe to cancel the retry timer.
                 operation.retryTimer?.invalidate()
-                operation.state = .cancelled
+                operation.isCancelled = true
+                operation.log("cancel idle operation")
             case .uploadingMedia:
+                // Cancel the upload for media, but keep the tasks scheduled
+                // for the media still present in the revision.
                 let deleted = Set(operation.revision.media).subtracting(Set(revision.media))
                 for media in deleted {
                     MediaCoordinator.shared.cancelUpload(of: media)
                 }
-                operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
-
-                operation.state = .cancelled
+                if !deleted.isEmpty {
+                    operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
+                }
+                operation.isCancelled = true
                 operation.log("cancel operation uploading media")
             case .syncing:
+                // There is no way to safely cancel the in-flight request.
+                // We'll have to wait until it complets.
                 operation.log("letting the current sync finish")
-                return // There is no way to safely cancel it
-            case .cancelled, .finished:
+                return
+            case .finished:
                 return assertionFailure("Should never happen (should be removed from the dictionary)")
             }
         }
 
         let operation = SyncOperation(post: post, revision: revision)
-        syncOperations[objectID] = operation
+        syncOperations[post.objectID] = operation
+        resumeSyncOperation(operation)
+    }
 
-        Task { await resumeSyncOperation(operation) }
+    private func resumeSyncOperation(_ operation: SyncOperation) {
+        guard operation.state == .idle, !operation.isCancelled else {
+            return operation.log("can't resume an operation in \(operation.state) state")
+        }
+        Task {
+            await _resumeSyncOperation(operation)
+        }
     }
 
     @MainActor
-    private func resumeSyncOperation(_ operation: SyncOperation) async {
-        guard operation.state == .idle else {
-            return operation.log("can't resume an operation in \(operation.state) state")
-        }
-
+    private func _resumeSyncOperation(_ operation: SyncOperation) async {
         if operation.error != nil {
             operation.error = nil
             postDidUpdateNotification(for: operation.post)
         }
-
         do {
-            // Upload media for the latest revision
             operation.state = .uploadingMedia
             try await uploadRemainingResources(for: operation.revision)
 
-            guard operation.state != .cancelled else {
-                return operation.log("stopping after uploading media (cancelled)")
+            guard !operation.isCancelled else {
+                return operation.log("stopping – got cancelled")
             }
 
             operation.state = .syncing
             try await PostRepository(coreDataStack: coreDataStack)
                 .sync(operation.post, revision: operation.revision)
 
-            didFinishOperation(operation)
-
-            if PostCoordinator.isSyncNeeded(for: operation.post) {
-                operation.log("more revisions need syncing")
-                scheduleSync(for: operation.post)
-            }
+            didFinishSyncOperation(operation)
         } catch {
+            guard !operation.isCancelled else {
+                return operation.log("stopping – got cancelled")
+            }
+
             operation.log("failed with error: \(error)")
             operation.error = error
             operation.state = .idle
 
             if let error = error as? PostRepository.PostSaveError, case .deleted = error {
                 handlePermanentlyDeleted(operation.post)
-                didFinishOperation(operation)
+                operation.state = .finished
+                syncOperations[operation.post.objectID] = nil
                 operation.log("post was permanently deleted")
-                return
+            } else {
+                let delay = operation.nextRetryDelay
+                operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
+                    self?.didRetryTimerFire(for: operation)
+                }
+                operation.log("scheduled retry with delay: \(delay)s.")
+                postDidUpdateNotification(for: operation.post)
             }
-
-            let delay = operation.nextRetryDelay
-            operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-                self?.didRetryTimerFire(for: operation)
-            }
-            operation.log("scheduled retry with delay: \(delay)s.")
-            postDidUpdateNotification(for: operation.post)
         }
     }
 
-    private func didFinishOperation(_ operation: SyncOperation) {
+    private func didFinishSyncOperation(_ operation: SyncOperation) {
         operation.log("operation completed")
         operation.state = .finished
         syncOperations[operation.post.objectID] = nil
         NotificationCenter.default.post(name: .postCoordinatorDidFinishSync, object: self, userInfo: [PostCoordinator.operationUserInfoKey: operation])
+
+        if PostCoordinator.isSyncNeeded(for: operation.post) {
+            operation.log("more revisions need syncing")
+            scheduleSync(for: operation.post)
+        }
     }
 
     private func didRetryTimerFire(for operation: SyncOperation) {
         operation.log("retry timer fired")
-        Task { await resumeSyncOperation(operation) }
+        resumeSyncOperation(operation)
     }
 
     @objc private func didUpdateReachability(_ notification: Foundation.Notification) {
@@ -438,7 +453,7 @@ class PostCoordinator: NSObject {
                urlError.code == .notConnectedToInternet {
                 operation.retryTimer?.invalidate()
                 operation.log("connection is reachable – retrying now")
-                Task { await resumeSyncOperation(operation) }
+                resumeSyncOperation(operation)
             }
         }
     }
