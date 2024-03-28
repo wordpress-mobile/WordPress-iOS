@@ -50,9 +50,9 @@ struct ReaderDisplaySetting: Codable, Equatable {
 
     enum Color: String, Codable, CaseIterable {
         case system
-        case paper
+        case soft
         case sepia
-        case charcoal
+        case evening
         case oled
 
         // TODO: Consider localization
@@ -60,12 +60,12 @@ struct ReaderDisplaySetting: Codable, Equatable {
             switch self {
             case .system:
                 return "Default"
-            case .paper:
-                return "Paper"
+            case .soft:
+                return "Soft"
             case .sepia:
                 return "Sepia"
-            case .charcoal:
-                return "Charcoal"
+            case .evening:
+                return "Evening"
             case .oled:
                 return "OLED"
             }
@@ -75,11 +75,11 @@ struct ReaderDisplaySetting: Codable, Equatable {
             switch self {
             case .system:
                 return .text
-            case .paper:
+            case .soft:
                 return .init(fromHex: 0x2d2e2e)
             case .sepia:
                 return .init(fromHex: 0x27201b)
-            case .charcoal:
+            case .evening:
                 return .init(fromHex: 0xabaab2)
             case .oled:
                 return .text.color(for: .init(userInterfaceStyle: .dark))
@@ -99,11 +99,11 @@ struct ReaderDisplaySetting: Codable, Equatable {
             switch self {
             case .system:
                 return .systemBackground
-            case .paper:
+            case .soft:
                 return .init(fromHex: 0xf2f2f2)
             case .sepia:
                 return .init(fromHex: 0xeae0cd)
-            case .charcoal:
+            case .evening:
                 return .init(fromHex: 0x3a3a3c)
             case .oled:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
