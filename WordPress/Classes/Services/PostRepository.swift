@@ -23,8 +23,7 @@ final class PostRepository {
     ///   - blogID: The blog that has the post.
     /// - Returns: The stored post object id.
     func getPost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> TaggedManagedObjectID<AbstractPost> {
-        let remote = try await getRemoteService(forblogID: blogID)
-        let remotePost = try await remote.post(withID: postID)
+        let remotePost = try await getRemotePost(withID: postID, from: blogID)
         return try await coreDataStack.performAndSave { context in
             let blog = try context.existingObject(with: blogID)
 
@@ -43,6 +42,11 @@ final class PostRepository {
 
             return .init(post)
         }
+    }
+
+    func getRemotePost(withID postID: NSNumber, from blogID: TaggedManagedObjectID<Blog>) async throws -> RemotePost {
+        let remote = try await getRemoteService(forblogID: blogID)
+        return try await remote.post(withID: postID)
     }
 
     enum PostSaveError: Swift.Error, LocalizedError {
@@ -177,7 +181,7 @@ final class PostRepository {
 
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
+    func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) {
         let context = coreDataStack.mainContext
         post.deleteRevision()
         PostHelper.update(post, with: revision, in: context)

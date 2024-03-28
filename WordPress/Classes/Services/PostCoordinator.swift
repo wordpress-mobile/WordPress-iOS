@@ -155,12 +155,11 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws -> AbstractPost {
         let post = post.original ?? post
         do {
             let isExistingPost = post.hasRemote()
-            // TODO: Set overwrite to false once conflict resolution support is added
-            try await PostRepository()._save(post, changes: changes, overwrite: true)
+            try await PostRepository()._save(post, changes: changes, overwrite: overwrite)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
@@ -176,19 +175,45 @@ class PostCoordinator: NSObject {
         let alert = UIAlertController(title: Strings.uploadFailed, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
-            case .conflict:
-                // TODO: Show conflict resolution dialog
-                alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
-                break
+            case .conflict(let latest):
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.handleVersionConflict(post: post, remoteRevision: latest)
+                }
             case .deleted:
-                alert.addDefaultActionWithTitle(Strings.buttonOK) { _ in
-                    self.handlePermanentlyDeleted(post)
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.handlePermanentlyDeleted(post)
                 }
             }
         } else {
             alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
         }
         topViewController.present(alert, animated: true)
+    }
+
+    private func handleVersionConflict(post: AbstractPost, remoteRevision: RemotePost) {
+        Task { @MainActor in
+            do {
+                let repository = PostRepository(coreDataStack: coreDataStack)
+                let latest = try await repository.getRemotePost(withID: post.postID ?? 0, from: TaggedManagedObjectID(post.blog))
+                let original = post.original ?? post
+                if original.content != latest.content {
+                    showResolveConflictView(post: post, remoteRevision: latest)
+                } else { // False positive – the revision changed, but content didn't
+                    repository._resolveConflict(for: post, pickingRemoteRevision: latest)
+                }
+            } catch {
+                handleError(error, for: post)
+            }
+        }
+    }
+
+    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost) {
+        guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            return
+        }
+        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision)
+        let navigation = UINavigationController(rootViewController: controller)
+        topViewController.present(navigation, animated: true)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
