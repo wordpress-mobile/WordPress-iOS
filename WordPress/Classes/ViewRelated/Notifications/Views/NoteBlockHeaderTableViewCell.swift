@@ -68,7 +68,7 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
             return
         }
 
-        if let gravatar = GravatarURL(url) {
+        if let gravatar = AvatarURL(url: url) {
             authorAvatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
         } else {
             authorAvatarImageView.downloadSiteIcon(at: url.absoluteString)

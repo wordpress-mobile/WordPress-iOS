@@ -85,7 +85,7 @@ class ListTableViewCell: UITableViewCell, NibReusable {
     /// If the URL does not contain any image, the default placeholder image will be displayed.
     /// - Parameter url: The URL containing the image.
     func configureImage(with url: URL?) {
-        if let someURL = url, let gravatar = GravatarURL(someURL) {
+        if let someURL = url, let gravatar = AvatarURL(url: someURL) {
             avatarView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
             return
         }

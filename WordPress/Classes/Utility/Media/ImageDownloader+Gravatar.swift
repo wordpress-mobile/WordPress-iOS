@@ -6,7 +6,7 @@ extension ImageDownloader {
 
     nonisolated func downloadGravatarImage(with email: String, completion: @escaping (UIImage?) -> Void) {
 
-        guard let url = GravatarURL.url(for: email) else {
+        guard let url = AvatarURL.url(for: email) else {
             completion(nil)
             return
         }
