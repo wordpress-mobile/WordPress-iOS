@@ -845,7 +845,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch reason {
             case .publish:
                 if editorHasContent(title: title, content: html) {
-                    handlePublishButtonTap()
+                    handlePrimaryActionButtonTap()
                 } else {
                     showAlertForEmptyPostPublish()
                 }

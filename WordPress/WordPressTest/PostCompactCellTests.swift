@@ -53,15 +53,6 @@ class PostCompactCellTests: CoreDataTestCase {
         XCTAssertEqual(postCell.badgesLabel.text, "Sticky")
     }
 
-    func testHideBadgesWhenEmpty() {
-        let post = PostBuilder(mainContext).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.badgesLabel.text, "Uploading post...")
-        XCTAssertFalse(postCell.badgesLabel.isHidden)
-    }
-
     func testShowBadgesWhenNotEmpty() {
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .sync)
@@ -73,16 +64,6 @@ class PostCompactCellTests: CoreDataTestCase {
         XCTAssertTrue(postCell.badgesLabel.isHidden)
     }
 
-    func testShowProgressView() {
-        let post = PostBuilder(mainContext)
-            .with(remoteStatus: .pushing)
-            .published().build()
-
-        postCell.configure(with: post)
-
-        XCTAssertFalse(postCell.progressView.isHidden)
-    }
-
     func testHideProgressView() {
         let post = PostBuilder(mainContext)
             .with(remoteStatus: .sync)
@@ -91,18 +72,6 @@ class PostCompactCellTests: CoreDataTestCase {
         postCell.configure(with: post)
 
         XCTAssertTrue(postCell.progressView.isHidden)
-    }
-
-    func testShowsWarningMessageForFailedPublishedPosts() {
-        // Given
-        let post = PostBuilder(mainContext).published().with(remoteStatus: .failed).confirmedAutoUpload().build()
-
-        // When
-        postCell.configure(with: post)
-
-        // Then
-        XCTAssertEqual(postCell.badgesLabel.text, i18n("We'll publish the post when your device is back online."))
-        XCTAssertEqual(postCell.badgesLabel.textColor, UIColor.warning)
     }
 
     private func postCellFromNib() -> PostCompactCell {

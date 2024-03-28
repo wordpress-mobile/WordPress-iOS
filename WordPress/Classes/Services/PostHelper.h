@@ -9,6 +9,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PostHelper: NSObject
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext;
++ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite;
 
 /**
  Creates a RemotePost from an AbstractPost to be used for API calls.

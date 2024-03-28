@@ -328,6 +328,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             self?.uploadsManager.resume()
         }
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            PostCoordinator.shared.scheduleSync()
+        }
+
         setupWordPressExtensions()
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)

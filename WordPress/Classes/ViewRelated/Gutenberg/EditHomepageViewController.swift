@@ -27,7 +27,7 @@ class EditHomepageViewController: GutenbergViewController {
     // If there are changes, offer to save them, otherwise continue will dismiss the editor with no changes.
     override func continueFromHomepageEditing() {
         if editorHasChanges {
-            handlePublishButtonTap()
+            handlePrimaryActionButtonTap()
         } else {
             cancelEditing()
         }

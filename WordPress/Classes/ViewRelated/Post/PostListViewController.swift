@@ -114,7 +114,7 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         }
         let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
             let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post)
+            return updatedObjects.contains(post) || updatedObjects.contains(post.original())
         }
         if !updatedIndexPaths.isEmpty {
             tableView.beginUpdates()

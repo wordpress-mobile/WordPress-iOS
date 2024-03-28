@@ -646,7 +646,6 @@ class AbstractPostListViewController: UIViewController,
 
     @objc func moveToDraft(_ post: AbstractPost) {
         WPAnalytics.track(.postListDraftAction, withProperties: propertiesForAnalytics())
-
         PostCoordinator.shared.moveToDraft(post)
     }
 

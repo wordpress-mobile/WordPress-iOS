@@ -15,11 +15,18 @@ protocol EditorAnalyticsProperties: AnyObject {
 struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
-
-        // Return early if a post is still uploading when the editor's requested.
-        guard !PostCoordinator.shared.isUploading(post: post) else {
-            presentAlertForPostBeingUploaded()
-            return
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            // Return early if a post is still uploading when the editor's requested.
+            guard !PostCoordinator.shared.isUpdating(post) else {
+                presentAlertForPostBeingUploaded()
+                return
+            }
+        } else {
+            // Return early if a post is still uploading when the editor's requested.
+            guard !PostCoordinator.shared.isUploading(post: post) else {
+                presentAlertForPostBeingUploaded()
+                return
+            }
         }
 
         // Autosaves are ignored for posts with local changes.
