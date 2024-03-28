@@ -22,6 +22,20 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
 
     required init(comment: Comment) {
         self.comment = comment
+        super.init()
+
+        if #available(iOS 16.4, *) {
+            webView.isInspectable = true
+        }
+
+        webView.backgroundColor = .clear
+        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        webView.navigationDelegate = self
+        webView.scrollView.bounces = false
+        webView.scrollView.showsVerticalScrollIndicator = false
+        webView.scrollView.backgroundColor = .clear
+        webView.configuration.allowsInlineMediaPlayback = true
     }
 
     func render() -> UIView {
@@ -30,12 +44,6 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
             return webView
         }
 
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        webView.navigationDelegate = self
-        webView.scrollView.bounces = false
-        webView.scrollView.showsVerticalScrollIndicator = false
-        webView.isOpaque = false // gets rid of the white flash upon content load in dark mode.
-        webView.configuration.allowsInlineMediaPlayback = true
         webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
 
         return webView
@@ -69,8 +77,10 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
                     return
                 }
 
-                // reset the webview to opaque again so the scroll indicator is visible.
-                webView.isOpaque = true
+                // TODO: Revisit this later.
+                // This is disabled for Reader customization.
+//                // reset the webview to opaque again so the scroll indicator is visible.
+//                webView.isOpaque = true
                 self.delegate?.renderer(self, asyncRenderCompletedWithHeight: height)
             }
         }
