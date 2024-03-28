@@ -295,9 +295,8 @@ static NSString *const CellIdentifier = @"CellIdentifier";
     }
 
     // Configure the image
-    UIImage *image = [WPStyleGuide iconForService: publicizer.serviceID];
+    UIImage *image = [WPStyleGuide socialIconFor:publicizer.serviceID];
     [cell.imageView setImage:image];
-    cell.imageView.tintColor = ([connections count] > 0) ? [WPStyleGuide tintColorForConnectedService: publicizer.serviceID] : [UIColor murielListIcon];
 
     // Configure the text
     cell.textLabel.text = publicizer.label;

@@ -361,7 +361,7 @@ private extension JetpackConnectionWebViewController {
 ///
 private extension JetpackConnectionWebViewController {
     func startNativeConnectionFlow() {
-        guard let api = blog.wordPressOrgRestApi else {
+        guard let api = blog.selfHostedSiteRestApi else {
             DDLogInfo("WordPressOrgRestAPI not loaded to perform native Jetpack connection")
             startConnectionFlow()
             return

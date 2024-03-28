@@ -9,7 +9,8 @@ extension XCTestCase {
     public func setUpTestSuite(
         for app: XCUIApplication = XCUIApplication(),
         removeBeforeLaunching: Bool = false,
-        crashOnCoreDataConcurrencyIssues: Bool = true
+        crashOnCoreDataConcurrencyIssues: Bool = true,
+        selectWPComSite: String? = nil
     ) {
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
@@ -22,6 +23,10 @@ extension XCTestCase {
 
         if crashOnCoreDataConcurrencyIssues {
             app.launchArguments.append(contentsOf: ["-com.apple.CoreData.ConcurrencyDebug", "1"])
+        }
+
+        if let selectWPComSite {
+            app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
 
         if removeBeforeLaunching {

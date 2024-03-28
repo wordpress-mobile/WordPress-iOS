@@ -17,7 +17,7 @@ class StoryEditor: CameraController {
         return saveDirectory
     }
 
-    var onClose: ((Bool, Bool) -> Void)? = nil
+    var onClose: ((Bool) -> Void)? = nil
 
     var editorSession: PostEditorAnalyticsSession
 
@@ -120,7 +120,7 @@ class StoryEditor: CameraController {
     }
 
     init(post: AbstractPost,
-                     onClose: ((Bool, Bool) -> Void)?,
+                     onClose: ((Bool) -> Void)?,
                      settings: CameraSettings,
                      stickerProvider: StickerProvider?,
                      analyticsProvider: KanvasAnalyticsProvider?,

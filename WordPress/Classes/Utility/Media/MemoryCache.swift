@@ -81,7 +81,7 @@ extension MemoryCache {
         WordPressUI.ImageCache.shared = WordpressUICacheAdapter(cache: .shared)
 
         // AlamofireImage
-        UIImageView.af_sharedImageDownloader = AlamofireImage.ImageDownloader(
+        UIImageView.af.sharedImageDownloader = AlamofireImage.ImageDownloader(
             imageCache: AlamofireImageCacheAdapter(cache: .shared)
         )
 

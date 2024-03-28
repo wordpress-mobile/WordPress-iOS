@@ -34,10 +34,7 @@ struct NotificationContentRangeFactory: FormattableRangesFactory {
             let commentID = dictionary[RangeKeys.id] as? NSNumber
             return NotificationCommentRange(commentID: commentID, properties: properties)
         case .noticon:
-            guard let value = dictionary[RangeKeys.value] as? String else {
-                fallthrough
-            }
-            return FormattableNoticonRange(value: value, range: properties.range)
+            return nil
         case .post:
             properties.postID = dictionary[RangeKeys.id] as? NSNumber
             return NotificationContentRange(kind: kind, properties: properties)

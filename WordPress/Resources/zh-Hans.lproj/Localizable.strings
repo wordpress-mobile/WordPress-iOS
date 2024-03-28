@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-03-20 11:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: zh_CN */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 个字词，%2$li 个字符";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 区块";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s区块选项";
@@ -843,11 +847,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "确定要永久删除此文章吗？";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "是否确定要立即发布？";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "确定要发布吗？";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -967,6 +967,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "汽车";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "自动播放可能会给某些用户带来使用方面的问题。";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "自动更新";
@@ -1181,6 +1184,12 @@
 /* No comment provided by engineer. */
 "Button position" = "按钮位置";
 
+/* No comment provided by engineer. */
+"Button to copy error details" = "点击此按钮即可复制错误详情";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "点击此按钮即可复制文章文本";
+
 /* Label for the post author in the post detail. */
 "By " = "作者";
 
@@ -1308,8 +1317,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "将您的生活拍成电影。";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "分类目录";
 
 /* Category menu item in share extension.
@@ -1434,9 +1442,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "选择布局";
 
-/* Label for Publish date picker */
-"Choose a date" = "选择日期";
-
 /* Select domain name. Title */
 "Choose a domain" = "选择域";
 
@@ -1531,12 +1536,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "点击数";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "关闭";
 
 /* Close account action label */
@@ -1843,7 +1846,13 @@
 "Copy URL from the clipboard, %s" = "从剪贴板复制 URL，%s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "复制错误详情";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "复制文件 URL";
+
+/* No comment provided by engineer. */
+"Copy post text" = "复制文章文本";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "从此应用程序复制版本";
@@ -2517,8 +2526,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "编辑审核密钥";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "编辑文章";
 
@@ -2769,6 +2777,9 @@
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "加载提示时出错";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "加载评论时出错";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "将评论标记为垃圾时出错。";
@@ -4132,9 +4143,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "已映射的域";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "全部标为已读";
-
 /* Marks a notification as unread */
 "Mark Read" = "标记为已读";
 
@@ -4742,8 +4750,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "通知详细信息表";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "通知设置";
 
@@ -5477,30 +5484,21 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "公开";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
    Title for the publish settings view */
 "Publish" = "发布";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "发布日期";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "立即发布";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "立即发布";
-
 /* Title of a Quick Start Tour */
 "Publish a post" = "发布文章";
-
-/* Immediately publish button title */
-"Publish immediately" = "立即发布";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "在以下网站发布页面：";
@@ -5992,9 +5990,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "定时";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "立即预发布";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6809,7 +6804,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "标语";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -6839,6 +6833,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap for more detail." = "点按以获取更多细节。";
+
+/* No comment provided by engineer. */
+"Tap here to copy error details" = "点击此处复制错误详情";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "点击此处复制文章文本";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "轻点此处以显示帮助";
@@ -6906,6 +6906,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "点击查看您的站点";
+
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "轻点以在外部浏览器中访问 Gravatar 网站";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "任务完成。";
@@ -6986,9 +6989,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "站点标题显示在网络浏览器的标题栏中，以及大部分主题的页眉中。";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "您的iPad目前无法使用故事编辑器。请在您的iPhone上编辑故事。";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL 缺少有效主机。";
 
@@ -7004,11 +7004,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "优秀作家的良好养成方式是形成写作习惯并与他人共享 - 这正是提示功能的用武之处！";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "此服务器的证书无效。您所连接的服务器伪装成了“%@”，这可能会给您的凭证信息带来危险。\n\n仍然信任此证书吗？";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "最新文章页面的内容是自动生成的，无法编辑。";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "编辑器发生未知错误";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "文件%1$@包含恶意代码模式";
@@ -7170,9 +7173,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "尝试访问您的位置时出错。请稍后重试。";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "关注站点时出现问题。如果该问题多次出现，请通过“我 > 帮助与支持”界面与我们联系。";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7354,7 +7354,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "标题";
@@ -7567,9 +7566,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "无法连接";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "无法创建故事编辑器";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "无法加载文章";
 
@@ -7751,9 +7747,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Unsupported" = "不受支持";
 
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "不支持的设备";
-
 /* Label for an untitled post in the revision browser */
 "Untitled" = "未命名";
 
@@ -7787,6 +7780,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "更新站点图标";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "更新的内容可能需要一段时间才能与您的 Gravatar 个人资料同步。";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "更新条形图以显示评论数。";
 
@@ -7804,6 +7800,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "正在更新";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "您在此对头像、名称和简介信息做出的更新也将更新到所有使用 Gravatar 个人资料的站点。";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "正在更新…";
@@ -8012,8 +8011,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "浏览次数和访客人数";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "可见性";
 
@@ -8382,6 +8380,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "您想要使用此文件完成的操作：上传此文件并在文章中添加指向此文件的链接，还是直接在文章中添加该文件的内容？";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "什么是 Gravatar？";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "什么是 WordPress.com?";
 
@@ -8624,6 +8625,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "您随时可以访问“我的站点”、“设置”、“博客”，控制博客提示和提醒。";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "您可以复制文章文本，以防内容受到影响。 将错误详情复制到调试程序并与支持人员共享。";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "您可以使用编辑器的 Web 版本编辑此区块。";
 
 /* Discussion Settings: Footer Text */
@@ -8664,6 +8668,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "您没有任何已放入垃圾桶的文章";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "您无权查看此私人博客。";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "您有 %lu个隐藏的 WordPress 站点。";
@@ -8730,7 +8737,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "您回复了此评论。";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "您似乎安装了来自 DudaMobile 的移动插件，该插件会阻止应用程序连接到您的博客";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -8763,6 +8770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "您的站点";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "您的 WordPress.com 个人资料由 Gravatar 提供技术支持。";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "您的 WordPress.com 站点支持使用加速移动页面，这是一项由 Google 主导的计划，大大缩短了在移动设备上的加载时间。";
@@ -8859,21 +8869,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[评论]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d 位博主为此内容点赞。";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_一位博主_赞过此内容。";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_您和 %1$d 位博主为此内容点赞。";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_您和其他一位博主_赞过此内容。";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_您_ 为此内容点赞。";
 
 /* Age between dates equaling one day. */
 "a day" = "一天";
@@ -9634,9 +9629,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ 将在 %2$@后移动";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "几天后将移动至 Jetpack 应用程序。";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ 即将移动";
 
@@ -9870,6 +9862,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "赞";
+
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "您无权查看此私人博客。";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "标记为垃圾内容";
@@ -10216,6 +10211,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "您无权查看此私人博客。";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "还可改进";
 
@@ -10227,6 +10225,12 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "发送反馈";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "查看我的文章 \"%@\"：";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "查看我的文章：";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "主页";
@@ -10375,6 +10379,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@，%2$@。";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "离线更改";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "回收站";
 
@@ -10386,6 +10393,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "查看";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "页面草稿已上传";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "页面待审核";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "页面已发布";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "页面已排入发布计划";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "页面已更新";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "文章草稿已上传";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "文章待审核";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "文章已发布";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "文章已排入发布计划";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "文章已更新";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "上传失败";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "查看";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "忽略";
@@ -10489,6 +10532,30 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "还剩 %1$d 个社交共享";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "分类";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "关闭";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "标题";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "发布";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "发布日期";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "正在发布到";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "安排";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10544,8 +10611,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "社交";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "标签";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "上传媒体";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "可见性";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "查看所有回复";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "第 %1$@ 步，共 %2$@ 步";
+
+/* Retry button title */
+"publishButton.retry" = "重试";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "现在";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "发布日期";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "忽略";
@@ -10555,6 +10643,12 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "您已登录！";
+
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "尝试选择“%@”，以查看订阅的内容，并管理您的订阅。";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "订阅";
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "更多";
@@ -10585,6 +10679,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "查看站点中的文章";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d 个赞_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "您为此点过赞。";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 个赞_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -10680,6 +10783,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "标签";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d 个标签";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d 个标签";
@@ -10688,14 +10795,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "标签";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "按%1$@筛选";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "打开筛选器列表";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "已点赞";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "列表";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "重置";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "已保存";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "搜索";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "订阅";
@@ -10942,6 +11063,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "新建";
 
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "您无权查看此私人博客。";
+
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "转移域名";
 
@@ -11134,6 +11258,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP 日志";
 
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Web 服务器日志";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "隐私";
 
@@ -11298,6 +11425,42 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "描绘所选时间段内评论数的条形图。";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "描绘所选时间段内点赞数的条形图。";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "描绘所选时间段内浏览次数的条形图。";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "描绘所选时间段内访客数的条形图。";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "比上一个月高 %@\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "比上一个月低 %@\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "比上一个 7 天高 %@\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "比上一个 7 天低 %@\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "比上一年高 %@\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "比上一年低 %@\n";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "忽略";
@@ -11466,6 +11629,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "重要提示";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "检查您是否已登录到正确的账户";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "未找到站点";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "未知 URL";
@@ -11649,6 +11818,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "到达上限。 您可以在 1 分钟后重试。 提前重试只会增加您在限制取消前必须要等待的时间。 如果您认为有错误，请联系支持人员。";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "无法找到您站点的 REST API URL。 应用程序需要由此与您的站点通信。 请联系您的托管服务提供商以解决此问题。";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "欢迎使用 Jetpack app。您可以卸载 WordPress 应用。";

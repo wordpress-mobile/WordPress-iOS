@@ -59,7 +59,7 @@ class AnnouncementCell: AnnouncementTableViewCell {
         }
 
         else if let url = URL(string: feature.iconUrl) {
-            announcementImageView.af_setImage(withURL: url)
+            announcementImageView.af.setImage(withURL: url)
         }
         headingLabel.text = feature.title
         subHeadingLabel.text = feature.subtitle

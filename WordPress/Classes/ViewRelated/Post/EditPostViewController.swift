@@ -9,8 +9,6 @@ class EditPostViewController: UIViewController {
 
     /// appear instantly, without animations
     @objc var showImmediately: Bool = false
-    /// appear with the post epilogue visible
-    @objc var openWithPostPost: Bool = false
     /// appear with media pre-inserted into the post
     var insertedMedia: [Media]? = nil
     /// is editing a reblogged post
@@ -25,9 +23,6 @@ class EditPostViewController: UIViewController {
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
     fileprivate let blog: Blog
-    fileprivate lazy var postPost: PostPostViewController = {
-        return UIStoryboard(name: "PostPost", bundle: nil).instantiateViewController(withIdentifier: "PostPostViewController") as! PostPostViewController
-    }()
 
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
     @objc var afterDismiss: (() -> Void)?
@@ -89,10 +84,6 @@ class EditPostViewController: UIViewController {
         modalTransitionStyle = .coverVertical
         restorationIdentifier = RestorationKey.viewController.rawValue
         restorationClass = EditPostViewController.self
-
-        addChild(postPost)
-        view.addSubview(postPost.view)
-        postPost.didMove(toParent: self)
     }
 
     required init?(coder: NSCoder) {
@@ -102,30 +93,21 @@ class EditPostViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // show postpost, which will be transparent
         view.isOpaque = false
         view.backgroundColor = .clear
-
-        if openWithPostPost {
-            showPostPost()
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
-        if !openWithPostPost && !hasShownEditor {
+        if !hasShownEditor {
             showEditor()
             hasShownEditor = true
         }
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
-        if openWithPostPost {
-            return .darkContent
-        } else {
-            return WPStyleGuide.preferredStatusBarStyle
-        }
+        WPStyleGuide.preferredStatusBarStyle
     }
 
     fileprivate func postToEdit() -> Post {
@@ -154,7 +136,7 @@ class EditPostViewController: UIViewController {
     }
 
     private func showEditor(_ editor: EditorViewController) {
-        editor.onClose = { [weak self, weak editor] changesSaved, showPostEpilogue in
+        editor.onClose = { [weak self, weak editor] changesSaved in
             guard let strongSelf = self else {
                 editor?.dismiss(animated: true) {}
                 return
@@ -166,7 +148,7 @@ class EditPostViewController: UIViewController {
             if changesSaved {
                 strongSelf.post = editor?.post as? Post
             }
-            strongSelf.closeEditor(changesSaved, showPostEpilogue: showPostEpilogue)
+            strongSelf.closeEditor(changesSaved)
         }
 
         let navController = AztecNavigationController(rootViewController: editor)
@@ -175,7 +157,7 @@ class EditPostViewController: UIViewController {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.prepare()
 
-        postPost.present(navController, animated: !showImmediately) {
+        present(navController, animated: !showImmediately) {
             generator.impactOccurred()
 
             if let insertedMedia = self.insertedMedia {
@@ -191,85 +173,14 @@ class EditPostViewController: UIViewController {
         }
     }
 
-    @objc func closeEditor(_ changesSaved: Bool = true, showPostEpilogue: Bool, from presentingViewController: UIViewController? = nil) {
+    @objc func closeEditor(_ changesSaved: Bool = true, from presentingViewController: UIViewController? = nil) {
         onClose?(changesSaved)
-
-        var dismissPostPostImmediately = true
-        if showPostEpilogue && shouldShowPostPost(hasChanges: changesSaved) {
-            showPostPost()
-            dismissPostPostImmediately = false
-        }
-
         dismiss(animated: true) {
-            if dismissPostPostImmediately {
-                self.closePostPost(animated: false)
-            }
+            self.closeEditor(animated: false)
         }
     }
 
-    private func showPostPost() {
-        guard let post = post else {
-            return
-        }
-
-        postPost.setup(post: post)
-        postPost.hideEditButton = isPresentingOverEditor()
-        postPost.onClose = {
-            self.closePostPost(animated: true)
-        }
-        postPost.reshowEditor = {
-            self.showEditor()
-        }
-        postPost.preview = {
-            self.previewPost()
-        }
-    }
-
-    /// - Returns: `true` if `self` was presented over an existing `EditPostViewController`, otherwise `false`.
-    private func isPresentingOverEditor() -> Bool {
-        guard
-            let aztecNavigationController = presentingViewController as? AztecNavigationController,
-            aztecNavigationController.presentingViewController is EditPostViewController
-        else {
-            return false
-        }
-        return true
-    }
-
-    @objc func shouldShowPostPost(hasChanges: Bool) -> Bool {
-        guard let post = post else {
-            return false
-        }
-        if openWithPostPost {
-            return true
-        }
-        if editingExistingPost {
-            return false
-        }
-        if postPost.revealPost {
-            return true
-        }
-        if post.originalIsDraft() {
-            return false
-        }
-        return hasChanges
-    }
-
-    @objc func previewPost() {
-        guard let post = post else {
-            return
-        }
-
-        let controller = PreviewWebKitViewController(post: post, source: "edit_post_preview")
-        controller.trackOpenEvent()
-        let navWrapper = LightNavigationController(rootViewController: controller)
-        if postPost.traitCollection.userInterfaceIdiom == .pad {
-            navWrapper.modalPresentationStyle = .fullScreen
-        }
-        postPost.present(navWrapper, animated: true) {}
-    }
-
-    @objc func closePostPost(animated: Bool) {
+    @objc func closeEditor(animated: Bool) {
         // this reference is needed in the completion
         let presentingController = self.presentingViewController
         // will dismiss self

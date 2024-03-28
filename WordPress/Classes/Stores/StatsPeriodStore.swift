@@ -25,7 +25,16 @@ enum PeriodAction: Action {
 }
 
 enum PeriodQuery {
+    struct TrafficOverviewParams {
+        let date: Date
+        let period: StatsPeriodUnit
+        let chartBarsUnit: StatsPeriodUnit
+        let chartBarsLimit: Int
+        let chartTotalsLimit: Int
+    }
+
     case allCachedPeriodData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
+    case timeIntervalsSummary(date: Date, period: StatsPeriodUnit)
     case allPostsAndPages(date: Date, period: StatsPeriodUnit)
     case allSearchTerms(date: Date, period: StatsPeriodUnit)
     case allVideos(date: Date, period: StatsPeriodUnit)
@@ -36,7 +45,7 @@ enum PeriodQuery {
     case allPublished(date: Date, period: StatsPeriodUnit)
     case allFileDownloads(date: Date, period: StatsPeriodUnit)
     case postStats(postID: Int)
-    case trafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int)
+    case trafficOverviewData(TrafficOverviewParams)
 
     var postID: Int? {
         switch self {
@@ -50,6 +59,8 @@ enum PeriodQuery {
     var date: Date {
         switch self {
         case .allCachedPeriodData(let date, _, _):
+            return date
+        case .timeIntervalsSummary(let date, _):
             return date
         case .allPostsAndPages(let date, _):
             return date
@@ -69,8 +80,8 @@ enum PeriodQuery {
             return date
         case .allFileDownloads(let date, _):
             return date
-        case .trafficOverviewData(let date, _, _, _):
-            return date
+        case .trafficOverviewData(let params):
+            return params.date
         default:
             return StatsDataHelper.currentDateForSite().normalizedDate()
         }
@@ -79,6 +90,8 @@ enum PeriodQuery {
     var period: StatsPeriodUnit {
         switch self {
         case .allCachedPeriodData( _, let period, _):
+            return period
+        case .timeIntervalsSummary( _, let period):
             return period
         case .allPostsAndPages( _, let period):
             return period
@@ -98,8 +111,8 @@ enum PeriodQuery {
             return period
         case .allFileDownloads( _, let period):
             return period
-        case .trafficOverviewData(_, let period, _, _):
-            return period
+        case .trafficOverviewData(let params):
+            return params.period
         default:
             return .day
         }
@@ -119,7 +132,7 @@ struct PeriodStoreState {
 
     var timeIntervalsSummaryStatus: StoreFetchingStatus = .idle
 
-    var totalsSummary: StatsTotalsSummaryData?
+    var totalsSummary: StatsSummaryTimeIntervalData?
     var totalsSummaryStatus: StoreFetchingStatus = .idle
 
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
@@ -160,7 +173,37 @@ protocol StatsPeriodStoreDelegate: AnyObject {
     func changingSpamStateForReferrerDomainFailed(oldValue: Bool)
 }
 
-class StatsPeriodStore: QueryStore<PeriodStoreState, PeriodQuery> {
+protocol StatsPeriodStoreMethods {
+    var isFetchingSummary: Bool { get }
+    var fetchingOverviewHasFailed: Bool { get }
+    var containsCachedData: Bool { get }
+    var timeIntervalsSummaryStatus: StoreFetchingStatus { get }
+    var totalsSummaryStatus: StoreFetchingStatus { get }
+    var topPostsAndPagesStatus: StoreFetchingStatus { get }
+    var topReferrersStatus: StoreFetchingStatus { get }
+    var topPublishedStatus: StoreFetchingStatus { get }
+    var topClicksStatus: StoreFetchingStatus { get }
+    var topAuthorsStatus: StoreFetchingStatus { get }
+    var topSearchTermsStatus: StoreFetchingStatus { get }
+    var topCountriesStatus: StoreFetchingStatus { get }
+    var topVideosStatus: StoreFetchingStatus { get }
+    var topFileDownloadsStatus: StoreFetchingStatus { get }
+    func getSummary() -> StatsSummaryTimeIntervalData?
+    func getTotalsSummary() -> StatsSummaryTimeIntervalData?
+    func getTopReferrers() -> StatsTopReferrersTimeIntervalData?
+    func getTopClicks() -> StatsTopClicksTimeIntervalData?
+    func getTopAuthors() -> StatsTopAuthorsTimeIntervalData?
+    func getTopSearchTerms() -> StatsSearchTermTimeIntervalData?
+    func getTopVideos() -> StatsTopVideosTimeIntervalData?
+    func getTopCountries() -> StatsTopCountryTimeIntervalData?
+    func getTopFileDownloads() -> StatsFileDownloadsTimeIntervalData?
+    func getTopPostsAndPages() -> StatsTopPostsTimeIntervalData?
+    func getTopPublished() -> StatsPublishedPostsTimeIntervalData?
+}
+
+typealias StatsPeriodStoreProtocol = QueryStore<PeriodStoreState, PeriodQuery> & StatsPeriodStoreMethods & StatsStoreCacheable
+
+final class StatsPeriodStore: StatsPeriodStoreProtocol {
     private typealias PeriodOperation = StatsPeriodAsyncOperation
     private typealias PublishedPostOperation = StatsPublishedPostsAsyncOperation
     private typealias PostDetailOperation = StatsPostDetailAsyncOperation
@@ -239,6 +282,10 @@ private extension StatsPeriodStore {
         switch query {
         case .allCachedPeriodData(let date, let period, let unit):
             loadFromCache(date: date, period: period, unit: unit)
+        case .timeIntervalsSummary(let date, let period):
+            if shouldFetchTimeIntervalsSummary() {
+                fetchTimeIntervalsSummary(date: query.date, period: query.period)
+            }
         case .allPostsAndPages:
             if shouldFetchPostsAndPages() {
                 fetchAllPostsAndPages(date: query.date, period: query.period)
@@ -279,8 +326,8 @@ private extension StatsPeriodStore {
             if shouldFetchPostStats(for: query.postID) {
                 fetchPostStats(postID: query.postID)
             }
-        case .trafficOverviewData(let date, let period, let unit, let limit):
-            refreshTrafficOverviewData(date: date, period: period, unit: unit, limit: limit)
+        case .trafficOverviewData(let params):
+            refreshTrafficOverviewData(params)
         }
     }
 
@@ -458,12 +505,14 @@ private extension StatsPeriodStore {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
             return
         }
-        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record) -> T? {
+        func getValue<T: StatsTimeIntervalData>(_ record: StatsPediodCache.Record, unit: StatsPeriodUnit? = nil) -> T? {
             cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
-            state.timeIntervalsSummary = getValue(.timeIntervalsSummary)
-            state.totalsSummary = getValue(.totalsSummary)
+            // timeIntervalsSummary and totalsSummary depends on both period and unit
+            state.timeIntervalsSummary = getValue(.timeIntervalsSummary, unit: unit)
+            // totals are fetched with a unit equal to period
+            state.totalsSummary = getValue(.totalsSummary, unit: period)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
             state.topClicks = getValue(.topClicks)
@@ -479,29 +528,27 @@ private extension StatsPeriodStore {
 
     // MARK: - Traffic Overview Data
 
-    private func refreshTrafficOverviewData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int) {
+    private func refreshTrafficOverviewData(_ params: PeriodQuery.TrafficOverviewParams) {
+        loadFromCache(date: params.date, period: params.period, unit: params.chartBarsUnit)
         cancelQueries()
-
-        loadFromCache(date: date, period: period, unit: unit)
-
-        guard shouldFetchOverview() else {
-            DDLogInfo("Stats Traffic Overview refresh triggered while one was in progress.")
-            return
-        }
 
         setAllFetchingStatus(.loading)
         scheduler.debounce { [weak self] in
-            self?.fetchTrafficOverviewChartData(date: date, period: period, unit: unit, limit: limit)
-            self?.fetchAsyncData(date: date, period: period)
+            self?.fetchTrafficOverviewChartData(params)
+            self?.fetchAsyncData(date: params.date, period: params.period)
         }
     }
 
-    private func fetchTrafficOverviewChartData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit, limit: Int) {
+    private func fetchTrafficOverviewChartData(_ params: PeriodQuery.TrafficOverviewParams) {
         guard let service = statsRemote() else {
             return
         }
 
-        let totalsOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: 1) { [weak self] (totalsSummary: StatsTotalsSummaryData?, error: Error?) in
+        // Backend doesn't accept a future date when fetching totals in some cases
+        // https://github.com/Automattic/jetpack/issues/36117
+        let totalsOperationDate = min(params.date, StatsDataHelper.currentDateForSite())
+
+        let totalsOperation = PeriodOperation(service: service, for: params.period, unit: params.period, date: totalsOperationDate, limit: params.chartTotalsLimit) { [weak self] (totalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Traffic: Error fetching totals summary: \(String(describing: error?.localizedDescription))")
             }
@@ -510,13 +557,12 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTotalsSummary(totalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
         operationQueue.addOperation(totalsOperation)
 
-        let chartOperation = PeriodOperation(service: service, for: period, unit: unit, date: date, limit: limit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
+        let chartOperation = PeriodOperation(service: service, for: params.period, unit: params.chartBarsUnit, date: params.date, limit: params.chartBarsLimit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
                 DDLogError("Stats Traffic: Error fetching timeIntervalsSummary: \(String(describing: error?.localizedDescription))")
             }
@@ -525,9 +571,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
 
         operationQueue.addOperation(chartOperation)
@@ -539,6 +584,7 @@ private extension StatsPeriodStore {
         if forceRefresh {
             DDLogInfo("Stats Period: Cancel all operations")
             cancelQueries()
+            setAllFetchingStatus(.idle)
         }
 
         loadFromCache(date: date, period: period, unit: period)
@@ -569,15 +615,37 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedTimeIntervalsSummary(timeIntervalsSummary, error)
+                self?.storeDataInCache()
             }
-
-            self?.storeDataInCache()
         }
 
         operationQueue.addOperation(chartOperation)
     }
 
     // MARK: - Periods
+
+    private func fetchTimeIntervalsSummary(date: Date, period: StatsPeriodUnit) {
+        guard let statsRemote = statsRemote() else {
+            return
+        }
+
+        operationQueue.cancelAllOperations()
+
+        state.timeIntervalsSummaryStatus = .loading
+
+        operationQueue.addOperation(PeriodOperation(service: statsRemote, for: period, date: date, limit: 0) { [weak self] (posts: StatsSummaryTimeIntervalData?, error: Error?) in
+            if error != nil {
+                DDLogError("Stats Period: Error fetching time interval summary: \(String(describing: error?.localizedDescription))")
+            }
+
+            DDLogInfo("Stats Period: Finished fetching time interval summary.")
+
+            DispatchQueue.main.async {
+                self?.receivedTimeIntervalsSummary(posts, error)
+                self?.storeDataInCache()
+            }
+        })
+    }
 
     private func fetchAllPostsAndPages(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
@@ -597,8 +665,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPostsAndPages(posts, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -661,8 +729,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedVideos(videos, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -725,8 +793,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedAuthors(authors, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -757,8 +825,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedReferrers(referrers, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -789,8 +857,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedCountries(countries, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -821,8 +889,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedPublished(published, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -853,8 +921,8 @@ private extension StatsPeriodStore {
 
             DispatchQueue.main.async {
                 self?.receivedFileDownloads(downloads, error)
+                self?.storeDataInCache()
             }
-            self?.storeDataInCache()
         })
     }
 
@@ -874,7 +942,8 @@ private extension StatsPeriodStore {
                 return
         }
 
-        operationQueue.cancelAllOperations()
+        cancelQueries()
+        setAllFetchingStatus(.idle)
 
         state.postStatsFetchingStatuses[postID] = .loading
 
@@ -893,7 +962,6 @@ private extension StatsPeriodStore {
 
     private func refreshPostStats(postID: Int) {
         state.postStatsFetchingStatuses[postID] = .idle
-        cancelQueries()
         fetchPostStats(postID: postID)
     }
 
@@ -909,7 +977,7 @@ private extension StatsPeriodStore {
         }
     }
 
-    private func receivedTotalsSummary(_ summaryData: StatsTotalsSummaryData?, _ error: Error?) {
+    private func receivedTotalsSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.totalsSummaryStatus = error != nil ? .error : .success
 
@@ -1046,9 +1114,7 @@ private extension StatsPeriodStore {
 
     private func cancelQueries() {
         operationQueue.cancelAllOperations()
-
         statsServiceRemote?.wordPressComRestApi.cancelTasks()
-        setAllFetchingStatus(.idle)
     }
 
     private func shouldFetchOverview() -> Bool {
@@ -1079,6 +1145,10 @@ private extension StatsPeriodStore {
             state.topVideosStatus = status
             state.topFileDownloadsStatus = status
         }
+    }
+
+    private func shouldFetchTimeIntervalsSummary() -> Bool {
+        return !isFetchingSummary
     }
 
     private func shouldFetchPostsAndPages() -> Bool {
@@ -1127,6 +1197,10 @@ extension StatsPeriodStore {
 
     func getSummary() -> StatsSummaryTimeIntervalData? {
         return state.timeIntervalsSummary
+    }
+
+    func getTotalsSummary() -> StatsSummaryTimeIntervalData? {
+        return state.totalsSummary
     }
 
     func getTopPostsAndPages() -> StatsTopPostsTimeIntervalData? {
@@ -1184,6 +1258,10 @@ extension StatsPeriodStore {
 
     var timeIntervalsSummaryStatus: StoreFetchingStatus {
         return state.timeIntervalsSummaryStatus
+    }
+
+    var totalsSummaryStatus: StoreFetchingStatus {
+        return state.totalsSummaryStatus
     }
 
     var isFetchingSummary: Bool {
@@ -1280,6 +1358,8 @@ extension StatsPeriodStore {
         switch query {
         case .allCachedPeriodData:
             return fetchingOverviewHasFailed
+        case .timeIntervalsSummary:
+            return timeIntervalsSummaryStatus == .error
         case .allPostsAndPages:
             return topPostsAndPagesStatus == .error
         case .allSearchTerms:

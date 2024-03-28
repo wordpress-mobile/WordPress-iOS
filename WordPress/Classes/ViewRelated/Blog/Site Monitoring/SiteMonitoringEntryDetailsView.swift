@@ -26,6 +26,7 @@ private struct SiteMonitoringTextView: UIViewRepresentable {
         textView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         textView.adjustsFontForContentSizeCategory = true
         textView.autocorrectionType = .no
+        textView.isEditable = false
         return textView
     }
 

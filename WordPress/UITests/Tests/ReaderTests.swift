@@ -5,12 +5,10 @@ class ReaderTests: XCTestCase {
 
     @MainActor
     override func setUp() async throws {
-        setUpTestSuite()
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
         try await WireMock.setUpScenario(scenario: "reader_subscriptions_flow")
         try await WireMock.setUpScenario(scenario: "reader_like_post_flow")
 
-        try LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail)
         try TabNavComponent()
             .goToReaderScreen()
     }
@@ -45,10 +43,10 @@ class ReaderTests: XCTestCase {
     func testFollowNewTopicOnDiscover() throws {
         try ReaderScreen()
             .switchToStream(.discover)
-            .selectTopic()
-            .verifyTopicLoaded()
-            .subscribeToTopic()
-            .verifyTopicSubscribed()
+            .selectTag()
+            .verifyTagLoaded()
+            .followTag()
+            .verifyTagFollowed()
     }
 
     func testSavePost() throws {

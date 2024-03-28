@@ -214,7 +214,7 @@ class PagesListTests: CoreDataTestCase {
         XCTAssertTrue(orderDiff.count == 0, "Unexpected order difference: \(orderDiff)", file: file, line: line)
 
         let levelDiff = originalLevels.difference(from: newLevels).inferringMoves()
-        XCTAssertTrue(orderDiff.count == 0, "Unexpected level difference: \(orderDiff)", file: file, line: line)
+        XCTAssertTrue(levelDiff.count == 0, "Unexpected level difference: \(levelDiff)", file: file, line: line)
     }
 }
 

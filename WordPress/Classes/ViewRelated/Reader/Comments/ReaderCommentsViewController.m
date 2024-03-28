@@ -48,7 +48,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 @property (nonatomic) BOOL isLoggedIn;
 @property (nonatomic) BOOL needsUpdateAttachmentsAfterScrolling;
 @property (nonatomic) BOOL needsRefreshTableViewAfterScrolling;
-@property (nonatomic) BOOL failedToFetchComments;
+@property (nonatomic, strong) NSError *fetchCommentsError;
 @property (nonatomic) BOOL deviceIsRotating;
 @property (nonatomic) BOOL userInterfaceStyleChanged;
 @property (nonatomic, strong) NSCache *cachedAttributedStrings;
@@ -361,6 +361,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)configureKeyboardManager
 {
+    // The variable introduced because we cannot reuse the same constraint for the keyboard manager and the reply text view.
+    self.replyTextViewBottomConstraint = [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor];
     self.keyboardManager = [[KeyboardDismissHelper alloc] initWithParentView:self.view
                                                                   scrollView:self.tableView
                                                           dismissableControl:self.replyTextView
@@ -401,20 +403,11 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
                                                                       metrics:nil
                                                                         views:views]];
 
-    // ReplyTextView Constraints
-    [[self.replyTextView.leftAnchor constraintEqualToAnchor:self.tableView.leftAnchor] setActive:YES];
-    [[self.replyTextView.rightAnchor constraintEqualToAnchor:self.tableView.rightAnchor] setActive:YES];
-
-    self.replyTextViewBottomConstraint = [NSLayoutConstraint constraintWithItem:self.view
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                      relatedBy:NSLayoutRelationEqual
-                                                                         toItem:self.replyTextView
-                                                                      attribute:NSLayoutAttributeBottom
-                                                                     multiplier:1.0
-                                                                       constant:0.0];
-    self.replyTextViewBottomConstraint.priority = UILayoutPriorityDefaultHigh;
-
-    [self.view addConstraint:self.replyTextViewBottomConstraint];
+    [NSLayoutConstraint activateConstraints:@[
+        [self.replyTextView.leadingAnchor constraintEqualToAnchor:self.replyTextView.leadingAnchor],
+        [self.replyTextView.trailingAnchor constraintEqualToAnchor:self.replyTextView.trailingAnchor],
+        [self.view.keyboardLayoutGuide.topAnchor constraintEqualToAnchor:self.replyTextView.bottomAnchor]
+    ]];
 
     // Suggestions Constraints
     // Pin the suggestions view left and right edges to the reply view edges
@@ -456,21 +449,22 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (NSString *)noResultsTitleText
 {
-    // Let's just display the same message, for consistency's sake
-    if (self.isLoadingPost || self.syncHelper.isSyncing) {
-        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
-    }
     // If we couldn't fetch the comments lets let the user know
-    if (self.failedToFetchComments) {
+    if (self.fetchCommentsError != nil) {
         return NSLocalizedString(@"There has been an unexpected error while loading the comments.", @"Message shown when comments for a post can not be loaded.");
     }
-    return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    // Let's just display the same message, for consistency's sake
+    else if (self.isLoadingPost || self.syncHelper.isSyncing) {
+        return NSLocalizedString(@"Fetching comments...", @"A brief prompt shown when the comment list is empty, letting the user know the app is currently fetching new comments.");
+    } else {
+        return NSLocalizedString(@"Be the first to leave a comment.", @"Message shown encouraging the user to leave a comment on a post in the reader.");
+    }
 }
 
 - (UIView *)noResultsAccessoryView
 {
     UIView *loadingAccessoryView = nil;
-    if (self.isLoadingPost || self.syncHelper.isSyncing) {
+    if ((self.isLoadingPost || self.syncHelper.isSyncing) && self.fetchCommentsError == nil) {
         loadingAccessoryView = [NoResultsViewController loadingAccessoryView];
     }
     return loadingAccessoryView;
@@ -798,15 +792,26 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         
         hideImageView = (WPDeviceIdentification.isiPhone && !isLandscape) || (WPDeviceIdentification.isiPad && isLandscape);
     }
+    NSString *image = nil;
+    NSString *subtitle = nil;
+    if (self.fetchCommentsError != nil) {
+        image = @"wp-illustration-reader-empty";
+        NSError *error = self.fetchCommentsError;
+        if (error && [error.domain isEqualToString:WordPressComRestApiErrorDomain] && error.code == WordPressComRestApiErrorCodeAuthorizationRequired) {
+            subtitle = NSLocalizedString(@"You don't have permission to view this private blog.",
+                                          @"Error message that informs reader comments from a private blog cannot be fetched.");
+
+        }
+    }
     [self.noResultsViewController configureWithTitle:self.noResultsTitleText
                                      attributedTitle:nil
                                    noConnectionTitle:nil
                                          buttonTitle:nil
-                                            subtitle:nil
+                                            subtitle:subtitle
                                 noConnectionSubtitle:nil
                                   attributedSubtitle:nil
                      attributedSubtitleConfiguration:nil
-                                               image:nil
+                                               image:image
                                        subtitleImage:nil
                                        accessoryView:[self noResultsAccessoryView]];
 
@@ -884,9 +889,16 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
         NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
         [self.tableView layoutIfNeeded];
-        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 
-        self.highlightedIndexPath = indexPath;
+        // Ensure that the indexPath exists before scrolling to it.
+        if (indexPath.section >=0
+            && indexPath.row >=0
+            && indexPath.section < self.tableView.numberOfSections
+            && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
+        {
+            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            self.highlightedIndexPath = indexPath;
+        }
 
         // Reset the commentID so we don't do this again.
         self.navigateToCommentID = nil;
@@ -995,7 +1007,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncContentWithUserInteraction:(BOOL)userInteraction success:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    self.failedToFetchComments = NO;
+    self.fetchCommentsError = nil;
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
     [service syncHierarchicalCommentsForPost:self.post page:1 success:^(BOOL hasMore, NSNumber * __unused totalComments) {
@@ -1009,7 +1021,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncHelper:(WPContentSyncHelper *)syncHelper syncMoreWithSuccess:(void (^)(BOOL))success failure:(void (^)(NSError *))failure
 {
-    self.failedToFetchComments = NO;
+    self.fetchCommentsError = nil;
     [self.activityFooter startAnimating];
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
@@ -1034,7 +1046,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 
 - (void)syncContentFailed:(WPContentSyncHelper *)syncHelper
 {
-    self.failedToFetchComments = YES;
+    self.fetchCommentsError = [NSError errorWithDomain:@"" code:0 userInfo:nil];
     [self.activityFooter stopAnimating];
     [self refreshTableViewAndNoResultsView];
 }
@@ -1055,6 +1067,9 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         
     } failure:^(NSError *error) {
         DDLogError(@"[RestAPI] %@", error);
+        self.fetchCommentsError = error;
+        [self.activityFooter stopAnimating];
+        [self refreshTableViewAndNoResultsView];
     }];
 }
 

@@ -140,7 +140,6 @@ import Foundation
     case storyIntroDismissed
     case storyIntroCreateStoryButtonTapped
     case storyAddedMedia
-    case storyBlockAddMediaTapped
 
     // Jetpack
     case jetpackSettingsViewed
@@ -331,6 +330,8 @@ import Foundation
     case notificationsMarkAllReadTapped
     case notificationMarkAsReadTapped
     case notificationMarkAsUnreadTapped
+    case notificationMenuTapped
+    case notificationsInlineActionTapped
 
     // Sharing Buttons
     case sharingButtonsEditSharingButtonsToggled
@@ -810,8 +811,6 @@ import Foundation
             return "story_intro_create_story_button_tapped"
         case .storyAddedMedia:
             return "story_added_media"
-        case .storyBlockAddMediaTapped:
-            return "story_block_add_media_tapped"
 
         // Jetpack
         case .jetpackSettingsViewed:
@@ -1142,6 +1141,10 @@ import Foundation
             return "notification_mark_as_read_tapped"
         case .notificationMarkAsUnreadTapped:
             return "notification_mark_as_unread_tapped"
+        case .notificationMenuTapped:
+            return "notification_menu_tapped"
+        case .notificationsInlineActionTapped:
+            return "notifications_inline_action_tapped"
 
         // Sharing
         case .sharingButtonsEditSharingButtonsToggled:

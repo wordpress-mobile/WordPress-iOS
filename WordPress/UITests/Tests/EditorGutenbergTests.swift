@@ -5,11 +5,8 @@ class EditorGutenbergTests: XCTestCase {
 
     @MainActor
     override func setUp() async throws {
-        setUpTestSuite()
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomPaidSite)
         try await WireMock.setUpScenario(scenario: "new_post_flow")
-
-        try LoginFlow
-            .login(email: WPUITestCredentials.testWPcomUserEmail)
 
         try TabNavComponent()
             .goToBlockEditorScreen()

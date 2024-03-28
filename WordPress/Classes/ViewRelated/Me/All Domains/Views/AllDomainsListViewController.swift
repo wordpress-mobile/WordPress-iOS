@@ -12,7 +12,7 @@ final class AllDomainsListViewController: UIViewController {
     }
 
     private enum Layout {
-        static let interRowSpacing = Length.Padding.double
+        static let interRowSpacing: CGFloat = .DS.Padding.double
     }
 
     private enum CellIdentifiers {
@@ -128,8 +128,8 @@ final class AllDomainsListViewController: UIViewController {
         NSLayoutConstraint.activate([
             self.emptyView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             self.emptyView.centerYAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerYAnchor),
-            self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: Length.Padding.double),
-            self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -Length.Padding.double)
+            self.emptyView.leadingAnchor.constraint(equalTo: view.readableContentGuide.leadingAnchor, constant: .DS.Padding.double),
+            self.emptyView.trailingAnchor.constraint(equalTo: view.readableContentGuide.trailingAnchor, constant: -.DS.Padding.double)
         ])
     }
 

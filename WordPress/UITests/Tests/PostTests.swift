@@ -6,12 +6,7 @@ class PostTests: XCTestCase {
     @MainActor
     override func setUpWithError() throws {
         try super.setUpWithError()
-        setUpTestSuite()
-
-        try LoginFlow.login(
-            email: WPUITestCredentials.testWPcomUserEmail,
-            siteAddress: WPUITestCredentials.testWPcomSiteForScheduledPost
-        )
+        setUpTestSuite(selectWPComSite: WPUITestCredentials.testWPcomSiteForScheduledPost)
 
         try TabNavComponent()
             .goToBlockEditorScreen()

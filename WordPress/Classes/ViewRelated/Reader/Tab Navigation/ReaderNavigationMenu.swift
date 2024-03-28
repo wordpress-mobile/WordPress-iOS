@@ -30,6 +30,7 @@ struct ReaderNavigationMenu: View {
                 HStack {
                     ReaderNavigationButton(viewModel: viewModel)
                         .frame(maxHeight: .infinity)
+                        .zIndex(1)
                         .animation(.easeInOut, value: viewModel.selectedItem)
                     streamFilterView
                     // add some empty space so that the last filter chip doesn't get covered by the gradient mask.

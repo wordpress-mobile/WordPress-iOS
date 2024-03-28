@@ -1,5 +1,6 @@
 import Aztec
 import Foundation
+import WordPressKit
 import WordPressFlux
 
 protocol PostCoordinatorDelegate: AnyObject {
@@ -15,7 +16,7 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
-    private let coreDataStack: CoreDataStack
+    private let coreDataStack: CoreDataStackSwift
 
     private var mainContext: NSManagedObjectContext {
         coreDataStack.mainContext
@@ -41,7 +42,7 @@ class PostCoordinator: NSObject {
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStack = ContextManager.sharedInstance()) {
+         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
@@ -94,6 +95,7 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode) (See PostCoordinator.publish)
     func publish(_ post: AbstractPost) {
         if post.status == .draft {
             post.status = .publish
@@ -107,6 +109,50 @@ class PostCoordinator: NSObject {
         post.shouldAttemptAutoUpload = true
 
         save(post)
+    }
+
+    /// Publishes the post according to the current settings and user capabilities.
+    ///
+    /// - warning: Before publishing, ensure that the media for the post got
+    /// uploaded. Managing media is not the responsibility of `PostRepository.`
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @MainActor
+    func _publish(_ post: AbstractPost) async throws {
+        let parameters = PostHelper.remotePost(with: post)
+        if post.status == .draft {
+            parameters.status = PostStatusPublish
+            parameters.date = Date()
+        } else {
+            // Publish according to the currrent post settings: private, scheduled, etc.
+        }
+        do {
+            let repository = PostRepository(coreDataStack: coreDataStack)
+            let post = try await repository._upload(parameters, for: post)
+            didPublish(post)
+            show(PostCoordinator.makePublishSuccessNotice(for: post))
+        } catch {
+            show(PostCoordinator.makePublishFailureNotice(for: post, error: error))
+            throw error
+        }
+    }
+
+    @MainActor
+    private func didPublish(_ post: AbstractPost) {
+        if post.status == .publish {
+            QuickStartTourGuide.shared.complete(tour: QuickStartPublishTour(), silentlyForBlog: post.blog)
+        }
+        if post.status == .scheduled {
+            notifyNewPostScheduled()
+        } else if post.status == .publish {
+            notifyNewPostPublished()
+        }
+        SearchManager.shared.indexItem(post)
+        AppRatingUtility.shared.incrementSignificantEvent()
+    }
+
+    private func show(_ notice: Notice) {
+        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
     func moveToDraft(_ post: AbstractPost) {
@@ -233,6 +279,7 @@ class PostCoordinator: NSObject {
         Post.refreshStatus(with: coreDataStack)
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
         mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
             guard let uploadedPost = uploadedPost else {

@@ -253,7 +253,7 @@ import AutomatticTracks
         calculateImageDimensionsIfNeeded(from: request)
 
         imageView.startLoadingAnimation()
-        imageView.af_setImage(withURLRequest: request, completion: { [weak self] dataResponse in
+        imageView.af.setImage(withURLRequest: request, completion: { [weak self] dataResponse in
             guard let self = self else {
                 return
             }

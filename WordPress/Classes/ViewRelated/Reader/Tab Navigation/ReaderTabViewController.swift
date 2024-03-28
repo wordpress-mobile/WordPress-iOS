@@ -52,6 +52,7 @@ class ReaderTabViewController: UIViewController {
         super.viewDidAppear(animated)
 
         ReaderTracker.shared.start(.main)
+        readerTabView.disableScrollsToTop()
 
         if AppConfiguration.showsWhatIsNew {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)

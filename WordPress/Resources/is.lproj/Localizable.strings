@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:53:34+0000 */
 /* Plural-Forms: nplurals=2; plural=n % 10 != 1 || n % 100 == 11; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: is */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -377,8 +377,7 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Varlega!";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Flokkar";
 
 /* Category menu item in share extension.
@@ -425,12 +424,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Smellir";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Loka";
 
 /* Settings: Close comments after X period */
@@ -775,8 +772,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Breyta ritskoðuðu orði";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Breyta færslu";
 
@@ -1458,8 +1454,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tafla ítarupplýsinga tilkynninga";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Stillingar tilkynninga";
 
@@ -1742,8 +1737,7 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Birt";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -1752,10 +1746,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Birta strax";
-
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Birta núna";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -2223,7 +2213,6 @@
 "Tagline" = "Kjörorð";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -2279,7 +2268,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Forritið gat ekki skilið svarið frá netþjóninum. Vinsamlegast yfirfarið stillingar á vefnum þínum.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Skírteinið fyrir þennan netþjón er ógilt. Þú gætir verið að tengjast við netþjón sem er að þykjast vera “%@” og gæti það ógnað upplýsingaöryggi þínu.\n\nViltu treysta skírteininu engu að síður?";
 
 /* Message of error prompt shown when a user tries to perform an action without an internet connection. */
@@ -2401,7 +2390,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titill";
@@ -2643,8 +2631,7 @@
    Today's Stats 'Views' label */
 "Views" = "Flettingar";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Sýnileiki";
 
@@ -2785,7 +2772,7 @@
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Þú verður að vera skráð(ur) inn á WordPress.com aðgang til að framkvæma þessa aðgerð.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Svo virðist sem þú hafir sett inn farsímaviðbót frá DudaMobile sem kemur í veg fyrir að forritið geti tengst blogginu þínu";
 
 /* Displayed in the Notification Settings View */

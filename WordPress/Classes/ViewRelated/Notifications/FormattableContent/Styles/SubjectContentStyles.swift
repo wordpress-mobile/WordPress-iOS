@@ -11,10 +11,10 @@ class SubjectContentStyles: FormattableContentStyles {
 
     var rangeStylesMap: [FormattableRangeKind: [NSAttributedString.Key: Any]]? {
         return [
-            .user: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .post: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .site: WPStyleGuide.Notifications.subjectSemiBoldStyle,
-            .comment: WPStyleGuide.Notifications.subjectSemiBoldStyle,
+            .user: WPStyleGuide.Notifications.subjectRegularStyle,
+            .post: WPStyleGuide.Notifications.subjectRegularStyle,
+            .site: WPStyleGuide.Notifications.subjectRegularStyle,
+            .comment: WPStyleGuide.Notifications.subjectRegularStyle,
             .blockquote: WPStyleGuide.Notifications.subjectQuotedStyle,
             .noticon: WPStyleGuide.Notifications.subjectNoticonStyle
         ]

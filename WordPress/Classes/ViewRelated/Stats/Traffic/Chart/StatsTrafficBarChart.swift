@@ -63,7 +63,7 @@ private struct StatsTrafficBarChartDataTransformer {
             xAxisIndexToDate[x] = dateInterval
         }
 
-        let formatter = StatsTrafficHorizontalAxisFormatter(period: data.period, xAxisIndexToDate: xAxisIndexToDate)
+        let formatter = StatsTrafficHorizontalAxisFormatter(period: data.unit ?? data.period, xAxisIndexToDate: xAxisIndexToDate)
         let styling = StatsTrafficBarChartStyle(xAxisValueFormatter: formatter)
         return Array(repeating: styling, count: StatsTrafficBarChartTabs.allCases.count)
     }
@@ -95,8 +95,6 @@ final class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
 
     private let period: StatsPeriodUnit
     private let xAxisIndexToDate: [Int: TimeInterval]
-
-    private lazy var calendar = Calendar.current
 
     // MARK: HorizontalAxisFormatter
 
@@ -130,34 +128,45 @@ final class StatsTrafficHorizontalAxisFormatter: AxisValueFormatter {
         }
     }
 
+    private lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.setLocalizedDateFormatFromTemplate(dateFormatTemplate)
+        return dateFormatter
+    }()
+
+    private lazy var dateFormatTemplate: String = {
+        switch period {
+        case .day:
+            return "d"
+        case .week:
+            return "d"
+        case .month:
+            return "LLLL"
+        case .year:
+            return "yyyy"
+        }
+    }()
+
     private func labelForDay(_ date: Date) -> String {
-        let dayComponent = calendar.component(.day, from: date)
-        return "\(dayComponent)"
+        return dateFormatter.string(from: date)
     }
 
     private func labelForWeek(_ date: Date) -> String {
-        guard
-            let startOfWeek = calendar.date(from: calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: date)),
-            let endOfWeek = calendar.date(byAdding: .day, value: 6, to: startOfWeek) else {
+        let week = StatsPeriodHelper().weekIncludingDate(date)
+        guard let startOfWeek = week?.weekStart, let endOfWeek = week?.weekEnd else {
             return ""
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "d"
-        dateFormatter.locale = .current
+
         return "\(dateFormatter.string(from: startOfWeek))-\(dateFormatter.string(from: endOfWeek))"
     }
 
     private func labelForMonth(_ date: Date) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "LLLL"
-        dateFormatter.locale = .current
         let fullMonthName = dateFormatter.string(from: date)
         return String(fullMonthName.prefix(1))
     }
 
     private func labelForYear(_ date: Date) -> String {
-        let dayComponent = calendar.component(.year, from: date)
-        return "\(dayComponent)"
+        return dateFormatter.string(from: date)
     }
 }
 

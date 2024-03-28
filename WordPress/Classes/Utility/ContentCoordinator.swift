@@ -77,10 +77,8 @@ struct DefaultContentCoordinator: ContentCoordinator {
         let matches = matcher.routesMatching(url)
         if let match = matches.first,
            let action = match.action as? StatsRoute,
-           let timePeriod = action.timePeriod {
-            // Initializing a StatsPeriodType to ensure we have a valid period
-            let key = SiteStatsDashboardViewController.lastSelectedStatsPeriodTypeKey(forSiteID: siteID)
-            UserPersistentStoreFactory.instance().set(timePeriod.rawValue, forKey: key)
+           let tab = action.tab {
+            SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
         }
     }
 

@@ -141,21 +141,16 @@ fileprivate extension Date {
     }
 }
 
-private extension StatsDataHelper {
-
-    typealias Style = WPStyleGuide.Stats
-
+extension StatsDataHelper {
     static var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
         cal.timeZone = .autoupdatingCurrent
         return cal
     }()
+}
 
-    static var calendarForSite: Calendar = {
-        var cal = StatsDataHelper.calendar
-        cal.timeZone = SiteStatsInformation.sharedInstance.siteTimeZone ?? .autoupdatingCurrent
-        return cal
-    }()
+private extension StatsDataHelper {
+    typealias Style = WPStyleGuide.Stats
 
     static var monthFormatter: DateFormatter = {
         let df = DateFormatter()
@@ -170,7 +165,6 @@ private extension StatsDataHelper {
 
         return StatsDataHelper.monthFormatter.string(from: month)
     }
-
 }
 
 extension Date {
@@ -185,7 +179,7 @@ extension Date {
         // This is basically a Swift rewrite of https://github.com/wordpress-mobile/WordPressCom-Stats-iOS/blob/develop/WordPressCom-Stats-iOS/Services/StatsDateUtilities.m#L97
         // It could definitely use some love!
 
-        let calendar = StatsDataHelper.calendarForSite
+        let calendar = StatsDataHelper.calendar
         let now = Date()
 
         let components = calendar.dateComponents([.minute, .hour, .day], from: self, to: now)

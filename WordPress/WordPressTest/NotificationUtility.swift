@@ -25,6 +25,10 @@ class NotificationUtility {
         return try .fixture(fromFile: "notifications-like.json", insertInto: context)
     }
 
+    func loadLikeMultipleAvatarNotification() throws -> WordPress.Notification {
+        return try .fixture(fromFile: "notifications-like-multiple-avatar.json", insertInto: context)
+    }
+
     func loadFollowerNotification() throws -> WordPress.Notification {
         return try .fixture(fromFile: "notifications-new-follower.json", insertInto: context)
     }
