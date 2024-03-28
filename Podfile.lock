@@ -126,7 +126,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `fa06fca7178b268d382d91861752b3be0729e8a8`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `92c1536724af8bb57ee677996919c2a9e37434e8`)
   - WordPressShared (~> 2.3)
-  - WordPressUI (~> 1.15)
+  - WordPressUI (from `../WordPressUI-iOS`)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -161,7 +161,6 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
-    - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -186,6 +185,8 @@ EXTERNAL SOURCES:
   WordPressKit:
     :commit: 92c1536724af8bb57ee677996919c2a9e37434e8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
+  WordPressUI:
+    :path: "../WordPressUI-iOS"
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -243,6 +244,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 050c35cfdc0e86886579eb435fcb84e70f6864e3
+PODFILE CHECKSUM: b9231d5f4652f478e79897eb92e356c7d1e31617
 
 COCOAPODS: 1.14.2
