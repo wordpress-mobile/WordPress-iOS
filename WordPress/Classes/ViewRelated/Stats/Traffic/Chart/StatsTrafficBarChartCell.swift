@@ -53,7 +53,6 @@ final class StatsTrafficBarChartCell: UITableViewCell {
         self.unit = unit
         self.siteStatsPeriodDelegate = siteStatsPeriodDelegate
 
-        updateLabels()
         updateButtons()
         updateChartView()
     }
@@ -61,14 +60,8 @@ final class StatsTrafficBarChartCell: UITableViewCell {
 
 private extension StatsTrafficBarChartCell {
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        updateLabels()
         updateChartView()
         siteStatsPeriodDelegate?.barChartTabSelected?(filterBar.selectedIndex)
-    }
-
-    func updateLabels() {
-        let tabData = tabsData[filterTabBar.selectedIndex]
-        differenceLabel.attributedText = differenceAttributedString(tabData)
     }
 
     func updateButtons() {
@@ -161,121 +154,6 @@ private extension StatsTrafficBarChartCell {
             return UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: .init(preferredContentSizeCategory: .large))
         } else {
             return UIFont.preferredFont(forTextStyle: .footnote, compatibleWith: .init(preferredContentSizeCategory: .large))
-        }
-    }
-}
-
-// MARK: - Difference
-
-private extension StatsTrafficBarChartCell {
-    enum DifferenceStrings {
-        static let weekHigher = NSLocalizedString("stats.traffic.label.weekDifference.higher",
-                                                  value: "%@ higher than the previous 7-days\n",
-                                                  comment: "Stats views higher than previous 7 days")
-        static let weekLower = NSLocalizedString("stats.traffic.label.weekDifference.lower",
-                                                 value: "%@ lower than the previous 7-days\n",
-                                                 comment: "Stats views lower than previous 7 days")
-
-        static let monthHigher = NSLocalizedString("stats.traffic.label.monthDifference.higher",
-                                                   value: "%@ higher than the previous month\n",
-                                                   comment: "Stats views higher than previous month")
-        static let monthLower = NSLocalizedString("stats.traffic.label.monthDifference.lower",
-                                                  value: "%@ lower than the previous month\n",
-                                                  comment: "Stats views lower than previous month")
-
-        static let yearHigher = NSLocalizedString("stats.traffic.label.yearDifference.higher",
-                                                  value: "%@ higher than the previous year\n",
-                                                  comment: "Stats views higher than previous year")
-        static let yearLower = NSLocalizedString("stats.traffic.label.yearDifference.lower",
-                                                 value: "%@ lower than the previous year\n",
-                                                 comment: "Stats views lower than previous year")
-    }
-
-    func differenceAttributedString(_ data: StatsTrafficBarChartTabData) -> NSAttributedString? {
-        guard let differenceText = differenceText(data) else {
-            return nil
-        }
-
-        let defaultAttributes = [NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .footnote), NSAttributedString.Key.foregroundColor: UIColor.DS.Foreground.secondary]
-        let differenceColor = data.difference > 0 ? UIColor.DS.Foreground.success : UIColor.DS.Foreground.error
-        let differenceLabel = differenceLabel(data)
-        let attributedString = NSMutableAttributedString(
-            string: String(format: differenceText, differenceLabel),
-            attributes: defaultAttributes
-        )
-
-        let str = attributedString.string as NSString
-        let range = str.range(of: differenceLabel)
-
-        attributedString.addAttributes(
-            [.foregroundColor: differenceColor,
-             .font: UIFont.preferredFont(forTextStyle: .footnote)
-            ],
-            range: NSRange(location: range.location, length: differenceLabel.count)
-        )
-
-        return attributedString
-    }
-
-    func differenceText(_ data: StatsTrafficBarChartTabData) -> String? {
-        switch data.period {
-        case .week:
-            if data.difference > 0 {
-                return DifferenceStrings.weekHigher
-            } else if data.difference < 0 {
-                return DifferenceStrings.weekLower
-            }
-        case .month:
-            if data.difference > 0 {
-                return DifferenceStrings.monthHigher
-            } else if data.difference < 0 {
-                return DifferenceStrings.monthLower
-            }
-        case .year:
-            if data.difference > 0 {
-                return DifferenceStrings.yearHigher
-            } else if data.difference < 0 {
-                return DifferenceStrings.yearLower
-            }
-        default:
-            return nil
-        }
-
-        return nil
-    }
-
-    func differenceLabel(_ data: StatsTrafficBarChartTabData) -> String {
-        // We want to show something like "+10.2K (+5%)" if we have a percentage difference and "1.2K" if we don't.
-        //
-        // Negative cases automatically appear with a negative sign "-10.2K (-5%)" by using `abbreviatedString()`.
-        // `abbreviatedString()` also handles formatting big numbers, i.e. 10,200 will become 10.2K.
-        let formatter = NumberFormatter()
-        formatter.locale = .current
-        let plusSign = data.difference <= 0 ? "" : "\(formatter.plusSign ?? "")"
-
-        if data.differencePercent != 0 {
-            let stringFormat = NSLocalizedString(
-                "stats.traffic.differenceLabelWithPercentage",
-                value: "%1$@%2$@ (%3$@%%)",
-                comment: "Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign."
-            )
-            return String.localizedStringWithFormat(
-                stringFormat,
-                plusSign,
-                data.difference.abbreviatedString(),
-                data.differencePercent.abbreviatedString()
-            )
-        } else {
-            let stringFormat = NSLocalizedString(
-                "stats.traffic.differenceLabelWithoutPercentage",
-                value: "%1$@%2$@",
-                comment: "Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value."
-            )
-            return String.localizedStringWithFormat(
-                stringFormat,
-                plusSign,
-                data.difference.abbreviatedString()
-            )
         }
     }
 }

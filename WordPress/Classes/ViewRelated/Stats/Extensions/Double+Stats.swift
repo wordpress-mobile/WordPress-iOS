@@ -143,6 +143,14 @@ extension Double {
         return formattedString
     }
 
+    func abbreviatedPercentageString(forHeroNumber: Bool = false) -> String {
+        guard let numberWithPercentage = NumberFormatter.statsPercentage.string(from: .init(value: self)) else {
+            return abbreviatedString(forHeroNumber: forHeroNumber)
+        }
+
+        return numberWithPercentage.replacingOccurrences(of: "\(self)", with: self.abbreviatedString(forHeroNumber: forHeroNumber))
+    }
+
     private func formatWithCommas() -> String {
         return numberFormatter.string(for: self) ?? ""
     }
@@ -157,16 +165,28 @@ extension NSNumber {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return self.doubleValue.abbreviatedString(forHeroNumber: forHeroNumber)
     }
+
+    func abbreviatedPercentageString(forHeroNumber: Bool = false) -> String {
+        return self.doubleValue.abbreviatedPercentageString(forHeroNumber: forHeroNumber)
+    }
 }
 
 extension Float {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
+
+    func abbreviatedPercentageString(forHeroNumber: Bool = false) -> String {
+        return Double(self).abbreviatedPercentageString(forHeroNumber: forHeroNumber)
+    }
 }
 
 extension Int {
     func abbreviatedString(forHeroNumber: Bool = false) -> String {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
+    }
+
+    func abbreviatedPercentageString(forHeroNumber: Bool = false) -> String {
+        return Double(self).abbreviatedPercentageString(forHeroNumber: forHeroNumber)
     }
 }
