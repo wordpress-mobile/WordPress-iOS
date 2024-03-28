@@ -118,11 +118,7 @@ private extension JetpackBrandingTextProvider {
         static let phaseThreeSingularMovingInText = NSLocalizedString("jetpack.branding.badge_banner.moving_in.singular",
                                                                       value: "%@ is moving in %@",
                                                                       comment: "Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks")
-        static let phaseStaticScreensText = NSLocalizedString(
-            "jetpack.branding.badge_banner.moving_in_days.plural",
-            value: "Moving to the Jetpack app in a few days.",
-            comment: "Title of a badge or banner indicating that this feature will be moved in a few days."
-        )
+        static let phaseStaticScreensText = defaultText
     }
 
     private var isPlural: Bool {

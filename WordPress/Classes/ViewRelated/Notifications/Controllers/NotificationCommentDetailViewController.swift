@@ -4,6 +4,8 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
 
     // MARK: - Properties
 
+    private var content: Content?
+
     private var notification: Notification {
         didSet {
             title = notification.title
@@ -31,7 +33,13 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
     // In this case, use the Post to obtain Comment information.
     private var post: ReaderPost?
 
-    private var commentDetailViewController: CommentDetailViewController?
+    private var commentDetailViewController: CommentDetailViewController? {
+        guard let content, case let .commentDetails(viewController) = content  else {
+            return nil
+        }
+        return viewController
+    }
+
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
     private let managedObjectContext = ContextManager.shared.mainContext
 
@@ -72,6 +80,9 @@ class NotificationCommentDetailViewController: UIViewController, NoResultsViewHo
             nextButton.isEnabled = nextButtonEnabled
         }
     }
+
+    private let errorTitle = NSLocalizedString("Error loading the comment",
+                                               comment: "Text displayed when there is a failure loading notification comments.")
 
     // MARK: - Init
 
@@ -156,48 +167,92 @@ private extension NotificationCommentDetailViewController {
             return
         }
 
-        if commentDetailViewController != nil {
-            commentDetailViewController?.refreshView(comment: comment, notification: notification)
+        // Refresh the current content if the underlying view controller supports it
+        // Else, remove the existing child view controller and add a new one.
+        let newContent = makeNewContent(with: comment, notification: notification)
+        if let commentDetailViewController, case .commentDetails = newContent {
+            commentDetailViewController.refreshView(comment: comment, notification: notification)
         } else {
-            let commentDetailViewController = CommentDetailViewController(comment: comment,
-                                                                      notification: notification,
-                                                                      notificationDelegate: notificationDelegate,
-                                                                      managedObjectContext: managedObjectContext)
-
-            commentDetailViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            add(commentDetailViewController)
-            view.pinSubviewToAllEdges(commentDetailViewController.view)
-            self.commentDetailViewController = commentDetailViewController
+            self.content?.viewController.remove()
+            let viewController = newContent.viewController
+            viewController.view.translatesAutoresizingMaskIntoConstraints = false
+            self.add(viewController)
+            self.view.pinSubviewToAllEdges(viewController.view)
+            self.content = newContent
         }
 
-        configureNavBarButtons()
+        self.configureNavBarButtons()
+    }
+
+    /// Creates content based on a comment's moderation ability.
+    /// If the comment does not allow moderation, and the blog supports WordPress.com REST API capability,
+    /// it returns a `ReaderCommentsViewController`. Otherwise, it defaults to a `CommentDetailViewController`.
+    ///
+    /// - Parameters:
+    ///   - comment: The comment object, used to check moderation capabilities.
+    ///   - notification: The notification object, used for additional information like site ID.
+    ///
+    /// - Returns: Either `.readerComments` with a `ReaderCommentsViewController` or `.commentDetails` with a `CommentDetailViewController`.
+    private func makeNewContent(with comment: Comment, notification: Notification) -> Content {
+        let blogSupportsWpcomRestAPI: Bool = {
+            return blog?.supports(.wpComRESTAPI) ?? true
+        }()
+        guard !comment.allowsModeration(),
+              blogSupportsWpcomRestAPI,
+              let siteID = notification.metaSiteID,
+              let readerComments = ReaderCommentsViewController(postID: NSNumber(value: comment.postID), siteID: siteID, source: .commentNotification)
+        else {
+            let viewController = CommentDetailViewController(
+                comment: comment,
+                notification: notification,
+                notificationDelegate: notificationDelegate,
+                managedObjectContext: managedObjectContext
+            )
+            return .commentDetails(viewController)
+        }
+        readerComments.navigateToCommentID = commentID
+        readerComments.allowsPushingPostDetails = true
+        return .readerComments(readerComments)
     }
 
     func loadComment() {
         showLoadingView()
 
         loadPostIfNeeded(completion: { [weak self] in
+            guard let self = self else {
+                return
+            }
 
-            self?.fetchParentCommentIfNeeded(completion: { [weak self] in
-                guard let self = self else {
-                    return
-                }
-
+            self.fetchParentCommentIfNeeded(completion: {
                 if let comment = self.loadCommentFromCache(self.commentID) {
                     self.comment = comment
                     return
                 }
-
-                self.fetchComment(self.commentID, completion: { [weak self] comment in
+                self.fetchComment(self.commentID, completion: { comment in
                     guard let comment = comment else {
-                        self?.showErrorView()
+                        self.showErrorView(title: NoResults.errorTitle, subtitle: NoResults.errorSubtitle)
                         return
                     }
-
-                    self?.comment = comment
+                    self.comment = comment
+                }, failure: { error in
+                    self.showErrorView(error: error)
                 })
+            }, failure: { error in
+                self.showErrorView(error: error)
             })
         })
+    }
+
+    private func showErrorView(error: Error?) {
+        let errorMessage: String? = {
+            guard let error = error as? NSError,
+                  error.domain == WordPressComRestApiEndpointError.errorDomain,
+                  error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                return nil
+            }
+            return Strings.fetchCommentDetailsFromPrivateBlogErrorMessage
+        }()
+        self.showErrorView(title: self.errorTitle, subtitle: errorMessage)
     }
 
     func loadPostIfNeeded(completion: @escaping () -> Void) {
@@ -245,10 +300,10 @@ private extension NotificationCommentDetailViewController {
         return nil
     }
 
-    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void) {
+    func fetchComment(_ commentID: NSNumber?, completion: @escaping (Comment?) -> Void, failure: @escaping (Error?) -> Void) {
         guard let commentID = commentID else {
             DDLogError("Notification Comment: unable to fetch comment due to missing commentID.")
-            completion(nil)
+            failure(nil)
             return
         }
 
@@ -256,7 +311,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: blog, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -265,7 +320,7 @@ private extension NotificationCommentDetailViewController {
             commentService.loadComment(withID: commentID, for: post, success: { comment in
                 completion(comment)
             }, failure: { error in
-                completion(nil)
+                failure(error)
             })
             return
         }
@@ -273,7 +328,7 @@ private extension NotificationCommentDetailViewController {
         completion(nil)
     }
 
-    func fetchParentCommentIfNeeded(completion: @escaping () -> Void) {
+    func fetchParentCommentIfNeeded(completion: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         // If the comment has a parent and it is not cached, fetch it so the details header is correct.
         guard let parentID = notification.metaParentID,
               loadCommentFromCache(parentID) == nil else {
@@ -281,9 +336,7 @@ private extension NotificationCommentDetailViewController {
                   return
               }
 
-        fetchComment(parentID, completion: { _ in
-            completion()
-        })
+        fetchComment(parentID, completion: { _ in completion() }, failure: { failure($0) })
     }
 
     struct Constants {
@@ -305,16 +358,16 @@ private extension NotificationCommentDetailViewController {
         }
     }
 
-    func showErrorView() {
+    func showErrorView(title: String, subtitle: String?) {
         if let commentDetailViewController = commentDetailViewController {
-            commentDetailViewController.showNoResultsView(title: NoResults.errorTitle,
-                                                          subtitle: NoResults.errorSubtitle,
+            commentDetailViewController.showNoResultsView(title: title,
+                                                          subtitle: subtitle,
                                                           imageName: NoResults.imageName)
         } else {
             hideNoResults()
             configureAndDisplayNoResults(on: view,
-                                         title: NoResults.errorTitle,
-                                         subtitle: NoResults.errorSubtitle,
+                                         title: title,
+                                         subtitle: subtitle,
                                          image: NoResults.imageName)
         }
     }
@@ -324,6 +377,34 @@ private extension NotificationCommentDetailViewController {
         static let errorTitle = NSLocalizedString("Oops", comment: "Title for the view when there's an error loading a comment.")
         static let errorSubtitle = NSLocalizedString("There was an error loading the comment.", comment: "Text displayed when there is a failure loading a comment.")
         static let imageName = "wp-illustration-notifications"
+    }
+
+    // MARK: - Types
+
+    /// The `Content` enum defines the types of view controllers that can be presented in the `NotificationCommentDetailViewController`.
+    /// It differentiates the content based on the comment's moderation capabilities.
+    ///
+    /// - `commentDetails`: A view controller for comments that permit moderation actions.
+    /// - `readerComments`: A view controller for comments that do not allow moderation.
+    private enum Content {
+
+        case commentDetails(CommentDetailViewController)
+        case readerComments(ReaderCommentsViewController)
+
+        var viewController: UIViewController {
+            switch self {
+            case .commentDetails(let vc): return vc
+            case .readerComments(let vc): return vc
+            }
+        }
+    }
+
+    struct Strings {
+        static let fetchCommentDetailsFromPrivateBlogErrorMessage = NSLocalizedString(
+            "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage",
+            value: "You don't have permission to view this private blog.",
+            comment: "Error message that informs comment details from a private blog cannot be fetched."
+        )
     }
 
 }

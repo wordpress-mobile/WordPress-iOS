@@ -2,6 +2,7 @@ import UIKit
 import WordPressAuthenticator
 import Combine
 import WordPressUI
+import SwiftUI
 
 enum PrepublishingIdentifier {
     case title
@@ -17,6 +18,17 @@ enum PrepublishingIdentifier {
         }
         return [.visibility, .schedule, .tags, .categories]
     }
+}
+
+enum PrepublishingSheetResult {
+    /// The user confirms that they want to publish (legacy behavior).
+    ///
+    /// - note: Deprecated (kahu-offline-mode)
+    case confirmed
+    /// The sheet published the post (new behavior)
+    case published
+    /// The user cancelled.
+    case cancelled
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -41,12 +53,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
 
-    enum CompletionResult {
-        case completed(AbstractPost)
-        case dismissed
-    }
-
-    private let completion: (CompletionResult) -> ()
+    private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.
     private var options = [PrepublishingOption]()
@@ -57,14 +64,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let tableView = UITableView(frame: .zero, style: .plain)
     private let footerSeparator = UIView()
 
-    let publishButton: NUXButton = {
-        let nuxButton = NUXButton()
-        nuxButton.isPrimary = true
-        nuxButton.accessibilityIdentifier = "publish"
-        return nuxButton
-    }()
-
     private weak var titleField: UITextField?
+
+    private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
+        self?.buttonPublishTapped()
+    }
 
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
@@ -72,9 +76,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private var cancellables = Set<AnyCancellable>()
     @Published private var keyboardShown: Bool = false
 
+    private weak var mediaPollingTimer: Timer?
+
     init(post: Post,
          identifiers: [PrepublishingIdentifier],
-         completion: @escaping (CompletionResult) -> (),
+         completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
@@ -151,8 +157,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         view.pinSubviewToSafeArea(stackView)
 
         view.backgroundColor = .systemBackground
-
-        announcePublishButton()
     }
 
     private func configureHeader() {
@@ -170,13 +174,22 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func setupPublishButton() -> UIView {
         let footerView = UIView()
-        footerView.addSubview(publishButton)
-        publishButton.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
 
-        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
+        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
+        addChild(hostingViewController)
+
+        footerView.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
 
         updatePublishButtonLabel()
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            updatePublishButtonState()
+            mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+                self?.updatePublishButtonState()
+            }
+        }
 
         return footerView
     }
@@ -224,13 +237,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
 
-        if isBeingDismissed || parent?.isBeingDismissed == true {
-            if !didTapPublish,
-               post.status == .publishPrivate,
-               let originalStatus = post.original?.status {
+        if (isBeingDismissed || parent?.isBeingDismissed == true) && !didTapPublish {
+            if post.status == .publishPrivate, let originalStatus = post.original?.status {
                 post.status = originalStatus
             }
-            completion(.dismissed)
+            getCompletion()?(.cancelled)
         }
     }
 
@@ -328,6 +339,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         cell.delegate = self
     }
 
+    /// Returns the completion closure and sets it to nil to make sure the screen
+    /// only calls it once.
+    private func getCompletion() -> ((PrepublishingSheetResult) -> Void)? {
+        let completion = self.completion
+        self.completion = nil
+        return completion
+    }
+
     // MARK: - Title
 
     private func configureTitleCell(_ cell: WPTextFieldTableViewCell) {
@@ -422,15 +441,64 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     // MARK: - Publish Button
 
-    private func updatePublishButtonLabel() {
-        publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
+    private func updatePublishButtonState() {
+        if let state = PublishButtonState.uploadingState(for: post) {
+            publishButtonViewModel.state = state
+        } else {
+            if case .loading = publishButtonViewModel.state {
+                // Do nothing
+            } else {
+                publishButtonViewModel.state = .default
+            }
+        }
     }
 
-    @objc func publish(_ sender: UIButton) {
+    private func updatePublishButtonLabel() {
+        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
+    }
+
+    private func buttonPublishTapped() {
         didTapPublish = true
-        navigationController?.dismiss(animated: true) {
-            WPAnalytics.track(.editorPostPublishNowTapped)
-            self.completion(.completed(self.post))
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            publishPost()
+        } else {
+            let completion = getCompletion()
+            navigationController?.dismiss(animated: true) {
+                WPAnalytics.track(.editorPostPublishNowTapped)
+                completion?(.confirmed)
+            }
+        }
+    }
+
+    private func publishPost() {
+        setLoading(true)
+        Task {
+            do {
+                try await PostCoordinator.shared._publish(post)
+                getCompletion()?(.published)
+            } catch {
+                setLoading(false)
+                publishButtonViewModel.state = .default
+            }
+        }
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        publishButtonViewModel.state = isLoading ? .loading : .default
+        isModalInPresentation = isLoading
+        view.isUserInteractionEnabled = !isLoading
+
+        var subviews: [UIView] = [view]
+        while let view = subviews.popLast() {
+            switch view {
+            case let control as UIControl:
+                control.isEnabled = !isLoading
+            case let cell as UITableViewCell:
+                isLoading ? cell.disable() : cell.enable()
+            default:
+                subviews += view.subviews
+            }
         }
     }
 
@@ -459,12 +527,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     // MARK: - Accessibility
-
-    private func announcePublishButton() {
-        DispatchQueue.main.asyncAfter(deadline: .now()) {
-            UIAccessibility.post(notification: .screenChanged, argument: self.publishButton)
-        }
-    }
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"

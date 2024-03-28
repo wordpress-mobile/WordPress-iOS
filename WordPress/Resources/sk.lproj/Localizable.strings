@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2023-04-09 10:06:11+0000 */
+/* Translation-Revision-Date: 2024-03-17 10:29:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -387,11 +387,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Naozaj chcete natrvalo odtrániť článok?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Naozaj chcete teraz publikovať?";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Naozaj chcete zverejniť?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -615,8 +611,7 @@
    Title for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Careful!" = "Pozor!";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Kategórie";
 
 /* Category menu item in share extension.
@@ -689,12 +684,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Kliknutia";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Zavrieť";
 
 /* Settings: Close comments after X period */
@@ -896,6 +889,12 @@
 
 /* Error message shown a URL points to a valid site but not a WordPress site. */
 "Couldn't connect to the WordPress site. There is no valid WordPress site at this address. Check the site address (URL) you entered." = "Nepodarilo sa pripojiť k webovej stránke WordPress. Neexistuje žiadna platná webová stránka WordPress na tejto adrese. Skontrolujte adresu webovej stránky (URL), ktorú ste zadali. ";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 403 error, meaning that the access to the /xmlrpc.php file is forbidden. */
+"Couldn't connect. We received a 403 error when trying to access your site's XMLRPC endpoint. The app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodarilo sa pripojiť. Vyskytla sa chyba 403 pri pokuse pripojiť sa na koncový bod webovej stránky XMLRPC. Aplikácia ho potrebuje na komunikáciu s webovou stránkou. Kontaktujte svojho poskytovateľa hostingu a vyriešte problém.";
+
+/* Message to show to user when he tries to add a self-hosted site but the host returned a 405 error, meaning that the host is blocking POST requests on /xmlrpc.php file. */
+"Couldn't connect. Your host is blocking POST requests, and the app needs that in order to communicate with your site. Please contact your hosting provider to solve this problem." = "Nepodarilo sa pripojiť. Váš host blokuje žiadosti článku. Aplikácia žiadosti potrebuje na komunikáciu s webovou stránkou. Kontaktujte svojho hostiteľa a vyriešte problém.";
 
 /* Error message when tag loading failed */
 "Couldn't load tags. Tap to retry." = "Značky sa nepodarilo načítať. Ťuknutím to zopakujte.";
@@ -1152,8 +1151,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Upraviť moderované slová";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Upraviť článok";
 
@@ -2253,8 +2251,7 @@
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Detailná tabuľka notifikácií";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Nastavenia upozornení";
 
@@ -2663,8 +2660,7 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Verejné";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -2673,10 +2669,6 @@
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Zverejniť okamžite";
-
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publikovať";
 
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publikujte príspevok";
@@ -2969,9 +2961,6 @@
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Naplánovať";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Naplánovať teraz";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -3421,7 +3410,6 @@
 "Tagline" = "Slogan";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -3495,7 +3483,7 @@
 /* No comment provided by engineer. */
 "The app can't recognize the server response. Please, check the configuration of your site." = "Aplikácia nemôže rozpoznať odpoveď servera. Skontrolujte konfiguráciu na vašej webovej stránke.";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Certifikát pre tento server je neplatný. Môžete sa pripájať na server, ktorý sa len tvári, že je \"%@\", a to môže ohroziť vaše dôverné informácie.\n\nChcete aj tak dôverovať tomuto certifikátu?";
 
 /* Message shown when an image failed to load while trying to add it to the Media library. */
@@ -3607,9 +3595,6 @@
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Došlo k chybe pri pokuse načítať vašu polohu. Skúste to znovu pozdejšie.";
 
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Vyskytol sa problém so sledovaním webovej stránky. Ak problém aj naďalej trvá, kontaktujte nás cez Profil > Pomocník & Podpora.";
-
 /* Text displayed when there is a failure loading the activity feed */
 "There was an error loading activities" = "Došlo k chybe pri načítavaní aktivít";
 
@@ -3699,7 +3684,6 @@
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Nadpis";
@@ -4097,8 +4081,7 @@
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Viditeľnosť";
 
@@ -4385,7 +4368,7 @@
    Text to look for */
 "You replied to this comment." = "Odpovedali ste na tento komentár.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Vypadá to, že ste nainštalovali mobilní plugin DudaMobile. Ten zabraňuje aplikácií prepojiť sa s vašou webovou stránkou. ";
 
 /* Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title */

@@ -90,6 +90,8 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
         parameter, since if the input post was a revision, it will no longer exist once the upload
         succeeds.
  @param failure A failure block
+
+ - note: Deprecated (kahu-offline-mode) (see PostRepository.upload)
  */
 - (void)uploadPost:(AbstractPost *)post
            success:(nullable void (^)(AbstractPost *post))success
@@ -105,6 +107,8 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
 
  Another use case of `forceDraftIfCreating` is to create the post in the background so we can
  periodically auto-save it. Again, we'd still want to create it as a `.draft` status.
+
+ - note: Deprecated (kahu-offline-mode) (see PostRepository.upload)
  */
 - (void)uploadPost:(AbstractPost *)post
 forceDraftIfCreating:(BOOL)forceDraftIfCreating

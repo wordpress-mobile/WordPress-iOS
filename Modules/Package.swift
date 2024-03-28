@@ -20,6 +20,10 @@ let package = Package(
             name: "\(jetpackStatsWidgetsCoreName)Tests",
             dependencies: [.target(name: jetpackStatsWidgetsCoreName)]
         ),
+        .testTarget(
+            name: "\(designSystemName)Tests",
+            dependencies: [.target(name: designSystemName)]
+        ),
         .target(name: designSystemName)
     ]
 )

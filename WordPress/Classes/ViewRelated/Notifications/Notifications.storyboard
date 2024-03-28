@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aRr-Yu-ntD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="aRr-Yu-ntD">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,10 +23,10 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="a0S-nk-6Lg">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="vdx-hy-x4l">
+                                    <tableView opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="vdx-hy-x4l">
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <inset key="separatorInset" minX="12" minY="0.0" maxX="0.0" maxY="0.0"/>
                                     </tableView>
                                     <view hidden="YES" contentMode="scaleToFill" verticalHuggingPriority="750" id="fx7-Fo-KUl" customClass="JetpackBannerView" customModule="WordPress" customModuleProvider="target">
@@ -119,7 +119,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6LW-NS-qSh" firstAttribute="top" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx" userLabel="Bottom"/>
+                            <constraint firstAttribute="bottom" secondItem="t2r-NP-ili" secondAttribute="bottom" id="Em4-Ll-jHx" userLabel="Bottom"/>
                             <constraint firstItem="t2r-NP-ili" firstAttribute="top" relation="greaterThanOrEqual" secondItem="8gl-SX-x5I" secondAttribute="bottom" id="KIB-vx-IuC"/>
                             <constraint firstItem="t2r-NP-ili" firstAttribute="leading" secondItem="lvM-1n-Dgf" secondAttribute="leading" id="V4D-fq-INq" userLabel="Leading"/>
                             <constraint firstItem="6LW-NS-qSh" firstAttribute="top" relation="greaterThanOrEqual" secondItem="t2r-NP-ili" secondAttribute="bottom" id="VTh-xG-bNj"/>

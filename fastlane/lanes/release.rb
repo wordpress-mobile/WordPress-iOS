@@ -107,7 +107,12 @@ platform :ios do
     attempts = 0
     begin
       attempts += 1
-      set_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
+      copy_branch_protection(
+        repository: GITHUB_REPO,
+        from_branch: DEFAULT_BRANCH,
+        to_branch: release_branch_name,
+        github_token: get_required_env('GITHUB_TOKEN')
+      )
     rescue StandardError => e
       if attempts < 2
         sleep_time = 5
@@ -120,7 +125,7 @@ platform :ios do
       end
     end
 
-    setfrozentag(repository: GITHUB_REPO, milestone: new_version)
+    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: new_version)
 
     ios_check_beta_deps(podfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile'))
     print_release_notes_reminder
@@ -171,6 +176,7 @@ platform :ios do
     trigger_beta_build
 
     pr_url = create_release_management_pull_request(
+      release_version: version,
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} code freeze"
     )
@@ -236,6 +242,7 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     pr_url = create_release_management_pull_request(
+      release_version:,
       base_branch: DEFAULT_BRANCH,
       title: "Merge changes from #{build_code_current}"
     )
@@ -404,13 +411,14 @@ platform :ios do
 
     version = release_version_current
     remove_branch_protection(repository: GITHUB_REPO, branch: release_branch_name)
-    setfrozentag(repository: GITHUB_REPO, milestone: version, freeze: false)
+    set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: version, freeze: false)
     create_new_milestone(repository: GITHUB_REPO)
     close_milestone(repository: GITHUB_REPO, milestone: version)
 
     trigger_release_build
 
     pr_url = create_release_management_pull_request(
+      release_version: release_version_next,
       base_branch: DEFAULT_BRANCH,
       title: "Merge #{version} release finalization"
     )
@@ -555,12 +563,12 @@ def commit_version_and_build_files
   )
 end
 
-def create_release_management_pull_request(base_branch:, title:)
+def create_release_management_pull_request(release_version:, base_branch:, title:)
   token = ENV.fetch('GITHUB_TOKEN', nil)
 
   UI.user_error!('Please export a GitHub API token in the environment as GITHUB_TOKEN') if token.nil?
 
-  create_pull_request(
+  pr_url = create_pull_request(
     api_token: token,
     repo: 'wordpress-mobile/WordPress-iOS',
     title:,
@@ -568,4 +576,20 @@ def create_release_management_pull_request(base_branch:, title:)
     base: base_branch,
     labels: 'Releases'
   )
+
+  # Next, set the milestone for the PR
+  #
+  # The create_pull_request action has a 'milestone' parameter, but it expects the milestone id.
+  # We don't know the id of the milestone, but we can use a different action to set it.
+  #
+  # PR URLs are in the format github.com/org/repo/pull/id
+  pr_number = File.basename(pr_url)
+  update_assigned_milestone(
+    repository: GITHUB_REPO,
+    numbers: [pr_number],
+    to_milestone: release_version
+  )
+
+  # Return the PR URL
+  pr_url
 end

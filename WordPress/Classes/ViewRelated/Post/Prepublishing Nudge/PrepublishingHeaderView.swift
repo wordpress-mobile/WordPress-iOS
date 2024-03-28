@@ -78,6 +78,6 @@ final class PrepublishingHeaderView: UIView {
 }
 
 private enum Strings {
-    static let close = NSLocalizedString("prepublishing.pubishingTo", value: "Close", comment: "Voiceover accessibility label informing the user that this button dismiss the current view")
-    static let publishingTo = NSLocalizedString("prepublishing.pubishingTo", value: "Publishing to", comment: "Label in the header in the pre-publishing sheet")
+    static let close = NSLocalizedString("prepublishing.close", value: "Close", comment: "Voiceover accessibility label informing the user that this button dismiss the current view")
+    static let publishingTo = NSLocalizedString("prepublishing.publishingTo", value: "Publishing to", comment: "Label in the header in the pre-publishing sheet")
 }

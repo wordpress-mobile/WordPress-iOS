@@ -60,6 +60,7 @@ class MediaCoordinator: NSObject {
     ///
     /// - Returns: `true` if all media in the post is uploading or was uploaded, `false` otherwise.
     ///
+    @discardableResult
     func uploadMedia(for post: AbstractPost, automatedRetry: Bool = false) -> Bool {
         let failedMedia: [Media] = post.media.filter({ $0.remoteStatus == .failed })
         let mediasToUpload: [Media]
@@ -230,6 +231,7 @@ class MediaCoordinator: NSObject {
         trackUploadOf(media, analyticsInfo: analyticsInfo)
 
         let uploadProgress = uploadMedia(media)
+        totalProgress.setUserInfoObject(uploadProgress, forKey: .uploadProgress)
         totalProgress.addChild(uploadProgress, withPendingUnitCount: MediaExportProgressUnits.uploadDone)
     }
 

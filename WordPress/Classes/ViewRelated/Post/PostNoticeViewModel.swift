@@ -4,6 +4,7 @@ enum PostNoticeUserInfoKey {
     static let postID = "post_id"
 }
 
+/// - note: Deprecated (kahu-offline-mode) (See PostCoordinator+Notices)
 struct PostNoticeViewModel {
     private let post: AbstractPost
     private let postCoordinator: PostCoordinator

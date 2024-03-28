@@ -206,6 +206,7 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     pr_url = create_release_management_pull_request(
+      release_version:,
       base_branch: compute_release_branch_name(options:, version: release_version),
       title: "Merge editorialized release notes in #{release_version}"
     )

@@ -51,4 +51,10 @@ import Foundation
 
         return topic
     }
+
+    /// Convenience method to update the tag's `following` state and also updates `showInMenu`.
+    @objc func toggleFollowing(_ isFollowing: Bool) {
+        following = isFollowing
+        showInMenu = (following || isRecommended)
+    }
 }

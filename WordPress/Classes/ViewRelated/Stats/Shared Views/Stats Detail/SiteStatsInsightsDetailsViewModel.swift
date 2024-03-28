@@ -19,15 +19,15 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore = StatsInsightsStore()
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StoreContainer.shared.statsPeriod
+    private let periodStore = StatsPeriodStore()
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
-    private let revampStore = StoreContainer.shared.statsRevamp
+    private let revampStore = StatsRevampStore()
     private var revampChangeReceipt: Receipt?
 
     private(set) var selectedDate: Date?
@@ -100,12 +100,20 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                     return
                 }
 
+                let selectedDate = selectedDate ?? StatsDataHelper.yesterdayDateForSite()
+                let selectedPeriod = selectedPeriod ?? .day
+
                 insightsChangeReceipt = insightsStore.onChange { [weak self] in
                     self?.emitChange()
                 }
                 insightsReceipt = insightsStore.query(storeQuery)
 
-                refreshComments()
+                periodChangeReceipt = periodStore.onChange { [weak self] in
+                    self?.emitChange()
+                }
+                periodReceipt = periodStore.query(.allCachedPeriodData(date: selectedDate, period: selectedPeriod, unit: selectedPeriod))
+
+                refreshComments(date: selectedDate, period: selectedPeriod)
             default:
                 guard let storeQuery = queryForInsightStatSection(statSection) else {
                     return
@@ -547,7 +555,8 @@ class SiteStatsInsightsDetailsViewModel: Observable {
         ActionDispatcher.dispatch(StatsRevampStoreAction.refreshLikesTotals(date: date))
     }
 
-    func refreshComments() {
+    func refreshComments(date: Date, period: StatsPeriodUnit) {
+        ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .timeIntervalsSummary(date: date, period: period)))
         ActionDispatcher.dispatch(InsightAction.refreshComments)
     }
 

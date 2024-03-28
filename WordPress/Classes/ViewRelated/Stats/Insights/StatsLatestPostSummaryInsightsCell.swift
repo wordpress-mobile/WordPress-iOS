@@ -250,12 +250,12 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
     // MARK: - Constants
 
     private enum Metrics {
-        static let outerStackViewSpacing: CGFloat = Length.Padding.double
-        static let postStackViewHorizontalSpacing: CGFloat = Length.Padding.double
-        static let postStackViewVerticalSpacing: CGFloat = Length.Padding.single
-        static let createPostButtonInset: CGFloat = Length.Padding.single
+        static let outerStackViewSpacing: CGFloat = .DS.Padding.double
+        static let postStackViewHorizontalSpacing: CGFloat = .DS.Padding.double
+        static let postStackViewVerticalSpacing: CGFloat = .DS.Padding.single
+        static let createPostButtonInset: CGFloat = .DS.Padding.single
         static let thumbnailSize: CGFloat = 68.0
-        static let thumbnailCornerRadius: CGFloat = Length.Padding.half
+        static let thumbnailCornerRadius: CGFloat = .DS.Padding.half
         static let dividerWidth: CGFloat = 1.0
     }
 

@@ -22,10 +22,8 @@ class AztecPostViewController: UIViewController, PostEditor {
     // MARK: - PostEditor conformance
 
     /// Closure to be executed when the editor gets closed.
-    /// Pass `false` for `showPostEpilogue` to prevent the post epilogue
-    /// (PostPost) flow being displayed after the editor is closed.
     ///
-    var onClose: ((_ changesSaved: Bool, _ showPostEpilogue: Bool) -> ())?
+    var onClose: ((_ changesSaved: Bool) -> ())?
 
     /// Verification Prompt Helper
     ///

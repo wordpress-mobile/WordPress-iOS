@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-06 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-03-20 10:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li 단어, %2$li 글자";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s 블록";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s 블록 옵션";
@@ -843,11 +847,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "이 글을 영구적으로 삭제하시겠습니까?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "지금 발행하시겠습니까?";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "정말로 공개하시겠습니까?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -967,6 +967,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "자동차";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "비디오를 자동 재생하면 일부 사용자에게 유용성 문제가 발생할 수 있습니다.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "자동 업데이트";
@@ -1181,6 +1184,12 @@
 /* No comment provided by engineer. */
 "Button position" = "버튼 위치";
 
+/* No comment provided by engineer. */
+"Button to copy error details" = "오류 상세 정보 복사 버튼";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "글 텍스트 복사 버튼";
+
 /* Label for the post author in the post detail. */
 "By " = "작성자";
 
@@ -1308,8 +1317,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "자신의 인생을 영화로 만들어 보세요.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "카테고리";
 
 /* Category menu item in share extension.
@@ -1434,9 +1442,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "레이아웃 선택하기";
 
-/* Label for Publish date picker */
-"Choose a date" = "날짜 선택";
-
 /* Select domain name. Title */
 "Choose a domain" = "도메인 선택하기";
 
@@ -1531,12 +1536,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "클릭";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "닫기";
 
 /* Close account action label */
@@ -1843,7 +1846,13 @@
 "Copy URL from the clipboard, %s" = "클립보드에서 URL 복사, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "오류 상세 정보 복사";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "파일 URL 복사하기";
+
+/* No comment provided by engineer. */
+"Copy post text" = "글 텍스트 복사";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "이 앱으로부터 버전 복사하기";
@@ -2517,8 +2526,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "중재 키 편집";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "글 편집";
 
@@ -2772,6 +2780,9 @@
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "프롬프트 로드 오류";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "댓글 로딩 중 오류 발생";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "댓글을 스팸으로 표시하는 중 오류가 발생했습니다.";
@@ -4135,9 +4146,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "매핑된 도메인";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "모두 읽음으로 표시";
-
 /* Marks a notification as unread */
 "Mark Read" = "읽음으로 표시";
 
@@ -4745,8 +4753,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "알림 세부정보 테이블";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "알림 설정";
 
@@ -5480,30 +5487,21 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "공개";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
    Title for the publish settings view */
 "Publish" = "발행하기";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "발행일";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "즉시 발행";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "지금 게시";
-
 /* Title of a Quick Start Tour */
 "Publish a post" = "글 게시";
-
-/* Immediately publish button title */
-"Publish immediately" = "즉시 공개";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "페이지 발행 중:";
@@ -5995,9 +5993,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "예약";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "지금 예약";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6812,7 +6807,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "태그라인";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -6842,6 +6836,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap for more detail." = "자세한 내용을 보려면 누르세요.";
+
+/* No comment provided by engineer. */
+"Tap here to copy error details" = "여기를 눌러 오류 상세 정보 복사";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "여기를 눌러 글 텍스트 복사";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "도움말을 보려면 여기를 탭";
@@ -6909,6 +6909,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "눌러서 사이트 보기";
+
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "눌러서 외부 브라우저에서 그라바타 웹사이트 방문";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "작업이 완료되었습니다.";
@@ -6989,9 +6992,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "사이트 제목은 웹 브라우저의 제목 표시줄에 보이고 대부분의 테마의 헤더에 보입니다.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "현재 회원님의 iPad에서 스토리 편집기를 사용할 수 없습니다. iPhone에서 스토리를 시도해 보세요.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL에 올바른 호스트가 없습니다.";
 
@@ -7007,11 +7007,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "더 좋은 작가가 되는 가장 좋은 방법은 글쓰기를 습관화하고 다른 사람과 공유하는 것입니다. 그래서 프롬프트가 필요합니다!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "이 서버의 인증서가 올바르지 않습니다. “%@”(으)로 사칭한 서버에 연결 중일 수 있습니다. 기밀 정보가 노출될 수 있습니다.\n\n그래도 인증서를 신뢰하시겠어요?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "최신 글 페이지의 콘텐츠는 자동으로 생성되며 편집할 수 없습니다.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "편집기에서 예기치 않은 오류가 발생했습니다.";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "%1$@ 파일에 악성 코드 패턴이 있음";
@@ -7173,9 +7176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "위치 액세스 시도 중 문제가 발생했습니다. 나중에 다시 시도해 주세요.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "스토리 편집기에서 문제가 발생했습니다.  문제가 지속될 경우 내 계정 > 도움 & 지원 화면을 통해 문의할 수 있습니다.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7357,7 +7357,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "제목";
@@ -7570,9 +7569,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "연결할 수 없음";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "스토리 편집기를 만들 수 없습니다.";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "게시글을 로드할 수 없습니다";
 
@@ -7754,9 +7750,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Unsupported" = "지원되지 않음";
 
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "지원되지 않는 기기";
-
 /* Label for an untitled post in the revision browser */
 "Untitled" = "제목없음";
 
@@ -7790,6 +7783,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "사이트 아이콘 업데이트";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "업데이트 내용이 그라바타 프로필과 동기화되려면 시간이 조금 걸릴 수 있습니다.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "댓글을 표시하도록 막대 차트를 업데이트합니다.";
 
@@ -7807,6 +7803,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "업데이트 중";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "아바타, 이름 및 소개 정보를 업데이트하면 그라바타 프로필을 사용하는 모든 사이트에서도 업데이트됩니다.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "업데이트 중...";
@@ -8015,8 +8014,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "조회수와 방문자 수";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "가시성";
 
@@ -8382,6 +8380,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "이 파일로 무엇을 하고 싶으신가요? 파일을 업로드하고 파일의 링크를 글에 추가하거나, 파일 콘텐츠를 글에 직접 추가하시겠습니까?";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "그라바타가 무엇인가요?";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "워드프레스닷컴이 무엇인가요?";
 
@@ -8624,6 +8625,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "언제든지 내 사이트, 설정, 블로깅에서 블로깅 프롬프트와 알림을 관리할 수 있습니다.";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "콘텐츠가 영향을 받는 때를 대비하여 글 텍스트를 복사할 수 있습니다. 디버깅할 오류 상세 정보를 복사하고 지원팀과 공유하세요.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "편집기의 웹 버전을 사용하여 이 블록을 편집하실 수 있습니다.";
 
 /* Discussion Settings: Footer Text */
@@ -8664,6 +8668,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "휴지통에 버린 글이 없습니다.";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "이 비공개 블로그를 볼 권한이 없습니다.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "숨겨진 워드프레스 사이트가 %lu개 있습니다.";
@@ -8730,7 +8737,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "이 댓글에 답하였습니다.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "DudaMobile에서 설치한 모바일 플러그인으로 인해 앱이 블로그에 연결할 수 없습니다.";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -8763,6 +8770,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "내 사이트";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "워드프레스닷컴 프로필이 그라바타에서 제공됩니다.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "워드프레스닷컴 사이트에서는 모바일 장치에서 로드 시간을 크게 높여주는 Google 중심의 이니셔티브인 가속 모바일 페이지 사용을 지원합니다.";
@@ -8859,21 +8869,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[댓글]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d명의 블로거_가 좋아합니다.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_1명의 블로거_가 좋아합니다.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_회원님과 %1$d명의 블로거_가 좋아합니다.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_회원님과 다른 블로거_가 좋아합니다.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_회원님_이 좋아합니다.";
 
 /* Age between dates equaling one day. */
 "a day" = "1일";
@@ -9631,9 +9626,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%2$@에서 %1$@ 이동 중";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "며칠 후 젯팩 앱이 이동됩니다.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "곧 %@ 이동 예정";
 
@@ -9867,6 +9859,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "좋아요";
+
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "스팸으로 표시됨";
@@ -10186,6 +10181,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "개선 가능";
 
@@ -10197,6 +10195,21 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "피드백 보내기";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "내 글 \"%@\" 확인:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "내 글 확인:";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "모두 읽음으로 표시";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "알림 설정";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "탐색 표시줄 메뉴 버튼";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "홈페이지";
@@ -10345,6 +10358,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "오프라인 변경 사항";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "휴지통";
 
@@ -10356,6 +10372,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "보기";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "페이지 임시글 업로드됨";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "페이지 검토 대기 중";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "페이지 발행됨";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "페이지 예약됨";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "페이지 업데이트됨";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "글 임시글 업로드됨";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "글 검토 대기 중";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "글 발행됨";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "글 예약됨";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "글 업데이트됨";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "업로드 실패";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "보기";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "해제";
@@ -10459,6 +10511,30 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "남은 소셜 공유 %1$d";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "카테고리";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "닫기";
+
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "미디어 업로드 실패";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "제목";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "발행";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "발행일";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "발행 위치";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "일정";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10514,8 +10590,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "소셜";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "태그";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "미디어 업로드하기";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "표시 여부";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "모든 응답 보기";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@\/%2$@";
+
+/* Retry button title */
+"publishButton.retry" = "다시 시도";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "지금";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "발행일";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "해제";
@@ -10525,6 +10622,12 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "로그인되었습니다!";
+
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "구독한 콘텐츠를 보고 구독을 관리하려면 %@을(를) 선택해 보세요.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "구독";
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "더 보기";
@@ -10555,6 +10658,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "사이트의 글 미리보기";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_좋아요 %1$d개_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "회원님이 좋아합니다.";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_좋아요 1개_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -10650,6 +10762,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "태그";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d 태그";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d 태그";
@@ -10658,14 +10774,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "태그";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "필터링 기준: %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "필터 목록 열기";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "좋아함";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "목록";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "초기화";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "저장됨";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "검색";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "구독";
@@ -10912,6 +11042,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "신규";
 
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
+
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "도메인 이전";
 
@@ -11101,6 +11234,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "PHP 로그";
 
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "웹 서버 로그";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "개인정보";
 
@@ -11266,6 +11402,54 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "최신 글 %1$@에 %2$@개의 좋아요가 있습니다.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "오늘";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "선택한 기간의 댓글 수가 표시되는 막대그래프입니다.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "선택한 기간의 좋아요 개수가 표시되는 막대그래프입니다.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "선택한 기간의 조회수가 표시되는 막대그래프입니다.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "선택한 기간의 방문자 수가 표시되는 막대그래프입니다.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "일 기준";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@(%3$@%%)";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "이전 달보다 %@ 높음\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "이전 달보다 %@ 낮음\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "이전 7일보다 %@ 높음\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "이전 7일보다 %@ 낮음\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "이전 연도보다 %@ 높음\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "이전 연도보다 %@ 낮음\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "월 기준";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "주 기준";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "연도 기준";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
 
@@ -11430,6 +11614,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "최고의 팁";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "올바른 계정에 로그인했는지 확인하세요.";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "사이트를 찾을 수 없음";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "알 수 없는 url";
@@ -11613,6 +11803,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "제한에 도달했습니다. 1분 후에 다시 시도할 수 있습니다. 그 전에 다시 시도할 경우 제한이 해제될 때까지 기다려야 하는 시간이 늘어납니다. 오류라고 생각되면 지원 팀에 문의하세요.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "사이트의 REST API URL을 찾을 수 없습니다. 앱에서 회원님의 사이트와 통신하려면 이 정보가 필요합니다. 호스팅 공급업체에 문의하여 이 문제를 해결하세요.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "젯팩 앱에 오신 것을 환영합니다. 워드프레스 앱을 제거하실 수 있습니다.";

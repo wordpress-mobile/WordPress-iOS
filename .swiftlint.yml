@@ -1,3 +1,5 @@
+swiftlint_version: 0.54.0
+
 parent_config: https://raw.githubusercontent.com/Automattic/swiftlint-config/0f8ab6388bd8d15a04391825ab125f80cfb90704/.swiftlint.yml
 remote_timeout: 10.0
 

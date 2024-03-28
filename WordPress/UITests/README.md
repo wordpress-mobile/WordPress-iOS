@@ -78,7 +78,7 @@ Note that due to the mock server setup, tests cannot be run on physical devices 
 
 1. Follow the [build instructions](https://github.com/wordpress-mobile/WordPress-iOS#build-instructions) (steps 1-5) to clone the project, install the dependencies, and open the project in Xcode.
 2. `rake mocks` to start a local mock server.
-3. With the `WordPress` scheme selected in Xcode, open the Test Navigator and select the `WordPressUITests` test plan.
+3. With the `Jetpack` scheme selected in Xcode, open the Test Navigator and select the `JetpackUITests` test plan.
 4. Run the tests on a simulator.
 
 ## Adding tests

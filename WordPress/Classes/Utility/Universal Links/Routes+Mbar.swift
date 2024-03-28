@@ -82,7 +82,7 @@ extension MbarRoute: NavigationAction {
 
         // If we're handling the link in the app, fire off a request to the
         // original URL so that any necessary tracking takes places.
-        Alamofire.request(url)
+        AF.request(url)
             .validate()
             .responseData { response in
                 switch response.result {

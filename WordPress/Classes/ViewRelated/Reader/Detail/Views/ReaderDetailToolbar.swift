@@ -3,6 +3,7 @@ import WordPressUI
 
 protocol ReaderDetailToolbarDelegate: AnyObject {
     func didTapLikeButton(isLiked: Bool)
+    var notificationID: String? { get }
 }
 
 class ReaderDetailToolbar: UIView, NibLoadable {
@@ -119,6 +120,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         let service = ReaderPostService(coreDataStack: ContextManager.shared)
         service.toggleLiked(for: post, success: { [weak self] in
+            if let notificationID = self?.delegate?.notificationID {
+                let mediator = NotificationSyncMediator()
+                mediator?.invalidateCacheForNotification(notificationID, completion: {
+                    mediator?.syncNote(with: notificationID)
+                })
+            }
             self?.trackArticleDetailsLikedOrUnliked()
         }, failure: { [weak self] (error: Error?) in
             self?.trackArticleDetailsLikedOrUnliked()

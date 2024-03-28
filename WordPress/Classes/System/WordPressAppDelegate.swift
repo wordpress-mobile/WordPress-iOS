@@ -132,7 +132,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DDLogInfo("didFinishLaunchingWithOptions state: \(application.applicationState)")
 
         ABTest.start()
-        configureWordPressKit()
 
         Media.removeTemporaryData()
         NSItemProvider.removeTemporaryData()
@@ -519,13 +518,6 @@ extension WordPressAppDelegate {
     @objc func configureWordPressComApi() {
         if let baseUrl = UserPersistentStoreFactory.instance().string(forKey: "wpcom-api-base-url"), let url = URL(string: baseUrl) {
             AppEnvironment.replaceEnvironment(wordPressComApiBase: url)
-        }
-    }
-
-    private func configureWordPressKit() {
-        if FeatureFlag.useURLSession.enabled {
-            WordPressComRestApi.useURLSession = true
-            WordPressOrgXMLRPCApi.useURLSession = true
         }
     }
 }
@@ -977,6 +969,29 @@ extension WordPressAppDelegate {
                 DDLogError("Error while removing Apple User ID from keychain: \(error.localizedDescription)")
             }
         }
+    }
+
+}
+
+// MARK: - UI Test Support
+
+extension WordPressAppDelegate {
+
+    func autoSignInUITestSite() {
+        guard let wpComSiteAddress = UserDefaults.standard.string(forKey: "ui-test-select-wpcom-site") else {
+            return
+        }
+
+        let service = WordPressComSyncService()
+        service.syncWPCom(authToken: "valid_token", isJetpackLogin: true, onSuccess: { account in
+            if let blog = try? BlogQuery().hostname(containing: wpComSiteAddress).blog(in: ContextManager.shared.mainContext) {
+                self.windowManager.showUI(for: blog)
+            } else {
+                fatalError("Can't find blog: \(wpComSiteAddress)")
+            }
+        }, onFailure: {
+            fatalError("Can't sync blogs: \($0)")
+        })
     }
 
 }

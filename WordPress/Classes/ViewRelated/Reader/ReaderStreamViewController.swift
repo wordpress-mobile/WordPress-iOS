@@ -528,7 +528,10 @@ import WordPressUI
         }
         let textProvider = JetpackBrandingTextProvider(screen: JetpackBannerScreen.reader)
         let bannerView = JetpackBannerView()
-        bannerView.configure(title: textProvider.brandingText()) { [unowned self] in
+        bannerView.configure(title: textProvider.brandingText()) { [weak self] in
+            guard let self else {
+                return
+            }
             JetpackBrandingCoordinator.presentOverlay(from: self)
             JetpackBrandingAnalyticsHelper.trackJetpackPoweredBannerTapped(screen: .reader)
         }

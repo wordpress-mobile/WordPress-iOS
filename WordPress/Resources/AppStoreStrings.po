@@ -45,9 +45,10 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v24.2-whats-new"
+msgctxt "v24.5-whats-new"
 msgid ""
-"We fixed an issue that made images and other media “blink” while being uploaded. Presto, no more disappearing act.\n"
+"We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.\n"
+"We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

@@ -1,4 +1,5 @@
 @objc enum StatSection: Int {
+    case periodToday
     case periodOverviewViews
     case periodOverviewVisitors
     case periodOverviewLikes
@@ -34,22 +35,26 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
 
-    static let allInsights: [StatSection] = [
-        .insightsViewsVisitors,
-        .insightsLikesTotals,
-        .insightsCommentsTotals,
-        .insightsFollowerTotals,
-        .insightsMostPopularTime,
-        .insightsLatestPostSummary,
-        .insightsAllTime,
-        .insightsAnnualSiteStats,
-        .insightsTodaysStats,
-        .insightsPostingActivity,
-        .insightsTagsAndCategories,
-        .insightsFollowersWordPress,
-        .insightsFollowersEmail,
-        .insightsPublicize
-    ]
+    static var allInsights: [StatSection] {
+        var insights: [StatSection?] = [
+            .insightsViewsVisitors,
+            .insightsLikesTotals,
+            .insightsCommentsTotals,
+            .insightsFollowerTotals,
+            .insightsMostPopularTime,
+            .insightsLatestPostSummary,
+            .insightsAllTime,
+            .insightsAnnualSiteStats,
+            RemoteFeatureFlag.statsTrafficTab.enabled() ? nil : .insightsTodaysStats,
+            .insightsPostingActivity,
+            .insightsTagsAndCategories,
+            .insightsFollowersWordPress,
+            .insightsFollowersEmail,
+            .insightsPublicize
+        ]
+
+        return insights.compactMap { $0 }
+    }
 
     static let allPeriods: [StatSection] = [
         .periodOverviewViews,
@@ -115,6 +120,8 @@
             return InsightsHeaders.publicize
         case .insightsAddInsight:
             return InsightsHeaders.addCard
+        case .periodToday:
+            return PeriodHeaders.todaysStats
         case .periodPostsAndPages:
             return PeriodHeaders.postsAndPages
         case .periodReferrers:
@@ -411,6 +418,7 @@
     }
 
     struct PeriodHeaders {
+        static let todaysStats = NSLocalizedString("stats.period.todayCard.title", value: "Today", comment: "Stats 'Today' header")
         static let postsAndPages = NSLocalizedString("Posts and Pages", comment: "Period Stats 'Posts and Pages' header")
         static let referrers = NSLocalizedString("Referrers", comment: "Period Stats 'Referrers' header")
         static let clicks = NSLocalizedString("Clicks", comment: "Period Stats 'Clicks' header")

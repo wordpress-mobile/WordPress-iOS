@@ -9,10 +9,10 @@ final class NotificationContentRangeFactoryTests: XCTestCase {
         XCTAssertNotNil(subject)
     }
 
-    func testIconRangeReturnsExpectedImplementationOfFormattableContentRange() throws {
+    func testIconRangeReturnsNil() throws {
         let subject = NotificationContentRangeFactory.contentRange(from: try mockIconRange()) as? FormattableNoticonRange
 
-        XCTAssertNotNil(subject)
+        XCTAssertNil(subject)
     }
 
     func testPostRangeReturnsExpectedImplementationOfFormattableContentRange() throws {

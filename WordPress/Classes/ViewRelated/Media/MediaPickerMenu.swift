@@ -197,8 +197,11 @@ extension MediaPickerMenu {
 // MARK: - MediaPickerMenu (Stock Photo)
 
 extension MediaPickerMenu {
-    func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
-        UIAction(
+    func makeStockPhotos(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction? {
+        guard blog.supports(.stockPhotos) else {
+            return nil
+        }
+        return UIAction(
             title: Strings.pickFromStockPhotos,
             image: UIImage(systemName: "photo.on.rectangle"),
             attributes: [],
@@ -229,8 +232,11 @@ extension MediaPickerMenu {
 // MARK: - MediaPickerMenu (Free GIF, Tenor)
 
 extension MediaPickerMenu {
-    func makeFreeGIFAction(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction {
-        UIAction(
+    func makeFreeGIFAction(blog: Blog, delegate: ExternalMediaPickerViewDelegate) -> UIAction? {
+        guard blog.supports(.tenor) else {
+            return nil
+        }
+        return UIAction(
             title: Strings.pickFromTenor,
             image: UIImage(systemName: "play.square.stack"),
             attributes: [],

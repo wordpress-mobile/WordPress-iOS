@@ -1,5 +1,4 @@
 #import <Foundation/Foundation.h>
-#import <AssetsLibrary/AssetsLibrary.h>
 #import <Photos/Photos.h>
 #import "LocalCoreDataService.h"
 

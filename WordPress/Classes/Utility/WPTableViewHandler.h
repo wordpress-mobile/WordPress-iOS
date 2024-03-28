@@ -86,6 +86,10 @@
 - (void)scrollViewWillEndDragging:(nonnull UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(nonnull inout CGPoint *)targetContentOffset;
 - (void)scrollViewDidEndDragging:(nonnull UIScrollView *)scrollView willDecelerate:(BOOL)decelerate;
 
+#pragma mark - Customizing animations
+
+- (BOOL)shouldCancelUpdateAnimation;
+
 @end
 
 

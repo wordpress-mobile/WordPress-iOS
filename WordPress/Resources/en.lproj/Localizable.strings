@@ -200,6 +200,9 @@
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li words, %2$li characters";
 
+/* translators: Block name. %s: The localized block name\ntranslators: %s: Block name e.g. \"Image block\" */
+"%s block" = "%s block";
+
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "%s block options";
 
@@ -346,21 +349,6 @@
 
 /* Message of Close Account confirmation alert */
 "\nTo confirm, please re-enter your username before closing.\n\n" = "\nTo confirm, please re-enter your username before closing.\n\n";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d bloggers_ like this.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_One blogger_ likes this.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_You and %1$d bloggers_ like this.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_You and another blogger_ like this.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_You_ like this.";
 
 /* A short description of what the 'More' button is and how it works. */
 "A \"more\" button contains a dropdown which displays sharing buttons" = "A \"more\" button contains a dropdown which displays sharing buttons";
@@ -905,11 +893,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Are you sure you want to permanently delete this post?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Are you sure you want to publish now?";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Are you sure you want to publish?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1032,6 +1016,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Automotive";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "Autoplay may cause usability issues for some users.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
@@ -1397,6 +1384,12 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title for a list of different button styles. */
 "Button Style" = "Button Style";
 
+/* No comment provided by engineer. */
+"Button to copy error details" = "Button to copy error details";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Button to copy post text";
+
 /* Label for the post author in the post detail. */
 "By " = "By ";
 
@@ -1523,8 +1516,7 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Cast the movie of your life.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categories";
 
 /* Category menu item in share extension.
@@ -1643,9 +1635,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Title for the button to progress with the selected site homepage design. */
 "Choose" = "Choose";
 
-/* Label for Publish date picker */
-"Choose a date" = "Choose a date";
-
 /* Select domain name. Title */
 "Choose a domain" = "Choose a domain";
 
@@ -1752,12 +1741,10 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Period Stats 'Clicks' header */
 "Clicks" = "Clicks";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Close";
 
 /* Close account action label */
@@ -2101,10 +2088,16 @@ Example: Reply to Pamela Nguyen */
 "Copied block" = "Copied block";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Copy error details";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Copy file URL";
 
 /* Copy link to oomment button title */
 "Copy Link to Comment" = "Copy Link to Comment";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Copy post text";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copy the version from this app";
@@ -3106,8 +3099,7 @@ Example: Reply to Pamela Nguyen */
 /* Explanation for the option to enable the block editor */
 "Edit new posts and pages with the block editor." = "Edit new posts and pages with the block editor.";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Edit Post";
 
@@ -3349,6 +3341,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Error loading prompt";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Error loading the comment";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Error marking comment as spam.";
@@ -4501,9 +4496,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ is moving in %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Moving to the Jetpack app in a few days.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ are moving soon";
 
@@ -4890,6 +4882,9 @@ Please install the %3$@ to use the app with this site.";
 /* VoiceOver accessibility hint, informing the user the button can be used to like a comment */
 "Likes the Comment." = "Likes the Comment.";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
+
 /* This description is used to set the accessibility label for the Insights chart, with Views selected. */
 "Line Chart depicting Views for insights." = "Line Chart depicting Views for insights.";
 
@@ -5124,9 +5119,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Confirmation title for marking all notifications under a filter as read. %1$@ is replaced by the filter name. */
 "Mark all %1$@ notifications as read?" = "Mark all %1$@ notifications as read?";
-
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Mark All As Read";
 
 /* Confirmation title for marking all notifications as read. */
 "Mark all notifications as read?" = "Mark all notifications as read?";
@@ -6076,8 +6068,7 @@ Please install the %3$@ to use the app with this site.";
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Notification Details Table";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Notification Settings";
 
@@ -6086,6 +6077,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Notification will include a word or short phrase for inspiration";
+
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
 
 /* Name of the Notifications feature.
    Notifications 3D Touch Shortcut
@@ -6116,6 +6110,21 @@ Please install the %3$@ to use the app with this site.";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Send feedback";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Check out my post:";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Check out my post \"%@\":";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Mark All As Read";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Notification Settings";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Navigation Bar Menu Button";
 
 /* Title of button to navigate to the next screen of the blogging reminders flow, setting up push notifications. */
 "Notify me" = "Notify me";
@@ -6844,6 +6853,9 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Offline changes";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Trash";
 
@@ -6855,6 +6867,42 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Page draft uploaded";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Page pending review";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Page published";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Page scheduled";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Page updated";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Post draft uploaded";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Post pending review";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Post published";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Post scheduled";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Post updated";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "Upload failed";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "View";
 
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
@@ -6997,6 +7045,33 @@ Please install the %3$@ to use the app with this site.";
 /* Label to show while converting and/or resizing media to send to server */
 "Preparing..." = "Preparing...";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "Categories";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Close";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Failed to upload media";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "Title";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "Publish";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "Publish Date";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publishing to";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "Schedule";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -7055,6 +7130,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "Tags";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Uploading media";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "Visibility";
 
 /* Displays the Post Preview Interface
    Title for button to preview a selected layout
@@ -7146,8 +7230,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Public";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -7157,25 +7240,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publish a post";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "Publish Date";
-
-/* Immediately publish button title */
-"Publish immediately" = "Publish immediately";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publish Immediately";
-
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publish Now";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publish page on:";
 
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publish post on:";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@ of %2$@";
+
+/* Retry button title */
+"publishButton.retry" = "Retry";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "Now";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "Publish Date";
 
 /* Name for the status of a published post.
    Period Stats 'Published' header
@@ -7274,6 +7361,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Views posts from the site";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d likes_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "You like this.";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 like_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -7651,6 +7747,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "New";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
 
 /* Title of button that asks the users if they'd like to focus on checking their sites stats */
 "Reading posts from other sites" = "Reading posts from other sites";
@@ -8125,9 +8224,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Schedule";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Schedule Now";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -9107,6 +9203,57 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Your latest post %1$@ has received %2$@ like.";
 
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Today";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "Bar Chart depicting Comments for the selected period.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Bar Chart depicting Likes for the selected period.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "Bar Chart depicting Views for selected period";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "Bar Chart depicting Visitors for the selected period.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "By day";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "%@ higher than the previous month\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "%@ lower than the previous month\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "%@ higher than the previous 7-days\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "%@ lower than the previous 7-days\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "%@ higher than the previous year\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "%@ lower than the previous year\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "By month";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "By week";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "By year";
+
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
 
@@ -9418,7 +9565,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "Tagline" = "Tagline";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -9448,6 +9594,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint */
 "Tap for more detail." = "Tap for more detail.";
+
+/* No comment provided by engineer. */
+"Tap here to copy error details" = "Tap here to copy error details";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Tap here to copy post text";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Tap here to show help";
@@ -9515,6 +9667,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Tap to view your site";
+
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "Tap to visit the Gravatar website in an external browser";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "Task complete.";
@@ -9591,11 +9746,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "The content of your latest posts page is automatically generated and cannot be edited.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "The editor has encountered an unexpected error";
 
 /* Error message shown to a user who is trying to share to Facebook but does not have any available Facebook Pages. */
 "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages." = "The Facebook connection cannot find any Pages. Publicize cannot connect to Facebook Profiles, only published Pages.";
@@ -9682,9 +9840,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* People: Invitation Error */
 "The specified user cannot be found. Please, verify if it's correctly spelt." = "The specified user cannot be found. Please, verify if it's correctly spelt.";
-
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "The Stories editor is not currently available for your iPad. Please try Stories on your iPhone.";
 
 /* Title for the technical details section in Threat Details */
 "The technical details" = "The technical details";
@@ -9782,9 +9937,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "There was a problem when trying to access your location. Please try again later.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -9969,7 +10121,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Title";
@@ -10182,9 +10333,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* An error message shown when there is an issue creating new invite links. */
 "Unable to create new invite links." = "Unable to create new invite links.";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Unable to Create Stories Editor";
-
 /* Text displayed in HUD if there was an error attempting to delete a media item. */
 "Unable to delete media item." = "Unable to delete media item.";
 
@@ -10323,6 +10471,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Unhides a site from the site picker list */
 "Unhide" = "Unhide";
 
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "Check that you are logged into the correct account";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "Site not found";
+
 /* Label for size of media when it's not possible to calculate it.
    Unknown Tag Name */
 "Unknown" = "Unknown";
@@ -10372,9 +10526,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "Unsupported" = "Unsupported";
 
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Unsupported Device";
-
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Untitled";
 
@@ -10408,6 +10559,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Update Site Icon";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Updates might take some time to sync with your Gravatar profile.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Updates the bar chart to show comments.";
 
@@ -10425,6 +10579,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes a status of a plugin */
 "Updating" = "Updating";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Updating...";
@@ -10639,8 +10796,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights views and visitors header */
 "Views & Visitors" = "Views & Visitors";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Visibility";
 
@@ -11027,6 +11183,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* No comment provided by engineer. */
 "What is alt text?" = "What is alt text?";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "What is Gravatar?";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "What is WordPress.com?";
 
@@ -11328,6 +11487,9 @@ from anywhere.";
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Limit reached. You can try again in 1 minute. Trying again before that will only increase the time you have to wait before the ban is lifted. If you think this is in error, contact support.";
 
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Couldn't find your site's REST API URL. The app needs that in order to communicate with your site. Contact your host to solve this problem.";
+
 /* Title of button that displays the Automattic Work With Us web page */
 "Work With Us" = "Work With Us";
 
@@ -11435,6 +11597,9 @@ from anywhere.";
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "You can copy your post text in case your content is impacted. Copy error details to debug and share with support.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "You can edit this block using the web version of the editor.";
 
 /* Discussion Settings: Footer Text */
@@ -11475,6 +11640,9 @@ from anywhere.";
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "You don't have any trashed posts";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "You don't have permission to view this private blog.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "You have %lu hidden WordPress sites.";
@@ -11540,7 +11708,7 @@ from anywhere.";
    Text to look for */
 "You replied to this comment." = "You replied to this comment.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -11657,6 +11825,9 @@ from anywhere.";
 
 /* Prompt displayed as part of the stats Weekly Roundup push notification. */
 "Your weekly roundup is ready, tap here to see the details!" = "Your weekly roundup is ready, tap here to see the details!";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "Your WordPress.com profile is powered by Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices.";

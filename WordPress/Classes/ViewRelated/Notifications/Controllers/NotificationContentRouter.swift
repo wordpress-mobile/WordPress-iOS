@@ -93,6 +93,7 @@ struct NotificationContentRouter {
             if url.absoluteString.matches(regex: "\\/backup\\/").count > 0 {
                 try coordinator.displayBackupWithSiteID(range.siteID)
             } else {
+                trackStatsRoute()
                 try coordinator.displayStatsWithSiteID(range.siteID, url: url)
             }
         case .follow:
@@ -109,5 +110,10 @@ struct NotificationContentRouter {
 
     private func getRange(with url: URL) -> FormattableContentRange? {
         return notification.contentRange(with: url)
+    }
+
+    private func trackStatsRoute() {
+        let properties: [AnyHashable: Any] = [WPAppAnalyticsKeyTapSource: "notification"]
+        WPAppAnalytics.track(.statsAccessed, withProperties: properties)
     }
 }

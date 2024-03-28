@@ -34,7 +34,7 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         return SiteStatsPinnedItemStore(siteId: siteID)
     }()
 
-    private let insightsStore = StoreContainer.shared.statsInsights
+    private let insightsStore = StatsInsightsStore()
 
     private var viewNeedsUpdating = false
     private var displayingEmptyView = false
@@ -74,8 +74,23 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         displayEmptyViewIfNecessary()
     }
 
-    func refreshInsights(forceRefresh: Bool = false) {
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         addViewModelListeners()
+        viewModel?.addListeners()
+
+        refreshInsights()
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        removeViewModelListeners()
+        viewModel?.removeListeners()
+    }
+
+    private func refreshInsights(forceRefresh: Bool = false) {
         viewModel?.refreshInsights(forceRefresh: forceRefresh)
     }
 
@@ -116,9 +131,6 @@ private extension SiteStatsInsightsTableViewController {
                                                viewsAndVisitorsDelegate: self,
                                                insightsStore: insightsStore,
                                                pinnedItemStore: pinnedItemStore)
-        addViewModelListeners()
-        viewModel?.fetchInsights()
-        viewModel?.startFetchingPeriodOverview()
     }
 
     func addViewModelListeners() {
@@ -418,15 +430,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         switch statSection {
         case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
-            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            selectedDate = viewModel?.lastRequestedDate
+            let selectedPeriod = viewModel?.lastRequestedPeriod
+            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         default:
             segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
     }
 
-    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?, selectedPeriod: StatsPeriodUnit?) {
         let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

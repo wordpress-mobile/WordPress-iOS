@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-02-06 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-20 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li mots, %2$li caractères";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bloc %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Options du bloc %s";
@@ -840,11 +844,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Confirmez-vous vouloir supprimer définitivement cet article ?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Confirmez-vous vouloir publier maintenant ?";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Confirmez-vous vouloir publier ?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -964,6 +964,9 @@
 
 /* Automotive site intent topic */
 "Automotive" = "Automobile";
+
+/* No comment provided by engineer. */
+"Autoplay may cause usability issues for some users." = "La lecture automatique peut engendrer des problèmes d’ergonomie pour certains utilisateurs.";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Mises à jour automatiques";
@@ -1175,6 +1178,12 @@
 /* No comment provided by engineer. */
 "Button position" = "Position du bouton";
 
+/* No comment provided by engineer. */
+"Button to copy error details" = "Bouton permettant de copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Bouton permettant de copier le texte de l’article";
+
 /* Label for the post author in the post detail. */
 "By " = "Par ";
 
@@ -1302,8 +1311,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Produisez le film de votre vie.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Catégories";
 
 /* Category menu item in share extension.
@@ -1428,9 +1436,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "Choisir une mise en page";
 
-/* Label for Publish date picker */
-"Choose a date" = "Choisir une date";
-
 /* Select domain name. Title */
 "Choose a domain" = "Choisir un domaine";
 
@@ -1525,12 +1530,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Clics";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Fermer";
 
 /* Close account action label */
@@ -1837,7 +1840,13 @@
 "Copy URL from the clipboard, %s" = "Copiez l’URL à partir du presse-papier, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Copier l’URL du fichier";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Copier le texte de l’article";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copier la version à partir de l’application";
@@ -2511,8 +2520,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Modifier le mot clé de modération";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Modifier l'article";
 
@@ -2766,6 +2774,9 @@
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Erreur lors du chargement de l’incitation";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Erreur lors du chargement du commentaire";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Erreur lors du marquage du commentaire comme indésirable.";
@@ -4123,9 +4134,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Domaine mappé";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Tout marquer comme lu";
-
 /* Marks a notification as unread */
 "Mark Read" = "Marquer comme lu";
 
@@ -4733,8 +4741,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tableau des détails de notification";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Paramètres de notification";
 
@@ -5468,30 +5475,21 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Public";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
    Title for the publish settings view */
 "Publish" = "Publier";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "Date de publication";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publier immédiatement";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publier maintenant";
-
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publiez un article";
-
-/* Immediately publish button title */
-"Publish immediately" = "Publier immédiatement";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publier la page sur :";
@@ -5983,9 +5981,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Planifier";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Planifier maintenant";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6800,7 +6795,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Description";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -6830,6 +6824,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint */
 "Tap for more detail." = "Toucher pour plus de détails.";
+
+/* No comment provided by engineer. */
+"Tap here to copy error details" = "Appuyer ici pour copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Appuyer ici pour copier le texte de l’article";
 
 /* No comment provided by engineer. */
 "Tap here to show help" = "Toucher ici pour voir l’aide";
@@ -6897,6 +6897,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Accessibility hint for button used to view the user's site */
 "Tap to view your site" = "Appuyer pour voir votre site";
+
+/* Accessibility hint, informing user the button can be used to visit the Gravatar website. */
+"Tap to visit the Gravatar website in an external browser" = "Appuyer pour visiter le site Web Gravatar dans un navigateur externe";
 
 /* A hint about the completed guided tour. */
 "Task complete." = "Tâche terminée.";
@@ -6977,9 +6980,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Le titre du site est affiché dans la barre de titre du navigateur web et dans l’en-tête de la plupart des thèmes.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "L’éditeur Stories n’est pas actuellement disponible pour votre iPad. Veuillez essayer Stories sur votre iPhone.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "L’URL ne contient pas d’hôte valide.";
 
@@ -6995,11 +6995,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "Pour améliorer vos compétences rédactionnelles, vous devez écrire régulièrement et partager votre travail. C’est là que Prompts entre en jeu !";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Le certificat de ce serveur n’est pas valide. Le serveur auquel vous vous connectez prétend être « %@ », ce qui peut constituer un risque de sécurité pour vos données confidentielles.\n\nSouhaitez-vous faire confiance au certificat malgré tout ?";
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Le contenu de la page de vos derniers articles est automatiquement généré et n’est pas modifiable.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "L’éditeur a rencontré une erreur inattendue";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Le fichier %1$@ contient un modèle de code malveillant";
@@ -7161,9 +7164,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Il y a eu un problème en tentant d'accéder à votre localisation. Veuillez essayer à nouveau.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Un problème est survenu avec l’éditeur Stories.  Si le problème persiste, vous pouvez nous contacter via l’écran Moi > Aide & Support.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7345,7 +7345,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Titre";
@@ -7558,9 +7557,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Impossible de connecter";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Impossible de créer un éditeur Stories";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Impossible de charger les articles";
 
@@ -7742,9 +7738,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "Unsupported" = "Non reconnu";
 
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Appareil non pris en charge";
-
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Sans titre";
 
@@ -7778,6 +7771,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Mettre à jour l’icône du site";
 
+/* A notice message that's shown after the user updates their profile information. */
+"Updates might take some time to sync with your Gravatar profile." = "Il se peut que les mises à jour prennent un peu de temps pour se synchroniser avec votre profil Gravatar.";
+
 /* Accessibility hint for the Comments button in Stats Overview. */
 "Updates the bar chart to show comments." = "Mise à jour du graphique à barres pour afficher les commentaires.";
 
@@ -7795,6 +7791,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Describes a status of a plugin */
 "Updating" = "Mise à jour";
+
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Mettre à jour votre avatar, votre nom et les informations vous concernant ici les mettra également à jour sur l’ensemble des sites qui utilisent les profils Gravatar.";
 
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "Mise à jour en cours...";
@@ -8003,8 +8002,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Vues et visiteurs";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Visibilité";
 
@@ -8370,6 +8368,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Que voulez-vous faire avec ce fichier : le téléverser et ajouter un lien vers ce fichier dans votre article, ou ajouter le contenu de ce fichier directement dans l’article ?";
 
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "Qu’est-ce que Gravatar ?";
+
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "Qu’est-ce que WordPress.com ?";
 
@@ -8612,6 +8613,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site, Réglages, Blogging";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Vous pouvez copier le texte de votre article au cas où votre contenu serait affecté. Copier les détails de l’erreur pour débuguer et les partager avec l’assistance.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Vous pouvez modifier ce bloc en utilisant la version Web de l’éditeur.";
 
 /* Discussion Settings: Footer Text */
@@ -8652,6 +8656,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Vous n’avez aucun article dans la corbeille";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "Vous n’avez pas le droit de voir ce blog privé.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Vous avez %lu sites WordPress cachés.";
@@ -8715,7 +8722,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Vous avez répondu à ce commentaire.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Il semble que vous ayez installé une extension mobile à partir de DudaMobile qui empêche l'application de se connecter à votre blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -8748,6 +8755,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Vos sites";
+
+/* Text in the profile editing page. Let the user know that their profile is managed by Gravatar. */
+"Your WordPress.com profile is powered by Gravatar." = "Votre profil WordPress.com est propulsé par Gravatar.";
 
 /* Footer for AMP Traffic Site Setting, should match Calypso. */
 "Your WordPress.com site supports the use of Accelerated Mobile Pages, a Google-led initiative that dramatically speeds up loading times on mobile devices." = "Votre site WordPress.com supporte l’utilisation de Accelerated Mobile Pages, une initiative de Google qui accélère énormément les temps de chargement sur appareils mobiles.";
@@ -8844,21 +8854,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENTAIRE]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d blogueurs_ aiment ceci.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Un blogueur_ aime ceci.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Vous et %1$d blogueurs_ aimez ceci.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Vous et un autre blogueur_ aimez ceci.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Vous_ aimez ceci.";
 
 /* Age between dates equaling one day. */
 "a day" = "un jour";
@@ -9610,9 +9605,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "La fonctionnalité %1$@ sera déplacée dans %2$@";
 
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Le passage à l’application Jetpack est prévu dans quelques jours.";
-
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "Les fonctionnalités %@ vont bientôt être déplacées";
 
@@ -9846,6 +9838,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "mention j’aime";
+
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
 
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marqué comme indésirable";
@@ -10183,6 +10178,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignorer";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Amélioration possible";
 
@@ -10194,6 +10192,21 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Envoyer des commentaires";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Consultez mon article « %@ » :";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Consultez mon article :";
+
+/* Marks all notifications under the filter as read */
+"notificationsViewController.navigationBar.action.markAllAsRead" = "Tout marquer comme lu";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Réglages de notification";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "Bouton du menu de la barre de navigation";
 
 /* Badge for page cells */
 "pageList.badgeHomepage" = "Page d’accueil";
@@ -10339,6 +10352,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a sticky post in the post list. */
 "postList.a11y.sticky" = "Épinglé.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Changements hors ligne";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Corbeille";
 
@@ -10347,6 +10363,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Voir";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Brouillon de la page mis en ligne";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Page en attente de relecture";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Page publiée";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Page planifiée";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Page mise à jour";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Brouillon de l’article mis en ligne";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Article en attente de relecture";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Article publié";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Article planifié";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Article mis à jour";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "La mise en ligne a échoué";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "Voir";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Ignorer";
@@ -10450,6 +10502,30 @@ Example: Reply to Pamela Nguyen */
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d partages sur les réseaux sociaux restants";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.categories" = "Catégories";
+
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Fermer";
+
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Échec du chargement du média";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "Titre";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "Publier";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.publishDate" = "Date de publication";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publication sur";
+
+/* Primary button label in the pre-publishing shee */
+"prepublishing.schedule" = "Planifier";
+
 /* The primary label for the auto-sharing row on the pre-publishing sheet.
 Indicates the number of social accounts that will be sharing the blog post.
 %1$d is a placeholder for the number of social network accounts that will be auto-shared.
@@ -10505,8 +10581,29 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Réseaux sociaux";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "Étiquettes";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Média en cours de chargement";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "Visibilité";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Afficher toutes les réponses";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@ sur %2$@";
+
+/* Retry button title */
+"publishButton.retry" = "Réessayer";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "Maintenant";
+
+/* Post publish date picker */
+"publishDatePicker.title" = "Date de publication";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignorer";
@@ -10516,6 +10613,12 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Connexion établie.";
+
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Essayez de sélectionner %@ pour afficher le contenu provenant de vos abonnements et gérer ces derniers.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Abonnements";
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Plus";
@@ -10546,6 +10649,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Affiche les articles du site";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d J’aime_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "Vous aimez ceci";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 J’aime_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -10641,6 +10753,10 @@ but tapping on this button will remove their like from the post. */
 This is displayed when we don't know the number of blogs yet. */
 "reader.navigation.filter.blog.unnumbered" = "Étiquettes";
 
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d étiquettes";
+
 /* Singular button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.singular" = "%1$d étiquette";
@@ -10649,14 +10765,28 @@ This is displayed when we don't know the number of blogs yet. */
 This is displayed when we don't know the number of tags yet. */
 "reader.navigation.filter.tag.unnumbered" = "Étiquettes";
 
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtré par %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Ouvre la liste de filtres";
+
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "J’aime";
 
 /* Reader navigation menu item for the lists menu group */
 "reader.navigation.menu.lists" = "Listes";
 
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Réinitialiser";
+
 /* Reader navigation menu item for the Saved filter */
 "reader.navigation.menu.saved" = "Enregistré";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Rechercher";
 
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonnements";
@@ -10903,6 +11033,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nouveau";
 
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
+
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "Transférer un domaine";
 
@@ -11077,6 +11210,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for PHP logs screen. */
 "siteMonitoring.phpLogs" = "Journaux PHP";
 
+/* Title for web server log screen. */
+"siteMonitoring.webServerLogs" = "Journaux du serveur Web";
+
 /* Title for screen to select the privacy options for a blog */
 "siteSettings.privacy.title" = "Confidentialité";
 
@@ -11241,6 +11377,54 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Votre dernier article %1$@ a reçu %2$@ mentions J’aime.";
+
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Aujourd’hui";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
+"stats.traffic.accessibilityLabel.comments" = "Graphique à barres représentant les commentaires pour la période sélectionnée.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Likes selected. */
+"stats.traffic.accessibilityLabel.likes" = "Graphique à barres représentant les mentions « J’aime » pour la période sélectionnée.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Views selected. */
+"stats.traffic.accessibilityLabel.views" = "Graphique à barres représentant les vues pour la période sélectionnée.";
+
+/* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
+"stats.traffic.accessibilityLabel.visitors" = "Graphique à barres représentant les visiteurs pour la période sélectionnée.";
+
+/* The label for the option to show Stats Traffic by day. */
+"stats.traffic.day" = "Par jour";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@ %%)";
+
+/* Stats views higher than previous month */
+"stats.traffic.label.monthDifference.higher" = "supérieur de %@ par rapport au mois précédent\n";
+
+/* Stats views lower than previous month */
+"stats.traffic.label.monthDifference.lower" = "inférieur de %@ par rapport au mois précédent\n";
+
+/* Stats views higher than previous 7 days */
+"stats.traffic.label.weekDifference.higher" = "supérieur de %@ par rapport aux 7 jours précédents\n";
+
+/* Stats views lower than previous 7 days */
+"stats.traffic.label.weekDifference.lower" = "inférieur de %@ par rapport aux 7 jours précédents\n";
+
+/* Stats views higher than previous year */
+"stats.traffic.label.yearDifference.higher" = "supérieur de %@ par rapport à l’année précédente\n";
+
+/* Stats views lower than previous year */
+"stats.traffic.label.yearDifference.lower" = "inférieur de %@ par rapport à l’année précédente\n";
+
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Par mois";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Par semaine";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Par an";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Ignorer";
@@ -11409,6 +11593,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The part of the nudge title that should be emphasized, this content needs to match a string in 'If you want to try get more...' */
 "top tips" = "meilleurs conseils";
+
+/* Message for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.message" = "Vérifier que vous êtes connecté(e) sur le bon compte";
+
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "Site non trouvé";
 
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "URL inconnue";
@@ -11592,6 +11782,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Message to show when a request for a WP.com API endpoint is throttled */
 "wordpresskit.api.message.endpoint_throttled" = "Limite atteinte. Vous pourrez réessayer dans 1 minute. Si vous faites une nouvelle tentative avant l’échéance du délai, vous ne ferez que repousser la levée de l’exclusion. Si vous pensez qu’il s’agit d’une erreur, veuillez contacter l’assistance.";
+
+/* Message to show to user when the app can't find WordPress.org REST API URL. */
+"wordpresskit.org-rest-api.not-found" = "Impossible de trouver l’URL de l’API REST de votre site. L’application en a besoin pour communiquer avec votre site. Contactez votre hébergeur pour résoudre ce problème.";
 
 /* Description of the jetpack migration success card, used in My site. */
 "wp.migration.successCard.description" = "Bienvenue dans l’application Jetpack. Vous pouvez désinstaller l’application WordPress.";

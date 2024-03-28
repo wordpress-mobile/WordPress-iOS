@@ -7,6 +7,7 @@ import WordPressShared
 protocol AnalyticsEventTracking {
 
     static func track(_ event: AnalyticsEvent)
+    static func track(_ event: WPAnalyticsEvent, properties: [AnyHashable: Any])
 }
 
 extension WPAnalytics: AnalyticsEventTracking {}

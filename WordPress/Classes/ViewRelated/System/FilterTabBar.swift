@@ -216,6 +216,7 @@ class FilterTabBar: UIControl {
     }
 
     var tabButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsets
+    var tabAttributedButtonInsets: UIEdgeInsets = AppearanceMetrics.buttonInsetsAttributedTitle
     var tabSeparatorPadding: CGFloat = AppearanceMetrics.buttonPadding
 
     // MARK: - Initialization
@@ -301,6 +302,7 @@ class FilterTabBar: UIControl {
         tab.setAttributedTitle(item.attributedTitle, for: .normal)
         tab.titleLabel?.lineBreakMode = .byWordWrapping
         tab.titleLabel?.textAlignment = .center
+        tab.titleLabel?.numberOfLines = 0
         tab.setAttributedTitle(addColor(titleColorForSelected, toAttributedString: item.attributedTitle), for: .selected)
         tab.setAttributedTitle(addColor(deselectedTabColor, toAttributedString: item.attributedTitle), for: .normal)
 
@@ -310,7 +312,7 @@ class FilterTabBar: UIControl {
         tab.accessibilityHint = item.accessibilityHint
 
         tab.contentEdgeInsets = item.attributedTitle != nil ?
-            AppearanceMetrics.buttonInsetsAttributedTitle :
+            tabAttributedButtonInsets :
             tabButtonInsets
 
         tab.sizeToFit()

@@ -22,14 +22,7 @@ class BlockEditorSettingsService {
     }
 
     convenience init?(blog: Blog, coreDataStack: CoreDataStackSwift) {
-        let remoteAPI: WordPressRestApi
-        if blog.isAccessibleThroughWPCom(),
-           blog.dotComID?.intValue != nil,
-           let restAPI = blog.wordPressComRestApi() {
-            remoteAPI = restAPI
-        } else if let orgAPI = blog.wordPressOrgRestApi {
-            remoteAPI = orgAPI
-        } else {
+        guard let remoteAPI = WordPressOrgRestApi(blog: blog) else {
             // This is should only happen if there is a problem with the blog itsself.
             return nil
         }
@@ -37,7 +30,7 @@ class BlockEditorSettingsService {
         self.init(blog: blog, remoteAPI: remoteAPI, coreDataStack: coreDataStack)
     }
 
-    init(blog: Blog, remoteAPI: WordPressRestApi, coreDataStack: CoreDataStackSwift) {
+    init(blog: Blog, remoteAPI: WordPressOrgRestApi, coreDataStack: CoreDataStackSwift) {
         assert(blog.objectID.persistentStore != nil, "The blog instance should be saved first")
         self.blog = blog
         self.coreDataStack = coreDataStack
@@ -65,7 +58,7 @@ class BlockEditorSettingsService {
 // MARK: Editor `theme_supports` support
 private extension BlockEditorSettingsService {
     func fetchTheme(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchTheme(forSiteID: blog.dotComID?.intValue) { [weak self] (response) in
+        remote.fetchTheme { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
             case .success(let editorTheme):
@@ -127,7 +120,7 @@ private extension BlockEditorSettingsService {
 // MARK: Editor Global Styles support
 private extension BlockEditorSettingsService {
     func fetchBlockEditorSettings(_ completion: @escaping BlockEditorSettingsServiceCompletion) {
-        remote.fetchBlockEditorSettings(forSiteID: blog.dotComID?.intValue) { [weak self] (response) in
+        remote.fetchBlockEditorSettings { [weak self] (response) in
             guard let `self` = self else { return }
             switch response {
             case .success(let remoteSettings):

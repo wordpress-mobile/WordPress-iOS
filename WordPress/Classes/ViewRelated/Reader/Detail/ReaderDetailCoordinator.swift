@@ -36,6 +36,10 @@ class ReaderDetailCoordinator {
         return nil
     }
 
+    /// ID representing the notification the post details is triggered from
+    /// If post details is not related to a notification, this property is `nil`
+    var notificationID: String?
+
     /// Called if the view controller's post fails to load
     var postLoadFailureBlock: (() -> Void)? = nil
 
@@ -329,8 +333,8 @@ class ReaderDetailCoordinator {
                                     success: { [weak self] post in
                                         self?.post = post
                                         self?.renderPostAndBumpStats()
-                                    }, failure: { [weak self] _ in
-                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                    }, failure: { [weak self] error in
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
                                         self?.reportPostLoadFailure()
                                     })
     }
@@ -346,9 +350,21 @@ class ReaderDetailCoordinator {
                                         self?.renderPostAndBumpStats()
                                     }, failure: { [weak self] error in
                                         DDLogError("Error fetching post for detail: \(String(describing: error?.localizedDescription))")
-                                        self?.postURL == nil ? self?.view?.showError() : self?.view?.showErrorWithWebAction()
+                                        self?.postURL == nil ? self?.showError(error: error) : self?.view?.showErrorWithWebAction()
                                         self?.reportPostLoadFailure()
                                     })
+    }
+
+    private func showError(error: Error?) {
+        let errorMessage: String? = {
+            guard let error = error as? NSError,
+                  error.domain == WordPressComRestApiEndpointError.errorDomain,
+                  error.code == WordPressComRestApiErrorCode.authorizationRequired.rawValue else {
+                return nil
+            }
+            return Strings.fetchDetailFromPrivateBlogErrorMessage
+        }()
+        self.view?.showError(subtitle: errorMessage)
     }
 
     private func renderPostAndBumpStats() {
@@ -773,4 +789,18 @@ extension ReaderDetailCoordinator {
             coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLKey)
         }
     }
+}
+
+// MARK: - Private Definitions
+
+private extension ReaderDetailCoordinator {
+
+    struct Strings {
+        static let fetchDetailFromPrivateBlogErrorMessage = NSLocalizedString(
+            "readerDetailCoordinator.readerDetail.privateBlogErrorMessage",
+            value: "You don't have permission to view this private blog.",
+            comment: "Error message that informs reader detail from a private blog cannot be fetched."
+        )
+    }
+
 }

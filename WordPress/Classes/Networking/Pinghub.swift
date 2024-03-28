@@ -46,8 +46,8 @@ public class PinghubClient {
 
     /// Initializes the client with an OAuth2 token.
     ///
-    public convenience init(token: String) {
-        let socket = starscreamSocket(url: PinghubClient.endpoint, token: token)
+    public convenience init(token: String, endpoint: URL? = nil) {
+        let socket = starscreamSocket(url: endpoint ?? PinghubClient.endpoint, token: token)
         self.init(socket: socket)
     }
 
@@ -83,14 +83,17 @@ public class PinghubClient {
             guard let client = self else {
                 return
             }
-            let error = error as NSError?
-            let filteredError: NSError? = error.flatMap({ error in
-                // Filter out normal disconnects that we initiated
-                if error.domain == WebSocket.ErrorDomain && error.code == Int(CloseCode.normal.rawValue) {
-                    return nil
-                }
-                return error
-            })
+
+            let filteredError: Error?
+
+            if (error as? WSError)?.code == UInt16(CloseCode.normal.rawValue) {
+                filteredError = nil
+            } else if (error as? ConnectionClosed)?.code == .normalClosure {
+                filteredError = nil
+            } else {
+                filteredError = error
+            }
+
             client.delegate?.pinghubDidDisconnect(client, error: filteredError)
         }
         socket.onData = { [weak self] data in
@@ -218,13 +221,85 @@ internal protocol Socket: AnyObject {
 // MARK: - Starscream
 
 private func starscreamSocket(url: URL, token: String) -> Socket {
-    var request = URLRequest(url: PinghubClient.endpoint)
+    var request = URLRequest(url: url)
     request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-    return WebSocket(request: request)
+    return StarscreamWebSocket(socket: WebSocket(request: request))
 }
 
-extension WebSocket: Socket {
-    @objc func disconnect() {
-        disconnect(forceTimeout: nil)
+private class StarscreamWebSocket: Socket {
+
+    var onConnect: (() -> Void)?
+    var onDisconnect: ((Error?) -> Void)?
+    var onText: ((String) -> Void)?
+    var onData: ((Data) -> Void)?
+
+    let socket: WebSocket
+
+    init(socket: WebSocket) {
+        self.socket = socket
+
+        socket.onEvent = { [weak self] event in
+            guard let self else { return }
+
+            switch event {
+            case .connected:
+                self.onConnect?()
+            case let .disconnected(_, code):
+                self.onDisconnect?(ConnectionClosed(code: Int(code)))
+            case .peerClosed:
+                // Remote peer has closed the network connection. See `ConnectionState.peerClosed`.
+                self.onDisconnect?(ConnectionClosed(code: .normal))
+            case let .text(text):
+                self.onText?(text)
+            case let .binary(data):
+                self.onData?(data)
+            case let .error(error):
+                self.onDisconnect?(error)
+            case .pong, .ping, .viabilityChanged, .reconnectSuggested, .cancelled:
+                break
+            }
+        }
+    }
+
+    func connect() {
+        socket.connect()
+    }
+
+    func disconnect() {
+        socket.disconnect()
+    }
+
+}
+
+private struct ConnectionClosed: Error {
+    var code: URLSessionWebSocketTask.CloseCode
+
+    init(code: Int) {
+        self.code = .init(rawValue: code) ?? .protocolError
+    }
+
+    init(code: URLSessionWebSocketTask.CloseCode) {
+        self.code = code
+    }
+
+    init(code: Starscream.CloseCode) {
+        switch code {
+        case .normal:
+            self.code = .normalClosure
+        case .goingAway:
+            self.code = .goingAway
+        case .protocolError:
+            self.code = .protocolError
+        case .protocolUnhandledType:
+            self.code = .unsupportedData
+        case .noStatusReceived:
+            self.code = .noStatusReceived
+        case .encoding:
+            self.code = .invalidFramePayloadData
+        case .policyViolated:
+            self.code = .policyViolation
+        case .messageTooBig:
+            self.code = .messageTooBig
+        }
     }
 }

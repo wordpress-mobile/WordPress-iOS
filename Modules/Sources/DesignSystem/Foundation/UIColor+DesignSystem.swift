@@ -41,7 +41,7 @@ public extension UIColor {
         }
 
         private static func colorWithModuleBundle(colorName: String) -> UIColor {
-            UIColor(named: colorName, in: .module, compatibleWith: .current)!
+            UIColor(named: colorName, in: .module, compatibleWith: .current) ?? .clear
         }
     }
 }

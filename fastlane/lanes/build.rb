@@ -101,16 +101,7 @@ platform :ios do
 
     # Only run Jetpack UI tests in parallel.
     # At the time of writing, we need to explicitly set this value despite using test plans that configure parallelism.
-    #
-    # Disabled to test if it makes a difference performance wise in Xcode 15.0.1 in CI as we've seen errors such as this one:
-    # https://github.com/wordpress-mobile/WordPress-iOS/pull/21921#issuecomment-1820707121
-    #
-    # Also, simply disabling at the test plan level doesn't seem to have effect.
-    # In this CI run, it can be seen that there are at least two clones (UI tests logs on iPad, lines 1930 to 1934):
-    # https://buildkite.com/automattic/wpios-macv2-test/builds/14#018bfb60-6b6e-4a31-9acd-d27ee6f053e8/398-1930
-    #
-    # parallel_testing_value = options[:name].include?('Jetpack')
-    parallel_testing_value = false
+    parallel_testing_value = options[:name].include?('Jetpack')
 
     run_tests(
       workspace: WORKSPACE_PATH,
@@ -166,7 +157,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: WORDPRESS_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: WORDPRESS_RELEASE_NOTES_PATH,
+      distribution_groups: ['Internal a8c Testers', 'Public Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -175,18 +169,34 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      release_version: release_version_current,
+      build_version: build_code_current,
+      app_identifier: WORDPRESS_BUNDLE_IDENTIFIER
+    )
+
     next unless options[:create_release]
 
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? build_code_current : release_version_current
-    create_release(
+    build_code = build_code_current
+    release_version = release_version_current
+
+    version = options[:beta_release] ? build_code : release_version
+    release_url = create_release(
       repository: GITHUB_REPO,
       version:,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
+    )
+
+    send_slack_message(
+      message: <<~MSG
+        :wpicon-blue: :applelogo: WordPress iOS `#{release_version} (#{build_code})` is available for testing and [a GitHub release draft](#{release_url}) has been created.
+      MSG
     )
 
     FileUtils.rm_rf(archive_zip_path)
@@ -212,7 +222,10 @@ platform :ios do
       export_options: { **COMMON_EXPORT_OPTIONS, method: 'app-store' }
     )
 
-    upload_build_to_testflight(whats_new_path: JETPACK_RELEASE_NOTES_PATH)
+    upload_build_to_testflight(
+      whats_new_path: JETPACK_RELEASE_NOTES_PATH,
+      distribution_groups: ['Beta Testers']
+    )
 
     sentry_upload_dsym(
       auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
@@ -220,56 +233,21 @@ platform :ios do
       project_slug: SENTRY_PROJECT_SLUG_JETPACK,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
-  end
 
-  # Builds the "WordPress Internal" app and uploads it to App Center
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by CI
-  #
-  desc 'Builds and uploads for distribution to App Center'
-  lane :build_and_upload_app_center do |options|
-    unless options[:skip_prechecks]
-      ensure_git_status_clean unless is_ci
-      ios_build_preflight
-    end
+    release_version = release_version_current
+    build_code = build_code_current
 
-    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      release_version:,
+      build_version: build_code,
+      app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      notify_testers: false
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    send_slack_message(
+      message: <<~MSG
+        :jetpack: :applelogo: Jetpack iOS `#{release_version} (#{build_code})` is available for testing.
+      MSG
     )
   end
 
@@ -288,7 +266,8 @@ platform :ios do
       output_app_name: 'WordPress Alpha',
       appcenter_app_name: 'WPiOS-One-Offs',
       app_icon: ':wordpress:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS
+      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
+      app_identifier: 'org.wordpress.alpha'
     )
   end
 
@@ -307,7 +286,8 @@ platform :ios do
       output_app_name: 'Jetpack Alpha',
       appcenter_app_name: 'jetpack-installable-builds',
       app_icon: ':jetpack:', # Use Buildkite emoji
-      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK
+      sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
+      app_identifier: 'com.jetpack.alpha'
     )
   end
 
@@ -339,7 +319,8 @@ platform :ios do
   # Builds a Prototype Build for WordPress or Jetpack, then uploads it to App Center and comment with a link to it on the PR.
   #
   # rubocop:disable Metrics/AbcSize
-  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:)
+  # rubocop:disable Metrics/ParameterLists
+  def build_and_upload_prototype_build(scheme:, output_app_name:, appcenter_app_name:, app_icon:, sentry_project_slug:, app_identifier:)
     configuration = 'Release-Alpha'
 
     # Get the current build version, and update it if needed
@@ -374,16 +355,12 @@ platform :ios do
       - Pull Request: [##{pr}](https://github.com/#{GITHUB_REPO}/pull/#{pr})\n
     NOTES
 
-    appcenter_upload(
-      api_token: get_required_env('APPCENTER_API_TOKEN'),
-      owner_name: APPCENTER_OWNER_NAME,
-      owner_type: APPCENTER_OWNER_TYPE,
-      app_name: appcenter_app_name,
+    upload_build_to_app_center(
+      name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
       release_notes:,
-      destinations: 'Collaborators',
-      notify_testers: false
+      distribute_to_everyone: false
     )
 
     # Upload dSYMs to Sentry
@@ -392,6 +369,13 @@ platform :ios do
       org_slug: SENTRY_ORG_SLUG,
       project_slug: sentry_project_slug,
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
+    )
+
+    upload_gutenberg_sourcemaps(
+      sentry_project_slug:,
+      release_version: release_version_current,
+      build_version: build_number,
+      app_identifier:
     )
 
     # Post PR Comment
@@ -419,6 +403,7 @@ platform :ios do
     buildkite_annotate(context: "appcenter-info-#{output_app_name}", style: 'info', message: "#{output_app_name} [App Center Build](#{appcenter_install_url}) Info:\n\n#{list}")
   end
   # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/ParameterLists
 
   def inject_buildkite_analytics_environment(xctestrun_path:)
     require 'plist'
@@ -442,12 +427,80 @@ platform :ios do
     ENV.fetch('BUILDKITE', false)
   end
 
-  def upload_build_to_testflight(whats_new_path:)
+  def upload_build_to_testflight(whats_new_path:, distribution_groups:)
     upload_to_testflight(
-      skip_waiting_for_build_processing: true,
       team_id: get_required_env('FASTLANE_ITC_TEAM_ID'),
       api_key_path: APP_STORE_CONNECT_KEY_PATH,
-      changelog: File.read(whats_new_path)
+      changelog: File.read(whats_new_path),
+      distribute_external: true,
+      groups: distribution_groups,
+      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
+      reject_build_waiting_for_review: true
+    )
+  end
+
+  # Send a Slack message to the specified channel
+  #
+  # @param [String] message The message to send to the channel
+  # @param [String] channel The Slack channel to send the message to
+  #
+  def send_slack_message(message:, channel: '#build-and-ship')
+    slack(
+      username: 'WordPress Release Bot',
+      icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
+      slack_url: get_required_env('SLACK_WEBHOOK'),
+      channel:,
+      message:,
+      default_payloads: []
+    )
+  end
+
+  def upload_build_to_app_center(
+    name:,
+    file:,
+    dsym:,
+    release_notes:,
+    distribute_to_everyone:
+  )
+    appcenter_upload(
+      api_token: get_required_env('APPCENTER_API_TOKEN'),
+      owner_name: APPCENTER_OWNER_NAME,
+      owner_type: APPCENTER_OWNER_TYPE,
+      app_name: name,
+      file:,
+      dsym:,
+      release_notes:,
+      destinations: distribute_to_everyone ? '*' : 'Collaborators',
+      notify_testers: false
+    )
+  end
+
+  def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
+    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
+
+    # To generate the full release version string to attach the source maps, we need to specify:
+    # - App identifier
+    # - Release version
+    # - Build version
+    # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
+    # Here are a couple of examples:
+    # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
+    # - App Store build: org.wordpress@24.1+24.1.0.3
+
+    sentry_upload_sourcemap(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: sentry_project_slug,
+      version: release_version,
+      dist: build_version,
+      build: build_version,
+      app_identifier:,
+      # When the React native bundle is generated, the source map file references
+      # include the local machine path, with the `rewrite` and `strip_common_prefix`
+      # options Sentry automatically strips this part.
+      rewrite: true,
+      strip_common_prefix: true,
+      sourcemap: gutenberg_bundle_source_map_folder
     )
   end
 end

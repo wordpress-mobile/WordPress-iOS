@@ -22,7 +22,7 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private var tableHeaderView: SiteStatsTableHeaderView?
     private typealias Style = WPStyleGuide.Stats
     private var viewModel: PostStatsViewModel?
-    private let store = StoreContainer.shared.statsPeriod
+    private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
     private lazy var tableHandler: ImmuTableViewHandler = {
@@ -120,6 +120,8 @@ private extension PostStatsTableViewController {
     func trackAccessEvent() {
         var properties = [AnyHashable: Any]()
 
+        properties[WPAppAnalyticsKeyTapSource] = "posts"
+
         if let blogIdentifier = SiteStatsInformation.sharedInstance.siteID {
             properties["blog_id"] = blogIdentifier
         }
@@ -128,7 +130,7 @@ private extension PostStatsTableViewController {
             properties["post_id"] = postIdentifier
         }
 
-        WPAppAnalytics.track(.statsSinglePostAccessed, withProperties: properties)
+        WPAppAnalytics.track(.statsAccessed, withProperties: properties)
     }
 
     func tableRowTypes() -> [ImmuTableRow.Type] {

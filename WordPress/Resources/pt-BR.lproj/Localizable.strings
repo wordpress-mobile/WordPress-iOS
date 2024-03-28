@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-01-04 16:02:17+0000 */
+/* Translation-Revision-Date: 2024-02-21 21:32:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-beta.2 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -218,6 +218,10 @@
 
 /* Displays the number of words and characters in text */
 "%li words, %li characters" = "%1$li palavras, %2$li caracteres";
+
+/* translators: Block name. %s: The localized block name
+translators: %s: Block name e.g. \"Image block\" */
+"%s block" = "Bloco %s";
 
 /* translators: %s: block title e.g: \"Paragraph\". */
 "%s block options" = "Opções do bloco %s";
@@ -813,11 +817,7 @@
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Tem certeza de que deseja excluir permanentemente esse post?";
 
-/* Title of the message shown when the user taps Publish Now while editing a post.  Options will be Publish Now and Keep Editing. */
-"Are you sure you want to publish now?" = "Tem certeza de que deseja publicar agora?";
-
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Tem certeza de que deseja publicar?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1266,8 +1266,7 @@
 /* Example prompt for the Prompts card in Feature Introduction. */
 "Cast the movie of your life." = "Faça o filme da sua vida.";
 
-/* Label for Categories
-   Label for the categories field. Should be the same as WP core. */
+/* Label for the categories field. Should be the same as WP core. */
 "Categories" = "Categorias";
 
 /* Category menu item in share extension.
@@ -1392,9 +1391,6 @@
 /* Title for the screen to pick a template for a page */
 "Choose a Layout" = "Escolher um modelo";
 
-/* Label for Publish date picker */
-"Choose a date" = "Escolha uma data";
-
 /* Select domain name. Title */
 "Choose a domain" = "Escolha um domínio";
 
@@ -1486,12 +1482,10 @@
    Period Stats 'Clicks' header */
 "Clicks" = "Cliques";
 
-/* Accessibility label for the date picker's close button.
-   Action button to close edior and cancel changes or insertion of post
+/* Action button to close edior and cancel changes or insertion of post
    Action button to close the editor
    Dismiss the current view
-   Dismisses the current screen
-   Voiceover accessibility label informing the user that this button dismiss the current view */
+   Dismisses the current screen */
 "Close" = "Fechar";
 
 /* Close account action label */
@@ -2457,8 +2451,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Editar chave de moderação";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Editar post";
 
@@ -4042,9 +4035,6 @@
 /* Describes a domain that was mapped to WordPress.com, but registered elsewhere */
 "Mapped Domain" = "Domínio mapeado";
 
-/* Marks all notifications under the filter as read */
-"Mark All As Read" = "Marcar todas como lidas";
-
 /* Marks a notification as unread */
 "Mark Read" = "Marcar como lido";
 
@@ -4640,8 +4630,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Notifications Details Accessibility Identifier */
 "Notification Details Table" = "Tabela de detalhes de notificação";
 
-/* Link to Notification Settings section
-   Title displayed in the Notification settings
+/* Title displayed in the Notification settings
    Title of the 'Notification Settings' screen within the 'Me' tab - used for spotlight indexing on iOS. */
 "Notification Settings" = "Configurações de notificações";
 
@@ -5369,30 +5358,21 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Público";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
    Title for the publish settings view */
 "Publish" = "Publicar";
 
-/* Label for Publish date
-   Label for the publish date button. */
+/* Label for the publish date button. */
 "Publish Date" = "Data de publicação";
 
 /* A short phrase indicating a post is due to be immedately published. */
 "Publish Immediately" = "Publicar imediatamente";
 
-/* Label for a button that publishes the post
-   Title of button allowing the user to immediately publish the post they are editing. */
-"Publish Now" = "Publicar agora";
-
 /* Title of a Quick Start Tour */
 "Publish a post" = "Publique um post";
-
-/* Immediately publish button title */
-"Publish immediately" = "Publicar imediatamente";
 
 /* Text displayed in the share extension's summary view. It describes the publish page action. */
 "Publish page on:" = "Publicar página em:";
@@ -5878,9 +5858,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
 "Schedule" = "Agendar";
-
-/* Label for the button that schedules the post */
-"Schedule Now" = "Agendar agora";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -6692,7 +6669,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tagline" = "Descrição";
 
 /* Label for selecting the blogs tags
-   Label for Tags
    Label for the tags field. Should be the same as WP core.
    Label for the Tags Section in the Blog Settings
    Tags menu item in share extension.
@@ -6863,9 +6839,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "O título do site é exibido na barra de título do navegador e também no cabeçalho da maioria dos temas.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "O editor de Stories não está disponível no momento para seu iPad. Se possível, tente editar as Stories em um iPhone.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "Está faltando um host válido no URL.";
 
@@ -6881,7 +6854,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Subtitle displayed on the feature introduction view. */
 "The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "A melhor forma de aprimorar sua escrita é fazer dela um hábito e compartilhá-la com outras pessoas. É aí que entram as sugestões!";
 
-/* No comment provided by engineer. */
+/* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "O certificado para este servidor é inválido. Você talvez esteja conectando a um servidor que está fingindo ser \"%@\", o que poderia colocar suas informações confidenciais em risco.";
 
 /* Message informing the user that posts page cannot be edited */
@@ -7047,9 +7020,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Ocorreu um erro ao tentar acessar sua localização. Por favor, tente novamente mais tarde.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Ocorreu um problema no editor de Stories. Caso o problema persista, entre em contato conosco por meio da tela Eu > Ajuda e suporte.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7228,7 +7198,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Label for list of stats by content title.
    Noun. Label for the title of a media asset (image / video)
    Placeholder for the post title.
-   Placeholder for title
    Post title
    Title of the new Category being created. */
 "Title" = "Título";
@@ -7438,9 +7407,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Não foi possível conectar";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Não foi possível abrir o editor de criação de histórias";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Não foi possível carregar os posts";
 
@@ -7615,9 +7581,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "Não compatível";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Dispositivo não suportado";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Sem título";
@@ -7874,8 +7837,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Visualizações e visitantes";
 
-/* Label for Visibility
-   The visibility settings of the post. Should be the same as in core WP.
+/* The visibility settings of the post. Should be the same as in core WP.
    Visibility label */
 "Visibility" = "Visibilidade";
 
@@ -8570,7 +8532,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Text to look for */
 "You replied to this comment." = "Você respondeu esse comentário.";
 
-/* No comment provided by engineer. */
+/* Error messaged show when a mobile plugin is redirecting traffict to their site, DudaMobile in particular */
 "You seem to have installed a mobile plugin from DudaMobile which is preventing the app to connect to your blog" = "Parece que você instalou um plugin mobile proveniente de DudaMobile que está evitando o app de se conectar ao seu blog";
 
 /* Message displayed in ignore threat alert. %1$@ is a placeholder for the blog name. */
@@ -8699,21 +8661,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMENTÁRIO]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d blogueiros_ curtiram isso.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Um blogueiro_ curtiu isso.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Você e %1$d blogueiros_ curtiram isto.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Você e outro blogueiro_ curtiram isso.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Você_ curtiu isto.";
 
 /* Age between dates equaling one day. */
 "a day" = "um dia";
@@ -8875,6 +8822,15 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title of label marking a scheduled page */
 "dashboardCard.pages.cell.status.schedule" = "Agendada";
 
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "URL de CSS do Leitor";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "URL padrão";
+
+/* Hint for the reader CSS URL field */
+"debugMenu.readerHit" = "Adicione uma URL de CSS personalizado aqui para ser carregada no Leitor. Se você está rodando o Calypso localmente, pode ser algo como: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Configurações remotas";
@@ -9026,9 +8982,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title of a badge indicating when a feature in singular form will be removed. First argument is the feature name. Second argument is the number of days/weeks it will be removed in. Ex: Reader is moving in 2 weeks */
 "jetpack.branding.badge_banner.moving_in.singular" = "%1$@ será movido em %2$@";
-
-/* Title of a badge or banner indicating that this feature will be moved in a few days. */
-"jetpack.branding.badge_banner.moving_in_days.plural" = "Indo para o aplicativo Jetpack em alguns dias.";
 
 /* Title of a badge indicating that a feature in plural form will be removed soon. First argument is the feature name. Ex: Notifications are moving soon */
 "jetpack.branding.badge_banner.moving_soon.plural" = "%@ serão movidos em breve";
@@ -9342,6 +9295,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* The title in the migration welcome screen */
 "migration.welcome.title" = "Desejamos boas-vindas ao Jetpack!";
 
+/* Description for the static screen displayed prompting users to switch the Jetpack app. */
+"movedToJetpack.description" = "O aplicativo do Jetpack tem todas as funcionalidades do aplicativo do WordPress e agora acesso exclusivo a Estatísticas, Leitor, Notificações e muito mais.";
+
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "A mudança é gratuita e leva apenas um minuto.";
 
@@ -9350,6 +9306,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for a button that displays a blog post in a web view. */
 "movedToJetpack.learnMoreButtonTitle" = "Saiba mais em br.jetpack.com";
+
+/* Title for the static screen displayed in the Reader screen prompting users to switch to the Jetpack app. */
+"movedToJetpack.reader.title" = "Use o WordPress com o Leitor no aplicativo do Jetpack.";
 
 /* Section title for the content table section in the blog details screen */
 "my-site.menu.content.section.title" = "Conteúdo";
@@ -9444,14 +9403,382 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Você efetuou login.";
 
+/* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
+"quick.start.reader.2.subscriptions.base" = "Tente selecionar %@ para visualizar o conteúdo assinado e gerenciar suas assinaturas.";
+
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Assinaturas";
+
+/* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
+"reader.blocked.blog.message" = "O blog %@ não aparecerá mais no seu leitor. Toque para desfazer.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ posts • %2$@ assinantes";
+
+/* Accessibility hint for the blog name and URL button on Reader's Post Details. */
+"reader.blog.name.accessibility.hint" = "Mostra os posts do blog.";
+
+/* Error message title informing the user that a search for sites in the Reader could not be loaded. */
+"reader.blog.search.loading.error" = "Problema ao carregar blogs";
+
+/* A brief prompt when the user is searching for blogs in the Reader. */
+"reader.blog.search.loading.title" = "Buscando blogs...";
+
+/* Message shown when the reader finds no blogs for the specified search phrase. The %@ is a placeholder for the search phrase. */
+"reader.blog.search.no.results.message.format" = "Nenhum blog encontrado na pesquisa de %@, em sua língua.";
+
+/* A message title */
+"reader.blog.search.no.results.title" = "Nenhum blog encontrado";
+
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ assinantes";
+
+/* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
+"reader.detail.header.authorInfo.a11y.hint" = "Visualiza posts do site.";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Comentar";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Curtir";
+
+/* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
+but tapping on this button will add a Like to the post. */
+"reader.detail.toolbar.like.button.a11y.hint" = "Curte este post.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "Curtiu";
+
+/* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
+but tapping on this button will remove their like from the post. */
+"reader.detail.toolbar.liked.button.a11y.hint" = "Remove a curtida deste post.";
+
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Salva este post para depois.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Salvar post";
+
+/* Accessibility hint for the 'Save Post' button when a post is already saved. */
+"reader.detail.toolbar.saved.button.a11y.hint" = "Remove este post do conteúdo salvo.";
+
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Post salvo";
+
+/* Error message informing the user that they are already following a blog in their reader. */
+"reader.error.already.subscribed.message" = "Você já assinou este blog.";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Editar";
+
+/* Title for a filter sheet on the Reader to filter the stream by blog */
+"reader.filterSheet.byBlog.title" = "Filtrar por blog";
+
+/* Title for a filter sheet on the Reader to filter the stream by tag */
+"reader.filterSheet.byTag.title" = "Filtrar por tag";
+
+/* Body text for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.body" = "Assine blogs em Descobrir para ver os posts mais recentes deles aqui. Você também pode pesquisar um blog do qual já gosta.";
+
+/* Search blogs button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.blogs.search" = "Pesquisar um blog";
+
+/* Title for an empty filter sheet on the Reader for blogs */
+"reader.filterSheet.empty.blogs.title" = "Nenhuma assinatura de blog";
+
+/* Body text for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.body" = "Assine uma tag para ver aqui os melhores posts com ela.";
+
+/* Subscribe to a tag button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.subscribe" = "Assinar uma tag";
+
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Tags sugeridas";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Nenhuma tag";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.loading" = "Assinando novas tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Tags sugeridas";
+
+/* A short message to inform the user data for their followed sites is being fetched.. */
+"reader.followed.blogs.loading" = "Buscando blogs...";
+
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blogs";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Tags";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d blogs";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Tags";
+
+/* Plural button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.plural" = "%1$d tags";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d tag";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Tags";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Filtrado por %1$@";
+
+/* Accessibility hint that informs the user that the filter list will be opened when they interact
+with the filter chip button. */
+"reader.navigation.menu.filter.a11y.hint" = "Abre a lista de filtros";
+
+/* Reader navigation menu item for the Liked filter */
+"reader.navigation.menu.liked" = "Curtidos";
+
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Listas";
+
+/* Accessibility label for the Close icon button, to reset the active filter. */
+"reader.navigation.menu.reset.a11y.label" = "Redefinir";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Salvos";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Pesquisar";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Assinaturas";
+
+/* Reader search button accessibility label. */
+"reader.navigation.search.button.label" = "Pesquisar";
+
+/* Reader settings button accessibility label. */
+"reader.navigation.settings.button.label" = "Configurações do Leitor";
+
+/* Title for button on the no followed blogs result screen */
+"reader.no.blogs.button" = "Descobrir blogs";
+
+/* Subtitle for the no followed blogs result screen */
+"reader.no.blogs.subtitle" = "Assine blogs em Descobrir para ver os posts mais recentes deles aqui. Você também pode pesquisar um blog do qual já gosta.";
+
+/* Title for the no followed blogs result screen */
+"reader.no.blogs.title" = "Nenhuma assinatura de blog";
+
+/* Message shown when the reader finds no posts for the chosen blog */
+"reader.no.results.blog.response.message" = "O blog não tem nenhum post ainda. Tente novamente mais tarde.";
+
+/* Message shown when the reader finds no posts for the chosen list */
+"reader.no.results.list.response.message" = "Não há posts recentes nos blogs desta lista.";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Gerenciar blogs";
+
+/* A message explaining the Following topic in the reader */
+"reader.no.results.response.message" = "Os posts recentes dos blogs e sites que você assina aparecerão aqui.";
+
+/* Button title. Tapping lets the user view the blogs they're subscribed to. */
+"reader.no.results.subscriptions.button" = "Ir para Assinaturas";
+
+/* No Sites View Label
+   No Topics View Label */
+"reader.no.tags.action" = "Para assinar posts em um blog específico, assine-o.";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Adicionar um blog";
+
+/* Notice title when blocking a blog fails. */
+"reader.notice.blog.blocked.failure" = "Não foi possível bloquear o blog";
+
+/* Notice title when blocking a site succeeds. */
+"reader.notice.blog.blocked.success" = "Blog bloqueado";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Assinou o blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribe.error" = "Não foi possível cancelar a assinatura do blog";
+
+/* Title of a prompt. */
+"reader.notice.blog.unsubscribed.error" = "Não foi possível cancelar a assinatura do blog";
+
+/* User unsubscribed from a blog. */
+"reader.notice.blog.unsubscribed.success" = "Cancelou a assinatura do blog";
+
+/* Notice title when turning blog notifications off fails. */
+"reader.notice.disable.notification.failure" = "Não foi possível desativar as notificações do blog";
+
+/* Notice title when turning blog notifications off succeeds. */
+"reader.notice.disable.notification.success" = "Notificações do blog desativadas";
+
+/* Notice title when turning blog notifications on fails. */
+"reader.notice.enable.notification.failure" = "Não foi possível ativar as notificações do blog";
+
+/* Message prompting user to enable blog notifications. */
+"reader.notice.enable.notification.prompt" = "Ativar notificações do blog?";
+
+/* Notice title when turning blog notifications on succeeds. */
+"reader.notice.enable.notification.success" = "Notificações do blog ativadas";
+
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "este blog";
+
+/* Notice title when subscribing to a blog fails. */
+"reader.notice.subscribe.failure" = "Não foi possível assinar o blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Você assinou %1$@";
+
+/* Notice title when unsubscribing to a blog fails. */
+"reader.notice.unsubscribe.failure" = "Não foi possível cancelar a assinatura do blog";
+
+/* Notice title when unfollowing a blog succeeds. */
+"reader.notice.unsubscribe.success" = "Assinatura do blog cancelada";
+
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
+
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Comentar";
+
+/* Accessibility hint for the comment button on the reader post card cell */
+"reader.post.button.comment.accessibility.hint" = "Abre os comentários no post.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Curtir";
+
+/* Accessibility hint for the like button on the reader post card cell */
+"reader.post.button.like.accessibility.hint" = "Curte o post.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "Curtiu";
+
+/* Accessibility hint for the liked button on the reader post card cell */
+"reader.post.button.liked.accessibility.hint" = "Remove a curtida do post.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Abre um menu com mais ações.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Mais";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "Reblogar";
+
+/* Accessibility hint for the reblog button on the reader post card cell */
+"reader.post.button.reblog.accessibility.hint" = "Rebloga o post.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.header.accessibility.hint" = "Abre os detalhes do site em que o post foi feito.";
+
+/* The title of a button that triggers blocking a blog from the user's reader. */
+"reader.post.menu.block.blog" = "Bloquear este blog";
 
 /* The title of a button that triggers blocking a user from the user's reader. */
 "reader.post.menu.block.user" = "Bloquear este usuário";
 
+/* Verb. An option to switch off site notifications. */
+"reader.post.menu.notifications.off" = "Desativar notificações do blog";
+
+/* Verb. An option to switch on blog notifications. */
+"reader.post.menu.notifications.on" = "Ativar notificações do blog";
+
+/* The title of a button that removes a saved post. */
+"reader.post.menu.remove.post" = "Remover Post Salvo";
+
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Reportar este usuário";
+
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Salvar";
+
+/* Verb. An option to subscribe to a blog. */
+"reader.post.menu.subscribe.blog" = "Assinar o blog";
+
+/* Verb. An option to unsubscribe from a blog. */
+"reader.post.menu.unsubscribe.blog" = "Cancelar assinatura do blog";
+
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Gerenciar blogs";
+
+/* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.subtitle" = "Assim que criar um blog no WordPress.com, você poderá reblogar o conteúdo que quiser em seu próprio blog.";
+
+/* A short message that informs the user no WordPress.com blogs could be found. */
+"reader.reblog.no.blogs.title" = "Nenhum blog do WordPress.com disponível";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blogs";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.loading" = "Assinando novas tags...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.title" = "Assinar tags";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.title" = "Nenhuma tag nova para assinar";
+
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Escolha suas tags";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.subscribe.button.accessibility.hint" = "Assina a tag.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Assinar";
+
+/* The accessibility label for the followed blogs search field */
+"reader.subscribed.blogs.search.accessibility.label" = "URL do blog";
+
+/* Placeholder text prompting the user to type the name of the URL they would like to follow. */
+"reader.subscribed.blogs.search.placeholder" = "Insira a URL de um blog para assinar";
+
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Assinado";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Blogs para assinar";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag" = "Adicionar uma tag";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Adicionar tag";
+
+/* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
+"reader.tags.add.tag.placeholder" = "Adicione uma tag";
+
+/* Title of a feature to add a new tag to the tags subscribed by the user. */
+"reader.tags.add.tag.title" = "Adicionar uma tag";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Descobrir mais tags";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unsubscribe.accessibility.label" = "Cancelar assinatura de %@";
+
+/* Label of the table view cell's delete button, when unsubscribing from a blog. */
+"reader.unsubscribe.button" = "Cancelar assinatura";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Voltar";
