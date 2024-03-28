@@ -79,8 +79,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.3.0)
-  - WordPressUI (1.15.1):
-    - Gravatar (~> 0.1.0)
+  - WordPressUI (1.15.1)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.2)
   - ZendeskCoreSDK (2.5.1)
@@ -127,7 +126,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (from `https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git`, commit `fa06fca7178b268d382d91861752b3be0729e8a8`)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `92c1536724af8bb57ee677996919c2a9e37434e8`)
   - WordPressShared (~> 2.3)
-  - WordPressUI (from `../WordPressUI-iOS`)
+  - WordPressUI (~> 1.15)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -162,6 +161,7 @@ SPEC REPOS:
     - UIDeviceIdentifier
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
+    - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -186,8 +186,6 @@ EXTERNAL SOURCES:
   WordPressKit:
     :commit: 92c1536724af8bb57ee677996919c2a9e37434e8
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressUI:
-    :path: "../WordPressUI-iOS"
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -234,7 +232,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: ba69878bfa1368636e92d29fcfb5bd1e0a11a3ef
   WordPressKit: 7e5250e9e28fcdca787f8d313a7dc89a8571d774
   WordPressShared: cad7777b283d3ce2752f283df587342a581cd49b
-  WordPressUI: 88c808b8a6ed7002fea945a3af9147a9e093a413
+  WordPressUI: 700e3ec5a9f77b6920c8104c338c85788036ab3c
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: 5f0a83f412e07ae23701f18c412fe783b3249ef5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -245,6 +243,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: b9231d5f4652f478e79897eb92e356c7d1e31617
+PODFILE CHECKSUM: 050c35cfdc0e86886579eb435fcb84e70f6864e3
 
 COCOAPODS: 1.14.2
