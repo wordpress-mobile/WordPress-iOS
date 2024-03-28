@@ -3,6 +3,7 @@ import Foundation
 import WordPressKit
 import WordPressFlux
 import CocoaLumberjack
+import Combine
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
@@ -17,6 +18,9 @@ class PostCoordinator: NSObject {
 
     @objc static let shared = PostCoordinator()
 
+    /// Events about the sync status changes.
+    let syncEvents = PassthroughSubject<SyncEvent, Never>()
+
     private let coreDataStack: CoreDataStackSwift
 
     private var mainContext: NSManagedObjectContext {
@@ -27,7 +31,7 @@ class PostCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
-    private var syncOperations: [NSManagedObjectID: SyncOperation] = [:]
+    private var workers: [NSManagedObjectID: SyncWorker] = [:]
     private var pendingPostIDs: Set<NSManagedObjectID> = []
     private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
@@ -39,6 +43,9 @@ class PostCoordinator: NSObject {
 
     private let actionDispatcherFacade: ActionDispatcherFacade
     private let isSyncPublishingEnabled: Bool
+
+    /// The initial sync retry delay. By default, 5 seconds.
+    var syncRetryDelay: TimeInterval = 5
 
     // MARK: - Initializers
 
@@ -257,53 +264,86 @@ class PostCoordinator: NSObject {
         }
     }
 
-    // MARK: - Sync (Drafts)
+    // MARK: - Sync
 
     /// Returns `true` if post has any revisions that need to be synced.
     static func isSyncNeeded(for post: AbstractPost) -> Bool {
         post.original().getLatestRevisionNeedingSync() != nil
     }
 
-    /// Saves the scratchpad in a local revision scheduled for sync with the server.
+    /// Sets a flag to sync the given revision and schedules the next sync.
     ///
-    /// - warning: This should only be used for draft posts.
+    /// - warning: Should only be used for draft posts.
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     func setNeedsSync(for revision: AbstractPost) {
         assert(revision.isRevision(), "Must be used only on revisions")
         assert(revision.original().status == .draft, "Must be used only with draft posts")
-        revision.isSyncNeeded = true
-        ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
 
-        let original = revision.original()
-        scheduleSync(for: original)
+        if !revision.isSyncNeeded {
+            revision.isSyncNeeded = true
+            ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
+        }
+        startSync(for: revision.original())
     }
 
-    /// Represents an operation for syncing the post and updating it to the
-    /// revision the operation was initialized with.
+    /// Schedules sync for all the posts with revisions that need syncing.
+    ///
+    /// - note: It should typically only be called once during the app launch.
+    func scheduleSync() {
+        let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+        request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
+        do {
+            let revisions = try coreDataStack.mainContext.fetch(request)
+            let originals = Set(revisions.map { $0.original() })
+            for post in originals {
+                startSync(for: post)
+            }
+        } catch {
+            DDLogError("failed to scheduled sync: \(error)")
+        }
+    }
+
+    /// A manages sync for the given post. Every post has its own worker.
+    private final class SyncWorker {
+        let post: AbstractPost
+        var operation: SyncOperation? // The sync operation that's currently running
+        var error: Error? // The previous sync error
+
+        var nextRetryDelay: TimeInterval {
+            retryDelay = min(30, retryDelay * 1.5)
+            return retryDelay
+        }
+        var retryDelay: TimeInterval
+        weak var retryTimer: Timer?
+
+        deinit {
+            self.log("deinit")
+        }
+
+        init(post: AbstractPost, retryDelay: TimeInterval) {
+            self.post = post
+            self.retryDelay = retryDelay
+            self.log("created for \"\(post.postTitle ?? "–")\"")
+        }
+
+        func log(_ string: String) {
+            DDLogInfo("sync-worker(\(post.objectID.shortDescription)) \(string)")
+        }
+    }
+
+    /// An operation for syncing post to the given local revision.
     final class SyncOperation {
         let id: Int
         let post: AbstractPost
         let revision: AbstractPost
-
-        var error: Error?
-        var state: State = .idle {
-            didSet { log("change state to \(state)") }
-        }
-
-        var nextRetryDelay: TimeInterval {
-            retryDelay = min(5, retryDelay * 1.5)
-            return retryDelay
-        }
-        private var retryDelay: TimeInterval = 0
-        weak var retryTimer: Timer?
+        var state: State = .uploadingMedia // The first step is always media
+        var isCancelled = false
 
         enum State {
-            case idle
             case uploadingMedia
             case syncing
-            case cancelled
-            case finished
+            case finished(Result<Void, Error>)
         }
 
         private static var nextId = 1
@@ -313,118 +353,146 @@ class PostCoordinator: NSObject {
             self.revision = revision
             self.id = SyncOperation.nextId
             SyncOperation.nextId += 1
-
-            self.log("created  operation (postID: \(post.postID ?? -1), title: \(post.postTitle ?? "–"), entity: \(post)")
+            self.log("created for \"\(post.postTitle ?? "–")\"")
         }
 
         func log(_ string: String) {
-            DDLogInfo("sync(\(id)) \(string)")
+            DDLogInfo("sync-operation(\(id)) (\(post.objectID.shortDescription)→\(revision.objectID.shortDescription))) \(string)")
         }
     }
 
-    private func scheduleSync(for post: AbstractPost) {
-        assert(Thread.isMainThread)
-        assert(post.isOriginal(), "Must be an original post")
+    enum SyncEvent {
+        /// A sync worker started a sync operation.
+        case started(operation: SyncOperation)
+        /// A sync worker finished a sync operation.
+        ///
+        /// - warning: By the time operation completes, the revision will be deleted.
+        case finished(operation: SyncOperation, result: Result<Void, Error>)
+    }
 
-        let objectID = post.objectID
+    private func startSync(for post: AbstractPost) {
         guard let revision = post.getLatestRevisionNeedingSync() else {
-            return // Defensive code (should never happen)
+            return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
         }
+        startSync(for: post, revision: revision)
+    }
 
-        // Check if we need or can cancel the current operation.
-        if let operation = syncOperations[objectID] {
+    private func startSync(for post: AbstractPost, revision: AbstractPost) {
+        assert(Thread.isMainThread)
+        assert(post.isOriginal())
+        assert(!post.objectID.isTemporaryID)
+
+        let worker = getWorker(for: post)
+        if let operation = worker.operation {
             guard operation.revision != revision else {
-                return // Defensive code (should never happen)
+                return worker.log("already syncing to the latest revision")
             }
-            switch operation.state {
-            case .idle:
-                operation.log("cancel idle operation")
-                operation.retryTimer?.invalidate()
-                operation.state = .cancelled
-            case .uploadingMedia:
-                let deleted = Set(operation.revision.media).subtracting(Set(revision.media))
-                for media in deleted {
-                    MediaCoordinator.shared.cancelUpload(of: media)
-                }
-                operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
-
-                operation.state = .cancelled
-                operation.log("cancel operation uploading media")
-            case .syncing:
-                operation.log("letting the current sync finish")
-                return // There is no way to safely cancel it
-            case .cancelled, .finished:
-                return assertionFailure("Should never happen (should be removed from the dictionary)")
+            tryCancelSyncOperation(operation, latest: revision)
+            guard operation.isCancelled else {
+                return worker.log("waiting until the current operation finishes")
             }
+        } else {
+            worker.retryTimer?.invalidate()
         }
 
         let operation = SyncOperation(post: post, revision: revision)
-        syncOperations[objectID] = operation
-
-        Task { await resumeSyncOperation(operation) }
+        worker.operation = operation
+        startSyncOperation(operation)
+        syncEvents.send(.started(operation: operation))
     }
 
-    @MainActor
-    private func resumeSyncOperation(_ operation: SyncOperation) async {
-        guard operation.state == .idle else {
-            return operation.log("can't resume an operation in \(operation.state) state")
-        }
+    private func getWorker(for post: AbstractPost) -> SyncWorker {
+        let worker = workers[post.objectID] ?? SyncWorker(post: post, retryDelay: syncRetryDelay)
+        workers[post.objectID] = worker
+        return worker
+    }
 
-        if operation.error != nil {
-            operation.error = nil
+    /// Try to cancel the current sync operation, which is not always possible.
+    private func tryCancelSyncOperation(_ operation: SyncOperation, latest: AbstractPost) {
+        // If there is a current sync operation running and it doesn't target
+        // the latest revision, then try to cancel it.
+        switch operation.state {
+        case .uploadingMedia:
+            // Cancel the upload for media, but keep the tasks scheduled
+            // for the media still present in the revision.
+            let deleted = Set(operation.revision.media).subtracting(Set(latest.media))
+            for media in deleted {
+                mediaCoordinator.cancelUpload(of: media)
+            }
+            if !deleted.isEmpty {
+                operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
+            }
+            operation.log("cancel media upload")
+            operation.isCancelled = true
+            syncOperation(operation, didFinishWithResult: .failure(CancellationError())) // Finish immediatelly
+        case .syncing:
+            break // There is no way to safely cancel an in-flight request
+        case .finished:
+            break // This should never happen
+        }
+    }
+
+    private func startSyncOperation(_ operation: SyncOperation) {
+        Task { @MainActor in
+            do {
+                operation.log("upload remaining media")
+                try await uploadRemainingResources(for: operation.revision)
+                guard !operation.isCancelled else { return }
+                operation.log("sync post contents and settings")
+                operation.state = .syncing
+                try await PostRepository(coreDataStack: coreDataStack)
+                    .sync(operation.post, revision: operation.revision)
+                syncOperation(operation, didFinishWithResult: .success(()))
+            } catch {
+                syncOperation(operation, didFinishWithResult: .failure(error))
+            }
+        }
+    }
+
+    private func syncOperation(_ operation: SyncOperation, didFinishWithResult result: Result<Void, Error>) {
+        operation.log("finished with result: \(result)")
+        operation.state = .finished(result)
+        defer { syncEvents.send(.finished(operation: operation, result: result)) }
+
+        guard !operation.isCancelled else { return }
+
+        let worker = getWorker(for: operation.post)
+        worker.operation = nil
+
+        switch result {
+        case .success:
+            worker.retryDelay = syncRetryDelay
+            worker.error = nil
+            postDidUpdateNotification(for: operation.post) // TODO: Use syncEvents
+
+            if let revision = operation.post.getLatestRevisionNeedingSync() {
+                operation.log("more revisions need syncing: \(revision.objectID.shortDescription)")
+                startSync(for: operation.post, revision: revision)
+            } else {
+                workers[operation.post.objectID] = nil
+            }
+        case .failure(let error):
+            worker.error = error
             postDidUpdateNotification(for: operation.post)
-        }
-
-        do {
-            // Upload media for the latest revision
-            operation.state = .uploadingMedia
-            try await uploadRemainingResources(for: operation.revision)
-
-            guard operation.state != .cancelled else {
-                return operation.log("stopping after uploading media (cancelled)")
-            }
-
-            operation.state = .syncing
-            try await PostRepository(coreDataStack: coreDataStack)
-                .sync(operation.post, revision: operation.revision)
-
-            didFinishOperation(operation)
-
-            if PostCoordinator.isSyncNeeded(for: operation.post) {
-                operation.log("more revisions need syncing")
-                scheduleSync(for: operation.post)
-            }
-        } catch {
-            operation.log("failed with error: \(error)")
-            operation.error = error
-            operation.state = .idle
 
             if let error = error as? PostRepository.PostSaveError, case .deleted = error {
-                handlePermanentlyDeleted(operation.post)
-                didFinishOperation(operation)
                 operation.log("post was permanently deleted")
-                return
+                handlePermanentlyDeleted(operation.post)
+                workers[operation.post.objectID] = nil
+            } else {
+                let delay = worker.nextRetryDelay
+                worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
+                    guard let self, let worker else { return }
+                    self.didRetryTimerFire(for: worker)
+                }
+                worker.log("scheduled retry with delay: \(delay)s.")
             }
-
-            let delay = operation.nextRetryDelay
-            operation.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self] _ in
-                self?.didRetryTimerFire(for: operation)
-            }
-            operation.log("scheduled retry with delay: \(delay)s.")
-            postDidUpdateNotification(for: operation.post)
         }
     }
 
-    private func didFinishOperation(_ operation: SyncOperation) {
-        operation.log("operation completed")
-        operation.state = .finished
-        syncOperations[operation.post.objectID] = nil
-        NotificationCenter.default.post(name: .postCoordinatorDidFinishSync, object: self, userInfo: [PostCoordinator.operationUserInfoKey: operation])
-    }
-
-    private func didRetryTimerFire(for operation: SyncOperation) {
-        operation.log("retry timer fired")
-        Task { await resumeSyncOperation(operation) }
+    private func didRetryTimerFire(for worker: SyncWorker) {
+        worker.log("retry timer fired")
+        startSync(for: worker.post)
     }
 
     @objc private func didUpdateReachability(_ notification: Foundation.Notification) {
@@ -432,37 +500,21 @@ class PostCoordinator: NSObject {
               (reachable as? Bool) == true else {
             return
         }
-        for operation in syncOperations.values {
-            if let error = operation.error,
+        for worker in workers.values {
+            if let error = worker.error,
                let urlError = (error as NSError).underlyingErrors.first as? URLError,
                urlError.code == .notConnectedToInternet {
-                operation.retryTimer?.invalidate()
-                operation.log("connection is reachable – retrying now")
-                Task { await resumeSyncOperation(operation) }
+                worker.log("connection is reachable – retrying now")
+                startSync(for: worker.post)
             }
-        }
-    }
-
-    /// Schedules sync for all the posts with revisions that need syncing.
-    func scheduleSync() {
-        let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
-        request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
-        do {
-            let revisions = try coreDataStack.mainContext.fetch(request)
-            let originals = Set(revisions.map { $0.original() })
-            for post in originals {
-                scheduleSync(for: post)
-            }
-        } catch {
-            DDLogError("failed to scheduled sync: \(error)")
         }
     }
 
     func syncError(for post: AbstractPost) -> Error? {
-        syncOperations[post.original().objectID]?.error
+        assert(post.isOriginal())
+        return workers[post.objectID]?.error
     }
 
-    @MainActor
     private func postDidUpdateNotification(for post: AbstractPost) {
         NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [NSUpdatedObjectsKey: Set([post])])
     }
@@ -496,7 +548,14 @@ class PostCoordinator: NSObject {
 
         change(post: post, status: .pushing)
 
-        if mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia {
+        let hasPendingMedia: Bool
+        if isSyncPublishingEnabled {
+            hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
+        } else {
+            hasPendingMedia = mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia
+        }
+
+        if hasPendingMedia {
             change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
@@ -952,13 +1011,6 @@ private struct Constants {
 extension Foundation.Notification.Name {
     /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key.
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
-
-    /// Contains a set of updated operatino under the ``PostCoordinator/operationUserInfoKey`` key.
-    static let postCoordinatorDidFinishSync = Foundation.Notification.Name("org.automattic.postCoordinatorDidFinishSync")
-}
-
-extension PostCoordinator {
-    static let operationUserInfoKey = "operationUserInfoKey"
 }
 
 // MARK: - Automatic Uploads
@@ -1022,6 +1074,15 @@ extension PostCoordinator {
                 result(postsAndActions)
             }
         }
+    }
+}
+
+private extension NSManagedObjectID {
+    var shortDescription: String {
+        let description = "\(self)"
+        guard let index = description.lastIndex(of: "/") else { return description }
+        return String(description.suffix(from: index))
+            .trimmingCharacters(in: CharacterSet(charactersIn: "/>"))
     }
 }
 

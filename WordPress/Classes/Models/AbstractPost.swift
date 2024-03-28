@@ -169,6 +169,18 @@ extension AbstractPost {
         return RemotePostUpdateParameters.changes(from: original, to: self)
     }
 
+    /// Returns all revisions of the post including the original one.
+    var allRevisions: [AbstractPost] {
+        var revisions: [AbstractPost] = [self]
+        var current = self
+        while let next = current.revision {
+            revisions.append(next)
+            current = next
+        }
+        return revisions
+
+    }
+
     // TODO: Replace with a new flag
     /// - note: Work-in-progress (kahu-offline-mode)
     @objc var isSyncNeeded: Bool {
@@ -182,14 +194,7 @@ extension AbstractPost {
     /// Returns `nil` if there are no such revisions.
     func getLatestRevisionNeedingSync() -> AbstractPost? {
         assert(original == nil, "Must be called on an original revision")
-        var revision = self
-        var current = self
-        while let next = current.revision {
-            if next.isSyncNeeded {
-                revision = next
-            }
-            current = next
-        }
+        let revision = allRevisions.last(where: \.isSyncNeeded)
         guard revision != self else {
             return nil
         }

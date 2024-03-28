@@ -27,7 +27,7 @@ final class PostSyncStateViewModel {
             return _state
         }
 
-        if let error = PostCoordinator.shared.syncError(for: post) {
+        if let error = PostCoordinator.shared.syncError(for: post.original()) {
             if let saveError = error as? PostRepository.PostSaveError,
                case .conflict = saveError {
                 return .failed // Terminal error

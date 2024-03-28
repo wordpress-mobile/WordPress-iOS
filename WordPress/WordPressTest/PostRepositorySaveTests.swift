@@ -317,7 +317,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         XCTAssertNotNil(post.revision, "Revision is missing")
 
-        // GIVEN a server where the post
+        // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
