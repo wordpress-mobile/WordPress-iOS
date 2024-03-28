@@ -550,9 +550,36 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         view.backgroundColor = displaySetting.color.background
     }
 
+    private func applyDisplaySetting() {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else {
+                return
+            }
+
+            // Main background view
+            view.backgroundColor = displaySetting.color.background
+
+            // Header view
+            header.displaySetting = displaySetting
+        }
+
+        // TODO: Featured image view
+
+        // Update Reader Post web view
+        if let post {
+            webView.displaySetting = displaySetting
+            webView.loadHTMLString(post.contentForDisplay())
+        }
+
+        // TODO: Comments table view
+
+        // TODO: Related posts
+
+        // TODO: Toolbar
+    }
+
     /// Configure the webview
     private func configureWebView() {
-        webView.usesSansSerifStyle = true
         webView.navigationDelegate = self
     }
 
@@ -766,7 +793,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
         let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
-            // TODO: Refresh all the views.
+            self?.displaySettingStore.setting = newSetting
+            self?.applyDisplaySetting()
         }
         let nav = UINavigationController(rootViewController: vc)
         if let sheet = nav.sheetPresentationController {
