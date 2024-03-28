@@ -17,7 +17,7 @@ struct NoSitesViewModel {
         self.appUIType = appUIType
         self.displayName = account?.displayName ?? "-"
         if let email = account?.email {
-            self.gravatarURL = GravatarURL.url(for: email)
+            self.gravatarURL = AvatarURL.url(for: email)
         } else {
             self.gravatarURL = nil
         }
