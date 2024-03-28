@@ -466,10 +466,8 @@ extension PublishingEditor {
         // TODO: this is incorrect because there might still be media in the previous revision
         cancelUploadOfAllMedia(for: post)
 
-        guard let original = post.original else {
-            assertionFailure("Editor works with revisions")
-            return true
-        }
+        let original = post.original()
+
         // Original can be either an unsynced revision or an original post at this post
         original.deleteRevision()
         if original.isNewDraft {

@@ -71,7 +71,7 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
-        self.originalPostID = (post?.original ?? post)?.objectID
+        self.originalPostID = post?.original().objectID
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
             if !post.originalIsDraft() {

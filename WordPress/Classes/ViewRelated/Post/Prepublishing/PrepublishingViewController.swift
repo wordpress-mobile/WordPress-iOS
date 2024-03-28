@@ -240,13 +240,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
 
-        if isBeingDismissed || parent?.isBeingDismissed == true {
-            if !didTapPublish {
-                if post.status == .publishPrivate, let originalStatus = post.original?.status {
-                    post.status = originalStatus
-                }
-                getCompletion()?(.cancelled)
+        if (isBeingDismissed || parent?.isBeingDismissed == true) && !didTapPublish {
+            if post.status == .publishPrivate, let originalStatus = post.original?.status {
+                post.status = originalStatus
             }
+            getCompletion()?(.cancelled)
         }
     }
 
