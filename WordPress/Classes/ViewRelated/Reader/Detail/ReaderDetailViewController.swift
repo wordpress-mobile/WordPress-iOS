@@ -765,7 +765,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let vc = ReaderDisplaySettingViewController()
+        let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+            // TODO: Refresh all the views.
+        }
         let nav = UINavigationController(rootViewController: vc)
         if let sheet = nav.sheetPresentationController {
             sheet.detents = [.large()]

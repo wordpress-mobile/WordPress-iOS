@@ -2,6 +2,18 @@ import SwiftUI
 import DesignSystem
 
 class ReaderDisplaySettingViewController: UIViewController {
+    private let initialSetting: ReaderDisplaySetting
+    private let completion: ((ReaderDisplaySetting) -> Void)?
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    init(initialSetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+        self.initialSetting = initialSetting
+        self.completion = completion
+        super.init(nibName: nil, bundle: nil)
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -11,7 +23,12 @@ class ReaderDisplaySettingViewController: UIViewController {
     private func setupView() {
         view.backgroundColor = .systemBackground
 
-        let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: .default)
+        let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: initialSetting) { [weak self] setting in
+            self?.dismiss(animated: true, completion: {
+                self?.completion?(setting)
+            })
+        }
+
         let swiftUIView = UIView.embedSwiftUIView(ReaderDisplaySettingSelectionView(viewModel: viewModel))
         view.addSubview(swiftUIView)
         view.pinSubviewToAllEdges(swiftUIView)
@@ -28,8 +45,15 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
 
     @Published var displaySetting: ReaderDisplaySetting
 
-    init(displaySetting: ReaderDisplaySetting) {
+    private let completion: ((ReaderDisplaySetting) -> Void)?
+
+    init(displaySetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
         self.displaySetting = displaySetting
+        self.completion = completion
+    }
+
+    func doneButtonTapped() {
+        completion?(displaySetting)
     }
 
     // Convenience accessors
@@ -176,7 +200,7 @@ extension ReaderDisplaySettingSelectionView {
                 sizeSelectionView
                     .padding(.horizontal, .DS.Padding.double)
                 DSButton(title: Strings.doneButton, style: DSButtonStyle.init(emphasis: .primary, size: .large)) {
-                    // TODO: Impl
+                    viewModel.doneButtonTapped()
                 }
                 .padding(.horizontal, .DS.Padding.double)
             }
