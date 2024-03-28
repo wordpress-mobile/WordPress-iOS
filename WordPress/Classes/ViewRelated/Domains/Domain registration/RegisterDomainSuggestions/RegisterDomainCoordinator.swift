@@ -13,18 +13,25 @@ class RegisterDomainCoordinator {
     typealias DomainPurchasedCallback = ((UIViewController, String) -> Void)
     typealias DomainAddedToCartCallback = ((UIViewController, String, Blog) -> Void)
 
-    // MARK: Variables
+    // MARK: Dependencies
 
+    private let domainRegistrationService: RegisterDomainDetailsServiceProxyProtocol
     private let crashLogger: CrashLogging
+
+    // MARK: Variables
 
     let analyticsSource: String
 
+    // TODO: This can cause Core Data crashes. Pass `NSManagedObjectID` instead.
     var site: Blog?
-    var domainPurchasedCallback: DomainPurchasedCallback?
-    var domainAddedToCartAndLinkedToSiteCallback: DomainAddedToCartCallback?
+
     var domain: DomainSuggestion?
 
+    var domainPurchasedCallback: DomainPurchasedCallback?
+
     private var webViewURLChangeObservation: NSKeyValueObservation?
+
+    // MARK: - Init
 
     /// Initializes a `RegisterDomainCoordinator` with the specified parameters.
     ///
@@ -36,20 +43,23 @@ class RegisterDomainCoordinator {
     init(site: Blog?,
          domainPurchasedCallback: RegisterDomainCoordinator.DomainPurchasedCallback? = nil,
          analyticsSource: String = "domains_register",
-         crashLogger: CrashLogging = .main) {
+         crashLogger: CrashLogging = .main,
+         domainRegistrationService: RegisterDomainDetailsServiceProxyProtocol = RegisterDomainDetailsServiceProxy()) {
         self.site = site
         self.domainPurchasedCallback = domainPurchasedCallback
         self.crashLogger = crashLogger
         self.analyticsSource = analyticsSource
+        self.domainRegistrationService = domainRegistrationService
     }
 
-    // MARK: Public Functions
+    // MARK: - Public Functions
 
     /// Adds the selected domain to the cart then launches the checkout webview.
     /// This flow support purchasing domains only, without plans.
     func handlePurchaseDomainOnly(on viewController: UIViewController,
                                   onSuccess: @escaping () -> (),
                                   onFailure: @escaping () -> ()) {
+        // TODO: Refactor `handlePurchaseDomainOnly` to use `purchaseDomain` helper.
         createCart { [weak self] result in
             switch result {
             case .success:
@@ -66,13 +76,14 @@ class RegisterDomainCoordinator {
     func addDomainToCartLinkedToCurrentSite(on viewController: UIViewController,
                          onSuccess: @escaping () -> (),
                          onFailure: @escaping () -> ()) {
+        // TODO: Refactor `addDomainToCartLinkedToCurrentSite` to use `purchaseDomain` helper.
         guard let blog = site else {
             return
         }
         createCart { [weak self] result in
             switch result {
             case .success(let domain):
-                self?.domainAddedToCartAndLinkedToSiteCallback?(viewController, domain.domainName, blog)
+                self?.presentPlansWebview(for: blog, domain: domain, on: viewController)
                 onSuccess()
             case .failure:
                 onFailure()
@@ -83,18 +94,9 @@ class RegisterDomainCoordinator {
     /// Related to the `purchaseFromDomainManagement` Domain selection type.
     /// Adds the selected domain to the cart then launches the checkout webview
     /// The checkout webview is configured for the domain management flow
-    func handleNoSiteChoice(on viewController: UIViewController,
-                            choicesViewModel: DomainPurchaseChoicesViewModel?) {
-        createCart { [weak self] result in
-            switch result {
-            case .success:
-                self?.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
-                choicesViewModel?.isGetDomainLoading = false
-
-            case .failure:
-                viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                choicesViewModel?.isGetDomainLoading = false
-            }
+    func handleNoSiteChoice(on viewController: UIViewController, choicesViewModel: DomainPurchaseChoicesViewModel?) {
+        self.purchaseDomain(for: site, on: viewController) { _ in
+            choicesViewModel?.isGetDomainLoading = false
         }
     }
 
@@ -117,18 +119,11 @@ class RegisterDomainCoordinator {
                 return
             }
             controller.showLoading()
-            self.createCart { [weak self] result in
-                guard let self else {
-                    return
-                }
-                switch result {
-                case .success(let domain):
-                    self.site = selectedBlog
-                    self.domainAddedToCartAndLinkedToSiteCallback?(controller, domain.domainName, selectedBlog)
-                case .failure:
-                    controller.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
-                }
+            self.purchaseDomain(for: selectedBlog, on: controller) { result in
                 controller.hideLoading()
+                if case .success = result {
+                    self.site = selectedBlog
+                }
             }
         }
 
@@ -141,23 +136,65 @@ class RegisterDomainCoordinator {
 
     // MARK: Helpers
 
+    /// Initiates the process of purchasing a domain with or without a site.
+    ///
+    /// - Parameters:
+    ///   - site: The blog site for which the domain is being purchased. Optional.
+    ///   - viewController: The UIViewController from which the domain registration or checkout process is presented.
+    ///   - completion: A closure that is called upon the completion of the purchase attempt.
+    ///     It returns a `Result` indicating either success or failure.
+    ///
+    /// The method follows this logic:
+    /// - The "Register Domain" screen is presented when `site.canRegisterDomainWithPaidPlan` is `true`.
+    /// - If the site does not have any domains (`!site.hasDomains`), the Plans web view is shown.
+    /// - For sites with existing domains, the Checkout web view is presented,
+    private func purchaseDomain(for site: Blog?, on viewController: UIViewController, completion: @escaping (Result<Void, Swift.Error>) -> Void) {
+        guard let domain else {
+            completion(.failure(Error.noDomainWhenCreatingCart))
+            return
+        }
+        if let site, site.canRegisterDomainWithPaidPlan {
+            self.presentDomainRegistration(for: site, domain: domain, on: viewController)
+            completion(.success(()))
+            return
+        }
+        self.createCart { [weak self] result in
+            guard let self else {
+                return
+            }
+            switch result {
+            case .success(let domain):
+                if let site, !site.hasDomains {
+                    self.presentPlansWebview(for: site, domain: domain, on: viewController)
+                } else {
+                    self.presentCheckoutWebview(on: viewController, title: TextContent.checkoutTitle)
+                }
+                completion(.success(()))
+            case .failure(let error):
+                viewController.displayActionableNotice(title: TextContent.errorTitle, actionTitle: TextContent.errorDismiss)
+                completion(.failure(error))
+            }
+        }
+    }
+
     private func createCart(completion: @escaping (Result<DomainSuggestion, Swift.Error>) -> Void) {
         guard let domain else {
             completion(.failure(Error.noDomainWhenCreatingCart))
             return
         }
         let siteID = site?.dotComID?.intValue
-        let proxy = RegisterDomainDetailsServiceProxy()
-        proxy.createPersistentDomainShoppingCart(siteID: siteID,
-                                                 domainSuggestion: domain,
-                                                 privacyProtectionEnabled: domain.supportsPrivacy ?? false,
-                                                 success: { _ in
+        self.domainRegistrationService.createPersistentDomainShoppingCart(siteID: siteID,
+                                                                          domainSuggestion: domain,
+                                                                          privacyProtectionEnabled: domain.supportsPrivacy ?? false,
+                                                                          success: { _ in
             completion(.success(domain))
         },
-                                                 failure: { error in
+                                                                          failure: { error in
             completion(.failure(error))
         })
     }
+
+    // MARK: - Presenting Checkout Web View
 
     private func presentCheckoutWebview(on viewController: UIViewController,
                                         title: String?) {
@@ -250,6 +287,46 @@ class RegisterDomainCoordinator {
             onSuccess(domain)
 
         }
+    }
+
+    // MARK: - Presenting Domain Registration View
+
+    private func presentDomainRegistration(
+        for site: Blog,
+        domain: DomainSuggestion,
+        on viewController: UIViewController
+    ) {
+        guard let siteID = site.dotComID?.intValue else {
+            return
+        }
+        let destination = RegisterDomainDetailsViewController()
+        destination.viewModel = RegisterDomainDetailsViewModel(siteID: siteID, domain: domain) { [weak self] name in
+            guard let self = self else {
+                return
+            }
+            self.domainPurchasedCallback?(viewController, name)
+            self.trackDomainPurchasingCompleted()
+        }
+    }
+
+    // MARK: - Presenting Plans
+
+    private func presentPlansWebview(
+        for site: Blog,
+        domain: DomainSuggestion,
+        on viewController: UIViewController
+    ) {
+        let presentPlansFlow = FreeToPaidPlansCoordinator.plansFlowAfterDomainAddedToCartBlock(
+            customTitle: nil,
+            analyticsSource: analyticsSource
+        ) { [weak self] controller, domain in
+            guard let self else {
+                return
+            }
+            self.domainPurchasedCallback?(controller, domain)
+            self.trackDomainPurchasingCompleted()
+        }
+        presentPlansFlow(viewController, domain.domainName, site)
     }
 
     // MARK: - Tracks
