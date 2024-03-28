@@ -65,6 +65,15 @@
         }
       },
       {
+        "package": "SwiftSoup",
+        "repositoryURL": "https://github.com/scinfu/SwiftSoup.git",
+        "state": {
+          "branch": null,
+          "revision": "1d39e56d364cba79ce43b341f9661b534cccb18d",
+          "version": "2.7.1"
+        }
+      },
+      {
         "package": "BuildkiteTestCollector",
         "repositoryURL": "https://github.com/buildkite/test-collector-swift",
         "state": {
