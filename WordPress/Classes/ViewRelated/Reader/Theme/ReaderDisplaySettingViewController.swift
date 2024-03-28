@@ -191,7 +191,12 @@ extension ReaderDisplaySettingSelectionView {
     struct ControlView: View {
         @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
-        @State private var sliderValue: Double = 0
+        @State private var sliderValue: Double
+
+        init(viewModel: ReaderDisplaySettingSelectionViewModel) {
+            self.viewModel = viewModel
+            self.sliderValue = Double(viewModel.displaySetting.size.rawValue)
+        }
 
         var body: some View {
             VStack(spacing: .DS.Padding.large) {
