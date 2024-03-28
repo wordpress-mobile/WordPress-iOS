@@ -205,6 +205,7 @@ extension ReaderDisplaySettingSelectionView {
                 .padding(.horizontal, .DS.Padding.double)
             }
             .padding(.top, .DS.Padding.medium)
+            .padding(.bottom, .DS.Padding.single)
             .background(Color(.systemBackground))
         }
 
