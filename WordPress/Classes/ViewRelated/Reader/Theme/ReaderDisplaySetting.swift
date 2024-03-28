@@ -128,6 +128,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
         case mono
 //        case olde
 //        case rock
+
+        var cssString: String {
+            switch self {
+            case .sans:
+                return "-apple-system, sans-serif"
+            case .serif:
+                return "'Noto Serif', serif"
+            case .mono:
+                return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
+            }
+        }
     }
 
     // TODO: Determine the magnitude

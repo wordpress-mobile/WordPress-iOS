@@ -14,9 +14,6 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
-    // TODO: Remove in favor of the display setting.
-    var usesSansSerifStyle = false
-
     var displaySetting: ReaderDisplaySetting = .default
 
     /// Make the webview transparent
@@ -50,7 +47,7 @@ class ReaderWebView: WKWebView {
         return """
         <!DOCTYPE html><html><head><meta charset='UTF-8' />
         <title>Reader Post</title>
-        <meta name='viewport' content='initial-scale=1, maximum-scale=1.0, user-scalable=no'>
+        <meta name='viewport' content='initial-scale=\(displaySetting.size.scale), maximum-scale=\(displaySetting.size.scale), user-scalable=no'>
         <link rel="stylesheet" type="text/css" href="\(ReaderCSS().address)">
         <style>
         \(cssColors())
@@ -184,20 +181,15 @@ class ReaderWebView: WKWebView {
     }
 
     private func overrideStyles() -> String {
-        guard usesSansSerifStyle else {
-            return String()
-        }
-
         /// Some context: We are fetching the CSS file from a remote endpoint, but we store a local `reader.css` file
         /// to override some styles for mobile-specific purposes.
         ///
         /// The `reader.css` forces the text to be displayed in Noto, but this method overrides it back to the
-        /// system font. Later when the `readerImprovements` flag is removed, we should remove this method and
-        /// update the CSS values in `reader.css` instead
+        /// user-preferred font.
         return """
             body.reader-full-post.reader-full-post__story-content {
                 font: -apple-system-body !important;
-                font-family: -apple-system, sans-serif !important;
+                font-family: \(displaySetting.font.cssString) !important;
             }
         """
     }
