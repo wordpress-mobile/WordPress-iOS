@@ -22,7 +22,7 @@ public enum ObjcGravatarRating: Int {
 }
 
 extension UIImageView {
-    
+
     /// Re-declaration for Objc compatibility
     @objc(downloadGravatarFor:gravatarRating:)
     public func objc_downloadGravatar(for email: String, gravatarRating: ObjcGravatarRating) {
@@ -59,7 +59,11 @@ extension UIImageView {
 
     private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         self.gravatar.cancelImageDownload()
-        let options: [ImageSettingOption] = [.imageCache(ImageCache.shared)]
+        guard let cache = ImageCache.shared as? WordPressUI.ImageCache else {
+            assertionFailure("ImageCache.shared should be of type WordPressUI.ImageCache")
+            return
+        }
+        let options: [ImageSettingOption] = [.imageCache(cache)]
         self.gravatar.setImage(with: fullURL,
                                placeholder: placeholder,
                                options: options) { [weak self] result in
@@ -89,7 +93,7 @@ fileprivate struct GravatarDefaults {
 }
 
 extension AvatarURL {
-    
+
     public static func url(for email: String,
                            preferredSize: ImageSize? = nil,
                            gravatarRating: Rating? = nil,
