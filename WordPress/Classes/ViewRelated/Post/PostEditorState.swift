@@ -418,7 +418,19 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            switch action {
+            case .schedule, .publish, .submitForReview:
+                publishActionAllowed = hasContent
+            case .update:
+                publishActionAllowed = hasContent && hasChanges && !isBeingPublished
+            case .save, .saveAsDraft, .continueFromHomepageEditing:
+                assertionFailure("No longer used")
+                break
+            }
+        } else {
+            publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        }
     }
 }
 

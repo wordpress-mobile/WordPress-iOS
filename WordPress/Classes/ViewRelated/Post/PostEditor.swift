@@ -103,7 +103,11 @@ extension PostEditor {
     }
 
     var editorHasChanges: Bool {
-        return post.hasUnsavedChanges()
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            return !post.changes.isEmpty
+        } else {
+            return post.hasUnsavedChanges()
+        }
     }
 
     func editorContentWasUpdated() {
