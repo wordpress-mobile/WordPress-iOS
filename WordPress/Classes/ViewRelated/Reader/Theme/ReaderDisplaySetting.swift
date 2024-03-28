@@ -126,8 +126,8 @@ struct ReaderDisplaySetting: Codable, Equatable {
         case sans
         case serif
         case mono
-        case olde
-        case rock
+//        case olde
+//        case rock
     }
 
     // TODO: Determine the magnitude
