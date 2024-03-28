@@ -174,6 +174,6 @@ private enum Strings {
     static let anotherDevice = NSLocalizedString(
         "resolveConflict.anotherDevice",
         value: "Another device",
-        comment: "A versino of the post on another device."
+        comment: "A version of the post on another device."
     )
 }
