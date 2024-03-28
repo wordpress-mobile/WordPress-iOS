@@ -304,9 +304,50 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// Safely pauses sync for the post. If there are any outstanding operations
+    /// that can't be canceled, allowing them to finish. When the method returns,
+    /// it's guaranteed that no requests will be sent until resumed.
+    @MainActor
+    func pauseSyncing(for post: AbstractPost) async {
+        assert(post.isOriginal())
+
+        guard let worker = workers[post.objectID] else {
+            return
+        }
+        worker.isPaused = true
+        worker.log("paused")
+        guard let operation = worker.operation else {
+            return
+        }
+        tryCancelSyncOperation(operation)
+        if operation.isCancelled {
+            return // Cancelled immediatelly
+        }
+        _ = await syncEvents.first(where: { [expected = operation] event in
+            if case .finished(let operation, _) = event, operation === expected {
+                return true
+            }
+            return false
+        }).values.first(where: { _ in true })
+    }
+
+    /// Resumes sync for the given post.
+    @MainActor
+    func resumeSyncing(for post: AbstractPost) {
+        assert(post.isOriginal())
+
+        guard let worker = workers[post.objectID] else {
+            return
+        }
+        worker.isPaused = false
+        worker.log("resumed")
+        startSync(for: post)
+    }
+
     /// A manages sync for the given post. Every post has its own worker.
     private final class SyncWorker {
         let post: AbstractPost
+        var isPaused = false
         var operation: SyncOperation? // The sync operation that's currently running
         var error: Error? // The previous sync error
 
@@ -383,11 +424,16 @@ class PostCoordinator: NSObject {
         assert(!post.objectID.isTemporaryID)
 
         let worker = getWorker(for: post)
+
+        guard !worker.isPaused else {
+            return worker.log("start failed: worker is paused")
+        }
+
         if let operation = worker.operation {
             guard operation.revision != revision else {
                 return worker.log("already syncing to the latest revision")
             }
-            tryCancelSyncOperation(operation, latest: revision)
+            tryCancelSyncOperation(operation)
             guard operation.isCancelled else {
                 return worker.log("waiting until the current operation finishes")
             }
@@ -408,21 +454,9 @@ class PostCoordinator: NSObject {
     }
 
     /// Try to cancel the current sync operation, which is not always possible.
-    private func tryCancelSyncOperation(_ operation: SyncOperation, latest: AbstractPost) {
-        // If there is a current sync operation running and it doesn't target
-        // the latest revision, then try to cancel it.
+    private func tryCancelSyncOperation(_ operation: SyncOperation) {
         switch operation.state {
         case .uploadingMedia:
-            // Cancel the upload for media, but keep the tasks scheduled
-            // for the media still present in the revision.
-            let deleted = Set(operation.revision.media).subtracting(Set(latest.media))
-            for media in deleted {
-                mediaCoordinator.cancelUpload(of: media)
-            }
-            if !deleted.isEmpty {
-                operation.log("cancel upload for deleted media: \(deleted.map(\.filename))")
-            }
-            operation.log("cancel media upload")
             operation.isCancelled = true
             syncOperation(operation, didFinishWithResult: .failure(CancellationError())) // Finish immediatelly
         case .syncing:

@@ -335,6 +335,35 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         // THEN post got deleted from the database
         XCTAssertNil(post.managedObjectContext)
     }
+
+    func testPauseSyncing() async throws {
+        // GIVEN a draft post that needs sync
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.authorID = 29043
+
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.content = "content-a"
+
+        // GIVEN
+        let expectation = self.expectation(description: "request-sent")
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
+            expectation.fulfill()
+            let response = try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+            response.responseTime = 0.05
+            return response
+        }
+        coordinator.setNeedsSync(for: revision1)
+        await fulfillment(of: [expectation], timeout: 2)
+
+        // WHEN
+        await coordinator.pauseSyncing(for: post)
+
+        // THEN post got synced
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertNil(post.revision)
+    }
 }
 
 private let mediaResponse = """
