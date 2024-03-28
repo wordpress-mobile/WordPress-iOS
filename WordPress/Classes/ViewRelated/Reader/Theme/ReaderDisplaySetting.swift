@@ -170,7 +170,19 @@ class ReaderDisplaySettingStore: NSObject {
 
     private let repository: UserPersistentRepository
 
-    var setting: ReaderDisplaySetting = .default {
+    var setting: ReaderDisplaySetting {
+        get {
+            return FeatureFlag.readerCustomization.enabled ? _setting : .default
+        }
+        set {
+            guard FeatureFlag.readerCustomization.enabled else {
+                return
+            }
+            _setting = newValue
+        }
+    }
+
+    private var _setting: ReaderDisplaySetting = .default {
         didSet {
             if let dictionary = try? setting.toDictionary() {
                 repository.set(dictionary, forKey: Constants.key)
@@ -180,7 +192,7 @@ class ReaderDisplaySettingStore: NSObject {
 
     init(repository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.repository = repository
-        self.setting = {
+        self._setting = {
             guard let dictionary = repository.dictionary(forKey: Constants.key),
                   let data = try? JSONSerialization.data(withJSONObject: dictionary),
                   let setting = try? JSONDecoder().decode(ReaderDisplaySetting.self, from: data) else {

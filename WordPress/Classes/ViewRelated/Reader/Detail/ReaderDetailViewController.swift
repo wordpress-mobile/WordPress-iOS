@@ -1131,7 +1131,8 @@ private extension ReaderDetailViewController {
     }
 
     func displaySettingButtonItem() -> UIBarButtonItem? {
-        guard let symbolImage = UIImage(systemName: "textformat") else {
+        guard FeatureFlag.readerCustomization.enabled,
+              let symbolImage = UIImage(systemName: "textformat") else {
             return nil
         }
         let button = barButtonItem(with: symbolImage, action: #selector(didTapDisplaySettingButton(_:)))
