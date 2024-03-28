@@ -59,8 +59,8 @@ extension UIImageView {
 
     private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         self.gravatar.cancelImageDownload()
-        guard let cache = ImageCache.shared as? WordPressUI.ImageCache else {
-            assertionFailure("ImageCache.shared should be of type WordPressUI.ImageCache")
+        guard let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching else {
+            assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
             return
         }
         let options: [ImageSettingOption] = [.imageCache(cache)]
