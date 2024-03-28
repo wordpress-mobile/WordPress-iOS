@@ -140,7 +140,11 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _publish(_ post: AbstractPost) async throws {
-        let post = post.original ?? post
+        let post = post.original()
+
+        await pauseSyncing(for: post)
+        defer { resumeSyncing(for: post) }
+
         var parameters = RemotePostUpdateParameters()
         if post.status == .draft {
             parameters.status = Post.Status.publish.rawValue
@@ -177,7 +181,7 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
     func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
-        let post = post.original ?? post
+        let post = post.original()
         do {
             let isExistingPost = post.hasRemote()
             // TODO: Set overwrite to false once conflict resolution support is added
@@ -195,7 +199,7 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
-        let post = post.original ?? post
+        let post = post.original()
         do {
             try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
         } catch {
@@ -266,8 +270,13 @@ class PostCoordinator: NSObject {
 
     // MARK: - Sync
 
+    /// Returns `true` if the post is eligible for syncing.
+    func isSyncAllowed(for post: AbstractPost) -> Bool {
+        post.status == .draft
+    }
+
     /// Returns `true` if post has any revisions that need to be synced.
-    static func isSyncNeeded(for post: AbstractPost) -> Bool {
+    func isSyncNeeded(for post: AbstractPost) -> Bool {
         post.original().getLatestRevisionNeedingSync() != nil
     }
 
@@ -278,7 +287,7 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     func setNeedsSync(for revision: AbstractPost) {
         assert(revision.isRevision(), "Must be used only on revisions")
-        assert(revision.original().status == .draft, "Must be used only with draft posts")
+        assert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
 
         if !revision.isSyncNeeded {
             revision.isSyncNeeded = true
@@ -310,6 +319,7 @@ class PostCoordinator: NSObject {
     @MainActor
     func pauseSyncing(for post: AbstractPost) async {
         assert(post.isOriginal())
+        guard isSyncAllowed(for: post) else { return }
 
         guard let worker = workers[post.objectID] else {
             return
@@ -335,6 +345,7 @@ class PostCoordinator: NSObject {
     @MainActor
     func resumeSyncing(for post: AbstractPost) {
         assert(post.isOriginal())
+        guard isSyncAllowed(for: post) else { return }
 
         guard let worker = workers[post.objectID] else {
             return

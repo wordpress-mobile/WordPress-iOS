@@ -37,7 +37,7 @@ final class PostSyncStateViewModel {
                 return .offlineChanges // A better indicator on what's going on
             }
         }
-        if PostCoordinator.isSyncNeeded(for: post) {
+        if PostCoordinator.shared.isSyncNeeded(for: post) {
             return .unsynced
         }
         if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
