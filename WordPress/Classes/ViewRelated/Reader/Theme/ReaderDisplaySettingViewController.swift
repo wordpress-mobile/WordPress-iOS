@@ -176,7 +176,7 @@ extension ReaderDisplaySettingSelectionView {
                 )
 
                 static let bodyNotice = NSLocalizedString(
-                    "reader.customization.preview.body.notice",
+                    "reader.preferences.preview.body.notice",
                     value: "This feature is still in development.",
                     comment: "Footnote to be displayed in the preview section, noticing that the feature is in development."
                 )
@@ -279,7 +279,7 @@ extension ReaderDisplaySettingSelectionView {
             Slider(value: $sliderValue,
                    in: Double(ReaderDisplaySetting.Size.smaller.rawValue)...Double(ReaderDisplaySetting.Size.larger.rawValue),
                    step: 1) {
-                Text("Size")
+                Text(Strings.sizeSliderLabel)
             } minimumValueLabel: {
                 Text("A")
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .smaller, textStyle: .body)))
@@ -295,9 +295,15 @@ extension ReaderDisplaySettingSelectionView {
 
     private struct Strings {
         static let doneButton = NSLocalizedString(
-            "reader.customization.control.doneButton",
+            "reader.preferences.control.doneButton",
             value: "Done",
             comment: "Title for a button to save and apply the customized Reader Preferences settings when tapped."
+        )
+
+        static let sizeSliderLabel = NSLocalizedString(
+            "reader.preferences.control.sizeSlider.description",
+            value: "Size",
+            comment: "Describes that the slider is used to customize the text size in the Reader."
         )
     }
 }
