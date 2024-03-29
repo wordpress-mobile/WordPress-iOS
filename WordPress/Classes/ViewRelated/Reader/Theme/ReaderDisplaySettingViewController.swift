@@ -131,17 +131,19 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         var tagsView: some View {
-            HStack(spacing: .DS.Padding.single) {
-                ForEach(Strings.Preview.tags, id: \.self) { text in
-                    Text(text)
-                        .font(Font(viewModel.displaySetting.font(with: .callout)))
-                        .foregroundStyle(viewModel.foregroundColor)
-                        .padding(.horizontal, .DS.Padding.double)
-                        .padding(.vertical, .DS.Padding.single)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: .DS.Radius.small)
-                                .strokeBorder(Color(viewModel.displaySetting.color.foreground.withAlphaComponent(0.3)), lineWidth: 1.0)
-                        }
+            ScrollView(.horizontal) {
+                HStack(spacing: .DS.Padding.single) {
+                    ForEach(Strings.Preview.tags, id: \.self) { text in
+                        Text(text)
+                            .font(Font(viewModel.displaySetting.font(with: .callout)))
+                            .foregroundStyle(viewModel.foregroundColor)
+                            .padding(.horizontal, .DS.Padding.double)
+                            .padding(.vertical, .DS.Padding.single)
+                            .overlay {
+                                RoundedRectangle(cornerRadius: .DS.Radius.small)
+                                    .strokeBorder(Color(viewModel.displaySetting.color.foreground.withAlphaComponent(0.3)), lineWidth: 1.0)
+                            }
+                    }
                 }
             }
         }
