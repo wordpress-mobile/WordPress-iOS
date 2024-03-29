@@ -146,8 +146,6 @@ struct ReaderDisplaySetting: Codable, Equatable {
         case sans
         case serif
         case mono
-//        case olde
-//        case rock
 
         var cssString: String {
             switch self {
