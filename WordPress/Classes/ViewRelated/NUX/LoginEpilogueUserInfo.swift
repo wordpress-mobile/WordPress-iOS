@@ -38,18 +38,9 @@ public struct LoginEpilogueUserInfo {
 //
 extension LoginEpilogueUserInfo {
 
-    /// Updates the Epilogue properties, given a GravatarProfile instance.
-    ///
-    func updating(with profile: Gravatar.UserProfile) -> LoginEpilogueUserInfo {
-        var copy = self
-        copy.gravatarUrl = profile.thumbnailURLString
-        copy.fullName = profile.displayName ?? ""
-        return copy
-    }
-
     mutating func update(with profile: GravatarProfile) {
-        self.gravatarUrl = profile.thumbnailUrl
-        self.fullName = profile.displayName
+        gravatarUrl = profile.thumbnailUrl
+        fullName = profile.displayName
     }
 
     mutating func update(with socialUser: SocialUser) {
