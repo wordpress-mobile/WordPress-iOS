@@ -74,7 +74,7 @@
 
     blog.dotComID = blogId;
 
-    OCMStub([api GET:[OCMArg isEqual:url]
+    OCMStub([api get:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg any]
              failure:[OCMArg any]]);
@@ -107,7 +107,7 @@
     blog.dotComID = blogId;
     blog.account.wordPressComRestApi = api;
 
-    OCMStub([api GET:[OCMArg isEqual:url]
+    OCMStub([api get:[OCMArg isEqual:url]
           parameters:[OCMArg isNotNil]
              success:[OCMArg any]
              failure:[OCMArg any]]);
@@ -147,7 +147,7 @@
     blog.dotComID = blogId;
     blog.account.wordPressComRestApi = api;
 
-    OCMStub([api POST:[OCMArg isEqual:url]
+    OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg isNotNil]
               success:[OCMArg any]
               failure:[OCMArg any]]);
