@@ -44,12 +44,13 @@ def wordpress_ui
   # pod 'WordPressUI', '~> 1.15'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
-  # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
-  pod 'WordPressUI', path: '../WordPressUI-iOS'
+  pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: '7f7606eefceaaab9982cf3417093a45d78bf284d'
+  # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
 def gravatar
-  pod 'Gravatar', path: '../Gravatar-SDK-iOS', :testspecs => ['GravatarTests']
+  #pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: '03160554be8b9b7f97055453f25d398dda2ec218'
 end
 
 def wordpress_kit
