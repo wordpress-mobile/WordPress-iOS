@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-18 13:03:07+0000 */
+/* Translation-Revision-Date: 2024-03-28 19:18:49+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: de */
@@ -1146,7 +1146,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Books" = "Bücher";
 
 /* No comment provided by engineer. */
-"Border Radius" = "Rahmenradius";
+"Border Radius" = "Eckenradius";
 
 /* No comment provided by engineer. */
 "Border Settings" = "Rahmen-Einstellungen";
