@@ -283,7 +283,7 @@ FeaturedImageViewControllerDelegate>
 - (void)setupPostDateFormatter
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterLongStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     dateFormatter.timeZone = [self.blog timeZone];
     self.postDateFormatter = dateFormatter;
@@ -691,16 +691,10 @@ FeaturedImageViewControllerDelegate>
     } else if (row == PostSettingsRowPublishDate) {
         // Publish date
         cell = [self getWPTableViewDisclosureCell];
-        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
-            if ([self.apost hasFuturePublishDate]) {
-                cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
-            }
-
+        cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
+        if (self.apost.dateCreated) {
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
-            cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
 
