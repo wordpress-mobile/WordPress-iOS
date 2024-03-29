@@ -59,15 +59,35 @@ struct ReaderDisplaySetting: Codable, Equatable {
         var label: String {
             switch self {
             case .system:
-                return "Default"
+                return NSLocalizedString(
+                    "reader.preferences.color.default",
+                    value: "Default",
+                    comment: "Name for the Default color theme, used in the Reader's reading preferences."
+                )
             case .soft:
-                return "Soft"
+                return NSLocalizedString(
+                    "reader.preferences.color.soft",
+                    value: "Soft",
+                    comment: "Name for the Soft color theme, used in the Reader's reading preferences."
+                )
             case .sepia:
-                return "Sepia"
+                return NSLocalizedString(
+                    "reader.preferences.color.sepia",
+                    value: "Sepia",
+                    comment: "Name for the Sepia color theme, used in the Reader's reading preferences."
+                )
             case .evening:
-                return "Evening"
+                return NSLocalizedString(
+                    "reader.preferences.color.evening",
+                    value: "Evening",
+                    comment: "Name for the Evening color theme, used in the Reader's reading preferences."
+                )
             case .oled:
-                return "OLED"
+                return NSLocalizedString(
+                    "reader.preferences.color.oled",
+                    value: "OLED",
+                    comment: "Name for the OLED color theme, used in the Reader's reading preferences."
+                )
             }
         }
 
