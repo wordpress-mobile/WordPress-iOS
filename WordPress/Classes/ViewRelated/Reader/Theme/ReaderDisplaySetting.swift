@@ -159,17 +159,16 @@ struct ReaderDisplaySetting: Codable, Equatable {
         }
     }
 
-    // TODO: Determine the magnitude
     enum Size: Int, Codable, CaseIterable {
-        case smaller = -2
+        case extraSmall = -2
         case small
         case normal
         case large
-        case larger
+        case extraLarge
 
         var scale: Double {
             switch self {
-            case .smaller:
+            case .extraSmall:
                 return 0.75
             case .small:
                 return 0.9
@@ -177,7 +176,7 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return 1.0
             case .large:
                 return 1.15
-            case .larger:
+            case .extraLarge:
                 return 1.25
             }
         }
