@@ -226,15 +226,11 @@ extension ReaderTabViewModel {
 
     func presentManage(filter: FilterProvider, from: UIViewController) {
         guard let managePresenter = settingsPresenter as? ReaderManageScenePresenter else {
-            settingsPresenter.present(on: from, animated: true, completion: nil)
+          settingsPresenter.present(on: from, animated: true, completion: nil)
             return
         }
 
-        managePresenter.present(on: from, selectedSection: filter.section, animated: true) {
-            // on completion, ensure that the FilterProvider is refreshed so the latest changes
-            // can be reflected on the UI.
-            filter.refresh()
-        }
+        managePresenter.present(on: from, selectedSection: filter.section, animated: true, completion: nil)
     }
 
     func didTapStreamFilterButton(with filter: FilterProvider) {

@@ -177,11 +177,11 @@ class StatsBaseCell: UITableViewCell {
     }
 
     enum Metrics {
-        static let padding: CGFloat = Length.Padding.double
-        static let bottomSpacing: CGFloat = Length.Padding.split
-        static let stackSpacing: CGFloat = Length.Padding.single
-        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -Length.Padding.single, bottom: 0, right: Length.Padding.single)
-        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: Length.Padding.single, bottom: 0, right: -Length.Padding.single)
+        static let padding: CGFloat = .DS.Padding.double
+        static let bottomSpacing: CGFloat = .DS.Padding.split
+        static let stackSpacing: CGFloat = .DS.Padding.single
+        static let buttonTitleInsets = UIEdgeInsets(top: 0, left: -.DS.Padding.single, bottom: 0, right: .DS.Padding.single)
+        static let rtlButtonTitleInsets = UIEdgeInsets(top: 0, left: .DS.Padding.single, bottom: 0, right: -.DS.Padding.single)
     }
 
     private enum LocalizedText {

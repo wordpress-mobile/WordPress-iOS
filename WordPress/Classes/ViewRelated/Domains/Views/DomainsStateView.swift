@@ -10,7 +10,7 @@ struct DomainsStateView: View {
     }
 
     var body: some View {
-        VStack(spacing: Length.Padding.single) {
+        VStack(spacing: .DS.Padding.single) {
             Text(viewModel.title)
                 .font(Font.DS.heading3)
                 .multilineTextAlignment(.center)
@@ -21,7 +21,7 @@ struct DomainsStateView: View {
                 .multilineTextAlignment(.center)
             if let button = viewModel.button {
                 Spacer()
-                    .frame(height: Length.Padding.single)
+                    .frame(height: .DS.Padding.single)
                 DSButton(title: button.title, style: .init(emphasis: .primary, size: .medium)) {
                     button.action()
                 }

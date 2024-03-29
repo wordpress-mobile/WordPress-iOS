@@ -12,7 +12,7 @@ struct NoAtomicLogsView: View {
     var body: some View {
         switch state {
         case .error(let retryAction):
-            VStack(spacing: Length.Padding.double) {
+            VStack(spacing: .DS.Padding.double) {
                 Text(Strings.error)
                 DSButton(title: Strings.retry, style: .init(emphasis: .primary, size: .small)) {
                     retryAction()

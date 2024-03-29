@@ -140,15 +140,15 @@ extension ReaderTagsTableViewModel {
     private func showSelectInterests() {
         let configuration = ReaderSelectInterestsConfiguration(
             title: NSLocalizedString(
-                "reader.select.interests.title",
-                value: "Subscribe to tags",
+                "reader.select.interests.follow.title",
+                value: "Follow tags",
                 comment: "Screen title. Reader select interests title label text."
             ),
             subtitle: nil,
             buttonTitle: nil,
             loading: NSLocalizedString(
-                "reader.select.interests.loading",
-                value: "Subscribing to new tags...",
+                "reader.select.interests.following",
+                value: "Following new tags...",
                 comment: "Label displayed to the user while loading their selected interests"
             )
         )
