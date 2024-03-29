@@ -68,7 +68,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
 - (void)setGravatarEmail:(NSString *)gravatarEmail
 {    
     // Since this view is only visible to the current user, we should show all ratings
-    [self.gravatarImageView downloadGravatarFor:gravatarEmail gravatarRating:GravatarRatingX];
+    [self.gravatarImageView downloadGravatarFor:gravatarEmail gravatarRating:ObjcGravatarRatingX];
     _gravatarEmail = gravatarEmail;
 }
 
@@ -80,7 +80,7 @@ const CGFloat MeHeaderViewVerticalSpacing = 10.0;
     // We need to update the internal cache. Otherwise, any upcoming query to refresh the gravatar
     // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
     //
-    [self.gravatarImageView overrideGravatarImageCache:gravatarImage rating:GravatarRatingsX email:self.gravatarEmail];
+    [self.gravatarImageView overrideGravatarImageCache:gravatarImage gravatarRating:ObjcGravatarRatingX email:self.gravatarEmail];
     [self.gravatarImageView updateGravatarWithImage:gravatarImage email:self.gravatarEmail];
 }
 

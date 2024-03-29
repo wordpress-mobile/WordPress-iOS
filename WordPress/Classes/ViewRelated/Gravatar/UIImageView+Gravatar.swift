@@ -2,9 +2,9 @@ import Foundation
 import Gravatar
 import WordPressUI
 
-// Convenience intermediate enum for Objc compatibility.
-@objc(GravatarRating)
+/// Convenience intermediate enum for Objc compatibility.
 /// Gravatar Image Ratings for Objc compatibility.
+@objc
 public enum ObjcGravatarRating: Int {
     case g
     case pg
@@ -76,6 +76,15 @@ extension UIImageView {
                 failure?(error)
             }
         }
+    }
+
+    @objc public func overrideGravatarImageCache(_ image: UIImage, gravatarRating: ObjcGravatarRating, email: String) {
+        guard let gravatarURL = AvatarURL.url(for: email, preferredSize: .pixels(gravatarDefaultSize()), gravatarRating: gravatarRating.map()) else {
+            return
+        }
+
+        listenForGravatarChanges(forEmail: email)
+        overrideImageCache(for: gravatarURL, with: image)
     }
 
     private func gravatarDefaultSize() -> Int {
