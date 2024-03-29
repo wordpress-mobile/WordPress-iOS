@@ -49,7 +49,7 @@ def wordpress_ui
 end
 
 def gravatar
-  #pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
   pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: '03160554be8b9b7f97055453f25d398dda2ec218'
 end
 
