@@ -170,7 +170,7 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         }
         isSyncing = true
         let service = ReaderTopicService(coreDataStack: ContextManager.shared)
-        service.fetchFollowedSites(success: {[weak self] in
+        service.fetchAllFollowedSites(success: {[weak self] in
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
@@ -179,7 +179,6 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
             self?.isSyncing = false
             self?.configureNoResultsView()
             self?.refreshControl.endRefreshing()
-
         })
     }
 

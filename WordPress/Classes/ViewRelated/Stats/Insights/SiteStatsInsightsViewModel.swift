@@ -22,8 +22,8 @@ class SiteStatsInsightsViewModel: Observable {
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
     private var insightsToShow = [InsightType]()
-    private var lastRequestedDate: Date
-    private var lastRequestedPeriod: StatsPeriodUnit
+    private(set) var lastRequestedDate: Date
+    private(set) var lastRequestedPeriod: StatsPeriodUnit
 
     private let pinnedItemStore: SiteStatsPinnedItemStore?
     private let itemToDisplay: SiteStatsPinnable?

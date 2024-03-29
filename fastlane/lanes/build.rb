@@ -251,62 +251,6 @@ platform :ios do
     )
   end
 
-  # Builds the "WordPress Internal" app and uploads it to App Center
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by CI
-  #
-  desc 'Builds and uploads for distribution to App Center'
-  lane :build_and_upload_app_center do |options|
-    unless options[:skip_prechecks]
-      ensure_git_status_clean unless is_ci
-      ios_build_preflight
-    end
-
-    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
-    )
-
-    upload_build_to_app_center(
-      name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes: File.read(WORDPRESS_RELEASE_NOTES_PATH),
-      distribute_to_everyone: true
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    upload_gutenberg_sourcemaps(
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      release_version: release_version_current_internal,
-      build_version: build_code_current_internal,
-      app_identifier: 'org.wordpress.internal'
-    )
-  end
-
   # Builds the WordPress app for a Prototype Build ("WordPress Alpha" scheme), and uploads it to App Center
   #
   # @called_by CI

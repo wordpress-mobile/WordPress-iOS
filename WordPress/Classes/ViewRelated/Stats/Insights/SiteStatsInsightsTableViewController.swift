@@ -430,15 +430,17 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
 
         switch statSection {
         case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
-            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            selectedDate = viewModel?.lastRequestedDate
+            let selectedPeriod = viewModel?.lastRequestedPeriod
+            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         default:
             segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
     }
 
-    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?, selectedPeriod: StatsPeriodUnit?) {
         let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

@@ -1,8 +1,2 @@
-A tela Estatísticas está com uma nova guia Tráfego. Receba gráficos melhores e acesse a todos os dados do seu histórico em um só lugar. Isso mesmo: agora, você tem dados e mais dados para conferir.
-
-As notificações ganharam uma repaginada, oferecendo a você um design mais elegante e fácil de usar. Nós também fizemos algumas alterações no editor de blocos.
-
-- Adicionamos o suporte ao VideoPress v5 para melhorar o desempenho nos blocos de vídeo.
-- Não haverá mais falhas no aplicativo quando o editor rolar automaticamente para um bloco. Não vamos desapontar ou desistir de você.
-- Agora, uma mensagem de erro será exibida quando ocorrer uma falha no envio de um vídeo para blocos de texto ou mídia.
-- As imagens não aparecerão parcialmente transparentes enquanto estiverem sendo enviadas. Tudo colorido, o tempo todo.
+Implementamos uma correção para evitar determinados bugs nos tipos de bloco individual e no editor. Essa correção registra eventuais bugs para que possamos eliminá-los também.
+Além disso, removemos o botão de edição da tela de êxito "Post publicado" e o botão de publicação da tela "Visualização" para melhorar sua experiência de publicação e visualização. Um dia normal de trabalho.

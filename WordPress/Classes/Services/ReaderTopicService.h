@@ -23,15 +23,6 @@ extern NSString * const ReaderTopicFreshlyPressedPathCommponent;
 - (void)fetchReaderMenuWithSuccess:(void (^)(void))success failure:(void (^)(NSError *error))failure;
 
 /**
- Get a list of ReaderSiteTopics of the sites the user follows.
-
- @param success block called on a successful fetch.
- @param failure block called if there is any error. `error` can be any underlying network error.
- */
-- (void)fetchFollowedSitesWithSuccess:(void(^)(void))success
-                              failure:(void(^)(NSError *error))failure;
-
-/**
  Deletes all search topics from core data and saves the context.
  Use to clean-up searches when they are finished.
  */

@@ -1,5 +1,2 @@
-Vi har gjort några ändringar i blockredigeraren.
-
-- Appen kommer inte längre att krascha när redigeraren automatiskt bläddrar ner till ett block.
-- Du kommer nu att se ett felmeddelande när en videouppladdning till ett media- och textblock misslyckas.
-- Bilder kommer inte längre att visas som delvis transparenta medan de laddas upp. Helt i färg, hela tiden.
+Vi har introducerat en korrigering som förhindrar vissa buggar i redigeraren och enskilda blocktyper. Den här korrigeringen loggar även eventuella buggar som slinker igenom, så att vi kan ta itu med dem också.
+Vi har dessutom förbättrat förhandsgransknings- och publiceringsupplevelsen genom att ta bort knappen Redigera från skärmen "Inlägg publicerat" och knappen Publicera från skärmen "Förhandsgranskning". Allt på en arbetsdag.
