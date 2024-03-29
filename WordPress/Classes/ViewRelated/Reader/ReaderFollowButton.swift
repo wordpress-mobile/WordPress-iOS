@@ -59,6 +59,7 @@ struct ReaderFollowButton: View {
             }
             return .init()
         }()
+        self.displaySetting = displaySetting
         self.action = action
     }
 
