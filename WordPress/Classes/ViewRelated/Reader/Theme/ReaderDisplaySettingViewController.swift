@@ -277,15 +277,15 @@ extension ReaderDisplaySettingSelectionView {
 
         var sizeSelectionView: some View {
             Slider(value: $sliderValue,
-                   in: Double(ReaderDisplaySetting.Size.smaller.rawValue)...Double(ReaderDisplaySetting.Size.larger.rawValue),
+                   in: Double(ReaderDisplaySetting.Size.extraSmall.rawValue)...Double(ReaderDisplaySetting.Size.extraLarge.rawValue),
                    step: 1) {
                 Text(Strings.sizeSliderLabel)
             } minimumValueLabel: {
                 Text("A")
-                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .smaller, textStyle: .body)))
+                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraSmall, textStyle: .body)))
             } maximumValueLabel: {
                 Text("A")
-                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .larger, textStyle: .body)))
+                    .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
             } onEditingChanged: { _ in
                 viewModel.displaySetting.size = .init(rawValue: Int(sliderValue)) ?? .normal
             }
