@@ -165,6 +165,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /**
  Returns YES if the original post is a draft
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)originalIsDraft;
 
 /**
@@ -172,12 +173,14 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  This is different from "isScheduled" in that  a post with a draft, pending, or
  trashed status can also have a date_created_gmt with a future value.
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)hasFuturePublishDate;
 
 /**
  Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal.
  Used when determining if a post should publish immediately.
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)dateCreatedIsNilOrEqualToDateModified;
 
 /**
