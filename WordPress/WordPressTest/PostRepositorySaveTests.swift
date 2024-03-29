@@ -48,7 +48,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "draft",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
@@ -117,7 +118,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
                   "tag-2"
                 ]
               },
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
@@ -152,7 +154,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "publish",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             var post = WordPressComPost.mock
@@ -191,7 +194,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "future",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             var post = WordPressComPost.mock
@@ -232,7 +236,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
               "status" : "publish",
-              "title" : "Hello"
+              "title" : "Hello",
+              "type" : "post"
             }
             """)
             return HTTPStubsResponse(error: URLError(.notConnectedToInternet))
@@ -958,7 +963,7 @@ private extension URLRequest {
     func getIfNotModifiedSince() throws -> Date {
         let parameters = try getBodyParameters()
         guard let value = parameters["if_not_modified_since"] as? String,
-              let date = NSDate.rfc3339DateFormatter().date(from: value) else {
+              let date = rfc3339DateFormatter.date(from: value) else {
             throw PostRepositorySaveTestsError.invalidRequest
         }
         return date
@@ -1048,12 +1053,20 @@ private struct WordPressComAuthor: Hashable, Codable {
 
 private let decoder: JSONDecoder = {
     let decoder = JSONDecoder()
-    decoder.dateDecodingStrategy = .formatted(NSDate.rfc3339DateFormatter())
+    decoder.dateDecodingStrategy = .formatted(rfc3339DateFormatter)
     return decoder
 }()
 
 private let encoder: JSONEncoder = {
     let encoder = JSONEncoder()
-    encoder.dateEncodingStrategy = .formatted(NSDate.rfc3339DateFormatter())
+    encoder.dateEncodingStrategy = .formatted(rfc3339DateFormatter)
     return encoder
+}()
+
+private let rfc3339DateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"
+    formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0) as TimeZone
+    formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
+    return formatter
 }()
