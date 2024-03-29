@@ -24,9 +24,8 @@ class GravatarServiceTests: CoreDataTestCase {
     class ImageServiceMock: GravatarImageUploader {
         var capturedAccountToken: String = ""
         var capturedAccountEmail: String = ""
-
-        func upload(_ image: UIImage, email: String, accessToken: String) async throws -> URLResponse {
-            capturedAccountEmail = email
+        func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse {
+            capturedAccountEmail = email.rawValue
             capturedAccountToken = accessToken
             return URLResponse()
         }
