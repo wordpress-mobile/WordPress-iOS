@@ -62,7 +62,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
         //
         if let email = gravatarEmail {
-            gravatarImageView.overrideGravatarImageCache(image, gravatarRating: ObjcGravatarRating.x, email: email)
+            gravatarImageView.overrideGravatarImageCache(image, gravatarRating: .x, email: email)
             gravatarImageView.updateGravatar(image: image, email: email)
         }
     }
