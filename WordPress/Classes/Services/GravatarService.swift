@@ -31,7 +31,7 @@ public class GravatarService {
     ///     - completion: A completion block.
     ///
     open func fetchProfile(email: String, onCompletion: @escaping ((_ profile: GravatarProfile?) -> Void)) {
-        let remote = gravatarServiceRemote()
+        let remote = GravatarServiceRemote()
         remote.fetchProfile(email, success: { remoteProfile in
             var profile = GravatarProfile()
             profile.profileID = remoteProfile.profileID
@@ -77,9 +77,5 @@ public class GravatarService {
                 completion?(error)
             }
         }
-    }
-
-    func gravatarServiceRemote() -> GravatarServiceRemote {
-        return GravatarServiceRemote()
     }
 }
