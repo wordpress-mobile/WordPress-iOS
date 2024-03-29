@@ -59,11 +59,16 @@ extension UIImageView {
 
     private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
         self.gravatar.cancelImageDownload()
-        guard let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching else {
-            assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
-            return
+        var options: [ImageSettingOption]?
+        if let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching {
+            options = [.imageCache(cache)]
         }
-        let options: [ImageSettingOption] = [.imageCache(cache)]
+        else {
+            // If we don't pass any cache to `gravatar.setImage(...)` it will use its internal in-memory cache.
+            // But in order to make things work consistently with the rest of the app, we should use `WordPressUI.ImageCache.shared` here.
+            // It needs to be fixed if we fail to do that. That's why we put an assertionFailure here.
+            assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
+        }
         self.gravatar.setImage(with: fullURL,
                                placeholder: placeholder,
                                options: options) { [weak self] result in
