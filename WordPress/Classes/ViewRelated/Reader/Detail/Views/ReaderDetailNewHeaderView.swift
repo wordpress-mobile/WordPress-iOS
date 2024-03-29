@@ -264,7 +264,7 @@ struct ReaderDetailNewHeaderView: View {
             if let postTitle = viewModel.postTitle {
                 Text(postTitle)
                     .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
-                    .foregroundStyle(Color(viewModel.displaySetting.color.foreground))
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
             }
