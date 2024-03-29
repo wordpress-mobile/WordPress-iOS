@@ -26,11 +26,11 @@ struct ReaderDisplaySetting: Codable, Equatable {
         let uiFont = {
             switch font {
             case .serif:
-                return WPStyleGuide.serifFontForTextStyle(textStyle).withSize(pointSize)
+                return WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight).withSize(pointSize)
             case .mono:
-                return .monospacedSystemFont(ofSize: pointSize, weight: .regular)
+                return .monospacedSystemFont(ofSize: pointSize, weight: weight)
             default:
-                return .systemFont(ofSize: pointSize)
+                return .systemFont(ofSize: pointSize, weight: weight)
             }
         }()
 
