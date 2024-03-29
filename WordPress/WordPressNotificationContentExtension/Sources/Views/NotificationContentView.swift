@@ -187,7 +187,7 @@ extension NotificationContentView {
     func downloadGravatar() {
         guard let specifiedGravatar = viewModel.gravatarURLString,
             let validURL = URL(string: specifiedGravatar),
-            let gravatar = GravatarURL(validURL) else {
+              let gravatar = AvatarURL(validURL) else {
 
             return
         }
