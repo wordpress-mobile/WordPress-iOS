@@ -1,0 +1,2 @@
+Implementamos uma correção para evitar determinados bugs nos tipos de bloco individual e no editor. Essa correção registra eventuais bugs para que possamos eliminá-los também.
+Além disso, removemos o botão de edição da tela de êxito "Post publicado" e o botão de publicação da tela "Visualização" para melhorar sua experiência de publicação e visualização. Um dia normal de trabalho.

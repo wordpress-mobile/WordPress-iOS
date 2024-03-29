@@ -1,0 +1,2 @@
+Hemos solucionado un problema que ocasionaba determinados errores en el editor y en tipos de bloques individuales. Con esta solución, se registran los errores que puedan pasar inadvertidos, así podremos acabar con ellos de un plumazo.
+Además, generar una vista previa y publicar es ahora más fácil, ya que hemos eliminado el botón de edición de la pantalla que confirma que la entrada se ha publicado correctamente, y también hemos quitado el botón de publicación de la pantalla de vista previa.  Forma parte del trabajo.

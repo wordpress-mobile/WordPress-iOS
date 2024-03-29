@@ -1,0 +1,2 @@
+Wir haben eine Verbesserung eingeführt, die bestimmte Fehler innerhalb des Editors und einzelner Blocktypen verhindert. Diese Verbesserung zeichnet alle unbemerkten Fehler auf, sodass auch diese beseitigt werden können.
+Außerdem haben wir die Vorschau und Veröffentlichung verbessert, indem wir den Button zum Bearbeiten aus dem Erfolgsbildschirm „Beitrag veröffentlicht“ und den Button zum Veröffentlichen aus dem Bildschirm „Vorschau“ entfernt haben. Alles in kürzester Zeit.

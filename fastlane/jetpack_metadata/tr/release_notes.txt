@@ -1,0 +1,2 @@
+Düzenleyicideki ve bireysel blok türlerindeki belirli hataları önleyen bir düzeltmeyi kullanıma sunduk. Bu düzeltme gözden kaçan hataları da kaydeder, bu sayede onları da düzeltebiliriz.
+Ayrıca "Gönderi Yayımlandı" işlem başarılı ekranından düzenleme düğmesini ve "Önizleme" ekranından yayımlama düğmesini kaldırarak önizleme ve yayımlama deneyiminizi de iyileştirdik. Hepsi bir günlük iş.
