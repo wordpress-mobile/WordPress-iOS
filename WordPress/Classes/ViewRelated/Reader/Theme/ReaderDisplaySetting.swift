@@ -6,7 +6,7 @@ struct ReaderDisplaySetting: Codable, Equatable {
     // MARK: Properties
 
     // The default display setting.
-    static let `default` = ReaderDisplaySetting(color: .system, font: .sans, size: .normal)
+    static let standard = ReaderDisplaySetting(color: .system, font: .sans, size: .normal)
 
     var color: Color
     var font: Font
@@ -200,7 +200,7 @@ class ReaderDisplaySettingStore: NSObject {
 
     var setting: ReaderDisplaySetting {
         get {
-            return FeatureFlag.readerCustomization.enabled ? _setting : .default
+            return FeatureFlag.readerCustomization.enabled ? _setting : .standard
         }
         set {
             guard FeatureFlag.readerCustomization.enabled else {
@@ -210,7 +210,7 @@ class ReaderDisplaySettingStore: NSObject {
         }
     }
 
-    private var _setting: ReaderDisplaySetting = .default {
+    private var _setting: ReaderDisplaySetting = .standard {
         didSet {
             if let dictionary = try? setting.toDictionary() {
                 repository.set(dictionary, forKey: Constants.key)
@@ -224,7 +224,7 @@ class ReaderDisplaySettingStore: NSObject {
             guard let dictionary = repository.dictionary(forKey: Constants.key),
                   let data = try? JSONSerialization.data(withJSONObject: dictionary),
                   let setting = try? JSONDecoder().decode(ReaderDisplaySetting.self, from: data) else {
-                return .default
+                return .standard
             }
             return setting
         }()

@@ -27,7 +27,7 @@ class ReaderDetailNewHeaderViewHost: UIView {
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
-    var displaySetting: ReaderDisplaySetting = .default {
+    var displaySetting: ReaderDisplaySetting = .standard {
         didSet {
             viewModel.displaySetting = displaySetting
             Task { @MainActor in

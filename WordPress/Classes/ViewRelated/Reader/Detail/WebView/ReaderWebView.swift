@@ -14,7 +14,7 @@ class ReaderWebView: WKWebView {
 
     var isP2 = false
 
-    var displaySetting: ReaderDisplaySetting = .default
+    var displaySetting: ReaderDisplaySetting = .standard
 
     /// Make the webview transparent
     ///
