@@ -140,24 +140,29 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _publish(_ post: AbstractPost) async throws {
-        let post = post.original()
+        let original = post.original()
+        let latest = post.latest()
 
-        await pauseSyncing(for: post)
-        defer { resumeSyncing(for: post) }
+        await pauseSyncing(for: original)
+        defer { resumeSyncing(for: original) }
 
         var parameters = RemotePostUpdateParameters()
-        if post.status == .draft {
-            parameters.status = Post.Status.publish.rawValue
+        if original.status == .draft {
+            if let date = latest.dateCreated, date > .now {
+                parameters.status = Post.Status.scheduled.rawValue
+            } else {
+                parameters.status = Post.Status.publish.rawValue
+            }
         } else {
             // Publish according to the currrent post settings: private, scheduled, etc.
         }
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository._save(post, changes: parameters)
-            didPublish(post)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post))
+            try await repository._save(original, changes: parameters)
+            didPublish(original)
+            show(PostCoordinator.makeUploadSuccessNotice(for: original))
         } catch {
-            handleError(error, for: post)
+            handleError(error, for: original)
             throw error
         }
     }

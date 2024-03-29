@@ -457,7 +457,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func updatePublishButtonLabel() {
-        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
+        publishButtonViewModel.title = PostEditorStateContext.action(for: post).publishActionLabel
     }
 
     private func buttonPublishTapped() {

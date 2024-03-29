@@ -256,36 +256,44 @@ public class PostEditorStateContext {
         publishDate: Date?,
         userCanPublish: Bool
     ) -> PostEditorAction {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            return action(postStatus: originalPostStatus ?? .draft, publishDate: publishDate, userCanPublish: userCanPublish)
+        } else {
             return _action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
         }
+    }
 
+    static func action(for revision: AbstractPost) -> PostEditorAction {
+        action(
+            postStatus: revision.original().status ?? .draft,
+            publishDate: revision.dateCreated,
+            userCanPublish: revision.blog.capabilities != nil ? revision.blog.isPublishingPostsAllowed() : true
+        )
+    }
+
+    private static func action(
+        postStatus: BasePost.Status,
+        publishDate: Date?,
+        userCanPublish: Bool
+    ) -> PostEditorAction {
         func makePublishAction() -> PostEditorAction {
             guard userCanPublish else {
                 return .submitForReview
             }
-            guard let date = publishDate else {
+            guard let publishDate else {
                 return .publish
             }
-            return date > .now ? .schedule : .publish
+            return publishDate > .now ? .schedule : .publish
         }
-
-        let originalPostStatus = originalPostStatus ?? .draft
-        switch originalPostStatus {
+        switch postStatus {
         case .draft:
             return makePublishAction()
         case .pending:
-            if userCanPublish {
-                // Let admin publish
-                return makePublishAction()
-            } else {
-                // An contributor update
-                return .update
-            }
+            return .update
         case .publishPrivate, .publish, .scheduled:
             return .update
         case .trash, .deleted:
-            return .update // Should not be editable
+            return .update // Should never happen (trashed posts are not be editable)
         }
     }
 
@@ -293,7 +301,8 @@ public class PostEditorStateContext {
     private static func _action(
         for originalPostStatus: BasePost.Status?,
         newPostStatus: BasePost.Status,
-        userCanPublish: Bool) -> PostEditorAction {
+        userCanPublish: Bool
+    ) -> PostEditorAction {
         let isNewOrDraft = { (status: BasePost.Status?) -> Bool in
             return status == nil || status == .draft
         }
