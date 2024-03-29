@@ -10,7 +10,7 @@ html, body {
 
 body {
   -webkit-text-size-adjust: none !important;
-  font: -apple-system-body !important;
+  font: -apple-system-body, sans-serif !important;
   font-family: 'Noto Serif', serif !important;
   font-weight: 400 !important;
   padding: 0 !important;
