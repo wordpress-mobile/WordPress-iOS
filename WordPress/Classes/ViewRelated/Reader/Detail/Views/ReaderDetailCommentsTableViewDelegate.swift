@@ -172,7 +172,19 @@ private extension ReaderDetailCommentsTableViewDelegate {
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
-        cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.configure(buttonTitle: title,
+                           titleFont: displaySetting.font(with: .body, weight: .semibold),
+                           normalColor: displaySetting.color.background,
+                           highlightedColor: displaySetting.color.border,
+                           borderColor: displaySetting.color.border,
+                           buttonInsets: Constants.buttonInsets,
+                           backgroundColor: displaySetting.color.foreground)
+        } else {
+            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
+        }
+
         cell.delegate = buttonDelegate
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
