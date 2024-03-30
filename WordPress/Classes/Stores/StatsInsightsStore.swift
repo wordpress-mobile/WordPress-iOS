@@ -266,7 +266,7 @@ private extension StatsInsightsStore {
     }
 
     func fetchInsightsCards(forceRefresh: Bool) {
-        guard let api = statsRemote(), let siteID = SiteStatsInformation.sharedInstance.siteID else {
+        guard let api = statsRemote() else {
             setAllFetchingStatus(.idle)
             return
         }
