@@ -3,6 +3,10 @@ import WordPressShared
 
 struct ReaderDisplaySetting: Codable, Equatable {
 
+    static var customizationEnabled: Bool {
+        FeatureFlag.readerCustomization.enabled
+    }
+
     // MARK: Properties
 
     // The default display setting.
@@ -208,10 +212,10 @@ class ReaderDisplaySettingStore: NSObject {
 
     var setting: ReaderDisplaySetting {
         get {
-            return FeatureFlag.readerCustomization.enabled ? _setting : .standard
+            return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
         set {
-            guard FeatureFlag.readerCustomization.enabled else {
+            guard ReaderDisplaySetting.customizationEnabled else {
                 return
             }
             _setting = newValue

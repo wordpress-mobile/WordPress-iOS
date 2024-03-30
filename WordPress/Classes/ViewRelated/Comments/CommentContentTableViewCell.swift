@@ -284,7 +284,7 @@ private extension CommentContentTableViewCell {
 
         /// NOTE: Remove when the `readerCustomization` flag is removed.
         var customizationEnabled: Bool {
-            FeatureFlag.readerCustomization.enabled
+            ReaderDisplaySetting.customizationEnabled
         }
 
         // Name Label
