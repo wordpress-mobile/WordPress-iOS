@@ -141,7 +141,6 @@ struct ReaderDisplaySetting: Codable, Equatable {
         }
     }
 
-    // TODO: Need to import the fonts
     enum Font: String, Codable, CaseIterable {
         case sans
         case serif

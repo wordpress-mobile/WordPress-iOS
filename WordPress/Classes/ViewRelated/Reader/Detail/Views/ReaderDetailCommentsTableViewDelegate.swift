@@ -15,6 +15,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var totalRows = 0
     private var hideButton = true
 
+    private var displaySetting: ReaderDisplaySetting
+
     private var comments: [Comment] = [] {
         didSet {
             totalRows = {
@@ -39,6 +41,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     // MARK: - Public Methods
+
+    init(displaySetting: ReaderDisplaySetting = .standard) {
+        self.displaySetting = displaySetting
+    }
 
     func updateWith(post: ReaderPost,
                     comments: [Comment] = [],
