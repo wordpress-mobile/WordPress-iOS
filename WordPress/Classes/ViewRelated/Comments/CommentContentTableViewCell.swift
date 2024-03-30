@@ -136,7 +136,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
     var displaySetting: ReaderDisplaySetting = .standard {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
-            configureViews() // TODO: Re-evaluate calling configure here.
+            resetRenderedContents()
+            configureViews() // TODO: Re-evaluate calling configure here, as it resets some state.
         }
     }
 
@@ -242,6 +243,8 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         isCommentLikesEnabled = false
         isCommentReplyEnabled = false
         isAccessoryButtonEnabled = false
+
+        shouldHideSeparator = true
 
         containerStackLeadingConstraint.constant = 0
         containerStackTrailingConstraint.constant = 0
@@ -386,6 +389,7 @@ private extension CommentContentTableViewCell {
         likeButton?.sizeToFit()
         likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
 
+        separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
         if style.customizationEnabled {
             separatorView.backgroundColor = displaySetting.color.border
         }

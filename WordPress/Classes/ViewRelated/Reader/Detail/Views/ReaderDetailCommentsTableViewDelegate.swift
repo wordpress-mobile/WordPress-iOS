@@ -122,6 +122,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
+        header.displaySetting = displaySetting
         header.contentView.backgroundColor = .clear
         header.configure(
             post: post,
@@ -191,7 +192,7 @@ private extension ReaderDetailCommentsTableViewDelegate {
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
-        static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        static let buttonInsets = UIEdgeInsets.zero
         static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }
