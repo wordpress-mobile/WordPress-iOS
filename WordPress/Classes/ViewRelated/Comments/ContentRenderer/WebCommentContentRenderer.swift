@@ -187,7 +187,7 @@ private extension WebCommentContentRenderer {
             --text-font: \(displaySetting.font.cssString);
             --text-color: \(textColor.lightVariant().cssRGBAString());
             --primary-color: \(highlightColor.lightVariant().cssRGBAString());
-            --mention-background-color: \(mentionBackgroundColor.darkVariant().cssRGBAString());
+            --mention-background-color: \(mentionBackgroundColor.lightVariant().cssRGBAString());
         }
 
         /* Color overrides for dark mode */

@@ -131,6 +131,15 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     private var isLikeButtonAnimating: Bool = false
 
+    private var style: CellStyle = .init(displaySetting: .standard)
+
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            style = CellStyle(displaySetting: displaySetting)
+            configureViews() // TODO: Re-evaluate calling configure here.
+        }
+    }
+
     // MARK: Visibility Control
 
     private var isCommentReplyEnabled: Bool = false {
@@ -265,6 +274,41 @@ extension CommentContentTableViewCell: CommentContentRendererDelegate {
     }
 }
 
+// MARK: - Cell Style
+
+private extension CommentContentTableViewCell {
+    /// A structure to override the cell styling based on `ReaderDisplaySetting`.
+    /// This doesn't cover all aspects of the cell, and iks currently scoped only for Reader Detail.
+    struct CellStyle {
+        let displaySetting: ReaderDisplaySetting
+
+        /// NOTE: Remove when the `readerCustomization` flag is removed.
+        var customizationEnabled: Bool {
+            FeatureFlag.readerCustomization.enabled
+        }
+
+        // Name Label
+
+        var nameFont: UIFont {
+            customizationEnabled ? displaySetting.font(with: .subheadline, weight: .semibold) : Style.nameFont
+        }
+
+        var nameTextColor: UIColor {
+            customizationEnabled ? displaySetting.color.foreground : Style.nameTextColor
+        }
+
+        // Date Label
+
+        var dateFont: UIFont {
+            customizationEnabled ? displaySetting.font(with: .footnote) : Style.dateFont
+        }
+
+        var dateTextColor: UIColor {
+            customizationEnabled ? displaySetting.color.secondaryForeground : Style.dateTextColor
+        }
+    }
+}
+
 // MARK: - Helpers
 
 private extension CommentContentTableViewCell {
@@ -299,8 +343,8 @@ private extension CommentContentTableViewCell {
 
         selectionStyle = .none
 
-        nameLabel?.font = Style.nameFont
-        nameLabel?.textColor = Style.nameTextColor
+        nameLabel?.font = style.nameFont
+        nameLabel?.textColor = style.nameTextColor
 
         badgeLabel?.font = Style.badgeFont
         badgeLabel?.textColor = Style.badgeTextColor
@@ -308,8 +352,8 @@ private extension CommentContentTableViewCell {
         badgeLabel?.adjustsFontForContentSizeCategory = true
         badgeLabel?.adjustsFontSizeToFitWidth = true
 
-        dateLabel?.font = Style.dateFont
-        dateLabel?.textColor = Style.dateTextColor
+        dateLabel?.font = style.dateFont
+        dateLabel?.textColor = style.dateTextColor
 
         accessoryButton?.tintColor = Style.buttonTintColor
         accessoryButton?.setImage(accessoryButtonImage, for: .normal)
@@ -341,6 +385,10 @@ private extension CommentContentTableViewCell {
         updateLikeButton(liked: false, numberOfLikes: 0)
         likeButton?.sizeToFit()
         likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
+
+        if style.customizationEnabled {
+            separatorView.backgroundColor = displaySetting.color.border
+        }
     }
 
     private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
@@ -470,7 +518,7 @@ private extension CommentContentTableViewCell {
         var renderer: CommentContentRenderer = {
             switch renderMethod {
             case .web:
-                return WebCommentContentRenderer(comment: comment)
+                return WebCommentContentRenderer(comment: comment, displaySetting: displaySetting)
             case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer(comment: comment)
                 renderer.richContentDelegate = self.richContentDelegate

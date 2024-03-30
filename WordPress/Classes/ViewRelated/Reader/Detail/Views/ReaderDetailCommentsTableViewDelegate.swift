@@ -15,7 +15,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var totalRows = 0
     private var hideButton = true
 
-    private var displaySetting: ReaderDisplaySetting
+    var displaySetting: ReaderDisplaySetting
 
     private var comments: [Comment] = [] {
         didSet {
@@ -88,6 +88,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                 return UITableViewCell()
             }
 
+            cell.displaySetting = displaySetting
             cell.configureForPostDetails(with: comment) { _ in
                 do {
                     try WPException.objcTry {
@@ -97,10 +98,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }
-
-            // TODO: Revisit
-            // Separator is removed because it has a hardcoded background color, which interferes with theming.
-            cell.shouldHideSeparator = true
 
             cell.backgroundColor = .clear
             cell.contentView.backgroundColor = .clear

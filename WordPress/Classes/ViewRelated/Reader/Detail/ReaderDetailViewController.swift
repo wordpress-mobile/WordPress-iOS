@@ -48,7 +48,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
 
     // swiftlint:disable:next weak_delegate
-    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+    private lazy var commentsTableViewDelegate = {
+        ReaderDetailCommentsTableViewDelegate(displaySetting: displaySetting)
+    }()
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
@@ -572,6 +574,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         // TODO: Comments table view
+        commentsTableViewDelegate.displaySetting = displaySetting
+        commentsTableView.reloadData()
 
         // TODO: Related posts
 

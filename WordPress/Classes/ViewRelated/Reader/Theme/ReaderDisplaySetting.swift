@@ -130,6 +130,15 @@ struct ReaderDisplaySetting: Codable, Equatable {
             }
         }
 
+        var border: UIColor {
+            switch self {
+            case .system:
+                return .separator
+            default:
+                return foreground.withAlphaComponent(0.3)
+            }
+        }
+
         /// Whether the color adjusts between light and dark mode.
         var adaptsToInterfaceStyle: Bool {
             switch self {
