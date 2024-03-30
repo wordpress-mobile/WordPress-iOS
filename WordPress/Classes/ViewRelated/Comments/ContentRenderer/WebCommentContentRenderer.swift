@@ -135,15 +135,15 @@ private extension WebCommentContentRenderer {
     }()
 
     var textColor: UIColor {
-        return displaySetting.color.foreground
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
     }
 
     var highlightColor: UIColor {
-        displaySetting.color == .system ? Constants.highlightColor : displaySetting.color.foreground
+        ReaderDisplaySetting.customizationEnabled ? Constants.highlightColor : displaySetting.color.foreground
     }
 
     var mentionBackgroundColor: UIColor {
-        displaySetting.color == .system ? Constants.mentionBackgroundColor : .clear
+        ReaderDisplaySetting.customizationEnabled ? Constants.mentionBackgroundColor : .clear
     }
 
     /// Cache the HTML template format. We only need read the template once.

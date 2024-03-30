@@ -390,9 +390,6 @@ private extension CommentContentTableViewCell {
         likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
 
         separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
-        if style.customizationEnabled {
-            separatorView.backgroundColor = displaySetting.color.border
-        }
     }
 
     private func adjustImageAndTitleEdgeInsets(for button: UIButton) {

@@ -176,11 +176,11 @@ private extension ReaderDetailCommentsTableViewDelegate {
         if ReaderDisplaySetting.customizationEnabled {
             cell.configure(buttonTitle: title,
                            titleFont: displaySetting.font(with: .body, weight: .semibold),
-                           normalColor: displaySetting.color.background,
-                           highlightedColor: displaySetting.color.border,
+                           normalColor: displaySetting.color.foreground,
+                           highlightedColor: displaySetting.color.background,
                            borderColor: displaySetting.color.border,
                            buttonInsets: Constants.buttonInsets,
-                           backgroundColor: displaySetting.color.foreground)
+                           backgroundColor: .clear)
         } else {
             cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
         }
