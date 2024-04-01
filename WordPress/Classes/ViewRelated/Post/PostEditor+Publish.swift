@@ -99,6 +99,7 @@ extension PublishingEditor {
         performEditorAction(action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     func handleSecondaryActionButtonTap() {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
             // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
@@ -110,11 +111,7 @@ extension PublishingEditor {
         let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
 
         let publishPostClosure = { [unowned self] in
-            guard RemoteFeatureFlag.syncPublishing.enabled() else {
-                publishPost(action: action, dismissWhenDone: action.dismissesEditor, analyticsStat: secondaryStat)
-                return
-            }
-            performEditorAction(action, analyticsStat: secondaryStat)
+            publishPost(action: action, dismissWhenDone: action.dismissesEditor, analyticsStat: secondaryStat)
         }
 
         if presentedViewController != nil {
@@ -134,20 +131,14 @@ extension PublishingEditor {
         switch action {
         case .schedule, .publish:
             showPrepublishingSheet(for: action, analyticsStat: analyticsStat)
-        case .saveAsDraft:
-            performSaveDraftAction()
         case .update:
-            if post.original().status == .draft {
-                performSaveDraftAction()
-            } else {
-                performUpdatePostAction()
-            }
+            performUpdatePostAction()
         case .submitForReview:
             // TODO: Show Prepublishing VC
             fatalError("Not implemented (kahu-offline-mode)")
-        case .save, .continueFromHomepageEditing:
+        case .save, .saveAsDraft, .continueFromHomepageEditing:
             assertionFailure("No longer used and supported")
-            assertionFailure("No longer used and supported")
+            break
         }
     }
 
