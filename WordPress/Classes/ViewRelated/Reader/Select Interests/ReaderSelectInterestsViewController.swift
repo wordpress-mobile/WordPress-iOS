@@ -1,4 +1,5 @@
 import UIKit
+import AutomatticTracks
 import WordPressUI
 
 protocol ReaderDiscoverFlowDelegate: AnyObject {
@@ -26,8 +27,8 @@ class ReaderSelectInterestsViewController: UIViewController {
 
     private struct Strings {
         static let noSearchResultsTitle = NSLocalizedString(
-            "reader.select.tags.no.results.title",
-            value: "No new tags to subscribe to",
+            "reader.select.tags.no.results.follow.title",
+            value: "No new tags to follow",
             comment: "Message shown when there are no new topics to follow."
         )
         static let tryAgainNoticeTitle = NSLocalizedString("Something went wrong. Please try again.", comment: "Error message shown when the app fails to save user selected interests")
@@ -321,7 +322,11 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
             fatalError("Expected a ReaderInterestsCollectionViewCell for identifier: \(Constants.reuseIdentifier)")
         }
 
-        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            CrashLogging.main.logMessage("ReaderSelectInterestsViewController: Requested for data at invalid row",
+                                         properties: ["row": indexPath.row], level: .warning)
+            return .init(frame: .zero)
+        }
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,
                                                       isSelected: interest.isSelected)
@@ -339,12 +344,15 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            return
+        }
 
         if spotlightIsShown {
             spotlightIsShown = false
         }
 
-        dataSource.interest(for: indexPath.row).toggleSelected()
+        interest.toggleSelected()
         updateNextButtonState()
 
         UIView.animate(withDuration: 0) {
@@ -356,7 +364,9 @@ extension ReaderSelectInterestsViewController: UICollectionViewDelegate {
 // MARK: - UICollectionViewFlowLayout
 extension ReaderSelectInterestsViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let interest: ReaderInterestViewModel = dataSource.interest(for: indexPath.row)
+        guard let interest = dataSource.interest(for: indexPath.row) else {
+            return .zero
+        }
 
         let attributes: [NSAttributedString.Key: Any] = [
             .font: ReaderInterestsStyleGuide.cellLabelTitleFont

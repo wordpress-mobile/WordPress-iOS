@@ -11,6 +11,7 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
+    case readerCustomization
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -37,6 +38,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
+        case .readerCustomization:
+            return false
         }
     }
 
@@ -77,6 +80,8 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
+        case .readerCustomization:
+            return "Reader Customization"
         }
     }
 }

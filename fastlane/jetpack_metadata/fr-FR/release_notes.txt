@@ -1,8 +1,2 @@
-L’écran Stats dispose d’un nouvel onglet Trafic. Profitez de meilleurs graphiques et accédez à l’ensemble de vos historiques au même endroit. Et oui, vous avez des jours, des semaines, des mois et même des années de données.
-
-Les notifications ont été rafraîchies et leur design est désormais plus convivial et pimpant. Nous avons également apporté quelques changements à l’éditeur de blocs.
-
-- Nous avons ajouté la prise en charge de VideoPress v5, les performances de vos blocs Vidéo devraient en profiter.
-- L’application ne plantera plus lorsque l’éditeur fait automatiquement défiler un bloc. Never gonna give you up, never gonna let you down, nous serons là pour vous.
-- Désormais, vous verrez un message d’erreur lorsque le chargement d’une vidéo dans un bloc Média ou Paragraphe échoue.
-- Les images ne seront plus partiellement transparentes lors de leur mise en ligne. De la couleur, partout, tout le temps.
+Nous avons introduit un correctif qui prévient certains bugs au sein de l’éditeur et des divers types de blocs. Ce correctif enregistre tout bug qui parvient à percer les défenses pour nous permettre de le corriger lui aussi.
+Nous avons également amélioré votre expérience en matière de prévisualisation et de publication en retirant le bouton d’édition de l’écran « Article publié » et le bouton de publication de l’écran « Aperçu » Tout ça en une journée de travail.

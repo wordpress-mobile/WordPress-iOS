@@ -37,7 +37,7 @@ def aztec
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', tag: ''
   # pod 'WordPress-Editor-iOS', path: '../AztecEditor-iOS'
-  pod 'WordPress-Editor-iOS', '~> 1.19.9'
+  pod 'WordPress-Editor-iOS', '~> 1.19.11'
 end
 
 def wordpress_ui
@@ -49,8 +49,8 @@ def wordpress_ui
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 14.1'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '810b304affac98b1db70c9faf9ed5c9adb173de9'
+  # pod 'WordPressKit', '~> 15.0'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '6a3b5c873069ec9c3efc336f5dd22dddd582a246'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'

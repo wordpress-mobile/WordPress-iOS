@@ -102,8 +102,8 @@ class ReaderInterestsDataSource {
 
     /// Returns a reader interest for the specified row
     /// - Parameter row: The index of the item you want to return
-    /// - Returns: A reader interest model
-    public func interest(for row: Int) -> ReaderInterestViewModel {
-        return interests[row]
+    /// - Returns: A reader interest model if exists; or nil otherwise.
+    public func interest(for row: Int) -> ReaderInterestViewModel? {
+        return interests[safe: row]
     }
 }

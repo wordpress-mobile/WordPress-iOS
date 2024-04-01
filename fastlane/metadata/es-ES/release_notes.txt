@@ -1,5 +1,2 @@
-Hemos realizado algunos cambios en el editor de bloques.
-
-- La aplicación ya no se bloquea cuando el editor se desplaza automáticamente a un bloque.
-- Ahora verás un mensaje de error cuando un vídeo no se cargue en los bloques de medios y texto.
-- Las imágenes ya no aparecen parcialmente transparentes mientras se cargan.
+Hemos introducido una corrección que evita ciertos errores en el editor y en los tipos de bloque individuales. Esta corrección registra cualquier error que se cuele para que también podamos eliminarlo.
+También hemos mejorado tu experiencia de previsualización y publicación eliminando el botón de edición de la pantalla de éxito «Entrada publicada» y el botón de publicación de la pantalla «Previsualizar». Todo en un día de trabajo.

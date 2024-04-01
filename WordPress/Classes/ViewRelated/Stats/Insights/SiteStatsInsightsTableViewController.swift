@@ -424,21 +424,23 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         if statSection == .insightsAnnualSiteStats,
             let year = viewModel?.annualInsightsYear() {
             var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
-            dateComponents.year = year
+            dateComponents.year = Int(year)
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
         switch statSection {
         case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
-            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            selectedDate = viewModel?.lastRequestedDate
+            let selectedPeriod = viewModel?.lastRequestedPeriod
+            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         default:
             segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
     }
 
-    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?, selectedPeriod: StatsPeriodUnit?) {
         let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

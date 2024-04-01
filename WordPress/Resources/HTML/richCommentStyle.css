@@ -25,7 +25,7 @@ html {
 body {
     font: -apple-system-body;
     color: -apple-system-label;
-    background-color: -apple-system-background;
+    background-color: transparent;
 }
 
 /* get rid of the container default margins and paddings. */
@@ -205,7 +205,7 @@ video {
 
 /* override hardcoded background color to system default. */
 .has-background {
-    background-color: -apple-system-background !important;
+    background-color: transparent !important;
 }
 
 /* forcefully remove gaps from custom vertical spacers. */

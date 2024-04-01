@@ -1,5 +1,2 @@
-Abbiamo apportato alcune modifiche all'editor a blocchi.
-
-- L'app non si blocca più quando l'editor scorre automaticamente verso il basso fino a un blocco.
-- Ora vedrai un messaggio di errore quando non è possibile caricare un video su media e blocchi di testo.
-- Le immagini non appaiono più parzialmente trasparenti mentre vengono caricate. Tutto a colori, sempre.
+Abbiamo introdotto una correzione che previene alcuni bug nell'editor e nei tipi di blocchi individuali. Questa correzione registra ogni bug che si presenta, per poterli fermare tutti.
+Abbiamo anche migliorato l'esperienza di anteprima e pubblicazione, rimuovendo il pulsante di modifica dalla schermata "Articolo pubblicato" e il pulsante di pubblicazione dalla schermata "Anteprima". Tutto in una giornata lavorativa.

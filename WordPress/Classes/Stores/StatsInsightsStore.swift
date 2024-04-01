@@ -260,18 +260,23 @@ private extension StatsInsightsStore {
 
     // MARK: - Insights Overview
 
-    func fetchInsights() {
+    func fetchInsights(forceRefresh: Bool) {
         updateFetchingStatusForVisibleCards(.loading)
-        fetchInsightsCards()
+        fetchInsightsCards(forceRefresh: forceRefresh)
     }
 
-    func fetchInsightsCards() {
+    func fetchInsightsCards(forceRefresh: Bool) {
         guard let api = statsRemote() else {
             setAllFetchingStatus(.idle)
             return
         }
 
         currentDataTypes.forEach {
+            guard forceRefresh || cache.isExpired || !hasCache(forDataType: $0) else {
+                DDLogInfo("Stats: Insights Overview refresh requested for \($0) but we still have valid cache data.")
+                return
+            }
+
             fetchInsightsForCard(type: $0, api: api)
         }
     }
@@ -385,20 +390,40 @@ private extension StatsInsightsStore {
             state.topCommentsInsight = getValue(.topCommentsInsight)
             state.dotComFollowers = getValue(.dotComFollowers)
             state.emailFollowers = getValue(.emailFollowers)
-
-            state.lastPostSummaryStatus = state.lastPostInsight == nil ? .error : .success
-            state.allTimeStatus = state.allTimeStats == nil ? .error : .success
-            state.annualAndMostPopularTimeStatus = state.annualAndMostPopularTime != nil ? .error : .success
-            state.publicizeFollowersStatus = state.publicizeFollowers == nil ? .error : .success
-            state.todaysStatsStatus = state.todaysStats == nil ? .error : .success
-            state.postingActivityStatus = state.postingActivity == nil ? .error : .success
-            state.tagsAndCategoriesStatus = state.topTagsAndCategories == nil ? .error : .success
-            state.commentsInsightStatus = state.topCommentsInsight == nil ? .error : .success
-            state.dotComFollowersStatus = state.dotComFollowers == nil ? .error : .success
-            state.emailFollowersStatus = state.emailFollowers == nil ? .error : .success
         }
 
         DDLogInfo("Insights load from cache")
+    }
+
+    private func hasCache(forDataType type: InsightDataType) -> Bool {
+        guard let siteID = SiteStatsInformation.sharedInstance.siteID else {
+            return false
+        }
+
+        func hasValue(_ record: StatsInsightsCache.Record) -> Bool {
+            cache.hasValue(record: record, siteID: siteID)
+        }
+
+        switch type {
+        case .latestPost:
+            return hasValue(.lastPostInsight)
+        case .allTime:
+            return hasValue(.allTimeStats)
+        case .annualAndMostPopular:
+            return hasValue(.annualAndMostPopularTime)
+        case .tagsAndCategories:
+            return hasValue(.topTagsAndCategories)
+        case .comments:
+            return hasValue(.topCommentsInsight)
+        case .followers:
+            return hasValue(.dotComFollowers) && hasValue(.emailFollowers)
+        case .today:
+            return hasValue(.todaysStats)
+        case .postingActivity:
+            return hasValue(.postingActivity)
+        case .publicize:
+            return hasValue(.publicizeFollowers)
+        }
     }
 
     func statsRemote() -> StatsServiceRemoteV2? {
@@ -419,17 +444,12 @@ private extension StatsInsightsStore {
             return
         }
 
-        guard forceRefresh || cache.isExpired else {
-            DDLogInfo("Stats: Insights Overview refresh requested but we still have valid cache data.")
-            return
-        }
-
         if forceRefresh {
             DDLogInfo("Stats: Forcing an Insights refresh.")
         }
 
         saveDataInCache()
-        fetchInsights()
+        fetchInsights(forceRefresh: forceRefresh)
     }
 
     func fetchLastPostSummary() {

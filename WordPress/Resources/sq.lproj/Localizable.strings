@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-07 10:32:11+0000 */
+/* Translation-Revision-Date: 2024-03-20 07:27:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: sq_AL */
@@ -847,8 +847,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Jeni i sigurt se doni të fshihet përgjithmonë ky postim?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Jeni i sigurt se doni të botohet?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1181,6 +1180,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "Pozicion butoni";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "Buton për “Kopjo hollësi gabimi”";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Buton për “Kopjo tekst postimi”";
 
 /* Label for the post author in the post detail. */
 "By " = "Nga ";
@@ -1838,7 +1843,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "Kopjoje URL-në prej të papastre, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Kopjo hollësi gabimi";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Kopjo URL kartele";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Kopjo tekst postimi";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Kopjo versionin prej këtij aplikacioni";
@@ -2509,8 +2520,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Përpunoni Fjalë Moderimi";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Përpunoni Postimin";
 
@@ -2764,6 +2774,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Gabim në ngarkim cytjeje";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Gabim me ngarkimin e komentit";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Gabim në vënie shenje komenti si i padëshiruar.";
@@ -5462,8 +5475,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publik";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6811,6 +6823,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "Prekeni për më tepër hollësi.";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "Prekeni këtu, që të kopjohen hollësi gabimi";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Prekeni këtu, që të kopjohet tekstin e postimit";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "Prekeni këtu që të shfaqet ndihmë";
 
 /* No comment provided by engineer. */
@@ -6959,9 +6977,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Titulli i Sajtit shfaqet te shtylla e titujve të një shfletuesi dhe, për shumicën e temave, shfaqet te kryet.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "Përpunuesi i Shkrimeve aktualisht s’është i përdorshëm në iPad-in tuaj. Ju lutemi, provoni Shkrime në iPhone-in tuaj.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "URL-së i mungon një strehë e vlefshme.";
 
@@ -6982,6 +6997,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Lënda e faqes tuaj të postimeve më të reja prodhohet automatikisht dhe s’mund të përpunohet.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "Përpunuesi hasi një gabim të papritur";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Kartela %1$@ përmban rregullsi kodi dashakeq";
@@ -7143,9 +7161,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Pati një gabim teksa bëheshin përpjekje për të hyrë te vendi juaj. Ju lutemi, riprovoni më vonë.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Pati një problem me përpunuesin e Shkrimeve. Nëse problemi vazhdon, mund të lidheni me ne përmes skenës Unë > Ndihmë & Asistencë.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7539,9 +7554,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "S’arrihet të Lidhet";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "S’arrihet të Krijohet Përpunues Shkrimesh";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "S’arrihet të Ngarkohen Postime";
 
@@ -7722,9 +7734,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "I pambuluar";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Pajisje e Pambuluar";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Pa titull";
@@ -8604,6 +8613,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Cytjet dhe Kujtuesit për Blogim mund t’i kontrolloni në çfarëdo kohe që nga Sajti Im, Rregullime, Blogim";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Mund ta kopjoni tekstin e postimit tuaj, në rast se preket lënda juaj. Kopjoni hollësi gabimi, për diagnostikim dhe për t’ia dhënë asistencës.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Këtë bllok mund ta përpunoni duke përdorur versionin web të përpunuesit.";
 
 /* Discussion Settings: Footer Text */
@@ -8644,6 +8656,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "S’keni postime të shpëna te hedhurinat";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "S’keni leje të shihni këtë blog privat.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Keni %lu sajte WordPress të fshehur.";
@@ -8842,21 +8857,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[KOMENT]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "Këtë e pëlqejnë _%1$d_ blogues.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "Këtë e pëlqen një blogues.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "Këtë e pëlqeni _ju dhe %1$d blogues_.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "Këtë e pëlqeni _ju dhe një tjetër blogues_.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Ju_ pëlqen kjo.";
 
 /* Age between dates equaling one day. */
 "a day" = "një ditë";
@@ -9854,6 +9854,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "pëlqim";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "iu vu shenjë si i padëshiruar";
 
@@ -10199,6 +10202,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Mund të përmirësohet";
 
@@ -10370,6 +10376,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Ndryshime jashtë interneti";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Shpjere te hedhurinat";
 
@@ -10381,6 +10390,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Shiheni";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Skica e faqes u ngarkua";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Faqe në pritje të shqyrtimit";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Faqja u botua";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Faqja u vu në plan për botim";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Faqja u përditësua";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Skica e postimit u ngarkua";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Postim në pritje të shqyrtimit";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Postimi u botua";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Postimi u vu në plan për botim";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Postimi u përditësua";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "Ngarkimi dështoi";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "Shiheni";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Hidhe tej";
@@ -10634,6 +10679,15 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Shihni postime nga sajti";
+
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d pëlqime_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "Ju pëlqen kjo.";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 pëlqim_";
 
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
@@ -11011,6 +11065,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "I ri";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
 
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "Shpërngule përkatësinë";
