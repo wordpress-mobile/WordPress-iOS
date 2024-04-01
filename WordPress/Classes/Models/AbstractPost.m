@@ -136,10 +136,17 @@
         return self.revision;
     }
 
-    return [self _createRevision];
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
+    [post cloneFrom:self];
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
+    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
+    return post;
 }
 
 - (AbstractPost *)_createRevision {
+    NSParameterAssert(self.revision == nil);
+
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
     [post cloneFrom:self];
     post.isSyncNeeded = NO;

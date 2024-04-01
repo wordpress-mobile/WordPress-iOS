@@ -32,10 +32,12 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    private let original: AbstractPost
     let post: Post
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
+    private let coordinator = PostCoordinator.shared
 
     lazy var postBlogID: Int? = {
         coreDataStack.performQuery { [postObjectID = post.objectID] context in
@@ -83,6 +85,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
          completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+        self.original = post.original() // Important to keep track of in case revision is deleted
         self.post = post
         self.identifiers = identifiers
         self.completion = completion

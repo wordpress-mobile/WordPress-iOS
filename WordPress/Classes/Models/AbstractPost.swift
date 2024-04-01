@@ -2,6 +2,8 @@ import Foundation
 
 extension AbstractPost {
 
+    /// Returns the original post by navigating the entire list of revisions
+    /// until it reaches the head.
     func original() -> AbstractPost {
         original?.original() ?? self
     }
