@@ -132,6 +132,18 @@ class PostCoordinator: NSObject {
         save(post)
     }
 
+    struct PublishingOptions {
+        var visibility: PostVisibility
+        var password: String?
+        var publishDate: Date?
+
+        init(visibility: PostVisibility, password: String?, publishDate: Date?) {
+            self.visibility = visibility
+            self.password = password
+            self.publishDate = publishDate
+        }
+    }
+
     /// Publishes the post according to the current settings and user capabilities.
     ///
     /// - warning: Before publishing, ensure that the media for the post got
@@ -139,18 +151,27 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _publish(_ post: AbstractPost) async throws {
-        let post = post.original()
+    func _publish(_ post: AbstractPost, options: PublishingOptions) async throws {
+        assert(post.isOriginal())
+        assert(post.status == .draft)
 
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
 
         var parameters = RemotePostUpdateParameters()
-        if post.status == .draft {
-            parameters.status = Post.Status.publish.rawValue
-        } else {
-            // Publish according to the currrent post settings: private, scheduled, etc.
+        switch options.visibility {
+        case .public, .protected:
+            if let date = options.publishDate, date > .now {
+                parameters.status = Post.Status.scheduled.rawValue
+            } else {
+                parameters.status = Post.Status.publish.rawValue
+            }
+        case .private:
+            parameters.status = Post.Status.publishPrivate.rawValue
         }
+        parameters.password = options.password
+        parameters.date = options.publishDate
+
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
             try await repository._save(post, changes: parameters)

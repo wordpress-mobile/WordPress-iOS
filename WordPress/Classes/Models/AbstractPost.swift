@@ -57,6 +57,8 @@ extension AbstractPost {
     ///
     /// - SeeAlso: PostService
     /// - SeeAlso: PostListFilter
+    ///
+    /// - note: deprecated (kahu-offline-mode)
     var statusAfterSync: Status? {
         get {
             return rawValue(forKey: "statusAfterSync")
@@ -71,6 +73,8 @@ extension AbstractPost {
     /// This should only be used in Objective-C. For Swift, use `statusAfterSync`.
     ///
     /// - SeeAlso: statusAfterSync
+    ///
+    /// - note: deprecated (kahu-offline-mode)
     @objc(statusAfterSync)
     var statusAfterSyncString: String? {
         get {

@@ -46,6 +46,7 @@ protocol PublishingEditor where Self: UIViewController {
     /// Debouncer used to save the post locally with a delay
     var debouncer: Debouncer { get }
 
+    /// - warning: deprecated (kahu-offline-mode)
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 
     func emitPostSaveEvent()
@@ -317,52 +318,8 @@ extension PublishingEditor {
         present(alertController, animated: true, completion: nil)
     }
 
-    /// If the user is publishing a post, displays the Prepublishing Nudges
-    /// Otherwise, shows a confirmation Action Sheet.
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        if let post = post as? Post {
-            displayPrepublishingNudges(post: post, completion: completion)
-        } else {
-            displayPublishConfirmationAlertForPage(for: action, completion: completion)
-        }
-    }
-
-    /// Displays the Prepublishing Nudges Bottom Sheet
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
-    fileprivate func displayPrepublishingNudges(post: Post, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        // End editing to avoid issues with accessibility
-        view.endEditing(true)
-
-        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers, completion: completion)
-        viewController.presentAsSheet(from: topmostPresentedViewController)
-    }
-
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
-    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = action.publishActionLabel
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(keepEditingTitle) { _ in
-            completion(.cancelled)
-        }
-        alertController.addDefaultActionWithTitle(publishTitle) { _ in
-            completion(.confirmed)
-        }
-        present(alertController, animated: true, completion: nil)
+        PrepublishingViewController.show(for: post, action: action, from: self, completion: completion)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {

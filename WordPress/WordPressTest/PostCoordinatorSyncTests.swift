@@ -404,7 +404,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         await fulfillment(of: [expectation], timeout: 2)
 
         // WHEN
-        try await coordinator._publish(post)
+        try await coordinator._publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
 
         // THEN the coordinator wait for the sync to complete and the post to
         // be created and only then sends a parial update to get it published

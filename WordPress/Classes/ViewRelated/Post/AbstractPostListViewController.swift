@@ -599,39 +599,15 @@ class AbstractPostListViewController: UIViewController,
 
     func publish(_ post: AbstractPost) {
         let action = AbstractPostHelper.editorPublishAction(for: post)
-
-        func showPrepublishingFlow(for post: Post) {
-            let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers) { [weak self] result in
-                switch result {
-                case .confirmed:
-                    self?.didConfirmPublish(for: post)
-                case .published:
-                    self?.dismiss(animated: true)
-                case .cancelled:
-                    break
-                }
+        PrepublishingViewController.show(for: post, action: action, from: self) { [weak self] result in
+            switch result {
+            case .confirmed:
+                self?.didConfirmPublish(for: post)
+            case .published:
+                self?.dismiss(animated: true)
+            case .cancelled:
+                break
             }
-            viewController.presentAsSheet(from: self)
-        }
-
-        func showPublishingConfirmation() {
-            let cancelTitle = NSLocalizedString("Cancel", comment: "Button shown when the author is asked for publishing confirmation.")
-
-            let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-            let alertController = UIAlertController(title: action.publishingActionQuestionLabel, message: nil, preferredStyle: style)
-
-            alertController.addCancelActionWithTitle(cancelTitle)
-            alertController.addDefaultActionWithTitle(action.publishingActionQuestionLabel) { [unowned self] _ in
-                self.didConfirmPublish(for: post)
-            }
-
-            present(alertController, animated: true)
-        }
-
-        if let post = post as? Post {
-            showPrepublishingFlow(for: post)
-        } else {
-            showPublishingConfirmation()
         }
     }
 
