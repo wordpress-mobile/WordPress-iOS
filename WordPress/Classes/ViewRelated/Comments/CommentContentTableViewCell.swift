@@ -131,9 +131,11 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
     private var isLikeButtonAnimating: Bool = false
 
-    private var style: CellStyle = .init(displaySetting: .standard)
+    /// Styling configuration based on `ReaderDisplaySetting`. The parameter is optional so that the styling approach
+    /// can be scoped by using the "legacy" style when the passed parameter is nil.
+    private var style: CellStyle = .init(displaySetting: nil)
 
-    var displaySetting: ReaderDisplaySetting = .standard {
+    var displaySetting: ReaderDisplaySetting? = nil {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
             resetRenderedContents()
@@ -283,7 +285,7 @@ private extension CommentContentTableViewCell {
     /// A structure to override the cell styling based on `ReaderDisplaySetting`.
     /// This doesn't cover all aspects of the cell, and iks currently scoped only for Reader Detail.
     struct CellStyle {
-        let displaySetting: ReaderDisplaySetting
+        let displaySetting: ReaderDisplaySetting?
 
         /// NOTE: Remove when the `readerCustomization` flag is removed.
         var customizationEnabled: Bool {
@@ -293,21 +295,33 @@ private extension CommentContentTableViewCell {
         // Name Label
 
         var nameFont: UIFont {
-            customizationEnabled ? displaySetting.font(with: .subheadline, weight: .semibold) : Style.nameFont
+            guard let displaySetting, customizationEnabled else {
+                return Style.nameFont
+            }
+            return displaySetting.font(with: .subheadline, weight: .semibold)
         }
 
         var nameTextColor: UIColor {
-            customizationEnabled ? displaySetting.color.foreground : Style.nameTextColor
+            guard let displaySetting, customizationEnabled else {
+                return Style.nameTextColor
+            }
+            return displaySetting.color.foreground
         }
 
         // Date Label
 
         var dateFont: UIFont {
-            customizationEnabled ? displaySetting.font(with: .footnote) : Style.dateFont
+            guard let displaySetting, customizationEnabled else {
+                return Style.dateFont
+            }
+            return displaySetting.font(with: .footnote)
         }
 
         var dateTextColor: UIColor {
-            customizationEnabled ? displaySetting.color.secondaryForeground : Style.dateTextColor
+            guard let displaySetting, customizationEnabled else {
+                return Style.dateTextColor
+            }
+            return displaySetting.color.secondaryForeground
         }
     }
 }
@@ -530,7 +544,7 @@ private extension CommentContentTableViewCell {
         var renderer: CommentContentRenderer = {
             switch renderMethod {
             case .web:
-                return WebCommentContentRenderer(comment: comment, displaySetting: displaySetting)
+                return WebCommentContentRenderer(comment: comment, displaySetting: displaySetting ?? .standard)
             case .richContent(let attributedText):
                 let renderer = RichCommentContentRenderer(comment: comment)
                 renderer.richContentDelegate = self.richContentDelegate
