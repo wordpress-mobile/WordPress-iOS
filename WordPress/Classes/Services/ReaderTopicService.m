@@ -43,19 +43,6 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
     } completion:nil onQueue:dispatch_get_main_queue()];
 }
 
-- (void)fetchFollowedSitesWithSuccess:(void(^)(void))success failure:(void(^)(NSError *error))failure
-{
-    ReaderTopicServiceRemote *service = [[ReaderTopicServiceRemote alloc] initWithWordPressComRestApi:[self apiForRequest]];
-    [service fetchFollowedSitesWithSuccess:^(NSArray *sites) {
-        [WPAnalytics setSubscriptionCount: sites.count];
-        [self mergeFollowedSites:sites withSuccess:success];
-    } failure:^(NSError *error) {
-        if (failure) {
-            failure(error);
-        }
-    }];
-}
-
 - (ReaderAbstractTopic *)currentTopicInContext:(NSManagedObjectContext *)context
 {
     ReaderAbstractTopic *topic;
