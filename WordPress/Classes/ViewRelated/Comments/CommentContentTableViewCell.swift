@@ -137,7 +137,7 @@ class CommentContentTableViewCell: UITableViewCell, NibReusable {
         didSet {
             style = CellStyle(displaySetting: displaySetting)
             resetRenderedContents()
-            configureViews() // TODO: Re-evaluate calling configure here, as it resets some state.
+            applyStyles()
         }
     }
 
@@ -390,6 +390,17 @@ private extension CommentContentTableViewCell {
         likeButton?.accessibilityIdentifier = .likeButtonAccessibilityId
 
         separatorView.layoutMargins = .init(top: 0, left: 20, bottom: 0, right: 0).flippedForRightToLeft
+
+        applyStyles()
+    }
+
+    /// Applies the `ReaderDisplaySetting` styles
+    private func applyStyles() {
+        nameLabel?.font = style.nameFont
+        nameLabel?.textColor = style.nameTextColor
+
+        dateLabel?.font = style.dateFont
+        dateLabel?.textColor = style.dateTextColor
     }
 
     private func adjustImageAndTitleEdgeInsets(for button: UIButton) {
