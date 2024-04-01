@@ -13,6 +13,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private let isInternetReachable: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
+    private let isSyncPublishingEnabled: Bool
 
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
@@ -33,15 +34,25 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     init(post: Post,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
+         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
         super.init()
     }
 
     var status: String? {
+        guard isSyncPublishingEnabled else {
+            return _status
+        }
+        return nil
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    private var _status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
@@ -117,6 +128,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var shouldHideProgressView: Bool {
+        if isSyncPublishingEnabled {
+            return true
+        }
         return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
@@ -164,14 +178,16 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if autoUploadInteractor.canRetryUpload(of: post) ||
-            autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
-            post.isFailed && isInternetReachable {
-            buttons.append(.retry)
-        }
+        if !isSyncPublishingEnabled {
+            if autoUploadInteractor.canRetryUpload(of: post) ||
+                autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
+                post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
 
-        if canCancelAutoUpload && !isInternetReachable {
-            buttons.append(.cancelAutoUpload)
+            if canCancelAutoUpload && !isInternetReachable {
+                buttons.append(.cancelAutoUpload)
+            }
         }
 
         if canPublish {

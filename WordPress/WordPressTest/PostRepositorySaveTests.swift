@@ -317,7 +317,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         XCTAssertNotNil(post.revision, "Revision is missing")
 
-        // GIVEN a server where the post
+        // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
@@ -939,6 +939,319 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // THEN the post is still in the database until the user taps OK and confirms
         XCTAssertNotNil(post.managedObjectContext)
     }
+
+    // MARK: - Sync (Drafts)
+
+    /// Scenarios: the app syncs drafts post while the editor is opened.
+    func testSyncExistingDraftPostWithUnsavedChangesDuringEditing() async throws {
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "title-a"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a post that has changes that need to be synced (across two local revision)
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.postTitle = "title-c"
+        revision2.isSyncNeeded = true
+
+        // GIVEN a revision created by an editor
+        let revision3 = revision2._createRevision()
+        revision3.postTitle = "title-d"
+
+        // GIVEN a server where the post was deleted
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "title" : "title-c"
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.title = "title-c"
+            post.sticky = true
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN saving the post
+        try await repository.sync(post)
+
+        // THEN it uploads the latest revision and applies the revision1 to the post
+        XCTAssertEqual(post.postTitle, "title-c")
+        XCTAssertTrue(post.revision == revision3)
+
+        // THEN but doesn't apply the remote changes to make sure the app could
+        // still correctly track local changes (revision0 vs revision2)
+        XCTAssertFalse(post.isStickyPost)
+
+        // GIVEN
+        HTTPStubs.removeAllStubs()
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "title" : "title-d"
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.title = "title-d"
+            post.sticky = true
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        revision3.isSyncNeeded = true
+        try await repository.sync(post)
+
+        // THEN it uploads the latest revision
+        XCTAssertEqual(post.postTitle, "title-d")
+        XCTAssertNil(post.revision)
+
+        // THEN and can now safely apply the changes from the remote
+        XCTAssertTrue(post.isStickyPost)
+    }
+
+    /// Scenarios: the app syncs drafts post while the editor is open. The changes
+    /// include changes to the `content` that might lead to a conflict.
+    func testSyncExistingDraftPostWithContentChangesDuringEditing() async throws {
+        // GIVEN a draft post (synced)
+        let dateModified = Date(timeIntervalSince1970: 1709852440)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = dateModified
+            $0.dateModified = dateModified
+            $0.postTitle = "title-a"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a post that has changes that need to be synced (across two local revision)
+        let revision1 = post._createRevision()
+        revision1.content = "content-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.content = "content-c"
+
+        // GIVEN a server where the post was deleted
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update
+            try assertRequestBody(request, expected: """
+            {
+              "content" : "content-b",
+              "if_not_modified_since" : "2024-03-07T23:00:40+0000"
+            }
+            """)
+
+            var post = WordPressComPost.mock
+            post.content = "content-b"
+            post.modified = dateModified.addingTimeInterval(5)
+            return try HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN saving the post
+        try await repository.sync(post)
+
+        // THEN it uploads the latest revision and applies the revision1 to the post
+        XCTAssertEqual(post.content, "content-b")
+        XCTAssertTrue(post.revision == revision2)
+
+        // GIVEN the app hits 409 but it's a false positive, so we are good
+        HTTPStubs.removeAllStubs()
+
+        var requestCount = 0
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the app sends a partial update but still has the old
+            // original revision of the post
+            requestCount += 1
+
+            if requestCount == 1 {
+                // THEN the first request contains an `if_not_modified_since` parameter
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-c",
+                  "if_not_modified_since" : "2024-03-07T23:00:40+0000"
+                }
+                """)
+                return HTTPStubsResponse(jsonObject: [
+                    "error": "old-revision",
+                    "message": "There is a revision of this post that is more recent."
+                ], statusCode: 409, headers: nil)
+            }
+            if requestCount == 2 {
+                // THEN the second request contains only the delta
+                try assertRequestBody(request, expected: """
+                {
+                  "content" : "content-c"
+                }
+                """)
+                var post = WordPressComPost.mock
+                post.content = "content-c"
+                post.modified = dateModified.addingTimeInterval(10)
+                return try HTTPStubsResponse(value: post, statusCode: 200)
+            }
+
+            throw URLError(.unknown)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            var post = WordPressComPost.mock
+            post.content = "content-b"
+            post.modified = dateModified.addingTimeInterval(5)
+            return try HTTPStubsResponse(value: post, statusCode: 200)
+        }
+
+        // WHEN syncing remaining changes
+        revision2.isSyncNeeded = true
+        try await repository.sync(post)
+
+        // THEN it uploads the latest revision and ignores 409 because it's
+        // false positive – the app made changes based on the latest content
+        XCTAssertEqual(post.content, "content-c")
+        XCTAssertEqual(post.dateModified, dateModified.addingTimeInterval(10))
+        XCTAssertNil(post.revision)
+    }
+
+    /// Scenario: created and saved a new draft.
+    func testSyncNewDraftPost() async throws {
+        // GIVEN a draft post (new)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+        }
+
+        let revision = post.createRevision()
+        revision.postTitle = "title-a"
+        revision.content = "content-a"
+        revision.isSyncNeeded = true
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends only the required parameters
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "content" : "content-a",
+              "status" : "draft",
+              "title" : "title-a",
+              "type" : "post"
+            }
+            """)
+            return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+        }
+
+        // WHEN
+        try await repository.sync(post)
+
+        // THEN the post was created
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertEqual(post.status, .draft)
+    }
+
+    /// Scenario: made an offline change and then reverted it.
+    func testSyncRevertedChangesAreSkipped() async throws {
+        // GIVEN a draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = Date(timeIntervalSince1970: 1709852440)
+            $0.dateModified = Date(timeIntervalSince1970: 1709852440)
+            $0.postTitle = "title-a"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a change that was reverted in a more recent revision
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.postTitle = "title-a"
+        revision2.isSyncNeeded = true
+
+        // GIVEN a server with the an updated content (but not title)
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            XCTFail("No POST requests should be made")
+            return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 202)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            var post = WordPressComPost.mock
+            post.title = "title-a"
+            post.content = "content-b"
+            return try HTTPStubsResponse(value: post, statusCode: 200)
+        }
+
+        // WHEN saving the post
+        try await repository.sync(post)
+
+        // THEN is gets the latest revision from the server but sends no changes
+        XCTAssertEqual(post.postTitle, "title-a")
+        XCTAssertEqual(post.content, "content-b")
+        XCTAssertNil(post.revision)
+    }
+
+    /// Scenario: saved a new draft and opened an editor before it syncs.
+    func testSyncCreatedPostWithLocalRevision() async throws {
+        // GIVEN a new draft post (not synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+        }
+
+        // GIVEN a saved revision
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-a"
+        revision1.content = "content-a"
+        revision1.isSyncNeeded = true
+
+        // GIVEN a local revision
+        let revision2 = revision1._createRevision()
+        revision2.postTitle = "title-b"
+
+        // GIVEN a server accepting the new post
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
+            // THEN the app sends only the required parameters
+            try assertRequestBody(request, expected: """
+            {
+              "author" : 29043,
+              "content" : "content-a",
+              "status" : "draft",
+              "title" : "title-a",
+              "type" : "post"
+            }
+            """)
+            var post = WordPressComPost.mock
+            post.excerpt = "hello"
+            return try HTTPStubsResponse(value: post, statusCode: 201)
+        }
+
+        // WHEN saving the post
+        try await repository.sync(post)
+
+        // THEN `postID` is saved to make sure new changes are saved using partial updates
+        XCTAssertEqual(post.postID, 974)
+
+        // THEN local revision is presereved
+        XCTAssertNotNil(post.revision)
+        XCTAssertEqual(post.revision?.postTitle, "title-b")
+
+        // THEN the rest of the post content is retained because we have a local revision
+        XCTAssertNil(post.mt_excerpt)
+    }
 }
 
 // MARK: - Helpers
@@ -1009,7 +1322,7 @@ private enum PostRepositorySaveTestsError: Error {
     case unexpectedRequestBody(_ lhs: Any, _ rhs: Any)
 }
 
-private extension HTTPStubsResponse {
+extension HTTPStubsResponse {
     convenience init<T: Encodable>(value: T, statusCode: Int) throws {
         let data = try encoder.encode(value)
         self.init(data: data, statusCode: Int32(statusCode), headers: nil)
@@ -1018,7 +1331,7 @@ private extension HTTPStubsResponse {
 
 // MARK: - Server
 
-private struct WordPressComPost: Hashable, Codable {
+struct WordPressComPost: Hashable, Codable {
     var id: Int
     var siteID: Int
     var date: Date
@@ -1063,7 +1376,7 @@ private struct WordPressComPost: Hashable, Codable {
     }()
 }
 
-private struct WordPressComAuthor: Hashable, Codable {
+struct WordPressComAuthor: Hashable, Codable {
     var id: Int
     var login: String?
     var email: Bool?

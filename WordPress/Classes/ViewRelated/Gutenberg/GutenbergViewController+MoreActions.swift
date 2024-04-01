@@ -27,7 +27,7 @@ extension GutenbergViewController {
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 
             alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
+                self.handleSecondaryActionButtonTap()
                 ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
@@ -85,30 +85,6 @@ extension GutenbergViewController {
         }
 
         present(alert, animated: true)
-    }
-
-    func secondaryPublishButtonTapped() {
-        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
-            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
-            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            WordPressAppDelegate.crashLogging?.logError(error)
-            return
-        }
-
-        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
-
-        let publishPostClosure = { [unowned self] in
-            self.publishPost(
-                action: action,
-                dismissWhenDone: action.dismissesEditor,
-                analyticsStat: secondaryStat)
-        }
-
-        if presentedViewController != nil {
-            dismiss(animated: true, completion: publishPostClosure)
-        } else {
-            publishPostClosure()
-        }
     }
 }
 
