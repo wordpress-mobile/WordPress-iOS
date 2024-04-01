@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-20 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-03-26 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: zh_CN */
@@ -9393,6 +9393,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Help button */
 "domainSelection.helpButton.title" = "帮助";
+
+/* Description for the first domain purchased with a free plan. */
+"domainSelection.redirectPrompt.title" = "在此站点上购买的域名会重定向至 %1$@";
 
 /* Search domain - Title for the Suggested domains screen */
 "domainSelection.search.title" = "搜索域名";

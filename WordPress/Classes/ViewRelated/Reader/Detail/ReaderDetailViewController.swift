@@ -77,8 +77,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private let featuredImage: ReaderDetailFeaturedImageView = .loadFromNib()
 
     /// The actual header
-    private lazy var header: UIView & ReaderDetailHeader = {
-        return ReaderDetailNewHeaderViewHost()
+    private lazy var header: ReaderDetailNewHeaderViewHost = {
+        return .init()
     }()
 
     /// Bottom toolbar
@@ -166,6 +166,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private var hasAutomaticallyTriggeredCommentAction = false
 
     private var tooltipPresenter: TooltipPresenter?
+
+    // Reader customization model
+    private lazy var displaySettingStore: ReaderDisplaySettingStore = {
+        return .init()
+    }()
+
+    // Convenient access to the underlying structure
+    private var displaySetting: ReaderDisplaySetting {
+        displaySettingStore.setting
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -534,11 +544,42 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Webview is scroll is done by it's superview
         webView.scrollView.isScrollEnabled = false
+
+        webView.displaySetting = displaySetting
+
+        view.backgroundColor = displaySetting.color.background
+    }
+
+    private func applyDisplaySetting() {
+        UIView.animate(withDuration: 0.3) { [weak self] in
+            guard let self else {
+                return
+            }
+
+            // Main background view
+            view.backgroundColor = displaySetting.color.background
+
+            // Header view
+            header.displaySetting = displaySetting
+        }
+
+        // TODO: Featured image view
+
+        // Update Reader Post web view
+        if let post {
+            webView.displaySetting = displaySetting
+            webView.loadHTMLString(post.contentForDisplay())
+        }
+
+        // TODO: Comments table view
+
+        // TODO: Related posts
+
+        // TODO: Toolbar
     }
 
     /// Configure the webview
     private func configureWebView() {
-        webView.usesSansSerifStyle = true
         webView.navigationDelegate = self
     }
 
@@ -557,7 +598,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 guard let webViewHeight = webViewHeight as? CGFloat else {
                     self?.webViewHeight.constant = height
                     return
-                }
+            }
 
                 self?.webViewHeight.constant = min(height, webViewHeight)
             })
@@ -607,6 +648,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureHeader() {
+        header.displaySetting = displaySetting
         header.useCompatibilityMode = useCompatibilityMode
         header.delegate = coordinator
         headerContainerView.addSubview(header)
@@ -652,6 +694,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureCommentsTable() {
+        commentsTableView.separatorStyle = .none
+        commentsTableView.backgroundColor = .clear
         commentsTableView.register(ReaderDetailCommentsHeader.defaultNib,
                                    forHeaderFooterViewReuseIdentifier: ReaderDetailCommentsHeader.defaultReuseID)
         commentsTableView.register(CommentContentTableViewCell.defaultNib,
@@ -663,6 +707,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureRelatedPosts() {
         relatedPostsTableView.isScrollEnabled = false
         relatedPostsTableView.separatorStyle = .none
+        relatedPostsTableView.backgroundColor = .clear
 
         relatedPostsTableView.register(ReaderRelatedPostsCell.defaultNib,
                            forCellReuseIdentifier: ReaderRelatedPostsCell.defaultReuseID)
@@ -744,6 +789,34 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     @objc func didTapBrowserButton(_ sender: UIBarButtonItem) {
         coordinator?.openInBrowser()
+    }
+
+    @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
+        let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+            self?.displaySettingStore.setting = newSetting
+            self?.applyDisplaySetting()
+        }
+        let nav = UINavigationController(rootViewController: vc)
+        if let sheet = nav.sheetPresentationController {
+            sheet.detents = [.large()]
+            sheet.prefersGrabberVisible = false
+        }
+
+        vc.navigationItem.rightBarButtonItem = .init(systemItem: .close,
+                                                     primaryAction: UIAction { [weak vc] _ in
+            vc?.navigationController?.dismiss(animated: true)
+        })
+
+        nav.navigationBar.isTranslucent = true
+        vc.edgesForExtendedLayout = .top
+
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        vc.navigationItem.standardAppearance = navAppearance
+        vc.navigationItem.scrollEdgeAppearance = navAppearance
+        vc.navigationItem.compactAppearance = navAppearance
+
+        navigationController?.present(nav, animated: true)
     }
 
     /// A View Controller that displays a Post content.
@@ -875,6 +948,10 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         let post = relatedPosts[indexPath.section].posts[indexPath.row]
         cell.configure(for: post)
+
+        // TODO: Reader customization: override to transparent background
+        cell.backgroundColor = .clear
+
         return cell
     }
 
@@ -889,6 +966,9 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         }
 
         header.titleLabel.text = title
+
+        // TODO: Reader customization: override to transparent background
+        header.backgroundColorView.backgroundColor = .clear
 
         return header
     }
@@ -1036,7 +1116,8 @@ private extension ReaderDetailViewController {
         let rightItems = [
             moreButtonItem(enabled: enableRightBarButtons),
             shareButtonItem(enabled: enableRightBarButtons),
-            safariButtonItem()
+            safariButtonItem(),
+            displaySettingButtonItem()
         ]
         navigationItem.largeTitleDisplayMode = .never
         navigationItem.rightBarButtonItems = rightItems.compactMap({ $0 })
@@ -1077,6 +1158,16 @@ private extension ReaderDetailViewController {
 
     @objc func didTapDismissButton(_ sender: UIButton) {
         dismiss(animated: true)
+    }
+
+    func displaySettingButtonItem() -> UIBarButtonItem? {
+        guard FeatureFlag.readerCustomization.enabled,
+              let symbolImage = UIImage(systemName: "textformat") else {
+            return nil
+        }
+        let button = barButtonItem(with: symbolImage, action: #selector(didTapDisplaySettingButton(_:)))
+
+        return button
     }
 
     func safariButtonItem() -> UIBarButtonItem? {
