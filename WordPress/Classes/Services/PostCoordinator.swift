@@ -26,6 +26,8 @@ class PostCoordinator: NSObject {
 
     private let queue = DispatchQueue(label: "org.wordpress.postcoordinator")
 
+    private var pendingPostIDs: Set<NSManagedObjectID> = []
+
     private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
@@ -35,6 +37,7 @@ class PostCoordinator: NSObject {
     private let failedPostsFetcher: FailedPostsFetcher
 
     private let actionDispatcherFacade: ActionDispatcherFacade
+    private let isSyncPublishingEnabled: Bool
 
     // MARK: - Initializers
 
@@ -42,7 +45,8 @@ class PostCoordinator: NSObject {
          mediaCoordinator: MediaCoordinator? = nil,
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
+         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
@@ -52,6 +56,7 @@ class PostCoordinator: NSObject {
         self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
         self.actionDispatcherFacade = actionDispatcherFacade
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     /// Upload or update a post in the server.
@@ -173,7 +178,7 @@ class PostCoordinator: NSObject {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
-        let alert = UIAlertController(title: Strings.uploadFailed, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: Strings.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
             case .conflict:
@@ -202,8 +207,31 @@ class PostCoordinator: NSObject {
     }
 
     func moveToDraft(_ post: AbstractPost) {
+        guard isSyncPublishingEnabled else {
+            _moveToDraft(post)
+            return
+        }
+
+        var changes = RemotePostUpdateParameters()
+        changes.status = Post.Status.draft.rawValue
+        _performChanges(changes, for: post)
+    }
+
+    /// - note: Deprecated (kahu-offline-mode) (along with all related types)
+    private func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
+    }
+
+    /// Sets the post state to "updating" and performs the given changes.
+    private func _performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
+        Task { @MainActor in
+            let post = post.original()
+            setUpdating(true, for: post)
+            defer { setUpdating(false, for: post) }
+
+            try await self._update(post, changes: changes)
+        }
     }
 
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
@@ -568,6 +596,25 @@ class PostCoordinator: NSObject {
         }
     }
 
+    // MARK: - State
+
+    func isUpdating(_ post: AbstractPost) -> Bool {
+        pendingPostIDs.contains(post.original().objectID)
+    }
+
+    @MainActor
+    private func setUpdating(_ isUpdating: Bool, for post: AbstractPost) {
+        let objectID = post.original().objectID
+        if isUpdating {
+            pendingPostIDs.insert(objectID)
+        } else {
+            pendingPostIDs.remove(objectID)
+        }
+        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
+            NSUpdatedObjectsKey: Set([post])
+        ])
+    }
+
     // MARK: - Trash/Delete
 
     func isDeleting(_ post: AbstractPost) -> Bool {
@@ -722,6 +769,6 @@ private enum Strings {
     static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
     static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
     static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
-    static let uploadFailed = NSLocalizedString("postNotice.uploadFailed", value: "Upload failed", comment: "A post upload failed notification.")
+    static let errorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
     static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
 }
