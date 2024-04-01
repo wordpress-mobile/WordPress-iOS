@@ -112,6 +112,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         cell.titleLabel.text = commentsEnabled ? Constants.noComments : Constants.closedComments
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.titleLabel.font = displaySetting.font(with: .body)
+            cell.titleLabel.textColor = displaySetting.color.secondaryForeground
+        }
+
         return cell
     }
 
@@ -179,10 +185,10 @@ private extension ReaderDetailCommentsTableViewDelegate {
                            normalColor: displaySetting.color.foreground,
                            highlightedColor: displaySetting.color.background,
                            borderColor: displaySetting.color.border,
-                           buttonInsets: Constants.buttonInsets,
+                           buttonInsets: showCommentsButtonInsets,
                            backgroundColor: .clear)
         } else {
-            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
+            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: showCommentsButtonInsets)
         }
 
         cell.delegate = buttonDelegate
@@ -199,12 +205,17 @@ private extension ReaderDetailCommentsTableViewDelegate {
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .readerDetail)
     }
 
+    // The 'No comments' cell doesn't have a bottom padding. When displayed, we need to add top padding to the button.
+    var showCommentsButtonInsets: UIEdgeInsets {
+        comments.count > 0 ? .zero : Constants.buttonInsets
+    }
+
     struct Constants {
         static let noComments = NSLocalizedString("No comments yet", comment: "Displayed on the post details page when there are no post comments.")
         static let closedComments = NSLocalizedString("Comments are closed", comment: "Displayed on the post details page when there are no post comments and commenting is closed.")
         static let viewAllButtonTitle = NSLocalizedString("View all comments", comment: "Title for button on the post details page to show all comments when tapped.")
         static let leaveCommentButtonTitle = NSLocalizedString("Be the first to comment", comment: "Title for button on the post details page when there are no comments.")
-        static let buttonInsets = UIEdgeInsets.zero
+        static let buttonInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         static let jetpackBadgeBottomPadding: CGFloat = 10
     }
 }
