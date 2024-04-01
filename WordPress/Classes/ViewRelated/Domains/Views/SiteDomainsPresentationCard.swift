@@ -8,9 +8,9 @@ struct SiteDomainsPresentationCard: View {
     let destinations: [Destination]
 
     var body: some View {
-        VStack(spacing: Length.Padding.medium) {
-            VStack(spacing: Length.Padding.single) {
-                VStack(spacing: -Length.Padding.large) {
+        VStack(spacing: .DS.Padding.medium) {
+            VStack(spacing: .DS.Padding.single) {
+                VStack(spacing: -.DS.Padding.large) {
                     DashboardDomainsCardSearchView()
                     Text(title)
                         .style(.heading4)
@@ -22,10 +22,10 @@ struct SiteDomainsPresentationCard: View {
                     .foregroundColor(.DS.Foreground.secondary)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, Length.Padding.single)
+                    .padding(.horizontal, .DS.Padding.single)
             }
 
-            VStack(spacing: Length.Padding.single) {
+            VStack(spacing: .DS.Padding.single) {
                 ForEach(destinations) { destination in
                     DSButton(
                         title: destination.title,

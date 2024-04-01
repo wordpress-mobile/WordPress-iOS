@@ -30,10 +30,10 @@ struct NotificationsTableViewCellContent: View {
         switch style {
         case .regular(let regular):
             Regular(info: regular)
-                .padding(.vertical, Length.Padding.split)
+                .padding(.vertical, .DS.Padding.split)
         case .altered(let altered):
             Altered(info: altered)
-                .padding(.vertical, Length.Padding.split)
+                .padding(.vertical, .DS.Padding.split)
         }
     }
 }
@@ -65,7 +65,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         x: -info.avatarStyle.leadingOffset * 2,
                         y: -3 * textScale
                     )
-                    .padding(.leading, Length.Padding.split)
+                    .padding(.leading, .DS.Padding.split)
                     .saveSize(in: $textsSize)
                 Spacer()
                 if let inlineAction = info.inlineAction {
@@ -73,20 +73,20 @@ fileprivate extension NotificationsTableViewCellContent {
                         .padding(.top, actionIconTopPadding())
                 }
             }
-            .padding(.trailing, Length.Padding.double)
+            .padding(.trailing, .DS.Padding.double)
         }
 
         private var avatarHStack: some View {
             HStack(spacing: 0) {
                 if info.shouldShowIndicator {
                     indicator
-                        .padding(.horizontal, Length.Padding.single)
+                        .padding(.horizontal, .DS.Padding.single)
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
                     AvatarsView(style: info.avatarStyle)
                         .offset(x: -info.avatarStyle.leadingOffset)
-                        .padding(.leading, Length.Padding.medium)
+                        .padding(.leading, .DS.Padding.medium)
                 }
             }
         }
@@ -94,7 +94,7 @@ fileprivate extension NotificationsTableViewCellContent {
         private var indicator: some View {
             Circle()
                 .fill(Color.DS.Background.brand(isJetpack: AppConfiguration.isJetpack))
-                .frame(width: Length.Padding.single)
+                .frame(width: .DS.Padding.single)
         }
 
         private var textsVStack: some View {
@@ -113,13 +113,13 @@ fileprivate extension NotificationsTableViewCellContent {
                         .foregroundStyle(Color.DS.Foreground.secondary)
                         .layoutPriority(2)
                         .lineLimit(1)
-                        .padding(.top, Length.Padding.half)
+                        .padding(.top, .DS.Padding.half)
                 }
             }
         }
 
         private func actionIconTopPadding() -> CGFloat {
-            rootStackAlignment == .center ? 0 : ((info.avatarStyle.diameter * textScale - Length.Padding.medium) / 2)
+            rootStackAlignment == .center ? 0 : ((info.avatarStyle.diameter * textScale - .DS.Padding.medium) / 2)
         }
     }
 }
@@ -152,7 +152,7 @@ fileprivate extension NotificationsTableViewCellContent {
                         .style(.bodySmall(.regular))
                         .foregroundStyle(Color.white)
                         .lineLimit(2)
-                        .padding(.leading, Length.Padding.medium)
+                        .padding(.leading, .DS.Padding.medium)
 
                     Spacer()
 
@@ -163,7 +163,7 @@ fileprivate extension NotificationsTableViewCellContent {
                             .style(.bodySmall(.regular))
                             .foregroundStyle(Color.white)
                             .accessibilityHint(Strings.undoButtonHint)
-                            .padding(.trailing, Length.Padding.medium)
+                            .padding(.trailing, .DS.Padding.medium)
                     })
                 }
             }
@@ -202,7 +202,7 @@ extension NotificationsTableViewCellContent {
                 configuration.icon
                     .imageScale(.small)
                     .foregroundStyle(configuration.color ?? Color.DS.Foreground.secondary)
-                    .frame(width: Length.Padding.medium, height: Length.Padding.medium)
+                    .frame(width: .DS.Padding.medium, height: .DS.Padding.medium)
                     .transaction { transaction in
                         transaction.animation = nil
                     }
@@ -250,7 +250,7 @@ private extension View {
 
 #if DEBUG
 #Preview {
-    VStack(alignment: .leading, spacing: Length.Padding.medium) {
+    VStack(alignment: .leading, spacing: .DS.Padding.medium) {
         NotificationsTableViewCellContent(
             style: .regular(
                 .init(

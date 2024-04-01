@@ -27,13 +27,22 @@ class ReaderDetailNewHeaderViewHost: UIView {
     // TODO: Find out if we still need this.
     var useCompatibilityMode: Bool = false
 
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            viewModel.displaySetting = displaySetting
+            Task { @MainActor in
+                refreshContainerLayout()
+            }
+        }
+    }
+
     private var postObjectID: TaggedManagedObjectID<ReaderPost>? = nil
 
     // TODO: Populate this with values from the ReaderPost.
     private lazy var viewModel: ReaderDetailHeaderViewModel = {
         $0.topicDelegate = self
         return $0
-    }(ReaderDetailHeaderViewModel())
+    }(ReaderDetailHeaderViewModel(displaySetting: displaySetting))
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -118,6 +127,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
 
     @Published var showsAuthorName: Bool = true
 
+    @Published var displaySetting: ReaderDisplaySetting
+
     var likeCountString: String? {
         guard let count = likeCount, count > 0 else {
             return nil
@@ -132,7 +143,8 @@ class ReaderDetailHeaderViewModel: ObservableObject {
         return WPStyleGuide.commentCountForDisplay(count)
     }
 
-    init(coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+    init(displaySetting: ReaderDisplaySetting, coreDataStack: CoreDataStackSwift = ContextManager.shared) {
+        self.displaySetting = displaySetting
         self.coreDataStack = coreDataStack
     }
 
@@ -234,8 +246,12 @@ struct ReaderDetailNewHeaderView: View {
     /// Used for the inward border. We want the color to be inverted, such that the avatar can "preserve" its shape
     /// when the image has low or almost no contrast with the background (imagine white avatar on white background).
     var avatarInnerBorderColor: UIColor {
-        let color = UIColor.systemBackground
+        let color = viewModel.displaySetting.color.background
         return colorScheme == .light ? color.darkVariant() : color.lightVariant()
+    }
+
+    var primaryTextColor: UIColor {
+        viewModel.displaySetting.color.foreground
     }
 
     var innerBorderOpacity: CGFloat {
@@ -247,8 +263,8 @@ struct ReaderDetailNewHeaderView: View {
             headerRow
             if let postTitle = viewModel.postTitle {
                 Text(postTitle)
-                    .font(.title)
-                    .fontWeight(.bold)
+                    .font(Font(viewModel.displaySetting.font(with: .title1, weight: .bold)))
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(nil)
                     .fixedSize(horizontal: false, vertical: true) // prevents the title from being truncated.
             }
@@ -270,7 +286,8 @@ struct ReaderDetailNewHeaderView: View {
             Spacer()
             ReaderFollowButton(isFollowing: viewModel.isFollowingSite,
                                isEnabled: viewModel.isFollowButtonInteractive,
-                               size: .compact) {
+                               size: .compact,
+                               displaySetting: viewModel.displaySetting) {
                 viewModel.didTapFollowButton()
             }
         }
@@ -284,9 +301,8 @@ struct ReaderDetailNewHeaderView: View {
             }
             VStack(alignment: .leading, spacing: 4.0) {
                 Text(viewModel.siteName)
-                    .font(.callout)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(.primary)
+                    .font(Font(viewModel.displaySetting.font(with: .callout, weight: .semibold)))
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(1)
                 authorAndTimestampView
             }
@@ -332,7 +348,7 @@ struct ReaderDetailNewHeaderView: View {
             .background {
                 // adds a border between the the author avatar and the site icon.
                 Circle()
-                    .stroke(Color(uiColor: .systemBackground), lineWidth: 1.0)
+                    .stroke(Color(uiColor: viewModel.displaySetting.color.background), lineWidth: 1.0)
             }
             .offset(x: 2.0, y: 2.0)
         }
@@ -356,12 +372,12 @@ struct ReaderDetailNewHeaderView: View {
                 }
             }
         }
-        .font(.footnote)
-        .foregroundStyle(.secondary)
+        .font(Font(viewModel.displaySetting.font(with: .footnote)))
+        .foregroundStyle(Color(viewModel.displaySetting.color.secondaryForeground))
     }
 
     var tagsView: some View {
-        ReaderDetailTagsWrapperView(topics: viewModel.tags, delegate: viewModel.topicDelegate)
+        ReaderDetailTagsWrapperView(topics: viewModel.tags, displaySetting: viewModel.displaySetting, delegate: viewModel.topicDelegate)
             .background(GeometryReader { geometry in
                 // The host view does not react properly after the collection view finished its layout.
                 // This informs any size changes to the host view so that it can readjust correctly.
@@ -376,13 +392,13 @@ struct ReaderDetailNewHeaderView: View {
         HStack(spacing: 0) {
             if viewModel.showsAuthorName {
                 Text(viewModel.authorName)
-                    .font(.footnote)
-                    .foregroundColor(Color(.text))
+                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                    .foregroundStyle(Color(primaryTextColor))
                     .lineLimit(1)
 
                 Text(" • ")
-                    .font(.footnote)
-                    .foregroundColor(Color(.secondaryLabel))
+                    .font(Font(viewModel.displaySetting.font(with: .footnote)))
+                    .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
                     .lineLimit(1)
                     .layoutPriority(1)
             }
@@ -399,8 +415,8 @@ struct ReaderDetailNewHeaderView: View {
 
     var timestampText: Text {
         Text(viewModel.relativePostTime)
-            .font(.footnote)
-            .foregroundColor(Color(.secondaryLabel))
+            .font(Font(viewModel.displaySetting.font(with: .footnote)))
+            .foregroundColor(Color(viewModel.displaySetting.color.secondaryForeground))
     }
 }
 
@@ -434,10 +450,12 @@ fileprivate extension ReaderDetailNewHeaderView {
 
 fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
     private let topics: [String]
+    private let displaySetting: ReaderDisplaySetting
     private weak var delegate: ReaderTopicCollectionViewCoordinatorDelegate?
 
-    init(topics: [String], delegate: ReaderTopicCollectionViewCoordinatorDelegate?) {
+    init(topics: [String], displaySetting: ReaderDisplaySetting, delegate: ReaderTopicCollectionViewCoordinatorDelegate?) {
         self.topics = topics
+        self.displaySetting = displaySetting
         self.delegate = delegate
     }
 
@@ -445,6 +463,7 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
         let view = TopicsCollectionView(frame: .zero, collectionViewLayout: ReaderInterestsCollectionViewFlowLayout())
         view.topics = topics
         view.topicDelegate = delegate
+        view.coordinator?.displaySetting = displaySetting
 
         // ensure that the collection view hugs its content.
         view.setContentHuggingPriority(.defaultHigh, for: .vertical)
@@ -453,6 +472,11 @@ fileprivate struct ReaderDetailTagsWrapperView: UIViewRepresentable {
     }
 
     func updateUIView(_ uiView: UICollectionView, context: Context) {
+        if let view = uiView as? TopicsCollectionView {
+            view.coordinator?.displaySetting = displaySetting
+        }
+
+        uiView.reloadData()
         uiView.layoutIfNeeded()
     }
 }

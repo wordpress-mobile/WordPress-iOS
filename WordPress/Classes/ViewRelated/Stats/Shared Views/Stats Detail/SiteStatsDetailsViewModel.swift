@@ -49,26 +49,17 @@ class SiteStatsDetailsViewModel: Observable {
         self.selectedPeriod = selectedPeriod
         self.postID = postID
 
-        switch statSection {
-        case let statSection where StatSection.allInsights.contains(statSection):
-            guard let storeQuery = queryForInsightStatSection(statSection) else {
-                return
-            }
-
+        if let insightQuery = queryForInsightStatSection(statSection) {
             insightsChangeReceipt = insightsStore.onChange { [weak self] in
                 self?.emitChange()
             }
-            insightsReceipt = insightsStore.query(storeQuery)
-        case let statSection where StatSection.allPeriods.contains(statSection):
-            guard let storeQuery = queryForPeriodStatSection(statSection) else {
-                return
-            }
-
+            insightsReceipt = insightsStore.query(insightQuery)
+        } else if let periodQuery = queryForPeriodStatSection(statSection) {
             periodChangeReceipt = periodStore.onChange { [weak self] in
                 self?.emitChange()
             }
-            periodReceipt = periodStore.query(storeQuery)
-        case let statSection where StatSection.allPostStats.contains(statSection):
+            periodReceipt = periodStore.query(periodQuery)
+        } else if StatSection.allPostStats.contains(statSection) {
             guard let postID = postID else {
                 return
             }
@@ -77,8 +68,8 @@ class SiteStatsDetailsViewModel: Observable {
                 self?.emitChange()
             }
             periodReceipt = periodStore.query(.postStats(postID: postID))
-        default:
-            break
+        } else {
+            DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
         }
     }
 
@@ -87,22 +78,18 @@ class SiteStatsDetailsViewModel: Observable {
             return true
         }
 
-        switch statSection {
-        case let statSection where StatSection.allInsights.contains(statSection):
-            guard let storeQuery = queryForInsightStatSection(statSection) else {
-                return true
-            }
-            return insightsStore.fetchingFailed(for: storeQuery)
-        case let statSection where StatSection.allPeriods.contains(statSection):
-            guard let storeQuery = queryForPeriodStatSection(statSection) else {
-                return true
-            }
-            return periodStore.fetchingFailed(for: storeQuery)
-        default:
+        if let insightQuery = queryForInsightStatSection(statSection) {
+            return insightsStore.fetchingFailed(for: insightQuery)
+        } else if let periodQuery = queryForPeriodStatSection(statSection) {
+            return periodStore.fetchingFailed(for: periodQuery)
+        } else if StatSection.allPostStats.contains(statSection) {
             guard let postID = postID else {
                 return true
             }
             return periodStore.fetchingFailed(for: .postStats(postID: postID))
+        } else {
+            DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
+            return true
         }
     }
 

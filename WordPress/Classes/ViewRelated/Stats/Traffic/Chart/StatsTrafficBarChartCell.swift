@@ -95,7 +95,7 @@ private extension StatsTrafficBarChartCell {
             chartView.translatesAutoresizingMaskIntoConstraints = false
             chartContainerView.addSubview(chartView)
             chartContainerView.accessibilityElements = [chartView]
-            chartContainerView.pinSubviewToAllEdges(chartView, insets: UIEdgeInsets(top: Length.Padding.split, left: 0, bottom: 0, right: 0))
+            chartContainerView.pinSubviewToAllEdges(chartView, insets: UIEdgeInsets(top: .DS.Padding.split, left: 0, bottom: 0, right: 0))
             self.chartView = chartView
         } else {
             self.chartView?.update(barChartData: chartData, styling: styling)
@@ -127,7 +127,7 @@ private extension StatsTrafficBarChartCell {
         contentStackView.translatesAutoresizingMaskIntoConstraints = false
         contentStackView.axis = .vertical
         contentStackView.alignment = .leading
-        contentStackView.spacing = Length.Padding.split
+        contentStackView.spacing = .DS.Padding.split
         contentView.addSubview(contentStackView)
         contentView.pinSubviewToAllEdges(contentStackView)
     }
@@ -143,7 +143,7 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.widthAnchor.constraint(equalTo: contentStackView.widthAnchor).isActive = true
         filterTabBar.tabBarHeight = 56
         filterTabBar.equalWidthFill = .fillEqually
-        filterTabBar.equalWidthSpacing = Length.Padding.single
+        filterTabBar.equalWidthSpacing = .DS.Padding.single
         filterTabBar.tabSizingStyle = .equalWidths
         filterTabBar.tintColor = UIColor.DS.Foreground.primary
         filterTabBar.selectedTitleColor = UIColor.DS.Foreground.primary
@@ -151,8 +151,8 @@ private extension StatsTrafficBarChartCell {
         filterTabBar.tabSeparatorPlacement = .top
         filterTabBar.tabsFont = tabsFont()
         filterTabBar.tabsSelectedFont = tabsFont()
-        filterTabBar.tabAttributedButtonInsets = UIEdgeInsets(top: Length.Padding.single, left: Length.Padding.half, bottom: Length.Padding.single, right: Length.Padding.half)
-        filterTabBar.tabSeparatorPadding = Length.Padding.single
+        filterTabBar.tabAttributedButtonInsets = UIEdgeInsets(top: .DS.Padding.single, left: .DS.Padding.half, bottom: .DS.Padding.single, right: .DS.Padding.half)
+        filterTabBar.tabSeparatorPadding = .DS.Padding.single
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 

@@ -1,8 +1,2 @@
-Layar Statistik kini dilengkapi dengan tab Pengunjung. Dapatkan grafik yang lebih informatif dan akses ke seluruh data riwayat Anda secara terpusat. Ya, sekarang ada data harian, mingguan, bulanan, bahkan tahunan.
-
-Pemberitahuan lebih modern dengan desain yang menawan dan mudah digunakan. Kami juga menerapkan sejumlah perubahan di editor blok.
-
-- Kami menambahkan dukungan untuk VideoPress v5. Anda akan rasakan performa yang jauh lebih baik pada blok video.
-- Aplikasi tidak akan mengalami crash lagi saat editor mengaktifkan fitur gulir otomatis ke blok. Tak ada lagi rasa kesal dan kecewa.
-- Sekarang, pesan error akan muncul saat video gagal diunggah ke blok media dan teks.
-- Saat diunggah, gambar tak lagi transparan sebagian. Penuh warna, selamanya
+Kami telah membuat perbaikan untuk mencegah bug tertentu di editor dan di tipe blok tunggal. Perbaikan ini mencatat semua bug yang lewat sehingga kami dapat membasminya pula.
+Kami juga menyempurnakan proses pratinjau dan penerbitan pos dengan menghapus tombol edit dari layar berhasil “Pos Diterbitkan” dan tombol poskan dari layar “Pratinjau”. Totalitas kerja yang kami nikmati.

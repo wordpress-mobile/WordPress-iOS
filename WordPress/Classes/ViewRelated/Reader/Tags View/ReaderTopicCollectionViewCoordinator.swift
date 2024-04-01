@@ -42,6 +42,8 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         }
     }
 
+    var displaySetting: ReaderDisplaySetting? = nil
+
     init(collectionView: UICollectionView, topics: [String]) {
         self.collectionView = collectionView
         self.topics = topics
@@ -117,11 +119,17 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         return size
     }
 
+    // TODO: Stylize
     private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
         ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
 
+        if let displaySetting {
+            cell.label.font = displaySetting.font(with: .footnote)
+            cell.label.textColor = displaySetting.color.foreground
+        }
+
         if metrics.borderWidth > 0 {
-            cell.layer.borderColor = metrics.borderColor.cgColor
+            cell.layer.borderColor = displaySetting?.color.secondaryForeground.cgColor ?? metrics.borderColor.cgColor
             cell.layer.borderWidth = metrics.borderWidth
         }
 

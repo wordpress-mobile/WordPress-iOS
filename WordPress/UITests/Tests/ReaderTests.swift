@@ -43,10 +43,10 @@ class ReaderTests: XCTestCase {
     func testFollowNewTopicOnDiscover() throws {
         try ReaderScreen()
             .switchToStream(.discover)
-            .selectTopic()
-            .verifyTopicLoaded()
-            .subscribeToTopic()
-            .verifyTopicSubscribed()
+            .selectTag()
+            .verifyTagLoaded()
+            .followTag()
+            .verifyTagFollowed()
     }
 
     func testSavePost() throws {

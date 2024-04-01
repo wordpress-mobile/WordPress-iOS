@@ -105,7 +105,7 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         XCTAssertEqual(dataSource.count, 1)
     }
 
-    func testDataSourceInterestInterestFor() {
+    func testDataSourceInterestInterestFor() throws {
         let service = MockInterestsService()
         let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
@@ -117,12 +117,29 @@ class ReaderInterestsDataSourceTests: XCTestCase {
 
         wait(for: [successExpectation], timeout: 4)
 
-        XCTAssertEqual(dataSource.interest(for: 0).title, Constants.testTitle)
-        XCTAssertEqual(dataSource.interest(for: 0).slug, Constants.testSlug)
-        XCTAssertEqual(dataSource.interest(for: 0).isSelected, false)
+        let interest = try XCTUnwrap(dataSource.interest(for: 0), "Expected interest at index 0 to exist")
+        XCTAssertEqual(interest.title, Constants.testTitle)
+        XCTAssertEqual(interest.slug, Constants.testSlug)
+        XCTAssertEqual(interest.isSelected, false)
     }
 
-    func testDataSourceInterestToggleSelected() {
+    func testDataSourceInterestInvalidIndexPath() {
+        let service = MockInterestsService()
+        let dataSource = ReaderInterestsDataSource(topics: [], service: service)
+        let successExpectation = expectation(description: "Fetching of interests succeeds")
+
+        service.success = true
+        service.fetchSuccessExpectation = successExpectation
+
+        dataSource.reload()
+
+        wait(for: [successExpectation], timeout: 4)
+
+        // Queries for invalid index should return nil instead of crashing.
+        XCTAssertNil(dataSource.interest(for: 1))
+    }
+
+    func testDataSourceInterestToggleSelected() throws {
         let service = MockInterestsService()
         let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
@@ -135,15 +152,20 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         wait(for: [successExpectation], timeout: 4)
 
         // Toggle on
-        dataSource.interest(for: 0).toggleSelected()
-        XCTAssertEqual(dataSource.interest(for: 0).isSelected, true)
+        let interest = try XCTUnwrap(dataSource.interest(for: 0), "Expected interest at index 0 to exist")
+        interest.toggleSelected()
+        XCTAssertEqual(interest.isSelected, true)
 
         // Toggle off
-        dataSource.interest(for: 0).toggleSelected()
-        XCTAssertEqual(dataSource.interest(for: 0).isSelected, false)
+        interest.toggleSelected()
+
+        // Re-fetch interest.
+        // The view model stored in the data source's `interests` array should also be updated.
+        let updatedInterest = try XCTUnwrap(dataSource.interest(for: 0), "Expected interest at index 0 to exist")
+        XCTAssertEqual(updatedInterest.isSelected, false)
     }
 
-    func testDataSourceInterestSelectedInterests() {
+    func testDataSourceInterestSelectedInterests() throws {
         let service = MockInterestsService()
         let dataSource = ReaderInterestsDataSource(topics: [], service: service)
         let successExpectation = expectation(description: "Fetching of interests succeeds")
@@ -156,7 +178,8 @@ class ReaderInterestsDataSourceTests: XCTestCase {
         wait(for: [successExpectation], timeout: 4)
 
         // Toggle on
-        dataSource.interest(for: 0).toggleSelected()
+        let interest = try XCTUnwrap(dataSource.interest(for: 0), "Expected interest at index 0 to exist")
+        interest.toggleSelected()
 
         XCTAssertEqual(dataSource.count, dataSource.selectedInterests.count)
     }

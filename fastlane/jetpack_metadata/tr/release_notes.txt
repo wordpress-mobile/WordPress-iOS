@@ -1,8 +1,2 @@
-İstatistikler ekranına yeni Trafik sekmesi eklendi. Daha iyi grafikler ve geçmiş verilere daha iyi erişim elde edin, hem de aynı yerden. Günler, hatta haftalar, aylar ve yıllar öncesine giden verileriniz var.
-
-Bildirimler iyileştirildi, daha güzel görünen ve kolay kullanım sağlayan bir tasarıma yükseltildi. Ayrıca blok düzenleyicide de birkaç değişiklik yaptık.
-
-- VideoPress v5 için destek ekledik, böylece video bloklarınızda daha iyi bir performans elde edersiniz.
-- Düzenleyici, bir blokta otomatik olarak ekranı aşağıya kaydırdığında artık çökme sorunu olmaz. Artık sizi yarı yolda bırakmayacak.
-- Artık bir ortam veya metin blokuna video yüklenmesi başarısız olursa bir hata mesajı görürsünüz.
-- Artık görseller yüklenirken kısmen şeffaf görünmez. Görseller her zaman tamamen renkli olur.
+Düzenleyicideki ve bireysel blok türlerindeki belirli hataları önleyen bir düzeltmeyi kullanıma sunduk. Bu düzeltme gözden kaçan hataları da kaydeder, bu sayede onları da düzeltebiliriz.
+Ayrıca "Gönderi Yayımlandı" işlem başarılı ekranından düzenleme düğmesini ve "Önizleme" ekranından yayımlama düğmesini kaldırarak önizleme ve yayımlama deneyiminizi de iyileştirdik. Hepsi bir günlük iş.
