@@ -42,6 +42,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         }
     }
 
+    /// For custom styling. When nil, the cell will be configured with default styling.
     var displaySetting: ReaderDisplaySetting? = nil
 
     init(collectionView: UICollectionView, topics: [String]) {
@@ -104,7 +105,7 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
 
     private func sizeForCell(title: String, of collectionView: UICollectionView) -> CGSize {
         let attributes: [NSAttributedString.Key: Any] = [
-            .font: ReaderInterestsStyleGuide.compactCellLabelTitleFont
+            .font: displaySetting?.font(with: .footnote) ?? ReaderInterestsStyleGuide.compactCellLabelTitleFont
         ]
 
         let title: NSString = title as NSString
@@ -119,7 +120,6 @@ class ReaderTopicCollectionViewCoordinator: NSObject {
         return size
     }
 
-    // TODO: Stylize
     private func configure(cell: ReaderInterestsCollectionViewCell, with title: String) {
         ReaderInterestsStyleGuide.applyCompactCellLabelStyle(label: cell.label)
 
