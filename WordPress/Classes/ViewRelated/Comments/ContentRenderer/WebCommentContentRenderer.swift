@@ -80,16 +80,17 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
-                guard let height = height as? CGFloat else {
+            webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
+                guard let self,
+                      let height = height as? CGFloat else {
                     return
                 }
 
-                // TODO: Revisit this later.
-                // This is disabled for Reader customization.
-//                // reset the webview to opaque again so the scroll indicator is visible.
-//                webView.isOpaque = true
-                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: height)
+                /// The display setting's custom size is applied through the HTML's initial-scale property
+                /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
+                /// so we'll need to add the custom scale into account.
+                let actualHeight = round(height * self.displaySetting.size.scale)
+                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: actualHeight)
             }
         }
     }
