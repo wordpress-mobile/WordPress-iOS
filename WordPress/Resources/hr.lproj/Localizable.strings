@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 22:00:55+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-rc.1 */
+/* Generator: GlotPress/4.0.0 */
 /* Language: hr */
 
 /* Singular button title to Like a comment. %1$d is a placeholder for the number of Likes.
@@ -275,8 +275,7 @@
 /* View title when editing a comment. */
 "Edit Comment" = "Uredi Komentar";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Uredi Post";
 
@@ -614,8 +613,7 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Javno";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen

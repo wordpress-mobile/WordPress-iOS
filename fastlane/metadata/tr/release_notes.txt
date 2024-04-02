@@ -1,5 +1,2 @@
-Blok düzenleyicide birkaç değişiklik yaptık.
-
-- Düzenleyici, bir blokta otomatik olarak ekranı aşağıya kaydırdığında artık çökme sorunu olmaz.
-- Artık bir ortam veya metin blokuna video yüklenmesi başarısız olursa bir hata mesajı görürsünüz.
-- Artık görseller yüklenirken kısmen şeffaf görünmez. Görseller her zaman tamamen renkli olur.
+Düzenleyicideki ve bireysel blok türlerindeki belirli hataları önleyen bir düzeltmeyi kullanıma sunduk. Bu düzeltme aradan kaçan hataları da kaydeder, bu sayede onları da düzeltebiliriz.
+Ayrıca "Gönderi Yayımlandı" işlem başarılı ekranından düzenleme düğmesini ve "Önizleme" ekranından yayımlama düğmesini kaldırarak önizleme ve yayımlama deneyiminizi de iyileştirdik. Hepsi bir günlük iş.

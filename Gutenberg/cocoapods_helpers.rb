@@ -9,6 +9,10 @@ DEFAULT_GUTENBERG_LOCATION = File.join(__dir__, '..', '..', 'gutenberg-mobile')
 
 GUTENBERG_CONFIG_PATH = File.join(__dir__, '..', 'Gutenberg', 'config.yml')
 
+# We skip the simulator architecture as we only need to extract the bundle and source map for installable builds.
+GUTENBERG_FRAMEWORK_FOLDER = File.join(__dir__, '..', 'Pods', 'Gutenberg', 'Frameworks', 'Gutenberg.xcframework', 'ios-arm64', 'Gutenberg.framework')
+GUTENBERG_BUNDLE_SOURCE_MAP_TARGET = File.join(__dir__, '..', 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
+
 LOCAL_GUTENBERG_KEY = 'LOCAL_GUTENBERG'
 
 # Note that the pods in this array might seem unused if you look for
@@ -115,6 +119,8 @@ def apply_rnreanimated_workaround!(dependencies:, gutenberg_path:)
 end
 
 def gutenberg_post_install(installer:)
+  extract_bundle_source_map_files unless should_use_local_gutenberg
+
   return unless should_use_local_gutenberg
 
   raise "[Gutenberg] Could not find local Gutenberg at given path #{local_gutenberg_path}" unless File.exist?(local_gutenberg_path)
@@ -206,4 +212,23 @@ def workaround_broken_search_paths
     end
   end
   project.save
+end
+
+# Copy Gutenberg bundle and source map files so they can be upload it to Sentry during the build process.
+def extract_bundle_source_map_files
+  puts '[Gutenberg] Extracting bundle and source map files'
+
+  FileUtils.mkdir_p(GUTENBERG_BUNDLE_SOURCE_MAP_TARGET)
+  bundle_from_path = File.join(GUTENBERG_FRAMEWORK_FOLDER, 'App.js')
+  bundle_destination_path = File.join(GUTENBERG_BUNDLE_SOURCE_MAP_TARGET, 'main.jsbundle')
+  FileUtils.cp(bundle_from_path, bundle_destination_path)
+
+  # Source map file is moved instead of copied to avoid including it in the binary.
+  source_map_from_path = File.join(GUTENBERG_FRAMEWORK_FOLDER, 'App.composed.js.map')
+  source_map_destination_path = File.join(GUTENBERG_BUNDLE_SOURCE_MAP_TARGET, 'main.jsbundle.map')
+  if File.exist?(source_map_from_path)
+    FileUtils.mv(source_map_from_path, source_map_destination_path)
+  elsif !File.exist?(source_map_destination_path)
+    raise "[Gutenberg] Source map \"#{source_map_from_path}\" could not be found. Please verify that the Gutenberg version includes the file or reinstall the pod."
+  end
 end

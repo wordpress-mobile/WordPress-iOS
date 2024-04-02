@@ -13,10 +13,8 @@ gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
 #
-# Attempt to address 'Bad CPU type in executable' on new Apple Silicon CI
-# See https://buildkite.com/automattic/wordpress-ios/builds/19609#018ced25-05f4-4c8b-9850-b314ea2f8d9e/1131-1330
-# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: '2cb009edaee3d058a61cfeb503e533eb0647f108'
-gem 'fastlane-plugin-wpmreleasetoolkit', '~> 9.3'
+# gem 'fastlane-plugin-wpmreleasetoolkit', git: 'https://github.com/wordpress-mobile/release-toolkit', ref: ''
+gem 'fastlane-plugin-wpmreleasetoolkit', '~> 10.0'
 gem 'rake'
 gem 'rubocop', '~> 1.60'
 gem 'rubocop-rake', '~> 0.6'

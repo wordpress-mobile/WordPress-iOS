@@ -33,13 +33,13 @@ struct DynamicDashboardCard: View {
     }
 
     var body: some View {
-        VStack(spacing: Length.Padding.single) {
+        VStack(spacing: .DS.Padding.single) {
             featureImage
             rowsVStack
             actionHStack
         }
-        .padding(.bottom, Length.Padding.single)
-        .padding(.horizontal, Length.Padding.double)
+        .padding(.bottom, .DS.Padding.single)
+        .padding(.horizontal, .DS.Padding.double)
     }
 
     @ViewBuilder
@@ -58,7 +58,7 @@ struct DynamicDashboardCard: View {
             }
             .clipShape(
                 RoundedRectangle(
-                    cornerRadius: Length.Radius.small
+                    cornerRadius: .DS.Radius.small
                 )
             )
         }
@@ -66,11 +66,19 @@ struct DynamicDashboardCard: View {
 
     @ViewBuilder
     var rowsVStack: some View {
-        VStack(spacing: Length.Padding.single) {
+        VStack(spacing: .DS.Padding.single) {
             ForEach(input.rows) { row in
-                HStack(alignment: .top, spacing: Length.Padding.split) {
+                HStack(alignment: .center, spacing: .DS.Padding.split) {
                     if let imageURL = row.imageURL {
-                        AsyncImage(url: imageURL)
+                        AsyncImage(url: imageURL) { phase in
+                            switch phase {
+                            case .success(let image):
+                                image
+                                    .resizable()
+                            default:
+                                Color.DS.Background.secondary
+                            }
+                        }
                             .frame(
                                 width: Constants.rowImageDiameter,
                                 height: Constants.rowImageDiameter
@@ -144,12 +152,12 @@ struct DynamicDashboardCard_Previews: PreviewProvider {
                     .init(
                         title: "Title first",
                         description: "Description first",
-                        imageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=48x48")!
+                        imageURL: URL(string: "https://mobiledotblog.files.wordpress.com/2024/03/perf-icon.png")!
                     ),
                     .init(
                         title: "Title second",
                         description: "Description second",
-                        imageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=48x48")!
+                        imageURL: nil
                     )
                 ],
                 action: .init(title: "Action button", callback: {

@@ -342,7 +342,7 @@ extension BlogDetailHeaderView {
             addSubview(mainStackView)
 
             NSLayoutConstraint.activate([
-                mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: Length.Padding.double),
+                mainStackView.topAnchor.constraint(equalTo: topAnchor, constant: .DS.Padding.double),
                 mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
                 mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
                 mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12)

@@ -10,8 +10,8 @@ extension ReaderTagsTableViewModel {
         let button = UIButton.closeAccessoryButton()
         button.addTarget(self, action: #selector(tappedAccessory(_:)), for: .touchUpInside)
         let unfollowString = NSLocalizedString(
-            "reader.tags.unsubscribe.accessibility.label",
-            value: "Unsubscribe from %@",
+            "reader.tags.unfollow.accessibility.label",
+            value: "Unfollow %@",
             comment: "Accessibility label for unsubscribing from a tag"
         )
         button.accessibilityLabel = String(format: unfollowString, topic.title)

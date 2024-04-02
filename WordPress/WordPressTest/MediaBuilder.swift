@@ -16,7 +16,6 @@ class MediaBuilder {
     ///
     @discardableResult
     func build() -> Media {
-
         return media
     }
 

@@ -1,6 +1,7 @@
 import Foundation
 import WordPressShared.WPStyleGuide
 import WordPressUI
+import Gravatar
 
 // MARK: - NoteBlockCommentTableViewCell Renders a Comment Block Onscreen
 //
@@ -99,7 +100,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
     // MARK: - Public Methods
 
     @objc func downloadGravatarWithURL(_ url: URL?) {
-        let gravatar = url.flatMap { Gravatar($0) }
+        let gravatar = url.flatMap { AvatarURL(url: $0) }
 
         gravatarImageView.downloadGravatar(gravatar, placeholder: placeholderImage, animate: true)
     }
@@ -110,7 +111,7 @@ class NoteBlockCommentTableViewCell: NoteBlockTextTableViewCell {
             return
         }
 
-        gravatarImageView.downloadGravatarWithEmail(unwrappedEmail, placeholderImage: placeholderImage)
+        gravatarImageView.downloadGravatar(for: unwrappedEmail, placeholderImage: placeholderImage)
     }
 
     // MARK: - View Methods

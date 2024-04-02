@@ -10,7 +10,7 @@ final class StatsTrafficBarChartView: BarChartView {
 
     private struct Constants {
         static let intrinsicHeight          = CGFloat(175)
-        static let topOffsetSansLegend      = Length.Padding.single
+        static let topOffsetSansLegend      = CGFloat.DS.Padding.single
         static let verticalAxisLabelCount   = 5
         static let barWidth                 = CGFloat(0.9) // Proportional to full width
         static let gridLineWidth            = CGFloat(0.5)
@@ -170,9 +170,9 @@ private extension StatsTrafficBarChartView {
 
     private func trailingOffset() -> CGFloat {
         if UIApplication.shared.preferredContentSizeCategory >= .extraExtraLarge {
-            return Length.Padding.max
+            return .DS.Padding.max
         } else {
-            return Length.Padding.large
+            return .DS.Padding.large
         }
     }
 

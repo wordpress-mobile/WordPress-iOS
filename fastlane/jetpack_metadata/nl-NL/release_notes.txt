@@ -1,0 +1,2 @@
+We hebben een oplossing geïntroduceerd die bepaalde bugs in de editor en individuele bloktypen voorkomt. Hierdoor worden de bugs ook bijgehouden die er toch doorheen komen, zodat we die ook kunnen pletten.
+We hebben ook je voorbeeld- en publiceerervaring verbeterd door de knop Bewerken te verwijderen van het scherm ‘Bericht gepubliceerd’ en de knop Publiceren van het scherm ‘Voorbeeldweergave’. Gewoon dagelijkse kost.

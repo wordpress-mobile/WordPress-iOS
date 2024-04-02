@@ -244,6 +244,14 @@ extension WPStyleGuide {
         button.setTitleColor(disabledColor, for: .disabled)
     }
 
+    class func applyTagsReaderButtonStyle(_ button: UIButton) {
+        applyReaderFollowButtonStyle(button)
+
+        button.setTitle(FollowButton.Text.tagsFollowString, for: .normal)
+        button.setTitle(FollowButton.Text.tagsFollowingString, for: .selected)
+        button.accessibilityLabel = button.isSelected ? FollowButton.Text.tagsFollowingString : FollowButton.Text.tagsFollowString
+    }
+
     @objc public class func applyReaderFollowButtonStyle(_ button: UIButton,
                                                          contentInsets: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 8.0, leading: 24.0, bottom: 8.0, trailing: 24.0)) {
         let font: UIFont = .preferredFont(forTextStyle: .subheadline)
@@ -499,8 +507,8 @@ extension WPStyleGuide {
     public struct FollowButton {
         struct Text {
             static let accessibilityHint = NSLocalizedString(
-                "reader.subscribe.button.accessibility.hint",
-                value: "Subscribes to the tag.",
+                "reader.follow.button.accessibility.hint",
+                value: "Follows the tag.",
                 comment: "VoiceOver accessibility hint, informing the user the button can be used to follow a tag."
             )
             static let followStringForDisplay =  NSLocalizedString(
@@ -512,6 +520,16 @@ extension WPStyleGuide {
                 "reader.subscribed.button.title",
                 value: "Subscribed",
                 comment: "Verb. Button title. The user is subscribed to a blog."
+            )
+            static let tagsFollowString = NSLocalizedString(
+                "reader.tags.follow.button.title",
+                value: "Follow",
+                comment: "Verb. Button title. Follows a new tag."
+            )
+            static let tagsFollowingString = NSLocalizedString(
+                "reader.tags.following.button.title",
+                value: "Following",
+                comment: "Verb. Button title. The user is following a tag."
             )
         }
     }
