@@ -105,7 +105,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
-  - Gravatar (from `https://github.com/Automattic/Gravatar-SDK-iOS`, commit `03160554be8b9b7f97055453f25d398dda2ec218`)
+  - Gravatar (from `https://github.com/Automattic/Gravatar-SDK-iOS`, tag `1.0.0`)
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
@@ -176,8 +176,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gravatar:
-    :commit: 03160554be8b9b7f97055453f25d398dda2ec218
     :git: https://github.com/Automattic/Gravatar-SDK-iOS
+    :tag: 1.0.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0.podspec
 
@@ -186,8 +186,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gravatar:
-    :commit: 03160554be8b9b7f97055453f25d398dda2ec218
     :git: https://github.com/Automattic/Gravatar-SDK-iOS
+    :tag: 1.0.0
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -234,6 +234,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: fa9ae5af13b7cf168245f24d1c672a4fb972e37f
 
-PODFILE CHECKSUM: 108f178528f8662e2392f634a9e795d28bc95a3f
+PODFILE CHECKSUM: 0a74faefe96cbe15fd6c862b089f5b4699a287e2
 
 COCOAPODS: 1.15.2
