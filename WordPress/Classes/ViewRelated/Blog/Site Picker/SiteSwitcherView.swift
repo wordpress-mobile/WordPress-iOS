@@ -40,7 +40,13 @@ struct SiteSwitcherView: View {
                     }
                 }
             }
-            .searchable(text: $searchText, isPresented: $isSearching)
+            .searchable(
+                text: $searchText,
+                isPresented: $isSearching,
+                placement: .navigationBarDrawer(
+                    displayMode: .always
+                )
+            )
         } else {
             NavigationView {
                 VStack {
