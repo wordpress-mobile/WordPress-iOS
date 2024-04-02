@@ -501,13 +501,3 @@ private extension UINavigationItem {
         }
     }
 }
-
-// MARK: - ReaderDisplaySetting
-
-private extension ReaderDisplaySetting {
-
-    var hasLightBackground: Bool {
-        return color.background.brighterThan(0.5)
-    }
-
-}
