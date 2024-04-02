@@ -581,6 +581,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Header view
             header.displaySetting = displaySetting
+
+            // Toolbar
+            toolbar.displaySetting = displaySetting
+            toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
         }
 
         // TODO: Featured image view
@@ -598,8 +602,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Related posts table view
         relatedPostsTableView.reloadData()
-
-        // TODO: Toolbar
     }
 
     /// Configure the webview
@@ -743,6 +745,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
+        if ReaderDisplaySetting.customizationEnabled {
+            toolbar.displaySetting = displaySetting
+        }
         toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
