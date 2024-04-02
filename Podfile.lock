@@ -25,6 +25,7 @@ PODS:
   - Down (0.6.6)
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
+  - Gravatar (1.0.0)
   - Gridicons (1.2.0)
   - Gutenberg (1.116.0)
   - JTAppleCalendar (8.0.5)
@@ -76,7 +77,7 @@ PODS:
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
   - WordPressShared (2.3.1)
-  - WordPressUI (1.15.1)
+  - WordPressUI (1.16.0)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.4)
   - ZendeskCoreSDK (2.5.1)
@@ -104,6 +105,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
+  - Gravatar (= 1.0.0)
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
@@ -121,7 +123,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (>= 9.0.6, ~> 9.0)
   - WordPressKit (~> 16.0.0)
   - WordPressShared (>= 2.3.1, ~> 2.3)
-  - WordPressUI (~> 1.15)
+  - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -140,6 +142,7 @@ SPEC REPOS:
     - CropViewController
     - Down
     - Gifu
+    - Gravatar
     - Gridicons
     - JTAppleCalendar
     - Kanvas
@@ -192,6 +195,7 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
+  Gravatar: bdd3950c5128304b51a9e655e4145334f23201d1
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
   Gutenberg: fda9c1f9d8d5ec0b565d0efb32757a39b046f538
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
@@ -214,7 +218,7 @@ SPEC CHECKSUMS:
   WordPressAuthenticator: 6be121346d4303dd32904a57f6d0e68eaa825152
   WordPressKit: f6dc2acce37a526ddb59e02388b3d59da50918ed
   WordPressShared: 04c6d51441bb8fa29651075b3a5536c90ae89c76
-  WordPressUI: 700e3ec5a9f77b6920c8104c338c85788036ab3c
+  WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: ba160fe413b491af9e7bfcb9808afcd494dc83a5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -225,6 +229,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: fa9ae5af13b7cf168245f24d1c672a4fb972e37f
 
-PODFILE CHECKSUM: b55d97e70f8656d0e491bc6c010dd68b8b5f199a
+PODFILE CHECKSUM: 1b7cffff7fff31174523088dc11490db0a1769eb
 
 COCOAPODS: 1.15.2

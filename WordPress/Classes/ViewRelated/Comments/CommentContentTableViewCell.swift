@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import Gravatar
 
 class CommentContentTableViewCell: UITableViewCell, NibReusable {
 
@@ -357,7 +358,7 @@ private extension CommentContentTableViewCell {
     /// If the URL does not contain any image, the default placeholder image will be displayed.
     /// - Parameter url: The URL containing the image.
     func configureImage(with url: URL?) {
-        if let someURL = url, let gravatar = Gravatar(someURL) {
+        if let someURL = url, let gravatar = AvatarURL(url: someURL) {
             avatarImageView.downloadGravatar(gravatar, placeholder: Style.placeholderImage, animate: true)
             return
         }
@@ -374,7 +375,7 @@ private extension CommentContentTableViewCell {
             return
         }
 
-        avatarImageView.downloadGravatarWithEmail(someEmail, placeholderImage: Style.placeholderImage)
+        avatarImageView.downloadGravatar(for: someEmail, placeholderImage: Style.placeholderImage)
     }
 
     func updateContainerLeadingConstraint() {

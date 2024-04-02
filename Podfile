@@ -41,11 +41,16 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.15'
+  pod 'WordPressUI', '~> 1.16'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
+end
+
+def gravatar
+  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  pod 'Gravatar', '1.0.0'
 end
 
 def wordpress_kit
@@ -128,6 +133,7 @@ abstract_target 'Apps' do
   wordpress_kit
   wordpress_shared
   kanvas
+  gravatar
 
   # Production
 
