@@ -8,7 +8,7 @@ struct SiteSwitcherView: View {
     @State private var searchText = ""
     @State private var isSearching = false
 
-    var searchResults: [BlogListView.Site] {
+    var sites: [BlogListView.Site] {
         if searchText.isEmpty {
             return SiteSwitcherReducer.allBlogs().compactMap {
                 .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
@@ -56,7 +56,8 @@ struct SiteSwitcherView: View {
 
     private var blogListView: some View {
         BlogListView(
-            sites: searchResults,
+            sites: sites,
+            currentDomain: SiteSwitcherReducer.selectedBlog()?.url,
             isEditing: $isEditing,
             isSearching: $isSearching,
             selectionCallback: selectionCallback
@@ -81,13 +82,13 @@ struct SiteSwitcherView: View {
     }
 
     private var addSiteButtonVStack: some View {
-        VStack(spacing: Length.Padding.medium) {
+        VStack(spacing: .DS.Padding.medium) {
             Divider()
                 .background(Color.DS.Foreground.secondary)
             DSButton(title: "Add a site", style: .init(emphasis: .primary, size: .large)) {
                 addSiteCallback()
             }
-            .padding(.horizontal, Length.Padding.medium)
+            .padding(.horizontal, .DS.Padding.medium)
         }
         .background(Color.DS.Background.primary)
     }

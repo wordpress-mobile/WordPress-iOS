@@ -14,18 +14,23 @@ struct BlogListView: View {
 
     @Binding private var isEditing: Bool
     @Binding private var isSearching: Bool
-    @State private var pinnedDomains: Set<String>?
+    @State private var pinnedDomains: Set<String>
+    @State private var recentDomains: [String]
     private let sites: [Site]
+    private let currentDomain: String?
     private let selectionCallback: ((String) -> Void)
 
     init(
         sites: [Site],
+        currentDomain: String?,
         isEditing: Binding<Bool>,
         isSearching: Binding<Bool>,
         selectionCallback: @escaping ((String) -> Void)
     ) {
         self.sites = sites
+        self.currentDomain = currentDomain
         self.pinnedDomains = BlogListReducer.pinnedDomains()
+        self.recentDomains = BlogListReducer.recentDomains()
         self._isEditing = isEditing
         self._isSearching = isSearching
         self.selectionCallback = selectionCallback
@@ -44,11 +49,12 @@ struct BlogListView: View {
         List {
             if isSearching {
                 ForEach(sites, id: \.domain) { site in
-                        siteButton(site: site)
+                    siteButton(site: site)
                 }
             } else {
                 pinnedSection
-                unPinnedSection
+                recentsSection
+                allSitesSection
             }
         }
         .listStyle(.grouped)
@@ -65,7 +71,7 @@ struct BlogListView: View {
     private var pinnedSection: some View {
         let pinnedSites = BlogListReducer.pinnedSites(
             allSites: sites,
-            pinnedDomains: pinnedDomains ?? []
+            pinnedDomains: pinnedDomains
         )
         if !pinnedSites.isEmpty {
             Section {
@@ -77,29 +83,49 @@ struct BlogListView: View {
                     title: "Pinned sites"
                 )
                 .listRowInsets(EdgeInsets(
-                    top: Length.Padding.medium,
-                    leading: Length.Padding.double,
+                    top: .DS.Padding.medium,
+                    leading: .DS.Padding.double,
                     bottom: 0,
-                    trailing: Length.Padding.double)
+                    trailing: .DS.Padding.double)
                 )
             }
         }
     }
 
     @ViewBuilder
-    private var unPinnedSection: some View {
-        let unPinnedSites = BlogListReducer.unPinnedSites(
+    private var allSitesSection: some View {
+        let allSites = BlogListReducer.allSites(
             allSites: sites,
-            pinnedDomains: pinnedDomains ?? []
+            pinnedDomains: pinnedDomains,
+            recentDomains: recentDomains
         )
-        if !unPinnedSites.isEmpty {
+        if !allSites.isEmpty {
             Section {
-                ForEach(unPinnedSites, id: \.domain) { site in
+                ForEach(allSites, id: \.domain) { site in
                     siteButton(site: site)
                 }
             } header: {
                 sectionHeader(
                     title: "All sites"
+                )
+            }
+        }
+    }
+
+    @ViewBuilder
+    private var recentsSection: some View {
+        let recentSites = BlogListReducer.recentSites(
+            allSites: sites,
+            recentDomains: recentDomains
+        )
+        if !recentSites.isEmpty {
+            Section {
+                ForEach(recentSites, id: \.domain) { site in
+                    siteButton(site: site)
+                }
+            } header: {
+                sectionHeader(
+                    title: "Recent sites"
                 )
             }
         }
@@ -113,29 +139,24 @@ struct BlogListView: View {
                     pinnedDomains = BlogListReducer.pinnedDomains()
                 }
             } else {
+                BlogListReducer.didSelectDomain(domain: site.domain)
                 selectionCallback(site.domain)
             }
         } label: {
             siteHStack(site: site)
         }
-        .buttonStyle(BlogListButtonStyle())
         .listRowSeparator(.hidden)
-        .listRowInsets(
-            .init(
-                top: Length.Padding.single,
-                leading: 0,
-                bottom: Length.Padding.single,
-                trailing: 0
-            )
+        .listRowBackground(
+            currentDomain == site.domain
+            ? Color.DS.Background.secondary
+            : Color.DS.Background.primary
         )
-        .listRowBackground(Color.DS.Background.primary)
     }
 
     private func siteHStack(site: Site) -> some View {
         HStack(spacing: 0) {
             AvatarsView(style: .single(site.imageURL))
-                .padding(.leading, Length.Padding.double)
-                .padding(.trailing, Length.Padding.split)
+                .padding(.trailing, .DS.Padding.split)
 
             textsVStack(title: site.title, domain: site.domain)
 
@@ -145,10 +166,10 @@ struct BlogListView: View {
                 pinIcon(
                     domain: site.domain
                 )
-                .padding(.trailing, Length.Padding.double)
+                .padding(.trailing, .DS.Padding.double)
             }
         }
-        .padding(.vertical, Length.Padding.half)
+//        .padding(.vertical, .DS.Padding.half)
     }
 
     private func textsVStack(title: String, domain: String) -> some View {
@@ -164,12 +185,12 @@ struct BlogListView: View {
                 .foregroundStyle(Color.DS.Foreground.secondary)
                 .layoutPriority(2)
                 .lineLimit(1)
-                .padding(.top, Length.Padding.half)
+                .padding(.top, .DS.Padding.half)
         }
     }
 
     private func pinIcon(domain: String) -> some View {
-        if pinnedDomains?.contains(domain) == true {
+        if pinnedDomains.contains(domain) == true {
             Image(systemName: "pin.fill")
                 .imageScale(.small)
                 .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
@@ -180,11 +201,4 @@ struct BlogListView: View {
         }
     }
 
-}
-
-private struct BlogListButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(configuration.isPressed ? Color.DS.Background.secondary : Color.DS.Background.primary)
-    }
 }
