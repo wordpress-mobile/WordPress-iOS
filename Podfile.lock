@@ -123,7 +123,7 @@ DEPENDENCIES:
   - WordPressAuthenticator (>= 9.0.2, ~> 9.0)
   - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `6a3b5c873069ec9c3efc336f5dd22dddd582a246`)
   - WordPressShared (>= 2.3.1, ~> 2.3)
-  - WordPressUI (from `https://github.com/wordpress-mobile/WordPressUI-iOS`, commit `7f7606eefceaaab9982cf3417093a45d78bf284d`)
+  - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (~> 0.9.8)
 
@@ -159,6 +159,7 @@ SPEC REPOS:
     - SwiftLint
     - UIDeviceIdentifier
     - WordPressShared
+    - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
@@ -181,9 +182,6 @@ EXTERNAL SOURCES:
   WordPressKit:
     :commit: 6a3b5c873069ec9c3efc336f5dd22dddd582a246
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressUI:
-    :commit: 7f7606eefceaaab9982cf3417093a45d78bf284d
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -195,9 +193,6 @@ CHECKOUT OPTIONS:
   WordPressKit:
     :commit: 6a3b5c873069ec9c3efc336f5dd22dddd582a246
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
-  WordPressUI:
-    :commit: 7f7606eefceaaab9982cf3417093a45d78bf284d
-    :git: https://github.com/wordpress-mobile/WordPressUI-iOS
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -244,6 +239,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: fa9ae5af13b7cf168245f24d1c672a4fb972e37f
 
-PODFILE CHECKSUM: 66adbf6295e17915326455241641fab07bc66bf9
+PODFILE CHECKSUM: e7c6769a2b5f9d352e07edc9ca7f21469878a0e7
 
 COCOAPODS: 1.15.2
