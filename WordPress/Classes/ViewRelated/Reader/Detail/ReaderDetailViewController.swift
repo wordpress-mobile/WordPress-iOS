@@ -160,7 +160,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
             return false
         }
-        return readerNavigationController.viewControllers.contains(self) == false
+
+        // This enables ALL Reader Detail screens to use a transparent navigation bar style,
+        // so that the display settings can be applied correctly.
+        //
+        // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
+        // so it may be a good chance to clean up and remove `useCompatibilityMode`.
+        if ReaderDisplaySetting.customizationEnabled {
+            return false
+        }
+
+        return !readerNavigationController.viewControllers.contains(self)
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
@@ -587,7 +597,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
         }
 
-        // TODO: Featured image view
+        // Featured image view
+        featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
         if let post {
@@ -656,6 +667,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureFeaturedImage() {
         guard featuredImage.superview == nil else {
             return
+        }
+
+        if ReaderDisplaySetting.customizationEnabled {
+            featuredImage.displaySetting = displaySetting
         }
 
         featuredImage.useCompatibilityMode = useCompatibilityMode
