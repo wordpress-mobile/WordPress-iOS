@@ -15,6 +15,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private let isBlazeFlagEnabled: Bool
     private let isSyncPublishingEnabled: Bool
 
+    /// - warning: deprecated (kahu-offline-mode)
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {

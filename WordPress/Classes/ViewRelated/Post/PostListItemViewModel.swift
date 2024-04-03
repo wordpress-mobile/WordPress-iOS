@@ -105,6 +105,9 @@ private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateV
     if !shouldHideAuthor, let author = post.authorForDisplay() {
         badges.append((author, nil))
     }
+    if !syncStateViewModel.isEditable {
+        badges = badges.map { ($0.0, UIColor.textTertiary) }
+    }
     return AbstractPostHelper.makeBadgesString(with: badges)
 }
 
