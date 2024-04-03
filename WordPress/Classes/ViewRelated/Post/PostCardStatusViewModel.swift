@@ -241,10 +241,11 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     func statusAndBadges(separatedBy separator: String) -> String {
-        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
+        let sticky = post.isStickyPost ? Constants.stickyLabel : ""
+        let pending = (post.status == .pending && isSyncPublishingEnabled) ? Constants.pendingReview : ""
         let status = self.status ?? ""
 
-        return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
+        return [status, pending, sticky].filter { !$0.isEmpty }.joined(separator: separator)
     }
 
     /// Determine what the failed status message should be and return it.
@@ -266,6 +267,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     private enum Constants {
         static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        static let pendingReview = NSLocalizedString("postList.badgePendingReview", value: "Pending review", comment: "Badge for post cells")
     }
 
     enum StatusMessages {
