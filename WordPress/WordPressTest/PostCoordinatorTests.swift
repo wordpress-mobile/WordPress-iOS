@@ -243,7 +243,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testChangePostToDraftWhenMovingToDraft() {
         let post = PostBuilder(mainContext).published().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
 
         postCoordinator.moveToDraft(post)
 
