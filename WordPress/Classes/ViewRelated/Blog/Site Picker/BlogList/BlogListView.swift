@@ -111,6 +111,12 @@ struct BlogListView: View {
                 sectionHeader(
                     title: Strings.allSitesSectionTitle
                 )
+                .listRowInsets(EdgeInsets(
+                    top: 0,
+                    leading: .DS.Padding.double,
+                    bottom: .DS.Padding.half,
+                    trailing: .DS.Padding.double)
+                )
             }
         }
     }
@@ -129,6 +135,12 @@ struct BlogListView: View {
             } header: {
                 sectionHeader(
                     title: Strings.recentsSectionTitle
+                )
+                .listRowInsets(EdgeInsets(
+                    top: 0,
+                    leading: .DS.Padding.double,
+                    bottom: .DS.Padding.half,
+                    trailing: .DS.Padding.double)
                 )
             }
         }
