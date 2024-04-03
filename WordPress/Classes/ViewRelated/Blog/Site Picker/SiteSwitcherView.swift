@@ -7,6 +7,7 @@ struct SiteSwitcherView: View {
     private let addSiteCallback: (() -> Void)
     @State private var searchText = ""
     @State private var isSearching = false
+    @Environment(\.dismiss) private var dismiss
 
     var sites: [BlogListView.Site] {
         if searchText.isEmpty {
@@ -69,10 +70,27 @@ struct SiteSwitcherView: View {
             selectionCallback: selectionCallback
         )
         .toolbar {
-            editButton
+            ToolbarItem(placement: .navigationBarLeading) {
+                cancelButton
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                editButton
+            }
         }
         .navigationTitle("Switch Site")
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private var cancelButton: some View {
+        Button(action: {
+            dismiss()
+        }, label: {
+            Text("Cancel")
+                .style(.bodyLarge(.regular))
+                .foregroundStyle(
+                    Color.DS.Foreground.primary
+                )
+        })
     }
 
     private var editButton: some View {
