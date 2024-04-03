@@ -137,6 +137,7 @@ struct BlogListView: View {
                 withAnimation {
                     BlogListReducer.togglePinnedDomain(domain: site.domain)
                     pinnedDomains = BlogListReducer.pinnedDomains()
+                    recentDomains = BlogListReducer.recentDomains()
                 }
             } else {
                 BlogListReducer.didSelectDomain(domain: site.domain)
@@ -169,7 +170,6 @@ struct BlogListView: View {
                 .padding(.trailing, .DS.Padding.double)
             }
         }
-//        .padding(.vertical, .DS.Padding.half)
     }
 
     private func textsVStack(title: String, domain: String) -> some View {

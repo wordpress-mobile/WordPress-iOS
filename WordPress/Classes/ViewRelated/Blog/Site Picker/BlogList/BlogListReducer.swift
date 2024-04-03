@@ -32,9 +32,13 @@ enum BlogListReducer {
         allSites: [BlogListView.Site],
         recentDomains: [String]
     ) -> [BlogListView.Site] {
-        allSites.filter {
-            recentDomains.contains($0.domain)
+        var sites: [BlogListView.Site] = []
+        for domain in recentDomains {
+            if let recentSite = allSites.first(where: { $0.domain == domain }) {
+                sites.append(recentSite)
+            }
         }
+        return sites
     }
 
     static func pinnedDomains(
@@ -53,6 +57,20 @@ enum BlogListReducer {
         domain: String
     ) {
         let tempPinnedDomains = pinnedDomains().symmetricDifference([domain])
+
+        if tempPinnedDomains.contains(domain) {
+            var tempRecentDomains = recentDomains()
+            let beforeRemoveCount = tempRecentDomains.count
+            tempRecentDomains.removeAll { recentDomain in
+                recentDomain == domain
+            }
+
+            if tempRecentDomains.count != beforeRemoveCount {
+                let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
+                repository.set(encodedRecentDomains, forKey: Constants.recentDomainsKey)
+            }
+        }
+
         let encodedDomain = try? Constants.jsonEncoder.encode(tempPinnedDomains)
         repository.set(encodedDomain, forKey: Constants.pinnedDomainsKey)
     }
