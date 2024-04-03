@@ -26,7 +26,9 @@ final class PostSyncStateViewModel {
         guard isSyncPublishingEnabled else {
             return _state
         }
-
+        if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
+            return .uploading
+        }
         if let error = PostCoordinator.shared.syncError(for: post.original()) {
             if let saveError = error as? PostRepository.PostSaveError,
                case .conflict = saveError {
@@ -39,9 +41,6 @@ final class PostSyncStateViewModel {
         }
         if PostCoordinator.shared.isSyncNeeded(for: post) {
             return .unsynced
-        }
-        if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
-            return .uploading
         }
         return .idle
     }

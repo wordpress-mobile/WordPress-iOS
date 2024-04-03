@@ -283,6 +283,8 @@ final class PostRepository {
     /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on its WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
+    ///
+    /// - warning: deprecated (kahu-offline-mode)
     func trash<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
         // Trash the original post instead if presents
         let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
