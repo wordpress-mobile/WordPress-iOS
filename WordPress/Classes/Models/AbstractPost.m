@@ -81,6 +81,10 @@
 {
     self.date_created_gmt = localDate;
 
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        return;
+    }
+
     /*
      If the date is nil it means publish immediately so set the status to publish.
      If the date is in the future set the status to scheduled if current status is published.
