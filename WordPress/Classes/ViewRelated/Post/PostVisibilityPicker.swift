@@ -50,7 +50,8 @@ struct PostVisibilityPicker: View {
                         .opacity(isEnteringPassword ? 0.5 : 1)
                 }
                 Spacer()
-                Image(systemName: "checkmark.circle.fill")
+                Image(systemName: "checkmark")
+                    .tint(Color(uiColor: .primary))
                     .opacity((selection == visibility && !isEnteringPassword) ? 1 : 0)
             }
         })
