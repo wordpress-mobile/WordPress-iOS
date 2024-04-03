@@ -58,6 +58,9 @@ struct BlogListView: View {
             }
         }
         .listStyle(.grouped)
+        .task {
+            BlogListReducer.syncCachedValues(allSites: sites)
+        }
     }
 
     private func sectionHeader(title: String) -> some View {
@@ -85,7 +88,7 @@ struct BlogListView: View {
                 .listRowInsets(EdgeInsets(
                     top: .DS.Padding.medium,
                     leading: .DS.Padding.double,
-                    bottom: 0,
+                    bottom: .DS.Padding.half,
                     trailing: .DS.Padding.double)
                 )
             }

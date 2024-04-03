@@ -13,11 +13,56 @@ enum BlogListReducer {
     }
 
     static func syncCachedValues(
-        allSites: [BlogListView.Site],
-        pinnedDomains: [String],
-        recentDomains: [String]
+        repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+        allSites: [BlogListView.Site]
     ) {
+        syncPinnedDomains(repository: repository, allSites: allSites)
+        syncRecentDomains(repository: repository, allSites: allSites)
+    }
 
+    private static func syncPinnedDomains(
+        repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+        allSites: [BlogListView.Site]
+    ) {
+        var tempPinnedDomains = pinnedDomains(repository: repository)
+        let initialPinnedDomainsCount = tempPinnedDomains.count
+
+        for pinnedDomain in tempPinnedDomains {
+            if !allSites.compactMap({ $0.domain }).contains(pinnedDomain.domain) {
+                let beforeRemoveCount = tempPinnedDomains.count
+
+                tempPinnedDomains.removeAll { current in
+                    current.domain == pinnedDomain.domain
+                }
+
+                if initialPinnedDomainsCount != tempPinnedDomains.count {
+                    let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempPinnedDomains)
+                    repository.set(encodedRecentDomains, forKey: Constants.pinnedDomainsKey)
+                }
+            }
+        }
+    }
+
+    private static func syncRecentDomains(
+        repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+        allSites: [BlogListView.Site]
+    ) {
+        var tempRecentDomains = recentDomains(repository: repository)
+        let initialRecentDomainsCount = tempRecentDomains.count
+        for recentDomain in tempRecentDomains {
+            if !allSites.compactMap({ $0.domain }).contains(recentDomain) {
+                let beforeRemoveCount = tempRecentDomains.count
+
+                tempRecentDomains.removeAll { current in
+                    current == recentDomain
+                }
+
+                if initialRecentDomainsCount != tempRecentDomains.count {
+                    let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
+                    repository.set(encodedRecentDomains, forKey: Constants.recentDomainsKey)
+                }
+            }
+        }
     }
 
     static func pinnedSites(
