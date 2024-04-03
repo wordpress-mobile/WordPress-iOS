@@ -1,2 +1,2 @@
-We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.
-We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.
+* [**] Block editor: Highlight text fixes [https://github.com/WordPress/gutenberg/pull/57650]
+
