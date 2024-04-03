@@ -204,7 +204,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
         case .insightsFollowersWordPress, .insightsFollowersEmail, .insightsFollowerTotals:
             viewModel?.refreshFollowers()
         case .insightsCommentsAuthors, .insightsCommentsPosts:
-            viewModel?.refreshComments()
+            viewModel?.refreshComments(date: selectedDate, period: selectedPeriod ?? .day)
         case .insightsTagsAndCategories:
             viewModel?.refreshTagsAndCategories()
         case .insightsAnnualSiteStats:

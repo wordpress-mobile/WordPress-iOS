@@ -92,6 +92,13 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                 }
             }
 
+            // TODO: Revisit
+            // Separator is removed because it has a hardcoded background color, which interferes with theming.
+            cell.shouldHideSeparator = true
+
+            cell.backgroundColor = .clear
+            cell.contentView.backgroundColor = .clear
+
             return cell
         }
 
@@ -100,6 +107,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         }
 
         cell.titleLabel.text = commentsEnabled ? Constants.noComments : Constants.closedComments
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
         return cell
     }
 
@@ -110,12 +119,14 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
+        header.contentView.backgroundColor = .clear
         header.configure(
             post: post,
             totalComments: totalComments,
             presentingViewController: presentingViewController,
             followButtonTappedClosure: followButtonTappedClosure
         )
+
         headerView = header
         return header
     }
@@ -159,6 +170,8 @@ private extension ReaderDetailCommentsTableViewDelegate {
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
         cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
         cell.delegate = buttonDelegate
+        cell.backgroundColor = .clear
+        cell.contentView.backgroundColor = .clear
         return cell
     }
 

@@ -71,7 +71,7 @@
     blog.isAdmin = YES;
 
     NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus", [blog dotComID]];
-    OCMStub([api GET:[OCMArg isEqual:url]
+    OCMStub([api get:[OCMArg isEqual:url]
           parameters:[OCMArg isNil]
              success:[OCMArg isNotNil]
              failure:[OCMArg isNotNil]]);
@@ -103,7 +103,7 @@
                 && [[parameters objectForKey:@"name"] isEqualToString:name]);
     };
     
-    OCMStub([api POST:[OCMArg isEqual:url]
+    OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg checkWithBlock:parametersCheckBlock]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
@@ -152,7 +152,7 @@
     menu.items = items;
 
     NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@", [blog dotComID], menu.menuID];
-    OCMStub([api POST:[OCMArg isEqual:url]
+    OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg isKindOfClass:[NSDictionary class]]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
@@ -179,7 +179,7 @@
 
     NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
-    OCMStub([api POST:[OCMArg isEqual:url]
+    OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);
@@ -206,7 +206,7 @@
 
     NSString* url = [NSString stringWithFormat:@"rest/v1.1/sites/%@/menus/%@/delete", [blog dotComID], menu.menuID];
     
-    OCMStub([api POST:[OCMArg isEqual:url]
+    OCMStub([api post:[OCMArg isEqual:url]
            parameters:[OCMArg isNil]
               success:[OCMArg isNotNil]
               failure:[OCMArg isNotNil]]);

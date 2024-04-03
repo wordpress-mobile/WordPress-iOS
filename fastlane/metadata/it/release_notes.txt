@@ -1,0 +1,2 @@
+Abbiamo introdotto una correzione che previene alcuni bug nell'editor e nei tipi di blocchi individuali. Questa correzione registra ogni bug che si presenta, per poterli fermare tutti.
+Abbiamo anche migliorato l'esperienza di anteprima e pubblicazione, rimuovendo il pulsante di modifica dalla schermata "Articolo pubblicato" e il pulsante di pubblicazione dalla schermata "Anteprima". Tutto in una giornata lavorativa.

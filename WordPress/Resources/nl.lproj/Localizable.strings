@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-22 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-03-26 23:23:53+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.0 */
 /* Language: nl */
@@ -234,6 +234,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: accessibility text for blocks with invalid content. %d: localized block title */
 "%s block. This block has invalid content" = "%s blok. Dit blok heeft ongeldige inhoud";
+
+/* translators: %s: name of the synced block */
+"%s detached" = "%s losgekoppeld";
 
 /* translators: %s: embed block variant's label e.g: \"Twitter\". */
 "%s embed block previews are coming soon" = "%s insluit blok voorbeelden komen binnenkort";
@@ -778,7 +781,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title for a call-to-action button in the create new bottom action sheet.
    Title for a call-to-action button on the prompts card. */
-"Answer Prompt" = "Antwoord prompt";
+"Answer Prompt" = "Antwoord melding";
 
 /* Title of answered Blogging Prompts filter. */
 "Answered" = "Beantwoord";
@@ -1180,6 +1183,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "Knop positie";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "Knop om foutdetails te kopiëren";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Knop om berichttekst te kopiëren";
 
 /* Label for the post author in the post detail. */
 "By " = "Door ";
@@ -2976,6 +2985,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Bestandstype";
 
+/* No comment provided by engineer. */
+"File type not supported as a media file." = "Bestandstype wordt niet ondersteund als mediabestand.";
+
 /* Film & Television site intent topic */
 "Film & Television" = "Film & televisie";
 
@@ -3500,7 +3512,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Inactive, Autoupdates on" = "Inactief, auto-updates aan";
 
 /* Title of the switch to turn on or off the blogging prompts feature. */
-"Include a Blogging Prompt" = "Blogmelding toevoegen";
+"Include a Blogging Prompt" = "Blog melding toevoegen";
 
 /* Describes a standard *.wordpress.com site domain */
 "Included with Site" = "Inbegrepen bij site";
@@ -3609,7 +3621,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Interior Design" = "Binnenhuisarchitectuur";
 
 /* Title displayed on the feature introduction view. */
-"Introducing Blogging Prompts" = "Nieuw: blogmeldingen";
+"Introducing Blogging Prompts" = "Introductie van blog meldingen";
 
 /* Stories intro header title */
 "Introducing Story Posts" = "Introductie verhalen";
@@ -3841,7 +3853,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Accessibility label for the blogging prompts info button on the Blogging Reminders Settings screen.
    Accessibility label for the blogging prompts info button on the prompts header view. */
-"Learn more about prompts" = "Meer informatie over opdrachten";
+"Learn more about prompts" = "Meer informatie over meldingen";
 
 /* Footer text for Invite People role field. */
 "Learn more about roles" = "Leer meer over rollen";
@@ -4925,6 +4937,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Divider on initial auth view separating auth options. */
 "Or" = "Of";
+
+/* Instruction text for other forms of two-factor auth methods. */
+"Or choose another form of authentication." = "Of kies een andere vorm van authenticatie.";
 
 /* Label for button to log in using site address. Underscores _..._ denote underline. */
 "Or log in by _entering your site address_." = "Of login door _je site-adres in te voeren_.";
@@ -6765,6 +6780,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility Identifier for the Default Font Aztec Style. */
 "Switches to the default Font Size" = "Wisselt naar de standaard lettergrootte";
 
+/* No comment provided by engineer. */
+"Synced patterns" = "Gesynchroniseerde patronen";
+
 /* Title for the app appearance setting (light / dark mode) that uses the system default value */
 "System default" = "Systeemstandaard";
 
@@ -6987,7 +7005,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "The basics" = "De grondbeginselen";
 
 /* Subtitle displayed on the feature introduction view. */
-"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "De beste manier om een betere schrijver te worden, is door elke dag wat te schrijven en dat met anderen te delen - hier kunnen deze opdrachten je mee helpen!";
+"The best way to become a better writer is to build a writing habit and share with others - that’s where Prompts come in!" = "De beste manier om een betere schrijver te worden, is door elke dag wat te schrijven en dat met anderen te delen - hier kunnen deze meldingen je mee helpen!";
 
 /* Message for when the certificate for the server is invalid. The %@ placeholder will be replaced the a host name, received from the API. */
 "The certificate for this server is invalid. You might be connecting to a server that is pretending to be “%@” which could put your confidential information at risk.\n\nWould you like to trust the certificate anyway?" = "Het certificaat voor deze server is ongeldig. Je maakt mogelijk verbinding met een server die zich voordoet als “%@”, wat je vertrouwelijke informatie in gevaar kan brengen.\n\nWil je het certificaat toch vertrouwen?";
@@ -8053,6 +8071,13 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message shown on screen while waiting for Google to finish its signup process. */
 "Waiting for Google to complete…" = "Wachten tot Google klaar is...";
 
+/* No comment provided by engineer. */
+"Waiting for connection" = "Wachten op verbinding";
+
+/* Text while the webauthn signature is being verified
+   Text while waiting for a security key challenge */
+"Waiting for security key" = "Wachten op beveiligingssleutel";
+
 /* View title during the Google auth process. */
 "Waiting..." = "Wachten...";
 
@@ -8063,6 +8088,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Noun. Title for Jetpack Restore warning.
    Title for Jetpack Restore Warning screen */
 "Warning" = "Waarschuwing";
+
+/* No comment provided by engineer. */
+"Warning message" = "Waarschuwingsbericht";
 
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "Zie hoe je publiek groeit met uitgebreide statistieken.";
@@ -8335,7 +8363,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "We’ll notify you when its done." = "We laten het je weten als het klaar is.";
 
 /* Description of Blogging Prompts displayed in the Feature Introduction view. */
-"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "We zullen je iedere dag een nieuwe opdracht laten zien op je dashboard, zodat jij je creativiteit de vrije loop kunt laten!";
+"We’ll show you a new prompt each day on your dashboard to help get those creative juices flowing!" = "We zullen je iedere dag een nieuwe melding laten zien op je dashboard, zodat jij je creativiteit de vrije loop kunt laten!";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We’ll still attempt to backup your site." = "We proberen nog steeds om een back-up van je site te maken.";
@@ -8354,6 +8382,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title displayed via UIAlertController when a user inserts a document into a post. */
 "What do you want to do with this file: upload it and add a link to the file into your post, or add the contents of the file directly to the post?" = "Wat wil je doen met dit bestand? Wil je het uploaden en een link naar het bestand aan je bericht toevoegen of wil je de inhoud van het bestand rechtstreeks aan het bericht toevoegen?";
+
+/* This is a link that takes the user to the external Gravatar website */
+"What is Gravatar?" = "Wat is Gravatar?";
 
 /* Navigates to page with details about What is WordPress.com. */
 "What is WordPress.com?" = "Wat is WordPress.com?";
@@ -8591,10 +8622,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can always log in with a link like the one you just used, but you can also set up a password if you prefer." = "Je kunt altijd inloggen met een link zoals degene die je zojuist hebt gebruikt, maar kunt ook een wachtwoord instellen, als je wilt.";
 
 /* Note displayed in the Feature Introduction view. */
-"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Je kunt blogmeldingen en -herinneringen te allen tijde beheren via Mijn site > Instellingen > Bloggen";
+"You can control Blogging Prompts and Reminders at any time in My Site > Settings > Blogging" = "Je kunt blog meldingen en herinneringen te allen tijde beheren via Mijn site > Instellingen > Bloggen";
 
 /* Accessibility hint for Note displayed in the Feature Introduction view. */
-"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Je kunt blogmeldingen en -herinneringen te allen tijde beheren via Mijn site, Instellingen, Bloggen";
+"You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Je kunt blog meldingen en herinneringen te allen tijde beheren via Mijn site, Instellingen, Bloggen";
 
 /* No comment provided by engineer. */
 "You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Je kan je berichttekst kopiëren als de fout betrekking heeft op je content. Kopieer de foutdetails om te debuggen en te delen met de ondersteuning.";
@@ -8869,8 +8900,23 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Option to enable the optimization of images when uploading. */
 "appSettings.media.imageOptimizationRow" = "Afbeeldingen optimaliseren";
 
+/* Indicates an image will use high quality when uploaded. */
+"appSettings.media.imageQuality.high" = "Hoog";
+
+/* Indicates an image will use low quality when uploaded. */
+"appSettings.media.imageQuality.low" = "Laag";
+
 /* Indicates an image will use maximum quality when uploaded. */
 "appSettings.media.imageQuality.maximum" = "Maximaal";
+
+/* Indicates an image will use medium quality when uploaded. */
+"appSettings.media.imageQuality.medium" = "Medium";
+
+/* The quality of image used when uploading */
+"appSettings.media.imageQuality.title" = "Kwaliteit";
+
+/* Title for the image quality settings option. */
+"appSettings.media.imageQualityRow" = "Afbeeldingskwaliteit";
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audiobestand";
@@ -8898,6 +8944,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text displayed when there is a failure loading Blaze campaigns. */
 "blaze.campaigns.errorMessage" = "Er is een fout opgetreden bij het laden van campagnes.";
+
+/* Title for the view when there's an error loading Blaze campiagns. */
+"blaze.campaigns.errorTitle" = "Oeps";
 
 /* Displayed while Blaze campaigns are being loaded. */
 "blaze.campaigns.loading.title" = "Campagnes aan het inladen ...";
@@ -8986,11 +9035,17 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Meer informatie";
 
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Voor de maand januari zullen blog meldingen afkomstig zijn van Bloganuary — onze community uitdaging om een blog gewoonte op te bouwen voor het nieuwe jaar.";
+
 /* Title for the Bloganuary dashboard card while Bloganuary is running. */
 "bloganuary.dashboard.card.runningTitle" = "Bloganuary is aangebroken!";
 
+/* Title for the Bloganuary dashboard card. */
+"bloganuary.dashboard.card.title" = "Bloganuary komt eraan!";
+
 /* Title of a button that calls the user to enable the Blogging Prompts feature. */
-"bloganuary.learnMore.modal.button.promptsDisabled" = "Blogmeldingen inschakelen";
+"bloganuary.learnMore.modal.button.promptsDisabled" = "Blog meldingen inschakelen";
 
 /* Title of a button that will dismiss the Bloganuary modal when tapped.
 Note that the word 'go' here should have a closer meaning to 'start' rather than 'move forward'. */
@@ -9006,10 +9061,10 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 "bloganuary.learnMore.modal.descriptions.first" = "Krijg elke dag een nieuwe melding als bron van inspiratie.";
 
 /* An additional piece of information shown in case the user has the Blogging Prompts feature disabled. */
-"bloganuary.learnMore.modal.footer.addition" = "Je moet Blogmeldingen inschakelen om je aan te kunnen melden voor Bloganuary.";
+"bloganuary.learnMore.modal.footer.addition" = "Je moet blog meldingen inschakelen om je aan te kunnen melden voor Bloganuary.";
 
 /* An informative excerpt shown in a subtler tone. */
-"bloganuary.learnMore.modal.footer.text" = "Bloganuary gebruikt Dagelijkse blogmeldingen om je in de maand januari onderwerpen toe te sturen.";
+"bloganuary.learnMore.modal.footer.text" = "Bloganuary gebruikt dagelijkse blog meldingen om je in de maand januari onderwerpen toe te sturen.";
 
 /* The headline text of the Bloganuary modal sheet. */
 "bloganuary.learnMore.modal.headline" = "Doe mee aan onze schrijfchallenge van een maand.";
@@ -9022,6 +9077,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Option for users to rate a chat bot answer as helpful. */
 "chat.rateHelpful" = "Beoordelen als nuttig";
+
+/* Title for the checkout view */
+"checkout.title" = "Afrekenen";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "reactie";
@@ -9043,6 +9101,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message informing a user about an invalid password. */
 "common.reEnterPasswordMessage" = "Gebruikersnaam en wachtwoord die in de app zijn opgeslagen zijn wellicht verouderd. Voer je wachtwoord opnieuw in bij de instellingen en probeer het nogmaals.";
+
+/* An error message. */
+"common.unableToConnect" = "Kan geen verbinding maken";
 
 /* Footnote for the privacy compliance popover. */
 "compliance.analytics.popover.footnote" = "Met deze cookies kunnen wij prestaties optimaliseren door informatie te verzamelen over hoe gebruikers zich gedragen op onze website.";
@@ -9100,6 +9161,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the Jetpack Social dashboard card when the user has no social shares left. */
 "dashboard.card.social.noshares.title" = "Je hebt geen mogelijkheden meer om te delen!";
+
+/* Title for comments button on dashboard. */
+"dashboard.menu.comments" = "Reacties";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
+
+/* Title for more button on dashboard. */
+"dashboard.menu.more" = "Meer";
+
+/* Title for pages button on dashboard. */
+"dashboard.menu.pages" = "Pagina's";
+
+/* Title for posts button on dashboard. */
+"dashboard.menu.posts" = "Berichten";
 
 /* Title for stats button on dashboard. */
 "dashboard.menu.stats" = "Statistieken";
@@ -9167,8 +9243,20 @@ Example: Reply to Pamela Nguyen */
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "Functievlaggen";
 
+/* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
+"debugMenu.readerCellTitle" = "Reader CSS URL";
+
+/* Placeholder for the reader CSS URL */
+"debugMenu.readerDefaultURL" = "Standaard URL";
+
 /* Hint for the reader CSS URL field */
 "debugMenu.readerHit" = "Voeg een aangepaste CSS URL toe om in de Reader te laden. Als je Calypso lokaal gebruikt, kan dit zoiets zijn: http:\/\/192.168.15.23:3000\/calypso\/reader-mobile.css";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.currentValue" = "Huidige waarde";
+
+/* Remote Config Debug Menu section title */
+"debugMenu.remoteConfig.defaultValue" = "Standaardwaarde";
 
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.overridenValue" = "Externe configuratie";
@@ -9176,12 +9264,30 @@ Example: Reply to Pamela Nguyen */
 /* Remote Config Debug Menu section title */
 "debugMenu.remoteConfig.remoteConfigValue" = "Externe configuratiewaarde";
 
+/* Remote Config Debug Menu reset button title */
+"debugMenu.remoteConfig.reset" = "Resetten";
+
 /* Remote Config Debug Menu screen title
    Remote Config debug menu title */
 "debugMenu.remoteConfig.title" = "Externe configuratie";
 
+/* Remove current quick start tour menu item */
+"debugMenu.removeQuickStart" = "Huidige tour verwijderen";
+
+/* Debug Menu section title */
+"debugMenu.section.logging" = "Loggen";
+
 /* Debug Menu section title */
 "debugMenu.section.quickStart" = "Snelstart";
+
+/* Debug Menu section title */
+"debugMenu.section.settings" = "Instellingen";
+
+/* Title for debug menu screen */
+"debugMenu.title" = "Ontwikkelaar";
+
+/* Weekly Roundup debug menu item */
+"debugMenu.weeklyRoundup" = "Wekelijks overzicht";
 
 /* Title for a menu action in the context menu on the Jetpack install card. */
 "domain.dashboard.card.menu.hide" = "Dit verbergen";
@@ -9195,11 +9301,23 @@ Example: Reply to Pamela Nguyen */
 /* Domain management buy domain card title */
 "domain.management.buy.card.title" = "Koop gewoon een domein";
 
+/* The expired label of the domain card in All Domains screen. */
+"domain.management.card.expired.label" = "Verlopen";
+
+/* Label indicating that a domain name registration has no expiry date. */
+"domain.management.card.neverExpires.label" = "Verloopt nooit";
+
+/* The renews label of the domain card in All Domains screen. */
+"domain.management.card.renews.label" = "Verlengingen";
+
 /* The empty state button title in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.button.title" = "Een domein vinden";
 
 /* The empty state description in All Domains screen when the user doesn't have any domains */
 "domain.management.default.empty.state.description" = "Tik hieronder om jouw ideale domein te vinden.";
+
+/* The empty state title in All Domains screen when the user doesn't have any domains */
+"domain.management.default.empty.state.title" = "Je hebt nog geen domeinen";
 
 /* The empty state description in All Domains screen when an error occurs */
 "domain.management.error.empty.state.description" = "We encountered an error while loading your domains. Neem contact op met het ondersteunend personeel als het probleem nog niet is opgelost.";
@@ -9218,6 +9336,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Domain management choose site card button title */
 "domain.management.purchase.footer" = "*Bij alle betaalde jaarabonnementen is een gratis domein voor een jaar inbegrepen.";
+
+/* Domain management purchase domain screen title */
+"domain.management.purchase.subtitle" = "Geen zorgen, je kan later nog heel eenvoudig een site toevoegen";
 
 /* Domain management purchase domain screen title. */
 "domain.management.purchase.title" = "Kies hoe je jouw domein gebruikt";
@@ -9288,11 +9409,23 @@ Example: Reply to Pamela Nguyen */
 /* Search domain - Title for the Suggested domains screen */
 "domainSelection.search.title" = "Domeinen zoeken";
 
+/* Title for the checkout screen. */
+"domains.checkout.title" = "Afrekenen";
+
 /* Action shown in a bottom notice to dismiss it. */
 "domains.failure.dismiss" = "Negeer";
 
 /* Content show when the domain selection action fails. */
 "domains.failure.title" = "Sorry, het domein dat je probeert toe te voegen kan op dit moment niet worden gekocht via de Jetpack app.";
+
+/* Title for the screen where the user can choose how to use the domain they're end up purchasing. */
+"domains.purchase.choice.title" = "Domein kopen";
+
+/* Back button title that navigates back to the search domains screen. */
+"domains.search.backButton.title" = "Zoeken";
+
+/* Title of screen where user chooses a site to connect to their selected domain */
+"domains.sitePicker.title" = "Site kiezen";
 
 /* No comment provided by engineer. */
 "double-tap to change unit" = "twee keer tikken om de eenheid te wijzigen";
@@ -9309,6 +9442,9 @@ Example: Reply to Pamela Nguyen */
 /* Placeholder for the site url textfield.
    Site Address placeholder */
 "example.com" = "voorbeeld.nl";
+
+/* Title for confirmation navigation bar button item */
+"externalMediaPicker.add" = "Toevoegen";
 
 /* Bottom toolbar title in the selection mode */
 "externalMediaPicker.toolbarSelectItemsPrompt" = "Afbeeldingen selecteren";
@@ -9345,6 +9481,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the domain purchase result screen. Tells user their domain was obtained. */
 "freeToPaidPlans.resultView.title" = "Helemaal klaar om te gaan!";
+
+/* A generic error message for a footer view in a list with pagination */
+"general.pagingFooterView.errorMessage" = "Er is een fout opgetreden";
 
 /* A footer retry button */
 "general.pagingFooterView.retry" = "Opnieuw proberen";
@@ -9415,6 +9554,9 @@ Example: Reply to Pamela Nguyen */
 /* The message for the first feedback alert */
 "in-app.feedback.alert.message" = "Gebruik je de Jetpack mobiele app graag?";
 
+/* The 'no' button title for the first feedback alert */
+"in-app.feedback.alert.no" = "Niet echt";
+
 /* The title for the first feedback alert */
 "in-app.feedback.alert.title" = "Jouw feedback is belangrijk";
 
@@ -9423,6 +9565,18 @@ Example: Reply to Pamela Nguyen */
 
 /* No comment provided by engineer. */
 "in-app.feedback.confirmation.notice.message" = "Bedankt voor je hulp bij het verbeteren van de app.";
+
+/* No comment provided by engineer. */
+"in-app.feedback.confirmation.notice.title" = "Feedback verzonden";
+
+/* The message for the negative feedback alert */
+"in-app.feedback.negative.alert.message" = "Wil je meer details met ons delen?";
+
+/* The 'no' button for the negative feedback alert */
+"in-app.feedback.negative.alert.no" = "Niet nu";
+
+/* The title for the negative feedback alert */
+"in-app.feedback.negative.alert.title" = "Help ons verbeteren";
 
 /* The 'yes' button for the negative feedback alert */
 "in-app.feedback.negative.alert.yes" = "Ok";
@@ -9671,13 +9825,13 @@ Example: Reply to Pamela Nguyen */
 "jetpack.prologue.prompt.addAuthor" = "Voeg een auteur toe";
 
 /* Build a site prompt for the jetpack prologue */
-"jetpack.prologue.prompt.buildSite" = "Maak een website";
+"jetpack.prologue.prompt.buildSite" = "Maak een site";
 
 /* Check notifications prompt for the jetpack prologue */
 "jetpack.prologue.prompt.checkNotifications" = "Controleer meldingen";
 
 /* Share on Facebook prompt for the jetpack prologue */
-"jetpack.prologue.prompt.fbShare" = "Share op Facebook";
+"jetpack.prologue.prompt.fbShare" = "Deel op Facebook";
 
 /* Fix a security issue prompt for the jetpack prologue */
 "jetpack.prologue.prompt.fixSecurity" = "Verhelp een probleem met de beveiliging";
@@ -9695,7 +9849,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.prologue.prompt.searchPlugins" = "Zoek naar plugins";
 
 /* Update a plugin prompt for the jetpack prologue */
-"jetpack.prologue.prompt.updatePlugin" = "Een plugin bijwerken";
+"jetpack.prologue.prompt.updatePlugin" = "Een plugin updaten";
 
 /* Watch your stats prompt for the jetpack prologue */
 "jetpack.prologue.prompt.watchStats" = "Bekijk je statistieken";
@@ -9739,6 +9893,9 @@ Example: Reply to Pamela Nguyen */
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "mediaExporter.videoLimitExceededError" = "Je hebt een betaald abonnement nodig om video's te uploaden die langer duren dan 5 minuten.";
 
+/* Accessibility hint for add button to add items to the user's media library */
+"mediaLibrary.addButtonAccessibilityHint" = "Nieuwe media toevoegen";
+
 /* Accessibility label for add button to add items to the user's media library */
 "mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
 
@@ -9751,14 +9908,44 @@ Example: Reply to Pamela Nguyen */
 /* Media screen navigation bar button Select title */
 "mediaLibrary.buttonSelect" = "Selecteer";
 
+/* Context menu button */
+"mediaLibrary.buttonShare" = "Delen";
+
+/* Verb. Button title. Tapping cancels an action. */
+"mediaLibrary.deleteConfirmationCancel" = "Annuleren";
+
+/* Title for button that permanently deletes one or more media items (photos / videos) */
+"mediaLibrary.deleteConfirmationConfirm" = "Verwijderen";
+
 /* Message prompting the user to confirm that they want to permanently delete a group of media items. */
 "mediaLibrary.deleteConfirmationMessageMany" = "Weet je zeker dat je deze items definitief wilt verwijderen?";
 
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "mediaLibrary.deleteConfirmationMessageOne" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
 
+/* Text displayed in HUD if there was an error attempting to delete a group of media items. */
+"mediaLibrary.deletionFailureMessage" = "Niet mogelijk om alle media te verwijderen.";
+
 /* Text displayed in HUD while a media item is being deleted. */
 "mediaLibrary.deletionProgressViewTitle" = "Verwijderen...";
+
+/* Text displayed in HUD after successfully deleting a media item */
+"mediaLibrary.deletionSuccessMessage" = "Verwijderd!";
+
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "Alles";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "Audio";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "Documenten";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "Afbeeldingen";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "Video's";
 
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "Verwijderen";
@@ -9778,6 +9965,24 @@ Example: Reply to Pamela Nguyen */
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Square Grid";
 
+/* Media screen navigation title */
+"mediaLibrary.title" = "Media";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesMany" = "%d afbeeldingen geselecteerd";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectImagesOne" = "1 afbeelding geselecteerd";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsMany" = "%d items geselecteerd";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsOne" = "1 item geselecteerd";
+
+/* Bottom toolbar title in the selection mode */
+"mediaLibrary.toolbarSelectItemsPrompt" = "Selecteer items";
+
 /* The title of the button to dismiss the alert shown when the picked media cannot be imported into stories. */
 "mediaPicker.failedMediaExportAlert.dismissButton" = "Negeren";
 
@@ -9790,6 +9995,9 @@ Example: Reply to Pamela Nguyen */
 /* Message for alert when access to camera is not granted */
 "mediaPicker.noCameraAccessMessage" = "Deze app heeft toestemming nodig om de camera te openen voor het registreren van nieuwe media; wijzig de privacyinstellingen als je dit wilt toestaan.";
 
+/* Title for alert when access to camera is not granted */
+"mediaPicker.noCameraAccessTitle" = "Mediaregistratie";
+
 /* Button that opens the Settings app */
 "mediaPicker.openSettings" = "Instellingen openen";
 
@@ -9799,8 +10007,14 @@ Example: Reply to Pamela Nguyen */
 /* The name of the action in the context menu (user's WordPress Media Library */
 "mediaPicker.pickFromMediaLibrary" = "Kies media";
 
+/* The name of the action in the context menu for selecting photos from other apps (Files app) */
+"mediaPicker.pickFromOtherApps" = "Andere bestanden";
+
 /* The name of the action in the context menu */
 "mediaPicker.pickFromPhotosLibrary" = "\"Kiezen op apparaat\"";
+
+/* The name of the action in the context menu for selecting photos from free stock photos */
+"mediaPicker.pickFromStockPhotos" = "Gratis fotobibliotheek";
 
 /* The name of the action in the context menu */
 "mediaPicker.takePhoto" = "Maak een foto";
@@ -9810,6 +10024,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "Video maken";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@ van %2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "px.%1$d%2$d";
@@ -9890,7 +10107,7 @@ Example: Reply to Pamela Nguyen */
 "migrationDone.actions.primaryTitle" = "Aan de slag";
 
 /* Description for the static screen displayed prompting users to switch the Jetpack app. */
-"movedToJetpack.description" = "De Jetpack-app heeft alle functies van de WordPress-app, en nu ook exclusieve toegang tot Statistieken, Reader, Meldingen en meer.";
+"movedToJetpack.description" = "De Jetpack app heeft alle functies van de WordPress app, en nu ook exclusieve toegang tot Statistieken, Reader, Meldingen en meer.";
 
 /* Hint for the static screen displayed prompting users to switch the Jetpack app. */
 "movedToJetpack.hint" = "Overstappen is gratis en duurt maar een minuut.";
@@ -9916,6 +10133,9 @@ Example: Reply to Pamela Nguyen */
 /* Section title for the maintenance table section in the blog details screen */
 "my-site.menu.maintenance.section.title" = "Onderhoud";
 
+/* Title for the site monitoring row in the blog details screen */
+"my-site.menu.site-monitoring.row.title" = "Sitebewaking";
+
 /* Title for the social row in the blog details screen */
 "my-site.menu.social.row.title" = "Sociaal";
 
@@ -9934,6 +10154,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for the card displaying today's stats. */
 "my-sites.stats.card.title" = "Statistieken van vandaag";
 
+/* Title for the domain focus card on My Site */
+"mySite.domain.focus.cardCell.title" = "Nieuws";
+
 /* Button title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.button.title" = "Je domeinen overdragen";
 
@@ -9942,6 +10165,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of the domain focus card on My Site */
 "mySite.domain.focus.cardView.title" = "Je Google-domeinen opnieuw claimen";
+
+/* Action sheet button title. Launches the flow to a add self-hosted site. */
+"mySite.noSites.actionSheet.addSelfHostedSite" = "Een zelf-gehoste site toevoegen";
 
 /* Action sheet button title. Launches the flow to create a WordPress.com site. */
 "mySite.noSites.actionSheet.createWPComSite" = "WordPress.com-site maken";
@@ -9957,6 +10183,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Message title for when a user has no sites. */
 "mySite.noSites.title" = "Je hebt geen sites";
+
+/* Menu title for the add site option */
+"mySite.siteActions.addSite" = "Site toevoegen";
 
 /* Button that reveals more site actions */
 "mySite.siteActions.button" = "Siteacties";
@@ -9976,6 +10205,9 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "Sitetitel wijzigen";
 
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "Site wisselen";
+
 /* Menu title for the visit site option */
 "mySite.siteActions.visitSite" = "Site bekijken";
 
@@ -9984,6 +10216,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A generic error message displayed on the atomic logs screen. */
 "noLogs.error" = "Er is een fout opgetreden";
+
+/* Button title for the retry button on the atomic logs screen. */
+"noLogs.retry" = "Opnieuw proberen";
 
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
@@ -10003,8 +10238,17 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Stuur feedback";
 
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithPost" = "Bekijk mijn bericht \"%@\":";
+
+/* Message to use along with the post URL when sharing a post */
+"notifications.share.messageWithoutPost" = "Bekijk mijn bericht:";
+
 /* Marks all notifications under the filter as read */
 "notificationsViewController.navigationBar.action.markAllAsRead" = "Alles als gelezen markeren";
+
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "Meldingsinstellingen";
 
 /* Accessibility label for the navigation bar menu button */
 "notificationsViewController.navigationBar.menu.accessibilityLabel" = "Menuknop navigatiebalk";
@@ -10013,7 +10257,16 @@ Example: Reply to Pamela Nguyen */
 "pageList.badgeHomepage" = "Startpagina";
 
 /* Badge for page cells */
+"pageList.badgeLocalChanges" = "Lokale wijzigingen";
+
+/* Badge for page cells */
 "pageList.badgePendingReview" = "Beoordeling in behandeling";
+
+/* Badge for page cells */
+"pageList.badgePosts" = "Berichtenpagina";
+
+/* Badge for page cells */
+"pageList.badgePrivate" = "Privé";
 
 /* Subtitle of the theme template homepage cell */
 "pages.template.subtitle" = "Jouw homepage gebruikt een themasjabloon en wordt in de webeditor geopend.";
@@ -10023,6 +10276,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Pagina is bijgewerkt.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.actionTitle" = "Permanent verwijderen";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertMessage" = "Weet je zeker dat je deze pagina permanent wil verwijderen?";
+
+/* Title of the confirmation alert when deleting a page from the trash. */
+"pagesList.deletePermanently.alertTitle" = "Permanent verwijderen?";
 
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Pages by everyone";
@@ -10035,6 +10297,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Message of the trash page confirmation alert. */
 "pagesList.trash.alertMessage" = "Weet je zeker dat je deze pagina naar de prullenbak wilt verplaatsen?";
+
+/* Title of the trash page confirmation alert. */
+"pagesList.trash.alertTitle" = "Deze pagina naar prullenbak verplaatsen?";
+
+/* Cancels an Action */
+"pagesList.trash.cancel" = "Annuleren";
 
 /* No comment provided by engineer. */
 "password" = "wachtwoord";
@@ -10058,7 +10326,7 @@ Example: Reply to Pamela Nguyen */
 "personalizeHome.dashboardCard.pages" = "Pagina's";
 
 /* Card title for the pesonalization menu */
-"personalizeHome.dashboardCard.prompts" = "Blogmeldingen";
+"personalizeHome.dashboardCard.prompts" = "Blog meldingen";
 
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.scheduledPosts" = "Ingeplande berichten";
@@ -10066,11 +10334,38 @@ Example: Reply to Pamela Nguyen */
 /* Card title for the pesonalization menu */
 "personalizeHome.dashboardCard.todaysStats" = "Statistieken van vandaag";
 
+/* Section header for shortcuts */
+"personalizeHome.shortcutsSectionHeader" = "Snelkoppelingen tonen of verbergen";
+
 /* Page title */
 "personalizeHome.title" = "Startpagina personaliseren";
 
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "Telefoonnummer";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterEndDate" = "Einddatum";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterSeverity" = "Ernst";
+
+/* A title for the filter on the PHP logs screen */
+"phpLogs.filterStartDate" = "Startdatum";
+
+/* A title for the log severity level */
+"phpLogs.severityDeprecated" = "Verouderd";
+
+/* A title for the log severity level */
+"phpLogs.severityFatalError" = "Fatale fout";
+
+/* A title for the log severity level */
+"phpLogs.severityUser" = "Gebruiker";
+
+/* A title for the log severity level */
+"phpLogs.severityWarning" = "Waarschuwing";
+
+/* Title for the plan selection view */
+"planSelection.title" = "Abonnementen";
 
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.createdTimeAgo" = "%@ aangemaakt";
@@ -10093,14 +10388,65 @@ Example: Reply to Pamela Nguyen */
 /* Post status and date for list cells with %@ a placeholder for the date. */
 "post.trashedTimeAgo" = "%@ verplaatst naar prullenbak";
 
+/* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
+"postList.a11y.authorChunkFormat" = "Door %@.";
+
+/* Accessibility label for a post's excerpt in the post list. The parameter is the post excerpt. For example, \"Excerpt. This is the first paragraph.\" */
+"postList.a11y.exerptChunkFormat" = "Samenvatting. %@.";
+
+/* Accessibility label for a sticky post in the post list. */
+"postList.a11y.sticky" = "Sticky.";
+
+/* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
+"postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Offline wijzigingen";
+
+/* Title for the 'Trash' post list row swipe action */
+"postList.swipeActionDelete" = "Prullenbak";
+
+/* Title for the 'Delete' post list row swipe action */
+"postList.swipeActionDeletePermanently" = "Verwijderen";
+
+/* Title for the 'Share' post list row swipe action */
+"postList.swipeActionShare" = "Delen";
+
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Weergave";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Paginaconcept geüpload";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Pagina wacht op beoordeling";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Pagina gepubliceerd";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Pagina gepland";
 
 /* Title of notification displayed when a page has been successfully updated. */
 "postNotice.pageUpdated" = "Pagina bijgewerkt";
 
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Berichtconcept geüpload";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Bericht wacht op beoordeling";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Bericht gepubliceerd";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Bericht gepland";
+
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Bericht bijgewerkt";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "Upload mislukt";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Weergeven";
@@ -10132,17 +10478,47 @@ Example: Reply to Pamela Nguyen */
 /* Label for the Post List option that cancels automatic uploading of a post. */
 "posts.cancelUpload.actionTitle" = "Uploaden annuleren";
 
+/* Label for post comments option. Tapping displays comments for a post. */
+"posts.comments.actionTitle" = "Reacties";
+
+/* Label for the delete post option. Tapping permanently deletes a post. */
+"posts.delete.actionTitle" = "Permanent verwijderen";
+
+/* Label for an option that moves a post to the draft folder */
+"posts.draft.actionTitle" = "Verplaatsen naar concept";
+
+/* Label for post duplicate option. Tapping creates a copy of the post. */
+"posts.duplicate.actionTitle" = "Dupliceren";
+
 /* Opens a submenu for page attributes. */
 "posts.pageAttributes.actionTitle" = "Pagina-eigenschappen";
 
+/* Label for the preview post button. Tapping displays the post as it appears on the web. */
+"posts.preview.actionTitle" = "Voorbeeld";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Opnieuw proberen";
+
+/* Set the selected page as the homepage. */
+"posts.setHomepage.actionTitle" = "Instellen als homepage";
 
 /* Set the parent page for the selected page. */
 "posts.setParent.actionTitle" = "Instellen als bovenliggend item";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Stel je berichtenpagina in";
+
+/* Set the selected page as a regular page. */
+"posts.setRegularPage.actionTitle" = "Instellen als normale pagina";
+
+/* Label for post settings option. Tapping displays settings for a post. */
+"posts.settings.actionTitle" = "Instellingen";
+
+/* Share the post. */
+"posts.share.actionTitle" = "Delen";
+
+/* Label for post stats option. Tapping displays statistics for a post. */
+"posts.stats.actionTitle" = "Statistieken";
 
 /* Label for a option that moves a post to the trash folder */
 "posts.trash.actionTitle" = "Verplaatsen naar prullenbak";
@@ -10156,6 +10532,12 @@ Example: Reply to Pamela Nguyen */
 /* A short message explaining that a post was deleted permanently. */
 "postsList.deletePost.message" = "Beoordeling permanent verwijderd.";
 
+/* A short message explaining that a page was moved to the trash bin. */
+"postsList.movePageToTrash.message" = "Pagina verplaatst naar prullenbak";
+
+/* A short message explaining that a post was moved to the trash bin. */
+"postsList.movePostToTrash.message" = "Bericht verplaatst naar prullenbak";
+
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Posts by everyone";
 
@@ -10165,14 +10547,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Neem nu een abonnement om meer te delen";
 
+/* The second half of the remaining social shares a user has. This is only displayed when there is no social limit warning. */
+"postsettings.social.remainingshares.text.part" = " in de komende 30 dagen";
+
 /* Beginning text of the remaining social shares a user has left. %1$d is their current remaining shares. This text is combined with ' in the next 30 days' if there is no warning displayed. */
 "postsettings.social.shares.text.format" = "%1$d keer delen op social media resterend";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.categories" = "Categorieën";
 
+/* Voiceover accessibility label informing the user that this button dismiss the current view */
+"prepublishing.close" = "Sluiten";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
+/* Title for an error messaage in the pre-publishing sheet */
+"prepublishing.mediaUploadFailed" = "Uploaden van media mislukt";
+
+/* Placeholder for a cell in the pre-publishing sheet */
+"prepublishing.postTitle" = "Titel";
+
+/* Primary button label in the pre-publishing sheet */
+"prepublishing.publish" = "Publiceren";
+
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Publiceerdatum";
+
+/* Label in the header in the pre-publishing sheet */
+"prepublishing.publishingTo" = "Publiceren naar";
 
 /* Primary button label in the pre-publishing shee */
 "prepublishing.schedule" = "Inplannen";
@@ -10201,8 +10604,20 @@ Indicates the blog post will be shared to a social media account.
 Example: Sharing to @wordpress */
 "prepublishing.social.label.singleConnection" = "Delen naar %1$@";
 
+/* A subtext that's shown below the primary label in the auto-sharing row on the pre-publishing sheet.
+Informs the remaining limit for post auto-sharing.
+%1$d is a placeholder for the remaining shares.
+Example: 27 social shares remaining */
+"prepublishing.social.remainingShares.format" = "%1$d aantal keer delen op social media resterend";
+
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.social.warningIcon.accessibilityHint" = "Waarschuwing";
+
 /* The navigation title for a screen that edits the sharing message for the post. */
 "prepublishing.socialAccounts.editMessage.navigationTitle" = "Bericht aanpassen";
+
+/* The label for a call-to-action button in the social accounts' footer section. */
+"prepublishing.socialAccounts.footer.button.text" = "Neem een abonnement om meer te delen";
 
 /* Text shown below the list of social accounts to indicate how many social shares available for the site.
 Note that the '30 days' part is intended to be a static value.
@@ -10210,11 +10625,36 @@ Note that the '30 days' part is intended to be a static value.
 Example: 27 social shares remaining in the next 30 days */
 "prepublishing.socialAccounts.footer.remainingShares.text" = "%1$d keer delen op social media resterend voor de komende 30 dagen";
 
+/* a VoiceOver description for the warning icon to hint that the remaining shares are low. */
+"prepublishing.socialAccounts.footer.warningIcon.accessibilityHint" = "Waarschuwing";
+
+/* The label displayed for a table row that displays the sharing message for the post.
+Tapping on this row allows the user to edit the sharing message. */
+"prepublishing.socialAccounts.message.label" = "Bericht";
+
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.tags" = "Tags";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadingMedia" = "Media aan het uploaden";
+
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.visibility" = "Zichtbaarheid";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
+
+/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
+"publishButton.progress" = "%1$@ van %2$@";
+
+/* Retry button title */
+"publishButton.retry" = "Opnieuw proberen";
+
+/* The Now button that clears the date selection */
+"publishDatePicker.now" = "Nu";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publiceerdatum";
@@ -10231,8 +10671,17 @@ Example: 27 social shares remaining in the next 30 days */
 /* A step in a guided tour for quick start. %@ will be a bolded Subscriptions text. */
 "quick.start.reader.2.subscriptions.base" = "Selecteer %@ om inhoud van abonnementen te bekijken en je abonnementen te beheren.";
 
+/* The bolded Subscriptions text in the Reader step 2 description for the quick start tour. */
+"quick.start.reader.2.subscriptions.target" = "Abonnementen";
+
+/* The quick tour actions item to select during a guided tour. */
+"quickStart.moreMenu" = "Meer";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "De blog %@ verschijnt niet langer in je Reader. Tik om ongedaan te maken.";
+
+/* The formatted number of posts and followers for a site. '%1$@' is a placeholder for the blog post count. '%2$@' is a placeholder for the blog subscriber count. Example: `5,000 posts • 10M subscribers` */
+"reader.blog.header.values" = "%1$@ berichten • %2$@ abonnees";
 
 /* Accessibility hint for the blog name and URL button on Reader's Post Details. */
 "reader.blog.name.accessibility.hint" = "Geeft de berichten op de blog weer.";
@@ -10249,14 +10698,29 @@ Example: 27 social shares remaining in the next 30 days */
 /* A message title */
 "reader.blog.search.no.results.title" = "Geen blogs gevonden.";
 
+/* The number of followers of a site. The '%@' is a placeholder for the numeric value. Example: `1000 followers` */
+"reader.blog.stream.subscribers" = "%@ abonnees";
+
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Bekijkt berichten van de site";
 
 /* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
 "reader.detail.likes.plural" = "_%1$d likes_";
 
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "Jij vindt dit leuk.";
+
 /* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_1 like_";
+
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "Reactie";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "Vind-ik-leuk";
 
 /* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
 but tapping on this button will add a Like to the post. */
@@ -10271,11 +10735,23 @@ Note: Since the display space is limited, a short or concise translation is pref
 but tapping on this button will remove their like from the post. */
 "reader.detail.toolbar.liked.button.a11y.hint" = "Vindt dit bericht niet meer leuk.";
 
+/* Accessibility hint for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.hint" = "Bewaart dit bericht voor later.";
+
+/* Accessibility label for the 'Save Post' button. */
+"reader.detail.toolbar.save.button.a11y.label" = "Bericht opslaan";
+
 /* Accessibility hint for the 'Save Post' button when a post is already saved. */
 "reader.detail.toolbar.saved.button.a11y.hint" = "Bewaart dit bericht niet meer.";
 
+/* Accessibility label for the 'Save Post' button when a post has been saved. */
+"reader.detail.toolbar.saved.button.a11y.label" = "Opgeslagen bericht";
+
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "U bent al geabonneerd op deze blog";
+
+/* Title for a button that allows user to edit their subscribed list from the filter sheet */
+"reader.filterSheet.button.edit" = "Bewerken";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filteren op blog";
@@ -10298,15 +10774,54 @@ but tapping on this button will remove their like from the post. */
 /* Subscribe to a tag button text for an empty filter sheet on the Reader */
 "reader.filterSheet.empty.tags.subscribe" = "Abonneren op een tag";
 
+/* Suggested tags button text for an empty filter sheet on the Reader */
+"reader.filterSheet.empty.tags.suggested" = "Voorgestelde tags";
+
+/* Title for an empty filter sheet on the Reader for tags */
+"reader.filterSheet.empty.tags.title" = "Geen tags";
+
 /* Label displayed to the user while loading their selected interests */
 "reader.filterSheet.select.tags.loading" = "Abonneren op nieuwe tags ...";
+
+/* Screen title. Reader select interests title label text. */
+"reader.filterSheet.select.tags.title" = "Voorgestelde tags";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs ophalen ...";
 
+/* Manage blogs tab title */
+"reader.manage.tab.blogs" = "Blogs";
+
+/* Manage tags tab title */
+"reader.manage.tab.tags" = "Tags";
+
+/* Plural button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.plural" = "%1$d blogs";
+
+/* Singular button title to filter the Reader stream by blog.
+%1$d is a placeholder for the number of blogs. */
+"reader.navigation.filter.blog.singular" = "%1$d blog";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unnumbered" = "Tags";
+
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
 "reader.navigation.filter.tag.plural" = "%1$d tags";
+
+/* Singular button title to filter the Reader stream by tag.
+%1$d is a placeholder for the number of tags. */
+"reader.navigation.filter.tag.singular" = "%1$d tag";
+
+/* Button title to filter the Reader stream by tag.
+This is displayed when we don't know the number of tags yet. */
+"reader.navigation.filter.tag.unnumbered" = "Tags";
+
+/* Accessibility label for when the user has an active filter.
+This informs the user that the currently displayed stream is being filtered. */
+"reader.navigation.menu.activeFilter.a11y.label" = "Gefilterd op %1$@";
 
 /* Accessibility hint that informs the user that the filter list will be opened when they interact
 with the filter chip button. */
@@ -10315,8 +10830,20 @@ with the filter chip button. */
 /* Reader navigation menu item for the Liked filter */
 "reader.navigation.menu.liked" = "Geliket";
 
+/* Reader navigation menu item for the lists menu group */
+"reader.navigation.menu.lists" = "Lijsten";
+
 /* Accessibility label for the Close icon button, to reset the active filter. */
 "reader.navigation.menu.reset.a11y.label" = "Resetten";
+
+/* Reader navigation menu item for the Saved filter */
+"reader.navigation.menu.saved" = "Opgeslagen";
+
+/* Accessibility label for the Search icon. */
+"reader.navigation.menu.search.a11y.label" = "Zoeken";
+
+/* Reader navigation menu item for the Subscriptions filter */
+"reader.navigation.menu.subscriptions" = "Abonnementen";
 
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
@@ -10339,6 +10866,9 @@ with the filter chip button. */
 /* Message shown when the reader finds no posts for the chosen list */
 "reader.no.results.list.response.message" = "De blogs in deze lijst hebben recent niets geplaatst.";
 
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.no.results.manage.blogs" = "Blogs beheren";
+
 /* A message explaining the Following topic in the reader */
 "reader.no.results.response.message" = "Recente berichten uit blogs en sites waarop je geabonneerd bent, verschijnen hier.";
 
@@ -10357,6 +10887,9 @@ with the filter chip button. */
 
 /* Notice title when blocking a site succeeds. */
 "reader.notice.blog.blocked.success" = "Blog geblokkeerd";
+
+/* User subscribed to a blog. */
+"reader.notice.blog.subscribe.success" = "Geabonneerd op blog";
 
 /* Title of a prompt. */
 "reader.notice.blog.unsubscribe.error" = "Kon niet uitschrijven voor blog";
@@ -10377,13 +10910,20 @@ with the filter chip button. */
 "reader.notice.enable.notification.failure" = "Blogmeldingen kunnen niet ingeschakeld worden";
 
 /* Message prompting user to enable blog notifications. */
-"reader.notice.enable.notification.prompt" = "Blogmeldingen inschakelen?";
+"reader.notice.enable.notification.prompt" = "Blog meldingen inschakelen?";
 
 /* Notice title when turning blog notifications on succeeds. */
 "reader.notice.enable.notification.success" = "Blogmeldingen zijn ingeschakeld";
 
+/* A default value used to fill in the site name when the followed site somehow has missing site name or URL.
+Example: given a notice format "Following %@" and empty site name, this will be "Following this blog". */
+"reader.notice.subscribe.blog.unknown" = "deze blog";
+
 /* Notice title when subscribing to a blog fails. */
 "reader.notice.subscribe.failure" = "Kan niet abonneren op blog";
+
+/* Notice title when following a blog succeeds. %1$@ is a placeholder for the site name. */
+"reader.notice.subscribe.success" = "Geabonneerd op %1$@";
 
 /* Notice title when unsubscribing to a blog fails. */
 "reader.notice.unsubscribe.failure" = "Kan niet uitschrijven voor blog";
@@ -10394,8 +10934,14 @@ with the filter chip button. */
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "Reactie";
+
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "Opent de reacties op het bericht.";
+
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "Vind-ik-leuk";
 
 /* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "Vindt het bericht leuk.";
@@ -10405,6 +10951,12 @@ with the filter chip button. */
 
 /* Accessibility hint for the liked button on the reader post card cell */
 "reader.post.button.liked.accessibility.hint" = "Vindt het bericht niet meer leuk.";
+
+/* Accessibility hint for the site header on the reader post card cell */
+"reader.post.button.menu.accessibility.hint" = "Opent een menu met meer acties.";
+
+/* Accessibility label for the more menu button on the reader post card cell */
+"reader.post.button.menu.accessibility.label" = "Meer";
 
 /* Text for the 'Reblog' button on the reader post card cell. */
 "reader.post.button.reblog" = "Rebloggen";
@@ -10433,17 +10985,26 @@ with the filter chip button. */
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "Deze gebruiker rapporteren";
 
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "Opslaan";
+
 /* Verb. An option to subscribe to a blog. */
 "reader.post.menu.subscribe.blog" = "Abonneren op blog";
 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Abonnement op blog stopzetten";
 
+/* Button title. Tapping lets the user manage the blogs they follow. */
+"reader.reblog.manage.blogs" = "Blogs beheren";
+
 /* A subtitle with more detailed info for the user when no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.subtitle" = "Zodra je een WordPress.com-blog aanmaakt, kan je inhoud die je leuk vindt rebloggen op je eigen site.";
 
 /* A short message that informs the user no WordPress.com blogs could be found. */
 "reader.reblog.no.blogs.title" = "Geen beschikbare WordPress.com-blogs";
+
+/* Title of a Reader tab showing Sites matching a user's search query */
+"reader.search.tab.blogs" = "Blogs";
 
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.loading" = "Abonneren op nieuwe tags ...";
@@ -10454,8 +11015,14 @@ with the filter chip button. */
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.title" = "Geen nieuwe tags om je op te abonneren";
 
+/* Reader select interests subtitle label text */
+"reader.select.tags.subtitle" = "Kies je tags";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
 "reader.subscribe.button.accessibility.hint" = "Abonneert je op de tag.";
+
+/* Verb. Button title. Subscribes to a new blog. */
+"reader.subscribe.button.title" = "Abonneren";
 
 /* The accessibility label for the followed blogs search field */
 "reader.subscribed.blogs.search.accessibility.label" = "Blog-URL";
@@ -10463,14 +11030,26 @@ with the filter chip button. */
 /* Placeholder text prompting the user to type the name of the URL they would like to follow. */
 "reader.subscribed.blogs.search.placeholder" = "Voer de URL in van een blog waarop je je wilt abonneren";
 
+/* Verb. Button title. The user is subscribed to a blog. */
+"reader.subscribed.button.title" = "Geabonneerd";
+
+/* A suggestion of topics the user might want to subscribe to */
+"reader.suggested.blogs.title" = "Blogs om je op te abonneren";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Voeg een tag toe";
+
+/* Button Title. Tapping subscribes the user to a new tag. */
+"reader.tags.add.tag.action" = "Tag toevoegen";
 
 /* Placeholder text. A call to action for the user to type any tag to which they would like to subscribe. */
 "reader.tags.add.tag.placeholder" = "Voeg een tag toe";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Voeg een tag toe";
+
+/* Button title. Tapping shows the Subscribe to Tags screen. */
+"reader.tags.discover.more.tags" = "Ontdek meer tags";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unsubscribe.accessibility.label" = "Abonnement op %@ stopzettten";
@@ -10514,6 +11093,9 @@ with the filter chip button. */
 /* Error message that informs reader detail from a private blog cannot be fetched. */
 "readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Je hebt geen toestemming om dit privéblog te bekijken.";
 
+/* The button title for the transfer footer view in Register Domain screen */
+"register.domain.transfer.button.title" = "Domein overdragen";
+
 /* The title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.title" = "Looking to transfer a domain you already own?";
 
@@ -10538,6 +11120,12 @@ with the filter chip button. */
 /* Text for related post cell preview */
 "relatedPostsSettings.preview3.title" = "Upgradefocus: VideoPress voor bruiloften";
 
+/* Section title for related posts section preview */
+"relatedPostsSettings.previewsHeaders" = "Voorbeeld";
+
+/* Label for Related Post header preview */
+"relatedPostsSettings.relatedPostsHeader" = "Gerelateerde berichten";
+
 /* Message to show when setting save failed */
 "relatedPostsSettings.settingsUpdateFailed" = "Bijwerken van instellingen mislukt";
 
@@ -10549,6 +11137,9 @@ with the filter chip button. */
 
 /* Label for configuration switch to show/hide images thumbnail for the related posts */
 "relatedPostsSettings.showThumbnail" = "Afbeeldingen weergeven";
+
+/* Title for screen that allows configuration of your blog/site related posts settings. */
+"relatedPostsSettings.title" = "Gerelateerde berichten";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Negeren";
@@ -10583,6 +11174,9 @@ with the filter chip button. */
 /* Site name that is placed in the tooltip view. */
 "site.creation.domain.tooltip.site.name" = "JouwSitenaam.com";
 
+/* Header of the secondary domains list section in the Domains Dashboard. %1$@ is the name of the site. */
+"site.domains.domainSection.title" = "Andere domeinen voor %1$@";
+
 /* A section title which displays a row with a free WP.com domain */
 "site.domains.freeDomainSection.title" = "Jouw gratis WordPress.com domein";
 
@@ -10595,11 +11189,47 @@ with the filter chip button. */
 /* Footer of the primary site section in the Domains Dashboard. */
 "site.domains.primaryDomain" = "Je primaire site-adres is wat je bezoekers zien in hun adresbalk wanneer ze je website bezoeken.";
 
+/* Primary domain label, used in the site address section of the Domains Dashboard. */
+"site.domains.primaryDomain.title" = "Primair domein";
+
+/* Title for a button that opens domain purchasing flow. */
+"site.domains.purchaseDirectly.buttons.title" = "Zoek gewoon naar een domein";
+
+/* Title for a button that opens plan and domain purchasing flow. */
+"site.domains.purchaseWithPlan.buttons.title" = "Upgrade naar een abonnement";
+
+/* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
+"siteCreation.domain.backButton.title" = "Domeinen";
+
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "Selecteer domein";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "Audio, %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "Document, %@";
+
+/* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
+"siteMedia.accessibilityLabelImage" = "Afbeelding, %@";
+
+/* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
+"siteMedia.accessibilityLabelVideo" = "Video, %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "Onbekende aanmaakdatum";
+
+/* Accessibility hint for actions when displaying media items. */
+"siteMedia.cellAccessibilityHint" = "Selecteer media.";
+
 /* Accessibility hint for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityHint" = "Klik om media op volledig scherm te bekijken";
 
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "Een voorbeeld van de media bekijken";
+
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "Toevoegen";
 
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "Deselecteren";
@@ -10607,14 +11237,32 @@ with the filter chip button. */
 /* Button selection media in media picker */
 "siteMediaPicker.select" = "Selecteer";
 
+/* Media screen navigation title */
+"siteMediaPicker.title" = "Media";
+
 /* Site Monitoring log entry details navigation title */
 "siteMonitoring.entryDetailsTitle" = "Logboekinvoer";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyCached" = "Gecachet";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyFile" = "Bestand";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyHTTPHost" = "HTTP-host";
 
 /* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyKind" = "Soort";
+
+/* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyLine" = "Regel";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyName" = "Naam";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyReferrer" = "Verwijzer";
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyRequestTime" = "Verzoek-tijd";
@@ -10624,6 +11272,12 @@ with the filter chip button. */
 
 /* Site Monitoring details screen metadata key */
 "siteMonitoring.metadataKeyResponseBodySize" = "Responsieve grootte";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyStatus" = "Status";
+
+/* Site Monitoring details screen metadata key */
+"siteMonitoring.metadataKeyTimestamp" = "Tijdstempel";
 
 /* Title for metrics screen. */
 "siteMonitoring.metrics" = "Meetwaarden";
@@ -10684,6 +11338,9 @@ with the filter chip button. */
 
 /* Accessibility label for the social media icons in the Jetpack Social no shares dashboard card */
 "social.noshares.icons.accessibility.label" = "Social media-pictogrammen";
+
+/* Title for the button to subscribe to Jetpack Social on the no shares dashboard card */
+"social.noshares.subscribe" = "Neem een abonnement om meer te delen";
 
 /* Section title for the disabled Twitter service in the Social screen */
 "social.section.disabledTwitter.header" = "Automatisch delen op Twitter is niet meer beschikbaar";
@@ -10790,6 +11447,15 @@ with the filter chip button. */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Niet genoeg activiteit. Keer nog eens terug wanneer je site meer bezoekers heeft gehad!";
 
+/* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
+"stats.insights.totalLikes.guideText.plural" = "Je nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
+
+/* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
+"stats.insights.totalLikes.guideText.singular" = "Je nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
+
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "Vandaag";
+
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Staafgrafiek waarin het aantal opmerkingen tijdens de geselecteerde periode staan weergegeven.";
 
@@ -10804,6 +11470,12 @@ with the filter chip button. */
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Per dag";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ meer dan de afgelopen maand\n";
@@ -10823,11 +11495,29 @@ with the filter chip button. */
 /* Stats views lower than previous year */
 "stats.traffic.label.yearDifference.lower" = "%@ minder dan het afgelopen jaar\n";
 
+/* The label for the option to show Stats Traffic by month. */
+"stats.traffic.month" = "Per maand";
+
+/* The label for the option to show Stats Traffic by week. */
+"stats.traffic.week" = "Per week";
+
+/* The label for the option to show Stats Traffic by year. */
+"stats.traffic.year" = "Per jaar";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Negeren";
 
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Foto's aangeboden door Pexels";
+
+/* Title for placeholder in Free Photos */
+"stockPhotos.title" = "Zoek gratis foto's om toe te voegen aan je mediabibliotheek!";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Verzenden";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Feedback";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In dit gesprek";
@@ -10856,6 +11546,9 @@ with the filter chip button. */
 /* Indicator that the chat bot is processing user's input. */
 "support.chatBot.botThinkingIndicator" = "Aan het denken ...";
 
+/* Dismiss the current view */
+"support.chatBot.close.title" = "Sluiten";
+
 /* Button for users to contact the support team directly. */
 "support.chatBot.contactSupport" = "Neem contact op met support";
 
@@ -10869,16 +11562,25 @@ with the filter chip button. */
 "support.chatBot.questionFive" = "Ik ben mijn inloggegevens vergeten";
 
 /* An example question shown to a user seeking support */
+"support.chatBot.questionFour" = "Waarom kan ik niet inloggen?";
+
+/* An example question shown to a user seeking support */
 "support.chatBot.questionOne" = "Wat is mijn siteadres?";
 
 /* An example question shown to a user seeking support */
 "support.chatBot.questionSix" = "Hoe kan ik mijn aangepaste domein gebruiken in de app?";
 
 /* An example question shown to a user seeking support */
+"support.chatBot.questionThree" = "Ik kan geen foto's\/video's uploaden";
+
+/* An example question shown to a user seeking support */
 "support.chatBot.questionTwo" = "Help, mijn site is onbereikbaar!";
 
 /* Option for users to report a chat bot answer as inaccurate. */
 "support.chatBot.reportInaccuracy" = "Rapporteren als foutief";
+
+/* Button title referring to the sources of information. */
+"support.chatBot.sources" = "Bronnen";
 
 /* Prompt for users suggesting to select a default question from the list to start a support chat. */
 "support.chatBot.suggestionsPrompt" = "Weet je niet wat je moet vragen?";
@@ -10894,6 +11596,12 @@ with the filter chip button. */
 
 /* Title of the view that shows support chat bot. */
 "support.chatBot.title" = "Neem contact op met de ondersteuning";
+
+/* A title for a text that displays a transcript of an answer in a support chat */
+"support.chatBot.zendesk.answer" = "Antwoord";
+
+/* A title for a text that displays a transcript of user's question in a support chat */
+"support.chatBot.zendesk.question" = "Vraag";
 
 /* A title for a text that displays a transcript from a conversation between Jetpack Mobile Bot (chat bot) and a user */
 "support.chatBot.zendesk.transcript" = "Transcriptie Jetpack Mobile Bot";
@@ -10929,7 +11637,7 @@ with the filter chip button. */
 "support.row.jetpackMigration.title" = "Bedankt voor het overschakelen naar de Jetpack-app!";
 
 /* Option in Support view to see activity logs. */
-"support.row.logs.title" = "Logbestanden";
+"support.row.logs.title" = "Logs";
 
 /* Option in Support view to access previous help tickets. */
 "support.row.tickets.title" = "Tickets";
@@ -10967,6 +11675,9 @@ with the filter chip button. */
 /* Message for error notice shown if the app can't find a specific site belonging to the user */
 "universalLink.qrCodeMedia.error.message" = "Controleer of je op het juiste account bent ingelogd";
 
+/* Title for error notice shown if the app can't find a specific site belonging to the user */
+"universalLink.qrCodeMedia.error.title" = "Site niet gevonden";
+
 /* Used when the response doesn't have a valid url to display */
 "unknown url" = "onbekende url";
 
@@ -10983,7 +11694,16 @@ with the filter chip button. */
 "webKit.button.dismiss" = "Negeren";
 
 /* A title for the filter on the PHP logs screen */
+"webServerLogs.filterEndDate" = "Einddatum";
+
+/* A title for the filter on the PHP logs screen */
 "webServerLogs.filterRequestType" = "Verzoektype";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStartDate" = "Startdatum";
+
+/* A title for the filter on the PHP logs screen */
+"webServerLogs.filterStatus" = "Status";
 
 /* Preview title of all-time posts and most views widget */
 "widget.allTimePostViews.previewTitle" = "Alle berichten en meeste weergaven";
@@ -10996,6 +11716,9 @@ with the filter chip button. */
 
 /* Title of best views ever label in all time widget */
 "widget.alltime.bestviews.label" = "Best bekeken ooit";
+
+/* Title of the label which displays the number of the most daily views the site has ever had. Keep the translation as short as possible. */
+"widget.alltime.bestviewsshort.label" = "Meeste weergaven";
 
 /* Title of the no data view in all time widget */
 "widget.alltime.nodata.view.title" = "Kan statistieken sinds het begin niet laden.";
@@ -11113,6 +11836,9 @@ with the filter chip button. */
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'My Sites' tab. */
 "wordpress, sites, site, blogs, blog" = "wordpress, sites, site, blogs, blog";
+
+/* Error message that describes an unknown error had occured */
+"wordpress-api.error.unknown" = "Er ging iets fout, probeer het later nog eens.";
 
 /* Jetpack Plugin Modal on WordPress primary button title */
 "wordpress.jetpack.plugin.modal.primary.button.title" = "Schakel over naar de Jetpack app";

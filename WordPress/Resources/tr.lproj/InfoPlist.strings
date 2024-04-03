@@ -10,8 +10,8 @@
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>WordPress coğrafi etiketlemeyi etkinleştirdiğiniz sitelerdeki yazılara konumunuzu eklemek istiyor.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Videolarınızdaki sesleri kaydetmek için mikrofon erişimini etkinleştir.</string>
+    <string>Videolarınızdaki sesleri kaydetmek için mikrofona erişme izni verin.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Yazılarınızda fotoğraf veya video eklemek için.</string>
+    <string>Yazılarınıza fotoğraf veya video eklemek için.</string>
   </dict>
 </plist>

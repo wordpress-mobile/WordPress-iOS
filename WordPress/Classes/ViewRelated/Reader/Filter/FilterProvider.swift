@@ -201,7 +201,7 @@ extension ReaderSiteTopic {
     private static func fetchFollowedSites(completion: @escaping (Result<[ReaderSiteTopic], Error>) -> Void) {
         let siteService = ReaderTopicService(coreDataStack: ContextManager.shared)
 
-        siteService.fetchFollowedSites(success: {
+        siteService.fetchAllFollowedSites(success: {
             let sites = (try? ReaderAbstractTopic.lookupAllSites(in: ContextManager.shared.mainContext)) ?? []
             completion(.success(sites))
         }, failure: { error in
