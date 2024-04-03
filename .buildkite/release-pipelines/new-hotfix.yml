@@ -2,7 +2,7 @@ steps:
   - label: New Hotfix Deployment
     plugins:
       - $CI_TOOLKIT_PLUGIN
-    # The beta needs to run on macOS because it uses genstrings under the hood
+    # The hotfix needs to run on macOS because it uses genstrings under the hood
     agents:
         queue: mac
     env:
