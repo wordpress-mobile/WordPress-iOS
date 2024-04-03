@@ -4,7 +4,7 @@ enum BlogListReducer {
         let isRecent: Bool
     }
 
-    /*private*/ enum Constants {
+    enum Constants {
         static let pinnedDomainsKey = "site_switcher_pinned_domains_key"
         static let recentDomainsKey = "site_switcher_recent_domains_key"
         static let jsonEncoder = JSONEncoder()
@@ -69,7 +69,7 @@ enum BlogListReducer {
         repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
         domain: String
     ) {
-        var tempPinnedDomains = pinnedDomains()
+        var tempPinnedDomains = pinnedDomains(repository: repository)
         let existingPinnedDomain = tempPinnedDomains.first { pinnedDomain in
             pinnedDomain.domain == domain
         }
@@ -77,7 +77,7 @@ enum BlogListReducer {
         if let existingPinnedDomain {
             // Pinned -> All/Recent
             if existingPinnedDomain.isRecent {
-                var tempRecentDomains = recentDomains()
+                var tempRecentDomains = recentDomains(repository: repository)
                 tempRecentDomains.insert(domain, at: 0)
 
                 let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
@@ -86,14 +86,14 @@ enum BlogListReducer {
             tempPinnedDomains.removeAll(where: { $0 == existingPinnedDomain })
         } else {
             // All/Recent -> Pinned
-            var tempRecentDomains = recentDomains()
+            var tempRecentDomains = recentDomains(repository: repository)
             let beforeRemoveCount = tempRecentDomains.count
             tempRecentDomains.removeAll { recentDomain in
                 recentDomain == domain
             }
 
             let didRemoveFromRecent = tempRecentDomains.count != beforeRemoveCount
-            if didRemoveFromRecent  {
+            if didRemoveFromRecent {
                 let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
                 repository.set(encodedRecentDomains, forKey: Constants.recentDomainsKey)
             }
@@ -120,11 +120,11 @@ enum BlogListReducer {
         repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
         domain: String
     ) {
-        guard !pinnedDomains().compactMap({ $0.domain }).contains(domain) else {
+        guard !pinnedDomains(repository: repository).compactMap({ $0.domain }).contains(domain) else {
             return
         }
 
-        var tempRecentDomains = recentDomains()
+        var tempRecentDomains = recentDomains(repository: repository)
         tempRecentDomains.removeAll { $0 == domain }
         tempRecentDomains.insert(domain, at: 0)
 
