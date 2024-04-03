@@ -371,7 +371,7 @@ extension PublishingEditor {
             return discardAndDismiss()
         }
 
-        if post.original().status == .draft {
+        if post.original().isStatus(in: [.draft, .pending]) {
             showCloseDraftConfirmationAlert()
         } else {
             showClosePublishedPostConfirmationAlert()

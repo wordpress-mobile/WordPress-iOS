@@ -52,7 +52,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if (page.status != .draft  || page.status != .pending) && !isSiteHomepage {
+        if !page.isStatus(in: [.draft, .pending]) && !isSiteHomepage {
             buttons.append(.moveToDraft)
         }
 
@@ -80,7 +80,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return !page.isFailed && page.status != .publish && page.status != .trash
         }
         let userCanPublish = page.blog.capabilities != nil ? page.blog.isPublishingPostsAllowed() : true
-        return (page.status == .draft || page.status == .pending) && userCanPublish
+        return page.isStatus(in: [.draft, .pending]) && userCanPublish
     }
 
     private func createBlazeSection() -> AbstractPostButtonSection {
