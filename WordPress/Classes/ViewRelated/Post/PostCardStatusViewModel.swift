@@ -166,7 +166,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if post.status != .draft {
+        if post.status != .draft && post.status != .pending {
             buttons.append(.moveToDraft)
         }
 
@@ -230,12 +230,16 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
 
-    /// Returns true if any of the following conditions are true:
-    ///
-    /// * The post is a draft.
-    /// * The post failed to upload and has local changes but the user canceled auto-uploading
-    /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
     private var canPublish: Bool {
+        guard isSyncPublishingEnabled else {
+            return _canPublish
+        }
+        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
+        return (post.status == .draft || post.status == .pending) && userCanPublish
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private var _canPublish: Bool {
         let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
         return post.isDraft() || isNotCancelableWithFailedToUploadChanges
     }

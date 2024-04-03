@@ -7,6 +7,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private let isSitePostsPage: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
+    private let isSyncPublishingEnabled: Bool
 
     var buttonSections: [AbstractPostButtonSection] {
         [
@@ -27,13 +28,15 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         isSiteHomepage: Bool,
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()
+        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
+        isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()
     ) {
         self.page = page
         self.isSiteHomepage = isSiteHomepage
         self.isSitePostsPage = isSitePostsPage
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     private func createPrimarySection() -> AbstractPostButtonSection {
@@ -49,7 +52,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if page.status != .draft && !isSiteHomepage {
+        if (page.status != .draft  || page.status != .pending) && !isSiteHomepage {
             buttons.append(.moveToDraft)
         }
 
@@ -65,11 +68,19 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.retry)
         }
 
-        if !page.isFailed, page.status != .publish && page.status != .trash {
+        if canPublish {
             buttons.append(.publish)
         }
 
         return AbstractPostButtonSection(buttons: buttons)
+    }
+
+    private var canPublish: Bool {
+        guard isSyncPublishingEnabled else {
+            return !page.isFailed && page.status != .publish && page.status != .trash
+        }
+        let userCanPublish = page.blog.capabilities != nil ? page.blog.isPublishingPostsAllowed() : true
+        return (page.status == .draft || page.status == .pending) && userCanPublish
     }
 
     private func createBlazeSection() -> AbstractPostButtonSection {

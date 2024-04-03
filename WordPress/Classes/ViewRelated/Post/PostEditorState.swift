@@ -281,7 +281,7 @@ public class PostEditorStateContext {
         case .draft:
             return makePublishAction()
         case .pending:
-            return .update
+            return userCanPublish ? .publish : .update
         case .publishPrivate, .publish, .scheduled:
             return .update
         case .trash, .deleted:
