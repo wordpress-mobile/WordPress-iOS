@@ -1,3 +1,27 @@
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Regular'), url('NotoSerif-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Bold'), url('NotoSerif-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
 :root {
     /* informs WebKit that this template supports both appearance modes. */
     color-scheme: light dark;
@@ -21,10 +45,11 @@ html {
     -webkit-text-size-adjust: none;
 }
 
-/* use Apple's standard style to match the native look. */
+/* use Apple's standard style to match the native look, while allowing it to be overridden. */
 body {
     font: -apple-system-body;
-    color: -apple-system-label;
+    font-family: var(--text-font);
+    color: var(--text-color);
     background-color: transparent;
 }
 
@@ -97,6 +122,7 @@ p > img:not(.emoji),
 
 figcaption {
     font: -apple-system-caption1;
+    font-family: var(--text-font);
     color: -apple-system-secondary-label;
     text-align: center;
 }
@@ -145,6 +171,7 @@ blockquote > p:first-child {
 blockquote cite {
     display: block;
     font: -apple-system-footnote;
+    font-family: var(--text-font);
     text-align: right;
 }
 
@@ -218,5 +245,5 @@ video {
  some contents apply inline text color styling which may lead to low contrast.
  */
 p, em, strong, b {
-    color: -apple-system-label !important;
+    color: var(--text-color) !important;
 }

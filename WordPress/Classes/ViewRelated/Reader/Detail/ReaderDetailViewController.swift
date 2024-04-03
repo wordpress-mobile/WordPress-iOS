@@ -48,10 +48,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
 
     // swiftlint:disable:next weak_delegate
-    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+    private lazy var commentsTableViewDelegate = {
+        ReaderDetailCommentsTableViewDelegate(displaySetting: displaySetting)
+    }()
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
+
+    /// Whether the we should load the related posts section.
+    /// Ideally we should only load this section once per post.
+    private var shouldFetchRelatedPosts = true
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -285,6 +291,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
+        guard shouldFetchRelatedPosts else {
+            return
+        }
+
+        shouldFetchRelatedPosts = false
+
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
@@ -387,6 +399,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         guard let post = post else {
+            return
+        }
+
+        fetchRelatedPostsIfNeeded(for: post)
+    }
+
+    func fetchRelatedPostsIfNeeded(for post: ReaderPost) {
+        guard shouldFetchRelatedPosts else {
             return
         }
 
@@ -569,11 +589,15 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if let post {
             webView.displaySetting = displaySetting
             webView.loadHTMLString(post.contentForDisplay())
+            // TODO: Fix sizing
         }
 
-        // TODO: Comments table view
+        // Comments table view
+        commentsTableViewDelegate.displaySetting = displaySetting
+        commentsTableView.reloadData()
 
-        // TODO: Related posts
+        // Related posts table view
+        relatedPostsTableView.reloadData()
 
         // TODO: Toolbar
     }
@@ -949,8 +973,16 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         let post = relatedPosts[indexPath.section].posts[indexPath.row]
         cell.configure(for: post)
 
-        // TODO: Reader customization: override to transparent background
+        // Additional style overrides
         cell.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.titleLabel.font = displaySetting.font(with: .body, weight: .semibold)
+            cell.titleLabel.textColor = displaySetting.color.foreground
+
+            cell.excerptLabel.font = displaySetting.font(with: .footnote)
+            cell.excerptLabel.textColor = displaySetting.color.foreground
+        }
 
         return cell
     }
@@ -967,8 +999,13 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         header.titleLabel.text = title
 
-        // TODO: Reader customization: override to transparent background
+        // Additional style overrides
         header.backgroundColorView.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            header.titleLabel.font = displaySetting.font(with: .footnote, weight: .semibold)
+            header.titleLabel.textColor = displaySetting.color.foreground
+        }
 
         return header
     }
@@ -1161,7 +1198,7 @@ private extension ReaderDetailViewController {
     }
 
     func displaySettingButtonItem() -> UIBarButtonItem? {
-        guard FeatureFlag.readerCustomization.enabled,
+        guard ReaderDisplaySetting.customizationEnabled,
               let symbolImage = UIImage(systemName: "textformat") else {
             return nil
         }

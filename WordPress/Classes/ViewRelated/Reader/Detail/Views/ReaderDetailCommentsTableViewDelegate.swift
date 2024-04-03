@@ -15,6 +15,8 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     private var totalRows = 0
     private var hideButton = true
 
+    var displaySetting: ReaderDisplaySetting
+
     private var comments: [Comment] = [] {
         didSet {
             totalRows = {
@@ -39,6 +41,10 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
     }
 
     // MARK: - Public Methods
+
+    init(displaySetting: ReaderDisplaySetting = .standard) {
+        self.displaySetting = displaySetting
+    }
 
     func updateWith(post: ReaderPost,
                     comments: [Comment] = [],
@@ -82,6 +88,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                 return UITableViewCell()
             }
 
+            cell.displaySetting = displaySetting
             cell.configureForPostDetails(with: comment) { _ in
                 do {
                     try WPException.objcTry {
@@ -91,10 +98,6 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
                     WordPressAppDelegate.crashLogging?.logError(error)
                 }
             }
-
-            // TODO: Revisit
-            // Separator is removed because it has a hardcoded background color, which interferes with theming.
-            cell.shouldHideSeparator = true
 
             cell.backgroundColor = .clear
             cell.contentView.backgroundColor = .clear
@@ -109,6 +112,12 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
         cell.titleLabel.text = commentsEnabled ? Constants.noComments : Constants.closedComments
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.titleLabel.font = displaySetting.font(with: .body)
+            cell.titleLabel.textColor = displaySetting.color.secondaryForeground
+        }
+
         return cell
     }
 
@@ -119,6 +128,7 @@ class ReaderDetailCommentsTableViewDelegate: NSObject, UITableViewDataSource, UI
             return nil
         }
 
+        header.displaySetting = displaySetting
         header.contentView.backgroundColor = .clear
         header.configure(
             post: post,
@@ -168,7 +178,19 @@ private extension ReaderDetailCommentsTableViewDelegate {
     func showCommentsButtonCell() -> BorderedButtonTableViewCell {
         let cell = BorderedButtonTableViewCell()
         let title = totalComments == 0 ? Constants.leaveCommentButtonTitle : Constants.viewAllButtonTitle
-        cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: Constants.buttonInsets)
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.configure(buttonTitle: title,
+                           titleFont: displaySetting.font(with: .body, weight: .semibold),
+                           normalColor: displaySetting.color.foreground,
+                           highlightedColor: displaySetting.color.background,
+                           borderColor: displaySetting.color.border,
+                           buttonInsets: showCommentsButtonInsets,
+                           backgroundColor: .clear)
+        } else {
+            cell.configure(buttonTitle: title, borderColor: .textTertiary, buttonInsets: showCommentsButtonInsets)
+        }
+
         cell.delegate = buttonDelegate
         cell.backgroundColor = .clear
         cell.contentView.backgroundColor = .clear
@@ -181,6 +203,11 @@ private extension ReaderDetailCommentsTableViewDelegate {
         }
         JetpackBrandingCoordinator.presentOverlay(from: presentingViewController)
         JetpackBrandingAnalyticsHelper.trackJetpackPoweredBadgeTapped(screen: .readerDetail)
+    }
+
+    // The 'No comments' cell doesn't have a bottom padding. When displayed, we need to add top padding to the button.
+    var showCommentsButtonInsets: UIEdgeInsets {
+        comments.count > 0 ? .zero : Constants.buttonInsets
     }
 
     struct Constants {

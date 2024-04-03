@@ -3,6 +3,10 @@ import WordPressShared
 
 struct ReaderDisplaySetting: Codable, Equatable {
 
+    static var customizationEnabled: Bool {
+        FeatureFlag.readerCustomization.enabled
+    }
+
     // MARK: Properties
 
     // The default display setting.
@@ -130,6 +134,15 @@ struct ReaderDisplaySetting: Codable, Equatable {
             }
         }
 
+        var border: UIColor {
+            switch self {
+            case .system:
+                return .separator
+            default:
+                return foreground.withAlphaComponent(0.3)
+            }
+        }
+
         /// Whether the color adjusts between light and dark mode.
         var adaptsToInterfaceStyle: Bool {
             switch self {
@@ -141,7 +154,6 @@ struct ReaderDisplaySetting: Codable, Equatable {
         }
     }
 
-    // TODO: Need to import the fonts
     enum Font: String, Codable, CaseIterable {
         case sans
         case serif
@@ -200,10 +212,10 @@ class ReaderDisplaySettingStore: NSObject {
 
     var setting: ReaderDisplaySetting {
         get {
-            return FeatureFlag.readerCustomization.enabled ? _setting : .standard
+            return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
         set {
-            guard FeatureFlag.readerCustomization.enabled else {
+            guard ReaderDisplaySetting.customizationEnabled else {
                 return
             }
             _setting = newValue
