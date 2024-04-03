@@ -88,7 +88,11 @@ end
 
 def shared_with_extension_pods
   shared_style_pods
-  pod 'ZIPFoundation', '~> 0.9.8'
+  # The PrivacyInfo in this library is incorrectly copied to the app bundle's root directory.
+  # That conflicts with the our own app's PrivacyInfo. We can update this library once the
+  # issue is resolved.
+  # See https://github.com/weichsel/ZIPFoundation/pull/314
+  pod 'ZIPFoundation', '0.9.16'
   pod 'Down', '~> 0.6.6'
 end
 
