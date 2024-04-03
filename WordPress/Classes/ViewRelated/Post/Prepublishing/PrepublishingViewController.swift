@@ -466,7 +466,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             let formatter = SiteDateFormatters.dateFormatter(for: post.blog.timeZone ?? TimeZone.current, dateStyle: .medium, timeStyle: .short)
             cell.detailTextLabel?.text = formatter.string(from: publishDate)
         } else {
-            cell.detailTextLabel?.text = Strings.immediatelly
+            cell.detailTextLabel?.text = Strings.immediately
         }
         visibility == .private ? cell.disable() : cell.enable()
     }
@@ -714,5 +714,5 @@ private enum Strings {
     static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
     static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
-    static let immediatelly = NSLocalizedString("prepublishing.publishDateImmediatelly", value: "Immediatelly", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
+    static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
 }
