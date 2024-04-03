@@ -52,7 +52,11 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !page.isStatus(in: [.draft, .pending]) && !isSiteHomepage {
+        if canPublish {
+            buttons.append(.publish)
+        }
+
+        if page.status != .draft && !isSiteHomepage {
             buttons.append(.moveToDraft)
         }
 
@@ -64,12 +68,10 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if page.status != .trash && page.isFailed {
-            buttons.append(.retry)
-        }
-
-        if canPublish {
-            buttons.append(.publish)
+        if !isSyncPublishingEnabled {
+            if page.status != .trash && page.isFailed {
+                buttons.append(.retry)
+            }
         }
 
         return AbstractPostButtonSection(buttons: buttons)

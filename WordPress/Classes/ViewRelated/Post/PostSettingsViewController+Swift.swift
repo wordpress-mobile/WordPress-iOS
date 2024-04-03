@@ -25,7 +25,7 @@ extension PostSettingsViewController {
     }
 
     @objc var isDraftOrPending: Bool {
-        [Post.Status.draft, Post.Status.draft].contains(apost.original().status)
+        apost.original().isStatus(in: [.draft, .pending])
     }
 
     @objc func setupStandaloneEditor() {

@@ -86,6 +86,23 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var statusColor: UIColor {
+        guard isSyncPublishingEnabled else {
+            return _statusColor
+        }
+        switch post.status ?? .draft {
+        case .pending:
+            return .success
+        case .scheduled:
+            return .primary(.shade40)
+        case .trash:
+            return .error
+        default:
+            return .neutral(.shade70)
+        }
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    var _statusColor: UIColor {
         guard let status = postStatus else {
             return .neutral(.shade70)
         }
@@ -166,7 +183,11 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if post.status != .draft && post.status != .pending {
+        if canPublish {
+            buttons.append(.publish)
+        }
+
+        if post.status != .draft {
             buttons.append(.moveToDraft)
         }
 
@@ -188,10 +209,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             if canCancelAutoUpload && !isInternetReachable {
                 buttons.append(.cancelAutoUpload)
             }
-        }
-
-        if canPublish {
-            buttons.append(.publish)
         }
 
         return AbstractPostButtonSection(buttons: buttons)
