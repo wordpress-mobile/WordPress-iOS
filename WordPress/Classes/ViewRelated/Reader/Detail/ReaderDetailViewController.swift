@@ -641,7 +641,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
                 /// The display setting's custom size is applied through the HTML's initial-scale property
                 /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
                 /// so we'll need to add the custom scale into account.
-                self.webViewHeight.constant = round(min(webViewHeight, height) * self.displaySetting.size.scale)
+                let scaledWebViewHeight = round(webViewHeight * self.displaySetting.size.scale)
+                self.webViewHeight.constant = min(scaledWebViewHeight, height)
             })
         }
     }
