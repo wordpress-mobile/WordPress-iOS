@@ -27,6 +27,8 @@ class EditPostViewController: UIViewController {
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
     @objc var afterDismiss: (() -> Void)?
 
+    private var originalPostID: NSManagedObjectID?
+
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
@@ -69,6 +71,7 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
+        self.originalPostID = (post?.original ?? post)?.objectID
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
             if !post.originalIsDraft() {
@@ -128,9 +131,9 @@ class EditPostViewController: UIViewController {
     @objc private func didChangeObjects(_ notification: Foundation.Notification) {
         guard let userInfo = notification.userInfo else { return }
 
-        let deletedPosts = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
-        if let post = self.post?.original ?? self.post, deletedPosts.contains(post) {
-            closeEditor(animated: true)
+        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
+            closeEditor()
         }
     }
 

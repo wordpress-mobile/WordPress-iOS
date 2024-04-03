@@ -131,7 +131,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
     func testReturnFailedMessageIfPostFailedAndThereIsConnectivity() {
         let post = PostBuilder(mainContext).revision().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
-        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: true)
+        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: true, isSyncPublishingEnabled: false)
 
         expect(viewModel.status).to(equal(i18n("Upload failed")))
         expect(viewModel.statusColor).to(equal(.error))
@@ -142,7 +142,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
     func testReturnWillUploadLaterMessageIfPostFailedAndThereIsConnectivity() {
         let post = PostBuilder(mainContext).revision().with(remoteStatus: .failed).confirmedAutoUpload().build()
 
-        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false)
+        let viewModel = PostCardStatusViewModel(post: post, isInternetReachable: false, isSyncPublishingEnabled: false)
 
         expect(viewModel.status).to(equal(i18n("We'll publish the post when your device is back online.")))
         expect(viewModel.statusColor).to(equal(.warning))

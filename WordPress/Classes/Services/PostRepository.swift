@@ -90,8 +90,7 @@ final class PostRepository {
     /// require special handling or an error from the underlying system.
     ///
     /// - parameters:
-    ///   - post: The post to be synced. It doesn't matter whether you pass
-    ///   the original version of the post or the revision.
+    ///   - post: The post to be synced (original revision) .
     ///   - changes: A set of (optional) changes to be applied on top of the post
     ///   or its latest revision.
     ///   - overwrite: Set to `true` to overwrite the values on the server and
@@ -102,34 +101,91 @@ final class PostRepository {
     /// TODO: update to support XML-RPC (error code, etc)
     @MainActor
     func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
-        let original = post.original ?? post
+        try await _sync(post, revision: post.latest(), changes: changes, overwrite: overwrite)
+    }
 
-        let uploadedPost: RemotePost
+    /// Syncs revisions that have unsaved changes (see `isSyncNeeded`).
+    ///
+    /// - note: This method is designed to be used with drafts.
+    ///
+    /// - warning: Work-in-progress (kahu-offline-mode)
+    @MainActor
+    func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
+        assert(post.original == nil, "Must be called on an original post")
+        guard let revision = revision ?? post.getLatestRevisionNeedingSync() else {
+            return assertionFailure("Requires a revision")
+        }
+        try await _sync(post, revision: revision)
+    }
+
+    /// - parameter revision: The revision to upload (doesn't have to
+    /// be the latest revision).
+    @MainActor
+    private func _sync(
+        _ post: AbstractPost,
+        revision: AbstractPost,
+        changes: RemotePostUpdateParameters? = nil,
+        overwrite: Bool = false
+    ) async throws {
+        let post = post.original() // Defensive code
+
+        let remotePost: RemotePost
         var isCreated = false
-        if let postID = original.postID, postID.intValue > 0 {
-            uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
+        if let postID = post.postID, postID.intValue > 0 {
+            let changes = RemotePostUpdateParameters.changes(from: post, to: revision, with: changes)
+            if !changes.isEmpty {
+                remotePost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
+            } else {
+                remotePost = try await getRemoteService(for: post.blog).post(withID: postID)
+            }
         } else {
             isCreated = true
-            uploadedPost = try await _create(post, changes: changes)
+            remotePost = try await _create(revision, changes: changes)
         }
 
         let context = coreDataStack.mainContext
-        original.deleteRevision()
-        PostHelper.update(original, with: uploadedPost, in: context)
+        if revision.revision == nil {
+            // No more revisions were created during the upload, so it's safe
+            // to fully replace the local version with the remote data
+            PostHelper.update(post, with: remotePost, in: context, overwrite: true)
+        } else {
+            // We have to keep the local changes to make sure the delta can
+            // still be computed accurately (a smarter algo could merge the changes)
+            post.clone(from: revision)
+            post.postID = remotePost.postID // important!
+        }
+
+        post.deleteSyncedRevisions(until: revision)
+
         if isCreated {
             PostService(managedObjectContext: context)
-                .updateMediaFor(post: original, success: {}, failure: { _ in })
+                .updateMediaFor(post: post, success: {}, failure: { _ in })
         }
-        /// - warning: Work-in-progress (kahu-offline-mode)
-        // TODO: Remove when it's no longer needed
-        original.remoteStatus = AbstractPostRemoteStatus.sync
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
+    /// Patches the post.
+    ///
+    /// - note: This method can be used for quick edits for published posts where
+    /// revisions are used only for content.
+    @MainActor
+    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+        let original = post.original ?? post
+        guard let postID = original.postID, postID.intValue > 0 else {
+            assertionFailure("Trying to patch a non-existent post")
+            return
+        }
+        let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
+
+        let context = coreDataStack.mainContext
+        PostHelper.update(original, with: uploadedPost, in: context, overwrite: true)
         ContextManager.shared.saveContextAndWait(context)
     }
 
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
-        var parameters = RemotePostCreateParameters(post: post.latest())
+        var parameters = RemotePostCreateParameters(post: post)
         if let changes {
             parameters.apply(changes)
         }
@@ -137,13 +193,10 @@ final class PostRepository {
     }
 
     @MainActor
-    private func _patch(_ post: AbstractPost, postID: NSNumber, changes: RemotePostUpdateParameters?, overwrite: Bool) async throws -> RemotePost {
+    private func _patch(_ post: AbstractPost, postID: NSNumber, changes: RemotePostUpdateParameters, overwrite: Bool) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
-        let original = post.original ?? post
-        let latest = post.latest()
-
-        // Create a diff between local revision and the target revision.
-        var changes = RemotePostUpdateParameters.changes(from: original, to: latest, with: changes)
+        let original = post.original()
+        var changes = changes
 
         // Make sure the app never overwrites the content without the user approval.
         if !overwrite, let date = original.dateModified, changes.content != nil {
@@ -286,7 +339,7 @@ final class PostRepository {
         try? await coreDataStack.performAndSave { context in
             let post = try context.existingObject(with: postID)
             if let updatedRemotePost, updatedRemotePost.status != PostStatusDeleted {
-                PostHelper.update(post, with: updatedRemotePost, in: context)
+                PostHelper.update(post, with: updatedRemotePost, in: context, overwrite: true)
                 post.latest().statusAfterSync = post.statusAfterSync
                 post.latest().status = post.status
             } else {

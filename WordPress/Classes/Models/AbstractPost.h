@@ -54,12 +54,19 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 @property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
+@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
+@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
+
 // Revision management
 - (AbstractPost *)createRevision;
+/// A new version of `createRevision` that allows you to create revisions based
+/// on other revisions.
+/// 
+/// - warning: Work-in-progress (kahu-offline-mode)
+- (AbstractPost *)_createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (AbstractPost *)updatePostFrom:(AbstractPost *)revision;
-- (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 
@@ -73,7 +80,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-/// True if either the post failed to upload, or the post has media that failed to upload.
+/// - note: deprecated (kahu-offline-mode)
 @property (nonatomic, assign, readonly) BOOL isFailed;
 
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
@@ -86,7 +93,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
+/// - note: deprecated (kahu-offline-mode)
 - (void)publishImmediately;
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
@@ -176,6 +185,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  *
  *  @returns    YES if there ever was an attempt to upload this post, NO otherwise.
  */
+/// - warning: deprecated (kahu-offline-mode)
 - (BOOL)hasNeverAttemptedToUpload;
 
 /**

@@ -21,6 +21,7 @@
     ///     eventually be made private.
     /// - SeeAlso: PostCoordinator.resume
     ///
+    /// - note: deprecated (kahu-offline-mode)
     func markAsFailedAndDraftIfNeeded() {
         guard self.remoteStatus != .failed else {
             return

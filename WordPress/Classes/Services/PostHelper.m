@@ -8,6 +8,14 @@
 @implementation PostHelper
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
+    [self updatePost:post withRemotePost:remotePost inContext:managedObjectContext overwrite:NO];
+}
+
++ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+        return;
+    }
+
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.

@@ -6,8 +6,16 @@ extension AbstractPost {
         original?.original() ?? self
     }
 
+    /// Returns `true` if the post was never uploaded to the remote and has
+    /// not revisions that were marked for syncing.
+    var isNewDraft: Bool {
+        assert(isOriginal(), "Must be called on the original")
+        return !hasRemote() && getLatestRevisionNeedingSync() == nil
+    }
+
     // MARK: - Status
 
+    /// - note: deprecated (kahu-offline-mode)
     @objc
     var statusTitle: String? {
         guard let status = self.status else {
@@ -17,6 +25,7 @@ extension AbstractPost {
         return AbstractPost.title(for: status)
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
@@ -149,5 +158,65 @@ extension AbstractPost {
     ///
     func hasPermanentFailedMedia() -> Bool {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
+    }
+
+    /// Returns the changes made in the current revision compared to the
+    /// previous revision or the original post if there is only one revision.
+    var changes: RemotePostUpdateParameters {
+        guard let original else {
+            return RemotePostUpdateParameters() // Empty
+        }
+        return RemotePostUpdateParameters.changes(from: original, to: self)
+    }
+
+    /// Returns all revisions of the post including the original one.
+    var allRevisions: [AbstractPost] {
+        var revisions: [AbstractPost] = [self]
+        var current = self
+        while let next = current.revision {
+            revisions.append(next)
+            current = next
+        }
+        return revisions
+
+    }
+
+    // TODO: Replace with a new flag
+    /// - note: Work-in-progress (kahu-offline-mode)
+    @objc var isSyncNeeded: Bool {
+        get { confirmedChangesHash == AbstractPost.syncNeededKey }
+        set { confirmedChangesHash = newValue ? AbstractPost.syncNeededKey : "" }
+    }
+
+    static let syncNeededKey = "sync-needed"
+
+    /// Returns the latest saved revisions that needs to be synced with the server.
+    /// Returns `nil` if there are no such revisions.
+    func getLatestRevisionNeedingSync() -> AbstractPost? {
+        assert(original == nil, "Must be called on an original revision")
+        let revision = allRevisions.last(where: \.isSyncNeeded)
+        guard revision != self else {
+            return nil
+        }
+        return revision
+    }
+
+    /// Deletes all of the synced revisions until and including the `latest`
+    /// one passed as a parameter.
+    func deleteSyncedRevisions(until latest: AbstractPost) {
+        assert(original == nil, "Must be called on an original revision")
+        let tail = latest.revision
+
+        var current = self
+        while current !== latest, let next = current.revision {
+            current.deleteRevision()
+            current = next
+        }
+
+        if let tail {
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(tail, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
     }
 }

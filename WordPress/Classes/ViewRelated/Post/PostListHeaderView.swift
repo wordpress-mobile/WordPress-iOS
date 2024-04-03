@@ -79,6 +79,8 @@ final class PostListHeaderView: UIView {
             stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
         }
 
+        indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+
         stackView.spacing = 12
         addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -90,9 +92,10 @@ final class PostListHeaderView: UIView {
             return
         }
         NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: 24),
-            icon.heightAnchor.constraint(equalToConstant: 24)
+            icon.widthAnchor.constraint(equalToConstant: 22),
+            icon.heightAnchor.constraint(equalToConstant: 22)
         ])
+        icon.contentMode = .scaleAspectFit
     }
 
     private func setupEllipsisButton() {
