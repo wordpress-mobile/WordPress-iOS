@@ -16,6 +16,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
     var font: Font
     var size: Size
 
+    var hasLightBackground: Bool {
+        color.background.brighterThan(0.5)
+    }
+
     // MARK: Methods
 
     static func font(with font: Font,

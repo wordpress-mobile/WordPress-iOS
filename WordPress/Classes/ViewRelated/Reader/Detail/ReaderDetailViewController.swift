@@ -160,7 +160,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
             return false
         }
-        return readerNavigationController.viewControllers.contains(self) == false
+
+        // This enables ALL Reader Detail screens to use a transparent navigation bar style,
+        // so that the display settings can be applied correctly.
+        //
+        // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
+        // so it may be a good chance to clean up and remove `useCompatibilityMode`.
+        if ReaderDisplaySetting.customizationEnabled {
+            return false
+        }
+
+        return !readerNavigationController.viewControllers.contains(self)
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
@@ -581,9 +591,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Header view
             header.displaySetting = displaySetting
+
+            // Toolbar
+            toolbar.displaySetting = displaySetting
+            toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
         }
 
-        // TODO: Featured image view
+        // Featured image view
+        featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
         if let post {
@@ -598,8 +613,6 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
         // Related posts table view
         relatedPostsTableView.reloadData()
-
-        // TODO: Toolbar
     }
 
     /// Configure the webview
@@ -654,6 +667,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureFeaturedImage() {
         guard featuredImage.superview == nil else {
             return
+        }
+
+        if ReaderDisplaySetting.customizationEnabled {
+            featuredImage.displaySetting = displaySetting
         }
 
         featuredImage.useCompatibilityMode = useCompatibilityMode
@@ -743,6 +760,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
+        if ReaderDisplaySetting.customizationEnabled {
+            toolbar.displaySetting = displaySetting
+        }
         toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -1199,10 +1219,10 @@ private extension ReaderDetailViewController {
 
     func displaySettingButtonItem() -> UIBarButtonItem? {
         guard ReaderDisplaySetting.customizationEnabled,
-              let symbolImage = UIImage(systemName: "textformat") else {
+              let icon = UIImage(named: "reader-reading-preferences") else {
             return nil
         }
-        let button = barButtonItem(with: symbolImage, action: #selector(didTapDisplaySettingButton(_:)))
+        let button = barButtonItem(with: icon, action: #selector(didTapDisplaySettingButton(_:)))
 
         return button
     }
