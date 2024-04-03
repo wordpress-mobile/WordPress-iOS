@@ -14,7 +14,7 @@ struct BlogListView: View {
 
     @Binding private var isEditing: Bool
     @Binding private var isSearching: Bool
-    @State private var pinnedDomains: Set<String>
+    @State private var pinnedDomains: [String]
     @State private var recentDomains: [String]
     private let sites: [Site]
     private let currentDomain: String?
@@ -29,7 +29,7 @@ struct BlogListView: View {
     ) {
         self.sites = sites
         self.currentDomain = currentDomain
-        self.pinnedDomains = BlogListReducer.pinnedDomains()
+        self.pinnedDomains = BlogListReducer.pinnedDomains().compactMap({ $0.domain })
         self.recentDomains = BlogListReducer.recentDomains()
         self._isEditing = isEditing
         self._isSearching = isSearching
@@ -135,8 +135,8 @@ struct BlogListView: View {
         Button {
             if isEditing {
                 withAnimation {
-                    BlogListReducer.togglePinnedDomain(domain: site.domain)
-                    pinnedDomains = BlogListReducer.pinnedDomains()
+                    BlogListReducer.toggleDomainPin(domain: site.domain)
+                    pinnedDomains = BlogListReducer.pinnedDomains().compactMap({ $0.domain })
                     recentDomains = BlogListReducer.recentDomains()
                 }
             } else {

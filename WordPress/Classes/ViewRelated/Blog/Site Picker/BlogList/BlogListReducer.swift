@@ -1,5 +1,10 @@
 enum BlogListReducer {
-    private enum Constants {
+    struct PinnedDomain: Codable, Equatable {
+        let domain: String
+        let isRecent: Bool
+    }
+
+    /*private*/ enum Constants {
         static let pinnedDomainsKey = "site_switcher_pinned_domains_key"
         static let recentDomainsKey = "site_switcher_recent_domains_key"
         static let jsonEncoder = JSONEncoder()
@@ -7,9 +12,17 @@ enum BlogListReducer {
         static let recentsTotalLimit = 8
     }
 
+    static func syncCachedValues(
+        allSites: [BlogListView.Site],
+        pinnedDomains: [String],
+        recentDomains: [String]
+    ) {
+
+    }
+
     static func pinnedSites(
         allSites: [BlogListView.Site],
-        pinnedDomains: Set<String>
+        pinnedDomains: [String]
     ) -> [BlogListView.Site] {
         allSites.filter {
             pinnedDomains.contains(
@@ -20,7 +33,7 @@ enum BlogListReducer {
 
     static func allSites(
         allSites: [BlogListView.Site],
-        pinnedDomains: Set<String>,
+        pinnedDomains: [String],
         recentDomains: [String]
     ) -> [BlogListView.Site] {
         allSites.filter {
@@ -43,32 +56,49 @@ enum BlogListReducer {
 
     static func pinnedDomains(
         repository: UserPersistentRepository = UserPersistentStoreFactory.instance()
-    ) -> Set<String> {
+    ) -> [PinnedDomain] {
         if let data = repository.object(forKey: Constants.pinnedDomainsKey) as? Data,
-           let decodedDomains = try? Constants.jsonDecoder.decode(Set<String>.self, from: data) {
-             return decodedDomains
+           let decodedDomains = try? Constants.jsonDecoder.decode([PinnedDomain].self, from: data) {
+            return decodedDomains
         }
 
         return []
     }
 
-    static func togglePinnedDomain(
+    static func toggleDomainPin(
         repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
         domain: String
     ) {
-        let tempPinnedDomains = pinnedDomains().symmetricDifference([domain])
+        var tempPinnedDomains = pinnedDomains()
+        let existingPinnedDomain = tempPinnedDomains.first { pinnedDomain in
+            pinnedDomain.domain == domain
+        }
 
-        if tempPinnedDomains.contains(domain) {
+        if let existingPinnedDomain {
+            // Pinned -> All/Recent
+            if existingPinnedDomain.isRecent {
+                var tempRecentDomains = recentDomains()
+                tempRecentDomains.insert(domain, at: 0)
+
+                let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
+                repository.set(encodedRecentDomains, forKey: Constants.recentDomainsKey)
+            }
+            tempPinnedDomains.removeAll(where: { $0 == existingPinnedDomain })
+        } else {
+            // All/Recent -> Pinned
             var tempRecentDomains = recentDomains()
             let beforeRemoveCount = tempRecentDomains.count
             tempRecentDomains.removeAll { recentDomain in
                 recentDomain == domain
             }
 
-            if tempRecentDomains.count != beforeRemoveCount {
+            let didRemoveFromRecent = tempRecentDomains.count != beforeRemoveCount
+            if didRemoveFromRecent  {
                 let encodedRecentDomains = try? Constants.jsonEncoder.encode(tempRecentDomains)
                 repository.set(encodedRecentDomains, forKey: Constants.recentDomainsKey)
             }
+
+            tempPinnedDomains.append(.init(domain: domain, isRecent: didRemoveFromRecent))
         }
 
         let encodedDomain = try? Constants.jsonEncoder.encode(tempPinnedDomains)
@@ -90,7 +120,7 @@ enum BlogListReducer {
         repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
         domain: String
     ) {
-        guard !pinnedDomains().contains(domain) else {
+        guard !pinnedDomains().compactMap({ $0.domain }).contains(domain) else {
             return
         }
 
