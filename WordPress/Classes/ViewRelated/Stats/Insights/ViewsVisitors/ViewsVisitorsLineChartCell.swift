@@ -69,15 +69,15 @@ struct StatsSegmentedControlData {
 
         if differencePercent != 0 {
             let stringFormat = NSLocalizedString(
-                "insights.visitorsLineChartCell.differenceLabelWithPercentage",
-                value: "%1$@%2$@ (%3$@%%)",
-                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign."
+                "insights.visitorsLineChartCell.differenceLabelWithNumber",
+                value: "%1$@%2$@ (%3$@)",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
                 plusSign,
                 difference.abbreviatedString(),
-                differencePercent.abbreviatedString()
+                differencePercent.percentageString()
             )
         } else {
             let stringFormat = NSLocalizedString(

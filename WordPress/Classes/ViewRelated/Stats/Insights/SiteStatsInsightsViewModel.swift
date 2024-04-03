@@ -452,8 +452,8 @@ private extension SiteStatsInsightsViewModel {
         static let bestDay = NSLocalizedString("Best Day", comment: "'Best Day' label for Most Popular stat.")
         static let bestHour = NSLocalizedString("Best Hour", comment: "'Best Hour' label for Most Popular stat.")
         static let viewPercentage = NSLocalizedString(
-            "stats.insights.mostPopularCard.viewPercentage",
-            value: "%d%% of views",
+            "stats.insights.mostPopularCard.viewsNumber",
+            value: "%1$@ of views",
             comment: "Label showing the percentage of views to a user's site which fall on a particular day."
         )
     }
@@ -523,8 +523,8 @@ private extension SiteStatsInsightsViewModel {
             return nil
         }
 
-        let dayPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularDayOfWeekPercentage)
-        let hourPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularHourPercentage)
+        let dayPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularDayOfWeekPercentage.percentageString())
+        let hourPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularHourPercentage.percentageString())
 
         return StatsMostPopularTimeData(mostPopularDayTitle: MostPopularStats.bestDay, mostPopularTimeTitle: MostPopularStats.bestHour, mostPopularDay: dayString, mostPopularTime: timeString.uppercased(), dayPercentage: dayPercentage, timePercentage: hourPercentage)
     }
