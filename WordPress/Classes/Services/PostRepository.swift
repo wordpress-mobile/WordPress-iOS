@@ -237,6 +237,22 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Permanently delete the given post.
+    @MainActor
+    func _delete(_ post: AbstractPost) async throws {
+        assert(post.isOriginal())
+
+        guard let postID = post.postID, postID.intValue > 0 else {
+            assertionFailure("Trying to patch a non-existent post")
+            return
+        }
+        try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
+
+        let context = coreDataStack.mainContext
+        context.deleteObject(post)
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
     /// Permanently delete the given post from local database and the post's WordPress site.
     ///
     /// - Parameter postID: Object ID of the post

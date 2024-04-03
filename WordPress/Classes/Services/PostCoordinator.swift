@@ -996,7 +996,7 @@ class PostCoordinator: NSObject {
         ])
     }
 
-    // MARK: - Trash/Delete
+    // MARK: - Trash/Restore/Delete
 
     /// Moves the given post to trash.
     @MainActor
@@ -1019,12 +1019,36 @@ class PostCoordinator: NSObject {
         }
 
         // Delete local revisions
-        post.deleteRevision()
+        post.deleteAllRevisions()
         ContextManager.shared.saveContextAndWait(context)
 
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.trash.rawValue
         try await _update(post, changes: changes)
+
+        SearchManager.shared.deleteSearchableItem(post)
+    }
+
+    @MainActor
+    func _delete(_ post: AbstractPost) async throws {
+        assert(post.isOriginal())
+
+        setUpdating(true, for: post)
+        defer { setUpdating(false, for: post) }
+
+        do {
+            try await PostRepository(coreDataStack: coreDataStack)._delete(post)
+
+            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            SearchManager.shared.deleteSearchableItem(post)
+        } catch {
+            if let error = error as? PostServiceRemoteUpdatePostError, case .notFound = error {
+                handlePermanentlyDeleted(post)
+            } else {
+                handleError(error, for: post)
+            }
+            throw error
+        }
     }
 
     func isDeleting(_ post: AbstractPost) -> Bool {
