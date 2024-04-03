@@ -77,7 +77,7 @@ struct SiteSwitcherView: View {
                 editButton
             }
         }
-        .navigationTitle("Switch Site")
+        .navigationTitle(Strings.navigationTitle)
         .navigationBarTitleDisplayMode(.inline)
     }
 
@@ -85,7 +85,7 @@ struct SiteSwitcherView: View {
         Button(action: {
             dismiss()
         }, label: {
-            Text("Cancel")
+            Text(Strings.navigationDismissButtonTitle)
                 .style(.bodyLarge(.regular))
                 .foregroundStyle(
                     Color.DS.Foreground.primary
@@ -97,7 +97,7 @@ struct SiteSwitcherView: View {
         Button(action: {
             isEditing.toggle()
         }, label: {
-            Text(isEditing ? "Done": "Edit")
+            Text(isEditing ? Strings.navigationDoneButtonTitle: Strings.navigationEditButtonTitle)
                 .style(.bodyLarge(.regular))
                 .foregroundStyle(
                     Color.DS.Foreground.primary
@@ -109,11 +109,45 @@ struct SiteSwitcherView: View {
         VStack(spacing: .DS.Padding.medium) {
             Divider()
                 .background(Color.DS.Foreground.secondary)
-            DSButton(title: "Add a site", style: .init(emphasis: .primary, size: .large)) {
+            DSButton(title: Strings.addSiteButtonTitle, style: .init(emphasis: .primary, size: .large)) {
                 addSiteCallback()
             }
             .padding(.horizontal, .DS.Padding.medium)
         }
         .background(Color.DS.Background.primary)
+    }
+}
+
+private extension SiteSwitcherView {
+    enum Strings {
+        static let navigationTitle = NSLocalizedString(
+            "site_switcher_title",
+            value: "Choose a site",
+            comment: "Title for site switcher screen."
+        )
+
+        static let navigationDismissButtonTitle = NSLocalizedString(
+            "site_switcher_dismiss_button_title",
+            value: "Cancel",
+            comment: "Dismiss button title above the search."
+        )
+
+        static let navigationEditButtonTitle = NSLocalizedString(
+            "site_switcher_edit_button_title",
+            value: "Edit",
+            comment: "Edit button title above the search."
+        )
+
+        static let navigationDoneButtonTitle = NSLocalizedString(
+            "site_switcher_done_button_title",
+            value: "Done",
+            comment: "Done button title above the search."
+        )
+
+        static let addSiteButtonTitle = NSLocalizedString(
+            "site_switcher_cta_title",
+            value: "Add a site",
+            comment: "CTA title for the site switcher screen."
+        )
     }
 }

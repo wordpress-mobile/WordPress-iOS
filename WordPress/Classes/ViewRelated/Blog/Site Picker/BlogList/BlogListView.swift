@@ -83,7 +83,7 @@ struct BlogListView: View {
                 }
             } header: {
                 sectionHeader(
-                    title: "Pinned sites"
+                    title: Strings.pinnedSectionTitle
                 )
                 .listRowInsets(EdgeInsets(
                     top: .DS.Padding.medium,
@@ -109,7 +109,7 @@ struct BlogListView: View {
                 }
             } header: {
                 sectionHeader(
-                    title: "All sites"
+                    title: Strings.allSitesSectionTitle
                 )
             }
         }
@@ -128,7 +128,7 @@ struct BlogListView: View {
                 }
             } header: {
                 sectionHeader(
-                    title: "Recent sites"
+                    title: Strings.recentsSectionTitle
                 )
             }
         }
@@ -204,4 +204,26 @@ struct BlogListView: View {
         }
     }
 
+}
+
+private extension BlogListView {
+    enum Strings {
+        static let pinnedSectionTitle = NSLocalizedString(
+            "site_switcher_pinned_section_title",
+            value: "Pinned sites",
+            comment: "Pinned section title for site switcher."
+        )
+
+        static let recentsSectionTitle = NSLocalizedString(
+            "site_switcher_recents_section_title",
+            value: "Recent sites",
+            comment: "Recents section title for site switcher."
+        )
+
+        static let allSitesSectionTitle = NSLocalizedString(
+            "site_switcher_all_sites_section_title",
+            value: "All sites",
+            comment: "All sites section title for site switcher."
+        )
+    }
 }
