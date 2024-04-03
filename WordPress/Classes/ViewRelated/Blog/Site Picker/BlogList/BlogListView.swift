@@ -6,7 +6,7 @@ struct BlogListView: View {
         static let imageDiameter: CGFloat = 40
     }
 
-    struct Site {
+    struct Site: Equatable {
         let title: String
         let domain: String
         let imageURL: URL?
