@@ -623,7 +623,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Updates the webview height constraint with it's height
     private func observeWebViewHeight() {
         scrollObserver = webView.scrollView.observe(\.contentSize, options: .new) { [weak self] _, change in
-            guard let height = change.newValue?.height else {
+            guard let self,
+                  let height = change.newValue?.height else {
                 return
             }
 
@@ -631,13 +632,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             /// (except for a few times when it returns a very big weird number)
             /// We use that value so the content is not displayed with weird empty space at the bottom
             ///
-            self?.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
+            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
                 guard let webViewHeight = webViewHeight as? CGFloat else {
-                    self?.webViewHeight.constant = height
+                    self.webViewHeight.constant = height
                     return
-            }
+                }
 
-                self?.webViewHeight.constant = min(height, webViewHeight)
+                /// The display setting's custom size is applied through the HTML's initial-scale property
+                /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
+                /// so we'll need to add the custom scale into account.
+                self.webViewHeight.constant = round(min(webViewHeight, height) * self.displaySetting.size.scale)
             })
         }
     }
