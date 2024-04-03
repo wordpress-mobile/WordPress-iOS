@@ -1,12 +1,12 @@
 steps:
   - label: New Hotfix Deployment
     plugins:
-      - automattic/a8c-ci-toolkit#3.1.0
+      - $CI_TOOLKIT_PLUGIN
     # The beta needs to run on macOS because it uses genstrings under the hood
     agents:
         queue: mac
     env:
-      IMAGE_ID: xcode-15.1
+      IMAGE_ID: $IMAGE_ID
     command: |
       echo '--- :git: Configure Git for release management'
       .buildkite/commands/configure-git-for-release-management.sh
