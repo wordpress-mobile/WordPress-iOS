@@ -304,9 +304,9 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         let differenceText: String = {
             if difference > 0 {
-                return String(format: TextContent.differenceHigher, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedPercentageString())
+                return String(format: TextContent.differenceHigher, differencePrefix, difference.abbreviatedString(), percentage.percentageString())
             } else if difference < 0 {
-                return String(format: TextContent.differenceLower, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedPercentageString())
+                return String(format: TextContent.differenceLower, differencePrefix, difference.abbreviatedString(), percentage.percentageString())
             } else {
                 return TextContent.differenceSame
             }

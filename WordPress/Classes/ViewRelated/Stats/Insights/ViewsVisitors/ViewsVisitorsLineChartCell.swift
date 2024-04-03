@@ -77,7 +77,7 @@ struct StatsSegmentedControlData {
                 stringFormat,
                 plusSign,
                 difference.abbreviatedString(),
-                differencePercent.abbreviatedPercentageString()
+                differencePercent.percentageString()
             )
         } else {
             let stringFormat = NSLocalizedString(

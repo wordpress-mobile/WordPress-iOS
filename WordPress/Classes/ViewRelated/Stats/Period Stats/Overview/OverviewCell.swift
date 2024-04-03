@@ -65,7 +65,7 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
         return String.localizedStringWithFormat(stringFormat,
                                                 difference < 0 ? "" : "+",
                                                 difference.abbreviatedString(),
-                                                differencePercent.abbreviatedPercentageString())
+                                                differencePercent.percentageString())
     }
 
     var differenceTextColor: UIColor {
