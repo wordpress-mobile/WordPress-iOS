@@ -213,7 +213,8 @@ final class PostRepository {
             case .conflict:
                 // Fetch the latest post to consolidate the changes
                 let remotePost = try await service.post(withID: postID)
-                if changes.content != nil && remotePost.content != original.content {
+                // Check for false positives
+                if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
