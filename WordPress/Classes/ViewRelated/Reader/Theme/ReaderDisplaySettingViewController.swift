@@ -73,21 +73,51 @@ struct ReaderDisplaySettingSelectionView: View {
 
     @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
+    @State private var viewHeight: CGFloat = .zero
+
+    @State private var controlViewIntrinsicHeight: CGFloat = .zero
+
     var body: some View {
-        ZStack {
+        VStack(spacing: .zero) {
             PreviewView(viewModel: viewModel)
-            VStack {
-                Spacer() // stick the control view to the bottom.
+
+            ScrollView(.vertical) {
                 ControlView(viewModel: viewModel)
-                    .overlay(alignment: .top, content: { // add 1pt top border.
-                        Rectangle()
-                            .frame(width: nil, height: 1.0, alignment: .top)
-                            .foregroundStyle(Color(.tertiaryLabel))
+                    .background {
+                        GeometryReader { proxy in
+                            Color.clear.onAppear {
+                                self.controlViewIntrinsicHeight = proxy.size.height
+                            }
+                        }
+                    }
+            }
+            .overlay(alignment: .top, content: { // add a thin top border.
+                Rectangle()
+                    .frame(width: nil, height: .hairlineBorderWidth, alignment: .top)
+                    .foregroundStyle(Color(.tertiaryLabel))
+            })
+            // if there's enough space to show the entire control view, shrink the scroll view to fit.
+            // otherwise, we're going to limit the height so that the preview section remains visible.
+            .frame(height: min(controlViewIntrinsicHeight, viewHeight * Constants.maxControlViewHeightRatio))
+        }
+        .background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear(perform: {
+                        self.viewHeight = proxy.size.height
                     })
+                    .onChange(of: proxy.size.height) { newValue in
+                        // update value in case of orientation change.
+                        self.viewHeight = newValue
+                    }
             }
         }
     }
 
+    private struct Constants {
+        /// The ratio of the screen height to be used for defining the max height of the control view.
+        static let maxControlViewHeightRatio = 0.6
+    }
 }
 
 // MARK: - Preview View
@@ -104,7 +134,7 @@ extension ReaderDisplaySettingSelectionView {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
                     Text(Strings.title)
                         .font(Font(viewModel.displaySetting.font(with: .title1)))
-                        .foregroundStyle(Color(viewModel.displaySetting.color.foreground))
+                        .foregroundStyle(viewModel.foregroundColor)
 
                     Text(Strings.bodyText)
                         .font(Font(viewModel.displaySetting.font(with: .callout)))
@@ -125,16 +155,17 @@ extension ReaderDisplaySettingSelectionView {
 
                     Spacer()
                 }
+                .padding(.DS.Padding.double)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.DS.Padding.double)
             .background(viewModel.backgroundColor)
             .animation(.easeInOut, value: viewModel.displaySetting)
         }
 
         var feedbackText: Text? {
             // TODO: Check feature flag for feedback collection.
+
             let linkMarkdownString = "[\(Strings.feedbackLinkCTA)](\(viewModel.feedbackLinkString))"
             let string = String(format: Strings.feedbackLineFormat, linkMarkdownString)
 
