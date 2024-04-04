@@ -4,6 +4,7 @@ import DesignSystem
 class ReaderDisplaySettingViewController: UIViewController {
     private let initialSetting: ReaderDisplaySetting
     private let completion: ((ReaderDisplaySetting) -> Void)?
+    private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -12,15 +13,18 @@ class ReaderDisplaySettingViewController: UIViewController {
     init(initialSetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
+
         super.init(nibName: nil, bundle: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupNavigationItems()
     }
 
     private func setupView() {
+        edgesForExtendedLayout = .top
         view.backgroundColor = .systemBackground
 
         let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: initialSetting) { [weak self] setting in
@@ -29,9 +33,39 @@ class ReaderDisplaySettingViewController: UIViewController {
             })
         }
 
+        viewModel.didChangeColor = { [weak self] in
+            // since the navigation bar is transparent, we need to override the interface style so that
+            // the navigation items remain visible with the new color.
+            self?.updateNavigationBarStyle(with: viewModel.displaySetting)
+        }
+
         let swiftUIView = UIView.embedSwiftUIView(ReaderDisplaySettingSelectionView(viewModel: viewModel))
         view.addSubview(swiftUIView)
         view.pinSubviewToAllEdges(swiftUIView)
+
+        self.viewModel = viewModel
+    }
+
+    private func setupNavigationItems() {
+        // configure transparent navigation bar for the view
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        navigationItem.standardAppearance = navAppearance
+        navigationItem.scrollEdgeAppearance = navAppearance
+        navigationItem.compactAppearance = navAppearance
+
+        guard let displaySetting = viewModel?.displaySetting else {
+            return
+        }
+
+        updateNavigationBarStyle(with: displaySetting)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            self?.navigationController?.dismiss(animated: true)
+        })
+    }
+
+    private func updateNavigationBarStyle(with setting: ReaderDisplaySetting) {
+        navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
     }
 }
 
@@ -44,6 +78,9 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     let feedbackLinkString = String() // TODO: Update with the actual feedback link.
 
     @Published var displaySetting: ReaderDisplaySetting
+
+    /// Called when the user selects a new color.
+    var didChangeColor: (() -> Void)? = nil
 
     private let completion: ((ReaderDisplaySetting) -> Void)?
 
@@ -296,6 +333,7 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Color.allCases, id: \.rawValue) { color in
                         Button {
                             viewModel.displaySetting.color = color
+                            viewModel.didChangeColor?() // notify the view controller to update.
                         } label: {
                             VStack(spacing: .DS.Padding.single) {
                                 DualColorCircle(primaryColor: Color(color.foreground),

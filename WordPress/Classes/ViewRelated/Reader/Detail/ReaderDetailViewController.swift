@@ -840,31 +840,20 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
             self?.displaySettingStore.setting = newSetting
             self?.applyDisplaySetting()
         }
-        let nav = UINavigationController(rootViewController: vc)
-        if let sheet = nav.sheetPresentationController {
+
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.navigationBar.isTranslucent = true
+
+        if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
         }
 
-        vc.navigationItem.rightBarButtonItem = .init(systemItem: .close,
-                                                     primaryAction: UIAction { [weak vc] _ in
-            vc?.navigationController?.dismiss(animated: true)
-        })
-
-        nav.navigationBar.isTranslucent = true
-        vc.edgesForExtendedLayout = .top
-
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithTransparentBackground()
-        vc.navigationItem.standardAppearance = navAppearance
-        vc.navigationItem.scrollEdgeAppearance = navAppearance
-        vc.navigationItem.compactAppearance = navAppearance
-
-        navigationController?.present(nav, animated: true)
+        navigationController?.present(navController, animated: true)
     }
 
     /// A View Controller that displays a Post content.
