@@ -1,8 +1,3 @@
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &common_plugins
-    - $CI_TOOLKIT_PLUGIN
-
 env:
   IMAGE_ID: $IMAGE_ID
 
@@ -13,10 +8,10 @@ agents:
 steps:
   - label: Complete Code Freeze
     key: complete_code_freeze
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     command: ".buildkite/commands/complete-code-freeze.sh $RELEASE_VERSION"
 
   - label: Log Outdated Pods
     depends_on: complete_code_freeze
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     command: ".buildkite/commands/log-outdated-pods.sh $RELEASE_VERSION"
