@@ -12,6 +12,7 @@ struct ResolveConflictView: View {
     private var remoteVersion: PostVersion { .remote(remoteRevision) }
 
     @State private var selectedVersion: PostVersion?
+    @State private var isShowingError = false
 
     var body: some View {
         Form {
@@ -43,6 +44,9 @@ struct ResolveConflictView: View {
                 }.disabled(selectedVersion == nil)
             }
         }
+        .alert("Error", isPresented: $isShowingError) {
+            Button("OK", role: .cancel) { }
+        }
     }
 
     @MainActor
@@ -62,7 +66,7 @@ struct ResolveConflictView: View {
                 dismiss?()
                 // Send notification to create revision and update editor
             } catch {
-                showError()
+                isShowingError = true
             }
         }
     }
@@ -74,12 +78,8 @@ struct ResolveConflictView: View {
             dismiss?()
             // Send notification to create revision and update editor
         } catch {
-            showError()
+            isShowingError = true
         }
-    }
-
-    private func showError() {
-        // Show error alert
     }
 }
 
