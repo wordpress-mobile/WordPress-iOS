@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowTags,
     PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
+    /// - warning: deprecated (kahu-offline-mode)
     PostSettingsRowStatus,
     PostSettingsRowVisibility,
     PostSettingsRowPassword,
@@ -672,7 +673,14 @@ FeaturedImageViewControllerDelegate>
 
     [metaRows addObject:@(PostSettingsRowPublishDate)];
 
-    if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        if (!self.isDraftOrPending) {
+            [metaRows addObjectsFromArray:@[@(PostSettingsRowVisibility)]];
+            if (self.apost.password) {
+                [metaRows addObject:@(PostSettingsRowPassword)];
+            }
+        }
+    } else {
         [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
                                           @(PostSettingsRowVisibility) ]];
         if (self.apost.password) {
