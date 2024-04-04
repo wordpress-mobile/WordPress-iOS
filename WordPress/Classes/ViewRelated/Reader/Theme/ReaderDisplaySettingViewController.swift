@@ -127,6 +127,7 @@ struct ReaderDisplaySettingSelectionView: View {
             }
             .overlay(alignment: .top, content: { // add a thin top border.
                 Rectangle()
+                    .ignoresSafeArea()
                     .frame(width: nil, height: .hairlineBorderWidth, alignment: .top)
                     .foregroundStyle(Color(.tertiaryLabel))
             })
