@@ -41,7 +41,7 @@ class ReaderDisplaySettingViewController: UIViewController {
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
 
-    let feedbackLinkString = "https://wordpress.com/about"
+    let feedbackLinkString = String() // TODO: Update with the actual feedback link.
 
     @Published var displaySetting: ReaderDisplaySetting
 
@@ -97,6 +97,8 @@ extension ReaderDisplaySettingSelectionView {
     struct PreviewView: View {
         @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
+        @Environment(\.openURL) private var openURL
+
         var body: some View {
             ScrollView(.vertical) {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
@@ -113,6 +115,10 @@ extension ReaderDisplaySettingSelectionView {
                             .font(Font(viewModel.displaySetting.font(with: .callout)))
                             .foregroundStyle(viewModel.foregroundColor)
                             .tint(Color(linkTintColor))
+                            .environment(\.openURL, OpenURLAction { url in
+                                // TODO: Add Tracks
+                                return .systemAction
+                            })
                     }
 
                     tagsView
