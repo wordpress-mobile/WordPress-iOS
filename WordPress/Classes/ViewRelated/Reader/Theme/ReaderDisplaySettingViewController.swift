@@ -130,7 +130,7 @@ extension ReaderDisplaySettingSelectionView {
         @Environment(\.openURL) private var openURL
 
         var body: some View {
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
                     Text(Strings.title)
                         .font(Font(viewModel.displaySetting.font(with: .title1)))
@@ -159,6 +159,16 @@ extension ReaderDisplaySettingSelectionView {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
             }
+            .mask({
+                // adds a soft gradient mask that hints that there are more content to scroll.
+                VStack(spacing: .zero) {
+                    Rectangle().fill(.black)
+                    LinearGradient(gradient: Gradient(colors: [.black, .clear]),
+                                   startPoint: .top,
+                                   endPoint: .bottom)
+                    .frame(height: Constants.gradientMaskHeight)
+                }
+            })
             .background(viewModel.backgroundColor)
             .animation(.easeInOut, value: viewModel.displaySetting)
         }
@@ -201,6 +211,10 @@ extension ReaderDisplaySettingSelectionView {
                     }
                 }
             }
+        }
+
+        private struct Constants {
+            static let gradientMaskHeight = 32.0
         }
 
         private struct Strings {
