@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 12:54:10+0000 */
+/* Translation-Revision-Date: 2024-04-03 10:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "清除搜尋記錄";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "清除已選取的顏色";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "正在清除…";
@@ -10738,8 +10741,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "你已訂閱此網誌。";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "編輯";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "管理";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "依網誌篩選";
@@ -10769,10 +10772,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "無標籤";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "正在訂閱新標籤...";
+"reader.filterSheet.select.tags.following" = "正在追蹤新標籤...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "已建議的標籤";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "追蹤此標籤。";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "正在擷取網誌...";
@@ -10862,10 +10868,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "前往「訂閱」";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "若想訂閱特定網誌的文章，可以訂閱該網誌。";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "新增網誌";
@@ -10982,6 +10984,48 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "將網誌取消訂閱";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "預設";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "晚上";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "深褐色";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "柔和";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "完成";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "尺寸";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "閱讀是個人的體驗，我們希望你可以全程掌握。 選擇適合你的風格。";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "傳送此功能的意見回饋給我們";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "此功能仍在開發階段。";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "狗";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "狐狸";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "設計";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "寫作";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "選擇你的閱讀喜好";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "管理網誌";
 
@@ -10994,20 +11038,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "網誌";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "正在訂閱新標籤...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "訂閱標籤";
+"reader.select.interests.follow.title" = "追蹤標籤";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "正在追蹤新標籤...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "沒有可訂閱的新標籤";
+"reader.select.tags.no.results.follow.title" = "沒有要追蹤的新標籤";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "選擇標籤";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "訂閱標籤。";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "訂閱";
@@ -11038,6 +11079,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "探索更多標籤";
+
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "追蹤";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "正在追蹤";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unfollow.accessibility.label" = "停止追蹤 %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "取消訂閱";
@@ -11794,6 +11844,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "日後將無法使用。";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "是否建立新網站？";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, 說明, 支援, 常見問題集, 問題, 除錯, 記錄, 說明中心, 聯絡";

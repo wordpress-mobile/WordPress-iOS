@@ -22,9 +22,18 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         static let imageLoadingTimeout: TimeInterval = 4
     }
 
-    struct Styles {
-        static let startTintColor: UIColor = .white
-        static let endTintColor: UIColor = .text
+    struct Style {
+        let startTintColor: UIColor
+        let endTintColor: UIColor
+
+        init(startTintColor: UIColor = .white, endTintColor: UIColor = .text) {
+            self.startTintColor = startTintColor
+            self.endTintColor = endTintColor
+        }
+
+        init(displaySetting: ReaderDisplaySetting) {
+            self.init(endTintColor: displaySetting.color.foreground)
+        }
     }
 
     // MARK: - Private: IBOutlets
@@ -50,6 +59,35 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         didSet {
             updateIfNotLoading()
         }
+    }
+
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            style = .init(displaySetting: displaySetting)
+
+            // Queue the style update in the main queue to prevent other logic from overriding this value.
+            Task { @MainActor in
+                resetNavigationBarTintColor()
+                resetStatusBarStyle()
+            }
+        }
+    }
+
+    private var style: Style = .init()
+
+    /// Determines whether the navigation bar should shift its colors to the `foreground` color
+    /// once the user scrolls past the featured image.
+    ///
+    /// Previously, the navigation bar is only set to adaptive mode when the user uses a light `userInterfaceStyle`.
+    /// Now that we're supporting multiple color themes, the logic is extended to themes with light backgrounds.
+    ///
+    /// For more, see comments on `updateNavigationBar(with:)`.
+    private var usesAdaptiveNavigationBar: Bool {
+        if displaySetting.color == .system {
+            return traitCollection.userInterfaceStyle == .light
+        }
+
+        return displaySetting.hasLightBackground
     }
 
     // MARK: - Private: Properties
@@ -312,19 +350,19 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func updateNavigationBar(with offset: CGFloat) {
-        /// Navigation bar is only updated in light interface style, so that the tint color can be reverted
+        /// Navigation bar is only updated in light color themes, so that the tint color can be reverted
         /// to the original color after scrolling past the featured image.
         ///
-        /// In case of dark mode, the navigation bar tint color will always be kept white.
-        guard traitCollection.userInterfaceStyle == .light else {
+        /// In case of dark color themes, the navigation bar tint color will always be kept white.
+        guard usesAdaptiveNavigationBar else {
             return
         }
 
         let fullProgress = (offset / heightConstraint.constant)
         let progress = fullProgress.clamp(min: 0, max: 1)
 
-        let tintColor = UIColor.interpolate(from: Styles.startTintColor,
-                                            to: Styles.endTintColor,
+        let tintColor = UIColor.interpolate(from: style.startTintColor,
+                                            to: style.endTintColor,
                                             with: progress)
 
         currentStatusBarStyle = fullProgress >= 2.5 ? .darkContent : .lightContent
@@ -346,7 +384,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
         navigationItem.compactScrollEdgeAppearance = appearance
 
         if isLoaded, imageView.image == nil {
-            navBarTintColor = Styles.endTintColor
+            navBarTintColor = style.endTintColor
         }
 
         updateIfNotLoading()
@@ -380,8 +418,7 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func reset() {
-        navigationItem?.setTintColor(useCompatibilityMode ? .appBarTint : Styles.endTintColor)
-
+        resetNavigationBarTintColor()
         resetStatusBarStyle()
         heightConstraint.constant = 0
         isHidden = true
@@ -390,9 +427,18 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     }
 
     private func resetStatusBarStyle() {
-        let isDark = traitCollection.userInterfaceStyle == .dark
+        let isDark = {
+            if displaySetting.color == .system {
+                return traitCollection.userInterfaceStyle == .dark
+            }
+            return !displaySetting.hasLightBackground
+        }()
 
         currentStatusBarStyle = isDark ? .lightContent : .darkContent
+    }
+
+    private func resetNavigationBarTintColor() {
+        navigationItem?.setTintColor(useCompatibilityMode ? .appBarTint : style.endTintColor)
     }
 
     // MARK: - Private: Calculations
