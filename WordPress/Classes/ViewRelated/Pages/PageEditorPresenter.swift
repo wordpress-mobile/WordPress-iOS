@@ -13,9 +13,15 @@ struct PageEditorPresenter {
             return false
         }
 
-        guard !PostCoordinator.shared.isUploading(post: page) else {
-            presentAlertForPageBeingUploaded()
-            return false
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            guard !PostCoordinator.shared.isUpdating(page) else {
+                return false // It's clear from the UI that the cells are not interactive
+            }
+        } else {
+            guard !PostCoordinator.shared.isUploading(post: page) else {
+                presentAlertForPageBeingUploaded()
+                return false
+            }
         }
 
         QuickStartTourGuide.shared.endCurrentTour()

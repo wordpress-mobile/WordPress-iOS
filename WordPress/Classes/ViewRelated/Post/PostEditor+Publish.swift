@@ -75,7 +75,7 @@ extension PublishingEditor {
                 return
             }
 
-            if self.post.hasLocalChanges() {
+            if self.post.hasChanges {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
