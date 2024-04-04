@@ -3964,6 +3964,8 @@
 		F9C47A6B238C7CFD00AAD9ED /* LoginFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED4D8321FF11E3800A11345 /* LoginFlow.swift */; };
 		F9C47A78238C7DAC00AAD9ED /* BaseScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE2B4E9E1FD664F5007AE3E4 /* BaseScreen.swift */; };
 		FA00863D24EB68B100C863F2 /* FollowCommentsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */; };
+		FA0A1C362BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A1C352BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift */; };
+		FA0A1C372BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0A1C352BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift */; };
 		FA111E382A2F38FC00896FCE /* BlazeCampaignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */; };
 		FA111E392A2F474600896FCE /* BlazeCampaignsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */; };
 		FA141F272AEC1D9E00C9A653 /* PageMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA141F262AEC1D9E00C9A653 /* PageMenuViewModel.swift */; };
@@ -9327,6 +9329,7 @@
 		F9C47A8B238C801600AAD9ED /* PostsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsScreen.swift; sourceTree = "<group>"; };
 		F9C47A8E238C9D6400AAD9ED /* StatsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsScreen.swift; sourceTree = "<group>"; };
 		FA00863C24EB68B100C863F2 /* FollowCommentsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowCommentsService.swift; sourceTree = "<group>"; };
+		FA0A1C352BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostCoordinator+ResolveConflict.swift"; sourceTree = "<group>"; };
 		FA111E372A2F38FC00896FCE /* BlazeCampaignsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlazeCampaignsViewController.swift; sourceTree = "<group>"; };
 		FA141F262AEC1D9E00C9A653 /* PageMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageMenuViewModel.swift; sourceTree = "<group>"; };
 		FA141F292AEC23E300C9A653 /* PageListViewController+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PageListViewController+Menu.swift"; sourceTree = "<group>"; };
@@ -10985,7 +10988,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -14525,6 +14528,7 @@
 				B543D2B420570B5A00D3D4CC /* WordPressComSyncService.swift */,
 				010459E529153FFF000C7778 /* JetpackNotificationMigrationService.swift */,
 				FED77257298BC5B300C2346E /* PluginJetpackProxyService.swift */,
+				FA0A1C352BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -19411,7 +19415,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -21012,11 +21016,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -21211,13 +21215,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22628,6 +22632,7 @@
 				B535209D1AF7EB9F00B33BA8 /* PushAuthenticationService.swift in Sources */,
 				F41E3301287B5FE500F89082 /* SuggestionViewModel.swift in Sources */,
 				FA141F272AEC1D9E00C9A653 /* PageMenuViewModel.swift in Sources */,
+				FA0A1C362BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift in Sources */,
 				1762B6DC2845510400F270A5 /* StatsReferrersChartViewModel.swift in Sources */,
 				3F851428260D1EA300A4B938 /* CircledIcon.swift in Sources */,
 				3101866B1A373B01008F7DF6 /* WPTabBarController.m in Sources */,
@@ -25291,6 +25296,7 @@
 				4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */,
 				FABB23C92602FC2C00C8785C /* JetpackState.swift in Sources */,
 				FABB23CA2602FC2C00C8785C /* EditPostViewController.swift in Sources */,
+				FA0A1C372BBEB32F006A2D6F /* PostCoordinator+ResolveConflict.swift in Sources */,
 				0141929D2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */,
 				F484D4EB2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */,
 				FABB23CB2602FC2C00C8785C /* PostListFilter.swift in Sources */,

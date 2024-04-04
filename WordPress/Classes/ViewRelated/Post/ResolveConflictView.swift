@@ -60,11 +60,11 @@ struct ResolveConflictView: View {
     }
 
     private func handleLocalVersionSelected(for post: AbstractPost) {
-        Task {
+        Task { @MainActor in
             do {
                 try await repository._save(post, overwrite: true)
+                PostCoordinator.shared.notifyConflictResolved(for: post)
                 dismiss?()
-                // Send notification to create revision and update editor
             } catch {
                 isShowingError = true
             }
@@ -75,8 +75,8 @@ struct ResolveConflictView: View {
     private func handleRemoteVersionSelected(for post: AbstractPost, remoteRevision: RemotePost) {
         do {
             try repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
+            PostCoordinator.shared.notifyConflictResolved(for: post)
             dismiss?()
-            // Send notification to create revision and update editor
         } catch {
             isShowingError = true
         }
