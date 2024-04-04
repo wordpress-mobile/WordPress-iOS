@@ -50,7 +50,8 @@ end
 
 def gravatar
   # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
-  pod 'Gravatar', '1.0.0'
+  pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: '16d650e6fe6825932cfd0acb14ff40a7b63b5a48'
+  # pod 'Gravatar', '1.0.0'
 end
 
 def wordpress_kit
