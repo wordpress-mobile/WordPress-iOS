@@ -640,7 +640,7 @@ extension InteractiveNotificationsManager: UNUserNotificationCenterDelegate {
         let textInputResponse = response as? UNTextInputNotificationResponse
 
         // Analytics
-        PushNotificationsManager.shared.trackNotification(with: userInfo)
+        PushNotificationsManager.shared.trackNotification(with: userInfo, response: response)
 
         if handleAction(with: response.actionIdentifier,
                         category: response.notification.request.content.categoryIdentifier,
