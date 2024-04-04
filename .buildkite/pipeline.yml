@@ -1,8 +1,5 @@
 # Nodes with values to reuse in the pipeline.
 common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &common_plugins
-    - $CI_TOOLKIT_PLUGIN
   # Common environment values to use with the `env` key.
   - &common_env
     # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
@@ -19,7 +16,7 @@ steps:
       - label: "🛠 WordPress Prototype Build"
         command: ".buildkite/commands/prototype-build-wordpress.sh"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
@@ -28,7 +25,7 @@ steps:
       - label: "🛠 Jetpack Prototype Build"
         command: ".buildkite/commands/prototype-build-jetpack.sh"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
@@ -43,7 +40,7 @@ steps:
         key: "build_wordpress"
         command: ".buildkite/commands/build-for-testing.sh wordpress"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "WordPress Build for Testing"
@@ -52,7 +49,7 @@ steps:
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
@@ -64,7 +61,7 @@ steps:
     command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build_wordpress"
     env: *common_env
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
       - "build/results/*"
     notify:
@@ -80,7 +77,7 @@ steps:
         command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
         depends_on: "build_jetpack"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -92,7 +89,7 @@ steps:
         command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
         depends_on: "build_jetpack"
         env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -107,7 +104,7 @@ steps:
     steps:
       - label: ":swift: SwiftLint"
         command: run_swiftlint --strict
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "SwiftLint"
@@ -127,5 +124,5 @@ steps:
 
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         env: *common_env
