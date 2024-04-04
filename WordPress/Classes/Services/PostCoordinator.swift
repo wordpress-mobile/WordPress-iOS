@@ -237,7 +237,7 @@ class PostCoordinator: NSObject {
             switch error {
             case .conflict(let latest):
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
-                    self?.handleVersionConflict(post: post, remoteRevision: latest, presentingController: topViewController)
+                    self?.showResolveConflictView(post: post, remoteRevision: latest)
                 }
             case .deleted:
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
@@ -250,28 +250,12 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func handleVersionConflict(post: AbstractPost, remoteRevision: RemotePost, presentingController: UIViewController) {
-        /*
-        Send a GET request to pull the latest version of the post
-        IF original.content != RemotePost.content
-            Ask the user which version they want to keep
-            IF they keep local
-                Re-send POST request with a diff (skip if_not_modified_since to overwrite)
-            ELSE
-                Apply RemotePost to the original version and delete the local revision
-        ELSE
-            // False positive – the revision changed, but content didn't
-            Apply RemotePost to the original version and delete the local revision
-         */
-
-        showResolveConflictView(post: post, remoteRevision: remoteRevision)
-    }
-
     private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
-        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision)
+        let repository = PostRepository(coreDataStack: coreDataStack)
+        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository)
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
     }

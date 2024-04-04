@@ -5,6 +5,7 @@ import WordPressKit
 struct ResolveConflictView: View {
     let post: AbstractPost
     let remoteRevision: RemotePost
+    let repository: PostRepository
     var dismiss: (() -> Void)?
 
     private var localVersion: PostVersion { .local(post) }
@@ -39,21 +40,46 @@ struct ResolveConflictView: View {
                         return
                     }
                     saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
-                    dismiss?()
                 }.disabled(selectedVersion == nil)
             }
         }
     }
 
+    @MainActor
     private func saveSelectedVersion(_ version: PostVersion, post: AbstractPost, remoteRevision: RemotePost) {
         switch version {
         case .local:
-            // TODO: Re-send POST request with a diff (skip if_not_modified_since to overwrite)
-            break
+            handleLocalVersionSelected(for: post)
         case .remote:
-            // TODO: Apply RemotePost to the original version and delete the local revision
-            break
+            handleRemoteVersionSelected(for: post, remoteRevision: remoteRevision)
         }
+    }
+
+    private func handleLocalVersionSelected(for post: AbstractPost) {
+        Task {
+            do {
+                try await repository._save(post, overwrite: true)
+                dismiss?()
+                // Send notification to create revision and update editor
+            } catch {
+                showError()
+            }
+        }
+    }
+
+    @MainActor
+    private func handleRemoteVersionSelected(for post: AbstractPost, remoteRevision: RemotePost) {
+        do {
+            try repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
+            dismiss?()
+            // Send notification to create revision and update editor
+        } catch {
+            showError()
+        }
+    }
+
+    private func showError() {
+        // Show error alert
     }
 }
 
@@ -125,8 +151,8 @@ private enum PostVersion {
 
 final class ResolveConflictViewController: UIHostingController<ResolveConflictView> {
 
-    init(post: AbstractPost, remoteRevision: RemotePost) {
-        super.init(rootView: .init(post: post, remoteRevision: remoteRevision))
+    init(post: AbstractPost, remoteRevision: RemotePost, repository: PostRepository) {
+        super.init(rootView: .init(post: post, remoteRevision: remoteRevision, repository: repository))
         rootView.dismiss = { self.dismiss(animated: true) }
     }
 
