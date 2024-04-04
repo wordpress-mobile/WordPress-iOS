@@ -41,7 +41,7 @@ class ReaderDisplaySettingViewController: UIViewController {
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
 
-    let feedbackLinkString = String() // TODO: Update with actual link
+    let feedbackLinkString = "https://wordpress.com/about"
 
     @Published var displaySetting: ReaderDisplaySetting
 
@@ -100,25 +100,22 @@ extension ReaderDisplaySettingSelectionView {
         var body: some View {
             ScrollView(.vertical) {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
-                    Text(Strings.Preview.title)
+                    Text(Strings.title)
                         .font(Font(viewModel.displaySetting.font(with: .title1)))
                         .foregroundStyle(Color(viewModel.displaySetting.color.foreground))
 
-                    tagsView
+                    Text(Strings.bodyText)
+                        .font(Font(viewModel.displaySetting.font(with: .callout)))
+                        .foregroundStyle(viewModel.foregroundColor)
 
-                    // TODO: Add feature flag for feedback collection.
-                    // TODO: Apply link styles.
-                    if let feedbackURL = URL(string: viewModel.feedbackLinkString) {
-                        Link(Strings.Preview.feedbackLinkText, destination: feedbackURL)
+                    if let feedbackText {
+                        feedbackText
+                            .font(Font(viewModel.displaySetting.font(with: .callout)))
+                            .foregroundStyle(viewModel.foregroundColor)
+                            .tint(Color(linkTintColor))
                     }
 
-                    Text(Strings.Preview.bodyDescription)
-                        .font(Font(viewModel.displaySetting.font(with: .callout)))
-                        .foregroundStyle(viewModel.foregroundColor)
-
-                    Text(Strings.Preview.bodyNotice)
-                        .font(Font(viewModel.displaySetting.font(with: .callout)))
-                        .foregroundStyle(viewModel.foregroundColor)
+                    tagsView
 
                     Spacer()
                 }
@@ -130,10 +127,31 @@ extension ReaderDisplaySettingSelectionView {
             .animation(.easeInOut, value: viewModel.displaySetting)
         }
 
+        var feedbackText: Text? {
+            // TODO: Check feature flag for feedback collection.
+            let linkMarkdownString = "[\(Strings.feedbackLinkCTA)](\(viewModel.feedbackLinkString))"
+            let string = String(format: Strings.feedbackLineFormat, linkMarkdownString)
+
+            guard var attributedString = try? AttributedString(markdown: string) else {
+                return nil
+            }
+
+            if viewModel.displaySetting.color != .system,
+               let rangeOfLink = attributedString.range(of: Strings.feedbackLinkCTA) {
+                attributedString[rangeOfLink].underlineStyle = .single
+            }
+
+            return Text(attributedString)
+        }
+
+        var linkTintColor: UIColor {
+            viewModel.displaySetting.color == .system ? UIColor.tintColor : viewModel.displaySetting.color.foreground
+        }
+
         var tagsView: some View {
             ScrollView(.horizontal) {
                 HStack(spacing: .DS.Padding.single) {
-                    ForEach(Strings.Preview.tags, id: \.self) { text in
+                    ForEach(Strings.tags, id: \.self) { text in
                         Text(text)
                             .font(Font(viewModel.displaySetting.font(with: .callout)))
                             .foregroundStyle(viewModel.foregroundColor)
@@ -149,38 +167,43 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         private struct Strings {
-            struct Preview {
-                static let title = NSLocalizedString(
-                    "reader.preferences.preview.title",
-                    value: "Choose your Reading Preferences",
-                    comment: "Title text for a preview"
-                )
+            static let title = NSLocalizedString(
+                "reader.preferences.preview.header",
+                value: "Reading Preferences",
+                comment: "Title text for a preview"
+            )
 
-                static let tags = [
-                    NSLocalizedString("reader.preferences.preview.tags.1", value: "dogs", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.2", value: "fox", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.3", value: "design", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.4", value: "writing", comment: "Example tag for preview"),
-                ]
+            static let bodyText = NSLocalizedString(
+                "reader.preferences.preview.body.text",
+                value: "Choose your colors, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.",
+                comment: "Description text for the preview section of Reader Preferences"
+            )
 
-                static let feedbackLinkText = NSLocalizedString(
-                    "reader.preferences.preview.body.feedbackLink",
-                    value: "Send us a feedback on this feature",
-                    comment: "Text for a feedback link for the Reader Preferences feature"
-                )
+            static let feedbackLineFormat = NSLocalizedString(
+                "reader.preferences.preview.body.feedback.format",
+                value: "This is a new feature still in development. To help us improve it %1$@.",
+                comment: """
+                Text format for the feedback line text, to be displayed in the preview section.
+                %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+                Example: 'This is a new feature still in development. To help us improve it send your feedback.'
+                """
+            )
 
-                static let bodyDescription = NSLocalizedString(
-                    "reader.preferences.preview.body.description",
-                    value: "Reading is personal, we want you to have control. Choose the styles that suit you.",
-                    comment: "Description text for the preview section of Reader Preferences"
-                )
+            static let feedbackLinkCTA = NSLocalizedString(
+                "reader.preferences.preview.body.feedback.link",
+                value: "send your feedback",
+                comment: """
+                A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+                Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+                Refer to: `reader.preferences.preview.body.feedback.format`
+                """
+            )
 
-                static let bodyNotice = NSLocalizedString(
-                    "reader.preferences.preview.body.notice",
-                    value: "This feature is still in development.",
-                    comment: "Footnote to be displayed in the preview section, noticing that the feature is in development."
-                )
-            }
+            static let tags = [
+                NSLocalizedString("reader.preferences.preview.tags.reading", value: "reading", comment: "Example tag for preview"),
+                NSLocalizedString("reader.preferences.preview.tags.colors", value: "colors", comment: "Example tag for preview"),
+                NSLocalizedString("reader.preferences.preview.tags.fonts", value: "fonts", comment: "Example tag for preview"),
+            ]
         }
     }
 
