@@ -15,6 +15,7 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
     private var indentationIconView = UIImageView()
+    private var viewModel: PageListItemViewModel?
 
     // MARK: - Properties
 
@@ -44,6 +45,7 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         super.prepareForReuse()
 
         imageLoader.prepareForReuse()
+        viewModel?.didUpdateSyncState = nil
     }
 
     func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false, delegate: InteractivePostViewDelegate? = nil) {
@@ -75,26 +77,34 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            let syncStateViewModel = viewModel.syncStateViewModel
-            configureIcon(with: syncStateViewModel)
-
-            ellipsisButton.isHidden = !syncStateViewModel.isShowingEllipsis
-            icon.isHidden = syncStateViewModel.iconInfo == nil
-            indicator.isHidden = !syncStateViewModel.isShowingIndicator
-
-            if syncStateViewModel.isShowingIndicator {
-                indicator.startAnimating()
-            }
+        configure(with: viewModel.syncStateViewModel)
+        viewModel.didUpdateSyncState = { [weak self] in
+            self?.configure(with: $0)
         }
+
+        self.viewModel = viewModel // Important to retain it
     }
 
-    private func configureIcon(with viewModel: PostSyncStateViewModel) {
-        guard let iconInfo = viewModel.iconInfo else {
+    private func configure(with viewModel: PostSyncStateViewModel) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
             return
         }
-        icon.image = iconInfo.image
-        icon.tintColor = iconInfo.color
+
+        titleLabel.alpha = viewModel.isEditable ? 1 : 0.5
+        contentStackView.alpha = viewModel.isEditable ? 1 : 0.5
+
+        if let iconInfo = viewModel.iconInfo {
+            icon.image = iconInfo.image
+            icon.tintColor = iconInfo.color
+        }
+
+        ellipsisButton.isHidden = !viewModel.isShowingEllipsis
+        icon.isHidden = viewModel.iconInfo == nil
+        indicator.isHidden = !viewModel.isShowingIndicator
+
+        if viewModel.isShowingIndicator {
+            indicator.startAnimating()
+        }
     }
 
     private func configureEllipsisButton(with page: Page, delegate: InteractivePostViewDelegate) {
@@ -127,7 +137,6 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         labelsStackView.axis = .vertical
 
         if RemoteFeatureFlag.syncPublishing.enabled() {
-
             contentStackView.addArrangedSubviews([
                 indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
             ])
