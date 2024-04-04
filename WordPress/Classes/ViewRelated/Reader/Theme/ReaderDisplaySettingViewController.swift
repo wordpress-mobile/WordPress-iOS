@@ -74,9 +74,6 @@ class ReaderDisplaySettingViewController: UIViewController {
 // MARK: View Model
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
-
-    let feedbackLinkString = String() // TODO: Update with the actual feedback link.
-
     @Published var displaySetting: ReaderDisplaySetting
 
     /// Called when the user selects a new color.
@@ -213,7 +210,7 @@ extension ReaderDisplaySettingSelectionView {
         var feedbackText: Text? {
             // TODO: Check feature flag for feedback collection.
 
-            let linkMarkdownString = "[\(Strings.feedbackLinkCTA)](\(viewModel.feedbackLinkString))"
+            let linkMarkdownString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
             let string = String(format: Strings.feedbackLineFormat, linkMarkdownString)
 
             guard var attributedString = try? AttributedString(markdown: string) else {
@@ -252,6 +249,8 @@ extension ReaderDisplaySettingSelectionView {
 
         private struct Constants {
             static let gradientMaskHeight = 32.0
+
+            static let feedbackLinkString = "https://automattic.survey.fm/reader-customization-survey"
         }
 
         private struct Strings {
