@@ -10,6 +10,8 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
     private let badgeIconView = UIImageView()
     private let badgesLabel = UILabel()
     private let featuredImageView = CachedAnimatedImageView()
+    private let icon = UIImageView()
+    private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
     private var indentationIconView = UIImageView()
@@ -72,6 +74,27 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         )
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            let syncStateViewModel = viewModel.syncStateViewModel
+            configureIcon(with: syncStateViewModel)
+
+            ellipsisButton.isHidden = !syncStateViewModel.isShowingEllipsis
+            icon.isHidden = syncStateViewModel.iconInfo == nil
+            indicator.isHidden = !syncStateViewModel.isShowingIndicator
+
+            if syncStateViewModel.isShowingIndicator {
+                indicator.startAnimating()
+            }
+        }
+    }
+
+    private func configureIcon(with viewModel: PostSyncStateViewModel) {
+        guard let iconInfo = viewModel.iconInfo else {
+            return
+        }
+        icon.image = iconInfo.image
+        icon.tintColor = iconInfo.color
     }
 
     private func configureEllipsisButton(with page: Page, delegate: InteractivePostViewDelegate) {
@@ -103,12 +126,21 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        contentStackView.addArrangedSubviews([
-            indentationIconView, labelsStackView, featuredImageView, ellipsisButton
-        ])
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+
+            contentStackView.addArrangedSubviews([
+                indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
+            ])
+        } else {
+            contentStackView.addArrangedSubviews([
+                indentationIconView, labelsStackView, featuredImageView, ellipsisButton
+            ])
+        }
         contentStackView.spacing = 8
         contentStackView.alignment = .center
         contentStackView.isLayoutMarginsRelativeArrangement = true
+
+        indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
         NSLayoutConstraint.activate([
             badgeIconView.heightAnchor.constraint(equalToConstant: 18),
@@ -126,6 +158,17 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         titleLabel.numberOfLines = 1
 
         badgeIconView.tintColor = UIColor.secondaryLabel
+    }
+
+    private func setupIcon() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 22),
+            icon.heightAnchor.constraint(equalToConstant: 22)
+        ])
+        icon.contentMode = .scaleAspectFit
     }
 
     private func setupFeaturedImageView() {

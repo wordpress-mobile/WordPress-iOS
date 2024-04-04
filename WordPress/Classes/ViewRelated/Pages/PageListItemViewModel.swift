@@ -7,6 +7,7 @@ final class PageListItemViewModel {
     let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
+    let syncStateViewModel: PostSyncStateViewModel
 
     init(page: Page, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.page = page
@@ -15,6 +16,7 @@ final class PageListItemViewModel {
         self.badges = makeBadgesString(for: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
+        self.syncStateViewModel = PostSyncStateViewModel(post: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
     }
 }
 
