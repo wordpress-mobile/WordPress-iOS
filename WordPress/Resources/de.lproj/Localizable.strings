@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-28 19:18:49+0000 */
+/* Translation-Revision-Date: 2024-04-03 12:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: de */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "Suchverlauf löschen";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "Ausgewählte Farbe löschen";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Löschung...";
@@ -10750,8 +10753,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Du hast dieses Blog bereits abonniert.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Bearbeiten";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Verwalten";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Nach Blog filtern";
@@ -10781,10 +10784,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Keine Schlagwörter";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Neue Schlagwörter werden abonniert …";
+"reader.filterSheet.select.tags.following" = "Neue Schlagwörter werden abonniert ...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Vorgeschlagene Schlagwörter";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Folgt dem Schlagwort.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs werden abgerufen …";
@@ -10874,10 +10880,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Gehe zu Abonnements";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Du kannst die Beiträge eines bestimmten Blogs abonnieren, indem du ihn abonnierst.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Einen Blog hinzufügen";
@@ -10994,6 +10996,33 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Blog abbestellen";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Standard";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Abends";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Weich";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Fertig";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Größe";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "Lesen ist etwas Persönliches. Wir wollen, dass du die Kontrolle darüber hast. Wähle Stile aus, die du magst.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Sende uns Feedback zu dieser Funktion";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Diese Funktion befindet sich noch in der Entwicklung.";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Leseeinstellungen auswählen";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Blogs verwalten";
 
@@ -11006,20 +11035,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Neue Schlagwörter werden abonniert …";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Schlagwörter abonnieren";
+"reader.select.interests.follow.title" = "Schlagwörtern folgen";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Neue Schlagwörter werden abonniert ...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Keine neuen Schlagwörter zum Abonnieren";
+"reader.select.tags.no.results.follow.title" = "Keine neuen Schlagwörter zum Folgen vorhanden";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Wähle deine Schlagwörter";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Abonniert das Schlagwort.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonnieren";
@@ -11051,8 +11077,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Mehr Schlagwörter entdecken";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Folgen";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Abonniert";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "%@ abbestellen";
+"reader.tags.unfollow.accessibility.label" = "%@ nicht mehr folgen";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Abbestellen";
@@ -11815,6 +11847,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "wird zukünftig deaktiviert sein";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Du willst eine neue Website aufbauen?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, hilfe, support, faq, fragen, debuggen, protokolle, hilfe-center, kontakt";

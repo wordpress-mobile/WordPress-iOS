@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 10:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-02 10:21:18+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: id */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -521,6 +521,9 @@ translators: %s: Block name e.g. \"Image block\" */
 "Add description" = "Tambahkan deskripsi";
 
 /* No comment provided by engineer. */
+"Add image" = "Tambahkan gambar";
+
+/* No comment provided by engineer. */
 "Add image or video" = "Tambahkan gambar atau video";
 
 /* Accessibility hint text for adding an image to a new user account. */
@@ -577,6 +580,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Add title" = "Tambahkan judul";
+
+/* No comment provided by engineer. */
+"Add video" = "Tambahkan video";
 
 /* User-facing string, presented to reflect that site assembly is underway. */
 "Adding site features" = "Menambahkan fitur situs";
@@ -1522,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "Bersihkan riwayat pencarian";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "Bersihkan warna yang dipilih";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Menghapus...";
@@ -9029,6 +9038,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Baca selengkapnya";
 
+/* Short description for the Bloganuary event, shown right below the title. */
+"bloganuary.dashboard.card.description" = "Selama bulan Januari, prompt blogging akan datang dari Bloganuary — tantangan kami untuk komunitas guna membentuk kebiasaan blogging di tahun yang baru.";
+
 /* Title for the Bloganuary dashboard card while Bloganuary is running. */
 "bloganuary.dashboard.card.runningTitle" = "Bloganuary telah hadir!";
 
@@ -9155,6 +9167,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for comments button on dashboard. */
 "dashboard.menu.comments" = "Komentar";
+
+/* Title for media button on dashboard. */
+"dashboard.menu.media" = "Media";
 
 /* Title for more button on dashboard. */
 "dashboard.menu.more" = "Lainnya";
@@ -10547,6 +10562,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Tutup";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
 /* Title for an error messaage in the pre-publishing sheet */
 "prepublishing.mediaUploadFailed" = "Gagal mengunggah media";
 
@@ -10735,8 +10753,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Anda sudah berlangganan blog ini.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Edit";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Kelola";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Saring berdasarkan blog";
@@ -10766,10 +10784,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Tidak ada tag";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Berlangganan tag baru...";
+"reader.filterSheet.select.tags.following" = "Mengikuti tag baru...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Tag yang diusulkan";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Mengikuti tag.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Mengambil blog...";
@@ -10859,10 +10880,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Lihat Langganan";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Anda dapat berlangganan pos di blog tertentu dengan berlangganan blog tersebut.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Tambahkan blog";
@@ -10979,6 +10996,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Berhenti berlangganan blog";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Standar";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Malam";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sepia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Lembut";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Selesai";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Ukuran";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "Membaca adalah hal yang personal, kami ingin Anda memiliki kendali. Pilih gaya yang sesuai dengan Anda.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Berikan kami masukan tentang fitur ini.";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Fitur ini masih dalam tahap pengembangan.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "anjing";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "rubah";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "desain";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "menulis";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Pilih Preferensi Baca Anda";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Kelola Blog";
 
@@ -10991,20 +11053,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blog";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Berlangganan tag baru...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Berlangganan tag";
+"reader.select.interests.follow.title" = "Ikuti Tag";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Mengikuti tag baru...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Tidak ada tag baru untuk dijadikan langganan";
+"reader.select.tags.no.results.follow.title" = "Tidak ada tag baru untuk diikuti";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Pilih tag Anda";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Berlangganan tag.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Berlangganan";
@@ -11036,8 +11095,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Temukan tag selengkapnya";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Ikuti";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Mengikuti";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Berhenti berlangganan %@";
+"reader.tags.unfollow.accessibility.label" = "Batal Mengikuti %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Berhenti berlangganan";
@@ -11456,6 +11521,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Menurut hari";
 
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ lebih tinggi dari bulan sebelumnya\n";
 
@@ -11494,6 +11565,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Kirim";
+
+/* The title for the the In-App Feedback screen */
+"submit.feedback.title" = "Masukan";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "Dalam percakapan ini";
@@ -11791,6 +11865,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "akan tidak tersedia di waktu mendatang.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Memulai situs baru?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, bantuan, dukungan, tanya jawab umum, pertanyaan, debug, log, pusat bantuan, kontak";

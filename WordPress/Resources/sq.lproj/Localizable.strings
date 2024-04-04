@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 07:27:10+0000 */
+/* Translation-Revision-Date: 2024-04-02 09:28:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1525,6 +1525,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "Spastro historikun e kërkimeve";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "Hiqe ngjyrën e përzgjedhur";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Po spastrohen…";
@@ -10726,8 +10729,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Jeni tashmë i pajtuar te ky blog.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Përpunojeni";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Administroni";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtroji sipas blogjesh";
@@ -10757,10 +10760,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Pa etiketa";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Po bëhet pajtimi te etiketa të reja…";
+"reader.filterSheet.select.tags.following" = "Po ndiqen tema të reja…";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Etiketa të sugjeruara";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Ndjek etiketën.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Po sillen blogje…";
@@ -10850,10 +10856,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Kaloni te Pajtime";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Te postime në një blog të dhënë mund të pajtoheni duke u pajtuar në të.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Shtoni një blog";
@@ -10970,6 +10972,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Shpajtohuni nga blogu";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Parazgjedhje";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Mbrëmje";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sepia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Të buta";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "U bë";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Madhësi";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "Leximi është gjë personale, duam ta keni ju kontrollin e tij. Zgjidhni stilet që ju shkojnë për shtat.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Dërgonani përshtypje rreth kësaj veçorie";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Kjo veçori është ende në zhvillim.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "qen";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "dhelpër";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "dizajn";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "shkrim";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Zgjidhni Parapëlqime tuajat për Lexim";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Administroni Blogje";
 
@@ -10982,20 +11029,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogje";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Po bëhet pajtimi te etiketa të reja…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Pajtohuni te etiketa";
+"reader.select.interests.follow.title" = "Ndiqni etiketa";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Po ndiqen etiketa të reja…";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "S’ka etiketa të reja ku të pajtoheni";
+"reader.select.tags.no.results.follow.title" = "S’ka etiketa të reja për t’u ndjekur";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Zgjidhni etiketat tuaja";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Ju pajto te etiketa.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Pajtohuni";
@@ -11027,8 +11071,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Zbuloni më tepër etiketa";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Ndiqeni";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Ndiqeni";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Shpajtomë prej %@";
+"reader.tags.unfollow.accessibility.label" = "Hiqe ndjekjen e %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Shpajtomë";
@@ -11791,6 +11841,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "s’do të jetë më i passhëm në të ardhmen.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Po filloni një sajt të ri?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ndihmë, asistencë, PBR, pyetje, diagnostikim, regjistra, qendër ndihme, kontakt";

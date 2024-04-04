@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-21 17:02:00+0000 */
+/* Translation-Revision-Date: 2024-04-03 16:54:10+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "Очистить историю поиска";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "Очистить выбранный цвет";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Идет очистка...";
@@ -10750,8 +10753,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Вы уже подписаны на этот блог.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Редактировать";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Управление";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Фильтровать по блогу";
@@ -10781,10 +10784,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Нет тегов";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Подписка на новые теги…";
+"reader.filterSheet.select.tags.following" = "Подписка на новые метки...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Рекомендуемые теги";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Подписка на метку.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Получение блогов…";
@@ -10874,10 +10880,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Перейти в подписки";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Вы можете подписаться на записи в определенном блоге, оформив подписку на него.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Добавьте блог";
@@ -10994,6 +10996,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Отменить подписку на блог";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "По умолчанию";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Вечер";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Сепия";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Мягкий";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Готово";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Размер";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "Чтение — личное дело, и мы хотим, чтобы вы сами принимали решения. Выберите стиль, отвечающий вашим вкусам.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Отправьте нам отзыв на эту функцию.";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Эта функция ещё на стадии разработки.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "собаки";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "лиса";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "дизайн";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "письмо";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Укажите ваши читательские предпочтения";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Управление блогами";
 
@@ -11006,20 +11053,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Блоги";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Подписка на новые теги…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Подписаться на теги";
+"reader.select.interests.follow.title" = "Подписаться на метки";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Подписка на новые метки...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Нет новых тегов для подписки";
+"reader.select.tags.no.results.follow.title" = "Нет новых меток для подписки";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Выберите теги";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Подписка на тег.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Подписаться";
@@ -11051,8 +11095,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Другие теги";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Подписаться";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Подписки";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Отменить подписку на %@";
+"reader.tags.unfollow.accessibility.label" = "Отписаться от %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Отменить подписку";
@@ -11815,6 +11865,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "в будущем будет недоступен.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Запускаете новый сайт?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, помощь, поддержка, faq, вопросы, отладка, журналы, центр справки, контакт";
