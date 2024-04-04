@@ -16,11 +16,11 @@ class SiteStatsDetailsViewModel: Observable {
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
-    private let insightsStore = StatsInsightsStore()
+    private let insightsStore: StatsInsightsStore
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StatsPeriodStore()
+    private let periodStore: StatsPeriodStore
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
@@ -33,9 +33,13 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate,
-         referrerDelegate: SiteStatsReferrerDelegate) {
+         referrerDelegate: SiteStatsReferrerDelegate,
+         insightsStore: StatsInsightsStore,
+         periodStore: StatsPeriodStore) {
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
+        self.insightsStore = insightsStore
+        self.periodStore = periodStore
     }
 
     // MARK: - Data Fetching

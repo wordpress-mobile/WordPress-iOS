@@ -10,7 +10,10 @@ class SiteStatsInsightsDetailsViewModelTests: XCTestCase {
         viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: MockInsightsDelegate(),
                                                       detailsDelegate: MockDetailsDelegate(),
                                                       referrerDelegate: MockReferrerDeletage(),
-                                                      viewsAndVisitorsDelegate: MockViewsAndVisitorsDelegate())
+                                                      viewsAndVisitorsDelegate: MockViewsAndVisitorsDelegate(),
+                                                      insightsStore: StatsInsightsStore(),
+                                                      periodStore: StatsPeriodStore(),
+                                                      revampStore: StatsRevampStore())
 
         viewModel.fetchDataFor(statSection: StatSection.insightsAddInsight)
     }
