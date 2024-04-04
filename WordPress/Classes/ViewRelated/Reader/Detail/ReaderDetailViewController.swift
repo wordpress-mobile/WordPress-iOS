@@ -1222,6 +1222,7 @@ private extension ReaderDetailViewController {
             return nil
         }
         let button = barButtonItem(with: icon, action: #selector(didTapDisplaySettingButton(_:)))
+        button.accessibilityLabel = Strings.displaySettingAccessibilityLabel
 
         return button
     }
@@ -1312,6 +1313,10 @@ extension ReaderDetailViewController {
             value: "Dismiss",
             comment: "Spoken accessibility label"
         )
+        static let displaySettingAccessibilityLabel = NSLocalizedString(
+            "readerDetail.displaySettingButton.accessibilityLabel",
+            value: "Reading Preferences",
+            comment: "Spoken accessibility label for the Reading Preferences menu.")
         static let safariButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.safariButton.accessibilityLabel",
             value: "Open in Safari",

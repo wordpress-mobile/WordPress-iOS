@@ -196,6 +196,41 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return 1.25
             }
         }
+
+        var accessibilityLabel: String {
+            switch self {
+            case .extraSmall:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraSmall",
+                    value: "Extra Small",
+                    comment: "Accessibility label for the Extra Small size option, used in the Reader's reading preferences."
+                )
+            case .small:
+                return NSLocalizedString(
+                    "reader.preferences.size.small",
+                    value: "Small",
+                    comment: "Accessibility label for the Small size option, used in the Reader's reading preferences."
+                )
+            case .normal:
+                return NSLocalizedString(
+                    "reader.preferences.size.normal",
+                    value: "Normal",
+                    comment: "Accessibility label for the Normal size option, used in the Reader's reading preferences."
+                )
+            case .large:
+                return NSLocalizedString(
+                    "reader.preferences.size.large",
+                    value: "Large",
+                    comment: "Accessibility label for the Large size option, used in the Reader's reading preferences."
+                )
+            case .extraLarge:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraLarge",
+                    value: "Extra Large",
+                    comment: "Accessibility label for the Extra Large size option, used in the Reader's reading preferences."
+                )
+            }
+        }
     }
 
     // MARK: Codable

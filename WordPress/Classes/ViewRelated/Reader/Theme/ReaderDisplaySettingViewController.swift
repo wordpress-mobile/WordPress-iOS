@@ -179,6 +179,7 @@ extension ReaderDisplaySettingSelectionView {
                             .font(Font(viewModel.displaySetting.font(with: .callout)))
                             .foregroundStyle(viewModel.foregroundColor)
                             .tint(Color(linkTintColor))
+                            .accessibilityAddTraits(.isLink)
                             .environment(\.openURL, OpenURLAction { url in
                                 // TODO: Add Tracks
                                 return .systemAction
@@ -210,9 +211,8 @@ extension ReaderDisplaySettingSelectionView {
         var feedbackText: Text? {
             // TODO: Check feature flag for feedback collection.
 
-            let linkMarkdownString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
-            let string = String(format: Strings.feedbackLineFormat, linkMarkdownString)
-
+            let linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
+            let string = String(format: Strings.feedbackLineFormat, linkString)
             guard var attributedString = try? AttributedString(markdown: string) else {
                 return nil
             }
@@ -244,12 +244,13 @@ extension ReaderDisplaySettingSelectionView {
                             }
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Strings.tagsListAccessibilityLabel)
             }
         }
 
         private struct Constants {
             static let gradientMaskHeight = 32.0
-
             static let feedbackLinkString = "https://automattic.survey.fm/reader-customization-survey"
         }
 
@@ -291,6 +292,12 @@ extension ReaderDisplaySettingSelectionView {
                 NSLocalizedString("reader.preferences.preview.tags.colors", value: "colors", comment: "Example tag for preview"),
                 NSLocalizedString("reader.preferences.preview.tags.fonts", value: "fonts", comment: "Example tag for preview"),
             ]
+
+            static let tagsListAccessibilityLabel = NSLocalizedString(
+                "reader.preferences.preview.tagsList.a11y",
+                value: "Example tags",
+                comment: "Accessibility label for a list of tags in the preview section."
+            )
         }
     }
 
@@ -350,9 +357,12 @@ extension ReaderDisplaySettingSelectionView {
                                                   : Color(UIColor.label.withAlphaComponent(0.1)), lineWidth: 1.0)
                             }
                         }
+                        .accessibilityAddTraits(color == viewModel.displaySetting.color ? .isSelected : [])
                     }
                 }
                 .padding(.leading, .DS.Padding.double) // initial content offset
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(Strings.colorListAccessibilityLabel)
             }
         }
 
@@ -380,6 +390,8 @@ extension ReaderDisplaySettingSelectionView {
                                                   : Color(UIColor.label.withAlphaComponent(0.1)), lineWidth: 1.0)
                             }
                         }
+                        .accessibilityAddTraits(font == viewModel.displaySetting.font ? .isSelected : [])
+                        .accessibilityLabel(font.rawValue.capitalized)
                     }
                 }
                 .padding(.leading, .DS.Padding.double) // initial content offset
@@ -394,13 +406,16 @@ extension ReaderDisplaySettingSelectionView {
             } minimumValueLabel: {
                 Text("A")
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraSmall, textStyle: .body)))
+                    .accessibilityHidden(true)
             } maximumValueLabel: {
                 Text("A")
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
+                    .accessibilityHidden(true)
             } onEditingChanged: { _ in
                 viewModel.displaySetting.size = .init(rawValue: Int(sliderValue)) ?? .normal
             }
             .padding(.vertical, .DS.Padding.single)
+            .accessibilityValue(Text(viewModel.displaySetting.size.accessibilityLabel))
         }
     }
 
@@ -415,6 +430,18 @@ extension ReaderDisplaySettingSelectionView {
             "reader.preferences.control.sizeSlider.description",
             value: "Size",
             comment: "Describes that the slider is used to customize the text size in the Reader."
+        )
+
+        static let colorListAccessibilityLabel = NSLocalizedString(
+            "reader.preferences.control.colors.a11y",
+            value: "Colors",
+            comment: "Accessibility label describing the list of colors to be selected from."
+        )
+
+        static let fontListAccessibilityLabel = NSLocalizedString(
+            "reader.preferences.control.fonts.a11y",
+            value: "Fonts",
+            comment: "Accessibility label describing the list of fonts to be selected from."
         )
     }
 }
