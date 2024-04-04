@@ -12,17 +12,11 @@ protocol PostCoordinatorDelegate: AnyObject {
 class PostCoordinator: NSObject {
 
     enum SavingError: Error, LocalizedError {
-        /// If the action can only be performs
-        case hasUnsyncedChanges
         case mediaFailure(AbstractPost)
         case unknown
 
         var errorDescription: String? {
-            switch self {
-            case .hasUnsyncedChanges: return Strings.errorUnsyncedChangesMessage
-            case .mediaFailure: return Strings.genericErrorTitle
-            case .unknown: return Strings.genericErrorTitle
-            }
+            Strings.genericErrorTitle
         }
     }
 
@@ -234,9 +228,6 @@ class PostCoordinator: NSObject {
 
         let post = post.original()
         do {
-            guard post.revision == nil else {
-                throw SavingError.hasUnsyncedChanges
-            }
             try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
         } catch {
             handleError(error, for: post)
