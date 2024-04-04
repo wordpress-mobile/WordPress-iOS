@@ -105,7 +105,7 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
-  - Gravatar (from `https://github.com/Automattic/Gravatar-SDK-iOS`, commit `16d650e6fe6825932cfd0acb14ff40a7b63b5a48`)
+  - Gravatar (= 1.0.1)
   - Gridicons (~> 1.2)
   - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
@@ -142,6 +142,7 @@ SPEC REPOS:
     - CropViewController
     - Down
     - Gifu
+    - Gravatar
     - Gridicons
     - JTAppleCalendar
     - Kanvas
@@ -175,9 +176,6 @@ EXTERNAL SOURCES:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gravatar:
-    :commit: 16d650e6fe6825932cfd0acb14ff40a7b63b5a48
-    :git: https://github.com/Automattic/Gravatar-SDK-iOS
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0.podspec
 
@@ -185,9 +183,6 @@ CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  Gravatar:
-    :commit: 16d650e6fe6825932cfd0acb14ff40a7b63b5a48
-    :git: https://github.com/Automattic/Gravatar-SDK-iOS
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -234,6 +229,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 55ed04898812ee6978265038bdbd34e406589f1a
+PODFILE CHECKSUM: cff152d6fd3b6c78aa23f95c2449c871b1248397
 
 COCOAPODS: 1.15.2
