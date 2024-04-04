@@ -16,6 +16,7 @@ class EditPostViewController: UIViewController {
     /// the entry point for the editor
     var entryPoint: PostEditorEntryPoint = .unknown
 
+    /// - warning: deprecated (kahu-offline-mode)
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
@@ -244,7 +245,7 @@ extension EditPostViewController: UIViewControllerRestoration {
                 return nil
         }
 
-        return EditPostViewController(post: reloadedPost)
+        return EditPostViewController(post: reloadedPost.latest() as! Post)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {

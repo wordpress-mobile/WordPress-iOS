@@ -514,9 +514,6 @@ extension PublishingEditor {
         alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
             self.discardAndDismiss()
         }
-        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraftChanges, style: .default) { _ in
-            fatalError("TODO: save changes locally (kahu-offline-mode")
-        }
         alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
         present(alert, animated: true, completion: nil)
     }
@@ -720,7 +717,7 @@ extension PublishingEditor {
 
         assert(post.latest() == post, "Must be opened with the latest verison of the post")
 
-        if !(post.isRevision() && !post.isSyncNeeded) {
+        if !post.isUnsavedRevision {
             DDLogDebug("Creating new revision")
             post = post._createRevision()
         }
@@ -730,6 +727,7 @@ extension PublishingEditor {
             post.postTitle = post.autosaveTitle
             post.mt_excerpt = post.autosaveExcerpt
             post.content = post.autosaveContent
+            post = post // Update the UI
         }
 
         ContextManager.sharedInstance().save(managedObjectContext)
@@ -812,7 +810,6 @@ private enum Strings {
     static let closeConfirmationAlertDelete = NSLocalizedString("postEditor.closeConfirmationAlert.discardDraft", value: "Discard Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertDiscardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
-    static let closeConfirmationAlertSaveDraftChanges = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraftChanges", value: "Save Draft Changes", comment: "Button in an alert confirming saving draft changes to an existing published post")
 }
 
 private struct MediaUploadingAlert {

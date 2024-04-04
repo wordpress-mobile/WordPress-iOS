@@ -15,18 +15,24 @@ protocol EditorAnalyticsProperties: AnyObject {
 struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            // Return early if a post is still uploading when the editor's requested.
-            guard !PostCoordinator.shared.isUpdating(post) else {
-                presentAlertForPostBeingUploaded()
-                return
-            }
-        } else {
-            // Return early if a post is still uploading when the editor's requested.
-            guard !PostCoordinator.shared.isUploading(post: post) else {
-                presentAlertForPostBeingUploaded()
-                return
-            }
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _handle(post: post, in: postListViewController)
+        }
+
+        // Return early if a post is still uploading when the editor's requested.
+        guard !PostCoordinator.shared.isUpdating(post) else {
+            return // It's clear from the UI that the cells are not interactive
+        }
+
+        openEditor(with: post, loadAutosaveRevision: false, in: postListViewController, entryPoint: entryPoint)
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private static func _handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+        // Return early if a post is still uploading when the editor's requested.
+        guard !PostCoordinator.shared.isUploading(post: post) else {
+            presentAlertForPostBeingUploaded()
+            return
         }
 
         // Autosaves are ignored for posts with local changes.

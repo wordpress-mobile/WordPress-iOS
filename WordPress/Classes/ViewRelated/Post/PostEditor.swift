@@ -1,4 +1,3 @@
-
 import UIKit
 
 enum EditMode {
@@ -136,6 +135,37 @@ extension PostEditor {
     }
 }
 
+extension PostEditor where Self: UIViewController {
+    func onViewDidLoad() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        showAutosaveAvailableAlertIfNeeded()
+    }
+
+    private func showAutosaveAvailableAlertIfNeeded() {
+        // The revision has unsaved local changes, takes precedence over autosave
+        guard post.changes.isEmpty else {
+            return // Do nothing
+        }
+        guard post.hasAutosaveRevision, let autosaveDate = post.autosaveModifiedDate else {
+            return
+        }
+        showAutosaveAvailableAlert(autosaveDate: autosaveDate)
+    }
+
+    private func showAutosaveAvailableAlert(autosaveDate: Date) {
+        let alert = UIAlertController(title: Strings.autosaveAlertTitle, message: Strings.autosaveAlertMessage(date: autosaveDate), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.autosaveAlertContinue, style: .default, handler: { [weak self] _ in
+            guard let self else { return }
+            self.createRevisionOfPost(loadAutosaveRevision: true)
+            self.post = self.post // Reload UI
+        }))
+        alert.addAction(UIAlertAction(title: Strings.autosaveAlertCancel, style: .cancel, handler: nil))
+        present(alert, animated: true)
+    }
+}
+
 enum PostEditorEntryPoint: String {
     case unknown
     case postsList
@@ -146,4 +176,16 @@ enum PostEditorEntryPoint: String {
     case bloggingPromptsNotification = "blogging_reminders_notification_answer_prompt"
     case bloggingPromptsDashboardCard = "my_site_card_answer_prompt"
     case bloggingPromptsListView = "blogging_prompts_list_view"
+}
+
+private enum Strings {
+    static let autosaveAlertTitle = NSLocalizedString("autosaveAlert.title", value: "Autosave Available", comment: "An alert suggesting to load autosaved revision for a published post")
+
+    static func autosaveAlertMessage(date: Date) -> String {
+        let format = NSLocalizedString("autosaveAlert.message", value: "You've made unsaved changes to this post from a different device. Edited: %@.", comment: "An alert suggesting to load autosaved revision for a published post")
+        return String(format: format, date.mediumStringWithTime())
+    }
+
+    static let autosaveAlertContinue = NSLocalizedString("autosaveAlert.viewChanges", value: "View Changes", comment: "An alert suggesting to load autosaved revision for a published post")
+    static let autosaveAlertCancel = NSLocalizedString("autosaveAlert.cancel", value: "Cancel", comment: "An alert suggesting to load autosaved revision for a published post")
 }

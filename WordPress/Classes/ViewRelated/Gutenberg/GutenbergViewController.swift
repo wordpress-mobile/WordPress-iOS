@@ -353,6 +353,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        onViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
