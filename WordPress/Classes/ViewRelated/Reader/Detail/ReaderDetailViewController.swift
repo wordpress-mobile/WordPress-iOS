@@ -604,8 +604,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if let post {
             webView.displaySetting = displaySetting
             webView.loadHTMLString(post.contentForDisplay())
-            // TODO: Fix sizing
         }
+
+        // Likes view
+        likesSummary.displaySetting = displaySetting
 
         // Comments table view
         commentsTableViewDelegate.displaySetting = displaySetting
@@ -712,6 +714,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureLikesSummary() {
         likesSummary.delegate = coordinator
+        likesSummary.displaySetting = displaySetting
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
 
