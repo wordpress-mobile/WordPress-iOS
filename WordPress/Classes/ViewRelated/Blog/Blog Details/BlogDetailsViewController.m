@@ -49,12 +49,7 @@ NSString * const HideWPAdminDate = @"2015-09-07T00:00:00Z";
 CGFloat const BlogDetailReminderSectionHeaderHeight = 8.0;
 CGFloat const BlogDetailReminderSectionFooterHeight = 1.0;
 
-// NOTE: Currently "stats" acts as the calypso dashboard with a redirect to
-// stats/insights. Per @mtias, if the dashboard should change at some point the
-// redirect will be updated to point to new content, eventhough the path is still
-// "stats/".
-// aerych, 2016-06-14
-NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/stats/";
+NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 
 #pragma mark - Helper Classes for Blog Details view model.
 
