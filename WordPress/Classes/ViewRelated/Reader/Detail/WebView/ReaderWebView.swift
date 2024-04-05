@@ -215,7 +215,8 @@ class ReaderWebView: WKWebView {
             """
         }
 
-        // doesn't matter what interface style we pass here because the colors are fixed either way.
+        // for other color themes not adapting to interface, it doesn't matter what interface style we pass here
+        // because the colors are fixed.
         return mappedCSSColors(.light)
     }
 
@@ -223,15 +224,15 @@ class ReaderWebView: WKWebView {
         let trait = UITraitCollection(userInterfaceStyle: style)
         return """
             :root {
-              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexString() ?? "");
-              --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexString() ?? "");
-              --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexString() ?? "");
-              --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexString() ?? "");
-              --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexString() ?? "");
-              --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexString() ?? "");
-              --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexString() ?? "");
-              --main-link-color: #\(linkColor(for: trait).hexString() ?? "");
-              --main-link-active-color: #\(activeLinkColor(for: trait).hexString() ?? "");
+              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexStringWithAlpha);
+              --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexStringWithAlpha);
+              --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexStringWithAlpha);
+              --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexStringWithAlpha);
+              --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexStringWithAlpha);
+              --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexStringWithAlpha);
+              --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexStringWithAlpha);
+              --main-link-color: #\(linkColor(for: trait).hexStringWithAlpha);
+              --main-link-active-color: #\(activeLinkColor(for: trait).hexStringWithAlpha);
             }
         """
     }
@@ -247,7 +248,10 @@ class ReaderWebView: WKWebView {
         let color: UIColor = {
             switch shade {
             case .shade0:
-                return .listForegroundUnread
+                if displaySetting.color == .system {
+                    return .listForegroundUnread
+                }
+                return displaySetting.color.foreground.withAlphaComponent(0.1)
             case .shade5:
                 if displaySetting.color == .system {
                     return .init(light: .muriel(color: .gray, .shade5), dark: .muriel(color: .gray, .shade80))
@@ -281,5 +285,22 @@ class ReaderWebView: WKWebView {
     func activeLinkColor(for trait: UITraitCollection) -> UIColor {
         let color = displaySetting.color == .system ? UIColor.muriel(name: .blue, .shade30) : displaySetting.color.secondaryForeground
         return color.color(for: trait)
+    }
+}
+
+private extension UIColor {
+    /// Produces an 8-digit CSS color hex string representation of `UIColor`.
+    /// The last two digits represent the alpha value of the color.
+    var hexStringWithAlpha: String {
+        // A CGColor either has 4 components (r,g,b,a) or 2 components (white, alpha).
+        // Regardless the type of components, the last component is guaranteed to represent the alpha value.
+        guard let hexString = hexString(),
+              let components = cgColor.components,
+              let alphaValue: CGFloat = components.last?.clamp(min: .zero, max: 1.0) else {
+            return String()
+        }
+
+        let alphaValueInHex = String(format: "%02lx", lroundf(Float(alphaValue) * 255))
+        return hexString.appending(alphaValueInHex)
     }
 }
