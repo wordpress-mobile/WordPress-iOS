@@ -183,6 +183,4 @@ final class BlogListReducerTests: XCTestCase {
         let result = BlogListReducer.recentDomains(repository: repository)
         XCTAssertEqual(result.count, BlogListReducer.Constants.recentsTotalLimit)
     }
-
-
 }
