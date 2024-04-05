@@ -172,7 +172,7 @@ extension Float {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
 
-    func percentageString(forHeroNumber: Bool = false) -> String {
+    func percentageString() -> String {
         return Double(self).percentageString()
     }
 }
@@ -182,7 +182,7 @@ extension Int {
         return Double(self).abbreviatedString(forHeroNumber: forHeroNumber)
     }
 
-    func percentageString(forHeroNumber: Bool = false) -> String {
+    func percentageString() -> String {
         return Double(self).percentageString()
     }
 }
