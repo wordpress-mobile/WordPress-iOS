@@ -9,11 +9,14 @@ final class PostRepository {
 
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
+    private let isSyncPublishingEnabled: Bool
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     /// Sync a specific post from the API
@@ -587,7 +590,7 @@ extension PostRepository {
                     // doesn't have local edits
                     NSPredicate(format: "original = NULL AND revision = NULL"),
                     // doesn't have local status changes
-                    NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
+                    self.isSyncPublishingEnabled ? nil : NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
                     // is not included in the fetched page lists (i.e. it has been deleted from the site)
                     NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
                     // we only need to deal with pages that match the filters passed to this function.
