@@ -84,7 +84,7 @@ struct BlogListView: View {
                     title: Strings.pinnedSectionTitle
                 )
                 .listRowInsets(EdgeInsets(
-                    top: .DS.Padding.medium,
+                    top: 0,
                     leading: .DS.Padding.double,
                     bottom: .DS.Padding.half,
                     trailing: .DS.Padding.double)
