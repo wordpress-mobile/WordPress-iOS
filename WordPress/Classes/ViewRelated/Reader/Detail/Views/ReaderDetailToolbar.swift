@@ -147,9 +147,6 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     private func applyStyles() {
         backgroundColor = displaySetting == .standard ? .listForeground : displaySetting.color.background
         dividerView.backgroundColor = displaySetting == .standard ? .divider : displaySetting.color.border
-
-//        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
-//        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
     }
 
     // MARK: - Configuration
