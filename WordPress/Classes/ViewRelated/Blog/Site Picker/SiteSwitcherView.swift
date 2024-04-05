@@ -43,10 +43,7 @@ struct SiteSwitcherView: View {
             }
             .searchable(
                 text: $searchText,
-                isPresented: $isSearching,
-                placement: .navigationBarDrawer(
-                    displayMode: .always
-                )
+                isPresented: $isSearching
             )
         } else {
             NavigationView {
@@ -64,7 +61,6 @@ struct SiteSwitcherView: View {
     private var blogListView: some View {
         BlogListView(
             sites: sites,
-            currentDomain: SiteSwitcherReducer.selectedBlog()?.url,
             isEditing: $isEditing,
             isSearching: $isSearching,
             selectionCallback: selectionCallback

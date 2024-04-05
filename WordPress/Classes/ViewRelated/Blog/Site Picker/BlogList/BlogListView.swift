@@ -16,19 +16,17 @@ struct BlogListView: View {
     @Binding private var isSearching: Bool
     @State private var pinnedDomains: [String]
     @State private var recentDomains: [String]
+    @State private var pressedDomains: Set<String> = []
     private let sites: [Site]
-    private let currentDomain: String?
     private let selectionCallback: ((String) -> Void)
 
     init(
         sites: [Site],
-        currentDomain: String?,
         isEditing: Binding<Bool>,
         isSearching: Binding<Bool>,
         selectionCallback: @escaping ((String) -> Void)
     ) {
         self.sites = sites
-        self.currentDomain = currentDomain
         self.pinnedDomains = BlogListReducer.pinnedDomains().compactMap({ $0.domain })
         self.recentDomains = BlogListReducer.recentDomains()
         self._isEditing = isEditing
@@ -162,10 +160,13 @@ struct BlogListView: View {
             siteHStack(site: site)
         }
         .listRowSeparator(.hidden)
+        .buttonStyle(SelectedButtonStyle(onPress: { isPressed in
+            pressedDomains = pressedDomains.symmetricDifference([site.domain])
+        }))
         .listRowBackground(
-            currentDomain == site.domain
-            ? Color.DS.Background.secondary
-            : Color.DS.Background.primary
+            pressedDomains.contains(
+                site.domain
+            ) ? Color.DS.Background.secondary : Color.DS.Background.primary
         )
     }
 
@@ -237,5 +238,16 @@ private extension BlogListView {
             value: "All sites",
             comment: "All sites section title for site switcher."
         )
+    }
+}
+
+private struct SelectedButtonStyle: ButtonStyle {
+    var onPress: (Bool) -> Void
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .onChange(of: configuration.isPressed) { newValue in
+                onPress(newValue)
+            }
     }
 }

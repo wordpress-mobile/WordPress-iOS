@@ -49,6 +49,10 @@ struct AvatarsView: View {
         switch style {
         case let .single(primaryURL):
             avatar(url: primaryURL)
+                .overlay {
+                    Circle()
+                        .stroke(Color.DS.Foreground.primary.opacity(0.1), lineWidth: 0.5)
+                }
         case let .double(primaryURL, secondaryURL):
             doubleAvatarView(
                 primaryURL: primaryURL,
