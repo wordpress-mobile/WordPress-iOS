@@ -191,6 +191,12 @@ class ReaderWebView: WKWebView {
                 font: -apple-system-body !important;
                 font-family: \(displaySetting.font.cssString) !important;
             }
+
+            /* link styling */
+            a {
+                font-weight: \(displaySetting.color == .system ? "inherit" : "600");
+                text-decoration: underline;
+            }
         """
     }
 
@@ -218,18 +224,62 @@ class ReaderWebView: WKWebView {
         return """
             :root {
               --color-text: #\(displaySetting.color.foreground.color(for: trait).hexString() ?? "");
-              --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
-              --color-neutral-5: #\(UIColor(light: .muriel(color: .gray, .shade5),
-                            dark: .muriel(color: .gray, .shade80)).color(for: trait).hexString() ?? "");
-              --color-neutral-10: #\(UIColor(light: .muriel(color: .gray, .shade10),
-                            dark: .muriel(color: .gray, .shade30)).color(for: trait).hexString() ?? "");
-              --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
-              dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
-              --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
-              --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
-              --main-link-color: #\(UIColor.muriel(color: .init(name: .blue)).color(for: trait).hexString() ?? "");
-              --main-link-active-color: #\(UIColor.muriel(name: .blue, .shade30).color(for: trait).hexString() ?? "");
+              --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexString() ?? "");
+              --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexString() ?? "");
+              --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexString() ?? "");
+              --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexString() ?? "");
+              --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexString() ?? "");
+              --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexString() ?? "");
+              --main-link-color: #\(linkColor(for: trait).hexString() ?? "");
+              --main-link-active-color: #\(activeLinkColor(for: trait).hexString() ?? "");
             }
         """
+    }
+
+    /// Returns the requested neutral color based on the current color theme.
+    /// Note that the previous color values were preserved for the `.system` color theme.
+    ///
+    /// - Parameters:
+    ///   - shade: `MurielColorShade` enum.
+    ///   - trait: The trait collection for the color.
+    /// - Returns: `UIColor`
+    func neutralColor(shade: MurielColorShade, trait: UITraitCollection) -> UIColor {
+        let color: UIColor = {
+            switch shade {
+            case .shade0:
+                return .listForegroundUnread
+            case .shade5:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade5), dark: .muriel(color: .gray, .shade80))
+                }
+                return displaySetting.color.border
+            case .shade10:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade10), dark: .muriel(color: .gray, .shade30))
+                }
+                return displaySetting.color.border
+            case .shade40:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade40), dark: .muriel(color: .gray, .shade20))
+                }
+                return displaySetting.color.secondaryForeground
+            case .shade50:
+                return displaySetting.color.secondaryForeground
+            default:
+                return displaySetting.color.foreground
+            }
+        }()
+
+        return color.color(for: trait)
+    }
+
+    func linkColor(for trait: UITraitCollection) -> UIColor {
+        let color = displaySetting.color == .system ? UIColor.muriel(color: .init(name: .blue)) : displaySetting.color.foreground
+        return color.color(for: trait)
+    }
+
+    func activeLinkColor(for trait: UITraitCollection) -> UIColor {
+        let color = displaySetting.color == .system ? UIColor.muriel(name: .blue, .shade30) : displaySetting.color.secondaryForeground
+        return color.color(for: trait)
     }
 }
