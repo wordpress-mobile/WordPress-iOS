@@ -15,9 +15,15 @@ static NSString* const WPUserAgentKeyUserAgent = @"UserAgent";
         NSDictionary * registrationDomain = [[UserPersistentStoreFactory userDefaultsInstance] volatileDomainForName:NSRegistrationDomain];
         NSString *storeCurrentUA = [registrationDomain objectForKey:WPUserAgentKeyUserAgent];
         [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: @(0)}];
-
-        _defaultUserAgent = [self webViewUserAgent];
-
+        
+        if ([NSThread isMainThread]){
+            _defaultUserAgent = [WKWebView userAgent];
+        } else {
+            dispatch_sync(dispatch_get_main_queue(), ^{
+                _defaultUserAgent = [WKWebView userAgent];
+            });
+        }
+        
         if (storeCurrentUA) {
             [[UserPersistentStoreFactory userDefaultsInstance] registerDefaults:@{WPUserAgentKeyUserAgent: storeCurrentUA}];
         }
