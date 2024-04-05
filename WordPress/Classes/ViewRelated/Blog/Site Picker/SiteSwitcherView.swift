@@ -34,7 +34,7 @@ struct SiteSwitcherView: View {
     var body: some View {
         if #available(iOS 17.0, *) {
             NavigationStack {
-                VStack {
+                VStack(spacing: 0) {
                     blogListView
                     if !isSearching {
                         addSiteButtonVStack
@@ -47,7 +47,7 @@ struct SiteSwitcherView: View {
             )
         } else {
             NavigationView {
-                VStack {
+                VStack(spacing: 0) {
                     blogListView
                     if !isSearching {
                         addSiteButtonVStack
