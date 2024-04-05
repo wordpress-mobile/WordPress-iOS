@@ -179,6 +179,9 @@ FeaturedImageViewControllerDelegate>
     [super viewWillDisappear:animated];
 
     if (self.isStandalone) {
+        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+            return; // No longer needed
+        }
         if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
             // TODO: Implement it using a ViewModel or a child context to eliminate the risk of accidently saving the changes without uploading them
             [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
