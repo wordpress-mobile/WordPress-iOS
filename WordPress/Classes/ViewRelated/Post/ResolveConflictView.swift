@@ -8,8 +8,7 @@ struct ResolveConflictView: View {
     let repository: PostRepository
     var dismiss: (() -> Void)?
 
-    private var localVersion: PostVersion { .local(post) }
-    private var remoteVersion: PostVersion { .remote(remoteRevision) }
+    private var versions: [PostVersion] { [.local(post), .remote(remoteRevision)] }
 
     @State private var selectedVersion: PostVersion?
     @State private var isShowingError = false
@@ -18,11 +17,8 @@ struct ResolveConflictView: View {
         Form {
             Section {
                 Text(Strings.description)
-                PostVersionView(version: localVersion) {
-                    selectedVersion = $0.isSelected ? localVersion : nil
-                }
-                PostVersionView(version: remoteVersion) {
-                    selectedVersion = $0.isSelected ? remoteVersion : nil
+                ForEach(versions) { version in
+                    PostVersionView(version: version, selectedVersion: $selectedVersion)
                 }
             }
         }
@@ -85,9 +81,10 @@ struct ResolveConflictView: View {
 
 private struct PostVersionView: View {
     let version: PostVersion
-    let onVersionSelected: (PostVersionView) -> Void
 
-    @State var isSelected = false
+    @Binding var selectedVersion: PostVersion?
+
+    private var isSelected: Bool { selectedVersion == version }
 
     var body: some View {
         HStack(spacing: 12) {
@@ -106,8 +103,7 @@ private struct PostVersionView: View {
             }
             Spacer()
             Button {
-                isSelected.toggle()
-                onVersionSelected(self)
+                selectedVersion = isSelected ? nil : version
             } label: {
                 Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                     .resizable()
@@ -128,9 +124,13 @@ private struct PostVersionView: View {
     }
 }
 
-private enum PostVersion {
+private enum PostVersion: Hashable, Identifiable {
     case local(AbstractPost)
     case remote(RemotePost)
+
+    var id: Self {
+        return self
+    }
 
     var title: String {
         switch self {
