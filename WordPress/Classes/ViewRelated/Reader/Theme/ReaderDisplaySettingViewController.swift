@@ -168,7 +168,7 @@ extension ReaderDisplaySettingSelectionView {
             ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
                     Text(Strings.title)
-                        .font(Font(viewModel.displaySetting.font(with: .title1)))
+                        .font(Font(viewModel.displaySetting.font(with: .title1, weight: .semibold)))
                         .foregroundStyle(viewModel.foregroundColor)
 
                     Text(Strings.bodyText)
@@ -212,14 +212,18 @@ extension ReaderDisplaySettingSelectionView {
         var feedbackText: Text? {
             // TODO: Check feature flag for feedback collection.
 
-            let linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
+            var linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
+            if viewModel.displaySetting.color != .system {
+                // for color themes other than the default, we'll mark it bold.
+                linkString = "**\(linkString)**"
+            }
+
             let string = String(format: Strings.feedbackLineFormat, linkString)
             guard var attributedString = try? AttributedString(markdown: string) else {
                 return nil
             }
 
-            if viewModel.displaySetting.color != .system,
-               let rangeOfLink = attributedString.range(of: Strings.feedbackLinkCTA) {
+            if let rangeOfLink = attributedString.range(of: Strings.feedbackLinkCTA) {
                 attributedString[rangeOfLink].underlineStyle = .single
             }
 
