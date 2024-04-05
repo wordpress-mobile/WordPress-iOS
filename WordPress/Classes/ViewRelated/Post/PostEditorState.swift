@@ -8,6 +8,7 @@ import WordPressShared
 public enum PostEditorAction {
     /// - note: Deprecated (kahu-offline-mode)
     case save
+    /// - note: Deprecated (kahu-offline-mode)
     case saveAsDraft
     case schedule
     case publish
@@ -114,6 +115,7 @@ public enum PostEditorAction {
         }
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
@@ -260,7 +262,11 @@ public class PostEditorStateContext {
         case .draft where originalPostStatus == nil:
             return publishAction(userCanPublish: userCanPublish)
         case .draft:
-            return .update
+            if RemoteFeatureFlag.syncPublishing.enabled() {
+                return publishAction(userCanPublish: userCanPublish)
+            } else {
+                return .update
+            }
         case .pending:
             return .save
         case .publish where isNewOrDraft(originalPostStatus):
@@ -358,8 +364,7 @@ public class PostEditorStateContext {
         return action.publishActionAnalyticsStat
     }
 
-    /// Returns whether the secondary publish button should be displayed, or not
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var isSecondaryPublishButtonShown: Bool {
         guard hasContent else {
             return false
@@ -376,11 +381,14 @@ public class PostEditorStateContext {
             return false
         }
 
+        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+            return false
+        }
+
         return action.secondaryPublishAction != nil
     }
 
-    /// Returns the secondary publish action
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishButtonAction: PostEditorAction? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -389,8 +397,7 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction
     }
 
-    /// Returns the secondary publish button text
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishButtonText: String? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -399,7 +406,7 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction?.publishActionLabel
     }
 
-    /// Returns the WPAnalyticsStat enum to be tracked when this post is published with the secondary action
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishActionAnalyticsStat: WPAnalyticsStat? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -411,7 +418,19 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            switch action {
+            case .schedule, .publish, .submitForReview:
+                publishActionAllowed = hasContent
+            case .update:
+                publishActionAllowed = hasContent && hasChanges && !isBeingPublished
+            case .save, .saveAsDraft, .continueFromHomepageEditing:
+                assertionFailure("No longer used")
+                break
+            }
+        } else {
+            publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        }
     }
 }
 
