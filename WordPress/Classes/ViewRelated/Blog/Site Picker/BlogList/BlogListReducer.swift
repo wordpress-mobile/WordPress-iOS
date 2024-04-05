@@ -66,7 +66,6 @@ enum BlogListReducer {
         }
     }
 
-
     static func pinnedSites(
         allSites: [BlogListView.Site],
         pinnedDomains: [String]
