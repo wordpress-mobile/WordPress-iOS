@@ -385,9 +385,11 @@ extension WordPressAppDelegate {
 
     func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         DDLogInfo("\(self) \(#function)")
-
-        PushNotificationsManager.shared.handleNotification(userInfo as NSDictionary,
-                                                           completionHandler: completionHandler)
+        PushNotificationsManager.shared.application(
+            application,
+            didReceiveRemoteNotification: userInfo,
+            fetchCompletionHandler: completionHandler
+        )
     }
 
 }
