@@ -5,8 +5,6 @@ import UIKit
 struct SchedulingDatePickerConfiguration {
     var date: Date?
     var timeZone: TimeZone
-    var dateFormatter: DateFormatter
-    var dateTimeFormatter: DateFormatter
     var updated: (Date?) -> Void
 }
 
@@ -74,8 +72,6 @@ extension SchedulingDatePickerViewController {
         viewController.configuration = SchedulingDatePickerConfiguration(
             date: viewModel.date,
             timeZone: viewModel.timeZone,
-            dateFormatter: viewModel.dateFormatter,
-            dateTimeFormatter: viewModel.dateTimeFormatter,
             updated: onDateUpdated
         )
         return viewController

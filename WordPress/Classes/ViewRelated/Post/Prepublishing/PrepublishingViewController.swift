@@ -32,12 +32,15 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    private let original: AbstractPost
     let post: Post
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
     private let coordinator = PostCoordinator.shared
+
+    private var visibility: PostVisibility
+    private var password: String?
+    private var publishDate: Date?
 
     lazy var postBlogID: Int? = {
         coreDataStack.performQuery { [postObjectID = post.objectID] context in
@@ -85,8 +88,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
          completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
-        self.original = post.original() // Important to keep track of in case revision is deleted
         self.post = post
+        self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
+        self.password = post.password
+        self.publishDate = post.dateCreated
         self.identifiers = identifiers
         self.completion = completion
         self.coreDataStack = coreDataStack
@@ -241,8 +246,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
 
         if (isBeingDismissed || parent?.isBeingDismissed == true) && !didTapPublish {
-            if post.status == .publishPrivate, let originalStatus = post.original?.status {
-                post.status = originalStatus
+            if !RemoteFeatureFlag.syncPublishing.enabled() {
+                if post.status == .publishPrivate, let originalStatus = post.original?.status {
+                    post.status = originalStatus
+                }
             }
             getCompletion()?(.cancelled)
         }
@@ -401,10 +408,34 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Visibility
 
     private func configureVisibilityCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.titleForVisibility
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            cell.detailTextLabel?.text = visibility.localizedTitle
+        } else {
+            cell.detailTextLabel?.text = post.titleForVisibility
+        }
     }
 
     private func didTapVisibilityCell() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _didTapVisibilityCell()
+        }
+        let view = PostVisibilityPicker(visibility: visibility) { [weak self] selection in
+            guard let self else { return }
+            self.visibility = selection.visibility
+            if selection.visibility == .private {
+                self.publishDate = nil
+            }
+            self.password = selection.password
+            self.reloadData()
+            self.navigationController?.popViewController(animated: true)
+        }
+        let viewController = UIHostingController(rootView: view)
+        viewController.title = PostVisibilityPicker.title
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    /// - note: deprecated (kahu-offline-mode)
+    private func _didTapVisibilityCell() {
         let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
 
         visbilitySelectorViewController.completion = { [weak self] option in
@@ -427,12 +458,42 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _configureScheduleCell(cell)
+        }
+        cell.textLabel?.text = Strings.publishDate
+        if let publishDate {
+            let formatter = SiteDateFormatters.dateFormatter(for: post.blog.timeZone ?? TimeZone.current, dateStyle: .medium, timeStyle: .short)
+            cell.detailTextLabel?.text = formatter.string(from: publishDate)
+        } else {
+            cell.detailTextLabel?.text = Strings.immediately
+        }
+        visibility == .private ? cell.disable() : cell.enable()
+    }
+
+    func didTapSchedule(_ indexPath: IndexPath) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _didTapSchedule(indexPath)
+        }
+        let viewController = SchedulingDatePickerViewController()
+        viewController.configuration = SchedulingDatePickerConfiguration(date: publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
+            WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
+            self?.publishDate = date
+            self?.reloadData()
+            self?.updatePublishButtonLabel()
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    /// - note: deprecated (kahu-offline-mode)
+    func _configureScheduleCell(_ cell: WPTableViewCell) {
         cell.textLabel?.text = Strings.publishDate
         cell.detailTextLabel?.text = publishSettingsViewModel.detailString
         post.status == .publishPrivate ? cell.disable() : cell.enable()
     }
 
-    func didTapSchedule(_ indexPath: IndexPath) {
+    /// - note: deprecated (kahu-offline-mode)
+    func _didTapSchedule(_ indexPath: IndexPath) {
         let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.publishSettingsViewModel.setDate(date)
@@ -457,7 +518,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func updatePublishButtonLabel() {
-        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
+        let isScheduled: Bool
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            isScheduled = publishDate.map { $0 > .now } ?? false
+        } else {
+            isScheduled = post.isScheduled()
+        }
+        publishButtonViewModel.title = isScheduled ? Strings.schedule : Strings.publish
     }
 
     private func buttonPublishTapped() {
@@ -478,7 +545,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         setLoading(true)
         Task {
             do {
-                try await PostCoordinator.shared._publish(post)
+                try await PostCoordinator.shared._publish(post.original(), options: .init(
+                    visibility: visibility,
+                    password: password,
+                    publishDate: publishDate
+                ))
                 getCompletion()?(.published)
             } catch {
                 setLoading(false)
@@ -498,7 +569,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             case let control as UIControl:
                 control.isEnabled = !isLoading
             case let cell as UITableViewCell:
-                isLoading ? cell.disable() : cell.enable()
+                cell.textLabel?.textColor = isLoading ? .secondaryLabel : .label
             default:
                 subviews += view.subviews
             }
@@ -507,6 +578,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     // MARK: - Password Prompt
 
+    /// - note: deprecated (kahu-offline-mode)
     private func showPasswordAlert() {
         let passwordAlertController = PasswordAlertController(onSubmit: { [weak self] password in
             guard let password = password, !password.isEmpty else {
@@ -523,6 +595,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         passwordAlertController.show(from: self)
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     private func cancelPasswordProtectedPost() {
         post.status = .publish
         post.password = nil
@@ -594,6 +667,44 @@ private extension PrepublishingOption {
     }
 }
 
+extension PrepublishingViewController {
+    static func show(for revision: AbstractPost, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+        switch revision {
+        case let post as Post:
+            show(post: post, from: presentingViewController, completion: completion)
+        case let page as Page:
+            show(for: page, action: action, from: presentingViewController, completion: completion)
+        default:
+            assertionFailure("Unsupported post type")
+            break
+        }
+    }
+
+    private static func show(post: Post, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+        // End editing to avoid issues with accessibility
+        presentingViewController.view.endEditing(true)
+
+        let viewController = PrepublishingViewController(post: post, identifiers: PrepublishingIdentifier.defaultIdentifiers, completion: completion)
+        viewController.presentAsSheet(from: presentingViewController)
+    }
+
+    private static func show(for page: Page, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+        let title = action.publishingActionQuestionLabel
+        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
+        let publishTitle = action.publishActionLabel
+        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
+        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
+
+        alertController.addCancelActionWithTitle(keepEditingTitle) { _ in
+            completion(.cancelled)
+        }
+        alertController.addDefaultActionWithTitle(publishTitle) { _ in
+            completion(.confirmed)
+        }
+        presentingViewController.present(alertController, animated: true, completion: nil)
+    }
+}
+
 private enum Strings {
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
@@ -603,4 +714,5 @@ private enum Strings {
     static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
     static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
+    static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
 }
