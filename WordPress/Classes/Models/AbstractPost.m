@@ -81,6 +81,10 @@
 {
     self.date_created_gmt = localDate;
 
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        return;
+    }
+
     /*
      If the date is nil it means publish immediately so set the status to publish.
      If the date is in the future set the status to scheduled if current status is published.
@@ -136,10 +140,17 @@
         return self.revision;
     }
 
-    return [self _createRevision];
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
+    [post cloneFrom:self];
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
+    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
+    return post;
 }
 
 - (AbstractPost *)_createRevision {
+    NSParameterAssert(self.revision == nil);
+
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
     [post cloneFrom:self];
     post.isSyncNeeded = NO;

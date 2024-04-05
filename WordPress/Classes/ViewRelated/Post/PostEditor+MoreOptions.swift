@@ -130,7 +130,7 @@ extension PostEditor {
                     return
                 }
                 DispatchQueue.main.async {
-                    guard let original = self?.post.original,
+                    guard let original = self?.post.original(),
                         let clone = self?.post.clone(from: original) else {
                         return
                     }

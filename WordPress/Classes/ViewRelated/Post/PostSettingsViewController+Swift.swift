@@ -12,9 +12,12 @@ extension PostSettingsViewController {
         presentingViewController.present(navigation, animated: true)
     }
 
+    @objc var isDraftOrPending: Bool {
+        [Post.Status.draft, Post.Status.draft].contains(apost.original().status)
+    }
+
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
-
         configureDefaultNavigationBarAppearance()
 
         refreshNavigationBarButtons()
@@ -49,7 +52,9 @@ extension PostSettingsViewController {
     private func refreshNavigationBarButtons() {
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(buttonCancelTapped))
 
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(buttonSaveTapped))
+        let buttonSave = UIBarButtonItem(barButtonSystemItem: isStandalone ? .save : .done, target: self, action: #selector(buttonSaveTapped))
+        buttonSave.accessibilityLabel = "save"
+        navigationItem.rightBarButtonItem = buttonSave
     }
 
     @objc private func buttonCancelTapped() {

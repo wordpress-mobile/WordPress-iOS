@@ -282,7 +282,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         coordinator.setNeedsSync(for: revision1)
         await fulfillment(of: [expectation], timeout: 2)
 
-        let revision2 = post._createRevision()
+        let revision2 = revision1._createRevision()
         revision2.media = []
         revision2.content = "empty"
 
@@ -335,6 +335,88 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         // THEN post got deleted from the database
         XCTAssertNil(post.managedObjectContext)
     }
+
+    func testPauseSyncing() async throws {
+        // GIVEN a draft post that needs sync
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.authorID = 29043
+
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-b"
+        revision1.content = "content-a"
+
+        // GIVEN
+        let expectation = self.expectation(description: "request-sent")
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
+            expectation.fulfill()
+            let response = try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+            response.responseTime = 0.05
+            return response
+        }
+        coordinator.setNeedsSync(for: revision1)
+        await fulfillment(of: [expectation], timeout: 2)
+
+        // WHEN
+        await coordinator.pauseSyncing(for: post)
+
+        // THEN post got synced
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertNil(post.revision)
+    }
+
+    /// Scenario: publish a draft post that has unsynced revisions.
+    func testPublishDraftPostThatNeedsSyncing() async throws {
+        // GIVEN a draft post that needs sync
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.authorID = 29043
+
+        let revision1 = post._createRevision()
+        revision1.postTitle = "title-a"
+        revision1.content = "content-a"
+
+        // WHEN a slug was changes during the current editor session
+        let revision2 = revision1._createRevision()
+        revision2.wp_slug = "hello"
+
+        // GIVEN
+        let expectation = self.expectation(description: "request-sent")
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
+            expectation.fulfill()
+            let response = try! HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 201)
+            response.responseTime = 0.05
+            return response
+        }
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            XCTAssertEqual(request.getBodyParameters(), [
+                "slug": "hello",
+                "status": "publish"
+            ])
+            var post = WordPressComPost.mock
+            post.status = AbstractPost.Status.publish.rawValue
+            post.title = "title-a"
+            post.content = "content-a"
+            post.slug = "hello"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+        coordinator.setNeedsSync(for: revision1)
+        await fulfillment(of: [expectation], timeout: 2)
+
+        // WHEN
+        try await coordinator._publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+
+        // THEN the coordinator wait for the sync to complete and the post to
+        // be created and only then sends a parial update to get it published
+        XCTAssertEqual(post.postID, 974)
+        XCTAssertEqual(post.status, .publish)
+        XCTAssertEqual(post.postTitle, "title-a")
+        XCTAssertEqual(post.content, "content-a")
+        XCTAssertEqual(post.wp_slug, "hello")
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision1.managedObjectContext)
+        XCTAssertNil(revision2.managedObjectContext)
+    }
 }
 
 private let mediaResponse = """
@@ -364,10 +446,10 @@ private let mediaResponse = """
 """
 
 private extension URLRequest {
-    func getBodyParameters() -> [String: Any]? {
+    func getBodyParameters() -> [String: AnyHashable]? {
         guard let data = httpBodyStream?.read(),
               let object = try? JSONSerialization.jsonObject(with: data),
-              let parameters = object as? [String: Any] else {
+              let parameters = object as? [String: AnyHashable] else {
             return nil
         }
         return parameters

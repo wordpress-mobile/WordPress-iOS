@@ -599,6 +599,8 @@
 		0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */; };
 		0CF7EACF2B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
 		0CF7EAD02B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
+		0CFDEE802BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */; };
+		0CFDEE812BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */; };
 		0CFE9AC62AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */; };
 		0CFE9AC72AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */; };
 		0CFE9AC92AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC82AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift */; };
@@ -6321,6 +6323,7 @@
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
 		0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostServiceRemote+Concurrency.swift"; sourceTree = "<group>"; };
 		0CFD6C792A73E703003DD0A0 /* WordPress 152.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 152.xcdatamodel"; sourceTree = "<group>"; };
+		0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVisibilityPicker.swift; sourceTree = "<group>"; };
 		0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPostHelper+Actions.swift"; sourceTree = "<group>"; };
 		0CFE9AC82AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostSettingsViewController+Swift.swift"; sourceTree = "<group>"; };
 		131D0EE49695795ECEDAA446 /* Pods-WordPressTest.release-alpha.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WordPressTest.release-alpha.xcconfig"; path = "../Pods/Target Support Files/Pods-WordPressTest/Pods-WordPressTest.release-alpha.xcconfig"; sourceTree = "<group>"; };
@@ -15135,6 +15138,7 @@
 				0CFE9AC82AF52D3B00B8F659 /* PostSettingsViewController+Swift.swift */,
 				FFEECFFB2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift */,
 				83914BD32A2EA03A0017A588 /* PostSettingsViewController+JetpackSocial.swift */,
+				0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */,
 				8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
@@ -21964,6 +21968,7 @@
 				8B05D29123A9417E0063B9AA /* WPMediaEditor.swift in Sources */,
 				987E79CB261F8858000192B7 /* UserProfileSheetViewController.swift in Sources */,
 				D816C1EC20E0887C00C4D82F /* ApproveComment.swift in Sources */,
+				0CFDEE802BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */,
 				74AF4D741FE417D200E3EBFE /* MediaUploadOperation.swift in Sources */,
 				981C986E21B9D71400A7C0C8 /* PostingActivityCollectionViewCell.swift in Sources */,
 				FADC40A82A8BC2A200C19997 /* UIImage+Gravatar.swift in Sources */,
@@ -24522,6 +24527,7 @@
 				FABB21AA2602FC2C00C8785C /* WPStyleGuide+Activity.swift in Sources */,
 				77DFF08A2B68386B00FA561D /* BooleanUserDefaultsDebugView.swift in Sources */,
 				F4141EE42AE7152F000D2AAE /* AllDomainsListViewController+Strings.swift in Sources */,
+				0CFDEE812BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */,
 				FABB21AB2602FC2C00C8785C /* AllTimeWidgetStats.swift in Sources */,
 				F1A75B9C2732EF3700784A70 /* AboutScreenTracker.swift in Sources */,
 				FABB21AC2602FC2C00C8785C /* GutenbergFilesAppMediaSource.swift in Sources */,
