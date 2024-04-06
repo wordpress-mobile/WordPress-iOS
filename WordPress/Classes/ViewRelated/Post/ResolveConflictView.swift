@@ -11,7 +11,7 @@ struct ResolveConflictView: View {
     private var versions: [PostVersion] { [.local(post), .remote(remoteRevision)] }
 
     @State private var selectedVersion: PostVersion?
-    @State private var isShowingError = false
+    @State private var isSaving = false
 
     var body: some View {
         Form {
@@ -28,25 +28,27 @@ struct ResolveConflictView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(Strings.Navigation.cancel) {
                     dismiss?()
+                }.disabled(isSaving)
+            }
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                if isSaving {
+                    ProgressView()
+                } else {
+                    Button(Strings.Navigation.save) {
+                        guard let selectedVersion else {
+                            dismiss?()
+                            return
+                        }
+                        saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
+                    }.disabled(selectedVersion == nil)
                 }
             }
-            ToolbarItem(placement: .navigationBarTrailing) {
-                Button(Strings.Navigation.save) {
-                    guard let selectedVersion else {
-                        dismiss?()
-                        return
-                    }
-                    saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
-                }.disabled(selectedVersion == nil)
-            }
-        }
-        .alert("Error", isPresented: $isShowingError) {
-            Button("OK", role: .cancel) { }
         }
     }
 
     @MainActor
     private func saveSelectedVersion(_ version: PostVersion, post: AbstractPost, remoteRevision: RemotePost) {
+        isSaving = true
         switch version {
         case .local:
             handleLocalVersionSelected(for: post)
@@ -62,8 +64,9 @@ struct ResolveConflictView: View {
                 PostCoordinator.shared.notifyConflictResolved(for: post)
                 dismiss?()
             } catch {
-                isShowingError = true
+                DDLogError("Error resolving conflict picking local version: \(error)")
             }
+            isSaving = false
         }
     }
 
@@ -74,8 +77,9 @@ struct ResolveConflictView: View {
             PostCoordinator.shared.notifyConflictResolved(for: post)
             dismiss?()
         } catch {
-            isShowingError = true
+            DDLogError("Error resolving conflict picking remote version: \(error)")
         }
+        isSaving = false
     }
 }
 
@@ -110,15 +114,6 @@ private struct PostVersionView: View {
                     .scaledToFit()
                     .frame(width: 24)
                     .foregroundColor(isSelected ? .accentColor : .secondary)
-            }
-            Button {
-                // Do something
-            } label: {
-                Image(systemName: "ellipsis")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 16)
-                    .foregroundColor(.secondary)
             }
         }
     }
