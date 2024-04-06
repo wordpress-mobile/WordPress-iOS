@@ -24,24 +24,29 @@ struct ResolveConflictView: View {
         }
         .navigationTitle(Strings.Navigation.title)
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            ToolbarItem(placement: .navigationBarLeading) {
-                Button(Strings.Navigation.cancel) {
-                    dismiss?()
-                }.disabled(isSaving)
-            }
-            ToolbarItemGroup(placement: .navigationBarTrailing) {
-                if isSaving {
-                    ProgressView()
-                } else {
-                    Button(Strings.Navigation.save) {
-                        guard let selectedVersion else {
-                            dismiss?()
-                            return
-                        }
+        .toolbar { toolbarContent }
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button(Strings.Navigation.cancel) {
+                dismiss?()
+            }.disabled(isSaving)
+        }
+        ToolbarItemGroup(placement: .navigationBarTrailing) {
+            if isSaving {
+                ProgressView()
+            } else {
+                Button(Strings.Navigation.save) {
+                    guard let selectedVersion else {
+                        dismiss?()
+                        return
+                    }
+                    Task { @MainActor in
                         saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
-                    }.disabled(selectedVersion == nil)
-                }
+                    }
+                }.disabled(selectedVersion == nil)
             }
         }
     }
