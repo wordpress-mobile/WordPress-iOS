@@ -25,6 +25,7 @@ struct ResolveConflictView: View {
         .navigationTitle(Strings.Navigation.title)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
+        .interactiveDismissDisabled()
     }
 
     @ToolbarContentBuilder
