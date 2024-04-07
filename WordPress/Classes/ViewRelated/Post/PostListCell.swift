@@ -26,6 +26,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
     // MARK: - Properties
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+    private var viewModel: PostListItemViewModel?
 
     // MARK: - PostSearchResultCell
 
@@ -51,6 +52,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         super.prepareForReuse()
 
         imageLoader.prepareForReuse()
+        viewModel?.didUpdateSyncState = nil
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
@@ -69,9 +71,22 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
 
-        contentView.isUserInteractionEnabled = viewModel.isEnabled
-
         accessibilityLabel = viewModel.accessibilityLabel
+
+        configure(with: viewModel.syncStateViewModel)
+        viewModel.didUpdateSyncState = { [weak self] in
+            self?.headerView.configure(with: $0)
+        }
+
+        self.viewModel = viewModel // Important to retain it
+    }
+
+    private func configure(with viewModel: PostSyncStateViewModel) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        contentView.isUserInteractionEnabled = viewModel.isEditable
+        headerView.configure(with: viewModel)
     }
 
     // MARK: - Setup

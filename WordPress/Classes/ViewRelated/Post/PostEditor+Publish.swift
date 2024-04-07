@@ -801,7 +801,7 @@ private enum EditorError: Int {
 }
 
 struct PostEditorDebouncerConstants {
-    static let autoSavingDelay = Double(0.5)
+    static let autoSavingDelay =  RemoteFeatureFlag.syncPublishing.enabled() ? Double(7.0) : Double(0.5)
 }
 
 private enum Strings {

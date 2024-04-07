@@ -71,7 +71,9 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             self?.handleRefreshNoResultsViewController($0)
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
+        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {

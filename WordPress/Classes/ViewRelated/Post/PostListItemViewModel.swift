@@ -5,21 +5,44 @@ final class PostListItemViewModel {
     let content: NSAttributedString
     let imageURL: URL?
     let badges: NSAttributedString
-    let syncStateViewModel: PostSyncStateViewModel
+    private(set) var syncStateViewModel: PostSyncStateViewModel
     private let statusViewModel: PostCardStatusViewModel
 
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
-    var isEnabled: Bool { syncStateViewModel.isEditable }
 
-    init(post: Post, shouldHideAuthor: Bool = false) {
+    var didUpdateSyncState: ((PostSyncStateViewModel) -> Void)?
+
+    init(post: Post, shouldHideAuthor: Bool = false, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
-        self.imageURL = post.featuredImageURL
+
+        let revision: Post
+        if isSyncPublishingEnabled {
+            revision = (post.isUnsavedRevision ? post.original : post) as! Post
+        } else {
+            revision = post
+        }
+
+        self.imageURL = revision.featuredImageURL
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.syncStateViewModel = PostSyncStateViewModel(post: post)
-        self.badges = makeBadgesString(for: post, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
-        self.content = makeContentString(for: post, syncStateViewModel: syncStateViewModel)
+        self.badges = makeBadgesString(for: revision, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
+        self.content = makeContentString(for: revision, syncStateViewModel: syncStateViewModel)
+
+        if isSyncPublishingEnabled {
+            NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
+        }
+    }
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return
+        }
+        if updatedObjects.contains(post.original()) {
+            syncStateViewModel = PostSyncStateViewModel(post: post)
+            didUpdateSyncState?(syncStateViewModel)
+        }
     }
 }
 

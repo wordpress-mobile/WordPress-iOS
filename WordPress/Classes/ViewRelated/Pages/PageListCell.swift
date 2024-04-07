@@ -90,6 +90,8 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
             return
         }
 
+        contentView.isUserInteractionEnabled = viewModel.isEditable
+
         titleLabel.alpha = viewModel.isEditable ? 1 : 0.5
         contentStackView.alpha = viewModel.isEditable ? 1 : 0.5
 
