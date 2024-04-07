@@ -329,7 +329,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            PostCoordinator.shared.scheduleSync()
+            PostCoordinator.shared.initializeSync()
         }
 
         setupWordPressExtensions()

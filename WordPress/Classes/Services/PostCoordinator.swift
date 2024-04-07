@@ -320,7 +320,7 @@ class PostCoordinator: NSObject {
     /// Schedules sync for all the posts with revisions that need syncing.
     ///
     /// - note: It should typically only be called once during the app launch.
-    func scheduleSync() {
+    func initializeSync() {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
         request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
         do {

@@ -417,6 +417,46 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         XCTAssertNil(revision1.managedObjectContext)
         XCTAssertNil(revision2.managedObjectContext)
     }
+
+    /// Scenario: app launches and has unsynced revisions.
+    func testInitializeSync() async throws {
+        // GIVEN a draft post that needs sync
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.content = "content-a"
+
+        let revision1 = post._createRevision()
+        revision1.content = "content-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.content = "content-c"
+        revision2.isSyncNeeded = true
+
+        let revision3 = revision2._createRevision()
+        revision3.content = "content-d"
+        revision3.isSyncNeeded = false
+
+        try mainContext.save()
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            XCTAssertEqual(request.getBodyParameters()?["content"] as? String, "content-c")
+            var post = WordPressComPost.mock
+            post.content = "content-c"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        coordinator.initializeSync()
+        try await coordinator.waitForSync(post, to: revision2)
+
+        // THEN
+        XCTAssertEqual(post.content, "content-c")
+        XCTAssertEqual(post.revision, revision3)
+    }
 }
 
 private let mediaResponse = """
