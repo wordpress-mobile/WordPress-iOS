@@ -1095,7 +1095,6 @@ private extension AztecPostViewController {
         }
         self.post = post
         createRevisionOfPost()
-        refreshInterface()
     }
 
     /// Presents an alert controller, allowing the user to insert a link to either:

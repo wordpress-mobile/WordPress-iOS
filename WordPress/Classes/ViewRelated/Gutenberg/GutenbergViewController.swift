@@ -580,7 +580,6 @@ extension GutenbergViewController {
         }
         self.post = post
         createRevisionOfPost()
-        refreshInterface()
     }
 }
 
