@@ -184,7 +184,6 @@ extension AbstractPost {
             current = next
         }
         return revisions
-
     }
 
     // TODO: Replace with a new flag
@@ -223,6 +222,13 @@ extension AbstractPost {
             willChangeValue(forKey: "revision")
             setPrimitiveValue(tail, forKey: "revision")
             didChangeValue(forKey: "revision")
+        }
+    }
+
+    func deleteAllRevisions() {
+        assert(isOriginal())
+        for revision in allRevisions {
+            revision.deleteRevision()
         }
     }
 }

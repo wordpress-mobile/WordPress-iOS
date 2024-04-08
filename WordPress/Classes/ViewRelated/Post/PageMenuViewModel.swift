@@ -117,6 +117,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: [])
         }
 
-        return AbstractPostButtonSection(buttons: [.trash])
+        let action: AbstractPostButton = page.original().status == .trash ? .delete : .trash
+        return AbstractPostButtonSection(buttons: [action])
     }
 }

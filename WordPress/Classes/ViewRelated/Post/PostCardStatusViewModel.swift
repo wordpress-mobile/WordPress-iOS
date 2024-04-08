@@ -222,7 +222,8 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
-        return AbstractPostButtonSection(buttons: [.trash])
+        let action: AbstractPostButton = post.original().status == .trash ? .delete : .trash
+        return AbstractPostButtonSection(buttons: [action])
     }
 
     private var canCancelAutoUpload: Bool {

@@ -193,7 +193,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.moveToDraft],
-            [.trash]
+            [.delete]
         ]
         expect(buttons).to(equal(expectedButtons))
     }

@@ -215,11 +215,16 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Patches the post but keeps the local revision if any.
+    /// Patches the post.
+    ///
+    /// - warning: Can only be used on posts with no unsynced revisions.
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+        assert(post.isOriginal())
+        assert(post.revision == nil, "Can only be used on posts with no unsynced changes")
+
         let post = post.original()
         do {
             try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
@@ -991,7 +996,60 @@ class PostCoordinator: NSObject {
         ])
     }
 
-    // MARK: - Trash/Delete
+    // MARK: - Trash/Restore/Delete
+
+    /// Moves the given post to trash.
+    @MainActor
+    func trash(_ post: AbstractPost) async throws {
+        assert(post.isOriginal())
+
+        setUpdating(true, for: post)
+        defer { setUpdating(false, for: post) }
+
+        await pauseSyncing(for: post)
+        defer { resumeSyncing(for: post) }
+
+        let context = coreDataStack.mainContext
+
+        guard post.hasRemote() else {
+            // Delete all the local data
+            context.deleteObject(post)
+            ContextManager.shared.saveContextAndWait(context)
+            return
+        }
+
+        // Delete local revisions
+        post.deleteAllRevisions()
+        ContextManager.shared.saveContextAndWait(context)
+
+        var changes = RemotePostUpdateParameters()
+        changes.status = Post.Status.trash.rawValue
+        try await _update(post, changes: changes)
+
+        SearchManager.shared.deleteSearchableItem(post)
+    }
+
+    @MainActor
+    func _delete(_ post: AbstractPost) async throws {
+        assert(post.isOriginal())
+
+        setUpdating(true, for: post)
+        defer { setUpdating(false, for: post) }
+
+        do {
+            try await PostRepository(coreDataStack: coreDataStack)._delete(post)
+
+            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            SearchManager.shared.deleteSearchableItem(post)
+        } catch {
+            if let error = error as? PostServiceRemoteUpdatePostError, case .notFound = error {
+                handlePermanentlyDeleted(post)
+            } else {
+                handleError(error, for: post)
+            }
+            throw error
+        }
+    }
 
     func isDeleting(_ post: AbstractPost) -> Bool {
         pendingDeletionPostIDs.contains(post.objectID)

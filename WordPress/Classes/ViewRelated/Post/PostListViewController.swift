@@ -308,6 +308,13 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return trashPost(post, completion: completion)
+        }
+        return super._trash(post, completion: completion)
+    }
+
+    private func trashPost(_ post: AbstractPost, completion: @escaping () -> Void) {
         if post.status == .draft ||
             post.status == .scheduled {
             deletePost(post)

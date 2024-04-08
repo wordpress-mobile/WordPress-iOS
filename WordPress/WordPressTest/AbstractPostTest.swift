@@ -74,4 +74,19 @@ class AbstractPostTest: CoreDataTestCase {
         XCTAssertTrue(revision2.isDeleted)
         XCTAssertFalse(revision3.isDeleted)
     }
+
+    func testDeleteRevisionDeletsAll() {
+        // GIVEN a post with two revisions
+        let post = PostBuilder(mainContext).build()
+        let revision1 = post._createRevision()
+        let revision2 = revision1._createRevision()
+
+        // WHEN
+        post.deleteAllRevisions()
+
+        // THEN both revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertTrue(revision1.isDeleted)
+        XCTAssertTrue(revision2.isDeleted)
+    }
 }

@@ -96,6 +96,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
+        case .delete: return UIImage(systemName: "trash")
         case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
@@ -111,7 +112,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var attributes: UIMenuElement.Attributes? {
         switch self {
-        case .trash:
+        case .trash, .delete:
             return [UIMenuElement.Attributes.destructive]
         default:
             return nil
@@ -126,7 +127,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
         case .moveToDraft: return Strings.draft
-        case .trash: return post.status == .trash ? Strings.delete : Strings.trash
+        case .trash: return Strings.trash
+        case .delete: return Strings.delete
         case .cancelAutoUpload: return Strings.cancelAutoUpload
         case .share: return Strings.share
         case .blaze: return Strings.blaze
@@ -156,6 +158,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.draft(post)
         case .trash:
             delegate.trash(post)
+        case .delete:
+            delegate.delete(post)
         case .cancelAutoUpload:
             delegate.cancelAutoUpload(post)
         case .share:

@@ -642,6 +642,47 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
+    func _trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        let post = post.original()
+
+        func performAction() {
+            Task {
+                try? await PostCoordinator.shared.trash(post)
+            }
+        }
+
+        guard !(post.status == .draft || post.status == .pending) || post.revision != nil else {
+            return performAction()
+        }
+
+        let alert = UIAlertController(title: Strings.Trash.actionTitle, message: Strings.Trash.message(for: post.latest()), preferredStyle: .alert)
+        alert.addCancelActionWithTitle(Strings.cancelText) { _ in
+            completion()
+        }
+        alert.addDestructiveActionWithTitle(Strings.Trash.actionTitle) { _ in
+            performAction()
+            completion()
+        }
+        alert.presentFromRootViewController()
+    }
+
+    func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
+        let post = post.original()
+
+        let alert = UIAlertController(title: Strings.Delete.actionTitle, message: Strings.Delete.message(for: post.latest()), preferredStyle: .alert)
+        alert.addCancelActionWithTitle(Strings.cancelText) { _ in
+            completion()
+        }
+        alert.addDestructiveActionWithTitle(Strings.Delete.actionTitle) { _ in
+            completion()
+            Task {
+                try? await PostCoordinator.shared._delete(post)
+            }
+        }
+        alert.presentFromRootViewController()
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
     func deletePost(_ post: AbstractPost) {
         Task {
             await PostCoordinator.shared.delete(post)
@@ -753,5 +794,27 @@ extension AbstractPostListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
         createPost()
+    }
+}
+
+private enum Strings {
+    static let cancelText = NSLocalizedString("postList.cancel", value: "Cancel", comment: "Cancels an Action")
+
+    enum Trash {
+        static let actionTitle = NSLocalizedString("postList.trash.actionTitle", value: "Move to Trash", comment: "Trash option in the trash post or page confirmation alert.")
+
+        static func message(for post: AbstractPost) -> String {
+            let format = NSLocalizedString("postList.trash.alertMessage", value: "Are you sure you want to trash \"%@\"? Any changes that weren't sent previously to the server will be lost.", comment: "Message of the trash post or page confirmation alert.")
+            return String(format: format, post.titleForDisplay() ?? "–")
+        }
+    }
+
+    enum Delete {
+        static let actionTitle = NSLocalizedString("postList.deletePermanently.actionTitle", value: "Delete Permanently", comment: "Delete option in the confirmation alert when deleting a page from the trash.")
+
+        static func message(for post: AbstractPost) -> String {
+            let format = NSLocalizedString("postList.deletePermanently.alertMessage", value: "Are you sure you want to permanently delete \"%@\"?", comment: "Message of the confirmation alert when deleting a page from the trash.")
+            return String(format: format, post.titleForDisplay() ?? "–")
+        }
     }
 }

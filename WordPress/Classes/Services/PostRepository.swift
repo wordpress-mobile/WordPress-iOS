@@ -9,11 +9,14 @@ final class PostRepository {
 
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
+    private let isSyncPublishingEnabled: Bool
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
-         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory()) {
+         remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     /// Sync a specific post from the API
@@ -237,6 +240,22 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Permanently delete the given post.
+    @MainActor
+    func _delete(_ post: AbstractPost) async throws {
+        assert(post.isOriginal())
+
+        guard let postID = post.postID, postID.intValue > 0 else {
+            assertionFailure("Trying to patch a non-existent post")
+            return
+        }
+        try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
+
+        let context = coreDataStack.mainContext
+        context.deleteObject(post)
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
     /// Permanently delete the given post from local database and the post's WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
@@ -283,6 +302,8 @@ final class PostRepository {
     /// Move the given post to the trash bin. The post will not be deleted from local database, unless it's delete on its WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
+    ///
+    /// - warning: deprecated (kahu-offline-mode)
     func trash<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>) async throws {
         // Trash the original post instead if presents
         let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
@@ -345,62 +366,6 @@ final class PostRepository {
             } else {
                 context.deleteObject(post)
             }
-        }
-    }
-
-    /// Move the given post out of the trash bin.
-    ///
-    /// - Parameters:
-    ///   - postID: Object ID of the given post
-    ///   - status: The post's original status before it's moved to the trash bin.
-    func restore<P: AbstractPost>(_ postID: TaggedManagedObjectID<P>, to status: BasePost.Status) async throws {
-        // Restore the original post instead if presents
-        let original: TaggedManagedObjectID<AbstractPost>? = try await coreDataStack.performQuery { context in
-            let post = try context.existingObject(with: postID)
-            if let original = post.original {
-                return TaggedManagedObjectID(original)
-            }
-            return nil
-        }
-        if let original {
-            DDLogInfo("Trash the original post object instead")
-            try await restore(original, to: status)
-            return
-        }
-
-        // Update local database
-        let result: (PostServiceRemote, RemotePost)? = try await coreDataStack.performAndSave { [remoteFactory] context in
-            let post = try context.existingObject(with: postID)
-            post.status = status
-
-            if let remote = remoteFactory.forBlog(post.blog), !post.isRevision() && (post.postID?.int64Value ?? 0) > 0 {
-                return (remote, PostHelper.remotePost(with: post))
-            }
-            return nil
-        }
-
-        // Call WordPress API if needed
-        guard let (remote, remotePost) = result else { return }
-
-        let updatedRemotePost: RemotePost
-        do {
-            updatedRemotePost = try await withCheckedThrowingContinuation { continuation in
-                remote.restore(remotePost, success: { continuation.resume(returning: $0!) }, failure: { continuation.resume(throwing: $0!)} )
-            }
-        } catch {
-            DDLogError("Failed to restore post: \(error)")
-
-            // Put the post back in the trash bin.
-            try? await coreDataStack.performAndSave { context in
-                let post = try context.existingObject(with: postID)
-                post.status = .trash
-            }
-            throw error
-        }
-
-        try? await coreDataStack.performAndSave { context in
-            let post = try context.existingObject(with: postID)
-            PostHelper.update(post, with: updatedRemotePost, in: context)
         }
     }
 }
@@ -625,7 +590,7 @@ extension PostRepository {
                     // doesn't have local edits
                     NSPredicate(format: "original = NULL AND revision = NULL"),
                     // doesn't have local status changes
-                    NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
+                    self.isSyncPublishingEnabled ? nil : NSPredicate(format: "remoteStatusNumber = %@", NSNumber(value: AbstractPostRemoteStatus.sync.rawValue)),
                     // is not included in the fetched page lists (i.e. it has been deleted from the site)
                     NSPredicate(format: "NOT (SELF IN %@)", allPages.map { $0.objectID }),
                     // we only need to deal with pages that match the filters passed to this function.
