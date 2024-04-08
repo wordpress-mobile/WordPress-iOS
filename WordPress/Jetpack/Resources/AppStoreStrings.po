@@ -81,10 +81,11 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v24.5-whats-new"
+msgctxt "v24.6-whats-new"
 msgid ""
-"We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.\n"
-"We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.\n"
+"We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.\n"
+"While we were at it, we solved the problems causing multiple error messages on the Insights screen. No drama, just data.\n"
+"You should also see the most current version of your site in the reader—not an older, cached version. Newer is always better.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

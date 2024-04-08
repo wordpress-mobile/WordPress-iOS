@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-21 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-04 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "検索履歴を削除";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "選択した色を消去";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "消去中...";
@@ -10741,8 +10744,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "このブログをすでに購読済みです。";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "編集";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "管理";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "ブログごとに表示";
@@ -10772,10 +10775,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "タグなし";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "新しいタグを登録しています…";
+"reader.filterSheet.select.tags.following" = "新しいタグをフォロー中...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "おすすめタグ";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "タグをフォローします。";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "ブログを取得しています…";
@@ -10865,10 +10871,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "サブスクリプションに移動";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "特定のブログを購読することでそのブログの投稿を購読できます。";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "ブログを追加";
@@ -10985,6 +10987,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "ブログの購読を中止";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "デフォルト";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "イヴニング";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "セピア";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "ソフト";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "完了";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "サイズ";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "閲覧は個人的なものです。ご自身で管理しましょう。 ご自身に合ったスタイルを選択します。";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "この機能についてフィードバックを送信";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "この機能は現在も開発中です。";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "イヌ";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "キツネ";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "デザイン";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "投稿設定";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "閲覧の設定を選択";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "ブログ管理";
 
@@ -10997,20 +11044,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "ブログ";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "新しいタグを登録しています…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "タグをフォローする";
+"reader.select.interests.follow.title" = "タグをフォロー";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "新しいタグをフォロー中...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "購読する新しいタグはありません";
+"reader.select.tags.no.results.follow.title" = "フォローする新しいタグはありません";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "タグを選択する";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "タグを購読します。";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "フォロー";
@@ -11042,8 +11086,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "その他のタグを見る";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "フォロー";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "フォロー中";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "%@ から購読を中止";
+"reader.tags.unfollow.accessibility.label" = "%@ のフォローを解除";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "フォロー解除";
@@ -11797,6 +11847,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "は、いずれ利用できなくなります。";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "新規サイトを作成しますか ?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ヘルプ, サポート, よくある質問, 質問, デバッグ, ログ, ヘルプセンター, お問い合わせ";

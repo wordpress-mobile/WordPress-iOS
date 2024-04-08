@@ -3,6 +3,10 @@ import WordPressShared
 
 struct ReaderDisplaySetting: Codable, Equatable {
 
+    static var customizationEnabled: Bool {
+        FeatureFlag.readerCustomization.enabled
+    }
+
     // MARK: Properties
 
     // The default display setting.
@@ -12,29 +16,50 @@ struct ReaderDisplaySetting: Codable, Equatable {
     var font: Font
     var size: Size
 
+    var hasLightBackground: Bool {
+        color.background.brighterThan(0.5)
+    }
+
     // MARK: Methods
 
+    /// Generates a `UIFont` with customizable parameters.
+    ///
+    /// - Parameters:
+    ///   - font: The `ReaderDisplaySetting.Font` type.
+    ///   - size: The `ReaderDisplaySetting.Size`. Defaults to `.normal`.
+    ///   - textStyle: The preferred text style.
+    ///   - weight: The preferred weight. Defaults to nil, which falls back to the inherent weight from the `UITextStyle`.
+    /// - Returns: A `UIFont` instance with the specified configuration.
     static func font(with font: Font,
                      size: Size = .normal,
                      textStyle: UIFont.TextStyle,
-                     weight: UIFont.Weight = .regular) -> UIFont {
-        let scale = size.scale
-        let metrics = UIFontMetrics(forTextStyle: textStyle)
-        let descriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
-        let pointSize = descriptor.pointSize * scale
+                     weight: UIFont.Weight? = nil) -> UIFont {
+        let descriptor: UIFontDescriptor = {
+            let defaultDescriptor = UIFontDescriptor.preferredFontDescriptor(withTextStyle: textStyle)
 
-        let uiFont = {
-            switch font {
-            case .serif:
-                return WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight).withSize(pointSize)
-            case .mono:
-                return .monospacedSystemFont(ofSize: pointSize, weight: weight)
-            default:
-                return .systemFont(ofSize: pointSize, weight: weight)
+            /// If weight is not specified, do not override any attributes.
+            /// Some default styles have preferred weight (e.g., `headline`), so we should preserve it.
+            guard let weight else {
+                return defaultDescriptor
             }
+
+            var traits = (defaultDescriptor.fontAttributes[.traits] as? [UIFontDescriptor.TraitKey: Any]) ?? [:]
+            traits[UIFontDescriptor.TraitKey.weight] = weight
+
+            return defaultDescriptor.addingAttributes([.traits: traits])
         }()
 
-        return metrics.scaledFont(for: uiFont)
+        let pointSize = descriptor.pointSize * size.scale
+
+        switch font {
+        case .serif:
+            return WPStyleGuide.serifFontForTextStyle(textStyle, fontWeight: weight ?? .regular).withSize(pointSize)
+        case .mono:
+            let descriptorWithDesign = descriptor.withDesign(.monospaced) ?? descriptor
+            return UIFont(descriptor: descriptorWithDesign, size: descriptorWithDesign.pointSize * size.scale)
+        default:
+            return UIFont(descriptor: descriptor, size: pointSize)
+        }
     }
 
     func font(with textStyle: UIFont.TextStyle, weight: UIFont.Weight = .regular) -> UIFont {
@@ -130,6 +155,15 @@ struct ReaderDisplaySetting: Codable, Equatable {
             }
         }
 
+        var border: UIColor {
+            switch self {
+            case .system:
+                return .separator
+            default:
+                return foreground.withAlphaComponent(0.3)
+            }
+        }
+
         /// Whether the color adjusts between light and dark mode.
         var adaptsToInterfaceStyle: Bool {
             switch self {
@@ -141,7 +175,6 @@ struct ReaderDisplaySetting: Codable, Equatable {
         }
     }
 
-    // TODO: Need to import the fonts
     enum Font: String, Codable, CaseIterable {
         case sans
         case serif
@@ -200,10 +233,10 @@ class ReaderDisplaySettingStore: NSObject {
 
     var setting: ReaderDisplaySetting {
         get {
-            return FeatureFlag.readerCustomization.enabled ? _setting : .standard
+            return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
         set {
-            guard FeatureFlag.readerCustomization.enabled else {
+            guard ReaderDisplaySetting.customizationEnabled else {
                 return
             }
             _setting = newValue

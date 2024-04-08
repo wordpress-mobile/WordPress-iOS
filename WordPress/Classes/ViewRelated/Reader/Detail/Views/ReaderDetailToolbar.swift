@@ -30,6 +30,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
     weak var delegate: ReaderDetailToolbarDelegate? = nil
 
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            applyStyles()
+            configureActionButtons()
+        }
+    }
+
     private var likeButtonTitle: String {
         guard let post else {
             return likeLabel(count: likeCount)
@@ -138,11 +145,11 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     // MARK: - Styles
 
     private func applyStyles() {
-        backgroundColor = .listForeground
-        dividerView.backgroundColor = .divider
+        backgroundColor = displaySetting == .standard ? .listForeground : displaySetting.color.background
+        dividerView.backgroundColor = displaySetting == .standard ? .divider : displaySetting.color.border
 
-        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
-        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
+//        WPStyleGuide.applyReaderCardActionButtonStyle(commentButton)
+//        WPStyleGuide.applyReaderCardActionButtonStyle(likeButton)
     }
 
     // MARK: - Configuration
@@ -186,12 +193,12 @@ class ReaderDetailToolbar: UIView, NibLoadable {
     }
 
     private func configureActionButtonStyle(_ button: UIButton) {
-        let disabledColor = UIColor(light: .muriel(color: .gray, .shade10),
-                                    dark: .textQuaternary)
+        let standardDisabledColor = UIColor(light: .muriel(color: .gray, .shade10), dark: .textQuaternary)
+        let disabledColor = displaySetting == .standard ? standardDisabledColor : displaySetting.color.border
 
         WPStyleGuide.applyReaderActionButtonStyle(button,
-                                                  titleColor: .textSubtle,
-                                                  imageColor: .textSubtle,
+                                                  titleColor: displaySetting == .standard ? .textSubtle : displaySetting.color.secondaryForeground,
+                                                  imageColor: displaySetting == .standard ? .textSubtle : displaySetting.color.secondaryForeground,
                                                   disabledColor: disabledColor)
 
         var configuration = UIButton.Configuration.plain()
@@ -203,9 +210,13 @@ class ReaderDetailToolbar: UIView, NibLoadable {
 
         /// Override the button's title label font.
         /// When the button's configuration exists, updating the font via `titleLabel` no longer works somehow.
-        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { [weak self] incoming in
+            guard let self else {
+                return incoming
+            }
+
             var outgoing = incoming
-            outgoing.font = WPStyleGuide.fontForTextStyle(.footnote)
+            outgoing.font = self.displaySetting == .standard ? WPStyleGuide.fontForTextStyle(.footnote) : self.displaySetting.font(with: .footnote)
             return outgoing
         }
 

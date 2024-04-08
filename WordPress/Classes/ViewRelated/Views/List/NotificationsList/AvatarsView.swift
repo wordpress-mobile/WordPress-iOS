@@ -1,4 +1,5 @@
 import SwiftUI
+import Gravatar
 import DesignSystem
 import WordPressUI
 
@@ -64,9 +65,9 @@ struct AvatarsView: View {
 
     private func avatar(url: URL?) -> some View {
         let processedURL: URL?
-        if let url, let gravatar = Gravatar(url) {
-            let size = Int(ceil(style.diameter * UIScreen.main.scale))
-            processedURL = gravatar.urlWithSize(size)
+        let size = Int(ceil(style.diameter * UIScreen.main.scale))
+        if let url, let gravatar = AvatarURL(url: url, options: .init(preferredSize: .pixels(size))) {
+            processedURL = gravatar.url
         } else {
             processedURL = url
         }
