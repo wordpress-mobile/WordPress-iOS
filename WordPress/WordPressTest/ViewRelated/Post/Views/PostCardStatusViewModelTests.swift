@@ -81,7 +81,7 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
             .map { $0.buttons }
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
-            [.duplicate, .publish],
+            [.publish, .duplicate],
             [.settings],
             [.trash]
         ]

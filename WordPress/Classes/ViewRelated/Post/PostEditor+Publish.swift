@@ -133,10 +133,17 @@ extension PublishingEditor {
         case .schedule, .publish:
             showPrepublishingSheet(for: action, analyticsStat: analyticsStat)
         case .update:
-            performUpdatePostAction()
+            guard !isUploadingMedia else {
+                return displayMediaIsUploadingAlert()
+            }
+            performUpdateAction()
         case .submitForReview:
-            // TODO: Show Prepublishing VC
-            fatalError("Not implemented (kahu-offline-mode)")
+            guard !isUploadingMedia else {
+                return displayMediaIsUploadingAlert()
+            }
+            var changes = RemotePostUpdateParameters()
+            changes.status = Post.Status.pending.rawValue
+            performUpdateAction(changes: changes)
         case .save, .saveAsDraft, .continueFromHomepageEditing:
             assertionFailure("No longer used and supported")
             break
@@ -171,15 +178,16 @@ extension PublishingEditor {
         dismissOrPopView()
     }
 
-    private func performUpdatePostAction() {
+    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil) {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
         postEditorStateContext.updated(isBeingPublished: true)
 
         Task { @MainActor in
             do {
-                try await PostCoordinator.shared._save(post)
-                dismissOrPopView()
+                let post = try await PostCoordinator.shared._save(post, changes: changes)
+                self.post = post
+                self.createRevisionOfPost()
             } catch {
                 postEditorStateContext.updated(isBeingPublished: false)
             }
@@ -363,7 +371,7 @@ extension PublishingEditor {
             return discardAndDismiss()
         }
 
-        if post.original().status == .draft {
+        if post.original().isStatus(in: [.draft, .pending]) {
             showCloseDraftConfirmationAlert()
         } else {
             showClosePublishedPostConfirmationAlert()

@@ -9,7 +9,10 @@ extension RemotePostCreateParameters {
             status: (post.status ?? .draft).rawValue
         )
         date = post.dateCreated
-        authorID = post.authorID?.intValue
+        // - warning: the currnet Core Data model defaults to `0`
+        if let authorID = post.authorID?.intValue, authorID > 0 {
+            self.authorID = authorID
+        }
         title = post.postTitle
         content = post.content
         password = post.password

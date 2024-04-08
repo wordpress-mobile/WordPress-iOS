@@ -17,6 +17,11 @@ extension AbstractPost {
 
     // MARK: - Status
 
+    /// Returns `true` is the post has one of the given statuses.
+    func isStatus(in statuses: Set<Status>) -> Bool {
+        statuses.contains(status ?? .draft)
+    }
+
     /// - note: deprecated (kahu-offline-mode)
     @objc
     var statusTitle: String? {

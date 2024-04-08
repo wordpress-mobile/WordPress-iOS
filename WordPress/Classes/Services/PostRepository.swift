@@ -3,8 +3,18 @@ import WordPressKit
 
 final class PostRepository {
 
-    enum Error: Swift.Error {
+    enum Error: Swift.Error, LocalizedError {
         case remoteAPIUnavailable
+        case hasUnsyncedChanges
+        case patchingUnsyncedPost // Should never happen
+
+        var errorDescription: String? {
+            switch self {
+            case .remoteAPIUnavailable: return Strings.genericErrorMessage
+            case .hasUnsyncedChanges: return Strings.errorUnsyncedChangesMessage
+            case .patchingUnsyncedPost: return Strings.genericErrorMessage
+            }
+        }
     }
 
     private let coreDataStack: CoreDataStackSwift
@@ -173,15 +183,19 @@ final class PostRepository {
     /// revisions are used only for content.
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
-        let original = post.original ?? post
-        guard let postID = original.postID, postID.intValue > 0 else {
+        assert(post.isOriginal())
+
+        guard post.revision == nil else {
+            throw PostRepository.Error.hasUnsyncedChanges
+        }
+        guard let postID = post.postID, postID.intValue > 0 else {
             assertionFailure("Trying to patch a non-existent post")
-            return
+            throw PostRepository.Error.patchingUnsyncedPost
         }
         let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
 
         let context = coreDataStack.mainContext
-        PostHelper.update(original, with: uploadedPost, in: context, overwrite: true)
+        PostHelper.update(post, with: uploadedPost, in: context, overwrite: true)
         ContextManager.shared.saveContextAndWait(context)
     }
 
@@ -216,7 +230,8 @@ final class PostRepository {
             case .conflict:
                 // Fetch the latest post to consolidate the changes
                 let remotePost = try await service.post(withID: postID)
-                if changes.content != nil && remotePost.content != original.content {
+                // Check for false positives
+                if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
@@ -672,4 +687,9 @@ extension PostRepository {
         return updatedPosts
     }
 
+}
+
+private enum Strings {
+    static let genericErrorMessage = NSLocalizedString("postList.genericErrorMessage", value: "Something went wrong", comment: "A generic error message title")
+    static let errorUnsyncedChangesMessage = NSLocalizedString("postList.errorUnsyncedChangesMessage", value: "The app is uploading previously made changes to the server. Please try again later.", comment: "An error message")
 }

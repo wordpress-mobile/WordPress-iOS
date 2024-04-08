@@ -123,7 +123,11 @@ extension AbstractPostButton: AbstractPostMenuAction {
         switch self {
         case .retry: return Strings.retry
         case .view: return post.status == .publish ? Strings.view : Strings.preview
-        case .publish: return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
+        case .publish:
+            guard RemoteFeatureFlag.syncPublishing.enabled() else {
+                return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
+            }
+            return Strings.publish
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
         case .moveToDraft: return Strings.draft
@@ -194,6 +198,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let trash = NSLocalizedString("posts.trash.actionTitle", value: "Move to trash", comment: "Label for a option that moves a post to the trash folder")
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")
+        static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish", comment: "Label for the publish post button.")
         static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")

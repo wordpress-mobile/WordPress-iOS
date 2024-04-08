@@ -871,6 +871,92 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertNil(revision.managedObjectContext)
     }
 
+    /// Scenario: the use sends the updated content to the server, the content
+    /// gets updated on the server, but the app never recieves a response.
+    func testSaveConflictFalsePositiveNoResponseFromTheServer() async throws {
+        // GIVEN a draft post (client behind, server has "content-c")
+        let clientDateModified = Date(timeIntervalSince1970: 1709852440)
+        let serverDateModified = Date(timeIntervalSince1970: 1709852440)
+            .addingTimeInterval(30)
+
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.dateCreated = clientDateModified
+            $0.dateModified = clientDateModified
+            $0.postTitle = "Hello"
+            $0.content = "content-a"
+        }
+
+        // GIVEN a modified content
+        let revision = post.createRevision()
+        revision.content = "content-b"
+
+        try mainContext.save()
+
+        // GIVEN server revision that's ahead and has a new `content-b` that
+        // was saved after the first "partially successfull" request
+        let serverPost = {
+            var post = WordPressComPost.mock
+            post.modified = serverDateModified
+            post.title = "title-c"
+            post.content = "content-b"
+            return post
+        }()
+
+        var requestCount = 0
+        // GIVEN a server where the post is ahead and has a new content
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            requestCount += 1
+
+            if requestCount == 1 {
+                // THEN the first request contains an `if_not_modified_since` parameter
+                try assertRequestBody(request, expected: """
+                    {
+                      "content" : "content-b",
+                      "if_not_modified_since" : "2024-03-07T23:00:40+0000"
+                    }
+                    """)
+                // GIVEN the first request fails with 409 (Conflict)
+                let ifNotModifiedSince = try request.getIfNotModifiedSince()
+                XCTAssertTrue(ifNotModifiedSince < serverDateModified)
+                return HTTPStubsResponse(jsonObject: [
+                    "error": "old-revision",
+                    "message": "There is a revision of this post that is more recent."
+                ], statusCode: 409, headers: nil)
+            }
+            if requestCount == 2 {
+                // THEN the second request contains only the delta
+                try assertRequestBody(request, expected: """
+                    {
+                      "content" : "content-b"
+                    }
+                    """)
+                var serverPost = serverPost
+                serverPost.content = "content-b"
+                return try HTTPStubsResponse(value: serverPost, statusCode: 200)
+            }
+
+            throw URLError(.unknown)
+        }
+
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            try HTTPStubsResponse(value: serverPost, statusCode: 200)
+        }
+
+        try await repository._save(post)
+
+        // THEN the content got updated to the version from the local revision
+        XCTAssertEqual(post.content, "content-b")
+        // THEN the rest of the changes are consolidated on the server and the
+        // new changes made elsewhere are not overwritten thanks to the detla update
+        XCTAssertEqual(post.postTitle, "title-c")
+        // THEN the local revision got deleted
+        XCTAssertNil(post.revision)
+        XCTAssertNil(revision.managedObjectContext)
+    }
+
     // MARK: - XMLRPC
 
     /// Scenario: saving a post that was deleted on the remote.

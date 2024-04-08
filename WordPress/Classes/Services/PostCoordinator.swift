@@ -11,9 +11,13 @@ protocol PostCoordinatorDelegate: AnyObject {
 
 class PostCoordinator: NSObject {
 
-    enum SavingError: Error {
+    enum SavingError: Error, LocalizedError {
         case mediaFailure(AbstractPost)
         case unknown
+
+        var errorDescription: String? {
+            Strings.genericErrorTitle
+        }
     }
 
     @objc static let shared = PostCoordinator()
@@ -153,7 +157,7 @@ class PostCoordinator: NSObject {
     @MainActor
     func _publish(_ post: AbstractPost, options: PublishingOptions) async throws {
         assert(post.isOriginal())
-        assert(post.status == .draft)
+        assert(post.isStatus(in: [.draft, .pending]))
 
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
@@ -217,13 +221,10 @@ class PostCoordinator: NSObject {
 
     /// Patches the post.
     ///
-    /// - warning: Can only be used on posts with no unsynced revisions.
-    ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         assert(post.isOriginal())
-        assert(post.revision == nil, "Can only be used on posts with no unsynced changes")
 
         let post = post.original()
         do {
@@ -238,7 +239,7 @@ class PostCoordinator: NSObject {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
-        let alert = UIAlertController(title: Strings.errorTitle, message: error.localizedDescription, preferredStyle: .alert)
+        let alert = UIAlertController(title: Strings.genericErrorTitle, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
             case .conflict:
@@ -298,7 +299,7 @@ class PostCoordinator: NSObject {
 
     /// Returns `true` if the post is eligible for syncing.
     func isSyncAllowed(for post: AbstractPost) -> Bool {
-        post.status == .draft
+        post.status == .draft || post.status == .pending
     }
 
     /// Returns `true` if post has any revisions that need to be synced.
@@ -1215,6 +1216,7 @@ private enum Strings {
     static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
     static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
     static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
-    static let errorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
+    static let genericErrorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
     static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
+    static let errorUnsyncedChangesMessage = NSLocalizedString("postNotice.errorUnsyncedChangesMessage", value: "The app is uploading previously made changes to the server. Please try again later.", comment: "An error message")
 }
