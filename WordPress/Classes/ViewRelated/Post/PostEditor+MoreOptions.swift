@@ -157,6 +157,31 @@ extension PostEditor {
     }
 
     func displayHistory() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        let viewController = RevisionsTableViewController(post: post) { _ in }
+        viewController.onRevisionSelected = { [weak self] revision in
+            guard let self else { return }
+
+            self.navigationController?.popViewController(animated: true)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+                self.post.postTitle = revision.postTitle
+                self.post.content = revision.postContent
+                self.post.mt_excerpt = revision.postExcerpt
+
+                self.post = self.post // Reload the ui
+
+                let notice = Notice(title: Strings.revisionLoaded, feedbackType: .success)
+                ActionDispatcher.dispatch(NoticeAction.post(notice))
+            }
+        }
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private func _displayHistory() {
         let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
             guard let post = self?.post.update(from: revision) else {
                 return
@@ -190,4 +215,5 @@ extension PostEditor {
 private enum Strings {
     static let savingDraft = NSLocalizedString("postEditor.savingDraftForPreview", value: "Saving draft...", comment: "Saving draft to generate a preview (status message")
     static let creatingAutosave = NSLocalizedString("postEditor.creatingAutosaveForPreview", value: "Creating autosave...", comment: "Creating autosave to generate a preview (status message")
+    static let revisionLoaded = NSLocalizedString("postEditor.revisionLoaded", value: "Revision loaded", comment: "Title for a snackbar")
 }
