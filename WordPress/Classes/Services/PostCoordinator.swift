@@ -207,6 +207,10 @@ class PostCoordinator: NSObject {
     @discardableResult @MainActor
     func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
         let post = post.original()
+
+        await pauseSyncing(for: post)
+        defer { resumeSyncing(for: post) }
+
         do {
             let isExistingPost = post.hasRemote()
             // TODO: Set overwrite to false once conflict resolution support is added

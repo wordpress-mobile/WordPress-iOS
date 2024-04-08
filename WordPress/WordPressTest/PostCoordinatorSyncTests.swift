@@ -457,6 +457,83 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         XCTAssertEqual(post.content, "content-c")
         XCTAssertEqual(post.revision, revision3)
     }
+
+    /// Scenario: the app needs to upload the most recent revision to the server
+    /// to generate a preview.
+    func testSaveDraftPostChangesImmediatelly() async throws {
+        // GIVEN a draft post with an unsynced revision and a local revision
+        // that wasn't commited yet
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.content = "content-a"
+
+        let revision1 = post._createRevision()
+        revision1.content = "content-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.content = "content-c"
+
+        try mainContext.save()
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            XCTAssertEqual(request.getBodyParameters()?["content"] as? String, "content-c")
+            var post = WordPressComPost.mock
+            post.content = "content-c"
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator._save(post)
+
+        // THEN all changes were synced
+        XCTAssertEqual(post.content, "content-c")
+        XCTAssertNil(post.revision)
+    }
+
+    /// Scenario: the app needs to upload the most recent revision to the server
+    /// to generate a preview.
+    func testSaveDraftPostChangesImmediatellyFailure() async throws {
+        // GIVEN a draft post with an unsynced revision and a local revision
+        // that wasn't commited yet
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.content = "content-a"
+
+        let revision1 = post._createRevision()
+        revision1.content = "content-b"
+        revision1.isSyncNeeded = true
+
+        let revision2 = revision1._createRevision()
+        revision2.content = "content-c"
+
+        try mainContext.save()
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            try! HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+        }
+
+        // WHEN
+        do {
+            try await coordinator._save(post)
+            XCTFail("Expected a failure")
+        } catch {
+            // Expect an error
+        }
+
+        // THEN the revisions are in the same state as before the call to `save()`
+        XCTAssertEqual(post.content, "content-a")
+        XCTAssertEqual(post.revision, revision1)
+        XCTAssertTrue(revision1.isSyncNeeded)
+        XCTAssertEqual(revision1.revision, revision2)
+        XCTAssertFalse(revision2.isSyncNeeded)
+    }
 }
 
 private let mediaResponse = """
@@ -514,7 +591,7 @@ private extension PostCoordinator {
     /// - warning: If more revisions are added during after the call is made,
     /// it'll still finish.
     ///
-    /// - parameter timeout: The default value is 10 seconds.
+    /// - parameter timeout: The default value is 5 seconds.
     /// - parameter handler: Return `true` if the revision matches the one you expected.
     func waitForSync(_ post: AbstractPost, ignoreErrors: Bool = false, timeout: TimeInterval = 5, handler: @escaping (PostCoordinator.SyncOperation) -> Bool) async throws {
         let result = await syncEvents
