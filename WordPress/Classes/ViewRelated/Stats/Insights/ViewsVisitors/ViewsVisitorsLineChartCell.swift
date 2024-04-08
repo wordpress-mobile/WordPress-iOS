@@ -1,6 +1,6 @@
 import UIKit
 
-struct StatsSegmentedControlData {
+struct StatsSegmentedControlData: Equatable {
     var segmentTitle: String
     var segmentData: Int
     var segmentPrevData: Int

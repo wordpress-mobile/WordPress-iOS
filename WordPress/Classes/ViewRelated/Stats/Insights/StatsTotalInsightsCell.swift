@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-struct StatsTotalInsightsData {
+struct StatsTotalInsightsData: Equatable {
     var count: Int
     var difference: Int? = nil
     var percentage: Int? = nil
