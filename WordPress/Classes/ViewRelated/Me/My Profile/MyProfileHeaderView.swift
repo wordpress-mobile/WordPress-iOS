@@ -25,7 +25,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
     var gravatarEmail: String? = nil {
         didSet {
             if let email = gravatarEmail {
-                gravatarImageView.downloadGravatarWithEmail(email, rating: GravatarRatings.x)
+                gravatarImageView.downloadGravatar(for: email, gravatarRating: .x)
             }
         }
     }
@@ -62,7 +62,7 @@ class MyProfileHeaderView: UITableViewHeaderFooterView {
         // might return the cached (outdated) image, and the UI will end up in an inconsistent state.
         //
         if let email = gravatarEmail {
-            gravatarImageView.overrideGravatarImageCache(image, rating: GravatarRatings.x, email: email)
+            gravatarImageView.overrideGravatarImageCache(image, gravatarRating: ObjcGravatarRating.x, email: email)
             gravatarImageView.updateGravatar(image: image, email: email)
         }
     }

@@ -181,13 +181,22 @@ platform :ios do
     archive_zip_path = File.join(PROJECT_ROOT_FOLDER, 'WordPress.xarchive.zip')
     zip(path: lane_context[SharedValues::XCODEBUILD_ARCHIVE], output_path: archive_zip_path)
 
-    version = options[:beta_release] ? build_code_current : release_version_current
-    create_release(
+    build_code = build_code_current
+    release_version = release_version_current
+
+    version = options[:beta_release] ? build_code : release_version
+    release_url = create_release(
       repository: GITHUB_REPO,
       version:,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
+    )
+
+    send_slack_message(
+      message: <<~MSG
+        :wpicon-blue: :applelogo: WordPress iOS `#{release_version} (#{build_code})` is available for testing and [a GitHub release draft](#{release_url}) has been created.
+      MSG
     )
 
     FileUtils.rm_rf(archive_zip_path)
@@ -225,67 +234,20 @@ platform :ios do
       dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
     )
 
+    release_version = release_version_current
+    build_code = build_code_current
+
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      release_version: release_version_current,
-      build_version: build_code_current,
+      release_version:,
+      build_version: build_code,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
-  end
 
-  # Builds the "WordPress Internal" app and uploads it to App Center
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by CI
-  #
-  desc 'Builds and uploads for distribution to App Center'
-  lane :build_and_upload_app_center do |options|
-    unless options[:skip_prechecks]
-      ensure_git_status_clean unless is_ci
-      ios_build_preflight
-    end
-
-    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
-    )
-
-    upload_build_to_app_center(
-      name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes: File.read(WORDPRESS_RELEASE_NOTES_PATH),
-      distribute_to_everyone: true
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    upload_gutenberg_sourcemaps(
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      release_version: release_version_current_internal,
-      build_version: build_code_current_internal,
-      app_identifier: 'org.wordpress.internal'
+    send_slack_message(
+      message: <<~MSG
+        :jetpack: :applelogo: Jetpack iOS `#{release_version} (#{build_code})` is available for testing.
+      MSG
     )
   end
 
@@ -477,6 +439,22 @@ platform :ios do
     )
   end
 
+  # Send a Slack message to the specified channel
+  #
+  # @param [String] message The message to send to the channel
+  # @param [String] channel The Slack channel to send the message to
+  #
+  def send_slack_message(message:, channel: '#build-and-ship')
+    slack(
+      username: 'WordPress Release Bot',
+      icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
+      slack_url: get_required_env('SLACK_WEBHOOK'),
+      channel:,
+      message:,
+      default_payloads: []
+    )
+  end
+
   def upload_build_to_app_center(
     name:,
     file:,
@@ -498,39 +476,31 @@ platform :ios do
   end
 
   def upload_gutenberg_sourcemaps(sentry_project_slug:, release_version:, build_version:, app_identifier:)
-    # The bundle and source map files are the same for all architectures.
-    gutenberg_bundle = File.join(PROJECT_ROOT_FOLDER, 'Pods/Gutenberg/Frameworks/Gutenberg.xcframework/ios-arm64/Gutenberg.framework')
+    gutenberg_bundle_source_map_folder = File.join(PROJECT_ROOT_FOLDER, 'Pods', 'Gutenberg', 'react-native-bundle-source-map')
 
-    Dir.mktmpdir do |sourcemaps_folder|
-      # It's important that the bundle and source map files have specific names, otherwise, Sentry
-      # won't symbolicate the stack traces.
-      FileUtils.cp(File.join(gutenberg_bundle, 'App.js'), File.join(sourcemaps_folder, 'main.jsbundle'))
-      FileUtils.cp(File.join(gutenberg_bundle, 'App.composed.js.map'), File.join(sourcemaps_folder, 'main.jsbundle.map'))
+    # To generate the full release version string to attach the source maps, we need to specify:
+    # - App identifier
+    # - Release version
+    # - Build version
+    # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
+    # Here are a couple of examples:
+    # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
+    # - App Store build: org.wordpress@24.1+24.1.0.3
 
-      # To generate the full release version string to attach the source maps, we need to specify:
-      # - App identifier
-      # - Release version
-      # - Build version
-      # This conforms to the following format: <app_identifier>@<release_version>+<build_version>
-      # Here are a couple of examples:
-      # - Prototype build: com.jetpack.alpha@24.2+pr22654-07765b3
-      # - App Store build: org.wordpress@24.1+24.1.0.3
-
-      sentry_upload_sourcemap(
-        auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-        org_slug: SENTRY_ORG_SLUG,
-        project_slug: sentry_project_slug,
-        version: release_version,
-        dist: build_version,
-        build: build_version,
-        app_identifier:,
-        # When the React native bundle is generated, the source map file references
-        # include the local machine path, with the `rewrite` and `strip_common_prefix`
-        # options Sentry automatically strips this part.
-        rewrite: true,
-        strip_common_prefix: true,
-        sourcemap: sourcemaps_folder
-      )
-    end
+    sentry_upload_sourcemap(
+      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
+      org_slug: SENTRY_ORG_SLUG,
+      project_slug: sentry_project_slug,
+      version: release_version,
+      dist: build_version,
+      build: build_version,
+      app_identifier:,
+      # When the React native bundle is generated, the source map file references
+      # include the local machine path, with the `rewrite` and `strip_common_prefix`
+      # options Sentry automatically strips this part.
+      rewrite: true,
+      strip_common_prefix: true,
+      sourcemap: gutenberg_bundle_source_map_folder
+    )
   end
 end

@@ -69,8 +69,8 @@ private extension TwoColumnCell {
     }
 
     private func configureSpacing() {
-        bottomConstraint.constant = Length.Padding.double
-        rowsStackView.spacing = Length.Padding.single
+        bottomConstraint.constant = .DS.Padding.double
+        rowsStackView.spacing = .DS.Padding.single
     }
 
     func addRows() {

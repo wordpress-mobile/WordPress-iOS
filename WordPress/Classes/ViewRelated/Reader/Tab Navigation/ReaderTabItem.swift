@@ -17,7 +17,7 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
         shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
         shouldHideSettingsButton = content.type == .selfHostedFollowing
-        shouldHideTagFilter = content.topicType == .organization
+        shouldHideTagFilter = content.topicType == .organization || FeatureFlag.readerTagsFeed.enabled
     }
 
     static func == (lhs: ReaderTabItem, rhs: ReaderTabItem) -> Bool {

@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2023-10-25 07:12:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0-rc.1 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: pl */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -957,8 +957,7 @@
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Edytuj moderowane słowo";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Edytuj wpis";
 
@@ -2131,8 +2130,7 @@
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Publiczne";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen

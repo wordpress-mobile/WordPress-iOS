@@ -73,11 +73,9 @@ class ReaderCardTests: CoreDataTestCase {
     }
 
     private func remoteCard(ofType type: RemoteReaderCard.CardType, completion: @escaping (RemoteReaderCard) -> Void) {
-        let apiMock = WordPressComMockRestApi()
-        apiMock.succeed = true
-        let remoteService = ReaderPostServiceRemote(wordPressComRestApi: apiMock)
-        remoteService.fetchCards(for: [], success: { cards, _ in
+        let apiMock = ReaderPostServiceRemoteMock()
+        apiMock.mockFetch { cards, _ in
             completion(cards.first { $0.type == type }!)
-        }, failure: { _ in })
+        } failure: { _ in }
     }
 }

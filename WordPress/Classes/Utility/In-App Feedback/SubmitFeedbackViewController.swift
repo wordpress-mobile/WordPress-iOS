@@ -17,7 +17,7 @@ final class SubmitFeedbackViewController: UIViewController {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.font = WPStyleGuide.fontForTextStyle(.body)
         textView.textContainer.lineFragmentPadding = 0
-        textView.textContainerInset = .init(allEdges: Length.Padding.double)
+        textView.textContainerInset = .init(allEdges: .DS.Padding.double)
         return textView
     }()
 

@@ -80,16 +80,16 @@ final class RegisterDomainTransferFooterView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, primaryButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Length.Padding.double
+        stackView.spacing = .DS.Padding.double
         stackView.distribution = .fill
 
         self.addSubview(stackView)
 
         self.directionalLayoutMargins = NSDirectionalEdgeInsets(
-            top: Length.Padding.double,
-            leading: Length.Padding.double,
-            bottom: Length.Padding.double,
-            trailing: Length.Padding.double
+            top: .DS.Padding.double,
+            leading: .DS.Padding.double,
+            bottom: .DS.Padding.double,
+            trailing: .DS.Padding.double
         )
 
         NSLayoutConstraint.activate([

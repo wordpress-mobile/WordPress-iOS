@@ -1286,6 +1286,7 @@ private extension NotificationsViewController {
         // ref: https://github.com/wordpress-mobile/WordPress-iOS/issues/15370
         guard let indexPath = tableViewHandler.resultsController?.indexPath(forObject: notification),
               indexPath != tableView.indexPathForSelectedRow,
+              0..<tableView.numberOfSections ~= indexPath.section,
               0..<tableView.numberOfRows(inSection: indexPath.section) ~= indexPath.row else {
                   return
               }

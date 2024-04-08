@@ -37,20 +37,26 @@ def aztec
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', commit: ''
   # pod 'WordPress-Editor-iOS', git: 'https://github.com/wordpress-mobile/AztecEditor-iOS.git', tag: ''
   # pod 'WordPress-Editor-iOS', path: '../AztecEditor-iOS'
-  pod 'WordPress-Editor-iOS', '~> 1.19.9'
+  pod 'WordPress-Editor-iOS', '~> 1.19.11'
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.15'
+  pod 'WordPressUI', '~> 1.16'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
+def gravatar
+  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
+  pod 'Gravatar', '1.0.1'
+end
+
 def wordpress_kit
-  pod 'WordPressKit', '~> 14.0'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', '~> 16.0.0'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '7343890fb3b1b6a7be29cddb9194bf88a71a4a2a'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -83,7 +89,11 @@ end
 
 def shared_with_extension_pods
   shared_style_pods
-  pod 'ZIPFoundation', '~> 0.9.8'
+  # The PrivacyInfo in this library is incorrectly copied to the app bundle's root directory.
+  # That conflicts with the our own app's PrivacyInfo. We can update this library once the
+  # issue is resolved.
+  # See https://github.com/weichsel/ZIPFoundation/pull/314
+  pod 'ZIPFoundation', '0.9.16'
   pod 'Down', '~> 0.6.6'
 end
 
@@ -128,6 +138,7 @@ abstract_target 'Apps' do
   wordpress_kit
   wordpress_shared
   kanvas
+  gravatar
 
   # Production
 
@@ -139,7 +150,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.2'
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.6'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -333,7 +344,7 @@ post_install do |installer|
 
   acknowledgements = 'Acknowledgments'
   markdown = File.read("#{project_root}/Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-acknowledgements.markdown")
-  rendered_html = CommonMarker.render_html(markdown, :DEFAULT)
+  rendered_html = Commonmarker.to_html(markdown)
   styled_html = "<head>
                      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
                      <style>

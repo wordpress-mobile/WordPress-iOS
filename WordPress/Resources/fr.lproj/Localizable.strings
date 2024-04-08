@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-06 12:54:10+0000 */
+/* Translation-Revision-Date: 2024-04-03 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0-rc.1 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: fr */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -844,8 +844,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the confirmation alert when deleting a post from the trash. */
 "Are you sure you want to permanently delete this post?" = "Confirmez-vous vouloir supprimer définitivement cet article ?";
 
-/* Title of the message shown when the user taps Publish in the post list.
-   Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
+/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
 "Are you sure you want to publish?" = "Confirmez-vous vouloir publier ?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
@@ -1178,6 +1177,12 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Button position" = "Position du bouton";
+
+/* No comment provided by engineer. */
+"Button to copy error details" = "Bouton permettant de copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
+"Button to copy post text" = "Bouton permettant de copier le texte de l’article";
 
 /* Label for the post author in the post detail. */
 "By " = "Par ";
@@ -1518,6 +1523,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button. */
 "Clear search history" = "Supprimer l'historique de recherche";
 
+/* No comment provided by engineer. */
+"Clear selected color" = "Effacer la couleur sélectionnée";
+
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Nettoyage…";
 
@@ -1835,7 +1843,13 @@ translators: %s: Block name e.g. \"Image block\" */
 "Copy URL from the clipboard, %s" = "Copiez l’URL à partir du presse-papier, %s";
 
 /* No comment provided by engineer. */
+"Copy error details" = "Copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
 "Copy file URL" = "Copier l’URL du fichier";
+
+/* No comment provided by engineer. */
+"Copy post text" = "Copier le texte de l’article";
 
 /* Button title displayed in popup indicating the user copied the local copy */
 "Copy the version from this app" = "Copier la version à partir de l’application";
@@ -2509,8 +2523,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Moderation Keyword Edition Title */
 "Edit Moderation Word" = "Modifier le mot clé de modération";
 
-/* Button label for editing a post
-   Button title. Opens the editor to edit an existing post.
+/* Button title. Opens the editor to edit an existing post.
    Opens the editor to edit an existing post. */
 "Edit Post" = "Modifier l'article";
 
@@ -2764,6 +2777,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed when there is a failure loading a blogging prompt. */
 "Error loading prompt" = "Erreur lors du chargement de l’incitation";
+
+/* Text displayed when there is a failure loading notification comments. */
+"Error loading the comment" = "Erreur lors du chargement du commentaire";
 
 /* Message displayed when spamming a comment fails. */
 "Error marking comment as spam." = "Erreur lors du marquage du commentaire comme indésirable.";
@@ -5462,8 +5478,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
 "Public" = "Public";
 
-/* Button shown when the author is asked for publishing confirmation.
-   Button title. Publishes a post.
+/* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen
@@ -6814,6 +6829,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Tap for more detail." = "Toucher pour plus de détails.";
 
 /* No comment provided by engineer. */
+"Tap here to copy error details" = "Appuyer ici pour copier les détails de l’erreur";
+
+/* No comment provided by engineer. */
+"Tap here to copy post text" = "Appuyer ici pour copier le texte de l’article";
+
+/* No comment provided by engineer. */
 "Tap here to show help" = "Toucher ici pour voir l’aide";
 
 /* No comment provided by engineer. */
@@ -6962,9 +6983,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description of the purpose of a site's title. */
 "The Site Title is displayed in the title bar of a web browser and is displayed in the header for most themes." = "Le titre du site est affiché dans la barre de titre du navigateur web et dans l’en-tête de la plupart des thèmes.";
 
-/* Message for stories unsupported device error. */
-"The Stories editor is not currently available for your iPad. Please try Stories on your iPhone." = "L’éditeur Stories n’est pas actuellement disponible pour votre iPad. Veuillez essayer Stories sur votre iPhone.";
-
 /* Error message describing a problem with a URL. */
 "The URL is missing a valid host." = "L’URL ne contient pas d’hôte valide.";
 
@@ -6985,6 +7003,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Message informing the user that posts page cannot be edited */
 "The content of your latest posts page is automatically generated and cannot be edited." = "Le contenu de la page de vos derniers articles est automatiquement généré et n’est pas modifiable.";
+
+/* No comment provided by engineer. */
+"The editor has encountered an unexpected error" = "L’éditeur a rencontré une erreur inattendue";
 
 /* Title for a threat that includes the file name of the file */
 "The file %1$@ contains a malicious code pattern" = "Le fichier %1$@ contient un modèle de code malveillant";
@@ -7146,9 +7167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Explaining to the user there was an error trying to obtain the current location of the user. */
 "There was a problem when trying to access your location. Please try again later." = "Il y a eu un problème en tentant d'accéder à votre localisation. Veuillez essayer à nouveau.";
-
-/* Message for stories unknown error. */
-"There was a problem with the Stories editor.  If the problem persists you can contact us via the Me > Help & Support screen." = "Un problème est survenu avec l’éditeur Stories.  Si le problème persiste, vous pouvez nous contacter via l’écran Moi > Aide & Support.";
 
 /* Text displayed when there is a failure changing the password.
    Text displayed when there is a failure loading the history. */
@@ -7542,9 +7560,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Shown when a user logs in with Google but it subsequently fails to work as login to WordPress.com */
 "Unable To Connect" = "Impossible de connecter";
 
-/* Title for stories unknown error. */
-"Unable to Create Stories Editor" = "Impossible de créer un éditeur Stories";
-
 /* Title of a prompt saying the app needs an internet connection before it can load posts */
 "Unable to Load Posts" = "Impossible de charger les articles";
 
@@ -7725,9 +7740,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* No comment provided by engineer. */
 "Unsupported" = "Non reconnu";
-
-/* Title for stories unsupported device error. */
-"Unsupported Device" = "Appareil non pris en charge";
 
 /* Label for an untitled post in the revision browser */
 "Untitled" = "Sans titre";
@@ -8604,6 +8616,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Vous pouvez contrôler les invites pour bloguer et les rappels à tout moment en accédant à Mon site, Réglages, Blogging";
 
 /* No comment provided by engineer. */
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Vous pouvez copier le texte de votre article au cas où votre contenu serait affecté. Copier les détails de l’erreur pour débuguer et les partager avec l’assistance.";
+
+/* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Vous pouvez modifier ce bloc en utilisant la version Web de l’éditeur.";
 
 /* Discussion Settings: Footer Text */
@@ -8644,6 +8659,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views trashed in the posts list and there are no posts */
 "You don't have any trashed posts" = "Vous n’avez aucun article dans la corbeille";
+
+/* Error message that informs reader comments from a private blog cannot be fetched. */
+"You don't have permission to view this private blog." = "Vous n’avez pas le droit de voir ce blog privé.";
 
 /* Message informing the user that all of their sites are currently hidden (plural) */
 "You have %lu hidden WordPress sites." = "Vous avez %lu sites WordPress cachés.";
@@ -8839,21 +8857,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Comment Attachment Label */
 "[COMMENT]" = "[COMMENTAIRE]";
-
-/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
-"_%1$d bloggers_ like this." = "_%1$d blogueurs_ aiment ceci.";
-
-/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
-"_One blogger_ likes this." = "_Un blogueur_ aime ceci.";
-
-/* Plural format string for displaying the number of post likes, including the like from the current user. %1$d is the number of likes, excluding the like by current user. The underscores denote underline and is not displayed. */
-"_You and %1$d bloggers_ like this." = "_Vous et %1$d blogueurs_ aimez ceci.";
-
-/* Describes that the current user and one other user like a post. The underscores denote underline and is not displayed. */
-"_You and another blogger_ like this." = "_Vous et un autre blogueur_ aimez ceci.";
-
-/* Describes that the current user is the only one liking a post. The underscores denote underline and is not displayed. */
-"_You_ like this." = "_Vous_ aimez ceci.";
 
 /* Age between dates equaling one day. */
 "a day" = "un jour";
@@ -9839,6 +9842,9 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the confirmation alert when marking like notifications as read. */
 "like" = "mention j’aime";
 
+/* Error message that informs likes from a private blog cannot be fetched. */
+"likesListViewController.likesList.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
+
 /* Indicating that referrer was marked as spam */
 "marked as spam" = "marqué comme indésirable";
 
@@ -10175,6 +10181,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Ignorer";
 
+/* Error message that informs comment details from a private blog cannot be fetched. */
+"notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Amélioration possible";
 
@@ -10346,6 +10355,9 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a sticky post in the post list. */
 "postList.a11y.sticky" = "Épinglé.";
 
+/* Label for a post in the post list. Indicates that the post has offline changes. */
+"postList.offlineChanges" = "Changements hors ligne";
+
 /* Title for the 'Trash' post list row swipe action */
 "postList.swipeActionDelete" = "Corbeille";
 
@@ -10354,6 +10366,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Voir";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pageDraftCreated" = "Brouillon de la page mis en ligne";
+
+/* Title of notification displayed when a page has been successfully saved as a draft. */
+"postNotice.pagePending" = "Page en attente de relecture";
+
+/* Title of notification displayed when a page has been successfully published. */
+"postNotice.pagePublished" = "Page publiée";
+
+/* Title of notification displayed when a page has been successfully scheduled. */
+"postNotice.pageScheduled" = "Page planifiée";
+
+/* Title of notification displayed when a page has been successfully updated. */
+"postNotice.pageUpdated" = "Page mise à jour";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postDraftCreated" = "Brouillon de l’article mis en ligne";
+
+/* Title of notification displayed when a post has been successfully saved as a draft. */
+"postNotice.postPendingReview" = "Article en attente de relecture";
+
+/* Title of notification displayed when a post has been successfully published. */
+"postNotice.postPublished" = "Article publié";
+
+/* Title of notification displayed when a post has been successfully scheduled. */
+"postNotice.postScheduled" = "Article planifié";
+
+/* Title of notification displayed when a post has been successfully updated. */
+"postNotice.postUpdated" = "Article mis à jour";
+
+/* A post upload failed notification. */
+"postNotice.uploadFailed" = "La mise en ligne a échoué";
+
+/* Button title. Displays a summary / sharing screen for a specific post. */
+"postNotice.view" = "Voir";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Ignorer";
@@ -10605,6 +10653,15 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Accessibility hint to inform that the author section can be tapped to see posts from the site. */
 "reader.detail.header.authorInfo.a11y.hint" = "Affiche les articles du site";
 
+/* Plural format string for displaying the number of post likes. %1$d is the number of likes. The underscores denote underline and is not displayed. */
+"reader.detail.likes.plural" = "_%1$d J’aime_";
+
+/* Describes that the current user is the only one liking a post. */
+"reader.detail.likes.self" = "Vous aimez ceci";
+
+/* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
+"reader.detail.likes.single" = "_1 J’aime_";
+
 /* Title for the Comment button on the Reader Detail toolbar.
 Note: Since the display space is limited, a short or concise translation is preferred. */
 "reader.detail.toolbar.comment.button" = "Commenter";
@@ -10642,8 +10699,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Ce blog fait déjà partie de vos abonnements";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Modifier";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Gérer";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtrer par blog";
@@ -10673,10 +10730,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Aucune étiquette";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Abonnement aux nouvelles étiquettes…";
+"reader.filterSheet.select.tags.following" = "Abonnement à de nouvelles étiquettes…";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Étiquettes suggérées";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "S’abonner à l’étiquette.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Extraction des blogs…";
@@ -10766,10 +10826,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Accéder aux abonnements";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Vous pouvez vous abonner aux articles d’un blog spécifique en vous y abonnant.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Ajouter un blog";
@@ -10886,6 +10942,45 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Se désabonner du blog";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Par défaut";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Nuit";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sépia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Doux";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Terminé";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Taille";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "La lecture est un acte personnel, nous voulons vous donner le contrôle. Choisissez les styles qui vous conviennent.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Donnez-nous votre avis sur cette fonctionnalité";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Cette fonctionnalité est encore en cours de développement.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "chiens";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "renard";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "écriture";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Définir vos préférences de lecture";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Gérer les blogs";
 
@@ -10898,20 +10993,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Abonnement aux nouvelles étiquettes…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "S’abonner aux étiquettes";
+"reader.select.interests.follow.title" = "S’abonner aux étiquettes";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Abonnement à de nouvelles étiquettes…";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Aucune nouvelle étiquette à laquelle s’abonner";
+"reader.select.tags.no.results.follow.title" = "Aucune nouvelle étiquette à laquelle s’abonner";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Choisir vos étiquettes";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "S’abonne à l’étiquette.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "S’abonner";
@@ -10942,6 +11034,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Découvrir d’autres étiquettes";
+
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "S’abonner";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Abonné";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unfollow.accessibility.label" = "Se désabonner de %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Se désabonner";
@@ -10978,6 +11079,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Nouveau";
+
+/* Error message that informs reader detail from a private blog cannot be fetched. */
+"readerDetailCoordinator.readerDetail.privateBlogErrorMessage" = "Vous n’avez pas le droit de voir ce blog privé.";
 
 /* The button title for the transfer footer view in Register Domain screen */
 "register.domain.transfer.button.title" = "Transférer un domaine";
@@ -11680,6 +11784,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "ne sera plus disponible dans le futur.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Vous lancez un nouveau site ?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, aide, support, faq, questions, debug, logs, centre d’aide, contact";

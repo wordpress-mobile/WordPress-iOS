@@ -517,6 +517,7 @@ extension PublishingEditor {
 
     /// If the post is fresh new and doesn't has remote we apply the current changes to the original post
     ///
+    /// - note: Deprecated (kahu-offline-mode) – no longer needed before publishing
     fileprivate func consolidateChangesIfPostIsNew() {
         guard post.isRevision() && !post.hasRemote(), let originalPost = post.original else {
             return
