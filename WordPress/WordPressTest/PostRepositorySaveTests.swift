@@ -1271,22 +1271,19 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server with the an updated content (but not title)
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             XCTFail("No POST requests should be made")
-            return try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 202)
+            return HTTPStubsResponse(error: URLError(.unknown))
         }
 
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
-            var post = WordPressComPost.mock
-            post.title = "title-a"
-            post.content = "content-b"
-            return try HTTPStubsResponse(value: post, statusCode: 200)
+            XCTFail("No GET requests should be made")
+            return HTTPStubsResponse(error: URLError(.unknown))
         }
 
         // WHEN saving the post
         try await repository.sync(post)
 
-        // THEN is gets the latest revision from the server but sends no changes
+        // THEN the local revisions are deleted
         XCTAssertEqual(post.postTitle, "title-a")
-        XCTAssertEqual(post.content, "content-b")
         XCTAssertNil(post.revision)
     }
 

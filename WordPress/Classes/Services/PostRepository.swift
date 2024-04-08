@@ -141,22 +141,23 @@ final class PostRepository {
         overwrite: Bool = false
     ) async throws {
         let post = post.original() // Defensive code
+        let context = coreDataStack.mainContext
 
         let remotePost: RemotePost
         var isCreated = false
         if let postID = post.postID, postID.intValue > 0 {
             let changes = RemotePostUpdateParameters.changes(from: post, to: revision, with: changes)
-            if !changes.isEmpty {
-                remotePost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
-            } else {
-                remotePost = try await getRemoteService(for: post.blog).post(withID: postID)
+            guard !changes.isEmpty else {
+                post.deleteSyncedRevisions(until: revision) // Nothing to sync
+                ContextManager.shared.saveContextAndWait(context)
+                return
             }
+            remotePost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
         } else {
             isCreated = true
             remotePost = try await _create(revision, changes: changes)
         }
 
-        let context = coreDataStack.mainContext
         if revision.revision == nil {
             // No more revisions were created during the upload, so it's safe
             // to fully replace the local version with the remote data
