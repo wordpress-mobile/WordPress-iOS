@@ -37,7 +37,7 @@ final class PageListItemViewModel {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
             return
         }
-        if updatedObjects.contains(page.original()) {
+        if updatedObjects.contains(page) || updatedObjects.contains(page.original()) {
             syncStateViewModel = PostSyncStateViewModel(post: page)
             didUpdateSyncState?(syncStateViewModel)
         }
