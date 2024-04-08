@@ -44,8 +44,8 @@ class SiteStatsPeriodTableViewControllerDeprecated: UITableViewController, Story
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -152,9 +152,11 @@ private extension SiteStatsPeriodTableViewControllerDeprecated {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         refreshControl?.endRefreshing()
+        tableHeaderView?.configure(date: selectedDate, period: selectedPeriod, delegate: self)
+        tableHeaderView?.animateGhostLayers(viewModel.isFetchingChart() == true)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -179,8 +181,11 @@ private extension SiteStatsPeriodTableViewControllerDeprecated {
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
     func clearExpandedRows() {
@@ -196,7 +201,7 @@ private extension SiteStatsPeriodTableViewControllerDeprecated {
 
 extension SiteStatsPeriodTableViewControllerDeprecated: NoResultsViewHost {
     private func displayFailureViewIfNecessary() {
-        guard tableHandler.viewModel.sections.isEmpty else {
+        guard tableHandler.diffableDataSource.snapshot().numberOfSections == 0 else {
             return
         }
 

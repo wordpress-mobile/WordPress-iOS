@@ -5,7 +5,7 @@ import DGCharts
 // MARK: - Shared Rows
 
 // TODO: Remove with SiteStatsPeriodViewModelDeprecated
-struct OverviewRow: ImmuTableRow {
+struct OverviewRow: StatsHashableImmuTableRow {
 
     typealias CellType = OverviewCell
 
@@ -24,11 +24,6 @@ struct OverviewRow: ImmuTableRow {
 
     // MARK: - Hashable
 
-    static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
-        return lhs.tabsData == rhs.tabsData &&
-            lhs.chartHighlightIndex == rhs.chartHighlightIndex
-    }
-
     func configureCell(_ cell: UITableViewCell) {
 
         guard let cell = cell as? CellType else {
@@ -36,6 +31,10 @@ struct OverviewRow: ImmuTableRow {
         }
 
         cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
+    }
+
+    static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData && lhs.period == rhs.period && lhs.chartHighlightIndex == rhs.chartHighlightIndex
     }
 }
 struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {
@@ -110,6 +109,7 @@ struct CellHeaderRow: StatsHashableImmuTableRow {
     }()
 
     let statSection: StatSection?
+    var displayTitle: Bool = true
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -118,7 +118,11 @@ struct CellHeaderRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(statSection: statSection)
+        if displayTitle {
+            cell.configure(statSection: statSection)
+        } else {
+            cell.configure()
+        }
     }
 
     // MARK: - Hashable
@@ -128,7 +132,7 @@ struct CellHeaderRow: StatsHashableImmuTableRow {
     }
 }
 
-struct TableFooterRow: ImmuTableRow {
+struct TableFooterRow: StatsHashableImmuTableRow {
 
     typealias CellType = StatsTableFooter
 
@@ -137,10 +141,15 @@ struct TableFooterRow: ImmuTableRow {
     }()
 
     let action: ImmuTableAction? = nil
+    let statSection: StatSection? = nil
 
     func configureCell(_ cell: UITableViewCell) {
         // No configuration needed.
         // This method is needed to satisfy ImmuTableRow protocol requirements.
+    }
+
+    static func == (lhs: TableFooterRow, rhs: TableFooterRow) -> Bool {
+        return true
     }
 }
 
@@ -461,8 +470,7 @@ struct AddInsightStatRow: ImmuTableRow {
 
 // MARK: - Period Rows
 
-struct PeriodEmptyCellHeaderRow: ImmuTableRow {
-
+struct PeriodEmptyCellHeaderRow: StatsHashableImmuTableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
@@ -470,6 +478,7 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow {
     }()
 
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -478,6 +487,10 @@ struct PeriodEmptyCellHeaderRow: ImmuTableRow {
         }
 
         cell.configure()
+    }
+
+    static func == (lhs: PeriodEmptyCellHeaderRow, rhs: PeriodEmptyCellHeaderRow) -> Bool {
+        return lhs.statSection == rhs.statSection
     }
 }
 
@@ -899,6 +912,7 @@ struct StatsErrorRow: StatsHashableImmuTableRow {
     let rowStatus: StoreFetchingStatus
     let statType: StatType
     let statSection: StatSection?
+    var hideTitle: Bool = false
 
     private let noDataRow = StatsNoDataRow.loadFromNib()
 
@@ -918,7 +932,7 @@ struct StatsErrorRow: StatsHashableImmuTableRow {
         noDataRow.configure(forType: statType, rowStatus: rowStatus)
         cell.insert(view: noDataRow)
 
-        if let statSection = statSection {
+        if let statSection = statSection, !hideTitle {
            cell.statSection = statSection
         }
     }

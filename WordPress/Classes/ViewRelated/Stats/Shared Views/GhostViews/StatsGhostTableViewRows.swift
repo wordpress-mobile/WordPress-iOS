@@ -45,9 +45,10 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
         return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
     }()
 
+    var statSection: StatSection? = nil
     var hideTopBorder = false
     var hideBottomBorder = false
-    var statSection: StatSection? = nil
+    var hideTitle = false
 
     // MARK: - Hashable
 
@@ -65,7 +66,9 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
         if let detailCell = cell as? StatsGhostTopCell {
             detailCell.topBorder?.isHidden = hideTopBorder
             detailCell.bottomBorder?.isHidden = hideBottomBorder
-            detailCell.statSection = statSection
+            if !hideTitle {
+                detailCell.statSection = statSection
+            }
         }
     }
 }

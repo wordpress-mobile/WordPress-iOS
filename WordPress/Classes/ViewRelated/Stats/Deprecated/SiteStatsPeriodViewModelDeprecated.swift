@@ -83,7 +83,23 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
 
     // MARK: - Table Model
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
+
+        let emptySection = AnyHashable(0)
+        snapshot.appendSections([emptySection])
+
+        for tableSection in tableViewModel().sections {
+            if let tableRows = tableSection.rows as? [any StatsHashableImmuTableRow] {
+                let hashableRows = tableRows.map { AnyHashableImmuTableRow(immuTableRow: $0) }
+                snapshot.appendItems(hashableRows, toSection: emptySection)
+            }
+        }
+
+        return snapshot
+    }
+
+    private func tableViewModel() -> ImmuTable {
 
         var tableRows = [ImmuTableRow]()
 
@@ -93,15 +109,15 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
 
         let errorBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: section, hideTitle: true)]
         }
         let summaryErrorBlock: AsyncBlock<[ImmuTableRow]> = {
-            return [PeriodEmptyCellHeaderRow(),
-                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: nil)]
+            return [PeriodEmptyCellHeaderRow(statSection: .periodOverviewViews),
+                    StatsErrorRow(rowStatus: .error, statType: .period, statSection: .periodOverviewViews, hideTitle: true)]
         }
         let loadingBlock: (StatSection) -> [ImmuTableRow] = { section in
             return [CellHeaderRow(statSection: section),
-                    StatsGhostTopImmutableRow()]
+                    StatsGhostTopImmutableRow(statSection: section, hideTitle: true)]
         }
 
         tableRows.append(contentsOf: blocks(for: .timeIntervalsSummary,
@@ -113,8 +129,8 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
                                             block: { [weak self] in
                                                 return self?.overviewTableRows() ?? summaryErrorBlock()
             }, loading: {
-                return [PeriodEmptyCellHeaderRow(),
-                        StatsGhostChartImmutableRow()]
+                return [PeriodEmptyCellHeaderRow(statSection: .periodOverviewViews),
+                        StatsGhostChartImmutableRow(statSection: .periodOverviewViews)]
         }, error: summaryErrorBlock))
         tableRows.append(contentsOf: blocks(for: .topPostsAndPages,
                                             type: .period,
@@ -262,9 +278,9 @@ private extension SiteStatsPeriodViewModelDeprecated {
 
     // MARK: - Create Table Rows
 
-    func overviewTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
-        tableRows.append(PeriodEmptyCellHeaderRow())
+    func overviewTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
+        tableRows.append(PeriodEmptyCellHeaderRow(statSection: .periodOverviewViews))
 
         let periodSummary = store.getSummary()
         let summaryData = periodSummary?.summaryData ?? []
@@ -400,12 +416,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
             return (currentCount, difference, roundedPercentage)
     }
 
-    func postsAndPagesTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func postsAndPagesTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodPostsAndPages))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodPostsAndPages.itemSubtitle,
                                                  dataSubtitle: StatSection.periodPostsAndPages.dataSubtitle,
                                                  dataRows: postsAndPagesDataRows(),
+                                                 statSection: .periodPostsAndPages,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -439,12 +456,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
         }
     }
 
-    func referrersTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func referrersTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodReferrers))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodReferrers.itemSubtitle,
                                                  dataSubtitle: StatSection.periodReferrers.dataSubtitle,
                                                  dataRows: referrersDataRows(),
+                                                 statSection: .periodReferrers,
                                                  siteStatsPeriodDelegate: periodDelegate,
                                                  siteStatsReferrerDelegate: referrerDelegate))
 
@@ -481,12 +499,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
         return referrers.map { rowDataFromReferrer(referrer: $0) }
     }
 
-    func clicksTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func clicksTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodClicks))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodClicks.itemSubtitle,
                                                  dataSubtitle: StatSection.periodClicks.dataSubtitle,
                                                  dataRows: clicksDataRows(),
+                                                 statSection: .periodClicks,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -506,12 +525,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
             ?? []
     }
 
-    func authorsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func authorsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodAuthors))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodAuthors.itemSubtitle,
                                                  dataSubtitle: StatSection.periodAuthors.dataSubtitle,
                                                  dataRows: authorsDataRows(),
+                                                 statSection: .periodAuthors,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -530,15 +550,17 @@ private extension SiteStatsPeriodViewModelDeprecated {
         }
     }
 
-    func countriesTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func countriesTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodCountries))
         let map = countriesMap()
-        if !map.data.isEmpty {
-            tableRows.append(CountriesMapRow(countriesMap: map))
+        let isMapShown = !map.data.isEmpty
+        if isMapShown {
+            tableRows.append(CountriesMapRow(countriesMap: map, statSection: .periodCountries))
         }
         tableRows.append(CountriesStatsRow(itemSubtitle: StatSection.periodCountries.itemSubtitle,
                                            dataSubtitle: StatSection.periodCountries.dataSubtitle,
+                                           statSection: isMapShown ? nil : .periodCountries,
                                            dataRows: countriesDataRows(),
                                            siteStatsPeriodDelegate: periodDelegate))
         return tableRows
@@ -563,12 +585,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
         })
     }
 
-    func searchTermsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func searchTermsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodSearchTerms))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodSearchTerms.itemSubtitle,
                                                  dataSubtitle: StatSection.periodSearchTerms.dataSubtitle,
                                                  dataRows: searchTermsDataRows(),
+                                                 statSection: .periodSearchTerms,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -598,10 +621,11 @@ private extension SiteStatsPeriodViewModelDeprecated {
         return mappedSearchTerms
     }
 
-    func publishedTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func publishedTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodPublished))
         tableRows.append(TopTotalsNoSubtitlesPeriodStatsRow(dataRows: publishedDataRows(),
+                                                            statSection: .periodPublished,
                                                             siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -616,12 +640,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
             ?? []
     }
 
-    func videosTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func videosTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodVideos))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodVideos.itemSubtitle,
                                                  dataSubtitle: StatSection.periodVideos.dataSubtitle,
                                                  dataRows: videosDataRows(),
+                                                 statSection: .periodVideos,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
@@ -637,12 +662,13 @@ private extension SiteStatsPeriodViewModelDeprecated {
             ?? []
     }
 
-    func fileDownloadsTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func fileDownloadsTableRows() -> [any StatsHashableImmuTableRow] {
+        var tableRows = [any StatsHashableImmuTableRow]()
         tableRows.append(CellHeaderRow(statSection: StatSection.periodFileDownloads))
         tableRows.append(TopTotalsPeriodStatsRow(itemSubtitle: StatSection.periodFileDownloads.itemSubtitle,
                                                  dataSubtitle: StatSection.periodFileDownloads.dataSubtitle,
                                                  dataRows: fileDownloadsDataRows(),
+                                                 statSection: .periodFileDownloads,
                                                  siteStatsPeriodDelegate: periodDelegate))
 
         return tableRows
