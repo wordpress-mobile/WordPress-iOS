@@ -20,8 +20,8 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
     private let periodStore = StatsPeriodStore()
     private let revampStore = StatsRevampStore()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: nil)
     }()
 
     private var postID: Int?
@@ -186,7 +186,7 @@ private extension SiteStatsInsightsDetailsTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         refreshControl.endRefreshing()
 
         if viewModel.fetchDataHasFailed() {
@@ -241,8 +241,11 @@ private extension SiteStatsInsightsDetailsTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
     func clearExpandedRows() {

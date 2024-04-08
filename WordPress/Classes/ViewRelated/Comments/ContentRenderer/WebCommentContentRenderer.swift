@@ -1,4 +1,5 @@
 import WebKit
+import WordPressShared
 
 /// Renders the comment body with a web view. Provides the best visual experience but has the highest performance cost.
 ///
@@ -18,10 +19,17 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
     /// Caches the HTML content, to be reused when the orientation changed.
     private var htmlContentCache: String? = nil
 
+    private let displaySetting: ReaderDisplaySetting
+
     // MARK: Methods
 
-    required init(comment: Comment) {
+    required convenience init(comment: Comment) {
+        self.init(comment: comment, displaySetting: .standard)
+    }
+
+    required init(comment: Comment, displaySetting: ReaderDisplaySetting) {
         self.comment = comment
+        self.displaySetting = displaySetting
         super.init()
 
         if #available(iOS 16.4, *) {
@@ -44,7 +52,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
             return webView
         }
 
-        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Self.resourceURL)
+        webView.loadHTMLString(formattedHTMLString(for: comment.content), baseURL: Bundle.wordPressSharedBundle.bundleURL)
 
         return webView
     }
@@ -72,16 +80,17 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
 
             // To capture the content height, the methods to use is either `document.body.scrollHeight` or `document.documentElement.scrollHeight`.
             // `document.body` does not capture margins on <body> tag, so we'll use `document.documentElement` instead.
-            webView.evaluateJavaScript("document.documentElement.scrollHeight") { height, _ in
-                guard let height = height as? CGFloat else {
+            webView.evaluateJavaScript("document.documentElement.scrollHeight") { [weak self] height, _ in
+                guard let self,
+                      let height = height as? CGFloat else {
                     return
                 }
 
-                // TODO: Revisit this later.
-                // This is disabled for Reader customization.
-//                // reset the webview to opaque again so the scroll indicator is visible.
-//                webView.isOpaque = true
-                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: height)
+                /// The display setting's custom size is applied through the HTML's initial-scale property
+                /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
+                /// so we'll need to add the custom scale into account.
+                let actualHeight = round(height * self.displaySetting.size.scale)
+                self.delegate?.renderer(self, asyncRenderCompletedWithHeight: actualHeight)
             }
         }
     }
@@ -123,23 +132,79 @@ private extension WebCommentContentRenderer {
 
     /// Used for the web view's `baseURL`, to reference any local files (i.e. CSS) linked from the HTML.
     static let resourceURL: URL? = {
-        Bundle.main.resourceURL
+        Bundle.wordPressSharedBundle.bundleURL
     }()
 
+    var textColor: UIColor {
+        ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
+    }
+
+    var highlightColor: UIColor {
+        ReaderDisplaySetting.customizationEnabled ? Constants.highlightColor : displaySetting.color.foreground
+    }
+
+    var mentionBackgroundColor: UIColor {
+        ReaderDisplaySetting.customizationEnabled ? Constants.mentionBackgroundColor : .clear
+    }
+
     /// Cache the HTML template format. We only need read the template once.
-    static let htmlTemplateFormat: String? = {
+    var htmlTemplateFormat: String? {
         guard let templatePath = Bundle.main.path(forResource: "richCommentTemplate", ofType: "html"),
               let templateStringFormat = try? String(contentsOfFile: templatePath) else {
             return nil
         }
 
         return String(format: templateStringFormat,
-                      Constants.highlightColor.lightVariant().cssRGBAString(),
-                      Constants.highlightColor.darkVariant().cssRGBAString(),
-                      Constants.mentionBackgroundColor.lightVariant().cssRGBAString(),
-                      Constants.mentionBackgroundColor.darkVariant().cssRGBAString(),
+                      metaContents.joined(separator: ", "),
+                      cssStyles,
                       "%@")
-    }()
+    }
+
+    var metaContents: [String] {
+        [
+            "width=device-width",
+            "initial-scale=\(displaySetting.size.scale)",
+            "maximum-scale=\(displaySetting.size.scale)",
+            "user-scalable=no",
+            "shrink-to-fit=no"
+        ]
+    }
+
+    /// We'll need to load `richCommentStyle.css` from the main bundle and inject it as a string,
+    /// because the web view needs to be loaded with the WordPressShared bundle to gain access to custom fonts.
+    var cssStyles: String {
+        guard let cssURL = Bundle.main.url(forResource: "richCommentStyle", withExtension: "css"),
+              let cssContent = try? String(contentsOf: cssURL) else {
+            return String()
+        }
+        return cssContent.appending(overrideStyles)
+    }
+
+    /// Additional styles based on system or custom theme.
+    var overrideStyles: String {
+        """
+        /* Basic style variables */
+        :root {
+            --text-font: \(displaySetting.font.cssString);
+            --text-color: \(textColor.lightVariant().cssRGBAString());
+            --primary-color: \(highlightColor.lightVariant().cssRGBAString());
+            --mention-background-color: \(mentionBackgroundColor.lightVariant().cssRGBAString());
+        }
+
+        /* Color overrides for dark mode */
+        @media(prefers-color-scheme: dark) {
+            :root {
+                --text-color: \(textColor.darkVariant().cssRGBAString());
+                --primary-color: \(highlightColor.darkVariant().cssRGBAString());
+                --mention-background-color: \(mentionBackgroundColor.darkVariant().cssRGBAString());
+            }
+        }
+
+        a {
+          text-decoration: \(displaySetting.color == .system ? "initial" : "underline");
+        }
+        """
+    }
 
     /// Returns a formatted HTML string by loading the template for rich comment.
     ///
@@ -158,7 +223,7 @@ private extension WebCommentContentRenderer {
         }
 
         // otherwise: sanitize the content, cache it, and then return it.
-        guard let htmlTemplateFormat = Self.htmlTemplateFormat else {
+        guard let htmlTemplateFormat = htmlTemplateFormat else {
             DDLogError("WebCommentContentRenderer: Failed to load HTML template format for comment content.")
             return String()
         }

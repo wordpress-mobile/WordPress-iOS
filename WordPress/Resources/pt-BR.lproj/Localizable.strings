@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-02-21 21:32:55+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: pt_BR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -9473,9 +9473,6 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Você já assinou este blog.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Editar";
-
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtrar por blog";
 
@@ -9502,9 +9499,6 @@ but tapping on this button will remove their like from the post. */
 
 /* Title for an empty filter sheet on the Reader for tags */
 "reader.filterSheet.empty.tags.title" = "Nenhuma tag";
-
-/* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Assinando novas tags...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Tags sugeridas";
@@ -9597,10 +9591,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Ir para Assinaturas";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Para assinar posts em um blog específico, assine-o.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Adicionar um blog";
@@ -9729,20 +9719,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogs";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Assinando novas tags...";
-
-/* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Assinar tags";
-
-/* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Nenhuma tag nova para assinar";
-
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Escolha suas tags";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Assina a tag.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Assinar";
@@ -9773,9 +9751,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descobrir mais tags";
-
-/* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Cancelar assinatura de %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Cancelar assinatura";
