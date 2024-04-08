@@ -272,6 +272,17 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Creates an autosave with the changes in the given revision.
+    @MainActor
+    func autosave(_ revision: AbstractPost) async throws -> PostServiceRemoteREST.AutosaveResponse {
+        assert(revision.isRevision())
+        guard let remote = try getRemoteService(for: revision.blog) as? PostServiceRemoteREST else {
+            throw Error.remoteAPIUnavailable
+        }
+        let post = PostHelper.remotePost(with: revision)
+        return try await remote.createAutosave(with: post)
+    }
+
     /// Permanently delete the given post from local database and the post's WordPress site.
     ///
     /// - Parameter postID: Object ID of the post
