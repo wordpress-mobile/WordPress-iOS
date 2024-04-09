@@ -357,6 +357,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// If true, apply autosave content when the editor creates a revision.
     ///
+    /// - warning: deprecated (kahu-offline-mode)
     private let loadAutosaveRevision: Bool
 
     /// Active Downloads
@@ -519,6 +520,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             showDeprecationNotice()
             hasNoticeBeenShown = true
         }
+
+        onViewDidLoad()
     }
 
     private func shouldShowDeprecationNotice() -> Bool {

@@ -15,6 +15,10 @@ extension AbstractPost {
         return !hasRemote() && getLatestRevisionNeedingSync() == nil
     }
 
+    var isUnsavedRevision: Bool {
+        isRevision() && !isSyncNeeded
+    }
+
     // MARK: - Status
 
     /// Returns `true` is the post has one of the given statuses.
