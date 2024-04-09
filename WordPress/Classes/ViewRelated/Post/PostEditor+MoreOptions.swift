@@ -31,6 +31,42 @@ extension PostEditor {
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _savePostBeforePreview(completion: completion)
+        }
+
+        guard !post.changes.isEmpty else {
+            completion(nil, nil)
+            return
+        }
+
+        Task { @MainActor in
+            let coordinator = PostCoordinator.shared
+            do {
+                if post.isStatus(in: [.draft, .pending]) {
+                    SVProgressHUD.setDefaultMaskType(.clear)
+                    SVProgressHUD.show(withStatus: Strings.savingDraft)
+
+                    let original = post.original()
+                    try await coordinator._save(original)
+                    self.post = original
+                    self.createRevisionOfPost()
+
+                    completion(nil, nil)
+                } else {
+                    SVProgressHUD.setDefaultMaskType(.clear)
+                    SVProgressHUD.show(withStatus: Strings.creatingAutosave)
+                    let autosave = try await PostRepository().autosave(post)
+                    completion(autosave.previewURL.absoluteString, nil)
+                }
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+
+    // - warning: deprecated (kahu-offline-mode)
+    private func _savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
         let context = ContextManager.sharedInstance().mainContext
         let postService = PostService(managedObjectContext: context)
 
@@ -78,9 +114,11 @@ extension PostEditor {
             return
         }
 
-        guard post.remoteStatus != .pushing else {
-            displayPostIsUploadingAlert()
-            return
+        if !RemoteFeatureFlag.syncPublishing.enabled() {
+            guard post.remoteStatus != .pushing else {
+                displayPostIsUploadingAlert()
+                return
+            }
         }
 
         emitPostSaveEvent()
@@ -147,4 +185,9 @@ extension PostEditor {
         }
         navigationController?.pushViewController(revisionsViewController, animated: true)
     }
+}
+
+private enum Strings {
+    static let savingDraft = NSLocalizedString("postEditor.savingDraftForPreview", value: "Saving draft...", comment: "Saving draft to generate a preview (status message")
+    static let creatingAutosave = NSLocalizedString("postEditor.creatingAutosaveForPreview", value: "Creating autosave...", comment: "Creating autosave to generate a preview (status message")
 }

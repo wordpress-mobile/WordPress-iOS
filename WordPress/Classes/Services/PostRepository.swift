@@ -141,22 +141,23 @@ final class PostRepository {
         overwrite: Bool = false
     ) async throws {
         let post = post.original() // Defensive code
+        let context = coreDataStack.mainContext
 
         let remotePost: RemotePost
         var isCreated = false
         if let postID = post.postID, postID.intValue > 0 {
             let changes = RemotePostUpdateParameters.changes(from: post, to: revision, with: changes)
-            if !changes.isEmpty {
-                remotePost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
-            } else {
-                remotePost = try await getRemoteService(for: post.blog).post(withID: postID)
+            guard !changes.isEmpty else {
+                post.deleteSyncedRevisions(until: revision) // Nothing to sync
+                ContextManager.shared.saveContextAndWait(context)
+                return
             }
+            remotePost = try await _patch(post, postID: postID, changes: changes, overwrite: overwrite)
         } else {
             isCreated = true
             remotePost = try await _create(revision, changes: changes)
         }
 
-        let context = coreDataStack.mainContext
         if revision.revision == nil {
             // No more revisions were created during the upload, so it's safe
             // to fully replace the local version with the remote data
@@ -269,6 +270,17 @@ final class PostRepository {
         let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
+    }
+
+    /// Creates an autosave with the changes in the given revision.
+    @MainActor
+    func autosave(_ revision: AbstractPost) async throws -> PostServiceRemoteREST.AutosaveResponse {
+        assert(revision.isRevision())
+        guard let remote = try getRemoteService(for: revision.blog) as? PostServiceRemoteREST else {
+            throw Error.remoteAPIUnavailable
+        }
+        let post = PostHelper.remotePost(with: revision)
+        return try await remote.createAutosave(with: post)
     }
 
     /// Permanently delete the given post from local database and the post's WordPress site.
