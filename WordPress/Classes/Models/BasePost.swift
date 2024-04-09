@@ -77,6 +77,7 @@ extension BasePost {
 }
 
 extension Sequence where Iterator.Element == BasePost.Status {
+    /// - warning: deprecated (kahu-offline-mode)
     var strings: [String] {
         return map({ $0.rawValue })
     }

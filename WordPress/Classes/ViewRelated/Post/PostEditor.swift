@@ -141,6 +141,10 @@ extension PostEditor where Self: UIViewController {
             return
         }
         showAutosaveAvailableAlertIfNeeded()
+
+        let observation = NotificationCenter.default
+            .addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { [weak self] _ in self?.appWillTerminate() }
+        objc_setAssociatedObject(self, &willTerminateObservationKey, observation, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
     private func showAutosaveAvailableAlertIfNeeded() {
@@ -164,7 +168,22 @@ extension PostEditor where Self: UIViewController {
         alert.addAction(UIAlertAction(title: Strings.autosaveAlertCancel, style: .cancel, handler: nil))
         present(alert, animated: true)
     }
+
+    private func appWillTerminate() {
+        // Defensive code to make sure that in rare scenarios where the user changes
+        // status from post settings but doesn't save, and the app gets terminated,
+        // the app doesn't end up saving posts with uncommited status changes.
+        if post.status != post.original().status {
+            post.status = post.original().status
+        }
+        guard let context = post.managedObjectContext, post.hasChanges else {
+            return
+        }
+        ContextManager.sharedInstance().saveContextAndWait(context)
+    }
 }
+
+private var willTerminateObservationKey: UInt8 = 0
 
 enum PostEditorEntryPoint: String {
     case unknown
