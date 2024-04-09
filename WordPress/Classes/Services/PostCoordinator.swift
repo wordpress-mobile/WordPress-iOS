@@ -237,7 +237,7 @@ class PostCoordinator: NSObject {
             switch error {
             case .conflict(let latest):
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
-                    self?.showResolveConflictView(post: post, remoteRevision: latest)
+                    self?.showResolveConflictView(post: post, remoteRevision: latest, source: .editor)
                 }
             case .deleted:
                 alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
@@ -250,12 +250,12 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost) {
+    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
         let repository = PostRepository(coreDataStack: coreDataStack)
-        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository)
+        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository, source: source)
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
     }

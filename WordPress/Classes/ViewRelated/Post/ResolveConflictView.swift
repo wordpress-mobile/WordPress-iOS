@@ -3,9 +3,15 @@ import UIKit
 import WordPressKit
 
 struct ResolveConflictView: View {
+    enum Source: String {
+        case editor
+        case postList = "post_list"
+    }
+
     let post: AbstractPost
     let remoteRevision: RemotePost
     let repository: PostRepository
+    let source: Source
     var dismiss: (() -> Void)?
 
     private var versions: [PostVersion] { [.local(post), .remote(remoteRevision)] }
@@ -26,12 +32,16 @@ struct ResolveConflictView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar { toolbarContent }
         .interactiveDismissDisabled()
+        .onAppear {
+            track(.resolveConflictScreenShown)
+        }
     }
 
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button(Strings.Navigation.cancel) {
+                track(.resolveConflictCancelTapped)
                 dismiss?()
             }.disabled(isSaving)
         }
@@ -44,6 +54,7 @@ struct ResolveConflictView: View {
                         dismiss?()
                         return
                     }
+                    track(.resolveConflictSaveTapped)
                     Task { @MainActor in
                         saveSelectedVersion(selectedVersion, post: post, remoteRevision: remoteRevision)
                     }
@@ -86,6 +97,10 @@ struct ResolveConflictView: View {
             DDLogError("Error resolving conflict picking remote version: \(error)")
         }
         isSaving = false
+    }
+
+    private func track(_ event: WPAnalyticsEvent) {
+        WPAnalytics.track(event, properties: ["source": source.rawValue])
     }
 }
 
@@ -152,8 +167,8 @@ private enum PostVersion: Hashable, Identifiable {
 
 final class ResolveConflictViewController: UIHostingController<ResolveConflictView> {
 
-    init(post: AbstractPost, remoteRevision: RemotePost, repository: PostRepository) {
-        super.init(rootView: .init(post: post, remoteRevision: remoteRevision, repository: repository))
+    init(post: AbstractPost, remoteRevision: RemotePost, repository: PostRepository, source: ResolveConflictView.Source) {
+        super.init(rootView: .init(post: post, remoteRevision: remoteRevision, repository: repository, source: source))
         rootView.dismiss = { self.dismiss(animated: true) }
     }
 
