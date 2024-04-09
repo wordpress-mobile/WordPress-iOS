@@ -534,7 +534,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.content = "content-a"
         }
 
-        // GIVEN a server where the post
+        // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             // THEN the app sends a partial update
             try assertRequestBody(request, expected: """
@@ -1376,12 +1376,12 @@ private func assertRequestBody(_ request: URLRequest, expected: String, file: St
 }
 
 private extension URLRequest {
-    func getBodyParameters() throws -> [String: Any] {
+    func getBodyParameters() throws -> [String: AnyHashable] {
         guard let data = httpBodyStream?.read() else {
             throw PostRepositorySaveTestsError.requestBodyEmpty
         }
         guard let object = try? JSONSerialization.jsonObject(with: data),
-              let parameters = object as? [String: Any] else {
+              let parameters = object as? [String: AnyHashable] else {
             throw PostRepositorySaveTestsError.invalidRequestBody(data)
         }
         return parameters
@@ -1435,6 +1435,13 @@ struct WordPressComPost: Hashable, Codable {
     var type: String?
     var featuredImage: String?
     var format: String?
+    var metadata: [Metadata]?
+
+    struct Metadata: Hashable, Codable {
+        let id: String
+        let key: String
+        let value: String
+    }
 
     enum CodingKeys: String, CodingKey {
         case id = "ID"
@@ -1454,6 +1461,7 @@ struct WordPressComPost: Hashable, Codable {
         case type
         case featuredImage = "featured_image"
         case format
+        case metadata
     }
 
     static var mock: WordPressComPost = {
