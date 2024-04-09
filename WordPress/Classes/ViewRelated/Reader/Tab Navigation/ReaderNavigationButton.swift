@@ -54,7 +54,11 @@ struct ReaderNavigationButton: View {
                     menuButton(for: item)
                 }
             } label: {
-                Text(Strings.lists)
+                HStack {
+                    Text(Strings.lists)
+                    Spacer()
+                    Image("reader-menu-list")
+                }
             }
         } else {
             ForEach(viewModel.listItems, id: \.self) { item in
