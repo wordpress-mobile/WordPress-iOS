@@ -48,8 +48,8 @@ class PostCoordinator: NSObject {
     private let actionDispatcherFacade: ActionDispatcherFacade
     private let isSyncPublishingEnabled: Bool
 
-    /// The initial sync retry delay. By default, 5 seconds.
-    var syncRetryDelay: TimeInterval = 5
+    /// The initial sync retry delay. By default, 8 seconds.
+    var syncRetryDelay: TimeInterval = 8
 
     // MARK: - Initializers
 
@@ -390,7 +390,7 @@ class PostCoordinator: NSObject {
         var error: Error? // The previous sync error
 
         var nextRetryDelay: TimeInterval {
-            retryDelay = min(30, retryDelay * 1.5)
+            retryDelay = min(32, retryDelay * 1.5)
             return retryDelay
         }
         var retryDelay: TimeInterval
