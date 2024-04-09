@@ -1142,7 +1142,7 @@ extension Foundation.Notification.Name {
 
 extension PostCoordinator: Uploader {
     func resume() {
-        guard isSyncPublishingEnabled else {
+        guard !isSyncPublishingEnabled else {
             return
         }
         failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
