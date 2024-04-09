@@ -841,31 +841,26 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
-            self?.displaySettingStore.setting = newSetting
-            self?.applyDisplaySetting()
+        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+            // no need to refresh if there are no changes to the display setting.
+            guard let self,
+                  newSetting != self.displaySetting else {
+                return
+            }
+
+            self.displaySettingStore.setting = newSetting
+            self.applyDisplaySetting()
         }
-        let nav = UINavigationController(rootViewController: vc)
-        if let sheet = nav.sheetPresentationController {
+
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.navigationBar.isTranslucent = true
+
+        if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
         }
 
-        vc.navigationItem.rightBarButtonItem = .init(systemItem: .close,
-                                                     primaryAction: UIAction { [weak vc] _ in
-            vc?.navigationController?.dismiss(animated: true)
-        })
-
-        nav.navigationBar.isTranslucent = true
-        vc.edgesForExtendedLayout = .top
-
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithTransparentBackground()
-        vc.navigationItem.standardAppearance = navAppearance
-        vc.navigationItem.scrollEdgeAppearance = navAppearance
-        vc.navigationItem.compactAppearance = navAppearance
-
-        navigationController?.present(nav, animated: true)
+        navigationController?.present(navController, animated: true)
     }
 
     /// A View Controller that displays a Post content.
@@ -1228,6 +1223,7 @@ private extension ReaderDetailViewController {
             return nil
         }
         let button = barButtonItem(with: icon, action: #selector(didTapDisplaySettingButton(_:)))
+        button.accessibilityLabel = Strings.displaySettingAccessibilityLabel
 
         return button
     }
@@ -1318,6 +1314,10 @@ extension ReaderDetailViewController {
             value: "Dismiss",
             comment: "Spoken accessibility label"
         )
+        static let displaySettingAccessibilityLabel = NSLocalizedString(
+            "readerDetail.displaySettingButton.accessibilityLabel",
+            value: "Reading Preferences",
+            comment: "Spoken accessibility label for the Reading Preferences menu.")
         static let safariButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.safariButton.accessibilityLabel",
             value: "Open in Safari",

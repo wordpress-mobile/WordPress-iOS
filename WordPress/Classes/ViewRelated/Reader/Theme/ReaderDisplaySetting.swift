@@ -79,6 +79,8 @@ struct ReaderDisplaySetting: Codable, Equatable {
         case sepia
         case evening
         case oled
+        case hacker
+        case candy
 
         // TODO: Consider localization
         var label: String {
@@ -113,6 +115,18 @@ struct ReaderDisplaySetting: Codable, Equatable {
                     value: "OLED",
                     comment: "Name for the OLED color theme, used in the Reader's reading preferences."
                 )
+            case .hacker:
+                return NSLocalizedString(
+                    "reader.preferences.color.h4x0r",
+                    value: "h4x0r",
+                    comment: "Name for the h4x0r color theme, used in the Reader's reading preferences."
+                )
+            case .candy:
+                return NSLocalizedString(
+                    "reader.preferences.color.candy",
+                    value: "Candy",
+                    comment: "Name for the Candy color theme, used in the Reader's reading preferences."
+                )
             }
         }
 
@@ -128,6 +142,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return .init(fromHex: 0xabaab2)
             case .oled:
                 return .text.color(for: .init(userInterfaceStyle: .dark))
+            case .hacker:
+                return .green
+            case .candy:
+                return .init(fromHex: 0x0066ff)
             }
         }
 
@@ -152,6 +170,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return .init(fromHex: 0x3a3a3c)
             case .oled:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
+            case .hacker:
+                return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
+            case .candy:
+                return .init(fromHex: 0xffe8fd)
             }
         }
 
@@ -211,6 +233,41 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return 1.15
             case .extraLarge:
                 return 1.25
+            }
+        }
+
+        var accessibilityLabel: String {
+            switch self {
+            case .extraSmall:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraSmall",
+                    value: "Extra Small",
+                    comment: "Accessibility label for the Extra Small size option, used in the Reader's reading preferences."
+                )
+            case .small:
+                return NSLocalizedString(
+                    "reader.preferences.size.small",
+                    value: "Small",
+                    comment: "Accessibility label for the Small size option, used in the Reader's reading preferences."
+                )
+            case .normal:
+                return NSLocalizedString(
+                    "reader.preferences.size.normal",
+                    value: "Normal",
+                    comment: "Accessibility label for the Normal size option, used in the Reader's reading preferences."
+                )
+            case .large:
+                return NSLocalizedString(
+                    "reader.preferences.size.large",
+                    value: "Large",
+                    comment: "Accessibility label for the Large size option, used in the Reader's reading preferences."
+                )
+            case .extraLarge:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraLarge",
+                    value: "Extra Large",
+                    comment: "Accessibility label for the Extra Large size option, used in the Reader's reading preferences."
+                )
             }
         }
     }
