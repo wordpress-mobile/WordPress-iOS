@@ -42,8 +42,14 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !page.isFailed && page.status != .trash {
-            buttons.append(.view)
+        if isSyncPublishingEnabled {
+            if page.status != .trash {
+                buttons.append(.view)
+            }
+        } else {
+            if !page.isFailed && page.status != .trash {
+                buttons.append(.view)
+            }
         }
 
         return AbstractPostButtonSection(buttons: buttons)

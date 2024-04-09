@@ -10,11 +10,11 @@ final class PostSyncStateViewModel {
         case failed
     }
 
-    private let post: Post
+    private let post: AbstractPost
     private let isInternetReachable: Bool
     private let isSyncPublishingEnabled: Bool
 
-    init(post: Post,
+    init(post: AbstractPost,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
@@ -26,6 +26,7 @@ final class PostSyncStateViewModel {
         guard isSyncPublishingEnabled else {
             return _state
         }
+
         if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
             return .uploading
         }

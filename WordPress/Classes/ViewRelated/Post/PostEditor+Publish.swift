@@ -75,7 +75,8 @@ extension PublishingEditor {
                 return
             }
 
-            if self.post.hasLocalChanges() {
+            let hasChanges = RemoteFeatureFlag.syncPublishing.enabled() ? self.post.hasChanges : self.post.hasLocalChanges()
+            if hasChanges {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
@@ -87,9 +88,7 @@ extension PublishingEditor {
     func handlePrimaryActionButtonTap() {
         let action = self.postEditorStateContext.action
 
-        // - note: work-in-progress (kahu-offline-mode)
-        // TODO: enable for pages once we ready
-        guard RemoteFeatureFlag.syncPublishing.enabled() && post is Post else {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
             publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
@@ -131,7 +130,7 @@ extension PublishingEditor {
 
         switch action {
         case .schedule, .publish:
-            showPrepublishingSheet(for: action, analyticsStat: analyticsStat)
+            showPublishingConfirmation(for: action, analyticsStat: analyticsStat)
         case .update:
             guard !isUploadingMedia else {
                 return displayMediaIsUploadingAlert()
@@ -150,7 +149,7 @@ extension PublishingEditor {
         }
     }
 
-    private func showPrepublishingSheet(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
+    private func showPublishingConfirmation(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
         displayPublishConfirmationAlert(for: action) { [weak self] result in
             guard let self else { return }
             switch result {

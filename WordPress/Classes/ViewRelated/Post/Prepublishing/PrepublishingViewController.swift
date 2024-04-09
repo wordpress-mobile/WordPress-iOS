@@ -32,7 +32,7 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let post: Post
+    let post: AbstractPost
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
@@ -83,7 +83,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private weak var mediaPollingTimer: Timer?
 
-    init(post: Post,
+    init(post: AbstractPost,
          identifiers: [PrepublishingIdentifier],
          completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
@@ -123,18 +123,25 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func refreshOptions() {
-        options = identifiers.compactMap { identifier -> PrepublishingOption? in
-            switch identifier {
-            case .autoSharing:
-                // skip the social cell if the post's blog is not eligible for auto-sharing.
-                guard canDisplaySocialRow() else {
-                    return nil
+        if post is Page {
+            options = [
+                PrepublishingOption(identifier: .schedule),
+                PrepublishingOption(identifier: .visibility)
+            ]
+        } else {
+            options = identifiers.compactMap { identifier -> PrepublishingOption? in
+                switch identifier {
+                case .autoSharing:
+                    // skip the social cell if the post's blog is not eligible for auto-sharing.
+                    guard canDisplaySocialRow() else {
+                        return nil
+                    }
+                    break
+                default:
+                    break
                 }
-                break
-            default:
-                break
+                return .init(identifier: identifier)
             }
-            return .init(identifier: identifier)
         }
     }
 
@@ -371,32 +378,38 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         titleField = cell.textField
     }
 
-    // MARK: - Tags
+    // MARK: - Tags (Post)
 
     private func configureTagCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.tags
+        cell.detailTextLabel?.text = (post as! Post).tags
     }
 
     private func didTapTagCell() {
+        let post = post as! Post
         let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
+            guard let self else { return }
             WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
-            self?.post.tags = tags
-            self?.reloadData()
+            (self.post as! Post).tags = tags
+            self.reloadData()
         }
 
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
+    // MARK: - Categories (Post)
+
     private func configureCategoriesCell(_ cell: WPTableViewCell) {
+        let post = post as! Post
         cell.detailTextLabel?.text = Array(post.categories ?? [])
             .map { $0.categoryName }
             .joined(separator: ",")
     }
 
     private func didTapCategoriesCell() {
+        let post = post as! Post
         let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories ?? []), selectionMode: .post)
         categoriesViewController.delegate = self
         categoriesViewController.onCategoriesChanged = { [weak self] in
@@ -631,7 +644,7 @@ extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
         guard let categories = categories as? Set<PostCategory> else {
              return
         }
-        post.categories = categories
+        (post as! Post).categories = categories
         post.save()
     }
 }
@@ -673,14 +686,18 @@ extension PrepublishingViewController {
         case let post as Post:
             show(post: post, from: presentingViewController, completion: completion)
         case let page as Page:
-            show(for: page, action: action, from: presentingViewController, completion: completion)
+            if RemoteFeatureFlag.syncPublishing.enabled() {
+                show(post: page, from: presentingViewController, completion: completion)
+            } else {
+                showAlert(for: page, action: action, from: presentingViewController, completion: completion)
+            }
         default:
             assertionFailure("Unsupported post type")
             break
         }
     }
 
-    private static func show(post: Post, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    private static func show(post: AbstractPost, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
@@ -688,7 +705,7 @@ extension PrepublishingViewController {
         viewController.presentAsSheet(from: presentingViewController)
     }
 
-    private static func show(for page: Page, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    private static func showAlert(for page: Page, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         let title = action.publishingActionQuestionLabel
         let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
         let publishTitle = action.publishActionLabel

@@ -66,6 +66,8 @@ class ParentPageSettingsViewController: UIViewController {
         }
     }
 
+    private var selectedParentID: NSNumber?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -87,6 +89,7 @@ class ParentPageSettingsViewController: UIViewController {
 
     func set(pages: [Page], for page: Page) {
         selectedPage = page
+        selectedParentID = selectedPage.parentID
         originalRow = originalRow(with: pages)
         selectedRow = originalRow
 
@@ -183,7 +186,7 @@ class ParentPageSettingsViewController: UIViewController {
             return Row()
         }
 
-        guard let parent = (pages.first { $0.postID == selectedPage.parentID }) else {
+        guard let parent = (pages.first { $0.postID == selectedParentID }) else {
             return nil
         }
 
@@ -227,6 +230,35 @@ class ParentPageSettingsViewController: UIViewController {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
                                                          comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
+
+        selectedParentID = selectedRow?.page?.postID
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            Task {
+                await self.saveChanges()
+            }
+        } else {
+            _saveChanges()
+        }
+    }
+
+    @MainActor
+    private func saveChanges() async {
+        do {
+            var changes = RemotePostUpdateParameters()
+            changes.parentPageID = selectedParentID?.intValue
+            try await PostCoordinator.shared._update(selectedPage.original(), changes: changes)
+
+            await SVProgressHUD.dismiss()
+            self.dismiss()
+            self.onSuccess?()
+        } catch {
+            await SVProgressHUD.dismiss()
+        }
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private func _saveChanges() {
         let parentId: NSNumber? = selectedPage.parentID
         selectedPage.parentID = selectedRow?.page?.postID
         updatePage { [weak self] (_, error) in
