@@ -158,6 +158,7 @@ extension PostEditor {
 
     func displayHistory() {
         guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            _displayHistory()
             return
         }
         let viewController = RevisionsTableViewController(post: post) { _ in }
