@@ -13,19 +13,11 @@ final class PageListItemViewModel {
 
     init(page: Page, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.page = page
-
-        let revision: Page
-        if isSyncPublishingEnabled {
-            revision = (page.isUnsavedRevision ? page.original : page) as! Page
-        } else {
-            revision = page
-        }
-
-        self.badgeIcon = makeBadgeIcon(for: revision)
-        self.badges = makeBadgesString(for: revision, isSyncPublishingEnabled: isSyncPublishingEnabled)
-        self.imageURL = revision.featuredImageURL
-        self.title = makeContentAttributedString(for: revision)
-        self.accessibilityIdentifier = revision.slugForDisplay()
+        self.title = makeContentAttributedString(for: page)
+        self.badgeIcon = makeBadgeIcon(for: page)
+        self.badges = makeBadgesString(for: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
+        self.imageURL = page.featuredImageURL
+        self.accessibilityIdentifier = page.slugForDisplay()
         self.syncStateViewModel = PostSyncStateViewModel(post: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
 
         if isSyncPublishingEnabled {

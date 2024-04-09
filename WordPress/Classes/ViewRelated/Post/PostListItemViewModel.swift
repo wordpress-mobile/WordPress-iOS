@@ -16,19 +16,11 @@ final class PostListItemViewModel {
 
     init(post: Post, shouldHideAuthor: Bool = false, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
-
-        let revision: Post
-        if isSyncPublishingEnabled {
-            revision = (post.isUnsavedRevision ? post.original : post) as! Post
-        } else {
-            revision = post
-        }
-
-        self.imageURL = revision.featuredImageURL
+        self.imageURL = post.featuredImageURL
         self.statusViewModel = PostCardStatusViewModel(post: post)
         self.syncStateViewModel = PostSyncStateViewModel(post: post)
-        self.badges = makeBadgesString(for: revision, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
-        self.content = makeContentString(for: revision, syncStateViewModel: syncStateViewModel)
+        self.badges = makeBadgesString(for: post, syncStateViewModel: syncStateViewModel, shouldHideAuthor: shouldHideAuthor)
+        self.content = makeContentString(for: post, syncStateViewModel: syncStateViewModel)
 
         if isSyncPublishingEnabled {
             NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
