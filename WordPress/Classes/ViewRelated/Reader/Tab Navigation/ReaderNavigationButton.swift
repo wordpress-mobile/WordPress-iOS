@@ -100,6 +100,8 @@ private extension ReaderTabItem {
     var image: Image? {
         if content.type == .saved {
             return Image("reader-menu-saved")
+        } else if content.type == .tags {
+            return Image("reader-menu-tags")
         }
 
         switch content.topicType {
@@ -126,6 +128,8 @@ private extension ReaderTabItem {
 
         if content.type == .saved {
             return "saved"
+        } else if content.type == .tags {
+            return "tags"
         }
 
         switch content.topicType {
