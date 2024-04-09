@@ -496,7 +496,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
 
     /// Scenario: the app needs to upload the most recent revision to the server
     /// to generate a preview.
-    func testSaveDraftPostChangesImmediatellyFailure() async throws {
+    func testSaveDraftPostChangesImmediatelyFailure() async throws {
         // GIVEN a draft post with an unsynced revision and a local revision
         // that wasn't commited yet
         let post = PostBuilder(mainContext, blog: blog).build()
