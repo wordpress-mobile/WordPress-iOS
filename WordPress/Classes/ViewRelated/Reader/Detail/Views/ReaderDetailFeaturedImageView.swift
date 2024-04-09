@@ -175,6 +175,13 @@ class ReaderDetailFeaturedImageView: UIView, NibLoadable {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
 
+        // Re-apply the styles after a potential orientation change.
+        // This fixes a case where the navbar tint would revert after changing orientation.
+        if ReaderDisplaySetting.customizationEnabled {
+            resetNavigationBarTintColor()
+            resetStatusBarStyle()
+        }
+
         updateIfNotLoading()
     }
 
