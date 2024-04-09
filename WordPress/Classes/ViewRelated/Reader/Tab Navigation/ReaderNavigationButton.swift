@@ -6,23 +6,16 @@ struct ReaderNavigationButton: View {
 
     var body: some View {
         Menu {
-            ForEach(viewModel.filterItems, id: \.self) { item in
-                menuButton(for: item)
-            }
-            if viewModel.listItems.count > 0 {
+            ForEach(menuItemGroups, id: \.self) { group in
                 Section {
-                    if viewModel.listItems.count > 2 {
-                        Menu {
-                            ForEach(viewModel.listItems, id: \.self) { item in
-                                menuButton(for: item)
-                            }
-                        } label: {
-                            Text(Strings.lists)
+                    ForEach(group, id: \.self) { item in
+                        menuButton(for: item)
+                    }
+                    if group == menuItemGroups.last && viewModel.listItems.count > 0 {
+                        if !FeatureFlag.readerTagsFeed.enabled {
+                            Divider()
                         }
-                    } else {
-                        ForEach(viewModel.listItems, id: \.self) { item in
-                            menuButton(for: item)
-                        }
+                        listMenuItem
                     }
                 }
             }
@@ -35,6 +28,38 @@ struct ReaderNavigationButton: View {
         .buttonStyle(PlainButtonStyle())
         .onTapGesture {
             WPAnalytics.track(.readerDropdownOpened)
+        }
+    }
+
+    private var menuItemGroups: [[ReaderTabItem]] {
+        var items: [[ReaderTabItem]] = [[]]
+        var currentGroup = 0
+        for item in viewModel.filterItems {
+            if item.content.type == .saved || item.content.type == .tags {
+                currentGroup += 1
+                items.append([item])
+                continue
+            }
+            items[currentGroup].append(item)
+        }
+
+        return items
+    }
+
+    @ViewBuilder
+    private var listMenuItem: some View {
+        if viewModel.listItems.count > 2 {
+            Menu {
+                ForEach(viewModel.listItems, id: \.self) { item in
+                    menuButton(for: item)
+                }
+            } label: {
+                Text(Strings.lists)
+            }
+        } else {
+            ForEach(viewModel.listItems, id: \.self) { item in
+                menuButton(for: item)
+            }
         }
     }
 
