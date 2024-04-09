@@ -124,9 +124,9 @@ final class PostRepository {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
-        assert(post.original == nil, "Must be called on an original post")
+        wpAssert(post.original == nil, "Must be called on an original post")
         guard let revision = revision ?? post.getLatestRevisionNeedingSync() else {
-            return assertionFailure("Requires a revision")
+            return wpAssertionFailure("Requires a revision")
         }
         try await _sync(post, revision: revision)
     }
@@ -140,6 +140,7 @@ final class PostRepository {
         changes: RemotePostUpdateParameters? = nil,
         overwrite: Bool = false
     ) async throws {
+        wpAssert(post.isOriginal())
         let post = post.original() // Defensive code
         let context = coreDataStack.mainContext
 
@@ -184,13 +185,13 @@ final class PostRepository {
     /// revisions are used only for content.
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         guard post.revision == nil else {
             throw PostRepository.Error.hasUnsyncedChanges
         }
         guard let postID = post.postID, postID.intValue > 0 else {
-            assertionFailure("Trying to patch a non-existent post")
+            wpAssertionFailure("Trying to patch a non-existent post")
             throw PostRepository.Error.patchingUnsyncedPost
         }
         let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
@@ -259,10 +260,10 @@ final class PostRepository {
     /// Permanently delete the given post.
     @MainActor
     func _delete(_ post: AbstractPost) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         guard let postID = post.postID, postID.intValue > 0 else {
-            assertionFailure("Trying to patch a non-existent post")
+            wpAssertionFailure("Trying to patch a non-existent post")
             return
         }
         try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
@@ -302,7 +303,7 @@ final class PostRepository {
         }
 
         let status = try await coreDataStack.performQuery { try $0.existingObject(with: postID).status }
-        assert(status == .trash, "This function can only be used to delete trashed posts/pages.")
+        wpAssert(status == .trash, "This function can only be used to delete trashed posts/pages.")
 
         // First delete the post from local database.
         let (remote, remotePost) = try await coreDataStack.performAndSave { [remoteFactory] context in
@@ -414,7 +415,7 @@ private extension PostRepository {
             throw PostRepository.Error.remoteAPIUnavailable
         }
         guard let remote = remote as? PostServiceRemoteExtended else {
-            assertionFailure("Expected the extended service to be available")
+            wpAssertionFailure("Expected the extended service to be available")
             throw PostRepository.Error.remoteAPIUnavailable
         }
         return remote
@@ -643,8 +644,8 @@ extension PostRepository {
         deleteOtherLocalPosts: Bool,
         in blogID: TaggedManagedObjectID<Blog>
     ) async throws -> [TaggedManagedObjectID<P>] {
-        assert(type == Post.self || type == Page.self, "Only support fetching Post or Page")
-        assert(range.lowerBound >= 0)
+        wpAssert(type == Post.self || type == Page.self, "Only support fetching Post or Page")
+        wpAssert(range.lowerBound >= 0)
 
         let postType: String
         if type == Post.self {

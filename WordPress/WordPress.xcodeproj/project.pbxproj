@@ -583,6 +583,8 @@
 		0CE7833E2B08F3C300B114EB /* ExternalMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */; };
 		0CE783412B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
 		0CE783422B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
+		0CEA55522BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
+		0CEA55532BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
 		0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
 		0CED20002B6809CB00E6DD52 /* FilterCompactButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */; };
@@ -6326,6 +6328,7 @@
 		0CE58A2C2B35C91900E87D1E /* SiteMediaPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPreviewViewController.swift; sourceTree = "<group>"; };
 		0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerCollectionCell.swift; sourceTree = "<group>"; };
+		0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPInstrumentation.swift; sourceTree = "<group>"; };
 		0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicSiteService.swift; sourceTree = "<group>"; };
 		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
 		0CED20012B6809D600E6DD52 /* FilterCompactDatePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactDatePicker.swift; sourceTree = "<group>"; };
@@ -13988,6 +13991,7 @@
 				E114D798153D85A800984182 /* WPError.h */,
 				E114D799153D85A800984182 /* WPError.m */,
 				57D5812C2228526C002BAAD7 /* WPError+Swift.swift */,
+				0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */,
 				8B05D29023A9417E0063B9AA /* WPMediaEditor.swift */,
 				5D6C4B061B603E03005E3C43 /* WPTableViewHandler.h */,
 				5D6C4B071B603E03005E3C43 /* WPTableViewHandler.m */,
@@ -22320,6 +22324,7 @@
 				2FA6511721F26A24009AA935 /* ChangePasswordViewController.swift in Sources */,
 				D816C1F020E0893A00C4D82F /* LikeComment.swift in Sources */,
 				982DA9A7263B1E2F00E5743B /* CommentService+Likes.swift in Sources */,
+				0CEA55522BC55940008D0FE5 /* WPInstrumentation.swift in Sources */,
 				80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */,
 				FAFF7A1C2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
@@ -25432,6 +25437,7 @@
 				FABB24262602FC2C00C8785C /* SiteAssemblyStep.swift in Sources */,
 				FABB24272602FC2C00C8785C /* SiteSettingsViewController+Swift.swift in Sources */,
 				3FFDEF8F29187F1200B625CE /* MigrationHeaderConfiguration.swift in Sources */,
+				0CEA55532BC55940008D0FE5 /* WPInstrumentation.swift in Sources */,
 				FABB24282602FC2C00C8785C /* FilterTableData.swift in Sources */,
 				FABB24292602FC2C00C8785C /* ReaderGapMarker.m in Sources */,
 				FABB242A2602FC2C00C8785C /* Pattern.swift in Sources */,
