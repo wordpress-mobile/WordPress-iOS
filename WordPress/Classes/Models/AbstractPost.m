@@ -156,7 +156,6 @@
     post.isSyncNeeded = NO;
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
-    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
     return post;
 }
 

@@ -75,7 +75,6 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        // TODO: delete later too
         deleteRevision()
         presentingViewController?.dismiss(animated: true)
     }
