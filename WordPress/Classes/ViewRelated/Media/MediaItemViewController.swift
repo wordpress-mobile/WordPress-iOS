@@ -98,6 +98,7 @@ final class MediaItemViewController: UITableViewController {
         var rows = [ImmuTableRow]()
         rows.append(TextRow(title: NSLocalizedString("File name", comment: "Label for the file name for a media asset (image / video)"), value: media.filename ?? ""))
         rows.append(TextRow(title: NSLocalizedString("File type", comment: "Label for the file type (.JPG, .PNG, etc) for a media asset (image / video)"), value: presenter.fileType ?? ""))
+        rows.append(TextRow(title: NSLocalizedString("File size", comment: "Label for the file size for a media asset"), value: presenter.fileSize ?? ""))
 
         switch media.mediaType {
         case .image, .video:
@@ -425,6 +426,25 @@ private struct MediaMetadataPresenter {
         }
 
         return (filename as NSString).pathExtension.uppercased()
+    }
+
+    var fileSize: String? {
+        guard let fileSizeInBytes = media.filesize as? Int else {
+            return nil
+        }
+
+        let sizeAbbreviations = ["bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+        var sizeAbbreviationsIndex = 0
+        var capacity = Double(fileSizeInBytes)
+
+        while capacity > 1024 {
+            capacity /= 1024
+            sizeAbbreviationsIndex += 1
+        }
+
+        let formattedCapacity = String(format: "%4.2f", capacity)
+        let sizeAbbreviation = sizeAbbreviations[sizeAbbreviationsIndex]
+        return "\(formattedCapacity) \(sizeAbbreviation)"
     }
 }
 
