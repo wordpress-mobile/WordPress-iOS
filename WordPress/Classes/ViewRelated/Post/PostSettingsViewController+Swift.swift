@@ -16,7 +16,7 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = post._createRevision()
+        let revision = RemoteFeatureFlag.syncPublishing.enabled() ? post._createRevision() : post.latest()
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
@@ -30,35 +30,49 @@ extension PostSettingsViewController {
 
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
+
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _setupStandaloneEditor()
+        }
+
+        configureDefaultNavigationBarAppearance()
+
+        assert(navigationController?.presentationController != nil)
+        navigationController?.presentationController?.delegate = self
+
+        refreshNavigationBarButtons()
+        navigationItem.rightBarButtonItem?.isEnabled = false
+
+        var cancellables: [AnyCancellable] = []
+
+        let originalPostID = (apost.original ?? apost).objectID
+
+        NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: apost.managedObjectContext)
+            .sink { [weak self] notification in
+                self?.didChangeObjects(notification, originalPostID: originalPostID)
+            }.store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willTerminateNotification)
+            .sink { [weak self] _ in
+                self?.deleteRevision()
+            }.store(in: &cancellables)
+
+        objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    @objc private func _setupStandaloneEditor() {
         configureDefaultNavigationBarAppearance()
 
         refreshNavigationBarButtons()
         navigationItem.rightBarButtonItem?.isEnabled = false
 
-        assert(navigationController?.presentationController != nil)
-        navigationController?.presentationController?.delegate = self
-
         var cancellables: [AnyCancellable] = []
         apost.objectWillChange.sink { [weak self] in
-            self?.didUpdateSettings()
+            self?.navigationItem.rightBarButtonItem?.isEnabled = true
         }.store(in: &cancellables)
-
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            let originalPostID = (apost.original ?? apost).objectID
-
-            NotificationCenter.default
-                .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: apost.managedObjectContext)
-                .sink { [weak self] notification in
-                    self?.didChangeObjects(notification, originalPostID: originalPostID)
-                }.store(in: &cancellables)
-
-            NotificationCenter.default
-                .publisher(for: UIApplication.willTerminateNotification)
-                .sink { [weak self] _ in
-                    self?.deleteRevision()
-                }.store(in: &cancellables)
-        }
-
         objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
@@ -75,7 +89,9 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        deleteRevision()
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            deleteRevision()
+        }
         presentingViewController?.dismiss(animated: true)
     }
 
