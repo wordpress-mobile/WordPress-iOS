@@ -387,7 +387,7 @@ final class PostRepository {
         try? await coreDataStack.performAndSave { context in
             let post = try context.existingObject(with: postID)
             if let updatedRemotePost, updatedRemotePost.status != PostStatusDeleted {
-                PostHelper.update(post, with: updatedRemotePost, in: context)
+                PostHelper.update(post, with: updatedRemotePost, in: context, overwrite: true)
                 post.latest().statusAfterSync = post.statusAfterSync
                 post.latest().status = post.status
             } else {
