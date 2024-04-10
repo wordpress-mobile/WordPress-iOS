@@ -771,7 +771,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             }
         }
 
-        // WHEN the user picks the remote version and overwrites what's on the remote
+        // WHEN the user picks the local version and overwrites what's on the remote
         try await repository._save(post, overwrite: true)
 
         // THEN the content got updated to the version from the local revision

@@ -41,6 +41,11 @@ import Foundation
     case editorPostExcerptChanged
     case editorPostSiteChanged
 
+    // Resolve post version conflict
+    case resolveConflictScreenShown
+    case resolveConflictSaveTapped
+    case resolveConflictCancelTapped
+
     // App Settings
     case appSettingsAppearanceChanged
 
@@ -633,6 +638,12 @@ import Foundation
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .resolveConflictScreenShown:
+            return "resolve_conflict_screen_shown"
+        case .resolveConflictSaveTapped:
+            return "resolve_conflict_save_tapped"
+        case .resolveConflictCancelTapped:
+            return "resolve_conflict_cancel_tapped"
         case .appSettingsAppearanceChanged:
             return "app_settings_appearance_changed"
         case .gutenbergUnsupportedBlockWebViewShown:

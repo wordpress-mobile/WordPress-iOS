@@ -213,8 +213,7 @@ class PostCoordinator: NSObject {
 
         do {
             let isExistingPost = post.hasRemote()
-            // TODO: Set overwrite to false once conflict resolution support is added
-            try await PostRepository()._save(post, changes: changes, overwrite: true)
+            try await PostRepository()._save(post, changes: changes)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
@@ -246,19 +245,29 @@ class PostCoordinator: NSObject {
         let alert = UIAlertController(title: Strings.genericErrorTitle, message: error.localizedDescription, preferredStyle: .alert)
         if let error = error as? PostRepository.PostSaveError {
             switch error {
-            case .conflict:
-                // TODO: Show conflict resolution dialog
-                alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
-                break
+            case .conflict(let latest):
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.showResolveConflictView(post: post, remoteRevision: latest, source: .editor)
+                }
             case .deleted:
-                alert.addDefaultActionWithTitle(Strings.buttonOK) { _ in
-                    self.handlePermanentlyDeleted(post)
+                alert.addDefaultActionWithTitle(Strings.buttonOK) { [weak self] _ in
+                    self?.handlePermanentlyDeleted(post)
                 }
             }
         } else {
             alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
         }
         topViewController.present(alert, animated: true)
+    }
+
+    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
+        guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            return
+        }
+        let repository = PostRepository(coreDataStack: coreDataStack)
+        let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository, source: source)
+        let navigation = UINavigationController(rootViewController: controller)
+        topViewController.present(navigation, animated: true)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
