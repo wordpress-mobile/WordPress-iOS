@@ -51,7 +51,7 @@ class AbstractPostTest: CoreDataTestCase {
 
         // GIVEN a post with a revision that needs sync
         let revision2 = revision1._createRevision()
-        revision2.isSyncNeeded = true
+        revision2.remoteStatus = .syncNeeded
 
         // THEN
         XCTAssertEqual(post.getLatestRevisionNeedingSync(), revision2)

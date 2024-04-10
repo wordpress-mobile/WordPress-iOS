@@ -49,6 +49,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         guard isSyncPublishingEnabled else {
             return _status
         }
+        if post.isLegacyUnsavedRevision {
+            return StatusMessages.localChanges
+        }
         return nil
     }
 
@@ -89,6 +92,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     var statusColor: UIColor {
         guard isSyncPublishingEnabled else {
             return _statusColor
+        }
+        if post.isLegacyUnsavedRevision {
+            return .warning
         }
         switch post.status ?? .draft {
         case .pending:

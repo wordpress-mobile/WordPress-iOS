@@ -14,6 +14,14 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusSync,       // Post uploaded
     AbstractPostRemoteStatusPushingMedia, // Push Media
     AbstractPostRemoteStatusAutoSaved,       // Post remote auto-saved
+
+    // All the previous states were deprecated in 24.7 and are no longer used
+    // by the app. To get the status of the uploads, use `PostCoordinator`.
+
+    /// The default state of the newly created local revision.
+    AbstractPostRemoteStatusLocalRevision,
+    /// The user saved the revision, and it needs to be uploaded to a server.
+    AbstractPostRemoteStatusSyncNeeded
 };
 
 @interface AbstractPost : BasePost
@@ -49,6 +57,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 @property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
+/// - warning: deprecated (kahu-offline-mode)
 @property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
 

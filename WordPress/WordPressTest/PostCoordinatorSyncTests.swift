@@ -481,15 +481,15 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
 
         let revision1 = post._createRevision()
         revision1.content = "content-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.content = "content-c"
-        revision2.isSyncNeeded = true
+        revision2.remoteStatus = .syncNeeded
 
         let revision3 = revision2._createRevision()
         revision3.content = "content-d"
-        revision3.isSyncNeeded = false
+        XCTAssertFalse(revision3.isSyncNeeded)
 
         try mainContext.save()
 
@@ -523,7 +523,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
 
         let revision1 = post._createRevision()
         revision1.content = "content-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.content = "content-c"
@@ -559,7 +559,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
 
         let revision1 = post._createRevision()
         revision1.content = "content-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.content = "content-c"

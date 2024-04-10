@@ -19,6 +19,14 @@ extension AbstractPost {
         isRevision() && !isSyncNeeded
     }
 
+    /// Returns `true` if the post object is a revision created by one of the
+    /// versions of the app prior to 24.7.
+    var isLegacyUnsavedRevision: Bool {
+        isRevision() && AbstractPost.deprecatedStatuses.contains(remoteStatus)
+    }
+
+    private static let deprecatedStatuses: Set<AbstractPostRemoteStatus> = [.pushing, .failed, .local, .sync, .pushingMedia, .autoSaved]
+
     // MARK: - Status
 
     /// Returns `true` is the post has one of the given statuses.
@@ -36,7 +44,6 @@ extension AbstractPost {
         return AbstractPost.title(for: status)
     }
 
-    /// - note: deprecated (kahu-offline-mode)
     @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
@@ -195,14 +202,9 @@ extension AbstractPost {
         return revisions
     }
 
-    // TODO: Replace with a new flag
-    /// - note: Work-in-progress (kahu-offline-mode)
     @objc var isSyncNeeded: Bool {
-        get { confirmedChangesHash == AbstractPost.syncNeededKey }
-        set { confirmedChangesHash = newValue ? AbstractPost.syncNeededKey : "" }
+        remoteStatus == .syncNeeded
     }
-
-    static let syncNeededKey = "sync-needed"
 
     /// Returns the latest saved revisions that needs to be synced with the server.
     /// Returns `nil` if there are no such revisions.
