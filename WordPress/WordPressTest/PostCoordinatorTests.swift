@@ -25,7 +25,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
 
         postCoordinator.save(post)
 
@@ -122,7 +122,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
         var returnedError: Error?
 
         postCoordinator.save(post) { result in
@@ -370,8 +370,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock,
-                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, actionDispatcherFacade: actionDispatcherFacadeMock, isSyncPublishingEnabled: false)
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
@@ -387,7 +386,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(actionDispatcherFacadeMock.dispatchedActions).toEventuallyNot(beEmpty())
 
         guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
-            assertionFailure("The action should be a NoticeAction")
+            XCTFail("The action should be a NoticeAction")
             return
         }
 
@@ -409,7 +408,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
 
         // Act
         var results = [Result<AbstractPost, Error>]()

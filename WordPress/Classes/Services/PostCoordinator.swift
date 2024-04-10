@@ -330,7 +330,8 @@ class PostCoordinator: NSObject {
         assert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
 
         if !revision.isSyncNeeded {
-            revision.isSyncNeeded = true
+            revision.remoteStatus = .syncNeeded
+            revision.confirmedChangesTimestamp = Date()
             ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
         }
         startSync(for: revision.original())
@@ -341,7 +342,7 @@ class PostCoordinator: NSObject {
     /// - note: It should typically only be called once during the app launch.
     func initializeSync() {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
-        request.predicate = NSPredicate(format: "confirmedChangesHash == %@", AbstractPost.syncNeededKey)
+        request.predicate = NSPredicate(format: "remoteStatusNumber == %i", AbstractPostRemoteStatus.syncNeeded.rawValue)
         do {
             let revisions = try coreDataStack.mainContext.fetch(request)
             let originals = Set(revisions.map { $0.original() })
@@ -951,6 +952,9 @@ class PostCoordinator: NSObject {
     }
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus, then completion: ((AbstractPost) -> ())? = nil) {
+        guard !isSyncPublishingEnabled else {
+            return
+        }
         guard let context = post.managedObjectContext else {
             return
         }

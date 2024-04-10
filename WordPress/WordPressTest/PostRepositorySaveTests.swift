@@ -1044,11 +1044,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a post that has changes that need to be synced (across two local revision)
         let revision1 = post._createRevision()
         revision1.postTitle = "title-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.postTitle = "title-c"
-        revision2.isSyncNeeded = true
+        revision2.remoteStatus = .syncNeeded
 
         // GIVEN a revision created by an editor
         let revision3 = revision2._createRevision()
@@ -1097,7 +1097,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        revision3.isSyncNeeded = true
+        revision3.remoteStatus = .syncNeeded
         try await repository.sync(post)
 
         // THEN it uploads the latest revision
@@ -1126,7 +1126,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a post that has changes that need to be synced (across two local revision)
         let revision1 = post._createRevision()
         revision1.content = "content-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.content = "content-c"
@@ -1200,7 +1200,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN syncing remaining changes
-        revision2.isSyncNeeded = true
+        revision2.remoteStatus = .syncNeeded
         try await repository.sync(post)
 
         // THEN it uploads the latest revision and ignores 409 because it's
@@ -1221,7 +1221,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let revision = post.createRevision()
         revision.postTitle = "title-a"
         revision.content = "content-a"
-        revision.isSyncNeeded = true
+        revision.remoteStatus = .syncNeeded
 
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
@@ -1262,11 +1262,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a change that was reverted in a more recent revision
         let revision1 = post._createRevision()
         revision1.postTitle = "title-b"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         let revision2 = revision1._createRevision()
         revision2.postTitle = "title-a"
-        revision2.isSyncNeeded = true
+        revision2.remoteStatus = .syncNeeded
 
         // GIVEN a server with the an updated content (but not title)
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
@@ -1299,7 +1299,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let revision1 = post._createRevision()
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
-        revision1.isSyncNeeded = true
+        revision1.remoteStatus = .syncNeeded
 
         // GIVEN a local revision
         let revision2 = revision1._createRevision()
