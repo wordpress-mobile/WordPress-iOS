@@ -1,8 +1,7 @@
 24.7
 -----
 
-* [*] [Jetpack-only] Stats: Optimized the Insights tab to enhance loading and scrolling performance. [#22592]
-
+* [*] [Jetpack-only] Stats: Made optimizations to enhance loading and scrolling performance. [#22592, #22847]
 
 24.6
 -----
