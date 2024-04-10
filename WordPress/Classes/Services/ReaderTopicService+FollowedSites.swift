@@ -7,7 +7,7 @@ extension ReaderTopicService {
 
     @objc func fetchAllFollowedSites(success: @escaping () -> Void, failure: @escaping (Error?) -> Void) {
         let service = ReaderTopicServiceRemote(wordPressComRestApi: apiRequest())
-        let pageSize: UInt = 100
+        let pageSize: UInt = 25
 
         service.fetchFollowedSites(forPage: 1, number: pageSize) { totalSites, sites in
             guard let totalSites, let sites else {

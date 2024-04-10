@@ -1,2 +1,1 @@
-Wir haben einen Fix eingeführt, der bestimmte Fehler im Editor und bei individuellen Blocktypen verhindert. Dieser Fix protokolliert alle Fehler, die sich einschleichen, damit wir auch diese beseitigen können.
-Außerdem haben wir die Vorschau und Veröffentlichung verbessert, indem wir den Bearbeiten-Button aus dem „Beitrag veröffentlicht“-Erfolgsbildschirm und den „Veröffentlichen“-Button aus dem „Vorschau“-Bildschirm entfernt haben. Alles an einem Tag.
+Wir haben eine Handvoll Probleme mit der Formatierung von hervorgehobenem Text behoben. Ich weiß nicht, wie es dir geht, aber das ist das Highlight unserer Woche.

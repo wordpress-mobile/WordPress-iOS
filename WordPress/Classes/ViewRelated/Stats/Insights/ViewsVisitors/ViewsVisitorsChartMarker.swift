@@ -265,7 +265,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
                                                                   .paragraphStyle: paragraphStyle,
                                                                   .foregroundColor: UIColor.white]
 
-        let topRowStr = NSMutableAttributedString(string: "\(differenceStr) (\(roundedPercentage)%)\n", attributes: topRowAttributes)
+        let topRowStr = NSMutableAttributedString(string: "\(differenceStr) (\(roundedPercentage.percentageString()))\n", attributes: topRowAttributes)
         let bottomRowStr = NSAttributedString(string: "\(yValue) \(name)", attributes: bottomRowAttributes)
 
         topRowStr.append(bottomRowStr)

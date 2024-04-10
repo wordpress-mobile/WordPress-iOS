@@ -1,2 +1,3 @@
-Kami telah membuat perbaikan untuk mencegah bug tertentu di editor dan di tipe blok tunggal. Perbaikan ini mencatat semua bug yang lewat sehingga kami dapat membasminya pula.
-Kami juga menyempurnakan proses pratinjau dan penerbitan pos dengan menghapus tombol edit dari layar berhasil “Pos Diterbitkan” dan tombol poskan dari layar “Pratinjau”. Totalitas kerja yang kami nikmati.
+Kami telah memperbaiki sejumlah masalah terkait pemformatan teks yang disorot. Kami harap ini jadi kabar gembira untuk Anda minggu ini.
+Kami juga berhasil memecahkan masalah yang menyebabkan munculnya beberapa pesan error di layar Wawasan. Apa pun masalahnya, kami punya solusinya.
+Anda kini bisa mengakses versi terkini situs Anda di pembaca, alih-alih versi lama yang tersimpan di cache. Rasakan pengalaman pengguna yang lebih optimal di situs versi terbaru Anda.

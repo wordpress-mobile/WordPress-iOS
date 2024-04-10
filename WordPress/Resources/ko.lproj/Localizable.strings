@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-04-04 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "검색 내역 삭제";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "선택한 색상 지우기";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "지우는 중...";
@@ -10705,8 +10708,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "이 블로그를 이미 구독하고 있습니다.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "편집";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "관리";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "블로그별 필터링";
@@ -10736,10 +10739,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "태그 없음";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "새 태그 구독 중...";
+"reader.filterSheet.select.tags.following" = "새 태그를 팔로우하는 중...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "제안된 태그";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "태그를 팔로우합니다.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "블로그 가져오는 중...";
@@ -10829,10 +10835,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "구독으로 이동";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "구독을 통해 특정 블로그의 글을 구독할 수 있습니다.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "블로그 추가";
@@ -10949,6 +10951,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "블로그 구독 해지";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "기본";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "저녁";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "세피아";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "부드러운";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "완료";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "크기";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "맞춤화된 읽기 경험을 위해 직접 선택해 주세요. 여러분에게 맞는 스타일을 선택하세요.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "이 기능에 대한 피드백을 보내주세요";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "아직 개발 중인 기능입니다.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "개";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "여우";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "디자인";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "쓰기";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "읽기 기본 설정을 선택하세요";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "블로그 관리";
 
@@ -10961,20 +11008,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "블로그";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "새 태그 구독 중...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "태그 구독";
+"reader.select.interests.follow.title" = "태그 팔로우";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "새 태그를 팔로우하는 중...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "구독할 새 태그 없음";
+"reader.select.tags.no.results.follow.title" = "팔로우할 새 태그가 없음";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "태그 선택";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "태그를 구독합니다.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "구독";
@@ -11005,6 +11049,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "추가 태그 검색";
+
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "팔로우하기";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "팔로우 중";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unfollow.accessibility.label" = "%@ 팔로우 취소";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "구독 해지";
@@ -11758,6 +11811,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "을(를) 이후에 사용할 수 없게 됩니다.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "새로운 사이트를 제작하시나요?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "워드프레스, 도움말, 지원, 자주 묻는 질문, 질문, 디버깅, 로그, 도움말 센터, 연락처";

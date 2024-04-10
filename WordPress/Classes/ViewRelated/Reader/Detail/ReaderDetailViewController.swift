@@ -48,10 +48,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     @IBOutlet weak var commentsTableView: IntrinsicTableView!
 
     // swiftlint:disable:next weak_delegate
-    private let commentsTableViewDelegate = ReaderDetailCommentsTableViewDelegate()
+    private lazy var commentsTableViewDelegate = {
+        ReaderDetailCommentsTableViewDelegate(displaySetting: displaySetting)
+    }()
 
     /// The table view that displays Related Posts
     @IBOutlet weak var relatedPostsTableView: IntrinsicTableView!
+
+    /// Whether the we should load the related posts section.
+    /// Ideally we should only load this section once per post.
+    private var shouldFetchRelatedPosts = true
 
     /// Header container
     @IBOutlet weak var headerContainerView: UIView!
@@ -154,7 +160,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         guard let readerNavigationController = RootViewCoordinator.sharedPresenter.readerNavigationController else {
             return false
         }
-        return readerNavigationController.viewControllers.contains(self) == false
+
+        // This enables ALL Reader Detail screens to use a transparent navigation bar style,
+        // so that the display settings can be applied correctly.
+        //
+        // Plus, it looks like we don't have screens with a blue (legacy) navigation bar anymore,
+        // so it may be a good chance to clean up and remove `useCompatibilityMode`.
+        if ReaderDisplaySetting.customizationEnabled {
+            return false
+        }
+
+        return !readerNavigationController.viewControllers.contains(self)
     }
 
     /// Used to disable ineffective buttons when a Related post fails to load.
@@ -285,6 +301,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     func renderRelatedPosts(_ posts: [RemoteReaderSimplePost]) {
+        guard shouldFetchRelatedPosts else {
+            return
+        }
+
+        shouldFetchRelatedPosts = false
+
         let groupedPosts = Dictionary(grouping: posts, by: { $0.postType })
         let sections = groupedPosts.map { RelatedPostsSection(postType: $0.key, posts: $0.value) }
         relatedPosts = sections.sorted { $0.postType.rawValue < $1.postType.rawValue }
@@ -387,6 +409,14 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         }
 
         guard let post = post else {
+            return
+        }
+
+        fetchRelatedPostsIfNeeded(for: post)
+    }
+
+    func fetchRelatedPostsIfNeeded(for post: ReaderPost) {
+        guard shouldFetchRelatedPosts else {
             return
         }
 
@@ -561,21 +591,28 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
             // Header view
             header.displaySetting = displaySetting
+
+            // Toolbar
+            toolbar.displaySetting = displaySetting
+            toolbarSafeAreaView.backgroundColor = toolbar.backgroundColor
         }
 
-        // TODO: Featured image view
+        // Featured image view
+        featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
         if let post {
             webView.displaySetting = displaySetting
             webView.loadHTMLString(post.contentForDisplay())
+            // TODO: Fix sizing
         }
 
-        // TODO: Comments table view
+        // Comments table view
+        commentsTableViewDelegate.displaySetting = displaySetting
+        commentsTableView.reloadData()
 
-        // TODO: Related posts
-
-        // TODO: Toolbar
+        // Related posts table view
+        relatedPostsTableView.reloadData()
     }
 
     /// Configure the webview
@@ -586,7 +623,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     /// Updates the webview height constraint with it's height
     private func observeWebViewHeight() {
         scrollObserver = webView.scrollView.observe(\.contentSize, options: .new) { [weak self] _, change in
-            guard let height = change.newValue?.height else {
+            guard let self,
+                  let height = change.newValue?.height else {
                 return
             }
 
@@ -594,13 +632,17 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
             /// (except for a few times when it returns a very big weird number)
             /// We use that value so the content is not displayed with weird empty space at the bottom
             ///
-            self?.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
+            self.webView.evaluateJavaScript("document.body.scrollHeight", completionHandler: { (webViewHeight, error) in
                 guard let webViewHeight = webViewHeight as? CGFloat else {
-                    self?.webViewHeight.constant = height
+                    self.webViewHeight.constant = height
                     return
-            }
+                }
 
-                self?.webViewHeight.constant = min(height, webViewHeight)
+                /// The display setting's custom size is applied through the HTML's initial-scale property
+                /// in the meta tag. The `scrollHeight` value seems to return the height as if it's at 1.0 scale,
+                /// so we'll need to add the custom scale into account.
+                let scaledWebViewHeight = round(webViewHeight * self.displaySetting.size.scale)
+                self.webViewHeight.constant = min(scaledWebViewHeight, height)
             })
         }
     }
@@ -630,6 +672,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     private func configureFeaturedImage() {
         guard featuredImage.superview == nil else {
             return
+        }
+
+        if ReaderDisplaySetting.customizationEnabled {
+            featuredImage.displaySetting = displaySetting
         }
 
         featuredImage.useCompatibilityMode = useCompatibilityMode
@@ -719,6 +765,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     private func configureToolbar() {
+        if ReaderDisplaySetting.customizationEnabled {
+            toolbar.displaySetting = displaySetting
+        }
         toolbar.delegate = coordinator
         toolbarContainerView.addSubview(toolbar)
         toolbarContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -792,31 +841,26 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let vc = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
-            self?.displaySettingStore.setting = newSetting
-            self?.applyDisplaySetting()
+        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+            // no need to refresh if there are no changes to the display setting.
+            guard let self,
+                  newSetting != self.displaySetting else {
+                return
+            }
+
+            self.displaySettingStore.setting = newSetting
+            self.applyDisplaySetting()
         }
-        let nav = UINavigationController(rootViewController: vc)
-        if let sheet = nav.sheetPresentationController {
+
+        let navController = UINavigationController(rootViewController: viewController)
+        navController.navigationBar.isTranslucent = true
+
+        if let sheet = navController.sheetPresentationController {
             sheet.detents = [.large()]
             sheet.prefersGrabberVisible = false
         }
 
-        vc.navigationItem.rightBarButtonItem = .init(systemItem: .close,
-                                                     primaryAction: UIAction { [weak vc] _ in
-            vc?.navigationController?.dismiss(animated: true)
-        })
-
-        nav.navigationBar.isTranslucent = true
-        vc.edgesForExtendedLayout = .top
-
-        let navAppearance = UINavigationBarAppearance()
-        navAppearance.configureWithTransparentBackground()
-        vc.navigationItem.standardAppearance = navAppearance
-        vc.navigationItem.scrollEdgeAppearance = navAppearance
-        vc.navigationItem.compactAppearance = navAppearance
-
-        navigationController?.present(nav, animated: true)
+        navigationController?.present(navController, animated: true)
     }
 
     /// A View Controller that displays a Post content.
@@ -949,8 +993,16 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         let post = relatedPosts[indexPath.section].posts[indexPath.row]
         cell.configure(for: post)
 
-        // TODO: Reader customization: override to transparent background
+        // Additional style overrides
         cell.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            cell.titleLabel.font = displaySetting.font(with: .body, weight: .semibold)
+            cell.titleLabel.textColor = displaySetting.color.foreground
+
+            cell.excerptLabel.font = displaySetting.font(with: .footnote)
+            cell.excerptLabel.textColor = displaySetting.color.foreground
+        }
 
         return cell
     }
@@ -967,8 +1019,13 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
 
         header.titleLabel.text = title
 
-        // TODO: Reader customization: override to transparent background
+        // Additional style overrides
         header.backgroundColorView.backgroundColor = .clear
+
+        if ReaderDisplaySetting.customizationEnabled {
+            header.titleLabel.font = displaySetting.font(with: .footnote, weight: .semibold)
+            header.titleLabel.textColor = displaySetting.color.foreground
+        }
 
         return header
     }
@@ -1161,11 +1218,12 @@ private extension ReaderDetailViewController {
     }
 
     func displaySettingButtonItem() -> UIBarButtonItem? {
-        guard FeatureFlag.readerCustomization.enabled,
-              let symbolImage = UIImage(systemName: "textformat") else {
+        guard ReaderDisplaySetting.customizationEnabled,
+              let icon = UIImage(named: "reader-reading-preferences") else {
             return nil
         }
-        let button = barButtonItem(with: symbolImage, action: #selector(didTapDisplaySettingButton(_:)))
+        let button = barButtonItem(with: icon, action: #selector(didTapDisplaySettingButton(_:)))
+        button.accessibilityLabel = Strings.displaySettingAccessibilityLabel
 
         return button
     }
@@ -1256,6 +1314,10 @@ extension ReaderDetailViewController {
             value: "Dismiss",
             comment: "Spoken accessibility label"
         )
+        static let displaySettingAccessibilityLabel = NSLocalizedString(
+            "readerDetail.displaySettingButton.accessibilityLabel",
+            value: "Reading Preferences",
+            comment: "Spoken accessibility label for the Reading Preferences menu.")
         static let safariButtonAccessibilityLabel = NSLocalizedString(
             "readerDetail.safariButton.accessibilityLabel",
             value: "Open in Safari",

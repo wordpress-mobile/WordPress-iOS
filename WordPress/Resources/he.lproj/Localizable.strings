@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 18:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-03 16:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "ניקוי היסטוריית חיפוש";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "למחוק את הצבע שנבחר";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "מחיקה...";
@@ -10744,8 +10747,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "כבר נרשמת לעדכונים מבלוג זה.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "לערוך";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "ניהול";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "לסנן לפי בלוג";
@@ -10775,10 +10778,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "ללא תגיות";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "נרשם לעדכונים מתגיות חדשות...";
+"reader.filterSheet.select.tags.following" = "מתחיל מעקב אחר תגיות חדשות...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "תגיות מומלצות";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "עוקב אחר התגית.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "מביא בלוגים...";
@@ -10868,10 +10874,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "לעבור למינויים";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "אפשר להירשם לעדכוני פוסטים מבלוג ספציפי על ידי הרשמה לעדכונים מהבלוג.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "להוסיף בלוג";
@@ -10988,6 +10990,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "לבטל את ההרשמה לעדכונים מהבלוג";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "ברירת מחדל";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "ערב";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "ספיה";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "רך";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "סיימתי";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "גודל";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "קריאה היא חוויה אישית, אנחנו רוצים שתהיה לך שליטה עליה. באפשרותך לבחור את הסגנונות שמתאימים לך.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "לשליחת משוב על האפשרות הזאת";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "האפשרות הזאת עדיין נמצאת בפיתוח.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "כלבים";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "שועלים";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "עיצוב";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "כתיבה";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "לבחור את העדפות הקריאה שלך";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "לנהל בלוגים";
 
@@ -11000,20 +11047,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "בלוגים";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "נרשם לעדכונים מתגיות חדשות...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "להירשם לעדכונים מתגיות";
+"reader.select.interests.follow.title" = "לעקוב אחרי תגיות";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "מתחיל מעקב אחר תגיות חדשות...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "אין תגיות חדשות שניתן להירשם לעדכונים מהן";
+"reader.select.tags.no.results.follow.title" = "אין תגיות חדשות למעקב";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "לבחור את התגיות שלך";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "רושם לקבלת עדכונים על התגית.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "להירשם לעדכונים";
@@ -11045,8 +11089,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "לגלות תגיות נוספות";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "לעקוב";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "עוקב";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "לבטל את ההרשמה אל %@";
+"reader.tags.unfollow.accessibility.label" = "להפסיק את המעקב אחר %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "ביטול הרשמה";
@@ -11809,6 +11859,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "לא יהיה זמין בעתיד.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "רוצה ליצור אתר חדש?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "WordPress, עזרה, תמיכה, שאלות נפוצות, שאלות, איתור באגים, קובצי יומן, מרכז העזרה, יצירת קשר";

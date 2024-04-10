@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-28 21:39:46+0000 */
+/* Translation-Revision-Date: 2024-04-04 09:17:19+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: ro */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "Șterge istoric căutări";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "Șterge culoarea selectată";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Șterg...";
@@ -6470,7 +6473,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Site database" = "Bază de date site";
 
 /* Overlay message displayed when site successfully deleted */
-"Site deleted" = "Site-ul a fost șters";
+"Site deleted" = "Am șters site-ul";
 
 /* Setting: indicates if New Follows will be notified */
 "Site follows" = "Urmăriri site";
@@ -10750,8 +10753,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Te-ai abonat deja la acest blog.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Editează";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Administrează";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtrează după blog";
@@ -10781,10 +10784,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Nicio etichetă";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Abonare la etichete noi...";
+"reader.filterSheet.select.tags.following" = "Urmăresc etichete noi...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Etichete sugerate";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Urmărește eticheta.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Preiau blogurile...";
@@ -10874,10 +10880,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Mergi la Abonamente";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Te poți abona la articolele publicate pe un anumit blog abonându-te la blog.";
 
 /* No Tags View Button Label */
 "reader.no.tags.title" = "Adaugă un blog";
@@ -10994,6 +10996,51 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Dezabonează-te la blog";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Implicit";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Seara";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sepia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Delicat";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Gata";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Dimensiune";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "Cititorul este personal, vrem să ai control deplin. Alege stilurile care ți se potrivesc.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "Spune-ne părerea ta despre această funcționalitate";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "Această funcționalitate este încă în dezvoltare.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "câini";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "vulpe";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "design";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "scriere";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "Alege preferințele pentru Cititor";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Administrează blogurile";
 
@@ -11006,20 +11053,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Bloguri";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Abonare la etichete noi...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Abonează-te la etichete";
+"reader.select.interests.follow.title" = "Urmărește etichetele";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Urmăresc etichete noi...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Nu există etichete noi la care să te abonezi";
+"reader.select.tags.no.results.follow.title" = "Nu sunt etichete noi de urmărit";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Alege etichetele";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Abonează-te la etichetă.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonează-te";
@@ -11051,8 +11095,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descoperă mai multe etichete";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Urmărește";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Urmărești";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Dezabonează-te la %@";
+"reader.tags.unfollow.accessibility.label" = "Anulează urmărirea %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Dezabonează-te";
@@ -11815,6 +11865,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "va fi indisponibil în viitor.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Începi un site nou?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ajutor, suport, întrebări frecvente, întrebări, depanare, jurnale, centru de ajutor, contact";
