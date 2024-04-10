@@ -365,6 +365,8 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         XCTAssertNil(post.revision)
     }
 
+    // MARK: - Publish
+
     /// Scenario: publish a draft post that has unsynced revisions.
     func testPublishDraftPostThatNeedsSyncing() async throws {
         // GIVEN a draft post that needs sync
@@ -417,6 +419,56 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         XCTAssertNil(revision1.managedObjectContext)
         XCTAssertNil(revision2.managedObjectContext)
     }
+
+    /// Scenario: publish an existing draft with a blogging ID and with a custom
+    /// publicize message, both of which use metadata.
+    func testSaveExistingPostPublishWithMetadata() async throws {
+        // GIVEN a draft post (synced)
+        let post = PostBuilder(mainContext, blog: blog).build()
+        post.status = .draft
+        post.postID = 974
+        post.authorID = 29043
+        post.postTitle = "title-a"
+        post.content = "content-a"
+        post.bloggingPromptID = "prompt-a"
+
+        // GIVEN an editor revision
+        let revision = post._createRevision() as! Post
+        revision.publicizeMessage = "message-a"
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            let parameters = request.getBodyParameters() ?? [:]
+            XCTAssertEqual(parameters["status"], "publish")
+            let metadata = (parameters["metadata"] as? [[String: AnyHashable]]) ?? []
+            XCTAssertEqual(Set(metadata), Set([
+                [
+                    "key": "_wpas_mess",
+                    "operation": "update",
+                    "value": "message-a"
+                ],
+                [
+                    "key": "_jetpack_blogging_prompt_key",
+                    "operation": "update",
+                    "value": "prompt-a"
+                ]
+            ]))
+            var post = WordPressComPost.mock
+            post.metadata = [
+                WordPressComPost.Metadata(id: "752", key: "_wpas_mess", value: "message-a")
+            ]
+            return try! HTTPStubsResponse(value: post, statusCode: 202)
+        }
+
+        // WHEN
+        try await coordinator._publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+
+        // THEN
+        XCTAssertEqual(post.publicizeMessage, "message-a")
+        XCTAssertEqual(post.publicizeMessageID, "752")
+    }
+
+    // MARK: - Misc
 
     /// Scenario: app launches and has unsynced revisions.
     func testInitializeSync() async throws {

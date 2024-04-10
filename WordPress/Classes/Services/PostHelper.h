@@ -18,6 +18,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 + (RemotePost *)remotePostWithPost:(AbstractPost *)post;
 
++ (NSArray *)remoteMetadataForPost:(Post *)post;
+
 + (NSArray *)mergePosts:(NSArray <RemotePost *> *)remotePosts
                  ofType:(NSString *)syncPostType
            withStatuses:(nullable NSArray *)statuses

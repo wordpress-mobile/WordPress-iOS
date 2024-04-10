@@ -29,6 +29,19 @@ extension RemotePostCreateParameters {
             categoryIDs = (post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             }
+            metadata = Set(PostHelper.remoteMetadata(for: post).compactMap { value -> RemotePostMetadataItem? in
+                guard let dictionary = value as? [String: Any] else {
+                    assertionFailure("Unexpected value: \(value)")
+                    return nil
+                }
+                let id = dictionary["id"]
+
+                return RemotePostMetadataItem(
+                    id: (id as? String) ?? (id as? NSNumber)?.stringValue,
+                    key: dictionary["key"] as? String,
+                    value: dictionary["value"] as? String
+                )
+            })
         default:
             break
         }
