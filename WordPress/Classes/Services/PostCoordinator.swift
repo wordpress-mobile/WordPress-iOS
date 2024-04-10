@@ -274,7 +274,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
+    func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
@@ -282,6 +282,11 @@ class PostCoordinator: NSObject {
         let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository, source: source)
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
+    }
+
+    func didResolveConflict(for post: AbstractPost) {
+        workers[post.objectID]?.error = nil
+        notifyConflictResolved(for: post)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
