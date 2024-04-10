@@ -669,7 +669,7 @@ class AbstractPostListViewController: UIViewController,
 
         func performAction() {
             Task {
-                try? await PostCoordinator.shared.trash(post)
+                await PostCoordinator.shared.trash(post)
             }
         }
 
@@ -698,7 +698,7 @@ class AbstractPostListViewController: UIViewController,
         alert.addDestructiveActionWithTitle(Strings.Delete.actionTitle) { _ in
             completion()
             Task {
-                try? await PostCoordinator.shared._delete(post)
+                await PostCoordinator.shared._delete(post)
             }
         }
         alert.presentFromRootViewController()

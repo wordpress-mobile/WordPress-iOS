@@ -1042,24 +1042,15 @@ class PostCoordinator: NSObject {
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
 
-        let context = coreDataStack.mainContext
+        do {
+            try await PostRepository(coreDataStack: coreDataStack)._trash(post)
 
-        guard post.hasRemote() else {
-            // Delete all the local data
-            context.deleteObject(post)
-            ContextManager.shared.saveContextAndWait(context)
-            return
+            cancelAnyPendingSaveOf(post: post)
+            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            SearchManager.shared.deleteSearchableItem(post)
+        } catch {
+            handleError(error, for: post)
         }
-
-        // Delete local revisions
-        post.deleteAllRevisions()
-        ContextManager.shared.saveContextAndWait(context)
-
-        var changes = RemotePostUpdateParameters()
-        changes.status = Post.Status.trash.rawValue
-        try await _update(post, changes: changes)
-
-        SearchManager.shared.deleteSearchableItem(post)
     }
 
     @MainActor
@@ -1071,17 +1062,8 @@ class PostCoordinator: NSObject {
 
         do {
             try await PostRepository(coreDataStack: coreDataStack)._delete(post)
-
-            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
-            SearchManager.shared.deleteSearchableItem(post)
         } catch {
-            if let error = error as? PostServiceRemoteUpdatePostError, case .notFound = error {
-                handlePermanentlyDeleted(post)
-            } else {
-                trackError(error, operation: "post-delete")
-                handleError(error, for: post)
-            }
-            throw error
+            handleError(error, for: post)
         }
     }
 
