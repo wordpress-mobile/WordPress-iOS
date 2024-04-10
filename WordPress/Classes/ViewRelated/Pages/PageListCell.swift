@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import Combine
 
-final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
+final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
 
     // MARK: - Views
 
@@ -28,6 +28,10 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         set { titleLabel.attributedText = newValue }
     }
 
+    // MARK: AbstractPostListCell
+
+    var post: AbstractPost? { viewModel?.page }
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -45,7 +49,7 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         super.prepareForReuse()
 
         imageLoader.prepareForReuse()
-        viewModel?.didUpdateSyncState = nil
+        viewModel = nil
     }
 
     func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false, delegate: InteractivePostViewDelegate? = nil) {
@@ -78,11 +82,7 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
 
         configure(with: viewModel.syncStateViewModel)
-        viewModel.didUpdateSyncState = { [weak self] in
-            self?.configure(with: $0)
-        }
-
-        self.viewModel = viewModel // Important to retain it
+        self.viewModel = viewModel
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {

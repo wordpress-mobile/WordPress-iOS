@@ -70,10 +70,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
-
-        if !RemoteFeatureFlag.syncPublishing.enabled() {
-            NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
-        }
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -105,23 +101,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
-        }
-    }
-
-    // MARK: - Notifications
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post) || updatedObjects.contains(post.original())
-        }
-        if !updatedIndexPaths.isEmpty {
-            tableView.beginUpdates()
-            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
-            tableView.endUpdates()
         }
     }
 

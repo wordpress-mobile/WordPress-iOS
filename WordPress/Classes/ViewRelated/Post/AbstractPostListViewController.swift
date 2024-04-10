@@ -111,6 +111,8 @@ class AbstractPostListViewController: UIViewController,
         updateAndPerformFetchRequest()
 
         observeNetworkStatus()
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -216,6 +218,26 @@ class AbstractPostListViewController: UIViewController,
         }
 
         return properties
+    }
+
+    // MARK: - Notifications
+
+    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return assertionFailure("missing NSUpdatedObjectsKey")
+        }
+        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
+            let cell = tableView.cellForRow(at: $0) as? AbstractPostListCell
+            guard let post = cell?.post else {
+                return false
+            }
+            return updatedObjects.contains(post) || updatedObjects.contains(post.original())
+        }
+        if !updatedIndexPaths.isEmpty {
+            tableView.beginUpdates()
+            tableView.reloadRows(at: updatedIndexPaths, with: .none)
+            tableView.endUpdates()
+        }
     }
 
     // MARK: - Author Filter

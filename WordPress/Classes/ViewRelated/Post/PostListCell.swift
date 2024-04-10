@@ -1,7 +1,12 @@
 import Foundation
 import UIKit
 
-final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
+protocol AbstractPostListCell {
+    /// A post displayed by the cell.
+    var post: AbstractPost? { get }
+}
+
+final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
     var isEnabled = true
 
     // MARK: - Views
@@ -35,6 +40,10 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         set { contentLabel.attributedText = newValue }
     }
 
+    // MARK: AbstractPostListCell
+
+    var post: AbstractPost? { viewModel?.post }
+
     // MARK: - Initializers
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,7 +61,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         super.prepareForReuse()
 
         imageLoader.prepareForReuse()
-        viewModel?.didUpdateSyncState = nil
+        viewModel = nil
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
@@ -74,11 +83,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         accessibilityLabel = viewModel.accessibilityLabel
 
         configure(with: viewModel.syncStateViewModel)
-        viewModel.didUpdateSyncState = { [weak self] in
-            self?.headerView.configure(with: $0)
-        }
-
-        self.viewModel = viewModel // Important to retain it
+        self.viewModel = viewModel
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
