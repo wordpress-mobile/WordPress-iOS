@@ -139,7 +139,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         _ = PostBuilder(mainContext)
             .withRemote()
             .with(status: .draft)
@@ -153,10 +153,10 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
     }
 
-    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() {
+    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() throws {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         _ = PostBuilder(mainContext)
             .with(status: .publish)
             .with(remoteStatus: .failed)
@@ -171,7 +171,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(postServiceMock.didCallUploadPost).toEventually(beTrue())
         expect(postServiceMock.lastUploadPostInvocation).toEventuallyNot(beNil())
 
-        let invocation = postServiceMock.lastUploadPostInvocation!
+        let invocation = try XCTUnwrap(postServiceMock.lastUploadPostInvocation)
         expect(invocation.post.postTitle).to(equal("Ipsam nihil"))
         expect(invocation.forceDraftIfCreating).to(beTrue())
     }
@@ -253,7 +253,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testTracksAutoUploadPostInvoked() {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         let interactor = PostAutoUploadInteractor()
         let post = PostBuilder(mainContext)
             .withRemote()
