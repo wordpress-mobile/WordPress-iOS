@@ -185,7 +185,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     // Reader customization model
     private lazy var displaySettingStore: ReaderDisplaySettingStore = {
-        return .init()
+        let store = ReaderDisplaySettingStore()
+        store.delegate = self
+        return store
     }()
 
     // Convenient access to the underlying structure
@@ -560,7 +562,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Apply view styles
-    private func applyStyles() {
+    @MainActor private func applyStyles() {
         guard let readableGuide = webView.superview?.readableContentGuide else {
             return
         }
@@ -1067,6 +1069,14 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         default:
             return nil
         }
+    }
+}
+
+// MARK: - ReaderDisplaySettingStoreDelegate
+
+extension ReaderDetailViewController: ReaderDisplaySettingStoreDelegate {
+    func displaySettingDidChange() {
+        applyDisplaySetting()
     }
 }
 
