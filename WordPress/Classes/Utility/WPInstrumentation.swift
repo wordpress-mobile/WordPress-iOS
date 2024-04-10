@@ -37,33 +37,33 @@ extension WordPressAPIError: TrackableErrorProtocol {
     func getTrackingUserInfo() -> [String: String]? {
         switch self {
         case .requestEncodingFailure(let underlyingError):
-            return getUserInfo(for: underlyingError, category: "request-encoding-failure")
+            return getUserInfo(for: underlyingError, category: "request_encoding_failure")
         case .connection(let error):
             return getUserInfo(for: error, category: "connection")
         case .endpointError(let endpointError):
             switch endpointError {
             case let error as WordPressComRestApiEndpointError:
                 return [
-                    "category": "wpcom-endpoint-error",
-                    "wpcom-endpoint-error-api-error-code": error.apiErrorCode?.description ?? "–",
-                    "wpcom-endpoint-error-api-error-message": error.apiErrorMessage ?? "–"
+                    "category": "wpcom_endpoint_error",
+                    "wpcom_endpoint_error_api_error_code": error.apiErrorCode?.description ?? "–",
+                    "wpcom_endpoint_error_api_error_message": error.apiErrorMessage ?? "–"
                 ]
             case let error as WordPressOrgXMLRPCApiFault:
                 return [
-                    "category": "xmlrpc-endpoint-error",
-                    "xmlrpc-endpoint-error-api-error-code": error.code?.description ?? "–",
-                    "xmlrpc-endpoint-error-api-error-message": error.message ?? "–"
+                    "category": "xmlrpc_endpoint_error",
+                    "xmlrpc_endpoint_error_api_error_code": error.code?.description ?? "–",
+                    "xmlrpc_endpoint_error_api_error_message": error.message ?? "–"
                 ]
             default:
-                return ["category": "unexpected-endpoint-error"]
+                return ["category": "unexpected_endpoint_error"]
             }
         case let .unacceptableStatusCode(response, _):
             return [
-                "category": "unacceptable-status-code",
-                "status-code": response.statusCode.description
+                "category": "unacceptable_status_code",
+                "status_code": response.statusCode.description
             ]
         case let .unparsableResponse(_, _, error):
-            return getUserInfo(for: error, category: "unparsable-response")
+            return getUserInfo(for: error, category: "unparsable_response")
         case .unknown(let error):
             return getUserInfo(for: error, category: "unknown")
         }
@@ -73,7 +73,7 @@ extension WordPressAPIError: TrackableErrorProtocol {
 private func getUserInfo(for error: Error, category: String) -> [String: String] {
     return [
         "category": category,
-        "\(category)-error-domain": (error as NSError).domain,
-        "\(category)-error-code": (error as NSError).code.description
+        "\(category)_error_domain": (error as NSError).domain,
+        "\(category)_error_code": (error as NSError).code.description
     ]
 }
