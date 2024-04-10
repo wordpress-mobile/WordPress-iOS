@@ -56,11 +56,16 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%)")
+        let stringFormat = NSLocalizedString(
+            "stats.overview.differenceLabelWithNumber",
+            value: "%1$@%2$@ (%3$@)",
+            comment: "Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
+        )
+
         return String.localizedStringWithFormat(stringFormat,
                                                 difference < 0 ? "" : "+",
                                                 difference.abbreviatedString(),
-                                                differencePercent.abbreviatedString())
+                                                differencePercent.percentageString())
     }
 
     var differenceTextColor: UIColor {

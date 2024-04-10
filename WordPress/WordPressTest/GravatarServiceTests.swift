@@ -1,6 +1,7 @@
 import Foundation
 import XCTest
 import WordPressKit
+import Gravatar
 @testable import WordPress
 
 /// GravatarService Unit Tests
@@ -18,34 +19,40 @@ class GravatarServiceTests: CoreDataTestCase {
                 completion(nil)
             }
         }
-
     }
 
-    class GravatarServiceTester: GravatarService {
-        var gravatarServiceRemoteMock: GravatarServiceRemoteMock?
-
-        override func gravatarServiceRemote() -> GravatarServiceRemote {
-            gravatarServiceRemoteMock = GravatarServiceRemoteMock()
-            return gravatarServiceRemoteMock!
+    class ImageServiceMock: GravatarImageUploader {
+        var capturedAccountToken: String = ""
+        var capturedAccountEmail: String = ""
+        func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse {
+            capturedAccountEmail = email.rawValue
+            capturedAccountToken = accessToken
+            return URLResponse()
         }
     }
 
     func testServiceSanitizesEmailAddressCapitals() {
+        let expectation = expectation(description: "uploadImage must invoke completion")
         let account = createTestAccount(username: "some", token: "1234", emailAddress: "emAil@wordpress.com")
 
-        let gravatarService = GravatarServiceTester()
-        gravatarService.uploadImage(UIImage(), forAccount: account)
-
-        XCTAssertEqual("email@wordpress.com", gravatarService.gravatarServiceRemoteMock!.capturedAccountEmail)
+        let gravatarService = GravatarService(imageUploader: ImageServiceMock())
+        gravatarService.uploadImage(UIImage(), forAccount: account) { _ in
+            XCTAssertEqual("email@wordpress.com", (gravatarService.imageUploader as? ImageServiceMock)?.capturedAccountEmail)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
     }
 
     func testServiceSanitizesEmailAddressTrimsSpaces() {
+        let expectation = expectation(description: "uploadImage must invoke completion")
         let account = createTestAccount(username: "some", token: "1234", emailAddress: " email@wordpress.com ")
 
-        let gravatarService = GravatarServiceTester()
-        gravatarService.uploadImage(UIImage(), forAccount: account)
-
-        XCTAssertEqual("email@wordpress.com", gravatarService.gravatarServiceRemoteMock!.capturedAccountEmail)
+        let gravatarService = GravatarService(imageUploader: ImageServiceMock())
+        gravatarService.uploadImage(UIImage(), forAccount: account) { _ in
+            XCTAssertEqual("email@wordpress.com", (gravatarService.imageUploader as? ImageServiceMock)?.capturedAccountEmail)
+            expectation.fulfill()
+        }
+        wait(for: [expectation], timeout: 1)
     }
 
     private func createTestAccount(username: String, token: String, emailAddress: String) -> WPAccount {

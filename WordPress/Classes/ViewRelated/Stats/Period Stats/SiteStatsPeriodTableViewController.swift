@@ -185,8 +185,7 @@ private extension SiteStatsPeriodTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
     func clearExpandedRows() {

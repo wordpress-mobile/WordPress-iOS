@@ -186,9 +186,6 @@ final public class PushNotificationsManager: NSObject {
             return
         }
 
-        // Analytics
-        trackNotification(with: userInfo)
-
         // Handling!
         let handlers = [handleSupportNotification,
                         handleAuthenticationNotification,
@@ -207,7 +204,18 @@ final public class PushNotificationsManager: NSObject {
     ///
     /// - Parameter userInfo: The Notification's Payload
     ///
-    func trackNotification(with userInfo: NSDictionary) {
+    func trackNotification(with userInfo: NSDictionary, response: UNNotificationResponse? = nil) {
+        let event: WPAnalyticsStat? = {
+            if let response {
+                return response.actionIdentifier == UNNotificationDefaultActionIdentifier ? .pushNotificationAlertPressed : nil
+            }
+            return .pushNotificationReceived
+        }()
+
+        guard let event else {
+            return
+        }
+
         var properties = [String: String]()
 
         if let noteId = userInfo.number(forKey: Notification.identifierKey) {
@@ -222,7 +230,6 @@ final public class PushNotificationsManager: NSObject {
             properties[Tracking.tokenKey] = theToken
         }
 
-        let event: WPAnalyticsStat = (applicationState == .background) ? .pushNotificationReceived : .pushNotificationAlertPressed
         WPAnalytics.track(event, withProperties: properties)
     }
 
@@ -388,6 +395,17 @@ extension PushNotificationsManager {
         }
 
         return true
+    }
+}
+
+// MARK: - Application Delegate
+
+extension PushNotificationsManager: UIApplicationDelegate {
+
+    public func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        let dictionary = userInfo as NSDictionary
+        self.trackNotification(with: dictionary)
+        self.handleNotification(dictionary, completionHandler: completionHandler)
     }
 }
 

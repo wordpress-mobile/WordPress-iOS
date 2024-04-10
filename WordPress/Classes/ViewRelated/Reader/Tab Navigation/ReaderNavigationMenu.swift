@@ -20,6 +20,10 @@ struct ReaderNavigationMenu: View {
         return viewModel.streamFilters
     }
 
+    private var filterTitles: [String] {
+        filters.map { $0.title }
+    }
+
     private var hasActiveFilter: Bool {
         return viewModel.activeStreamFilter != nil
     }
@@ -38,7 +42,7 @@ struct ReaderNavigationMenu: View {
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
-            .animation(.easeInOut, value: filters)
+            .animation(.easeInOut, value: filterTitles)
             .mask({
                 HStack(spacing: .zero) {
                     Rectangle().fill(.black)

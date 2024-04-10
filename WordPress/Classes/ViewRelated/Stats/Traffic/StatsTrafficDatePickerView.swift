@@ -25,16 +25,16 @@ struct StatsTrafficDatePickerView: View {
                         .foregroundColor(Color.DS.Foreground.secondary)
                         .dynamicTypeSize(...maxDynamicTypeSize)
                 }
-                .padding(.vertical, Length.Padding.single)
-                .padding(.horizontal, Length.Padding.double)
+                .padding(.vertical, .DS.Padding.single)
+                .padding(.horizontal, .DS.Padding.double)
                 .background(Color.DS.Background.secondary)
-                .clipShape(RoundedRectangle(cornerRadius: Length.Radius.max))
+                .clipShape(RoundedRectangle(cornerRadius: .DS.Radius.max))
                 .overlay(
-                    RoundedRectangle(cornerRadius: Length.Radius.max)
+                    RoundedRectangle(cornerRadius: .DS.Radius.max)
                         .strokeBorder(.clear, lineWidth: 0)
                 )
-                .padding(.vertical, Length.Padding.single)
-                .padding(.horizontal, Length.Padding.double)
+                .padding(.vertical, .DS.Padding.single)
+                .padding(.horizontal, .DS.Padding.double)
             }
             .menuStyle(.borderlessButton)
 
@@ -46,7 +46,7 @@ struct StatsTrafficDatePickerView: View {
                 .lineLimit(1)
                 .dynamicTypeSize(...maxDynamicTypeSize)
 
-            Spacer().frame(width: Length.Padding.split)
+            Spacer().frame(width: .DS.Padding.split)
 
             HStack {
                 Button(action: {
@@ -56,11 +56,11 @@ struct StatsTrafficDatePickerView: View {
                         .imageScale(.small)
                         .foregroundColor(Color.DS.Foreground.secondary)
                         .flipsForRightToLeftLayoutDirection(true)
-                        .padding(.vertical, Length.Padding.double)
+                        .padding(.vertical, .DS.Padding.double)
                         .contentShape(Rectangle())
                         .dynamicTypeSize(...maxDynamicTypeSize)
                 }
-                .padding(.trailing, Length.Padding.single)
+                .padding(.trailing, .DS.Padding.single)
 
                 let isNextDisabled = !viewModel.isNextPeriodAvailable
                 let enabledColor = Color.DS.Foreground.secondary
@@ -73,16 +73,16 @@ struct StatsTrafficDatePickerView: View {
                         .imageScale(.small)
                         .foregroundColor(isNextDisabled ? disabledColor : enabledColor)
                         .flipsForRightToLeftLayoutDirection(true)
-                        .padding(.vertical, Length.Padding.double)
+                        .padding(.vertical, .DS.Padding.double)
                         .contentShape(Rectangle())
                         .dynamicTypeSize(...maxDynamicTypeSize)
                 }.disabled(isNextDisabled)
-            }.padding(.trailing, Length.Padding.medium)
+            }.padding(.trailing, .DS.Padding.medium)
 
         }.background(Color.DS.Background.primary)
             .overlay(
                 Rectangle()
-                    .frame(height: Length.Border.thin)
+                    .frame(height: .DS.Border.thin)
                     .foregroundColor(Color.DS.Foreground.tertiary),
                 alignment: .bottom
             )
