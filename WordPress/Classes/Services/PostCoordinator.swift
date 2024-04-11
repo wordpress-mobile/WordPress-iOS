@@ -174,7 +174,10 @@ class PostCoordinator: NSObject {
         case .private:
             parameters.status = Post.Status.publishPrivate.rawValue
         }
-        parameters.password = options.password
+        let latest = post.latest()
+        if (latest.password ?? "") != (options.password ?? "") {
+            parameters.password = options.password
+        }
         parameters.date = options.publishDate
 
         do {
