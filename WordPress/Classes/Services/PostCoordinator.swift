@@ -1030,9 +1030,7 @@ class PostCoordinator: NSObject {
         } else {
             pendingPostIDs.remove(post.objectID)
         }
-        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
-            NSUpdatedObjectsKey: Set([post])
-        ])
+        postDidUpdateNotification(for: post)
     }
 
     // MARK: - Trash/Restore/Delete
@@ -1152,9 +1150,7 @@ class PostCoordinator: NSObject {
             pendingDeletionPostIDs.remove(post.objectID)
         }
         if notify {
-            NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
-                NSUpdatedObjectsKey: Set([post])
-            ])
+            postDidUpdateNotification(for: post)
         }
     }
 
