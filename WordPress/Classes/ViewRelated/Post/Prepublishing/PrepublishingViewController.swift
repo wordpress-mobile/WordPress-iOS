@@ -38,6 +38,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let persistentStore: UserPersistentRepository
     private let coordinator = PostCoordinator.shared
 
+    private var postID: NSNumber?
     private var visibility: PostVisibility
     private var password: String?
     private var publishDate: Date?
@@ -89,6 +90,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
+        self.postID = post.postID
         self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
         self.password = post.password
         self.publishDate = post.dateCreated
@@ -695,7 +697,10 @@ extension PrepublishingViewController {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
             return assertionFailure("missing NSUpdatedObjectsKey")
         }
-        guard updatedObjects.count == 1, let updatedPost = updatedObjects.first as? AbstractPost else {
+        let updatedPosts = updatedObjects
+            .compactMap { $0 as? AbstractPost }
+            .filter { $0.postID != nil }
+        guard let updatedPost = updatedPosts.first(where: { $0.postID == postID }) else {
             return
         }
         self.post = updatedPost

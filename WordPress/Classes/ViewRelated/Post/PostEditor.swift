@@ -25,6 +25,10 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// The post being edited.
     ///
     var post: AbstractPost { get set }
+ 
+    /// The post ID of the post being edited.
+    ///
+    var postID: NSNumber? { get set }
 
     /// Initializer
     ///
@@ -199,7 +203,10 @@ extension PostEditor where Self: UIViewController {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
             return assertionFailure("missing NSUpdatedObjectsKey")
         }
-        guard updatedObjects.count == 1, let updatedPost = updatedObjects.first as? AbstractPost else {
+        let updatedPosts = updatedObjects
+            .compactMap { $0 as? AbstractPost }
+            .filter { $0.postID != nil }
+        guard let updatedPost = updatedPosts.first(where: { $0.postID == postID }) else {
             return
         }
         self.post = updatedPost
