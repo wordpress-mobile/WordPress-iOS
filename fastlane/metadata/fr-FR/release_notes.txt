@@ -1,2 +1,1 @@
-Nous avons introduit un correctif qui prévient certains bugs au sein de l’éditeur et des divers types de blocs. Ce correctif enregistre tout bug qui parvient à percer les défenses pour nous permettre de le corriger lui aussi.
-Nous avons également amélioré votre expérience en matière de prévisualisation et de publication en retirant le bouton d’édition de l’écran « Article publié » et le bouton de publication de l’écran « Aperçu » Tout ça en une journée de travail.
+Nous avons corrigé un certain nombre de problèmes liés au formatage du texte en surbrillance. Nous ne savons pas ce que vous en pensez, mais pour nous, c’est le clou de la semaine.

@@ -1,2 +1,3 @@
-We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.
-We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.
+We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.
+While we were at it, we solved the problems causing multiple error messages on the Insights screen. No drama, just data.
+You should also see the most current version of your site in the reader—not an older, cached version. Newer is always better.

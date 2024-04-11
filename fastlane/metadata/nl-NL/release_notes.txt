@@ -1,2 +1,1 @@
-We hebben een oplossing geïntroduceerd die bepaalde bugs binnen de editor en individuele bloktypen voorkomt. Deze oplossing logt eventuele bugs die erdoor glippen, zodat we die ook kunnen verhelpen.
-We hebben ook je voorbeeld en publicatie ervaring verbeterd door de bewerking knop te verwijderen van het succes bericht "Bericht gepubliceerd" en de publicatie knop van het "Voorbeeld" scherm. Allemaal in een dag werk.
+We hebben een paar problemen met de opmaak van gemarkeerde tekst opgelost. We weten niet hoe het met jou zit, maar dat is het hoogtepunt van onze week.

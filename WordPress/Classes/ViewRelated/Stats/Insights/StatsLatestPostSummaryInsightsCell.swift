@@ -2,6 +2,10 @@ import UIKit
 import Gridicons
 import DesignSystem
 
+protocol LatestPostSummaryConfigurable {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?)
+}
+
 class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfigurable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats

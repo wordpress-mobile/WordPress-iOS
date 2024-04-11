@@ -1,2 +1,3 @@
-Implementamos uma correção para evitar determinados bugs nos tipos de bloco individual e no editor. Essa correção registra eventuais bugs para que possamos eliminá-los também.
-Além disso, removemos o botão de edição da tela de êxito "Post publicado" e o botão de publicação da tela "Visualização" para melhorar sua experiência de publicação e visualização. Um dia normal de trabalho.
+Corrigimos uma série de problemas com formação de texto em destaque. Não sabemos sobre você, mas esse é o destaque da nossa semana.
+Enquanto fazíamos isso, solucionamos os problemas que causavam várias mensagens de erro na tela Informações. Sem drama, só dados.
+Pode ser que você também esteja vendo a versão mais atual do seu site no Leitor, e não a versão mais antiga e armazenada em cache. Quanto mais atual, melhor.
