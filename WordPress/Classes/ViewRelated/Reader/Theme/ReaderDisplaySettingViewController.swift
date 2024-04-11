@@ -182,7 +182,7 @@ extension ReaderDisplaySettingSelectionView {
                             .tint(Color(linkTintColor))
                             .accessibilityAddTraits(.isLink)
                             .environment(\.openURL, OpenURLAction { url in
-                                // TODO: Add Tracks
+                                WPAnalytics.track(.readingPreferencesFeedbackTapped)
                                 return .systemAction
                             })
                     }
