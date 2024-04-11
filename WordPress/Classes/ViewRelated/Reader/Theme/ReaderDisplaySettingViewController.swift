@@ -60,6 +60,7 @@ class ReaderDisplaySettingViewController: UIViewController {
 
         updateNavigationBarStyle(with: displaySetting)
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            WPAnalytics.track(.readingPreferencesClosed)
             self?.navigationController?.dismiss(animated: true)
         })
     }
