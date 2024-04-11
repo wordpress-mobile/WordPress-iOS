@@ -42,7 +42,6 @@ private extension MeScenePresenter {
     func makeNavigationController() -> UINavigationController {
         let meController = makeMeViewController()
         let navigationController = UINavigationController(rootViewController: meController)
-        navigationController.restorationIdentifier = Restorer.Identifier.navigationController.rawValue
         meController.navigationItem.rightBarButtonItem = makeDoneButton()
         // present in formSheet on iPad, default on iPhone
         if WPDeviceIdentification.isiPad() {

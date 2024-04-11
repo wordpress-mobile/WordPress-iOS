@@ -86,8 +86,6 @@ class EditPostViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
-        restorationIdentifier = RestorationKey.viewController.rawValue
-        restorationClass = EditPostViewController.self
 
         if RemoteFeatureFlag.syncPublishing.enabled() {
             NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
@@ -217,41 +215,6 @@ class EditPostViewController: UIViewController {
                                           for: self.blog,
                                           source: .publishFlow,
                                           alwaysShow: false)
-        }
-    }
-}
-
-// MARK: - State Restoration
-//
-extension EditPostViewController: UIViewControllerRestoration {
-    enum RestorationKey: String {
-        case viewController = "EditPostViewControllerRestorationID"
-        case post = "EditPostViewControllerPostRestorationID"
-    }
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL,
-            let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL),
-            let post = try? context.existingObject(with: postID),
-            let reloadedPost = post as? Post
-            else {
-                return nil
-        }
-
-        return EditPostViewController(post: reloadedPost.latest() as! Post)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        if let post = post {
-            coder.encode(post.objectID.uriRepresentation(), forKey: RestorationKey.post.rawValue)
         }
     }
 }

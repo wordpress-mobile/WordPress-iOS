@@ -215,38 +215,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
-    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        return true
-    }
-
-    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-        let lastSavedStateVersionKey = "lastSavedStateVersionKey"
-        let defaults = UserPersistentStoreFactory.instance()
-
-        var shouldRestoreApplicationState = false
-
-        if let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
-            if let lastSavedVersion = defaults.string(forKey: lastSavedStateVersionKey),
-                lastSavedVersion.count > 0 && lastSavedVersion == currentVersion {
-                shouldRestoreApplicationState = self.shouldRestoreApplicationState
-            }
-
-            defaults.set(currentVersion, forKey: lastSavedStateVersionKey)
-        }
-        return shouldRestoreApplicationState
-    }
-
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         let handler = WP3DTouchShortcutHandler()
         completionHandler(handler.handleShortcutItem(shortcutItem))
-    }
-
-    func application(_ application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let restoreID = identifierComponents.last else {
-            return nil
-        }
-
-        return Restorer().viewController(identifier: restoreID)
     }
 
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
