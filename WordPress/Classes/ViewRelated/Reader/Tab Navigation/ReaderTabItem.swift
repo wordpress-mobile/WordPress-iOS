@@ -47,6 +47,8 @@ extension ReaderTabItem {
             return Titles.followingTitle
         case .saved:
             return Titles.savedTitle
+        case .tags:
+            return Titles.tagsTitle
         default:
             return Titles.emptyTitle
         }
@@ -68,6 +70,11 @@ extension ReaderTabItem {
             value: "Saved",
             comment: "Reader navigation menu item for the Saved filter"
         )
+        static let tagsTitle = NSLocalizedString(
+            "reader.navigation.menu.tags",
+            value: "Your Tags",
+            comment: "Reader navigation menu item for the Tags filter"
+        )
         static let emptyTitle = ""
     }
 }
@@ -77,6 +84,7 @@ enum ReaderContentType {
     case selfHostedFollowing
     case contentError
     case saved
+    case tags
     case topic
 }
 
