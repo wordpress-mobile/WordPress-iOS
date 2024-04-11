@@ -93,7 +93,9 @@ figure {
 /** LINKS **/
 
 a {
-    color: var(--primary-color);
+    color: var(--link-color);
+    font-weight: var(--link-font-weight);
+    text-decoration: var(--link-text-decoration);
 }
 
 a.mention {
@@ -123,7 +125,7 @@ p > img:not(.emoji),
 figcaption {
     font: -apple-system-caption1;
     font-family: var(--text-font);
-    color: -apple-system-secondary-label;
+    color: var(--text-secondary-color);
     text-align: center;
 }
 
@@ -159,7 +161,7 @@ blockquote {
     font-size: 1rem;
     margin: 15pt 0;
     padding: 10pt;
-    background-color: -apple-system-secondary-background;
+    background-color: var(--background-secondary-color);
     -webkit-border-radius: 3pt;
 }
 
@@ -186,7 +188,7 @@ pre {
     font-family: var(--monospace-font);
     font-size: 0.85rem;
     -webkit-border-radius: 3pt;
-    background-color: -apple-system-secondary-background;
+    background-color: var(--background-secondary-color);
 }
 
 code {
@@ -213,7 +215,7 @@ table {
 }
 
 table, tr, td {
-    border: 1px solid -apple-system-separator;
+    border: 1px solid var(--border-color);
 }
 
 td {

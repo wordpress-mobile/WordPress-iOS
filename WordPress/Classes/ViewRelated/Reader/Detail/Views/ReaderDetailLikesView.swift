@@ -9,6 +9,19 @@ class ReaderDetailLikesView: UIView, NibLoadable {
     @IBOutlet weak var avatarStackView: UIStackView!
     @IBOutlet weak var summaryLabel: UILabel!
 
+    // Theming support
+
+    var displaySetting: ReaderDisplaySetting = .standard {
+        didSet {
+            applyStyles()
+            updateSummaryLabel()
+        }
+    }
+
+    private var preferredBorderColor: UIColor {
+        displaySetting.color == .system ? .basicBackground : displaySetting.color.background
+    }
+
     /// The UIImageView used to display the current user's avatar image. This view is hidden by default.
     @IBOutlet private weak var selfAvatarImageView: CircularImageView!
 
@@ -85,11 +98,12 @@ class ReaderDetailLikesView: UIView, NibLoadable {
 
 private extension ReaderDetailLikesView {
 
+    @MainActor
     func applyStyles() {
         // Set border on all the avatar views
         for subView in avatarStackView.subviews {
             subView.layer.borderWidth = 1
-            subView.layer.borderColor = UIColor.basicBackground.cgColor
+            subView.layer.borderColor = preferredBorderColor.cgColor
         }
     }
 
@@ -185,8 +199,17 @@ private extension ReaderDetailLikesView {
         let countPart = labelParts[safe: 1] ?? ""
         let lastPart = labelParts.last ?? ""
 
-        let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.secondaryLabel]
-        let highlightedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.primary]
+        let foregroundColor = displaySetting.color.secondaryForeground
+        let highlightedColor = displaySetting.color == .system ? .primary : displaySetting.color.foreground
+
+        let foregroundAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: foregroundColor]
+        var highlightedAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: highlightedColor]
+
+        if displaySetting.color != .system {
+            // apply underline and semibold weight for color themes other than `.system`.
+            highlightedAttributes[.font] = displaySetting.font(with: .footnote, weight: .semibold)
+            highlightedAttributes[.underlineStyle] = NSUnderlineStyle.single.rawValue
+        }
 
         let attributedString = NSMutableAttributedString(string: firstPart, attributes: foregroundAttributes)
         attributedString.append(NSAttributedString(string: countPart, attributes: highlightedAttributes))

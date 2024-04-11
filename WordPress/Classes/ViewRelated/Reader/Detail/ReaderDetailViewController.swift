@@ -185,7 +185,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     // Reader customization model
     private lazy var displaySettingStore: ReaderDisplaySettingStore = {
-        return .init()
+        let store = ReaderDisplaySettingStore()
+        store.delegate = self
+        return store
     }()
 
     // Convenient access to the underlying structure
@@ -560,7 +562,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Apply view styles
-    private func applyStyles() {
+    @MainActor private func applyStyles() {
         guard let readableGuide = webView.superview?.readableContentGuide else {
             return
         }
@@ -604,8 +606,10 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         if let post {
             webView.displaySetting = displaySetting
             webView.loadHTMLString(post.contentForDisplay())
-            // TODO: Fix sizing
         }
+
+        // Likes view
+        likesSummary.displaySetting = displaySetting
 
         // Comments table view
         commentsTableViewDelegate.displaySetting = displaySetting
@@ -713,6 +717,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureLikesSummary() {
         likesSummary.delegate = coordinator
+        likesSummary.displaySetting = displaySetting
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -1065,6 +1070,14 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
         default:
             return nil
         }
+    }
+}
+
+// MARK: - ReaderDisplaySettingStoreDelegate
+
+extension ReaderDetailViewController: ReaderDisplaySettingStoreDelegate {
+    func displaySettingDidChange() {
+        applyDisplaySetting()
     }
 }
 
