@@ -210,7 +210,9 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         var feedbackText: Text? {
-            // TODO: Check feature flag for feedback collection.
+            guard RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
+                return nil
+            }
 
             var linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
             if viewModel.displaySetting.color != .system {
