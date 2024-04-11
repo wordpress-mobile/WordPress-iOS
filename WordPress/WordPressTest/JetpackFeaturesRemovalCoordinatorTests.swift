@@ -346,12 +346,45 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
         XCTAssertNil(deadline)
     }
 
+    // MARK: Offline Scenarios
+
+    func testWordPressOfflineState() {
+        // Given
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        // assume that the user fails to request for remote feature flags and we fall back to the default values.
+        let remote = MockFeatureFlagRemote()
+        store.update(using: remote, waitOn: self)
+
+        // When
+        // assume that we're requesting from the WordPress app.
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, isJetpack: false)
+
+        // Then
+        XCTAssertEqual(phase, .staticScreens)
+    }
+
+    func testJetpackOfflineState() {
+        // Given
+        let store = RemoteFeatureFlagStore(persistenceStore: mockUserDefaults)
+        // assume that the user fails to request for remote feature flags and we fall back to the default values.
+        let remote = MockFeatureFlagRemote()
+        store.update(using: remote, waitOn: self)
+
+        // When
+        // assume that we're requesting from the Jetpack app.
+        let phase = JetpackFeaturesRemovalCoordinator.generalPhase(featureFlagStore: store, isJetpack: true)
+
+        // Then
+        XCTAssertEqual(phase, .normal)
+    }
+
     // MARK: Helpers
 
     private func generateFlags(phaseOne: Bool,
                                phaseTwo: Bool,
                                phaseThree: Bool,
                                phaseFour: Bool,
+                               phaseStaticScreens: Bool = false,
                                phaseNewUsers: Bool,
                                phaseSelfHosted: Bool) -> [WordPressKit.FeatureFlag] {
         return [
@@ -359,6 +392,7 @@ final class JetpackFeaturesRemovalCoordinatorTests: CoreDataTestCase {
             .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseTwo.remoteKey, value: phaseTwo),
             .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseThree.remoteKey, value: phaseThree),
             .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseFour.remoteKey, value: phaseFour),
+            .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalStaticPosters.remoteKey, value: phaseStaticScreens),
             .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseNewUsers.remoteKey, value: phaseNewUsers),
             .init(title: RemoteFeatureFlag.jetpackFeaturesRemovalPhaseSelfHosted.remoteKey, value: phaseSelfHosted),
         ]
