@@ -670,7 +670,7 @@ class ReaderDetailCoordinator {
             let setting = ReaderDisplaySettingStore().setting
             properties[DetailAnalyticsConstants.ReadingPreferences.isDefaultKey] = setting.isDefaultSetting
             properties[DetailAnalyticsConstants.ReadingPreferences.colorSchemeKey] = setting.color.valueForTracks
-            properties[DetailAnalyticsConstants.ReadingPreferences.fontTypeKey] = setting.font.rawValue
+            properties[DetailAnalyticsConstants.ReadingPreferences.fontTypeKey] = setting.font.valueForTracks
             properties[DetailAnalyticsConstants.ReadingPreferences.fontSizeKey] = setting.size.valueForTracks
         }
 

@@ -227,6 +227,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
             }
         }
+
+        var valueForTracks: String {
+            rawValue
+        }
     }
 
     enum Size: Int, Codable, CaseIterable {

@@ -347,6 +347,9 @@ extension ReaderDisplaySettingSelectionView {
                         Button {
                             viewModel.displaySetting.color = color
                             viewModel.didChangeColor?() // notify the view controller to update.
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.colorScheme,
+                                                           TrackingKeys.valueKey: color.valueForTracks])
                         } label: {
                             VStack(spacing: .DS.Padding.single) {
                                 DualColorCircle(primaryColor: Color(color.foreground),
@@ -379,6 +382,9 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Font.allCases, id: \.rawValue) { font in
                         Button {
                             viewModel.displaySetting.font = font
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.fontType,
+                                                           TrackingKeys.valueKey: font.rawValue])
                         } label: {
                             VStack(spacing: .DS.Padding.half) {
                                 Text("Aa")
@@ -419,7 +425,11 @@ extension ReaderDisplaySettingSelectionView {
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
                     .accessibilityHidden(true)
             } onEditingChanged: { _ in
-                viewModel.displaySetting.size = .init(rawValue: Int(sliderValue)) ?? .normal
+                let size = ReaderDisplaySetting.Size(rawValue: Int(sliderValue)) ?? .normal
+                viewModel.displaySetting.size = size
+                WPAnalytics.track(.readingPreferencesItemTapped,
+                                  properties: [TrackingKeys.typeKey: TrackingKeys.fontSize,
+                                               TrackingKeys.valueKey: size.valueForTracks])
             }
             .padding(.vertical, .DS.Padding.single)
             .accessibilityValue(Text(viewModel.displaySetting.size.accessibilityLabel))
@@ -481,5 +491,18 @@ fileprivate struct DualColorCircle: View {
             return .clear
         }
         return .secondary
+    }
+}
+
+// MARK: - Tracks
+
+fileprivate extension ReaderDisplaySettingSelectionView {
+
+    struct TrackingKeys {
+        static let typeKey = "type"
+        static let valueKey = "value"
+        static let colorScheme = "color_scheme"
+        static let fontType = "font"
+        static let fontSize = "font_size"
     }
 }
