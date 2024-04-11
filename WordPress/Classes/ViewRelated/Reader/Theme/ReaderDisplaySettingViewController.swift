@@ -74,6 +74,8 @@ class ReaderDisplaySettingViewController: UIViewController {
 // MARK: View Model
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
+    private typealias TrackingKeys = ReaderDisplaySettingSelectionView.TrackingKeys
+
     @Published var displaySetting: ReaderDisplaySetting
 
     /// Called when the user selects a new color.
@@ -87,6 +89,13 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     }
 
     func doneButtonTapped() {
+        WPAnalytics.track(.readingPreferencesSaved, properties: [
+            TrackingKeys.isDefault: displaySetting.isDefaultSetting,
+            TrackingKeys.colorScheme: displaySetting.color.valueForTracks,
+            TrackingKeys.fontType: displaySetting.font.valueForTracks,
+            TrackingKeys.fontSize: displaySetting.size.valueForTracks,
+        ])
+
         completion?(displaySetting)
     }
 
@@ -504,5 +513,6 @@ fileprivate extension ReaderDisplaySettingSelectionView {
         static let colorScheme = "color_scheme"
         static let fontType = "font"
         static let fontSize = "font_size"
+        static let isDefault = "is_default"
     }
 }
