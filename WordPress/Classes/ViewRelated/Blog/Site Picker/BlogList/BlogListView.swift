@@ -7,6 +7,7 @@ struct BlogListView: View {
     }
 
     struct Site: Equatable {
+        let id: NSNumber?
         let title: String
         let domain: String
         let imageURL: URL?
@@ -14,23 +15,20 @@ struct BlogListView: View {
 
     @Binding private var isEditing: Bool
     @Binding private var isSearching: Bool
-    @State private var pinnedDomains: [String]
-    @State private var recentDomains: [String]
+    @Binding private var searchText: String
+    @StateObject var viewModel: BlogListViewModel = BlogListViewModel()
     @State private var pressedDomains: Set<String> = []
-    private let sites: [Site]
-    private let selectionCallback: ((String) -> Void)
+    private let selectionCallback: ((NSNumber) -> Void)
 
     init(
-        sites: [Site],
         isEditing: Binding<Bool>,
         isSearching: Binding<Bool>,
-        selectionCallback: @escaping ((String) -> Void)
+        searchText: Binding<String>,
+        selectionCallback: @escaping ((NSNumber) -> Void)
     ) {
-        self.sites = sites
-        self.pinnedDomains = BlogListReducer.pinnedDomains().compactMap({ $0.domain })
-        self.recentDomains = BlogListReducer.recentDomains()
         self._isEditing = isEditing
         self._isSearching = isSearching
+        self._searchText = searchText
         self.selectionCallback = selectionCallback
     }
 
@@ -46,19 +44,19 @@ struct BlogListView: View {
     private var contentVStack: some View {
         List {
             if isSearching {
-                ForEach(sites, id: \.domain) { site in
+                ForEach(viewModel.searchSites, id: \.id) { site in
                     siteButton(site: site)
+                }
+                .onChange(of: searchText) { newValue in
+                    viewModel.updateSearchText(newValue)
                 }
             } else {
                 pinnedSection
                 recentsSection
-                allSitesSection
+                allRemainingSitesSection
             }
         }
         .listStyle(.grouped)
-        .task {
-            BlogListReducer.syncCachedValues(allSites: sites)
-        }
     }
 
     private func sectionHeader(title: String) -> some View {
@@ -70,13 +68,9 @@ struct BlogListView: View {
 
     @ViewBuilder
     private var pinnedSection: some View {
-        let pinnedSites = BlogListReducer.pinnedSites(
-            allSites: sites,
-            pinnedDomains: pinnedDomains
-        )
-        if !pinnedSites.isEmpty {
+        if !viewModel.pinnedSites.isEmpty {
             Section {
-                ForEach(pinnedSites, id: \.domain) { site in
+                ForEach(viewModel.pinnedSites, id: \.domain) { site in
                     siteButton(site: site)
                 }
             } header: {
@@ -94,20 +88,15 @@ struct BlogListView: View {
     }
 
     @ViewBuilder
-    private var allSitesSection: some View {
-        let allSites = BlogListReducer.allSites(
-            allSites: sites,
-            pinnedDomains: pinnedDomains,
-            recentDomains: recentDomains
-        )
-        if !allSites.isEmpty {
+    private var allRemainingSitesSection: some View {
+        if !viewModel.allRemainingSites.isEmpty {
             Section {
-                ForEach(allSites, id: \.domain) { site in
+                ForEach(viewModel.allRemainingSites, id: \.domain) { site in
                     siteButton(site: site)
                 }
             } header: {
                 sectionHeader(
-                    title: Strings.allSitesSectionTitle
+                    title: Strings.allRemainingSitesSectionTitle
                 )
                 .listRowInsets(EdgeInsets(
                     top: 0,
@@ -121,13 +110,9 @@ struct BlogListView: View {
 
     @ViewBuilder
     private var recentsSection: some View {
-        let recentSites = BlogListReducer.recentSites(
-            allSites: sites,
-            recentDomains: recentDomains
-        )
-        if !recentSites.isEmpty {
+        if !viewModel.recentSites.isEmpty {
             Section {
-                ForEach(recentSites, id: \.domain) { site in
+                ForEach(viewModel.recentSites, id: \.domain) { site in
                     siteButton(site: site)
                 }
             } header: {
@@ -144,30 +129,31 @@ struct BlogListView: View {
         }
     }
 
+    @ViewBuilder
     private func siteButton(site: Site) -> some View {
-        Button {
-            if isEditing {
-                withAnimation {
-                    BlogListReducer.toggleDomainPin(domain: site.domain)
-                    pinnedDomains = BlogListReducer.pinnedDomains().compactMap({ $0.domain })
-                    recentDomains = BlogListReducer.recentDomains()
+        if let siteID = site.id {
+            Button {
+                if isEditing {
+                    withAnimation {
+                        viewModel.togglePinnedSite(siteID: siteID)
+                    }
+                } else {
+                    viewModel.siteSelected(siteID: siteID)
+                    selectionCallback(siteID)
                 }
-            } else {
-                BlogListReducer.didSelectDomain(domain: site.domain)
-                selectionCallback(site.domain)
+            } label: {
+                siteHStack(site: site)
             }
-        } label: {
-            siteHStack(site: site)
+            .listRowSeparator(.hidden)
+            .buttonStyle(SelectedButtonStyle(onPress: { isPressed in
+                pressedDomains = pressedDomains.symmetricDifference([site.domain])
+            }))
+            .listRowBackground(
+                pressedDomains.contains(
+                    site.domain
+                ) ? Color.DS.Background.secondary : Color.DS.Background.primary
+            )
         }
-        .listRowSeparator(.hidden)
-        .buttonStyle(SelectedButtonStyle(onPress: { isPressed in
-            pressedDomains = pressedDomains.symmetricDifference([site.domain])
-        }))
-        .listRowBackground(
-            pressedDomains.contains(
-                site.domain
-            ) ? Color.DS.Background.secondary : Color.DS.Background.primary
-        )
     }
 
     private func siteHStack(site: Site) -> some View {
@@ -180,9 +166,7 @@ struct BlogListView: View {
             Spacer()
 
             if isEditing {
-                pinIcon(
-                    domain: site.domain
-                )
+                pinIcon(site: site)
                 .padding(.trailing, .DS.Padding.double)
             }
         }
@@ -205,8 +189,8 @@ struct BlogListView: View {
         }
     }
 
-    private func pinIcon(domain: String) -> some View {
-        if pinnedDomains.contains(domain) == true {
+    private func pinIcon(site: Site) -> some View {
+        if viewModel.pinnedSites.contains(site) {
             Image(systemName: "pin.fill")
                 .imageScale(.small)
                 .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
@@ -233,7 +217,7 @@ private extension BlogListView {
             comment: "Recents section title for site switcher."
         )
 
-        static let allSitesSectionTitle = NSLocalizedString(
+        static let allRemainingSitesSectionTitle = NSLocalizedString(
             "site_switcher_all_sites_section_title",
             value: "All sites",
             comment: "All sites section title for site switcher."
