@@ -32,7 +32,7 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let post: AbstractPost
+    private(set) var post: AbstractPost
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
@@ -155,6 +155,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         configureHeader()
         configureTableView()
         configureKeyboardToggle()
+        observePostCoordinatorDidUpdate()
+
         WPStyleGuide.applyBorderStyle(footerSeparator)
 
         title = ""
@@ -207,6 +209,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
 
         return footerView
+    }
+
+    private func observePostCoordinatorDidUpdate() {
+        NotificationCenter.default
+            .publisher(for: .postCoordinatorDidUpdate)
+            .sink { [weak self] notification in self?.postCoordinatorDidUpdate(notification) }
+            .store(in: &cancellables)
     }
 
     /// Toggles `keyboardShown` as the keyboard notifications come in
@@ -677,6 +686,19 @@ private extension PrepublishingOption {
         case .autoSharing:
             self.init(id: .autoSharing, title: Strings.jetpackSocial, type: .customContainer)
         }
+    }
+}
+
+// MARK: - Notifications
+extension PrepublishingViewController {
+    private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return assertionFailure("missing NSUpdatedObjectsKey")
+        }
+        guard updatedObjects.count == 1, let updatedPost = updatedObjects.first as? AbstractPost else {
+            return
+        }
+        self.post = updatedPost
     }
 }
 
