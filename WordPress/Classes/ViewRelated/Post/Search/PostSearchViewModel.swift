@@ -68,12 +68,10 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
             .sink { [weak self] in self?.reload(with: $0) }
             .store(in: &cancellables)
 
-        if !RemoteFeatureFlag.syncPublishing.enabled() {
-            NotificationCenter.default
-                .publisher(for: .postCoordinatorDidUpdate, object: nil)
-                .sink { [weak self] in self?.reload(with: $0) }
-                .store(in: &cancellables)
-        }
+        NotificationCenter.default
+            .publisher(for: .postCoordinatorDidUpdate, object: nil)
+            .sink { [weak self] in self?.reload(with: $0) }
+            .store(in: &cancellables)
 
         reload()
     }

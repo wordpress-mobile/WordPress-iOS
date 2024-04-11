@@ -1018,11 +1018,11 @@ class PostCoordinator: NSObject {
 
     @MainActor
     private func setUpdating(_ isUpdating: Bool, for post: AbstractPost) {
-        let objectID = post.original().objectID
+        let post = post.original()
         if isUpdating {
-            pendingPostIDs.insert(objectID)
+            pendingPostIDs.insert(post.objectID)
         } else {
-            pendingPostIDs.remove(objectID)
+            pendingPostIDs.remove(post.objectID)
         }
         NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
             NSUpdatedObjectsKey: Set([post])

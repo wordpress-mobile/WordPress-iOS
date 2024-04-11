@@ -7,9 +7,7 @@ final class PageListItemViewModel {
     let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
-    private(set) var syncStateViewModel: PostSyncStateViewModel
-
-    var didUpdateSyncState: ((PostSyncStateViewModel) -> Void)?
+    let syncStateViewModel: PostSyncStateViewModel
 
     init(page: Page, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.page = page
@@ -19,20 +17,6 @@ final class PageListItemViewModel {
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
         self.syncStateViewModel = PostSyncStateViewModel(post: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
-
-        if isSyncPublishingEnabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
-        }
-    }
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        if updatedObjects.contains(page) || updatedObjects.contains(page.original()) {
-            syncStateViewModel = PostSyncStateViewModel(post: page)
-            didUpdateSyncState?(syncStateViewModel)
-        }
     }
 }
 
