@@ -218,3 +218,51 @@ class EditPostViewController: UIViewController {
         }
     }
 }
+
+// MARK: - State Restoration
+
+extension EditPostViewController {
+    static func restore() -> UIViewController? {
+        wpAssert(Thread.isMainThread)
+
+        guard let value = UserDefaults.standard.string(forKey: restorationBlogURLKey),
+              let postURL = URL(string: value) else {
+            return nil
+        }
+        UserDefaults.standard.removeObject(forKey: restorationBlogURLKey)
+        restorationDate = Date()
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let postID = context.persistentStoreCoordinator?.safeManagedObjectID(forURIRepresentation: postURL),
+              let object = try? context.existingObject(with: postID),
+              let post = (object as? AbstractPost)?.latest() else {
+            return nil
+        }
+
+        switch post {
+        case let post as Post:
+            return EditPostViewController(post: post)
+        case let page as Page:
+            return EditPageViewController(page: page)
+        default:
+            wpAssertionFailure("unexpected post type", userInfo: [
+                "post_type": type(of: post)
+            ])
+            return nil
+        }
+    }
+
+    static func encode(post: AbstractPost) {
+        wpAssert(Thread.isMainThread)
+
+        if let restorationDate, Date().timeIntervalSince(restorationDate) < 0.5 {
+            return // Appears to be crashing repeatedly
+        }
+        let postURL = post.original().objectID.uriRepresentation().absoluteString
+        UserDefaults.standard.set(postURL, forKey: restorationBlogURLKey)
+    }
+
+    private static var restorationDate: Date?
+
+    private static let restorationBlogURLKey = "EditPostViewControllerRestorationBlogURLKey"
+}

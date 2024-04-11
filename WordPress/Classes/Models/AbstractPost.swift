@@ -47,8 +47,8 @@ extension AbstractPost {
     var remoteStatus: AbstractPostRemoteStatus {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
-                let status = AbstractPostRemoteStatus(rawValue: remoteStatusNumber) else {
-                    return .pushing
+                  let status = AbstractPostRemoteStatus(rawValue: remoteStatusNumber) else {
+                return .pushing
             }
 
             return status
@@ -259,7 +259,7 @@ extension AbstractPost {
     }
 
     func deleteAllRevisions() {
-        assert(isOriginal())
+        wpAssert(isOriginal())
         for revision in allRevisions {
             revision.deleteRevision()
         }

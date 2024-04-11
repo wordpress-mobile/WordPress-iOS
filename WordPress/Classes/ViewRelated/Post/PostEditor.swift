@@ -183,16 +183,23 @@ extension PostEditor where Self: UIViewController {
     }
 
     private func appWillTerminate() {
+        guard let context = post.managedObjectContext else {
+            return
+        }
         // Defensive code to make sure that in rare scenarios where the user changes
         // status from post settings but doesn't save, and the app gets terminated,
         // the app doesn't end up saving posts with uncommited status changes.
         if post.status != post.original().status {
             post.status = post.original().status
         }
-        guard let context = post.managedObjectContext, post.hasChanges else {
-            return
+        if post.changes.isEmpty {
+            AbstractPost.deleteLatestRevision(post, in: context)
+        } else {
+            EditPostViewController.encode(post: post)
         }
-        ContextManager.sharedInstance().saveContextAndWait(context)
+        if context.hasChanges {
+            ContextManager.sharedInstance().saveContextAndWait(context)
+        }
     }
 
     private func postConflictResolved(_ notification: Foundation.Notification) {

@@ -52,7 +52,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return ContextManager.shared.mainContext
     }
 
-    private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
 
         // It's not great that we're using singletons here.  This change is a good opportunity to
@@ -119,11 +118,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAnalytics()
 
         let solver = WPAuthTokenIssueSolver()
-        let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
+        _ = solver.fixAuthTokenIssueAndDo { [weak self] in
             self?.runStartupSequence(with: launchOptions ?? [:])
         }
-
-        shouldRestoreApplicationState = !isFixingAuthTokenIssue
 
         return true
     }
@@ -311,6 +308,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         windowManager.showUI()
         setupNoticePresenter()
+        restoreAppState()
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
@@ -330,6 +328,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             if case .failure(let error) = result {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
+        }
+    }
+
+    // MARK: - State Restoration
+
+    private func restoreAppState() {
+        if let viewController = EditPostViewController.restore() {
+            window?.topmostPresentedViewController?.present(viewController, animated: false)
         }
     }
 
