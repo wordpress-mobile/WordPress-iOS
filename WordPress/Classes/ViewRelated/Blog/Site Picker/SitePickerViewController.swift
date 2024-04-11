@@ -97,8 +97,8 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         var dismissAction: (() -> Void)? = nil
         let hostingController = UIHostingController(
             rootView: SiteSwitcherView(
-                selectionCallback: { [weak self] selectedDomain in
-                    guard let selectedBlog = SiteSwitcherReducer.allBlogs().first(where: { $0.url == selectedDomain }) else {
+                selectionCallback: { [weak self] siteID in
+                    guard let selectedBlog = BlogListViewModel().allBlogs.first(where: { $0.dotComID == siteID }) else {
                         return
                     }
                     self?.switchToBlog(selectedBlog)

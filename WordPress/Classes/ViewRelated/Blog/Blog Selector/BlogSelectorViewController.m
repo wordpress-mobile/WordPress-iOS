@@ -61,7 +61,7 @@
 
 - (void)configureDataSource
 {
-    self.dataSource = [BlogListDataSource new];
+    self.dataSource = [BlogListDataSource init];
     self.dataSource.selecting = YES;
     self.dataSource.selectedBlogId = self.selectedObjectID;
     __weak __typeof(self) weakSelf = self;

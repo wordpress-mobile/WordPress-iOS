@@ -3,29 +3,14 @@ import DesignSystem
 
 struct SiteSwitcherView: View {
     @State private var isEditing: Bool = false
-    private let selectionCallback: ((String) -> Void)
+    private let selectionCallback: ((NSNumber) -> Void)
     private let addSiteCallback: (() -> Void)
+    private let blogListViewModel = BlogListViewModel()
     @State private var searchText = ""
     @State private var isSearching = false
     @Environment(\.dismiss) private var dismiss
 
-    var sites: [BlogListView.Site] {
-        if searchText.isEmpty {
-            return SiteSwitcherReducer.allBlogs().compactMap {
-                .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
-            }
-        } else {
-            return SiteSwitcherReducer.allBlogs()
-                .filter {
-                    $0.url!.lowercased().contains(searchText.lowercased()) || $0.title!.lowercased().contains(searchText.lowercased())
-                }
-                .compactMap {
-                    .init(title: $0.title!, domain: $0.url!, imageURL: $0.hasIcon ? URL(string: $0.icon!) : nil)
-                }
-        }
-    }
-
-    init(selectionCallback: @escaping ((String) -> Void),
+    init(selectionCallback: @escaping ((NSNumber) -> Void),
         addSiteCallback: @escaping (() -> Void)) {
         self.selectionCallback = selectionCallback
         self.addSiteCallback = addSiteCallback
@@ -60,9 +45,9 @@ struct SiteSwitcherView: View {
 
     private var blogListView: some View {
         BlogListView(
-            sites: sites,
             isEditing: $isEditing,
             isSearching: $isSearching,
+            searchText: $searchText,
             selectionCallback: selectionCallback
         )
         .toolbar {
