@@ -127,7 +127,7 @@ platform :ios do
 
     # set_milestone_frozen_marker(repository: GITHUB_REPO, milestone: new_version)
 
-    ios_check_beta_deps(lockfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile.lock'))
+    check_pods_references
     # print_release_notes_reminder
 
     # message = <<~MESSAGE
