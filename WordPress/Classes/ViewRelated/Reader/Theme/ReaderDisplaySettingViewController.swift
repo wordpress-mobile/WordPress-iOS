@@ -1,18 +1,29 @@
 import SwiftUI
 import DesignSystem
 
+/// The tracking source values for the customization sheet.
+/// The values are kept in sync with Android.
+enum ReaderDisplaySettingViewSource: String {
+    case readerPostNavBar = "post_detail_toolbar"
+    case unspecified
+}
+
 class ReaderDisplaySettingViewController: UIViewController {
     private let initialSetting: ReaderDisplaySetting
     private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let trackingSource: ReaderDisplaySettingViewSource
     private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(initialSetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+    init(initialSetting: ReaderDisplaySetting,
+         source: ReaderDisplaySettingViewSource = .unspecified,
+         completion: ((ReaderDisplaySetting) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
+        self.trackingSource = source
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -21,6 +32,7 @@ class ReaderDisplaySettingViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupNavigationItems()
+        trackViewOpened()
     }
 
     private func setupView() {
@@ -63,6 +75,10 @@ class ReaderDisplaySettingViewController: UIViewController {
             WPAnalytics.track(.readingPreferencesClosed)
             self?.navigationController?.dismiss(animated: true)
         })
+    }
+
+    private func trackViewOpened() {
+        WPAnalytics.track(.readingPreferencesOpened, properties: ["source": trackingSource.rawValue])
     }
 
     private func updateNavigationBarStyle(with setting: ReaderDisplaySetting) {
