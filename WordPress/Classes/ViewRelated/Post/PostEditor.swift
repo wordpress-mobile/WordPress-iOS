@@ -152,9 +152,9 @@ extension PostEditor where Self: UIViewController {
             }.store(in: &cancellables)
 
         NotificationCenter.default
-            .publisher(for: .postConflictResolved)
+            .publisher(for: .postCoordinatorDidUpdate)
             .sink { [weak self] notification in
-                self?.postConflictResolved(notification)
+                self?.postCoordinatorDidUpdate(notification)
             }.store(in: &cancellables)
 
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -195,14 +195,14 @@ extension PostEditor where Self: UIViewController {
         ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
-    private func postConflictResolved(_ notification: Foundation.Notification) {
-        guard
-            let userInfo = notification.userInfo,
-            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
-        else {
+    private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
+        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
+            return assertionFailure("missing NSUpdatedObjectsKey")
+        }
+        guard updatedObjects.count == 1, let updatedPost = updatedObjects.first as? AbstractPost else {
             return
         }
-        self.post = post
+        self.post = updatedPost
         createRevisionOfPost()
     }
 }

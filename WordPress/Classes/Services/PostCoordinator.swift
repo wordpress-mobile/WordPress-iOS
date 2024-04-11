@@ -287,7 +287,7 @@ class PostCoordinator: NSObject {
 
     func didResolveConflict(for post: AbstractPost) {
         workers[post.objectID]?.error = nil
-        notifyConflictResolved(for: post)
+        postDidUpdateNotification(for: post)
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
