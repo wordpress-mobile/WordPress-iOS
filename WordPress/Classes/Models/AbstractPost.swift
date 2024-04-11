@@ -1,7 +1,6 @@
 import Foundation
 
 extension AbstractPost {
-
     /// Returns the original post by navigating the entire list of revisions
     /// until it reaches the head.
     func original() -> AbstractPost {
@@ -11,7 +10,7 @@ extension AbstractPost {
     /// Returns `true` if the post was never uploaded to the remote and has
     /// not revisions that were marked for syncing.
     var isNewDraft: Bool {
-        assert(isOriginal(), "Must be called on the original")
+        wpAssert(isOriginal(), "Must be called on the original")
         return !hasRemote() && getLatestRevisionNeedingSync() == nil
     }
 
@@ -233,6 +232,22 @@ extension AbstractPost {
             willChangeValue(forKey: "revision")
             setPrimitiveValue(tail, forKey: "revision")
             didChangeValue(forKey: "revision")
+        }
+    }
+
+    /// Deletes the given revision and deletes the post if it's empty.
+    static func deleteLatestRevision(_ revision: AbstractPost, in context: NSManagedObjectContext) {
+        wpAssert(revision.isRevision() && !revision.isSyncNeeded, "must be a local revision")
+
+        // - warning: The use of `.original` is intentional – we want to get
+        // the previous revision in the list.
+        guard let previous = revision.original else {
+            return wpAssertionFailure("missing original")
+        }
+        let original = revision.original()
+        previous.deleteRevision()
+        if previous == original, !previous.hasRemote() {
+            context.delete(original)
         }
     }
 
