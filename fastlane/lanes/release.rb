@@ -593,3 +593,12 @@ def create_release_management_pull_request(release_version:, base_branch:, title
   # Return the PR URL
   pr_url
 end
+
+def check_pods_references
+  result = ios_check_beta_deps(lockfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile.lock'))
+
+  # Will fail if :pods doesn't exist in the result.
+  # Seems fair, given the shape of the result Hash should not change unless via a major version bump.
+  style = result[:pods].empty? ? 'success' : 'warning'
+  buildkite_annotate(context: 'pods-check', style:, message: result[:message]) if is_ci
+end
