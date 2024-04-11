@@ -1585,11 +1585,10 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost],
+              let post = posts[safe: indexPath.row] else {
             return UITableViewCell()
         }
-
-        let post = posts[indexPath.row]
 
         return cell(for: post, at: indexPath)
     }
@@ -1648,11 +1647,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        guard let posts = content.content as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost],
+              let post = posts[safe: indexPath.row] else {
             return
         }
 
-        let post = posts[indexPath.row]
         bumpRenderTracker(post)
     }
 
@@ -1697,12 +1696,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = content.content as? [ReaderPost] else {
+        guard let posts = content.content as? [ReaderPost],
+              let apost = posts[safe: indexPath.row] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
             return
         }
 
-        let apost = posts[indexPath.row]
         didSelectPost(apost, at: indexPath)
     }
 
