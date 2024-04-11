@@ -4,6 +4,7 @@ import WordPressKit
 import WordPressFlux
 import CocoaLumberjack
 import Combine
+import AutomatticTracks
 
 protocol PostCoordinatorDelegate: AnyObject {
     func postCoordinator(_ postCoordinator: PostCoordinator, promptForPasswordForBlog blog: Blog)
@@ -156,8 +157,8 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _publish(_ post: AbstractPost, options: PublishingOptions) async throws {
-        assert(post.isOriginal())
-        assert(post.isStatus(in: [.draft, .pending]))
+        wpAssert(post.isOriginal())
+        wpAssert(post.isStatus(in: [.draft, .pending]))
 
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
@@ -182,6 +183,7 @@ class PostCoordinator: NSObject {
             didPublish(post)
             show(PostCoordinator.makeUploadSuccessNotice(for: post))
         } catch {
+            trackError(error, operation: "post-publish")
             handleError(error, for: post)
             throw error
         }
@@ -217,6 +219,7 @@ class PostCoordinator: NSObject {
             show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
             return post
         } catch {
+            trackError(error, operation: "post-save")
             handleError(error, for: post)
             throw error
         }
@@ -227,12 +230,13 @@ class PostCoordinator: NSObject {
     /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         let post = post.original()
         do {
             try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
         } catch {
+            trackError(error, operation: "post-patch")
             handleError(error, for: post)
             throw error
         }
@@ -240,6 +244,7 @@ class PostCoordinator: NSObject {
 
     private func handleError(_ error: Error, for post: AbstractPost) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            wpAssertionFailure("Failed to show an error alert")
             return
         }
         let alert = UIAlertController(title: Strings.genericErrorTitle, message: error.localizedDescription, preferredStyle: .alert)
@@ -258,6 +263,15 @@ class PostCoordinator: NSObject {
             alert.addDefaultActionWithTitle(Strings.buttonOK, handler: nil)
         }
         topViewController.present(alert, animated: true)
+    }
+
+    private func trackError(_ error: Error, operation: String) {
+        DDLogError("post-coordinator-\(operation)-failed: \(error)")
+
+        if let error = error as? TrackableErrorProtocol, var userInfo = error.getTrackingUserInfo() {
+            userInfo["operation"] = operation
+            WPAnalytics.track(.postCoordinatorErrorEncountered, properties: userInfo)
+        }
     }
 
     private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
@@ -326,8 +340,8 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Work-in-progress (kahu-offline-mode)
     func setNeedsSync(for revision: AbstractPost) {
-        assert(revision.isRevision(), "Must be used only on revisions")
-        assert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
+        wpAssert(revision.isRevision(), "Must be used only on revisions")
+        wpAssert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
 
         if !revision.isSyncNeeded {
             revision.remoteStatus = .syncNeeded
@@ -359,7 +373,7 @@ class PostCoordinator: NSObject {
     /// it's guaranteed that no requests will be sent until resumed.
     @MainActor
     func pauseSyncing(for post: AbstractPost) async {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
         guard isSyncAllowed(for: post) else { return }
 
         guard let worker = workers[post.objectID] else {
@@ -385,7 +399,7 @@ class PostCoordinator: NSObject {
     /// Resumes sync for the given post.
     @MainActor
     func resumeSyncing(for post: AbstractPost) {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
         guard isSyncAllowed(for: post) else { return }
 
         guard let worker = workers[post.objectID] else {
@@ -471,9 +485,9 @@ class PostCoordinator: NSObject {
     }
 
     private func startSync(for post: AbstractPost, revision: AbstractPost) {
-        assert(Thread.isMainThread)
-        assert(post.isOriginal())
-        assert(!post.objectID.isTemporaryID)
+        wpAssert(Thread.isMainThread)
+        wpAssert(post.isOriginal())
+        wpAssert(!post.objectID.isTemporaryID)
 
         let worker = getWorker(for: post)
 
@@ -530,6 +544,7 @@ class PostCoordinator: NSObject {
                     .sync(operation.post, revision: operation.revision)
                 syncOperation(operation, didFinishWithResult: .success(()))
             } catch {
+                trackError(error, operation: "post-sync")
                 syncOperation(operation, didFinishWithResult: .failure(error))
             }
         }
@@ -597,7 +612,7 @@ class PostCoordinator: NSObject {
     }
 
     func syncError(for post: AbstractPost) -> Error? {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
         return workers[post.objectID]?.error
     }
 
@@ -1019,7 +1034,7 @@ class PostCoordinator: NSObject {
     /// Moves the given post to trash.
     @MainActor
     func trash(_ post: AbstractPost) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
         defer { setUpdating(false, for: post) }
@@ -1049,7 +1064,7 @@ class PostCoordinator: NSObject {
 
     @MainActor
     func _delete(_ post: AbstractPost) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
         defer { setUpdating(false, for: post) }
@@ -1063,6 +1078,7 @@ class PostCoordinator: NSObject {
             if let error = error as? PostServiceRemoteUpdatePostError, case .notFound = error {
                 handlePermanentlyDeleted(post)
             } else {
+                trackError(error, operation: "post-delete")
                 handleError(error, for: post)
             }
             throw error
@@ -1076,7 +1092,7 @@ class PostCoordinator: NSObject {
     /// Moves the post to trash or delets it permanently in case it's already in trash.
     @MainActor
     func delete(_ post: AbstractPost) async {
-        assert(post.managedObjectContext == mainContext)
+        wpAssert(post.managedObjectContext == mainContext)
 
         WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics(for: post))
 

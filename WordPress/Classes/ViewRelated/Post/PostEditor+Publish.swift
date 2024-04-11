@@ -144,7 +144,7 @@ extension PublishingEditor {
             changes.status = Post.Status.pending.rawValue
             performUpdateAction(changes: changes)
         case .save, .saveAsDraft, .continueFromHomepageEditing:
-            assertionFailure("No longer used and supported")
+            wpAssertionFailure("No longer used and supported")
             break
         }
     }
@@ -154,7 +154,7 @@ extension PublishingEditor {
             guard let self else { return }
             switch result {
             case .confirmed:
-                assertionFailure("Not used when .syncPublishing is enabled")
+                wpAssertionFailure("Not used when .syncPublishing is enabled")
                 break
             case .published:
                 self.emitPostSaveEvent()
@@ -711,10 +711,10 @@ extension PublishingEditor {
             return _createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         }
         guard let managedObjectContext = post.managedObjectContext else {
-            return assertionFailure()
+            return wpAssertionFailure("managedObjectContext is missing")
         }
 
-        assert(post.latest() == post, "Must be opened with the latest verison of the post")
+        wpAssert(post.latest() == post, "Must be opened with the latest verison of the post")
 
         if !post.isUnsavedRevision {
             DDLogDebug("Creating new revision")

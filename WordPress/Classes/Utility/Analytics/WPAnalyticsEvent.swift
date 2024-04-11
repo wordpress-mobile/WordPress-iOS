@@ -569,6 +569,10 @@ import Foundation
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
+    // Assertions & Errors
+    case assertionFailure
+    case postCoordinatorErrorEncountered
+
     // Site monitoring
     case siteMonitoringTabShown
     case siteMonitoringEntryDetailsShown
@@ -1551,6 +1555,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Assertions & Errors
+        case .assertionFailure:
+            return "assertion_failure"
+        case .postCoordinatorErrorEncountered:
+            return "post-coordinator-eerror-encountered"
 
         // Site Monitoring
         case .siteMonitoringTabShown:
