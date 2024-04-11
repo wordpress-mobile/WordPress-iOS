@@ -7,6 +7,7 @@ import WordPressFlux
 import UIKit
 import Combine
 import WordPressUI
+import AutomatticTracks
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -1590,6 +1591,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return UITableViewCell()
         }
 
+        guard let post = posts[safe: indexPath.row] else {
+            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+            return .init()
+        }
+
         return cell(for: post, at: indexPath)
     }
 
@@ -1647,8 +1653,12 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        guard let posts = content.content as? [ReaderPost],
-              let post = posts[safe: indexPath.row] else {
+        guard let posts = content.content as? [ReaderPost] else {
+            return
+        }
+
+        guard let post = posts[safe: indexPath.row] else {
+            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
             return
         }
 
@@ -1696,9 +1706,13 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let posts = content.content as? [ReaderPost],
-              let apost = posts[safe: indexPath.row] else {
+        guard let posts = content.content as? [ReaderPost] else {
             DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            return
+        }
+
+        guard let apost = posts[safe: indexPath.row] else {
+            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
             return
         }
 
@@ -2130,4 +2144,25 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
         navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
     }
+}
+
+// MARK: - Custom Errors
+
+extension ReaderStreamViewController {
+
+    enum ReaderStreamError: LocalizedError {
+        case invalidIndexPath(row: Int, totalRows: Int)
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidIndexPath(let row, let totalRows):
+                return "Reader Stream: tried to request index \(row) from \(totalRows) objects"
+            }
+        }
+    }
+
+    func logReaderError(_ error: ReaderStreamError) {
+        CrashLogging.main.logError(error, tags: ["source": "reader_stream"])
+    }
+
 }
