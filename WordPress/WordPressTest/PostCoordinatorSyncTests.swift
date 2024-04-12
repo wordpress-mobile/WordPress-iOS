@@ -568,7 +568,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
 
         // GIVEN
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
-            try! HTTPStubsResponse(error: URLError(.notConnectedToInternet))
+            HTTPStubsResponse(error: URLError(.notConnectedToInternet))
         }
 
         // WHEN

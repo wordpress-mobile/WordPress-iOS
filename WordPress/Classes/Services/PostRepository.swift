@@ -257,14 +257,44 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Trashes the given post.
+    ///
+    /// - warning: This method delets all local revision of the post.
+    @MainActor
+    func _trash(_ post: AbstractPost) async throws {
+        wpAssert(post.isOriginal())
+
+        let context = coreDataStack.mainContext
+
+        guard let postID = post.postID, postID.intValue > 0 else {
+            context.deleteObject(post) // Delete all the local data
+            ContextManager.shared.saveContextAndWait(context)
+            return
+        }
+
+        post.deleteAllRevisions()
+        ContextManager.shared.saveContextAndWait(context)
+
+        let remote = try getRemoteService(for: post.blog)
+        var remotePost = try await remote.post(withID: postID)
+
+        // If the post is already in trash, do nothing. If the app were to
+        // proceed with `/delete`, it would permanently delete the post.
+        if remotePost.status != BasePost.Status.trash.rawValue {
+            remotePost = try await remote.trashPost(PostHelper.remotePost(with: post))
+        }
+
+        PostHelper.update(post, with: remotePost, in: context)
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
     /// Permanently delete the given post.
     @MainActor
     func _delete(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
         guard let postID = post.postID, postID.intValue > 0 else {
-            wpAssertionFailure("Trying to patch a non-existent post")
-            return
+            return wpAssertionFailure("Trying to patch a non-existent post")
         }
         try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
 

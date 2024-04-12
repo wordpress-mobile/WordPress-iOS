@@ -1033,7 +1033,7 @@ class PostCoordinator: NSObject {
 
     /// Moves the given post to trash.
     @MainActor
-    func trash(_ post: AbstractPost) async throws {
+    func trash(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
@@ -1042,28 +1042,19 @@ class PostCoordinator: NSObject {
         await pauseSyncing(for: post)
         defer { resumeSyncing(for: post) }
 
-        let context = coreDataStack.mainContext
+        do {
+            try await PostRepository(coreDataStack: coreDataStack)._trash(post)
 
-        guard post.hasRemote() else {
-            // Delete all the local data
-            context.deleteObject(post)
-            ContextManager.shared.saveContextAndWait(context)
-            return
+            cancelAnyPendingSaveOf(post: post)
+            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+            SearchManager.shared.deleteSearchableItem(post)
+        } catch {
+            handleError(error, for: post)
         }
-
-        // Delete local revisions
-        post.deleteAllRevisions()
-        ContextManager.shared.saveContextAndWait(context)
-
-        var changes = RemotePostUpdateParameters()
-        changes.status = Post.Status.trash.rawValue
-        try await _update(post, changes: changes)
-
-        SearchManager.shared.deleteSearchableItem(post)
     }
 
     @MainActor
-    func _delete(_ post: AbstractPost) async throws {
+    func _delete(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
@@ -1071,17 +1062,8 @@ class PostCoordinator: NSObject {
 
         do {
             try await PostRepository(coreDataStack: coreDataStack)._delete(post)
-
-            MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
-            SearchManager.shared.deleteSearchableItem(post)
         } catch {
-            if let error = error as? PostServiceRemoteUpdatePostError, case .notFound = error {
-                handlePermanentlyDeleted(post)
-            } else {
-                trackError(error, operation: "post-delete")
-                handleError(error, for: post)
-            }
-            throw error
+            handleError(error, for: post)
         }
     }
 

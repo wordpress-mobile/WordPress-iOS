@@ -1335,6 +1335,84 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // THEN the rest of the post content is retained because we have a local revision
         XCTAssertNil(post.mt_excerpt)
     }
+
+    // MARK: - Trash/Delete
+
+    func testTrashLocalPost() async throws {
+        // GIVEN a new draft post (not synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.authorID = 29043
+        }
+
+        // WHEN
+        try await repository._trash(post)
+
+        // THEN the post is deleted
+        XCTAssertNil(post.managedObjectContext)
+    }
+
+    func testTrashRemotePost() async throws {
+        // GIVEN a existing draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.content = "content-1"
+        }
+
+        let revision = post._createRevision()
+        revision.content = "content-2"
+
+        // GIVEN
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            try HTTPStubsResponse(value: WordPressComPost.mock, statusCode: 200)
+        }
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { request in
+            var mock = WordPressComPost.mock
+            mock.status = BasePost.Status.trash.rawValue
+            return try HTTPStubsResponse(value: mock, statusCode: 201)
+        }
+
+        // WHEN
+        try await repository._trash(post)
+
+        // THEN the post is trashed
+        XCTAssertEqual(post.status, .trash)
+
+        // THEN revision is deleted
+        XCTAssertEqual(post.content, "content-1")
+        XCTAssertNil(post.revision)
+    }
+
+    func testTrashRemotePostAlreadyTrashedOnRemote() async throws {
+        // GIVEN a existing draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.content = "content-a"
+        }
+
+        // GIVEN post trashed on the remote (and updated)
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            var mock = WordPressComPost.mock
+            mock.status = BasePost.Status.trash.rawValue
+            mock.content = "content-b"
+            return try HTTPStubsResponse(value: mock, statusCode: 200)
+        }
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
+            XCTFail("/delete must not be called")
+            return HTTPStubsResponse(error: URLError(.unknown))
+        }
+
+        // WHEN
+        try await repository._trash(post)
+
+        // THEN the post is trashed
+        XCTAssertEqual(post.status, .trash)
+        XCTAssertEqual(post.content, "content-b")
+    }
 }
 
 // MARK: - Helpers
