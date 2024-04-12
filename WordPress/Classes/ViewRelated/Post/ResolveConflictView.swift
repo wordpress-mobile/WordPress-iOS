@@ -6,6 +6,7 @@ struct ResolveConflictView: View {
     enum Source: String {
         case editor
         case postList = "post_list"
+        case pageList = "page_list"
     }
 
     let post: AbstractPost

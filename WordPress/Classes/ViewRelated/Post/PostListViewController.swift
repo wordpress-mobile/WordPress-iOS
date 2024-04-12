@@ -195,16 +195,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             // No editing posts that are trashed.
             return
         }
-
-        if let error = PostCoordinator.shared.syncError(for: post.original()),
-           let saveError = error as? PostRepository.PostSaveError,
-           case .conflict(let latest) = saveError {
-            // No editing posts until the conflict has been resolved.
-            let post = post.original()
-            PostCoordinator.shared.showResolveConflictView(post: post, remoteRevision: latest, source: .postList)
-            return
-        }
-
         WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }
