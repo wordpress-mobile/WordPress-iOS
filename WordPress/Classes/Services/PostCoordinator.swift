@@ -584,12 +584,6 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
-                operation.log("post was permanently deleted")
-                handlePermanentlyDeleted(operation.post)
-                workers[operation.post.objectID] = nil
-            }
-
             if shouldScheduleRetry(for: error) {
                 let delay = worker.nextRetryDelay
                 worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
@@ -598,12 +592,23 @@ class PostCoordinator: NSObject {
                 }
                 worker.log("scheduled retry with delay: \(delay)s.")
             }
+
+            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
+                operation.log("post was permanently deleted")
+                handlePermanentlyDeleted(operation.post)
+                workers[operation.post.objectID] = nil
+            }
         }
     }
 
     private func shouldScheduleRetry(for error: Error) -> Bool {
-        if error is PostRepository.PostSaveError {
-            return false
+        if let saveError = error as? PostRepository.PostSaveError {
+            switch saveError {
+            case .deleted:
+                return false
+            case .conflict:
+                return false
+            }
         }
         return true
     }
