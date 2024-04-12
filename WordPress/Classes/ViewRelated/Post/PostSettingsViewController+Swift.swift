@@ -59,6 +59,10 @@ extension PostSettingsViewController {
                 self?.deleteRevision()
             }.store(in: &cancellables)
 
+        apost.objectWillChange.sink { [weak self] in
+            self?.didUpdateSettings()
+        }.store(in: &cancellables)
+
         objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
