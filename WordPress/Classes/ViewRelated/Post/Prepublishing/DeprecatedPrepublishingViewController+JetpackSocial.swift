@@ -3,7 +3,7 @@ import SwiftUI
 
 /// Encapsulates logic related to Jetpack Social in the pre-publishing sheet.
 ///
-extension PrepublishingViewController {
+extension DeprecatedPrepublishingViewController {
 
     /// Determines whether the account and the post's blog is eligible to see the Jetpack Social row.
     func canDisplaySocialRow(isJetpack: Bool = AppConfiguration.isJetpack,
@@ -51,7 +51,7 @@ extension PrepublishingViewController {
 
 // MARK: - Helper Methods
 
-private extension PrepublishingViewController {
+private extension DeprecatedPrepublishingViewController {
 
     /// Convenience variable representing whether the No Connection view has been dismissed.
     /// Note: the value is stored per site.
@@ -171,7 +171,7 @@ private extension PrepublishingViewController {
     func noConnectionDismissTapped() -> () -> Void {
         return { [weak self] in
             guard let self,
-                  let autoSharingRowIndex = options.firstIndex(where: { $0.id == .autoSharing }) else {
+                  let autoSharingRowIndex = filteredIdentifiers.firstIndex(of: .autoSharing) else {
                 return
             }
 
@@ -181,7 +181,7 @@ private extension PrepublishingViewController {
             self.refreshOptions()
 
             // ensure that the `.autoSharing` identifier is truly removed to prevent table updates from crashing.
-            guard options.firstIndex(where: { $0.id == .autoSharing }) == nil else {
+            guard filteredIdentifiers.firstIndex(of: .autoSharing) == nil else {
                 return
             }
 
@@ -242,29 +242,9 @@ private extension PrepublishingViewController {
     }
 }
 
-// MARK: - Auto Sharing Model
-
-/// A value-type representation of `PublicizeService` for the current blog that's simplified for the auto-sharing flow.
-struct PrepublishingAutoSharingModel {
-    let services: [Service]
-    let message: String
-    let sharingLimit: PublicizeInfo.SharingLimit?
-
-    struct Service: Hashable {
-        let name: PublicizeService.ServiceName
-        let connections: [Connection]
-    }
-
-    struct Connection: Hashable {
-        let account: String
-        let keyringID: Int
-        var enabled: Bool
-    }
-}
-
 // MARK: - Sharing View Controller Delegate
 
-extension PrepublishingViewController: SharingViewControllerDelegate {
+extension DeprecatedPrepublishingViewController: SharingViewControllerDelegate {
 
     func didChangePublicizeServices() {
         reloadData()
@@ -274,7 +254,7 @@ extension PrepublishingViewController: SharingViewControllerDelegate {
 
 // MARK: - Prepublishing Social Accounts Delegate
 
-extension PrepublishingViewController: PrepublishingSocialAccountsDelegate {
+extension DeprecatedPrepublishingViewController: PrepublishingSocialAccountsDelegate {
 
     func didUpdateSharingLimit(with newValue: PublicizeInfo.SharingLimit?) {
         reloadData()
