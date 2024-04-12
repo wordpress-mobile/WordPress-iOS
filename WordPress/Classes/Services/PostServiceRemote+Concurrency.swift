@@ -10,7 +10,8 @@ extension PostServiceRemote {
                 }
                 continuation.resume(returning: post)
             }, failure: {
-                continuation.resume(throwing: $0 ?? URLError(.unknown))
+                let error = $0.map(mapRemotePostError) ?? URLError(.unknown)
+                continuation.resume(throwing: error)
             })
         }
     }
@@ -27,6 +28,24 @@ extension PostServiceRemote {
             }
         }
     }
+}
+
+// TODO: move this and `post(withID)` to WordPressKit
+private func mapRemotePostError(error: Error) -> Error {
+    if let error = error as? WordPressAPIError<WordPressComRestApiEndpointError>,
+       case .endpointError(let error) = error,
+        error.apiErrorCode == "unknown_post" {
+        return PostServiceRemoteUpdatePostError.notFound
+    }
+    if let error = error as? WordPressAPIError<WordPressOrgXMLRPCApiFault>,
+       case .endpointError(let error) = error,
+        error.code == 404 {
+        return PostServiceRemoteUpdatePostError.notFound
+    }
+    if (error as NSError).code == 404 {
+        return PostServiceRemoteUpdatePostError.notFound
+    }
+    return error
 }
 
 extension PostServiceRemoteREST {

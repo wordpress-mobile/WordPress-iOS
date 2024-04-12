@@ -1049,6 +1049,7 @@ class PostCoordinator: NSObject {
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
         } catch {
+            trackError(error, operation: "post-trash")
             handleError(error, for: post)
         }
     }
@@ -1063,6 +1064,7 @@ class PostCoordinator: NSObject {
         do {
             try await PostRepository(coreDataStack: coreDataStack)._delete(post)
         } catch {
+            trackError(error, operation: "post-delete")
             handleError(error, for: post)
         }
     }

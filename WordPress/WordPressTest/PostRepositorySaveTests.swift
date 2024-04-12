@@ -1413,6 +1413,43 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertEqual(post.status, .trash)
         XCTAssertEqual(post.content, "content-b")
     }
+
+    func testTrashRemotePostPermanentlyDeletedOnRemote() async throws {
+        // GIVEN a existing draft post (synced)
+        let post = makePost {
+            $0.status = .draft
+            $0.postID = 974
+            $0.authorID = 29043
+            $0.postTitle = "title-a"
+            $0.content = "content-a"
+        }
+
+        // GIVEN post permanently deleted on the remote
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            return try HTTPStubsResponse(value: [
+                "error": "unknown_post",
+                "message": "Unknown post"
+            ], statusCode: 404)
+        }
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
+            XCTFail("/delete must not be called")
+            return HTTPStubsResponse(error: URLError(.unknown))
+        }
+
+        // WHEN
+        do {
+            try await repository._trash(post)
+            XCTFail("Expected failure")
+        } catch {
+            let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
+            switch error {
+            case .deleted(let title):
+                XCTAssertEqual(title, "title-a")
+            default:
+                XCTFail("Unexpected error: \(error)")
+            }
+        }
+    }
 }
 
 // MARK: - Helpers

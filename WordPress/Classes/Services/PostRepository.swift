@@ -68,16 +68,16 @@ final class PostRepository {
         case conflict(latest: RemotePost)
 
         /// Post was deleted on the remote and can not be updated.
-        case deleted(post: RemotePost)
+        case deleted(title: String?)
 
         var errorDescription: String? {
             switch self {
             case .conflict:
                 return NSLocalizedString("postSaveErrorMessage.conflict", value: "The content was modified on another device", comment: "Error message: content was modified on another device")
-            case .deleted(let post):
+            case .deleted(let title):
                 let format = NSLocalizedString("postSaveErrorMessage.deleted", value: "\"%@\" was permanently deleted and can no longer be updated", comment: "Error message: item permanently deleted")
                 let untitled = NSLocalizedString("postSaveErrorMessage.postUntitled", value: "Untitled", comment: "A default value for an post without a title")
-                return String(format: format, post.title ?? untitled)
+                return String(format: format, title ?? untitled)
             }
         }
     }
@@ -242,8 +242,7 @@ final class PostRepository {
                 return try await service.patchPost(withID: postID.intValue, parameters: changes)
             case .notFound:
                 // Delete the post from the local database
-                let details = PostHelper.remotePost(with: original)
-                throw PostRepository.PostSaveError.deleted(post: details)
+                throw PostRepository.PostSaveError.deleted(title: original.titleForDisplay())
             }
         }
     }
@@ -276,7 +275,16 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
 
         let remote = try getRemoteService(for: post.blog)
-        var remotePost = try await remote.post(withID: postID)
+        var remotePost: RemotePost
+        do {
+            remotePost = try await remote.post(withID: postID)
+        } catch {
+            if let error = error as? PostServiceRemoteUpdatePostError, error == .notFound {
+                throw PostRepository.PostSaveError.deleted(title: post.titleForDisplay())
+            } else {
+                throw error
+            }
+        }
 
         // If the post is already in trash, do nothing. If the app were to
         // proceed with `/delete`, it would permanently delete the post.
