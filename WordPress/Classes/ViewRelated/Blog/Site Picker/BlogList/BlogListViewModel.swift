@@ -8,9 +8,13 @@ final class BlogListViewModel: ObservableObject {
 
     private let contextManager: ContextManager
     private let dataSource: BlogListDataSource
+    private let eventTracker: EventTracker
 
-    init(contextManager: ContextManager = ContextManager.sharedInstance()) {
+    init(contextManager: ContextManager = ContextManager.sharedInstance(),
+         eventTracker: EventTracker = DefaultEventTracker()
+    ) {
         self.contextManager = contextManager
+        self.eventTracker = eventTracker
         self.dataSource = Self.createDataSource(contextManager: contextManager)
         pinnedSites = Self.filteredPinnedSites(allBlogs: dataSource.filteredBlogs)
         recentSites = Self.filteredRecentSites(allBlogs: dataSource.filteredBlogs)
@@ -50,6 +54,15 @@ final class BlogListViewModel: ObservableObject {
         }
 
         blog.pinnedDate = blog.pinnedDate == nil ? Date() : nil
+
+        eventTracker.track(
+            .siteSwitcherPinUpdated,
+            properties: [
+                "blog_id": blog.dotComID ?? "",
+                "pinned": blog.pinnedDate == nil
+            ]
+        )
+
         pinnedSites = Self.filteredPinnedSites(allBlogs: allBlogs)
 
         let beforeRecentsCount = recentSites.count
@@ -66,9 +79,30 @@ final class BlogListViewModel: ObservableObject {
             return
         }
 
+        trackSiteSelected(blog: blog)
+
         blog.lastUsed = Date()
         recentSites = Self.filteredRecentSites(allBlogs: allBlogs)
         contextManager.saveContextAndWait(contextManager.mainContext)
+    }
+
+    private func trackSiteSelected(blog: Blog) {
+        let sectionName: String
+
+        if blog.pinnedDate != nil {
+            sectionName = "pinned"
+        } else if blog.lastUsed != nil {
+            sectionName = "recent"
+        } else {
+            sectionName = "all"
+        }
+
+        eventTracker.track(
+            .siteSwitcherSiteTapped,
+            properties: [
+                "section": sectionName,
+            ]
+        )
     }
 
     private static func filteredAllRemainingSites(allBlogs: [Blog]) -> [BlogListView.Site] {
