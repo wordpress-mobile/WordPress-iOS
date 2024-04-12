@@ -167,6 +167,7 @@ struct BlogListView: View {
 
             if isEditing {
                 pinIcon(site: site)
+                    .padding(.leading, .DS.Padding.single)
             }
         }
     }
