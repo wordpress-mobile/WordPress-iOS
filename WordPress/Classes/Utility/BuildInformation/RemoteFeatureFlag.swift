@@ -49,7 +49,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .jetpackFeaturesRemovalStaticPosters:
-            return false
+            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
