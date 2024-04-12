@@ -670,9 +670,8 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    [metaRows addObject:@(PostSettingsRowPublishDate)];
-
     if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+        [metaRows addObject:@(PostSettingsRowPublishDate)];
         [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
                                           @(PostSettingsRowVisibility) ]];
         if (self.apost.password) {
