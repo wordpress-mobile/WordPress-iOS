@@ -178,7 +178,9 @@ class PostCoordinator: NSObject {
         if (latest.password ?? "") != (options.password ?? "") {
             parameters.password = options.password
         }
-        parameters.date = options.publishDate
+        if let publishDate = options.publishDate {
+            parameters.date = publishDate
+        }
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)

@@ -1,18 +1,18 @@
 import UIKit
 
 extension PrepublishingViewController {
-    static func show(for revision: AbstractPost, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    static func show(for revision: AbstractPost, action: PostEditorAction, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         guard RemoteFeatureFlag.syncPublishing.enabled() else {
             return _show(for: revision, action: action, from: presentingViewController, completion: completion)
         }
-        show(post: revision, from: presentingViewController, completion: completion)
+        show(post: revision, isStandalone: isStandalone, from: presentingViewController, completion: completion)
     }
 
     /// - warning: deprecated (kahu-offline-mode)
     private static func _show(for revision: AbstractPost, action: PostEditorAction, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         switch revision {
         case let post as Post:
-            show(post: post, from: presentingViewController, completion: completion)
+            showDeprecated(post: post, from: presentingViewController, completion: completion)
         case let page as Page:
             showAlert(for: page, action: action, from: presentingViewController, completion: completion)
         default:
@@ -21,11 +21,11 @@ extension PrepublishingViewController {
         }
     }
 
-    private static func show(post: AbstractPost, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    private static func show(post: AbstractPost, isStandalone: Bool, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
-        let viewController = PrepublishingViewController(post: post, completion: completion)
+        let viewController = PrepublishingViewController(post: post, isStandalone: isStandalone, completion: completion)
         viewController.presentAsSheet(from: presentingViewController)
     }
 

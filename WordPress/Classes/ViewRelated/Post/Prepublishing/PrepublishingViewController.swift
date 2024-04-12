@@ -15,23 +15,16 @@ enum PrepublishingSheetResult {
     case cancelled
 }
 
-final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate {
     let post: AbstractPost
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
 
     private let viewModel: PrepublishingViewModel
 
-    private let coordinator = PostCoordinator.shared
-
-    lazy var postBlogID: Int? = {
-        coreDataStack.performQuery { [postObjectID = post.objectID] context in
-            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
-                return nil
-            }
-            return post.blog.dotComID?.intValue
-        }
-    }()
+    var postBlogID: Int? {
+        post.blog.dotComID?.intValue
+    }
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
 
@@ -48,15 +41,19 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         self?.buttonPublishTapped()
     }
 
-    private var cancellables = Set<AnyCancellable>()
-
     private weak var mediaPollingTimer: Timer?
+    private let isStandalone: Bool
 
     init(post: AbstractPost,
+         isStandalone: Bool,
          completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
-        self.post = post
+        // If presented from the editor, it make changes to the revision managed by
+        // the editor. But for a standalone publishing sheet, it has to manage
+        // its own revision.
+        self.post = isStandalone ? post._createRevision() : post
+        self.isStandalone = isStandalone
         self.viewModel = PrepublishingViewModel(post: post)
         self.completion = completion
         self.coreDataStack = coreDataStack
@@ -135,13 +132,26 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         view.pinSubviewToSafeArea(stackView)
 
         view.backgroundColor = .systemBackground
+
+        wpAssert(navigationController?.presentationController != nil)
+        navigationController?.presentationController?.delegate = self
+
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
     }
 
     private func configureHeader() {
-        headerView.closeButton.addAction(.init(handler: { [weak self] _ in
-            self?.presentingViewController?.dismiss(animated: true)
-        }), for: .touchUpInside)
+        headerView.closeButton.addTarget(self, action: #selector(buttonCloseTapped), for: .touchUpInside)
         headerView.configure(post.blog)
+    }
+
+    @objc private func buttonCloseTapped() {
+        didCancel()
+        presentingViewController?.dismiss(animated: true)
+    }
+
+    private func didCancel() {
+        getCompletion()?(.cancelled)
+        deleteRevisionIfNeeded()
     }
 
     private func configureTableView() {
@@ -192,10 +202,25 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         if isPushingViewController {
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
+    }
 
-        if isBeingDismissed || parent?.isBeingDismissed == true {
-            getCompletion()?(.cancelled)
-        }
+    // MARK: - Notifications
+
+    @objc private func appWillTerminate() {
+        deleteRevisionIfNeeded()
+    }
+
+    private func deleteRevisionIfNeeded() {
+        guard isStandalone else { return }
+        DDLogDebug("\(self): deleting unsaved changes")
+        post.original?.deleteRevision()
+        post.managedObjectContext.map(ContextManager.shared.saveContextAndWait)
+    }
+
+    // MARK: - UIAdaptivePresentationControllerDelegate {
+
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didCancel()
     }
 
     // MARK: - UITableViewDataSource
@@ -391,19 +416,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func updatePublishButtonLabel() {
-        let isScheduled = viewModel.publishDate.map { $0 > .now } ?? false
-        publishButtonViewModel.title = isScheduled ? Strings.schedule : Strings.publish
+        publishButtonViewModel.title = viewModel.publishButtonTitle
     }
 
     private func buttonPublishTapped() {
         setLoading(true)
         Task {
             do {
-                try await PostCoordinator.shared._publish(post.original(), options: .init(
-                    visibility: viewModel.visibility,
-                    password: viewModel.password,
-                    publishDate: viewModel.publishDate
-                ))
+                try await viewModel.publish()
                 getCompletion()?(.published)
             } catch {
                 setLoading(false)
@@ -442,13 +462,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
         WPAnalytics.track(.editorPostCategoryChanged, properties: ["via": "prepublishing_nudges"])
-
-        // Save changes.
         guard let categories = categories as? Set<PostCategory> else {
-             return
+             return wpAssertionFailure("incorrect categories")
         }
         (post as! Post).categories = categories
-        post.save()
     }
 }
 
@@ -490,6 +507,13 @@ private final class PrepublishingViewModel {
     var password: String?
     var publishDate: Date?
 
+    var publishButtonTitle: String {
+        let isScheduled = publishDate.map { $0 > .now } ?? false
+        return isScheduled ? Strings.schedule : Strings.publish
+    }
+
+    private let coordinator = PostCoordinator.shared
+
     init(post: AbstractPost) {
         self.post = post
 
@@ -497,6 +521,17 @@ private final class PrepublishingViewModel {
         self.password = post.password
         // Ask the user to provide the date every time (ignore the obscure WP dateCreated/dateModified logic)
         self.publishDate = nil
+    }
+
+    @MainActor
+    func publish() async throws {
+        wpAssert(post.isRevision())
+
+        try await coordinator._publish(post.original(), options: .init(
+            visibility: visibility,
+            password: password,
+            publishDate: publishDate
+        ))
     }
 }
 
