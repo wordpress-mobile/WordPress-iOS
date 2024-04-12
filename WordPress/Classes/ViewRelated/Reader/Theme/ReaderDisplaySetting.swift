@@ -4,7 +4,7 @@ import WordPressShared
 struct ReaderDisplaySetting: Codable, Equatable {
 
     static var customizationEnabled: Bool {
-        FeatureFlag.readerCustomization.enabled
+        RemoteFeatureFlag.readingPreferences.enabled()
     }
 
     // MARK: Properties
@@ -18,6 +18,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
 
     var hasLightBackground: Bool {
         color.background.brighterThan(0.5)
+    }
+
+    var isDefaultSetting: Bool {
+        return self == .standard
     }
 
     // MARK: Methods
@@ -194,6 +198,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return false
             }
         }
+
+        var valueForTracks: String {
+            switch self {
+            case .system:
+                return "default"
+            case .hacker:
+                return "h4x0r"
+            default:
+                return rawValue
+            }
+        }
     }
 
     enum Font: String, Codable, CaseIterable {
@@ -210,6 +225,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .mono:
                 return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
             }
+        }
+
+        var valueForTracks: String {
+            rawValue
         }
     }
 
@@ -267,6 +286,21 @@ struct ReaderDisplaySetting: Codable, Equatable {
                     value: "Extra Large",
                     comment: "Accessibility label for the Extra Large size option, used in the Reader's reading preferences."
                 )
+            }
+        }
+
+        var valueForTracks: String {
+            switch self {
+            case .extraSmall:
+                return "extra_small"
+            case .small:
+                return "small"
+            case .normal:
+                return "normal"
+            case .large:
+                return "large"
+            case .extraLarge:
+                return "extra_large"
             }
         }
     }

@@ -568,6 +568,13 @@ import Foundation
     case siteMonitoringTabShown
     case siteMonitoringEntryDetailsShown
 
+    // Reading preferences
+    case readingPreferencesOpened
+    case readingPreferencesFeedbackTapped
+    case readingPreferencesItemTapped
+    case readingPreferencesSaved
+    case readingPreferencesClosed
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1546,6 +1553,18 @@ import Foundation
             return "site_monitoring_tab_shown"
         case .siteMonitoringEntryDetailsShown:
             return "site_monitoring_entry_details_shown"
+
+        // Reading Preferences
+        case .readingPreferencesOpened:
+            return "reader_reading_preferences_opened"
+        case .readingPreferencesFeedbackTapped:
+            return "reader_reading_preferences_feedback_tapped"
+        case .readingPreferencesItemTapped:
+            return "reader_reading_preferences_item_tapped"
+        case .readingPreferencesSaved:
+            return "reader_reading_preferences_saved"
+        case .readingPreferencesClosed:
+            return "reader_reading_preferences_closed"
 
         } // END OF SWITCH
     }

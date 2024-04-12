@@ -1,18 +1,29 @@
 import SwiftUI
 import DesignSystem
 
+/// The tracking source values for the customization sheet.
+/// The values are kept in sync with Android.
+enum ReaderDisplaySettingViewSource: String {
+    case readerPostNavBar = "post_detail_toolbar"
+    case unspecified
+}
+
 class ReaderDisplaySettingViewController: UIViewController {
     private let initialSetting: ReaderDisplaySetting
     private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let trackingSource: ReaderDisplaySettingViewSource
     private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(initialSetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+    init(initialSetting: ReaderDisplaySetting,
+         source: ReaderDisplaySettingViewSource = .unspecified,
+         completion: ((ReaderDisplaySetting) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
+        self.trackingSource = source
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -21,6 +32,7 @@ class ReaderDisplaySettingViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupNavigationItems()
+        trackViewOpened()
     }
 
     private func setupView() {
@@ -60,8 +72,13 @@ class ReaderDisplaySettingViewController: UIViewController {
 
         updateNavigationBarStyle(with: displaySetting)
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            WPAnalytics.track(.readingPreferencesClosed)
             self?.navigationController?.dismiss(animated: true)
         })
+    }
+
+    private func trackViewOpened() {
+        WPAnalytics.track(.readingPreferencesOpened, properties: ["source": trackingSource.rawValue])
     }
 
     private func updateNavigationBarStyle(with setting: ReaderDisplaySetting) {
@@ -74,6 +91,8 @@ class ReaderDisplaySettingViewController: UIViewController {
 // MARK: View Model
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
+    private typealias TrackingKeys = ReaderDisplaySettingSelectionView.TrackingKeys
+
     @Published var displaySetting: ReaderDisplaySetting
 
     /// Called when the user selects a new color.
@@ -87,6 +106,13 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     }
 
     func doneButtonTapped() {
+        WPAnalytics.track(.readingPreferencesSaved, properties: [
+            TrackingKeys.isDefault: displaySetting.isDefaultSetting,
+            TrackingKeys.colorScheme: displaySetting.color.valueForTracks,
+            TrackingKeys.fontType: displaySetting.font.valueForTracks,
+            TrackingKeys.fontSize: displaySetting.size.valueForTracks,
+        ])
+
         completion?(displaySetting)
     }
 
@@ -182,7 +208,7 @@ extension ReaderDisplaySettingSelectionView {
                             .tint(Color(linkTintColor))
                             .accessibilityAddTraits(.isLink)
                             .environment(\.openURL, OpenURLAction { url in
-                                // TODO: Add Tracks
+                                WPAnalytics.track(.readingPreferencesFeedbackTapped)
                                 return .systemAction
                             })
                     }
@@ -210,7 +236,9 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         var feedbackText: Text? {
-            // TODO: Check feature flag for feedback collection.
+            guard RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
+                return nil
+            }
 
             var linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
             if viewModel.displaySetting.color != .system {
@@ -345,6 +373,9 @@ extension ReaderDisplaySettingSelectionView {
                         Button {
                             viewModel.displaySetting.color = color
                             viewModel.didChangeColor?() // notify the view controller to update.
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.colorScheme,
+                                                           TrackingKeys.valueKey: color.valueForTracks])
                         } label: {
                             VStack(spacing: .DS.Padding.single) {
                                 DualColorCircle(primaryColor: Color(color.foreground),
@@ -377,6 +408,9 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Font.allCases, id: \.rawValue) { font in
                         Button {
                             viewModel.displaySetting.font = font
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.fontType,
+                                                           TrackingKeys.valueKey: font.rawValue])
                         } label: {
                             VStack(spacing: .DS.Padding.half) {
                                 Text("Aa")
@@ -417,7 +451,11 @@ extension ReaderDisplaySettingSelectionView {
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
                     .accessibilityHidden(true)
             } onEditingChanged: { _ in
-                viewModel.displaySetting.size = .init(rawValue: Int(sliderValue)) ?? .normal
+                let size = ReaderDisplaySetting.Size(rawValue: Int(sliderValue)) ?? .normal
+                viewModel.displaySetting.size = size
+                WPAnalytics.track(.readingPreferencesItemTapped,
+                                  properties: [TrackingKeys.typeKey: TrackingKeys.fontSize,
+                                               TrackingKeys.valueKey: size.valueForTracks])
             }
             .padding(.vertical, .DS.Padding.single)
             .accessibilityValue(Text(viewModel.displaySetting.size.accessibilityLabel))
@@ -479,5 +517,19 @@ fileprivate struct DualColorCircle: View {
             return .clear
         }
         return .secondary
+    }
+}
+
+// MARK: - Tracks
+
+fileprivate extension ReaderDisplaySettingSelectionView {
+
+    struct TrackingKeys {
+        static let typeKey = "type"
+        static let valueKey = "value"
+        static let colorScheme = "color_scheme"
+        static let fontType = "font"
+        static let fontSize = "font_size"
+        static let isDefault = "is_default"
     }
 }

@@ -846,7 +846,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting,
+                                                                source: .readerPostNavBar) { [weak self] newSetting in
             // no need to refresh if there are no changes to the display setting.
             guard let self,
                   newSetting != self.displaySetting else {
