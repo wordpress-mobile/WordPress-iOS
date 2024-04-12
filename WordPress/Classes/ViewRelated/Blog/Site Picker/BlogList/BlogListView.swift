@@ -167,7 +167,6 @@ struct BlogListView: View {
 
             if isEditing {
                 pinIcon(site: site)
-                .padding(.trailing, .DS.Padding.double)
             }
         }
     }
@@ -192,12 +191,12 @@ struct BlogListView: View {
     private func pinIcon(site: Site) -> some View {
         if viewModel.pinnedSites.contains(site) {
             Image(systemName: "pin.fill")
-                .imageScale(.small)
                 .foregroundStyle(Color.DS.Background.brand(isJetpack: true))
+                .rotationEffect(.degrees(45))
         } else {
             Image(systemName: "pin")
-                .imageScale(.small)
                 .foregroundStyle(Color.DS.Foreground.secondary)
+                .rotationEffect(.degrees(45))
         }
     }
 

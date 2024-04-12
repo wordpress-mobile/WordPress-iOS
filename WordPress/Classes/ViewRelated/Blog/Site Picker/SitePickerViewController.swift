@@ -100,7 +100,6 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
             presentLegacySiteSwitcher()
         }
 
-        WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 
     private func presentNewSiteSwitcher() {
@@ -125,6 +124,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
             }
         }
         present(hostingController, animated: true)
+        WPAnalytics.track(.siteSwitcherAddSiteTapped)
     }
 
     private func presentLegacySiteSwitcher() {
@@ -141,6 +141,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         let navigationController = UINavigationController(rootViewController: blogListController)
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
+        WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 
     func visitSiteTapped() {
