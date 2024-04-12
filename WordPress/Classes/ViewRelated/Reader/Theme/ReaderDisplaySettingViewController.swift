@@ -45,10 +45,10 @@ class ReaderDisplaySettingViewController: UIViewController {
             })
         }
 
-        viewModel.didChangeColor = { [weak self] in
+        viewModel.didSelectItem = { [weak self] in
             // since the navigation bar is transparent, we need to override the interface style so that
             // the navigation items remain visible with the new color.
-            self?.updateNavigationBarStyle(with: viewModel.displaySetting)
+            self?.updateNavigationBar(with: viewModel.displaySetting)
         }
 
         let swiftUIView = UIView.embedSwiftUIView(ReaderDisplaySettingSelectionView(viewModel: viewModel))
@@ -70,19 +70,52 @@ class ReaderDisplaySettingViewController: UIViewController {
             return
         }
 
-        updateNavigationBarStyle(with: displaySetting)
+        // add the experimental label
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.text = Constants.experimentalText
+        navigationItem.leftBarButtonItem = .init(customView: label)
+
+        // add close button
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
             WPAnalytics.track(.readingPreferencesClosed)
             self?.navigationController?.dismiss(animated: true)
         })
+
+        updateNavigationBar(with: displaySetting)
     }
 
     private func trackViewOpened() {
         WPAnalytics.track(.readingPreferencesOpened, properties: ["source": trackingSource.rawValue])
     }
 
-    private func updateNavigationBarStyle(with setting: ReaderDisplaySetting) {
+    @MainActor
+    private func updateNavigationBar(with setting: ReaderDisplaySetting) {
         navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
+
+        // update the experimental label style
+        if let label = navigationItem.leftBarButtonItem?.customView as? UILabel {
+            label.font = setting.font(with: .footnote, weight: .semibold)
+            label.textColor = setting.color.secondaryForeground
+        }
+    }
+
+    private struct Constants {
+        // matches SwiftUI's `easeInOut` default animation duration.
+        // see: https://developer.apple.com/documentation/swiftui/animation/easeinout#discussion
+        static let animationDuration: TimeInterval = 0.35
+
+        static let experimentalText = NSLocalizedString(
+            "reader.preferences.navBar.experimental.label",
+            value: "<Experimental>",
+            comment: """
+                Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+                The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+                Feel free to replace it with other bracket types that you think looks better for the locale.
+                """
+        )
     }
 }
 
@@ -95,8 +128,8 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
 
     @Published var displaySetting: ReaderDisplaySetting
 
-    /// Called when the user selects a new color.
-    var didChangeColor: (() -> Void)? = nil
+    /// Called when the user selects a new option.
+    var didSelectItem: (() -> Void)? = nil
 
     private let completion: ((ReaderDisplaySetting) -> Void)?
 
@@ -372,7 +405,7 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Color.allCases, id: \.rawValue) { color in
                         Button {
                             viewModel.displaySetting.color = color
-                            viewModel.didChangeColor?() // notify the view controller to update.
+                            viewModel.didSelectItem?() // notify the view controller to update.
                             WPAnalytics.track(.readingPreferencesItemTapped,
                                               properties: [TrackingKeys.typeKey: TrackingKeys.colorScheme,
                                                            TrackingKeys.valueKey: color.valueForTracks])
@@ -408,6 +441,7 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Font.allCases, id: \.rawValue) { font in
                         Button {
                             viewModel.displaySetting.font = font
+                            viewModel.didSelectItem?() // notify the view controller to update.
                             WPAnalytics.track(.readingPreferencesItemTapped,
                                               properties: [TrackingKeys.typeKey: TrackingKeys.fontType,
                                                            TrackingKeys.valueKey: font.rawValue])
@@ -453,6 +487,7 @@ extension ReaderDisplaySettingSelectionView {
             } onEditingChanged: { _ in
                 let size = ReaderDisplaySetting.Size(rawValue: Int(sliderValue)) ?? .normal
                 viewModel.displaySetting.size = size
+                viewModel.didSelectItem?() // notify the view controller to update.
                 WPAnalytics.track(.readingPreferencesItemTapped,
                                   properties: [TrackingKeys.typeKey: TrackingKeys.fontSize,
                                                TrackingKeys.valueKey: size.valueForTracks])
