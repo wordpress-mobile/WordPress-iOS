@@ -4,10 +4,6 @@ import DesignSystem
 import WordPressUI
 
 struct AvatarsView: View {
-    private enum Constants {
-        static let doubleAvatarHorizontalOffset: CGFloat = 18
-    }
-
     enum Style {
         case single(URL?)
         case double(URL?, URL?)
@@ -36,13 +32,20 @@ struct AvatarsView: View {
         }
     }
 
+    private let doubleAvatarHorizontalOffset: CGFloat = 18
     private let style: Style
     private let borderColor: Color
+    private let placeholderImage: Image?
     @ScaledMetric private var scale = 1
 
-    init(style: Style, borderColor: Color = .DS.Background.primary) {
+    init(
+        style: Style,
+        borderColor: Color = .DS.Background.primary,
+        placeholderImage: Image? = nil
+    ) {
         self.style = style
         self.borderColor = borderColor
+        self.placeholderImage = placeholderImage
     }
 
     var body: some View {
@@ -79,8 +82,11 @@ struct AvatarsView: View {
         return CachedAsyncImage(url: processedURL) { image in
             image.resizable()
         } placeholder: {
-            Image("gravatar")
-                .resizable()
+            if let placeholderImage {
+                placeholderImage
+            } else {
+                placeholderZStack
+            }
         }
         .frame(width: style.diameter * scale, height: style.diameter * scale)
         .clipShape(Circle())
@@ -89,10 +95,10 @@ struct AvatarsView: View {
     private func doubleAvatarView(primaryURL: URL?, secondaryURL: URL?) -> some View {
         ZStack {
             avatar(url: secondaryURL)
-                .padding(.trailing, Constants.doubleAvatarHorizontalOffset * scale)
+                .padding(.trailing, doubleAvatarHorizontalOffset * scale)
             avatar(url: primaryURL)
                 .avatarBorderOverlay()
-                .padding(.leading, Constants.doubleAvatarHorizontalOffset * scale)
+                .padding(.leading, doubleAvatarHorizontalOffset * scale)
         }
     }
 
@@ -113,6 +119,16 @@ struct AvatarsView: View {
                 .padding(.leading, .DS.Padding.medium * scale)
         }
         .padding(.top, .DS.Padding.split)
+    }
+
+    private var placeholderZStack: some View {
+        ZStack {
+            Color.DS.Background.secondary
+            Image.DS.icon(named: .vector)
+                .resizable()
+                .frame(width: 18, height: 18)
+                .tint(.DS.Background.secondary)
+        }
     }
 }
 
