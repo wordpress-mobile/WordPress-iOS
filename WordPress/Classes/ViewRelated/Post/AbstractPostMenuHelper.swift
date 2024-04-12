@@ -13,7 +13,10 @@ struct AbstractPostMenuHelper {
     /// - parameters:
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
-    func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu {
+    func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu? {
+        if RemoteFeatureFlag.syncPublishing.enabled(), !PostSyncStateViewModel(post: post).isEditable {
+            return nil
+        }
         return UIMenu(title: "", options: .displayInline, children: [
             UIDeferredMenuElement.uncached { [weak presentingView, weak delegate] completion in
                 guard let presentingView, let delegate else { return }
