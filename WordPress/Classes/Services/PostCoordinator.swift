@@ -275,7 +275,7 @@ class PostCoordinator: NSObject {
     }
 
     func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
