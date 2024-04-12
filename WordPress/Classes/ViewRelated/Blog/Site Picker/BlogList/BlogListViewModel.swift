@@ -53,15 +53,9 @@ final class BlogListViewModel: ObservableObject {
             return
         }
 
-        blog.pinnedDate = blog.pinnedDate == nil ? Date() : nil
+        trackPinned(blog: blog)
 
-        eventTracker.track(
-            .siteSwitcherPinUpdated,
-            properties: [
-                "blog_id": blog.dotComID ?? "",
-                "pinned": blog.pinnedDate == nil
-            ]
-        )
+        blog.pinnedDate = blog.pinnedDate == nil ? Date() : nil
 
         pinnedSites = Self.filteredPinnedSites(allBlogs: allBlogs)
 
@@ -84,6 +78,16 @@ final class BlogListViewModel: ObservableObject {
         blog.lastUsed = Date()
         recentSites = Self.filteredRecentSites(allBlogs: allBlogs)
         contextManager.saveContextAndWait(contextManager.mainContext)
+    }
+
+    private func trackPinned(blog: Blog) {
+        eventTracker.track(
+            .siteSwitcherPinUpdated,
+            properties: [
+                "blog_id": blog.dotComID ?? "",
+                "pinned": blog.pinnedDate == nil
+            ]
+        )
     }
 
     private func trackSiteSelected(blog: Blog) {
