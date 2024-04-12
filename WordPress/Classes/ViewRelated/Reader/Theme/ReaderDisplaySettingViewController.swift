@@ -236,7 +236,8 @@ extension ReaderDisplaySettingSelectionView {
         }
 
         var feedbackText: Text? {
-            guard RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
+            guard AppConfiguration.isJetpack,
+                  RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
                 return nil
             }
 

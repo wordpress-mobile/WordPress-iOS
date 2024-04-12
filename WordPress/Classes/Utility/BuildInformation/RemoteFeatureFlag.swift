@@ -89,9 +89,9 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerDiscoverEndpoint:
             return true
         case .readingPreferences:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         case .readingPreferencesFeedback:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return true
         }
     }
 
