@@ -1033,7 +1033,7 @@ class PostCoordinator: NSObject {
 
     /// Moves the given post to trash.
     @MainActor
-    func trash(_ post: AbstractPost) async throws {
+    func trash(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
@@ -1054,7 +1054,7 @@ class PostCoordinator: NSObject {
     }
 
     @MainActor
-    func _delete(_ post: AbstractPost) async throws {
+    func _delete(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)

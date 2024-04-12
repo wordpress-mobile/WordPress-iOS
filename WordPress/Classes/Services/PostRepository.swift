@@ -262,7 +262,7 @@ final class PostRepository {
     /// - warning: This method delets all local revision of the post.
     @MainActor
     func _trash(_ post: AbstractPost) async throws {
-        assert(post.isOriginal())
+        wpAssert(post.isOriginal())
 
         let context = coreDataStack.mainContext
 
