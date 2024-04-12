@@ -432,13 +432,7 @@ extension PublishingEditor {
         // TODO: this is incorrect because there might still be media in the previous revision
         cancelUploadOfAllMedia(for: post)
 
-        let original = post.original()
-
-        // Original can be either an unsynced revision or an original post at this post
-        original.deleteRevision()
-        if original.isNewDraft {
-            context.delete(original)
-        }
+        AbstractPost.deleteLatestRevision(post, in: context)
         ContextManager.shared.saveContextAndWait(context)
         return true
     }
