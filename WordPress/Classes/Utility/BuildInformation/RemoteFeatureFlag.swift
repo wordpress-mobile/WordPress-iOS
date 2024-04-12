@@ -211,7 +211,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Synchronous Publishing"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
-        case .siteSwitcherRedesign
+        case .siteSwitcherRedesign:
             return "Site Switcher Redesign"
         }
     }

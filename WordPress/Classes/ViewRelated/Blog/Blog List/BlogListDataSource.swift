@@ -71,7 +71,7 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 class BlogListDataSource: NSObject {
     private let contextManager: ContextManager
 
-    init(contextManager: ContextManager = ContextManager.sharedInstance()) {
+    @objc init(contextManager: ContextManager = ContextManager.sharedInstance()) {
         self.contextManager = contextManager
         super.init()
         // We can't decide if we're using recent sites until the results controller
