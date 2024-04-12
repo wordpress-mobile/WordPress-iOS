@@ -355,8 +355,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    var postID: NSNumber?
-
     /// If true, apply autosave content when the editor creates a revision.
     ///
     /// - warning: deprecated (kahu-offline-mode)
@@ -462,7 +460,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.postID = post.postID
         self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)

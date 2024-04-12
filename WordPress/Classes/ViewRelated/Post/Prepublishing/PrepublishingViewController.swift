@@ -38,7 +38,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let persistentStore: UserPersistentRepository
     private let coordinator = PostCoordinator.shared
 
-    private var postID: NSNumber?
     private var visibility: PostVisibility
     private var password: String?
     private var publishDate: Date?
@@ -90,7 +89,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
-        self.postID = post.postID
         self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
         self.password = post.password
         self.publishDate = post.dateCreated
@@ -157,7 +155,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         configureHeader()
         configureTableView()
         configureKeyboardToggle()
-        observePostCoordinatorDidUpdate()
+        observePostConflictResolved()
 
         WPStyleGuide.applyBorderStyle(footerSeparator)
 
@@ -213,10 +211,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         return footerView
     }
 
-    private func observePostCoordinatorDidUpdate() {
+    private func observePostConflictResolved() {
         NotificationCenter.default
-            .publisher(for: .postCoordinatorDidUpdate)
-            .sink { [weak self] notification in self?.postCoordinatorDidUpdate(notification) }
+            .publisher(for: .postConflictResolved)
+            .sink { [weak self] notification in self?.postConflictResolved(notification) }
             .store(in: &cancellables)
     }
 
@@ -693,17 +691,14 @@ private extension PrepublishingOption {
 
 // MARK: - Notifications
 extension PrepublishingViewController {
-    private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return assertionFailure("missing NSUpdatedObjectsKey")
-        }
-        let updatedPosts = updatedObjects
-            .compactMap { $0 as? AbstractPost }
-            .filter { $0.postID != nil }
-        guard let updatedPost = updatedPosts.first(where: { $0.postID == postID }) else {
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
+        else {
             return
         }
-        self.post = updatedPost
+        self.post = post
     }
 }
 

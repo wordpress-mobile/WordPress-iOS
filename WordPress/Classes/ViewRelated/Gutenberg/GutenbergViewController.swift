@@ -204,8 +204,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
-    var postID: NSNumber?
-
     /// If true, apply autosave content when the editor creates a revision.
     ///
     var loadAutosaveRevision: Bool
@@ -307,7 +305,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     ) {
 
         self.post = post
-        self.postID = post.postID
         self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor

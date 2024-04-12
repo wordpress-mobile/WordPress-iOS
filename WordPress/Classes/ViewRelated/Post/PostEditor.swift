@@ -26,10 +26,6 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     ///
     var post: AbstractPost { get set }
 
-    /// The post ID of the post being edited.
-    ///
-    var postID: NSNumber? { get set }
-
     /// Initializer
     ///
     /// - Parameters:
@@ -156,9 +152,9 @@ extension PostEditor where Self: UIViewController {
             }.store(in: &cancellables)
 
         NotificationCenter.default
-            .publisher(for: .postCoordinatorDidUpdate)
+            .publisher(for: .postConflictResolved)
             .sink { [weak self] notification in
-                self?.postCoordinatorDidUpdate(notification)
+                self?.postConflictResolved(notification)
             }.store(in: &cancellables)
 
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
@@ -199,17 +195,14 @@ extension PostEditor where Self: UIViewController {
         ContextManager.sharedInstance().saveContextAndWait(context)
     }
 
-    private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return assertionFailure("missing NSUpdatedObjectsKey")
-        }
-        let updatedPosts = updatedObjects
-            .compactMap { $0 as? AbstractPost }
-            .filter { $0.postID != nil }
-        guard let updatedPost = updatedPosts.first(where: { $0.postID == postID }) else {
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
+        else {
             return
         }
-        self.post = updatedPost
+        self.post = post
         createRevisionOfPost()
     }
 }
