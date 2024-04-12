@@ -452,7 +452,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "date" : "2024-03-07T23:00:50+0000",
               "excerpt" : "excerpt-b",
               "featured_image" : 92,
-              "if_not_modified_since" : "2024-03-07T23:00:40+0000",
               "password" : "123",
               "slug" : "slug-b",
               "status" : "publish",
@@ -716,44 +715,21 @@ class PostRepositorySaveTests: CoreDataTestCase {
             return post
         }()
 
-        var requestCount = 0
-        // GIVEN a server where the post is ahead and has a new content
-        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
-            requestCount += 1
+        // GIVEN a server where content changed
+        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
+            try HTTPStubsResponse(value: serverPost, statusCode: 200)
+        }
 
-            if requestCount == 1 {
-                // THEN the first request contains an `if_not_modified_since` parameter
-                try assertRequestBody(request, expected: """
-                {
-                  "content" : "content-b",
-                  "if_not_modified_since" : "2024-03-07T23:00:40+0000"
-                }
-                """)
-                // GIVEN the first request fails with 409 (Conflict)
-                let ifNotModifiedSince = try request.getIfNotModifiedSince()
-                XCTAssertTrue(ifNotModifiedSince < serverDateModified)
-                return HTTPStubsResponse(jsonObject: [
-                    "error": "old-revision",
-                    "message": "There is a revision of this post that is more recent."
-                ], statusCode: 409, headers: nil)
-            }
-            if requestCount == 2 {
-                // THEN the second request contains only the delta
-                try assertRequestBody(request, expected: """
+        stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
+            // THEN the second request contains only the delta
+            try assertRequestBody(request, expected: """
                 {
                   "content" : "content-b"
                 }
                 """)
-                var serverPost = serverPost
-                serverPost.content = "content-b"
-                return try HTTPStubsResponse(value: serverPost, statusCode: 200)
-            }
-
-            throw URLError(.unknown)
-        }
-
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
-            try HTTPStubsResponse(value: serverPost, statusCode: 200)
+            var serverPost = serverPost
+            serverPost.content = "content-b"
+            return try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
         do {
@@ -775,7 +751,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         try await repository._save(post, overwrite: true)
 
         // THEN the content got updated to the version from the local revision
-        XCTAssertEqual(post.content, "content-b")
+        XCTAssertEqual(post.content, "content-b
         // THEN the rest of the changes are consolidated on the server and the
         // new changes made elsewhere are not overwritten thanks to the detla update
         XCTAssertEqual(post.postTitle, "title-c")

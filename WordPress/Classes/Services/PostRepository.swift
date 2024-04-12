@@ -215,35 +215,23 @@ final class PostRepository {
     private func _patch(_ post: AbstractPost, postID: NSNumber, changes: RemotePostUpdateParameters, overwrite: Bool) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
         let original = post.original()
-        var changes = changes
-
-        // Make sure the app never overwrites the content without the user approval.
-        if !overwrite, let date = original.dateModified, changes.content != nil {
-            changes.ifNotModifiedSince = date
-        }
-
         do {
-            return try await service.patchPost(withID: postID.intValue, parameters: changes)
-        } catch {
-            guard let error = error as? PostServiceRemoteUpdatePostError else {
-                throw error
-            }
-            switch error {
-            case .conflict:
+            if changes.content != nil && !overwrite {
                 // Fetch the latest post to consolidate the changes
                 let remotePost = try await service.post(withID: postID)
-                // Check for false positives
+                // Check if there is a conflict in revisions
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
-                // There is no conflict, so go ahead and overwrite the changes
-                changes.ifNotModifiedSince = nil
-                return try await service.patchPost(withID: postID.intValue, parameters: changes)
-            case .notFound:
-                // Delete the post from the local database
+            }
+            return try await service.patchPost(withID: postID.intValue, parameters: changes)
+        } catch {
+            if let error = error as? PostServiceRemoteUpdatePostError, error == .notFound {
+                // The app should delete the post from the local database
                 throw PostRepository.PostSaveError.deleted(title: original.titleForDisplay())
             }
+            throw error
         }
     }
 
