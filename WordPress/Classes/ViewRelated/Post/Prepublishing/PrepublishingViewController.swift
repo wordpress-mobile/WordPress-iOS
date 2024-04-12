@@ -36,11 +36,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
-    private let coordinator = PostCoordinator.shared
 
-    private var visibility: PostVisibility
-    private var password: String?
-    private var publishDate: Date?
+    private let viewModel: PrepublishingViewModel
+
+    private let coordinator = PostCoordinator.shared
 
     lazy var postBlogID: Int? = {
         coreDataStack.performQuery { [postObjectID = post.objectID] context in
@@ -89,9 +88,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
         self.post = post
-        self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
-        self.password = post.password
-        self.publishDate = post.dateCreated
+        self.viewModel = PrepublishingViewModel(post: post)
         self.identifiers = identifiers
         self.completion = completion
         self.coreDataStack = coreDataStack
@@ -422,7 +419,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func configureVisibilityCell(_ cell: WPTableViewCell) {
         if RemoteFeatureFlag.syncPublishing.enabled() {
-            cell.detailTextLabel?.text = visibility.localizedTitle
+            cell.detailTextLabel?.text = viewModel.visibility.localizedTitle
         } else {
             cell.detailTextLabel?.text = post.titleForVisibility
         }
@@ -432,13 +429,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         guard RemoteFeatureFlag.syncPublishing.enabled() else {
             return _didTapVisibilityCell()
         }
-        let view = PostVisibilityPicker(visibility: visibility) { [weak self] selection in
+        let view = PostVisibilityPicker(visibility: viewModel.visibility) { [weak self] selection in
             guard let self else { return }
-            self.visibility = selection.visibility
+            self.viewModel.visibility = selection.visibility
             if selection.visibility == .private {
-                self.publishDate = nil
+                self.viewModel.publishDate = nil
+                self.updatePublishButtonLabel()
             }
-            self.password = selection.password
+            self.viewModel.password = selection.password
             self.reloadData()
             self.navigationController?.popViewController(animated: true)
         }
@@ -475,13 +473,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             return _configureScheduleCell(cell)
         }
         cell.textLabel?.text = Strings.publishDate
-        if let publishDate {
+        if let publishDate = viewModel.publishDate {
             let formatter = SiteDateFormatters.dateFormatter(for: post.blog.timeZone ?? TimeZone.current, dateStyle: .medium, timeStyle: .short)
             cell.detailTextLabel?.text = formatter.string(from: publishDate)
         } else {
             cell.detailTextLabel?.text = Strings.immediately
         }
-        visibility == .private ? cell.disable() : cell.enable()
+        viewModel.visibility == .private ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
@@ -489,9 +487,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             return _didTapSchedule(indexPath)
         }
         let viewController = SchedulingDatePickerViewController()
-        viewController.configuration = SchedulingDatePickerConfiguration(date: publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
+        viewController.configuration = SchedulingDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
-            self?.publishDate = date
+            self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
         }
@@ -533,7 +531,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private func updatePublishButtonLabel() {
         let isScheduled: Bool
         if RemoteFeatureFlag.syncPublishing.enabled() {
-            isScheduled = publishDate.map { $0 > .now } ?? false
+            isScheduled = viewModel.publishDate.map { $0 > .now } ?? false
         } else {
             isScheduled = post.isScheduled()
         }
@@ -559,9 +557,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         Task {
             do {
                 try await PostCoordinator.shared._publish(post.original(), options: .init(
-                    visibility: visibility,
-                    password: password,
-                    publishDate: publishDate
+                    visibility: viewModel.visibility,
+                    password: viewModel.password,
+                    publishDate: viewModel.publishDate
                 ))
                 getCompletion()?(.published)
             } catch {
@@ -719,6 +717,23 @@ extension PrepublishingViewController {
             completion(.confirmed)
         }
         presentingViewController.present(alertController, animated: true, completion: nil)
+    }
+}
+
+private final class PrepublishingViewModel {
+    private let post: AbstractPost
+
+    var visibility: PostVisibility
+    var password: String?
+    var publishDate: Date?
+
+    init(post: AbstractPost) {
+        self.post = post
+
+        self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
+        self.password = post.password
+        // Ask the user to provide the date every time (ignore the obscure WP dateCreated/dateModified logic)
+        self.publishDate = nil
     }
 }
 
