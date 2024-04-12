@@ -98,6 +98,7 @@ final class SubmitFeedbackViewController: UIViewController {
             let completion = {
                 DispatchQueue.main.async {
                     SVProgressHUD.dismiss()
+                    WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
                     self.feedbackWasSubmitted = true
                     self.view.endEditing(true)
                     self.dismiss(animated: true) {
@@ -112,9 +113,17 @@ final class SubmitFeedbackViewController: UIViewController {
             case .failure(let error):
                 switch error {
                 case .noIdentity:
-                    print("Create anonymous request")
+                    ZendeskUtils.sharedInstance.createNewAnonymousRequest(in: self, description: text, tags: tags) { result in
+                        switch result {
+                        case .success:
+                            completion()
+                        case .failure(let error):
+                            DDLogError("Submitting feedback failed: \(error)")
+                            completion()
+                        }
+                    }
                 default:
-                    print("Log error and dismiss")
+                    DDLogError("Submitting feedback failed: \(error)")
                     completion()
                 }
             }
@@ -146,8 +155,8 @@ private extension SubmitFeedbackViewController {
         )
 
         static let submitLoadingMessage = NSLocalizedString(
-            "submit.feedback.submit.button",
-            value: "Submitting the feedback...",
+            "submit.feedback.submit.loading",
+            value: "Submitting...",
             comment: "Notice informing user that their feedback is being submitted."
         )
     }

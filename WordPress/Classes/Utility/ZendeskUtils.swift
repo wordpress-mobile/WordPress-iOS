@@ -331,12 +331,18 @@ protocol ZendeskUtilsProtocol {
 
 extension ZendeskUtils {
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+        createNewRequest(in: viewController, anonymous: false, description: description, tags: tags, completion: completion)
+    }
+
+    func createNewAnonymousRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+        createNewRequest(in: viewController, anonymous: true, description: description, tags: tags, completion: completion)
+    }
+
+    func createNewRequest(in viewController: UIViewController, anonymous: Bool, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
         presentInController = viewController
-        ZendeskUtils.createIdentity { [weak self] success, newIdentity in
-            guard let self, success else {
-                completion(.failure(.noIdentity))
-                return
-            }
+
+        let createRequest = { [weak self] in
+            guard let self else { return }
 
             self.createRequest() { requestConfig in
                 let provider = ZDKRequestProvider()
@@ -361,6 +367,20 @@ extension ZendeskUtils {
                         completion(.failure(.failedParsingResponse))
                     }
                 }
+            }
+        }
+
+        if anonymous {
+            let identity = Identity.createAnonymous()
+            Zendesk.instance?.setIdentity(identity)
+            createRequest()
+        } else {
+            ZendeskUtils.createIdentity { success, newIdentity in
+                guard success else {
+                    completion(.failure(.noIdentity))
+                    return
+                }
+                createRequest()
             }
         }
     }
