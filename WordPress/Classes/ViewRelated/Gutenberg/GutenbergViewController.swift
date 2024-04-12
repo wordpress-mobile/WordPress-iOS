@@ -203,7 +203,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
             refreshInterface()
         }
     }
-    
+
     var postID: NSNumber?
 
     /// If true, apply autosave content when the editor creates a revision.

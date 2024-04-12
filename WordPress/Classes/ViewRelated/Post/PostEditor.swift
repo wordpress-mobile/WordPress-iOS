@@ -25,7 +25,7 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// The post being edited.
     ///
     var post: AbstractPost { get set }
- 
+
     /// The post ID of the post being edited.
     ///
     var postID: NSNumber? { get set }
