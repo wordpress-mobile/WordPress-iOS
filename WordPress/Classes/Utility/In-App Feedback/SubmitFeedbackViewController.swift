@@ -88,11 +88,36 @@ final class SubmitFeedbackViewController: UIViewController {
 
     @objc private func didTapSubmit() {
         let text = textView.text ?? ""
-        self.feedbackWasSubmitted = true
-        WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
-        self.view.endEditing(true)
-        self.dismiss(animated: true) {
-            self.onFeedbackSubmitted?(self, text)
+        let tags = ["appreview_jetpack", "in_app_feedback"]
+
+        SVProgressHUD.show(withStatus: Strings.submitLoadingMessage)
+
+        ZendeskUtils.sharedInstance.createNewRequest(in: self, description: text, tags: tags) { [weak self] result in
+            guard let self else { return }
+
+            let completion = {
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    self.feedbackWasSubmitted = true
+                    self.view.endEditing(true)
+                    self.dismiss(animated: true) {
+                        self.onFeedbackSubmitted?(self, text)
+                    }
+                }
+            }
+
+            switch result {
+            case .success:
+                completion()
+            case .failure(let error):
+                switch error {
+                case .noIdentity:
+                    print("Create anonymous request")
+                default:
+                    print("Log error and dismiss")
+                    completion()
+                }
+            }
         }
     }
 }
@@ -118,6 +143,12 @@ private extension SubmitFeedbackViewController {
             "submit.feedback.title",
             value: "Feedback",
             comment: "The title for the the In-App Feedback screen"
+        )
+
+        static let submitLoadingMessage = NSLocalizedString(
+            "submit.feedback.submit.button",
+            value: "Submitting the feedback...",
+            comment: "Notice informing user that their feedback is being submitted."
         )
     }
 }
