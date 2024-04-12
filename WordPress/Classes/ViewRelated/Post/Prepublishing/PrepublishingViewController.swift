@@ -698,6 +698,9 @@ extension PrepublishingViewController {
         else {
             return
         }
+        // Ensures a post can be published after a conflict has been resolved.
+        // When resolving a conflict for a post, local revisions are deleted, causing self.post to become nil.
+        // By setting self.post to be the resolved post, users can proceed to publish the post.
         self.post = post
     }
 }
