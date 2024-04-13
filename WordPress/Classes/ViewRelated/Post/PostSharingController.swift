@@ -5,11 +5,11 @@ import SVProgressHUD
 
     @objc func shareController(_ title: String?, summary: String?, link: String?) -> UIActivityViewController {
         let url = link.flatMap(URL.init(string:))
-        let allItems: [Any?] = [title, summary, url]
-        let nonNilActivityItems = allItems.compactMap({ $0 })
+        let provider = CustomActivityItemProvider(title: title, summary: summary, url: url)
 
         let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
-        let controller = UIActivityViewController(activityItems: nonNilActivityItems, applicationActivities: activities)
+        let controller = UIActivityViewController(activityItems: [provider], applicationActivities: activities)
+
         if let str = title {
             controller.setValue(str, forKey: "subject")
         }
@@ -144,4 +144,27 @@ import SVProgressHUD
     }
 
     typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
+}
+
+private class CustomActivityItemProvider: UIActivityItemProvider {
+    private let title: String?
+    private let summary: String?
+    private let url: URL?
+
+    init(title: String?, summary: String?, url: URL?) {
+        self.title = title
+        self.summary = summary
+        self.url = url
+        super.init(placeholderItem: url ?? "")
+    }
+
+    override var item: Any {
+        guard let activityType = self.activityType else { return url ?? "" }
+
+        if activityType == .copyToPasteboard {
+            return url ?? ""
+        } else {
+            return [title as Any, summary as Any, url as Any].compactMap { $0 }
+        }
+    }
 }
