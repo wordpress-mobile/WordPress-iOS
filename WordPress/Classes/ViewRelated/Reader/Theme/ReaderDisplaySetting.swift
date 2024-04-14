@@ -4,7 +4,7 @@ import WordPressShared
 struct ReaderDisplaySetting: Codable, Equatable {
 
     static var customizationEnabled: Bool {
-        FeatureFlag.readerCustomization.enabled
+        RemoteFeatureFlag.readingPreferences.enabled()
     }
 
     // MARK: Properties
@@ -18,6 +18,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
 
     var hasLightBackground: Bool {
         color.background.brighterThan(0.5)
+    }
+
+    var isDefaultSetting: Bool {
+        return self == .standard
     }
 
     // MARK: Methods
@@ -79,8 +83,9 @@ struct ReaderDisplaySetting: Codable, Equatable {
         case sepia
         case evening
         case oled
+        case hacker
+        case candy
 
-        // TODO: Consider localization
         var label: String {
             switch self {
             case .system:
@@ -113,6 +118,18 @@ struct ReaderDisplaySetting: Codable, Equatable {
                     value: "OLED",
                     comment: "Name for the OLED color theme, used in the Reader's reading preferences."
                 )
+            case .hacker:
+                return NSLocalizedString(
+                    "reader.preferences.color.h4x0r",
+                    value: "h4x0r",
+                    comment: "Name for the h4x0r color theme, used in the Reader's reading preferences."
+                )
+            case .candy:
+                return NSLocalizedString(
+                    "reader.preferences.color.candy",
+                    value: "Candy",
+                    comment: "Name for the Candy color theme, used in the Reader's reading preferences."
+                )
             }
         }
 
@@ -128,6 +145,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return .init(fromHex: 0xabaab2)
             case .oled:
                 return .text.color(for: .init(userInterfaceStyle: .dark))
+            case .hacker:
+                return .green
+            case .candy:
+                return .init(fromHex: 0x0066ff)
             }
         }
 
@@ -152,6 +173,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return .init(fromHex: 0x3a3a3c)
             case .oled:
                 return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
+            case .hacker:
+                return .systemBackground.color(for: .init(userInterfaceStyle: .dark))
+            case .candy:
+                return .init(fromHex: 0xffe8fd)
             }
         }
 
@@ -173,6 +198,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return false
             }
         }
+
+        var valueForTracks: String {
+            switch self {
+            case .system:
+                return "default"
+            case .hacker:
+                return "h4x0r"
+            default:
+                return rawValue
+            }
+        }
     }
 
     enum Font: String, Codable, CaseIterable {
@@ -189,6 +225,10 @@ struct ReaderDisplaySetting: Codable, Equatable {
             case .mono:
                 return "'SF Mono', SFMono-Regular, ui-monospace, monospace"
             }
+        }
+
+        var valueForTracks: String {
+            rawValue
         }
     }
 
@@ -213,6 +253,56 @@ struct ReaderDisplaySetting: Codable, Equatable {
                 return 1.25
             }
         }
+
+        var accessibilityLabel: String {
+            switch self {
+            case .extraSmall:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraSmall",
+                    value: "Extra Small",
+                    comment: "Accessibility label for the Extra Small size option, used in the Reader's reading preferences."
+                )
+            case .small:
+                return NSLocalizedString(
+                    "reader.preferences.size.small",
+                    value: "Small",
+                    comment: "Accessibility label for the Small size option, used in the Reader's reading preferences."
+                )
+            case .normal:
+                return NSLocalizedString(
+                    "reader.preferences.size.normal",
+                    value: "Normal",
+                    comment: "Accessibility label for the Normal size option, used in the Reader's reading preferences."
+                )
+            case .large:
+                return NSLocalizedString(
+                    "reader.preferences.size.large",
+                    value: "Large",
+                    comment: "Accessibility label for the Large size option, used in the Reader's reading preferences."
+                )
+            case .extraLarge:
+                return NSLocalizedString(
+                    "reader.preferences.size.extraLarge",
+                    value: "Extra Large",
+                    comment: "Accessibility label for the Extra Large size option, used in the Reader's reading preferences."
+                )
+            }
+        }
+
+        var valueForTracks: String {
+            switch self {
+            case .extraSmall:
+                return "extra_small"
+            case .small:
+                return "small"
+            case .normal:
+                return "normal"
+            case .large:
+                return "large"
+            case .extraLarge:
+                return "extra_large"
+            }
+        }
     }
 
     // MARK: Codable
@@ -226,11 +316,21 @@ struct ReaderDisplaySetting: Codable, Equatable {
 
 // MARK: - Controller
 
+protocol ReaderDisplaySettingStoreDelegate: NSObjectProtocol {
+    func displaySettingDidChange()
+}
+
 /// This should be the object to be strongly retained. Keeps the store up-to-date.
 class ReaderDisplaySettingStore: NSObject {
 
     private let repository: UserPersistentRepository
 
+    private let notificationCenter: NotificationCenter
+
+    weak var delegate: ReaderDisplaySettingStoreDelegate?
+
+    /// A public facade to simplify the flag checking dance for the `ReaderDisplaySetting` object.
+    /// When the flag is disabled, this will always return the `standard` object, and the setter does nothing.
     var setting: ReaderDisplaySetting {
         get {
             return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
@@ -243,16 +343,23 @@ class ReaderDisplaySettingStore: NSObject {
         }
     }
 
+    /// The actual instance variable that holds the setting object.
+    /// This is intentionally set to private so that it's only controllable by `ReaderDisplaySettingStore`.
     private var _setting: ReaderDisplaySetting = .standard {
         didSet {
-            if let dictionary = try? setting.toDictionary() {
-                repository.set(dictionary, forKey: Constants.key)
+            guard oldValue != _setting,
+                  let dictionary = try? setting.toDictionary() else {
+                return
             }
+            repository.set(dictionary, forKey: Constants.key)
+            broadcastChangeNotification()
         }
     }
 
-    init(repository: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
+    init(repository: UserPersistentRepository = UserPersistentStoreFactory.instance(),
+         notificationCenter: NotificationCenter = .default) {
         self.repository = repository
+        self.notificationCenter = notificationCenter
         self._setting = {
             guard let dictionary = repository.dictionary(forKey: Constants.key),
                   let data = try? JSONSerialization.data(withJSONObject: dictionary),
@@ -262,9 +369,56 @@ class ReaderDisplaySettingStore: NSObject {
             return setting
         }()
         super.init()
+        registerNotifications()
+    }
+
+    private func registerNotifications() {
+        notificationCenter.addObserver(self,
+                                       selector: #selector(handleChangeNotification),
+                                       name: .readerDisplaySettingStoreDidChange,
+                                       object: nil)
+    }
+
+    private func broadcastChangeNotification() {
+        notificationCenter.post(name: .readerDisplaySettingStoreDidChange, object: self)
+    }
+
+    @objc
+    private func handleChangeNotification(_ notification: NSNotification) {
+        // ignore self broadcasts.
+        if let broadcaster = notification.object as? ReaderDisplaySettingStore,
+           broadcaster == self {
+            return
+        }
+
+        // since we're handling change notifications, a stored setting object *should* exist.
+        guard let updatedSetting = try? fetchSetting() else {
+            DDLogError("ReaderDisplaySettingStore: Received a didChange notification with a nil stored value")
+            return
+        }
+
+        _setting = updatedSetting
+        delegate?.displaySettingDidChange()
+    }
+
+    /// Fetches the stored value of `ReaderDisplaySetting`.
+    ///
+    /// - Returns: `ReaderDisplaySetting`
+    private func fetchSetting() throws -> ReaderDisplaySetting? {
+        guard let dictionary = repository.dictionary(forKey: Constants.key) else {
+            return nil
+        }
+
+        let data = try JSONSerialization.data(withJSONObject: dictionary)
+        let setting = try JSONDecoder().decode(ReaderDisplaySetting.self, from: data)
+        return setting
     }
 
     private struct Constants {
         static let key = "readerDisplaySettingKey"
     }
+}
+
+fileprivate extension NSNotification.Name {
+    static let readerDisplaySettingStoreDidChange = NSNotification.Name("ReaderDisplaySettingDidChange")
 }

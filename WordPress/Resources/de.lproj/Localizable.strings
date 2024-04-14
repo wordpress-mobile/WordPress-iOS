@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-03 12:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-07 22:24:31+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -11019,6 +11019,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Footnote to be displayed in the preview section, noticing that the feature is in development. */
 "reader.preferences.preview.body.notice" = "Diese Funktion befindet sich noch in der Entwicklung.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "Hunde";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "Fuchs";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "Design";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "Schreiben";
 
 /* Title text for a preview */
 "reader.preferences.preview.title" = "Leseeinstellungen auswählen";

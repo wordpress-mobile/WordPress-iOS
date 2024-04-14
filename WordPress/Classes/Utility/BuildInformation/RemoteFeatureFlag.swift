@@ -29,6 +29,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case siteMonitoring
     case syncPublishing
     case readerDiscoverEndpoint
+    case readingPreferences
+    case readingPreferencesFeedback
 
     var defaultValue: Bool {
         switch self {
@@ -47,7 +49,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .jetpackFeaturesRemovalStaticPosters:
-            return false
+            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
@@ -86,6 +88,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerDiscoverEndpoint:
             return true
+        case .readingPreferences:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+        case .readingPreferencesFeedback:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -147,6 +153,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "_sync_publishing"
         case .readerDiscoverEndpoint:
             return "reader_discover_new_endpoint"
+        case .readingPreferences:
+            return "reading_preferences"
+        case .readingPreferencesFeedback:
+            return "reading_preferences_feedback"
         }
     }
 
@@ -206,6 +216,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Synchronous Publishing"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
+        case .readingPreferences:
+            return "Reading Preferences"
+        case .readingPreferencesFeedback:
+            return "Reading Preferences Feedback"
         }
     }
 

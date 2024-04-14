@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-03-20 18:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-10 15:12:58+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -1528,6 +1528,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a button. */
 "Clear search history" = "مسح محفوظات البحث";
+
+/* No comment provided by engineer. */
+"Clear selected color" = "مسح لون محدد";
 
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "جاري المسح...";
@@ -7804,6 +7807,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes a status of a plugin */
 "Updating" = "جاري التحديث";
 
+/* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
+"Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "سيؤدي تحديث الصورة الرمزية والاسم والمعلومات الخاصة بك هنا إلى تحديثها أيضًا عبر جميع المواقع التي تستخدم ملفات تعريف Gravatar.";
+
 /* Text displayed in HUD while a draft or scheduled post is being updated. */
 "Updating..." = "جاري التحديث...";
 
@@ -9059,6 +9065,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* An informative excerpt shown in a subtler tone. */
 "bloganuary.learnMore.modal.footer.text" = "ستستخدم Bloganuary موجّهات التدوين اليومية لإرسال الموضوعات الخاصة بشهر يناير إليك.";
+
+/* The headline text of the Bloganuary modal sheet. */
+"bloganuary.learnMore.modal.headline" = "الانضمام إلى تحدي الكتابة الذي يستمر لمدة شهر";
 
 /* Verb. Dismisses the blogging prompt notification. */
 "bloggingPrompt.pushNotification.customActionDescription.dismiss" = "تجاهُل";
@@ -10544,6 +10553,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "إغلاق";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "وسائل التواصل الاجتماعي الخاصة بJetpack";
+
 /* Title for an error messaage in the pre-publishing sheet */
 "prepublishing.mediaUploadFailed" = "فشل رفع الوسائط";
 
@@ -10689,9 +10701,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Describes that only one user likes a post.  The underscores denote underline and is not displayed. */
 "reader.detail.likes.single" = "_إعجاب واحد_";
 
+/* Title for the Comment button on the Reader Detail toolbar.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.comment.button" = "تعليق";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has not liked the post yet.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.like.button" = "إعجاب";
+
 /* Accessibility hint for the Like button state. The button shows that the user has not liked the post,
 but tapping on this button will add a Like to the post. */
 "reader.detail.toolbar.like.button.a11y.hint" = "للإعجاب بهذه التدوينة.";
+
+/* Title for the Like button in the Reader Detail toolbar.
+This is shown when the user has already liked the post.
+Note: Since the display space is limited, a short or concise translation is preferred. */
+"reader.detail.toolbar.liked.button" = "أعجبني";
 
 /* Accessibility hint for the Liked button state. The button shows that the user has liked the post,
 but tapping on this button will remove their like from the post. */
@@ -10711,6 +10737,9 @@ but tapping on this button will remove their like from the post. */
 
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "لقد اشتركت في هذه المدونة بالفعل.";
+
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "الإدارة";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "التصفية حسب المدونة";
@@ -10739,8 +10768,14 @@ but tapping on this button will remove their like from the post. */
 /* Title for an empty filter sheet on the Reader for tags */
 "reader.filterSheet.empty.tags.title" = "لا توجد وسوم";
 
+/* Label displayed to the user while loading their selected interests */
+"reader.filterSheet.select.tags.following" = "جارٍ متابعة وسوم جديدة...";
+
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "الوسوم المقترحة";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "يتابع الوسم.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "جارٍ إحضار المدونات...";
@@ -10886,11 +10921,20 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Notice title when blocking a user fails. */
 "reader.notice.user.blocked" = "reader.notice.user.block.failed";
 
+/* Text for the 'Comment' button on the reader post card cell. */
+"reader.post.button.comment" = "تعليق";
+
 /* Accessibility hint for the comment button on the reader post card cell */
 "reader.post.button.comment.accessibility.hint" = "لفتح التعليقات الخاصة بالتدوينة.";
 
+/* Text for the 'Like' button on the reader post card cell. */
+"reader.post.button.like" = "إعجاب";
+
 /* Accessibility hint for the like button on the reader post card cell */
 "reader.post.button.like.accessibility.hint" = "للإعجاب بالتدوينة.";
+
+/* Text for the 'Liked' button on the reader post card cell. */
+"reader.post.button.liked" = "أعجبني";
 
 /* Accessibility hint for the liked button on the reader post card cell */
 "reader.post.button.liked.accessibility.hint" = "لإلغاء الإعجاب بالتدوينة.";
@@ -10900,6 +10944,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label for the more menu button on the reader post card cell */
 "reader.post.button.menu.accessibility.label" = "مزيد";
+
+/* Text for the 'Reblog' button on the reader post card cell. */
+"reader.post.button.reblog" = "إعادة التدوين";
 
 /* Accessibility hint for the reblog button on the reader post card cell */
 "reader.post.button.reblog.accessibility.hint" = "إعادة تدوين التدوينة";
@@ -10925,11 +10972,59 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* The title of a button that triggers the reporting of a post's author. */
 "reader.post.menu.report.user" = "الإبلاغ عن هذا المستخدم";
 
+/* The title of a button that saves a post. */
+"reader.post.menu.save.post" = "حفظ";
+
 /* Verb. An option to subscribe to a blog. */
 "reader.post.menu.subscribe.blog" = "الاشتراك في المدونة";
 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "إلغاء الاشتراك من المدونة";
+
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "افتراضي";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "المساء";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "بني";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "لين";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "تم";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "الحجم";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.description" = "القراءة هي أمر شخصي، نريد أن تكون لديك السيطرة اختر الأنماط الملائمة لك.";
+
+/* Text for a feedback link for the Reader Preferences feature */
+"reader.preferences.preview.body.feedbackLink" = "إرسال ملاحظات إلينا حول هذه الميزة";
+
+/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
+"reader.preferences.preview.body.notice" = "لا تزال هذه الميزة قيد التطوير.";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.1" = "كلاب";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.2" = "ثعلب";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.3" = "التصميم";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.4" = "كتابة";
+
+/* Title text for a preview */
+"reader.preferences.preview.title" = "اختيار تفضيلات القراءة الخاصة بك";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "إدارة المدونات";
@@ -10942,6 +11037,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "مدونات";
+
+/* Screen title. Reader select interests title label text. */
+"reader.select.interests.follow.title" = "متابعة الوسوم";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "جارٍ متابعة وسوم جديدة...";
+
+/* Message shown when there are no new topics to follow. */
+"reader.select.tags.no.results.follow.title" = "لا توجد وسوم جديدة للمتابعة";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "اختيار وسومك";
@@ -10975,6 +11079,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "اكتشاف مزيد من الوسوم";
+
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "متابعة";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "متابعة";
+
+/* Accessibility label for unsubscribing from a tag */
+"reader.tags.unfollow.accessibility.label" = "إلغاء متابعة %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "إلغاء الاشتراك";
@@ -11123,11 +11236,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "النطاقات";
 
+/* Button to progress to the next step after selecting domain in Site Creation */
+"siteCreation.domains.buttons.selectDomain" = "تحديد نطاق";
+
+/* Accessibility label for audio items in the media collection view. The parameter is the creation date of the audio. */
+"siteMedia.accessibilityLabelAudio" = "الصوت، %@";
+
+/* Accessibility label for other media items in the media collection view. The parameter is the filename file. */
+"siteMedia.accessibilityLabelDocument" = "المستند، %@";
+
 /* Accessibility label for image thumbnails in the media collection view. The parameter is the creation date of the image. */
 "siteMedia.accessibilityLabelImage" = "الصورة، %@";
 
 /* Accessibility label for video thumbnails in the media collection view. The parameter is the creation date of the video. */
 "siteMedia.accessibilityLabelVideo" = "الفيديو، %@";
+
+/* Accessibility label to use when creation date from media asset is not know. */
+"siteMedia.accessibilityUnknownCreationDate" = "تاريخ الإنشاء غير معروف";
 
 /* Accessibility hint for actions when displaying media items. */
 "siteMedia.cellAccessibilityHint" = "حدِّد الوسائط.";
@@ -11380,6 +11505,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "حسب اليوم";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
+"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
+"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
 /* Stats views higher than previous month */
 "stats.traffic.label.monthDifference.higher" = "%@ أعلى من الشهر السابق\n";
@@ -11719,6 +11850,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "لن يكون متوفرًا في المستقبل.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "هل تريد بدء موقع جديد؟";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "ووردبريس، المساعدة، الدعم، الأسئلة المتداولة، الأسئلة، كشف وتصحيح الأخطاء، السجلات، مركز التعليمات، الاتصال";

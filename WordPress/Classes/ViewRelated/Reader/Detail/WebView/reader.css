@@ -68,6 +68,11 @@ figure {
   margin-inline-end: 0;
 }
 
+/* Workaround: limit the maximum width so that the right border is not cut off */
+figure.wp-block-embed.is-type-video {
+    max-width: 99vw;
+}
+
 /* Temporary override for Reader Customization */
 .reader-full-post__story-content blockquote {
     color: var(--color-text) !important;

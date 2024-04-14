@@ -1,26 +1,42 @@
 import SwiftUI
 import DesignSystem
 
+/// The tracking source values for the customization sheet.
+/// The values are kept in sync with Android.
+enum ReaderDisplaySettingViewSource: String {
+    case readerPostNavBar = "post_detail_toolbar"
+    case unspecified
+}
+
 class ReaderDisplaySettingViewController: UIViewController {
     private let initialSetting: ReaderDisplaySetting
     private let completion: ((ReaderDisplaySetting) -> Void)?
+    private let trackingSource: ReaderDisplaySettingViewSource
+    private var viewModel: ReaderDisplaySettingSelectionViewModel? = nil
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    init(initialSetting: ReaderDisplaySetting, completion: ((ReaderDisplaySetting) -> Void)?) {
+    init(initialSetting: ReaderDisplaySetting,
+         source: ReaderDisplaySettingViewSource = .unspecified,
+         completion: ((ReaderDisplaySetting) -> Void)?) {
         self.initialSetting = initialSetting
         self.completion = completion
+        self.trackingSource = source
+
         super.init(nibName: nil, bundle: nil)
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupNavigationItems()
+        trackViewOpened()
     }
 
     private func setupView() {
+        edgesForExtendedLayout = .top
         view.backgroundColor = .systemBackground
 
         let viewModel = ReaderDisplaySettingSelectionViewModel(displaySetting: initialSetting) { [weak self] setting in
@@ -29,9 +45,77 @@ class ReaderDisplaySettingViewController: UIViewController {
             })
         }
 
+        viewModel.didSelectItem = { [weak self] in
+            // since the navigation bar is transparent, we need to override the interface style so that
+            // the navigation items remain visible with the new color.
+            self?.updateNavigationBar(with: viewModel.displaySetting)
+        }
+
         let swiftUIView = UIView.embedSwiftUIView(ReaderDisplaySettingSelectionView(viewModel: viewModel))
         view.addSubview(swiftUIView)
         view.pinSubviewToAllEdges(swiftUIView)
+
+        self.viewModel = viewModel
+    }
+
+    private func setupNavigationItems() {
+        // configure transparent navigation bar for the view
+        let navAppearance = UINavigationBarAppearance()
+        navAppearance.configureWithTransparentBackground()
+        navigationItem.standardAppearance = navAppearance
+        navigationItem.scrollEdgeAppearance = navAppearance
+        navigationItem.compactAppearance = navAppearance
+
+        guard let displaySetting = viewModel?.displaySetting else {
+            return
+        }
+
+        // add the experimental label
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontForContentSizeCategory = true
+        label.text = Constants.experimentalText
+        navigationItem.leftBarButtonItem = .init(customView: label)
+
+        // add close button
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            WPAnalytics.track(.readingPreferencesClosed)
+            self?.navigationController?.dismiss(animated: true)
+        })
+
+        updateNavigationBar(with: displaySetting)
+    }
+
+    private func trackViewOpened() {
+        WPAnalytics.track(.readingPreferencesOpened, properties: ["source": trackingSource.rawValue])
+    }
+
+    @MainActor
+    private func updateNavigationBar(with setting: ReaderDisplaySetting) {
+        navigationController?.navigationBar.overrideUserInterfaceStyle = setting.hasLightBackground ? .light : .dark
+
+        // update the experimental label style
+        if let label = navigationItem.leftBarButtonItem?.customView as? UILabel {
+            label.font = setting.font(with: .footnote, weight: .semibold)
+            label.textColor = setting.color.secondaryForeground
+        }
+    }
+
+    private struct Constants {
+        // matches SwiftUI's `easeInOut` default animation duration.
+        // see: https://developer.apple.com/documentation/swiftui/animation/easeinout#discussion
+        static let animationDuration: TimeInterval = 0.35
+
+        static let experimentalText = NSLocalizedString(
+            "reader.preferences.navBar.experimental.label",
+            value: "<Experimental>",
+            comment: """
+                Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+                The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+                Feel free to replace it with other bracket types that you think looks better for the locale.
+                """
+        )
     }
 }
 
@@ -40,10 +124,12 @@ class ReaderDisplaySettingViewController: UIViewController {
 // MARK: View Model
 
 class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
-
-    let feedbackLinkString = String() // TODO: Update with actual link
+    private typealias TrackingKeys = ReaderDisplaySettingSelectionView.TrackingKeys
 
     @Published var displaySetting: ReaderDisplaySetting
+
+    /// Called when the user selects a new option.
+    var didSelectItem: (() -> Void)? = nil
 
     private let completion: ((ReaderDisplaySetting) -> Void)?
 
@@ -53,6 +139,13 @@ class ReaderDisplaySettingSelectionViewModel: NSObject, ObservableObject {
     }
 
     func doneButtonTapped() {
+        WPAnalytics.track(.readingPreferencesSaved, properties: [
+            TrackingKeys.isDefault: displaySetting.isDefaultSetting,
+            TrackingKeys.colorScheme: displaySetting.color.valueForTracks,
+            TrackingKeys.fontType: displaySetting.font.valueForTracks,
+            TrackingKeys.fontSize: displaySetting.size.valueForTracks,
+        ])
+
         completion?(displaySetting)
     }
 
@@ -73,21 +166,52 @@ struct ReaderDisplaySettingSelectionView: View {
 
     @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
+    @State private var viewHeight: CGFloat = .zero
+
+    @State private var controlViewIntrinsicHeight: CGFloat = .zero
+
     var body: some View {
-        ZStack {
+        VStack(spacing: .zero) {
             PreviewView(viewModel: viewModel)
-            VStack {
-                Spacer() // stick the control view to the bottom.
+
+            ScrollView(.vertical) {
                 ControlView(viewModel: viewModel)
-                    .overlay(alignment: .top, content: { // add 1pt top border.
-                        Rectangle()
-                            .frame(width: nil, height: 1.0, alignment: .top)
-                            .foregroundStyle(Color(.tertiaryLabel))
+                    .background {
+                        GeometryReader { proxy in
+                            Color.clear.onAppear {
+                                self.controlViewIntrinsicHeight = proxy.size.height
+                            }
+                        }
+                    }
+            }
+            .overlay(alignment: .top, content: { // add a thin top border.
+                Rectangle()
+                    .ignoresSafeArea()
+                    .frame(width: nil, height: .hairlineBorderWidth, alignment: .top)
+                    .foregroundStyle(Color(.tertiaryLabel))
+            })
+            // if there's enough space to show the entire control view, shrink the scroll view to fit.
+            // otherwise, we're going to limit the height so that the preview section remains visible.
+            .frame(height: min(controlViewIntrinsicHeight, viewHeight * Constants.maxControlViewHeightRatio))
+        }
+        .background {
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear(perform: {
+                        self.viewHeight = proxy.size.height
                     })
+                    .onChange(of: proxy.size.height) { newValue in
+                        // update value in case of orientation change.
+                        self.viewHeight = newValue
+                    }
             }
         }
     }
 
+    private struct Constants {
+        /// The ratio of the screen height to be used for defining the max height of the control view.
+        static let maxControlViewHeightRatio = 0.6
+    }
 }
 
 // MARK: - Preview View
@@ -97,43 +221,84 @@ extension ReaderDisplaySettingSelectionView {
     struct PreviewView: View {
         @ObservedObject var viewModel: ReaderDisplaySettingSelectionViewModel
 
+        @Environment(\.openURL) private var openURL
+
         var body: some View {
-            ScrollView(.vertical) {
+            ScrollView(.vertical, showsIndicators: false) {
                 VStack(alignment: .leading, spacing: .DS.Padding.double) {
-                    Text(Strings.Preview.title)
-                        .font(Font(viewModel.displaySetting.font(with: .title1)))
-                        .foregroundStyle(Color(viewModel.displaySetting.color.foreground))
+                    Text(Strings.title)
+                        .font(Font(viewModel.displaySetting.font(with: .title1, weight: .semibold)))
+                        .foregroundStyle(viewModel.foregroundColor)
+
+                    Text(Strings.bodyText)
+                        .font(Font(viewModel.displaySetting.font(with: .callout)))
+                        .foregroundStyle(viewModel.foregroundColor)
+
+                    if let feedbackText {
+                        feedbackText
+                            .font(Font(viewModel.displaySetting.font(with: .callout)))
+                            .foregroundStyle(viewModel.foregroundColor)
+                            .tint(Color(linkTintColor))
+                            .accessibilityAddTraits(.isLink)
+                            .environment(\.openURL, OpenURLAction { url in
+                                WPAnalytics.track(.readingPreferencesFeedbackTapped)
+                                return .systemAction
+                            })
+                    }
 
                     tagsView
 
-                    // TODO: Add feature flag for feedback collection.
-                    // TODO: Apply link styles.
-                    if let feedbackURL = URL(string: viewModel.feedbackLinkString) {
-                        Link(Strings.Preview.feedbackLinkText, destination: feedbackURL)
-                    }
-
-                    Text(Strings.Preview.bodyDescription)
-                        .font(Font(viewModel.displaySetting.font(with: .callout)))
-                        .foregroundStyle(viewModel.foregroundColor)
-
-                    Text(Strings.Preview.bodyNotice)
-                        .font(Font(viewModel.displaySetting.font(with: .callout)))
-                        .foregroundStyle(viewModel.foregroundColor)
-
                     Spacer()
                 }
+                .padding(.DS.Padding.double)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .fixedSize(horizontal: false, vertical: true)
             }
-            .padding(.DS.Padding.double)
+            .mask({
+                // adds a soft gradient mask that hints that there are more content to scroll.
+                VStack(spacing: .zero) {
+                    Rectangle().fill(.black)
+                    LinearGradient(gradient: Gradient(colors: [.black, .clear]),
+                                   startPoint: .top,
+                                   endPoint: .bottom)
+                    .frame(height: Constants.gradientMaskHeight)
+                }
+            })
             .background(viewModel.backgroundColor)
             .animation(.easeInOut, value: viewModel.displaySetting)
+        }
+
+        var feedbackText: Text? {
+            guard RemoteFeatureFlag.readingPreferencesFeedback.enabled() else {
+                return nil
+            }
+
+            var linkString = "[\(Strings.feedbackLinkCTA)](\(Constants.feedbackLinkString))"
+            if viewModel.displaySetting.color != .system {
+                // for color themes other than the default, we'll mark it bold.
+                linkString = "**\(linkString)**"
+            }
+
+            let string = String(format: Strings.feedbackLineFormat, linkString)
+            guard var attributedString = try? AttributedString(markdown: string) else {
+                return nil
+            }
+
+            if let rangeOfLink = attributedString.range(of: Strings.feedbackLinkCTA) {
+                attributedString[rangeOfLink].underlineStyle = .single
+            }
+
+            return Text(attributedString)
+        }
+
+        var linkTintColor: UIColor {
+            viewModel.displaySetting.color == .system ? .muriel(color: .init(name: .blue)) : viewModel.displaySetting.color.foreground
         }
 
         var tagsView: some View {
             ScrollView(.horizontal) {
                 HStack(spacing: .DS.Padding.single) {
-                    ForEach(Strings.Preview.tags, id: \.self) { text in
+                    ForEach(Strings.tags, id: \.self) { text in
                         Text(text)
                             .font(Font(viewModel.displaySetting.font(with: .callout)))
                             .foregroundStyle(viewModel.foregroundColor)
@@ -145,42 +310,60 @@ extension ReaderDisplaySettingSelectionView {
                             }
                     }
                 }
+                .accessibilityElement(children: .combine)
+                .accessibilityLabel(Strings.tagsListAccessibilityLabel)
             }
         }
 
+        private struct Constants {
+            static let gradientMaskHeight = 32.0
+            static let feedbackLinkString = "https://automattic.survey.fm/reader-customization-survey"
+        }
+
         private struct Strings {
-            struct Preview {
-                static let title = NSLocalizedString(
-                    "reader.preferences.preview.title",
-                    value: "Choose your Reading Preferences",
-                    comment: "Title text for a preview"
-                )
+            static let title = NSLocalizedString(
+                "reader.preferences.preview.header",
+                value: "Reading Preferences",
+                comment: "Title text for a preview"
+            )
 
-                static let tags = [
-                    NSLocalizedString("reader.preferences.preview.tags.1", value: "dogs", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.2", value: "fox", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.3", value: "design", comment: "Example tag for preview"),
-                    NSLocalizedString("reader.preferences.preview.tags.4", value: "writing", comment: "Example tag for preview"),
-                ]
+            static let bodyText = NSLocalizedString(
+                "reader.preferences.preview.body.text",
+                value: "Choose your colors, fonts, and sizes. Preview your selection here, and read posts with your styles once you're done.",
+                comment: "Description text for the preview section of Reader Preferences"
+            )
 
-                static let feedbackLinkText = NSLocalizedString(
-                    "reader.preferences.preview.body.feedbackLink",
-                    value: "Send us a feedback on this feature",
-                    comment: "Text for a feedback link for the Reader Preferences feature"
-                )
+            static let feedbackLineFormat = NSLocalizedString(
+                "reader.preferences.preview.body.feedback.format",
+                value: "This is a new feature still in development. To help us improve it %1$@.",
+                comment: """
+                Text format for the feedback line text, to be displayed in the preview section.
+                %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+                Example: 'This is a new feature still in development. To help us improve it send your feedback.'
+                """
+            )
 
-                static let bodyDescription = NSLocalizedString(
-                    "reader.preferences.preview.body.description",
-                    value: "Reading is personal, we want you to have control. Choose the styles that suit you.",
-                    comment: "Description text for the preview section of Reader Preferences"
-                )
+            static let feedbackLinkCTA = NSLocalizedString(
+                "reader.preferences.preview.body.feedback.link",
+                value: "send your feedback",
+                comment: """
+                A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+                Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+                Refer to: `reader.preferences.preview.body.feedback.format`
+                """
+            )
 
-                static let bodyNotice = NSLocalizedString(
-                    "reader.preferences.preview.body.notice",
-                    value: "This feature is still in development.",
-                    comment: "Footnote to be displayed in the preview section, noticing that the feature is in development."
-                )
-            }
+            static let tags = [
+                NSLocalizedString("reader.preferences.preview.tags.reading", value: "reading", comment: "Example tag for preview"),
+                NSLocalizedString("reader.preferences.preview.tags.colors", value: "colors", comment: "Example tag for preview"),
+                NSLocalizedString("reader.preferences.preview.tags.fonts", value: "fonts", comment: "Example tag for preview"),
+            ]
+
+            static let tagsListAccessibilityLabel = NSLocalizedString(
+                "reader.preferences.preview.tagsList.a11y",
+                value: "Example tags",
+                comment: "Accessibility label for a list of tags in the preview section."
+            )
         }
     }
 
@@ -222,6 +405,10 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Color.allCases, id: \.rawValue) { color in
                         Button {
                             viewModel.displaySetting.color = color
+                            viewModel.didSelectItem?() // notify the view controller to update.
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.colorScheme,
+                                                           TrackingKeys.valueKey: color.valueForTracks])
                         } label: {
                             VStack(spacing: .DS.Padding.single) {
                                 DualColorCircle(primaryColor: Color(color.foreground),
@@ -239,9 +426,12 @@ extension ReaderDisplaySettingSelectionView {
                                                   : Color(UIColor.label.withAlphaComponent(0.1)), lineWidth: 1.0)
                             }
                         }
+                        .accessibilityAddTraits(color == viewModel.displaySetting.color ? .isSelected : [])
                     }
                 }
                 .padding(.leading, .DS.Padding.double) // initial content offset
+                .accessibilityElement(children: .contain)
+                .accessibilityLabel(Strings.colorListAccessibilityLabel)
             }
         }
 
@@ -251,6 +441,10 @@ extension ReaderDisplaySettingSelectionView {
                     ForEach(ReaderDisplaySetting.Font.allCases, id: \.rawValue) { font in
                         Button {
                             viewModel.displaySetting.font = font
+                            viewModel.didSelectItem?() // notify the view controller to update.
+                            WPAnalytics.track(.readingPreferencesItemTapped,
+                                              properties: [TrackingKeys.typeKey: TrackingKeys.fontType,
+                                                           TrackingKeys.valueKey: font.rawValue])
                         } label: {
                             VStack(spacing: .DS.Padding.half) {
                                 Text("Aa")
@@ -269,6 +463,8 @@ extension ReaderDisplaySettingSelectionView {
                                                   : Color(UIColor.label.withAlphaComponent(0.1)), lineWidth: 1.0)
                             }
                         }
+                        .accessibilityAddTraits(font == viewModel.displaySetting.font ? .isSelected : [])
+                        .accessibilityLabel(font.rawValue.capitalized)
                     }
                 }
                 .padding(.leading, .DS.Padding.double) // initial content offset
@@ -283,13 +479,21 @@ extension ReaderDisplaySettingSelectionView {
             } minimumValueLabel: {
                 Text("A")
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraSmall, textStyle: .body)))
+                    .accessibilityHidden(true)
             } maximumValueLabel: {
                 Text("A")
                     .font(Font(ReaderDisplaySetting.font(with: .sans, size: .extraLarge, textStyle: .body)))
+                    .accessibilityHidden(true)
             } onEditingChanged: { _ in
-                viewModel.displaySetting.size = .init(rawValue: Int(sliderValue)) ?? .normal
+                let size = ReaderDisplaySetting.Size(rawValue: Int(sliderValue)) ?? .normal
+                viewModel.displaySetting.size = size
+                viewModel.didSelectItem?() // notify the view controller to update.
+                WPAnalytics.track(.readingPreferencesItemTapped,
+                                  properties: [TrackingKeys.typeKey: TrackingKeys.fontSize,
+                                               TrackingKeys.valueKey: size.valueForTracks])
             }
             .padding(.vertical, .DS.Padding.single)
+            .accessibilityValue(Text(viewModel.displaySetting.size.accessibilityLabel))
         }
     }
 
@@ -304,6 +508,18 @@ extension ReaderDisplaySettingSelectionView {
             "reader.preferences.control.sizeSlider.description",
             value: "Size",
             comment: "Describes that the slider is used to customize the text size in the Reader."
+        )
+
+        static let colorListAccessibilityLabel = NSLocalizedString(
+            "reader.preferences.control.colors.a11y",
+            value: "Colors",
+            comment: "Accessibility label describing the list of colors to be selected from."
+        )
+
+        static let fontListAccessibilityLabel = NSLocalizedString(
+            "reader.preferences.control.fonts.a11y",
+            value: "Fonts",
+            comment: "Accessibility label describing the list of fonts to be selected from."
         )
     }
 }
@@ -336,5 +552,19 @@ fileprivate struct DualColorCircle: View {
             return .clear
         }
         return .secondary
+    }
+}
+
+// MARK: - Tracks
+
+fileprivate extension ReaderDisplaySettingSelectionView {
+
+    struct TrackingKeys {
+        static let typeKey = "type"
+        static let valueKey = "value"
+        static let colorScheme = "color_scheme"
+        static let fontType = "font"
+        static let fontSize = "font_size"
+        static let isDefault = "is_default"
     }
 }
