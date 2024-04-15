@@ -430,40 +430,40 @@ private extension SiteStatsPeriodViewModel {
     }
 
     func intervalData(summaryType: StatsSummaryType) -> (count: Int, difference: Int, percentage: Int) {
-            guard let summaryData = mostRecentChartData?.summaryData,
-                summaryData.indices.contains(currentEntryIndex) else {
-                return (0, 0, 0)
-            }
+        guard let summaryData = mostRecentChartData?.summaryData,
+              summaryData.indices.contains(currentEntryIndex) else {
+            return (0, 0, 0)
+        }
 
-            let currentInterval = summaryData[currentEntryIndex]
-            let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
+        let currentInterval = summaryData[currentEntryIndex]
+        let previousInterval = currentEntryIndex >= 1 ? summaryData[currentEntryIndex-1] : nil
 
-            let currentCount: Int
-            let previousCount: Int
-            switch summaryType {
-            case .views:
-                currentCount = currentInterval.viewsCount
-                previousCount = previousInterval?.viewsCount ?? 0
-            case .visitors:
-                currentCount = currentInterval.visitorsCount
-                previousCount = previousInterval?.visitorsCount ?? 0
-            case .likes:
-                currentCount = currentInterval.likesCount
-                previousCount = previousInterval?.likesCount ?? 0
-            case .comments:
-                currentCount = currentInterval.commentsCount
-                previousCount = previousInterval?.commentsCount ?? 0
-            }
+        let currentCount: Int
+        let previousCount: Int
+        switch summaryType {
+        case .views:
+            currentCount = currentInterval.viewsCount
+            previousCount = previousInterval?.viewsCount ?? 0
+        case .visitors:
+            currentCount = currentInterval.visitorsCount
+            previousCount = previousInterval?.visitorsCount ?? 0
+        case .likes:
+            currentCount = currentInterval.likesCount
+            previousCount = previousInterval?.likesCount ?? 0
+        case .comments:
+            currentCount = currentInterval.commentsCount
+            previousCount = previousInterval?.commentsCount ?? 0
+        }
 
-            let difference = currentCount - previousCount
-            var roundedPercentage = 0
+        let difference = currentCount - previousCount
+        var roundedPercentage = 0
 
-            if previousCount > 0 {
-                let percentage = (Float(difference) / Float(previousCount)) * 100
-                roundedPercentage = Int(round(percentage))
-            }
+        if previousCount > 0 {
+            let percentage = (Float(difference) / Float(previousCount)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
 
-            return (currentCount, difference, roundedPercentage)
+        return (currentCount, difference, roundedPercentage)
     }
 
     func todayRows() -> [any StatsHashableImmuTableRow] {
