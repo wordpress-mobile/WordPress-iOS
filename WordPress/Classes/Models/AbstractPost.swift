@@ -160,6 +160,13 @@ extension AbstractPost {
         return content?.contains("<!-- wp:jetpack/story") ?? false
     }
 
+    var analyticsUserInfo: [String: Any] {
+        [
+            "post_type": analyticsPostType ?? "",
+            "status": status?.rawValue ?? "",
+        ]
+    }
+
     var analyticsPostType: String? {
         switch self {
         case is Post:

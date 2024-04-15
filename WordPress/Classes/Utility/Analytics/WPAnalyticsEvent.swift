@@ -299,6 +299,12 @@ import Foundation
     case pageListEditHomepageTapped
     case pageListEditHomepageInfoTapped
 
+    // Posts (Techincal)
+    case postRepositoryPostCreated
+    case postRepositoryPostUpdated
+    case postRepositoryPatchStarted
+    case postRepositoryConflictEncountered
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -1098,6 +1104,16 @@ import Foundation
             return "page_list_edit_homepage_item_pressed"
         case .pageListEditHomepageInfoTapped:
             return "page_list_edit_homepage_info_pressed"
+
+        // Posts (Technical)
+        case .postRepositoryPostCreated:
+            return "post_repository_post_created"
+        case .postRepositoryPostUpdated:
+            return "post_repository_post_updated"
+        case .postRepositoryPatchStarted:
+            return "post_repository_patch_started"
+        case .postRepositoryConflictEncountered:
+            return "post_repository_conflict_encountered"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
