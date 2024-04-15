@@ -306,6 +306,10 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
 }
 
 extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {
+        viewModel.currentTabIndex = tabIndex
+    }
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         if let intervalDate = viewModel?.chartDate(for: entryIndex) {
             datePickerViewModel.updateDate(with: intervalDate)

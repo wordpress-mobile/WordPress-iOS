@@ -21,13 +21,15 @@ struct OverviewRow: StatsHashableImmuTableRow {
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
     let chartHighlightIndex: Int?
     let statSection: StatSection? = nil
+    let tabIndex: Int
 
     // MARK: - Hashable
 
     static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
         return lhs.tabsData == rhs.tabsData &&
             lhs.chartHighlightIndex == rhs.chartHighlightIndex &&
-            lhs.period == rhs.period
+            lhs.period == rhs.period &&
+            lhs.tabIndex == rhs.tabIndex
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -36,7 +38,7 @@ struct OverviewRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex, tabIndex: tabIndex)
     }
 }
 struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {

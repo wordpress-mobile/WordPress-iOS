@@ -45,6 +45,7 @@ final class SiteStatsPeriodViewModel: Observable {
     }
 
     private var currentEntryIndex: Int = 0
+    var currentTabIndex: Int = 0
 
     // MARK: - Constructor
 
@@ -61,13 +62,13 @@ final class SiteStatsPeriodViewModel: Observable {
     }
 
     func refreshTrafficOverviewData(withDate date: Date, forPeriod period: StatsPeriodUnit) {
-        var date = date
         if period != lastRequestedPeriod {
             currentEntryIndex = 0
             mostRecentChartData = nil
         }
         lastRequestedPeriod = period
         lastRequestedDate = StatsPeriodHelper().endDate(from: date, period: period)
+        currentEntryIndex = entryIndex(for: lastRequestedDate)
 
         periodReceipt = nil
         periodReceipt = store.query(
@@ -298,6 +299,19 @@ final class SiteStatsPeriodViewModel: Observable {
 
     // MARK: - Chart Date
 
+    func entryIndex(for date: Date) -> Int {
+        let endDate = { StatsPeriodHelper().endDate(from: $0, period: self.lastRequestedPeriod) }
+        if let summaryData = mostRecentChartData?.summaryData {
+            for (index, data) in summaryData.enumerated() {
+                if endDate(data.periodStartDate) == endDate(date) {
+                    return index
+                }
+            }
+        }
+
+        return 0
+    }
+
     func chartDate(for entryIndex: Int) -> Date? {
         if let summaryData = mostRecentChartData?.summaryData,
             summaryData.indices.contains(entryIndex) {
@@ -305,25 +319,6 @@ final class SiteStatsPeriodViewModel: Observable {
             return summaryData[entryIndex].periodStartDate
         }
         return nil
-    }
-
-    func updateDate(forward: Bool) -> Date? {
-        if forward {
-            currentEntryIndex += 1
-        } else {
-            currentEntryIndex -= 1
-        }
-
-        guard let nextDate = chartDate(for: currentEntryIndex) else {
-            // The date doesn't exist in the chart data... we need to manually calculate it and request
-            // a refresh.
-            let increment = forward ? 1 : -1
-            let nextDate = StatsDataHelper.calendar.date(byAdding: lastRequestedPeriod.calendarComponent, value: increment, to: lastRequestedDate)!
-            refreshTrafficOverviewData(withDate: nextDate, forPeriod: lastRequestedPeriod)
-            return nextDate
-        }
-
-        return nextDate
     }
 }
 
@@ -426,7 +421,8 @@ private extension SiteStatsPeriodViewModel {
             chartStyling: barChartStyling,
             period: lastRequestedPeriod,
             statsBarChartViewDelegate: statsBarChartViewDelegate,
-            chartHighlightIndex: indexToHighlight
+            chartHighlightIndex: indexToHighlight,
+            tabIndex: currentTabIndex
         )
         tableRows.append(row)
 

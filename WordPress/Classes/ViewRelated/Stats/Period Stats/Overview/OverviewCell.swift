@@ -131,7 +131,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
                    barChartStyling: [BarChartStyling] = [],
                    period: StatsPeriodUnit? = nil,
                    statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil,
-                   barChartHighlightIndex: Int? = nil) {
+                   barChartHighlightIndex: Int? = nil,
+                   tabIndex: Int) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -141,7 +142,7 @@ class OverviewCell: UITableViewCell, NibLoadable {
 
         configureLabelsStackView()
         configureChartView()
-        setupFilterBar()
+        setupFilterBar(selectedIndex: tabIndex)
         updateLabels()
     }
 
@@ -159,7 +160,7 @@ private extension OverviewCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    func setupFilterBar() {
+    func setupFilterBar(selectedIndex: Int) {
 
         // If there is only one tab data, this is being displayed on the
         // Post Stats view, which does not have a filterTabBar.
@@ -180,6 +181,7 @@ private extension OverviewCell {
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
         filterTabBar.dividerColor = .clear
+        filterTabBar.setSelectedIndex(selectedIndex, animated: false)
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -189,6 +191,7 @@ private extension OverviewCell {
 
         configureChartView()
         updateLabels()
+        statsBarChartViewDelegate?.statsBarChartTabSelected(filterTabBar.selectedIndex)
     }
 
     func updateLabels() {
