@@ -602,3 +602,7 @@ def check_pods_references
   message = "### Checking Internal Dependencies are all on a **stable** version\n\n#{result[:message]}"
   buildkite_annotate(context: 'pods-check', style:, message:) if is_ci
 end
+
+lane :test_check_pods_references do
+  check_pods_references
+end
