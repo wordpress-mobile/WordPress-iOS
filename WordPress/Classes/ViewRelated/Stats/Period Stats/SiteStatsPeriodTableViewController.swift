@@ -8,7 +8,6 @@ import Combine
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc optional func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex)
 }
 
 protocol SiteStatsReferrerDelegate: AnyObject {
@@ -296,12 +295,6 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                                                                                             postTitle: postTitle,
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
-    }
-
-    func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
-        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex) {
-            trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.period)
-        }
     }
 }
 
