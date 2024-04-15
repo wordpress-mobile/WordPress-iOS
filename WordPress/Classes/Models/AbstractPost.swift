@@ -208,7 +208,7 @@ extension AbstractPost {
     /// Returns the latest saved revisions that needs to be synced with the server.
     /// Returns `nil` if there are no such revisions.
     func getLatestRevisionNeedingSync() -> AbstractPost? {
-        assert(original == nil, "Must be called on an original revision")
+        wpAssert(original == nil, "Must be called on an original revision")
         let revision = allRevisions.last(where: \.isSyncNeeded)
         guard revision != self else {
             return nil
@@ -219,7 +219,7 @@ extension AbstractPost {
     /// Deletes all of the synced revisions until and including the `latest`
     /// one passed as a parameter.
     func deleteSyncedRevisions(until latest: AbstractPost) {
-        assert(original == nil, "Must be called on an original revision")
+        wpAssert(original == nil, "Must be called on an original revision")
         let tail = latest.revision
 
         var current = self

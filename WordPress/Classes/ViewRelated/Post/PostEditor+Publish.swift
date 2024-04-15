@@ -423,7 +423,7 @@ extension PublishingEditor {
         }
 
         guard let context = post.managedObjectContext else {
-            assertionFailure()
+            wpAssertionFailure("Missing managedObjectContext")
             return true
         }
 

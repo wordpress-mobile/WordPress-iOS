@@ -287,6 +287,7 @@ class PostCoordinator: NSObject {
     func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
         wpAssert(post.isOriginal())
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
+            wpAssertionFailure("Failed to show conflict resolution view")
             return
         }
         let repository = PostRepository(coreDataStack: coreDataStack)
