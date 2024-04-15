@@ -49,6 +49,9 @@ private enum Strings {
     static func publishSuccessTitle(for post: AbstractPost, isExistingPost: Bool = false) -> String {
         switch post {
         case let post as Post:
+            guard !isExistingPost else {
+                return NSLocalizedString("postNotice.postUpdated", value: "Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
+            }
             switch post.status {
             case .draft:
                 return NSLocalizedString("postNotice.postDraftCreated", value: "Post draft uploaded", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
@@ -57,13 +60,12 @@ private enum Strings {
             case .pending:
                 return NSLocalizedString("postNotice.postPendingReview", value: "Post pending review", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
             default:
-                if !isExistingPost {
-                    return NSLocalizedString("postNotice.postPublished", value: "Post published", comment: "Title of notification displayed when a post has been successfully published.")
-                } else {
-                    return NSLocalizedString("postNotice.postUpdated", value: "Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
-                }
+                return NSLocalizedString("postNotice.postPublished", value: "Post published", comment: "Title of notification displayed when a post has been successfully published.")
             }
         case let page as Page:
+            guard !isExistingPost else {
+                return NSLocalizedString("postNotice.pageUpdated", value: "Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
+            }
             switch page.status {
             case .draft:
                 return NSLocalizedString("postNotice.pageDraftCreated", value: "Page draft uploaded", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
@@ -72,11 +74,7 @@ private enum Strings {
             case .pending:
                 return NSLocalizedString("postNotice.pagePending", value: "Page pending review", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
             default:
-                if !isExistingPost {
-                    return NSLocalizedString("postNotice.pagePublished", value: "Page published", comment: "Title of notification displayed when a page has been successfully published.")
-                } else {
-                    return NSLocalizedString("postNotice.pageUpdated", value: "Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
-                }
+                return NSLocalizedString("postNotice.pagePublished", value: "Page published", comment: "Title of notification displayed when a page has been successfully published.")
             }
         default:
             assertionFailure("Unexpected post type: \(post)")

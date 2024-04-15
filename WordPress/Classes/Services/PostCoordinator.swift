@@ -175,11 +175,7 @@ class PostCoordinator: NSObject {
         var parameters = RemotePostUpdateParameters()
         switch options.visibility {
         case .public, .protected:
-            if let date = options.publishDate, date > .now {
-                parameters.status = Post.Status.scheduled.rawValue
-            } else {
-                parameters.status = Post.Status.publish.rawValue
-            }
+            parameters.status = Post.Status.publish.rawValue
         case .private:
             parameters.status = Post.Status.publishPrivate.rawValue
         }

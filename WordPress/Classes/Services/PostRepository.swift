@@ -215,6 +215,12 @@ final class PostRepository {
         let original = post.original()
         var changes = changes
 
+        // Scheduled posts need to sync with a status of 'publish'. If you omit
+        // the status, it will move the post to `draft`.
+        if original.status == .scheduled && service is PostServiceRemoteXMLRPC {
+            changes.status = AbstractPost.Status.publish.rawValue
+        }
+
         // Make sure the app never overwrites the content without the user approval.
         if !overwrite, let date = original.dateModified, changes.content != nil {
             changes.ifNotModifiedSince = date
