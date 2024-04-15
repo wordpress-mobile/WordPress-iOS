@@ -193,6 +193,9 @@ import AutomatticTracks
             if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
+            } else if oldValue != .tags, contentType == .tags {
+                updateContent(synchronize: false)
+                // TODO: Analytics
             }
             postCellActions?.visibleConfirmation = contentType != .saved
             showConfirmation = contentType != .saved
@@ -328,7 +331,7 @@ import AutomatticTracks
             return
         }
 
-        if readerTopic != nil || contentType == .saved {
+        if readerTopic != nil || contentType == .saved || contentType == .tags {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             updateContent(synchronize: false)
@@ -1299,6 +1302,10 @@ import AutomatticTracks
             NSPredicate(format: "isSavedForLater == YES") :
             NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
+        if contentType == .tags {
+            return NSPredicate(format: "following = true")
+        }
+
         guard let topic = readerTopic else {
             return predicateForNilTopic
         }
@@ -1316,7 +1323,9 @@ import AutomatticTracks
     }
 
     func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
+        let sortDescriptor = contentType == .tags ?
+        NSSortDescriptor(key: "title", ascending: true) :
+        NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
 
@@ -1493,7 +1502,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let entityName = contentType == .tags ? ReaderTagTopic.classNameWithoutNamespaces() : ReaderPost.classNameWithoutNamespaces()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         return fetchRequest
@@ -1555,17 +1565,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content as? [ReaderPost],
-              let post = posts[safe: indexPath.row] else {
-            return UITableViewCell()
+        if let posts = content.content as? [ReaderPost] {
+            if let post = posts[safe: indexPath.row] {
+                return cell(for: post, at: indexPath)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+                return .init()
+            }
+        } else if let tags = content.content as? [ReaderTagTopic] {
+            if let tag = tags[safe: indexPath.row] {
+                return cell(for: tag)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: tags.count))
+                return .init()
+            }
         }
-
-        guard let post = posts[safe: indexPath.row] else {
-            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
-            return .init()
-        }
-
-        return cell(for: post, at: indexPath)
+        assertionFailure("Unexpected content type.")
+        return UITableViewCell()
     }
 
     func cell(for post: ReaderPost, at indexPath: IndexPath, showsSeparator: Bool = true) -> UITableViewCell {
@@ -1603,6 +1619,13 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
                                                     showsSeparator: showsSeparator,
                                                     parentViewController: self)
         cell.configure(with: viewModel)
+        return cell
+    }
+
+    func cell(for tag: ReaderTagTopic) -> UITableViewCell {
+        let cell = tableConfiguration.tagCell(tableView)
+        cell.configure(with: tag, isLoggedIn: isLoggedIn)
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -1676,7 +1699,9 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
-            DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            if !(content.content is [ReaderTagTopic]) {
+                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            }
             return
         }
 
