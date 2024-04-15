@@ -275,7 +275,7 @@ GEM
       concurrent-ruby (~> 1.0)
     java-properties (0.3.0)
     jmespath (1.6.2)
-    json (2.7.1)
+    json (2.7.2)
     jwt (2.8.1)
       base64
     kramdown (2.4.0)
@@ -332,7 +332,7 @@ GEM
     rexml (3.2.6)
     rmagick (3.2.0)
     rouge (2.0.7)
-    rubocop (1.62.1)
+    rubocop (1.63.1)
       json (~> 2.3)
       language_server-protocol (>= 3.17.0)
       parallel (~> 1.10)
