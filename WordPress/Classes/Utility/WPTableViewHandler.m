@@ -598,6 +598,10 @@ static CGFloat const DefaultCellHeight = 44.0;
 
 - (NSFetchedResultsController *)resultsController
 {
+    if (_resultsController != nil && ![_resultsController.fetchRequest.entityName isEqualToString:[self fetchRequest].entityName]) {
+        _resultsController = nil;
+    }
+
     if (_resultsController != nil) {
         return _resultsController;
     }
