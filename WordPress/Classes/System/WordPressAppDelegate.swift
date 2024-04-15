@@ -71,7 +71,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
-    private let loggingStack = WPLoggingStack()
+    private let loggingStack = WPLoggingStack.shared
 
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
