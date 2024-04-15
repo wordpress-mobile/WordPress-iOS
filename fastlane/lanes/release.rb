@@ -598,8 +598,7 @@ end
 def check_pods_references
   result = ios_check_beta_deps(lockfile: File.join(PROJECT_ROOT_FOLDER, 'Podfile.lock'))
 
-  # Will fail if :pods doesn't exist in the result.
-  # Seems fair, given the shape of the result Hash should not change unless via a major version bump.
-  style = result[:pods].empty? ? 'success' : 'warning'
-  buildkite_annotate(context: 'pods-check', style:, message: result[:message]) if is_ci
+  style = result[:pods].nil? || result[:pods].empty? ? 'success' : 'warning'
+  message = "### Checking Internal Dependencies are all on a **stable** version\n\n#{result[:message]}"
+  buildkite_annotate(context: 'pods-check', style:, message:) if is_ci
 end
