@@ -69,6 +69,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
                                              selectedPeriod: datePickerViewModel.period,
                                              periodDelegate: self,
                                              referrerDelegate: self)
+        viewModel?.statsBarChartViewDelegate = self
         Publishers.CombineLatest(datePickerViewModel.$date, datePickerViewModel.$period)
             .sink(receiveValue: { [weak self] _, _ in
                 DispatchQueue.main.async {
@@ -149,7 +150,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 CountriesMapRow.self,
-                StatsTrafficBarChartRow.self,
+                OverviewRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
@@ -300,6 +301,14 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
     func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
         if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex) {
             trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.period)
+        }
+    }
+}
+
+extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        if let intervalDate = viewModel?.chartDate(for: entryIndex) {
+            datePickerViewModel.updateDate(with: intervalDate)
         }
     }
 }
