@@ -174,7 +174,7 @@ protocol ZendeskUtilsProtocol {
     func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
         presentInController = controller
 
-        ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
+        ZendeskUtils.getUserInformationAndShowPrompt(alertOptions: .withoutName) { success in
             completion(success)
         }
     }
@@ -331,14 +331,10 @@ protocol ZendeskUtilsProtocol {
 
 extension ZendeskUtils {
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
-        createNewRequest(in: viewController, anonymous: false, description: description, tags: tags, completion: completion)
+        createNewRequest(in: viewController, alertOptions: .withName, description: description, tags: tags, completion: completion)
     }
 
-    func createNewAnonymousRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
-        createNewRequest(in: viewController, anonymous: true, description: description, tags: tags, completion: completion)
-    }
-
-    func createNewRequest(in viewController: UIViewController, anonymous: Bool, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+    func createNewRequest(in viewController: UIViewController, alertOptions: IdentityAlertOptions, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
         presentInController = viewController
 
         let createRequest = { [weak self] in
@@ -370,18 +366,18 @@ extension ZendeskUtils {
             }
         }
 
-        if anonymous {
-            let identity = Identity.createAnonymous()
-            Zendesk.instance?.setIdentity(identity)
-            createRequest()
-        } else {
-            ZendeskUtils.createIdentity { success, newIdentity in
-                guard success else {
+        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, newIdentity in
+            guard success else {
+                if alertOptions.optionalIdentity {
+                    let identity = Identity.createAnonymous()
+                    Zendesk.instance?.setIdentity(identity)
+                    createRequest()
+                } else {
                     completion(.failure(.noIdentity))
-                    return
                 }
-                createRequest()
+                return
             }
+            createRequest()
         }
     }
 }
@@ -423,7 +419,7 @@ private extension ZendeskUtils {
     ///     - Bool indicating there is an identity to use.
     ///     - Bool indicating if a _new_ identity was created.
     ///
-    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
+    static func createIdentity(alertOptions: IdentityAlertOptions = .withName, completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
@@ -434,14 +430,14 @@ private extension ZendeskUtils {
         }
 
         // Prompt the user for information.
-        ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
+        ZendeskUtils.getUserInformationAndShowPrompt(alertOptions: alertOptions) { success in
             completion(success, success)
         }
     }
 
-    static func getUserInformationAndShowPrompt(withName: Bool, completion: @escaping (Bool) -> Void) {
+    static func getUserInformationAndShowPrompt(alertOptions: IdentityAlertOptions, completion: @escaping (Bool) -> Void) {
         ZendeskUtils.getUserInformationIfAvailable {
-            ZendeskUtils.promptUserForInformation(withName: withName) { success in
+            ZendeskUtils.promptUserForInformation(alertOptions: alertOptions) { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
@@ -826,24 +822,24 @@ private extension ZendeskUtils {
 
     // MARK: - User Information Prompt
 
-    static func promptUserForInformation(withName: Bool, completion: @escaping (Bool) -> Void) {
+    static func promptUserForInformation(alertOptions: IdentityAlertOptions, completion: @escaping (Bool) -> Void) {
 
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
                                                 preferredStyle: .alert)
 
-        let alertMessage = withName ? LocalizedText.alertMessageWithName : LocalizedText.alertMessage
+        let alertMessage = alertOptions.message
         alertController.setValue(NSAttributedString(string: alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
                                  forKey: "attributedMessage")
 
         // Cancel Action
-        alertController.addCancelActionWithTitle(LocalizedText.alertCancel) { (_) in
+        alertController.addCancelActionWithTitle(alertOptions.cancel) { (_) in
             completion(false)
             return
         }
 
         // Submit Action
-        let submitAction = alertController.addDefaultActionWithTitle(LocalizedText.alertSubmit) { [weak alertController] (_) in
+        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
             guard let email = alertController?.textFields?.first?.text else {
                 completion(false)
                 return
@@ -851,7 +847,7 @@ private extension ZendeskUtils {
 
             ZendeskUtils.sharedInstance.userEmail = email
 
-            if withName {
+            if alertOptions.includesName {
                 ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
                 ZendeskUtils.sharedInstance.userNameConfirmed = true
             }
@@ -884,7 +880,7 @@ private extension ZendeskUtils {
         })
 
         // Name Text Field
-        if withName {
+        if alertOptions.includesName {
             alertController.addTextField { textField in
                 textField.clearButtonMode = .always
                 textField.placeholder = LocalizedText.namePlaceholder
@@ -1145,4 +1141,34 @@ extension ZendeskUtils: UITextFieldDelegate {
         return EmailFormatValidator.validate(string: email)
     }
 
+}
+
+extension ZendeskUtils {
+    struct IdentityAlertOptions {
+        let optionalIdentity: Bool
+        let includesName: Bool
+        let message: String
+        let submit: String
+        let cancel: String
+
+        static var withName: IdentityAlertOptions {
+            return IdentityAlertOptions(
+                optionalIdentity: false,
+                includesName: true,
+                message: LocalizedText.alertMessageWithName,
+                submit: LocalizedText.alertSubmit,
+                cancel: LocalizedText.alertCancel
+            )
+        }
+
+        static var withoutName: IdentityAlertOptions {
+            return IdentityAlertOptions(
+                optionalIdentity: false,
+                includesName: false,
+                message: LocalizedText.alertMessage,
+                submit: LocalizedText.alertSubmit,
+                cancel: LocalizedText.alertCancel
+            )
+        }
+    }
 }

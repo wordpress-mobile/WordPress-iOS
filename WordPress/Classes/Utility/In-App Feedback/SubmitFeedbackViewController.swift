@@ -92,7 +92,15 @@ final class SubmitFeedbackViewController: UIViewController {
 
         SVProgressHUD.show(withStatus: Strings.submitLoadingMessage)
 
-        ZendeskUtils.sharedInstance.createNewRequest(in: self, description: text, tags: tags) { [weak self] result in
+        let options = ZendeskUtils.IdentityAlertOptions(
+            optionalIdentity: true,
+            includesName: true,
+            message: Strings.identityAlertMessage,
+            submit: Strings.identityAlertSubmit,
+            cancel: Strings.identityAlertCancel
+        )
+
+        ZendeskUtils.sharedInstance.createNewRequest(in: self, alertOptions: options, description: text, tags: tags) { [weak self] result in
             guard let self else { return }
 
             let completion = {
@@ -111,21 +119,8 @@ final class SubmitFeedbackViewController: UIViewController {
             case .success:
                 completion()
             case .failure(let error):
-                switch error {
-                case .noIdentity:
-                    ZendeskUtils.sharedInstance.createNewAnonymousRequest(in: self, description: text, tags: tags) { result in
-                        switch result {
-                        case .success:
-                            completion()
-                        case .failure(let error):
-                            DDLogError("Submitting feedback failed: \(error)")
-                            completion()
-                        }
-                    }
-                default:
-                    DDLogError("Submitting feedback failed: \(error)")
-                    completion()
-                }
+                DDLogError("Submitting feedback failed: \(error)")
+                completion()
             }
         }
     }
@@ -158,6 +153,24 @@ private extension SubmitFeedbackViewController {
             "submit.feedback.submit.loading",
             value: "Submitting...",
             comment: "Notice informing user that their feedback is being submitted."
+        )
+
+        static let identityAlertMessage = NSLocalizedString(
+            "submit.feedback.alert.message",
+            value: "Would you share your email address and name so we can follow up on your feedback?",
+            comment: "Alert users are shown when submtiting their feedback."
+        )
+
+        static let identityAlertSubmit = NSLocalizedString(
+            "submit.feedback.alert.submit",
+            value: "OK",
+            comment: "Alert submit option for users to accept sharing their email and name when submitting feedback."
+        )
+
+        static let identityAlertCancel = NSLocalizedString(
+            "submit.feedback.alert.cancel",
+            value: "No, thanks",
+            comment: "Alert cancel option for users to not accept sharing their email and name when submitting feedback."
         )
     }
 }
