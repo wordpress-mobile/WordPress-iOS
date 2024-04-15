@@ -164,7 +164,8 @@ private class CustomActivityItemProvider: UIActivityItemProvider {
         if activityType == .copyToPasteboard {
             return url ?? ""
         } else {
-            return [title as Any, summary as Any, url as Any].compactMap { $0 }
+            let formattedText = "\(title ?? "")\n\(summary ?? "")\n\(url?.absoluteString ?? "")"
+            return formattedText
         }
     }
 }
