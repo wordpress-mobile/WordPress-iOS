@@ -28,6 +28,11 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
         return StatsPeriodHelper().dateAvailableAfterDate(date, period: period)
     }
 
+    var isPreviousPeriodAvailable: Bool {
+        let backLimit = -(SiteStatsTableHeaderView.defaultPeriodCount - 1)
+        return StatsPeriodHelper().dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
+    }
+
     func goToPreviousPeriod() {
         date = StatsDataHelper.calendar.date(byAdding: period.calendarComponent, value: -1, to: date) ?? date
         track(isNext: false)

@@ -49,22 +49,23 @@ struct StatsTrafficDatePickerView: View {
             Spacer().frame(width: .DS.Padding.split)
 
             HStack {
+                let isNextDisabled = !viewModel.isNextPeriodAvailable
+                let isPreviousDisabled = !viewModel.isPreviousPeriodAvailable
+                let enabledColor = Color.DS.Foreground.secondary
+                let disabledColor = enabledColor.opacity(0.5)
+
                 Button(action: {
                     viewModel.goToPreviousPeriod()
                 }) {
                     Image(systemName: "chevron.left")
                         .imageScale(.small)
-                        .foregroundColor(Color.DS.Foreground.secondary)
+                        .foregroundColor(isPreviousDisabled ? disabledColor : enabledColor)
                         .flipsForRightToLeftLayoutDirection(true)
                         .padding(.vertical, .DS.Padding.double)
                         .contentShape(Rectangle())
                         .dynamicTypeSize(...maxDynamicTypeSize)
-                }
+                }.disabled(isPreviousDisabled)
                 .padding(.trailing, .DS.Padding.single)
-
-                let isNextDisabled = !viewModel.isNextPeriodAvailable
-                let enabledColor = Color.DS.Foreground.secondary
-                let disabledColor = enabledColor.opacity(0.5)
 
                 Button(action: {
                     viewModel.goToNextPeriod()
