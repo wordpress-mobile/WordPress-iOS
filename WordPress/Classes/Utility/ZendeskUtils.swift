@@ -24,8 +24,15 @@ enum ZendeskRequestError: Error {
     case createRequest(String)
 }
 
+enum ZendeskRequestLoadingStatus {
+    case identifyingUser
+    case creatingTicket
+    case creatingTicketAnonymously
+}
+
 protocol ZendeskUtilsProtocol {
     typealias ZendeskNewRequestCompletion = (Result<ZDKRequest, ZendeskRequestError>) -> ()
+    typealias ZendeskNewRequestLoadingStatus = (ZendeskRequestLoadingStatus) -> ()
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion)
 }
 
@@ -332,10 +339,17 @@ protocol ZendeskUtilsProtocol {
 
 extension ZendeskUtils {
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
-        createNewRequest(in: viewController, alertOptions: .withName, description: description, tags: tags, completion: completion)
+        createNewRequest(in: viewController, description: description, tags: tags, alertOptions: .withName, completion: completion)
     }
 
-    func createNewRequest(in viewController: UIViewController, alertOptions: IdentityAlertOptions, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+    func createNewRequest(
+        in viewController: UIViewController,
+        description: String,
+        tags: [String],
+        alertOptions: IdentityAlertOptions,
+        status: ZendeskNewRequestLoadingStatus? = nil,
+        completion: @escaping ZendeskNewRequestCompletion
+    ) {
         presentInController = viewController
 
         let createRequest = { [weak self] in
@@ -367,17 +381,22 @@ extension ZendeskUtils {
             }
         }
 
+        status?(.identifyingUser)
+
         ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, newIdentity in
             guard success else {
                 if alertOptions.optionalIdentity {
                     let identity = Identity.createAnonymous()
                     Zendesk.instance?.setIdentity(identity)
+                    status?(.creatingTicketAnonymously)
                     createRequest()
                 } else {
                     completion(.failure(.noIdentity))
                 }
                 return
             }
+
+            status?(.creatingTicket)
             createRequest()
         }
     }

@@ -90,8 +90,6 @@ final class SubmitFeedbackViewController: UIViewController {
         let text = textView.text ?? ""
         let tags = ["appreview_jetpack", "in_app_feedback"]
 
-        SVProgressHUD.show(withStatus: Strings.submitLoadingMessage)
-
         let options = ZendeskUtils.IdentityAlertOptions(
             optionalIdentity: true,
             includesName: true,
@@ -103,7 +101,18 @@ final class SubmitFeedbackViewController: UIViewController {
             namePlaceholder: Strings.identityAlertEmptyName
         )
 
-        ZendeskUtils.sharedInstance.createNewRequest(in: self, alertOptions: options, description: text, tags: tags) { [weak self] result in
+        let loadingStatus = { (status: ZendeskRequestLoadingStatus) in
+            switch status {
+            case .creatingTicket:
+                SVProgressHUD.show(withStatus: Strings.submitLoadingMessage)
+            case .creatingTicketAnonymously:
+                SVProgressHUD.show(withStatus: Strings.submitLoadingAnonymouslyMessage)
+            default:
+                break
+            }
+        }
+
+        ZendeskUtils.sharedInstance.createNewRequest(in: self, description: text, tags: tags, alertOptions: options, status: loadingStatus) { [weak self] result in
             guard let self else { return }
 
             let completion = {
