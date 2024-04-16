@@ -37,7 +37,7 @@ extension PostSettingsViewController {
 
         configureDefaultNavigationBarAppearance()
 
-        assert(navigationController?.presentationController != nil)
+        wpAssert(navigationController?.presentationController != nil)
         navigationController?.presentationController?.delegate = self
 
         refreshNavigationBarButtons()

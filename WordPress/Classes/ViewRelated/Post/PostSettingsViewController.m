@@ -670,9 +670,8 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    [metaRows addObject:@(PostSettingsRowPublishDate)];
-
     if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+        [metaRows addObject:@(PostSettingsRowPublishDate)];
         [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
                                           @(PostSettingsRowVisibility) ]];
         if (self.apost.password) {
@@ -699,7 +698,9 @@ FeaturedImageViewControllerDelegate>
         // Publish date
         cell = [self getWPTableViewDisclosureCell];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
-        if (self.apost.dateCreated) {
+        // Note: it's safe to remove `shouldPublishImmediately` when
+        // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
+        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");

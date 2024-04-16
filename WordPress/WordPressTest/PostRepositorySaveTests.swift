@@ -557,7 +557,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertTrue(post.isStickyPost)
     }
 
-    // MARK: - Exising Post (404, Not Found)
+    // MARK: - Existing Post (404, Not Found)
 
     /// Scenario: saving a post that was deleted on the remote.
     func testSaveExistingPostDeletedOnRemote() async throws {

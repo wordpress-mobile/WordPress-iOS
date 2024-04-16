@@ -183,8 +183,13 @@ class PostCoordinator: NSObject {
         case .private:
             parameters.status = Post.Status.publishPrivate.rawValue
         }
-        parameters.password = options.password
-        parameters.date = options.publishDate
+        let latest = post.latest()
+        if (latest.password ?? "") != (options.password ?? "") {
+            parameters.password = options.password
+        }
+        if let publishDate = options.publishDate {
+            parameters.date = publishDate
+        }
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)

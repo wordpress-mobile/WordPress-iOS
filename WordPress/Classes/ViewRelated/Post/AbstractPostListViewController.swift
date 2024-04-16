@@ -621,7 +621,7 @@ class AbstractPostListViewController: UIViewController,
 
     func publish(_ post: AbstractPost) {
         let action = AbstractPostHelper.editorPublishAction(for: post)
-        PrepublishingViewController.show(for: post, action: action, from: self) { [weak self] result in
+        PrepublishingViewController.show(for: post, action: action, isStandalone: true, from: self) { [weak self] result in
             switch result {
             case .confirmed:
                 self?.didConfirmPublish(for: post)

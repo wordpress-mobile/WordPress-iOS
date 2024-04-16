@@ -10,6 +10,7 @@ public enum PostEditorAction {
     case save
     /// - note: Deprecated (kahu-offline-mode)
     case saveAsDraft
+    /// - note: Deprecated (kahu-offline-mode)
     case schedule
     case publish
     case update
@@ -240,24 +241,23 @@ public class PostEditorStateContext {
         self.userCanPublish = userCanPublish
         self.currentPublishDate = publishDate
         self.delegate = delegate
-        self.action = PostEditorStateContext.initialAction(for: originalPostStatus, publishDate: publishDate, userCanPublish: userCanPublish)
+        self.action = PostEditorStateContext.initialAction(for: originalPostStatus, userCanPublish: userCanPublish)
     }
 
-    private static func initialAction(for originalPostStatus: BasePost.Status?, publishDate: Date?, userCanPublish: Bool) -> PostEditorAction {
+    private static func initialAction(for originalPostStatus: BasePost.Status?, userCanPublish: Bool) -> PostEditorAction {
         // We assume an initial status of draft if none is set
         let newPostStatus = originalPostStatus ?? .draft
 
-        return action(for: originalPostStatus, newPostStatus: newPostStatus, publishDate: publishDate, userCanPublish: userCanPublish)
+        return action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
     }
 
     private static func action(
         for originalPostStatus: BasePost.Status?,
         newPostStatus: BasePost.Status,
-        publishDate: Date?,
         userCanPublish: Bool
     ) -> PostEditorAction {
         if RemoteFeatureFlag.syncPublishing.enabled() {
-            return action(status: originalPostStatus ?? .draft, publishDate: publishDate, userCanPublish: userCanPublish)
+            return action(status: originalPostStatus ?? .draft, userCanPublish: userCanPublish)
         } else {
             return _action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
         }
@@ -265,21 +265,11 @@ public class PostEditorStateContext {
 
     static func action(
         status: BasePost.Status,
-        publishDate: Date?,
         userCanPublish: Bool
     ) -> PostEditorAction {
-        func makePublishAction() -> PostEditorAction {
-            guard userCanPublish else {
-                return .submitForReview
-            }
-            guard let publishDate else {
-                return .publish
-            }
-            return publishDate > .now ? .schedule : .publish
-        }
         switch status {
         case .draft:
-            return makePublishAction()
+            return userCanPublish ? .publish : .submitForReview
         case .pending:
             return userCanPublish ? .publish : .update
         case .publishPrivate, .publish, .scheduled:
@@ -326,7 +316,7 @@ public class PostEditorStateContext {
     }
 
     private func action(for newPostStatus: BasePost.Status) -> PostEditorAction {
-        return PostEditorStateContext.action(for: originalPostStatus, newPostStatus: newPostStatus, publishDate: currentPublishDate, userCanPublish: userCanPublish)
+        return PostEditorStateContext.action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
     }
 
     private static func publishAction(userCanPublish: Bool) -> PostEditorAction {
@@ -356,9 +346,6 @@ public class PostEditorStateContext {
     ///
     func updated(publishDate: Date?) {
         currentPublishDate = publishDate
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            action = action(for: currentPostStatus ?? .draft)
-        }
     }
 
     /// Call whenever the post content is not empty - title or content body
