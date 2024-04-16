@@ -26,32 +26,6 @@ class PostRepositoryTests: CoreDataTestCase {
         repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory, isSyncPublishingEnabled: false)
     }
 
-    func testGetPost() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "post"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertFalse(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
-    }
-
-    func testGetPage() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "page"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertTrue(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
-    }
-
     func testDeletePost() async throws {
         let postID = try await contextManager.performAndSave { context in
             let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
@@ -414,7 +388,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         case fail
     }
 
-    var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [[RemotePost]]() // Each element contains an array of RemotePost for one API request.
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
@@ -433,10 +406,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
     private(set) var invocationsCountOfUpdate = 0
-
-    override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostToReturnOnGetPostWithID)
-    }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
         guard !remotePostsToReturnOnSyncPostsOfType.isEmpty else {
