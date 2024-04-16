@@ -5,7 +5,7 @@ extension PostCoordinator {
         static let postConflictResolved = "PostConflictResolvedNotificationKey"
     }
 
-    func notifyConflictResolved(for post: AbstractPost) {
+    func postConflictResolvedNotification(for post: AbstractPost) {
         NotificationCenter.default.post(name: .postConflictResolved, object: nil, userInfo: [NotificationKey.postConflictResolved: post])
     }
 }

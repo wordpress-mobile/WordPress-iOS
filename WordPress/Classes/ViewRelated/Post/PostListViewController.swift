@@ -195,7 +195,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             // No editing posts that are trashed.
             return
         }
-
         WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }

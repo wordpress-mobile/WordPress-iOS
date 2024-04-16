@@ -336,7 +336,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupResolveConflictObservers()
         setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
         createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
@@ -409,15 +408,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     private var keyboardFrame = CGRect.zero
     private var suggestionViewBottomConstraint: NSLayoutConstraint?
     private var previousFirstResponder: UIView?
-
-    private func setupResolveConflictObservers() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(handlePostConflictResolved(_:)),
-            name: .postConflictResolved,
-            object: nil
-        )
-    }
 
     private func setupKeyboardObservers() {
         keyboardShowObserver = NotificationCenter.default.addObserver(forName: UIResponder.keyboardDidShowNotification, object: nil, queue: .main) { [weak self] (notification) in
@@ -570,21 +560,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     @objc func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
         return presentationController(forPresented: presented, presenting: presenting)
-    }
-}
-
-// MARK: - Conflict resolved
-
-extension GutenbergViewController {
-    @objc private func handlePostConflictResolved(_ notification: NSNotification) {
-        guard
-            let userInfo = notification.userInfo,
-            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
-        else {
-            return
-        }
-        self.post = post
-        createRevisionOfPost()
     }
 }
 

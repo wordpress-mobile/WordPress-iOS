@@ -274,7 +274,8 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
+    func showResolveConflictView(post: AbstractPost, remoteRevision: RemotePost, source: ResolveConflictView.Source) {
+        wpAssert(post.isOriginal())
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             return
         }
@@ -282,6 +283,11 @@ class PostCoordinator: NSObject {
         let controller = ResolveConflictViewController(post: post, remoteRevision: remoteRevision, repository: repository, source: source)
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
+    }
+
+    func didResolveConflict(for post: AbstractPost) {
+        postConflictResolvedNotification(for: post)
+        startSync(for: post) // Clears the error associated with the post
     }
 
     private func handlePermanentlyDeleted(_ post: AbstractPost) {
@@ -479,6 +485,9 @@ class PostCoordinator: NSObject {
 
     private func startSync(for post: AbstractPost) {
         guard let revision = post.getLatestRevisionNeedingSync() else {
+            let worker = getWorker(for: post)
+            worker.error = nil
+            postDidUpdateNotification(for: post)
             return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
         }
         startSync(for: post, revision: revision)
@@ -576,11 +585,7 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
-                operation.log("post was permanently deleted")
-                handlePermanentlyDeleted(operation.post)
-                workers[operation.post.objectID] = nil
-            } else {
+            if shouldScheduleRetry(for: error) {
                 let delay = worker.nextRetryDelay
                 worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
                     guard let self, let worker else { return }
@@ -588,7 +593,25 @@ class PostCoordinator: NSObject {
                 }
                 worker.log("scheduled retry with delay: \(delay)s.")
             }
+
+            if let error = error as? PostRepository.PostSaveError, case .deleted = error {
+                operation.log("post was permanently deleted")
+                handlePermanentlyDeleted(operation.post)
+                workers[operation.post.objectID] = nil
+            }
         }
+    }
+
+    private func shouldScheduleRetry(for error: Error) -> Bool {
+        if let saveError = error as? PostRepository.PostSaveError {
+            switch saveError {
+            case .deleted:
+                return false
+            case .conflict:
+                return false
+            }
+        }
+        return true
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {
@@ -1024,9 +1047,7 @@ class PostCoordinator: NSObject {
         } else {
             pendingPostIDs.remove(post.objectID)
         }
-        NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
-            NSUpdatedObjectsKey: Set([post])
-        ])
+        postDidUpdateNotification(for: post)
     }
 
     // MARK: - Trash/Restore/Delete
@@ -1128,9 +1149,7 @@ class PostCoordinator: NSObject {
             pendingDeletionPostIDs.remove(post.objectID)
         }
         if notify {
-            NotificationCenter.default.post(name: .postCoordinatorDidUpdate, object: self, userInfo: [
-                NSUpdatedObjectsKey: Set([post])
-            ])
+            postDidUpdateNotification(for: post)
         }
     }
 

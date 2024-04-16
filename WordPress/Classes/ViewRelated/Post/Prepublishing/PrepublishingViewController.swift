@@ -32,7 +32,7 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let post: AbstractPost
+    private(set) var post: AbstractPost
     let identifiers: [PrepublishingIdentifier]
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
@@ -155,6 +155,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         configureHeader()
         configureTableView()
         configureKeyboardToggle()
+        observePostConflictResolved()
+
         WPStyleGuide.applyBorderStyle(footerSeparator)
 
         title = ""
@@ -207,6 +209,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
 
         return footerView
+    }
+
+    private func observePostConflictResolved() {
+        NotificationCenter.default
+            .publisher(for: .postConflictResolved)
+            .sink { [weak self] notification in self?.postConflictResolved(notification) }
+            .store(in: &cancellables)
     }
 
     /// Toggles `keyboardShown` as the keyboard notifications come in
@@ -677,6 +686,22 @@ private extension PrepublishingOption {
         case .autoSharing:
             self.init(id: .autoSharing, title: Strings.jetpackSocial, type: .customContainer)
         }
+    }
+}
+
+// MARK: - Notifications
+extension PrepublishingViewController {
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
+        else {
+            return
+        }
+        // Ensures a post can be published after a conflict has been resolved.
+        // When resolving a conflict for a post, local revisions are deleted, causing self.post to become nil.
+        // By setting self.post to be the resolved post, users can proceed to publish the post.
+        self.post = post
     }
 }
 

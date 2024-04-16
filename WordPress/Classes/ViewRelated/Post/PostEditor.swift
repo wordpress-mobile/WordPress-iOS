@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 enum EditMode {
     case richText
@@ -142,9 +143,21 @@ extension PostEditor where Self: UIViewController {
         }
         showAutosaveAvailableAlertIfNeeded()
 
-        let observation = NotificationCenter.default
-            .addObserver(forName: UIApplication.willTerminateNotification, object: nil, queue: nil) { [weak self] _ in self?.appWillTerminate() }
-        objc_setAssociatedObject(self, &willTerminateObservationKey, observation, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+        var cancellables: [AnyCancellable] = []
+
+        NotificationCenter.default
+            .publisher(for: UIApplication.willTerminateNotification)
+            .sink { [weak self] _ in
+                self?.appWillTerminate()
+            }.store(in: &cancellables)
+
+        NotificationCenter.default
+            .publisher(for: .postConflictResolved)
+            .sink { [weak self] notification in
+                self?.postConflictResolved(notification)
+            }.store(in: &cancellables)
+
+        objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
     private func showAutosaveAvailableAlertIfNeeded() {
@@ -181,9 +194,20 @@ extension PostEditor where Self: UIViewController {
         }
         ContextManager.sharedInstance().saveContextAndWait(context)
     }
+
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        guard
+            let userInfo = notification.userInfo,
+            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
+        else {
+            return
+        }
+        self.post = post
+        createRevisionOfPost()
+    }
 }
 
-private var willTerminateObservationKey: UInt8 = 0
+private var cancellablesKey: UInt8 = 0
 
 enum PostEditorEntryPoint: String {
     case unknown

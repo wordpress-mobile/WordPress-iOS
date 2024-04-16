@@ -797,7 +797,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.addObserver(self, selector: #selector(applicationWillResignActive(_:)), name: UIApplication.willResignActiveNotification, object: nil)
         nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidUndoChange, object: nil)
         nc.addObserver(self, selector: #selector(didUndoRedo), name: .NSUndoManagerDidRedoChange, object: nil)
-        nc.addObserver(self, selector: #selector(handlePostConflictResolved(_:)), name: .postConflictResolved, object: nil)
     }
 
     func stopListeningToNotifications() {
@@ -807,7 +806,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         nc.removeObserver(self, name: UIApplication.willResignActiveNotification, object: nil)
         nc.removeObserver(self, name: .NSUndoManagerDidUndoChange, object: nil)
         nc.removeObserver(self, name: .NSUndoManagerDidRedoChange, object: nil)
-        nc.removeObserver(self, name: .postConflictResolved, object: nil)
     }
 
     func rememberFirstResponder() {
@@ -1088,18 +1086,6 @@ extension AztecPostViewController {
 // MARK: - Private Helpers
 //
 private extension AztecPostViewController {
-
-    @objc private func handlePostConflictResolved(_ notification: NSNotification) {
-        guard
-            let userInfo = notification.userInfo,
-            let post = userInfo[PostCoordinator.NotificationKey.postConflictResolved] as? AbstractPost
-        else {
-            return
-        }
-        self.post = post
-        createRevisionOfPost()
-    }
-
     /// Presents an alert controller, allowing the user to insert a link to either:
     ///
     /// - Insert a link to the document
