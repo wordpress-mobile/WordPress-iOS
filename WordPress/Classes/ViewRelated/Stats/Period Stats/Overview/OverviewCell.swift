@@ -93,6 +93,15 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     var accessibilityValue: String? {
         return tabDataStub != nil ? "" : "\(tabData)"
     }
+
+    // MARK: - Equatable
+
+    static func == (lhs: OverviewTabData, rhs: OverviewTabData) -> Bool {
+        return lhs.tabTitle == rhs.tabTitle &&
+            lhs.tabData == rhs.tabData &&
+            lhs.difference == rhs.difference &&
+            lhs.differencePercent == rhs.differencePercent
+    }
 }
 
 class OverviewCell: UITableViewCell, NibLoadable {
