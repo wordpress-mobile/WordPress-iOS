@@ -1,4 +1,3 @@
 
-* [*] [Jetpack-only] Stats: Optimized the Insights tab to enhance loading and scrolling performance. [#22592]
 
 
