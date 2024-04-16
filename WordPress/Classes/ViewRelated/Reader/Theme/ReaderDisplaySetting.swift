@@ -4,7 +4,7 @@ import WordPressShared
 struct ReaderDisplaySetting: Codable, Equatable {
 
     static var customizationEnabled: Bool {
-        RemoteFeatureFlag.readingPreferences.enabled()
+        AppConfiguration.isJetpack && RemoteFeatureFlag.readingPreferences.enabled()
     }
 
     // MARK: Properties
