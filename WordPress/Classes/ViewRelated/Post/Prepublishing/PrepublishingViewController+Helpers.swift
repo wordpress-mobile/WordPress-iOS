@@ -16,7 +16,7 @@ extension PrepublishingViewController {
         case let page as Page:
             showAlert(for: page, action: action, from: presentingViewController, completion: completion)
         default:
-            assertionFailure("Unsupported post type")
+            wpAssertionFailure("Unsupported post type")
             break
         }
     }

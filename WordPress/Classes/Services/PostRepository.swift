@@ -175,6 +175,8 @@ final class PostRepository {
                 .updateMediaFor(post: post, success: {}, failure: { _ in })
         }
         ContextManager.shared.saveContextAndWait(context)
+
+        WPAnalytics.track(isCreated ? .postRepositoryPostCreated : .postRepositoryPostUpdated, properties: post.analyticsUserInfo)
     }
 
     /// Patches the post.
@@ -211,6 +213,7 @@ final class PostRepository {
 
     @MainActor
     private func _patch(_ post: AbstractPost, postID: Int, changes: RemotePostUpdateParameters, overwrite: Bool) async throws -> RemotePost {
+        WPAnalytics.track(.postRepositoryPatchStarted)
         let service = try getRemoteService(for: post.blog)
         let original = post.original()
         var changes = changes
@@ -232,9 +235,12 @@ final class PostRepository {
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
+                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
+                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
+
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
                 return try await service.patchPost(withID: postID, parameters: changes)

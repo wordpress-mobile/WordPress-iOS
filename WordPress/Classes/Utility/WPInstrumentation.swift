@@ -3,27 +3,35 @@ import Sentry
 
 // MARK: - Assertions
 
-func wpAssert(_ closure: @autoclosure () -> Bool, _ message: StaticString = "–", file: StaticString = #file, line: UInt = #line) {
+func wpAssert(_ closure: @autoclosure () -> Bool, _ message: StaticString = "–", userInfo: [String: Any]? = nil, file: StaticString = #file, line: UInt = #line) {
     guard !closure() else {
         return
     }
 
     let filename = (file.description as NSString).lastPathComponent
-    DDLogError("WPAssertionFailure in \(filename)–\(line): \(message)")
+    DDLogError("WPAssertionFailure in \(filename)–\(line): \(message)\n\(userInfo ?? [:])")
 
-    WPAnalytics.track(.assertionFailure, properties: [
-        "file": filename,
-        "line": line,
-        "message": "\(filename)–\(line): \(message)"
-    ])
+    WPAnalytics.track(.assertionFailure, properties: {
+        var properties: [String: Any] = [
+            "file": filename,
+            "line": line,
+            "message": "\(filename)–\(line): \(message)"
+        ]
+        for (key, value) in userInfo ?? [:] {
+            properties[key] = value
+        }
+        return properties
+    }())
+
+    WPLoggingStack.shared.crashLogging.logError(NSError(domain: "WPAssertionFailure", code: -1, userInfo: [NSDebugDescriptionErrorKey: "\(filename)–\(line): \(message)"]), userInfo: userInfo)
 
 #if DEBUG
-    assertionFailure(message.description, file: file, line: line)
+    assertionFailure(message.description + "\n\(userInfo ?? [:])", file: file, line: line)
 #endif
 }
 
-func wpAssertionFailure(_ message: StaticString, file: StaticString = #file, line: UInt = #line) {
-    wpAssert(false, message, file: file, line: line)
+func wpAssertionFailure(_ message: StaticString, userInfo: [String: Any]? = nil, file: StaticString = #file, line: UInt = #line) {
+    wpAssert(false, message, userInfo: userInfo, file: file, line: line)
 }
 
 // MARK: - Error Tracking
