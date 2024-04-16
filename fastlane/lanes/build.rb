@@ -88,7 +88,7 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    inject_buildkite_analytics_environment(xctestrun_path:) if buildkite_ci?
+    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
     #
     # Their scheme and xctestrun name pairing are:
@@ -105,7 +105,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme:,
+      scheme: scheme,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
@@ -187,7 +187,7 @@ platform :ios do
     version = options[:beta_release] ? build_code : release_version
     release_url = create_release(
       repository: GITHUB_REPO,
-      version:,
+      version: version,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
@@ -239,7 +239,7 @@ platform :ios do
 
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      release_version:,
+      release_version: release_version,
       build_version: build_code,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
@@ -334,9 +334,9 @@ platform :ios do
 
     # Build
     gym(
-      scheme:,
+      scheme: scheme,
       workspace: WORKSPACE_PATH,
-      configuration:,
+      configuration: configuration,
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_app_name,
@@ -359,7 +359,7 @@ platform :ios do
       name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes:,
+      release_notes: release_notes,
       distribute_to_everyone: false
     )
 
@@ -372,16 +372,16 @@ platform :ios do
     )
 
     upload_gutenberg_sourcemaps(
-      sentry_project_slug:,
+      sentry_project_slug: sentry_project_slug,
       release_version: release_version_current,
       build_version: build_number,
-      app_identifier:
+      app_identifier: app_identifier
     )
 
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
-      app_icon:,
+      app_icon: app_icon,
       app_center_org_name: APPCENTER_OWNER_NAME,
       metadata: { Configuration: configuration },
       fold: true
@@ -449,8 +449,8 @@ platform :ios do
       username: 'WordPress Release Bot',
       icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
       slack_url: get_required_env('SLACK_WEBHOOK'),
-      channel:,
-      message:,
+      channel: channel,
+      message: message,
       default_payloads: []
     )
   end
@@ -467,9 +467,9 @@ platform :ios do
       owner_name: APPCENTER_OWNER_NAME,
       owner_type: APPCENTER_OWNER_TYPE,
       app_name: name,
-      file:,
-      dsym:,
-      release_notes:,
+      file: file,
+      dsym: dsym,
+      release_notes: release_notes,
       destinations: distribute_to_everyone ? '*' : 'Collaborators',
       notify_testers: false
     )
@@ -494,7 +494,7 @@ platform :ios do
       version: release_version,
       dist: build_version,
       build: build_version,
-      app_identifier:,
+      app_identifier: app_identifier,
       # When the React native bundle is generated, the source map file references
       # include the local machine path, with the `rewrite` and `strip_common_prefix`
       # options Sentry automatically strips this part.

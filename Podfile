@@ -335,7 +335,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer:)
+  gutenberg_post_install(installer: installer)
 
   project_root = File.dirname(__FILE__)
 
