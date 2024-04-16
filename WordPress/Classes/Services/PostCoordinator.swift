@@ -12,12 +12,21 @@ protocol PostCoordinatorDelegate: AnyObject {
 
 class PostCoordinator: NSObject {
 
-    enum SavingError: Error, LocalizedError {
-        case mediaFailure(AbstractPost)
+    enum SavingError: Error, LocalizedError, CustomNSError {
+        case mediaFailure(AbstractPost, Error)
         case unknown
 
         var errorDescription: String? {
             Strings.genericErrorTitle
+        }
+
+        var errorUserInfo: [String: Any] {
+            switch self {
+            case .mediaFailure(_, let error):
+                return [NSUnderlyingErrorKey: error]
+            case .unknown:
+                return [:]
+            }
         }
     }
 
@@ -97,7 +106,7 @@ class PostCoordinator: NSObject {
                 self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
             case .failure(let error):
                 switch error {
-                case SavingError.mediaFailure(let savedPost):
+                case SavingError.mediaFailure(let savedPost, _):
                     self.dispatchNotice(savedPost)
                 default:
                     if let notice = defaultFailureNotice {
@@ -665,7 +674,7 @@ class PostCoordinator: NSObject {
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
             change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost)))
+                completion(.failure(SavingError.mediaFailure(savedPost, URLError(.unknown))))
             }
             return
         }
@@ -820,7 +829,7 @@ class PostCoordinator: NSObject {
 
     private func observeMedia(for post: AbstractPost, completion: @escaping (Result<AbstractPost, SavingError>) -> ()) -> UUID {
         // Only observe if we're not already
-        let handleSingleMediaFailure = { [weak self] in
+        let handleSingleMediaFailure = { [weak self] (error: Error) -> Void in
             guard let `self` = self,
                 self.isObserving(post: post) else {
                 return
@@ -833,7 +842,7 @@ class PostCoordinator: NSObject {
             self.removeObserver(for: post)
 
             self.change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost)))
+                completion(.failure(SavingError.mediaFailure(savedPost, error)))
             }
         }
 
@@ -862,8 +871,8 @@ class PostCoordinator: NSObject {
                 case .video:
                     EditorMediaUtility.fetchRemoteVideoURL(for: media, in: post) { (result) in
                         switch result {
-                        case .failure:
-                            handleSingleMediaFailure()
+                        case .failure(let error):
+                            handleSingleMediaFailure(error)
                         case .success(let videoURL):
                             media.remoteURL = videoURL.absoluteString
                             successHandler()
@@ -872,8 +881,8 @@ class PostCoordinator: NSObject {
                 default:
                     successHandler()
                 }
-            case .failed:
-                handleSingleMediaFailure()
+            case .failed(let error):
+                handleSingleMediaFailure(error)
             default:
                 DDLogInfo("Post Coordinator -> Media state: \(state)")
             }
@@ -991,6 +1000,7 @@ class PostCoordinator: NSObject {
 
     private func change(post: AbstractPost, status: AbstractPostRemoteStatus, then completion: ((AbstractPost) -> ())? = nil) {
         guard !isSyncPublishingEnabled else {
+            completion?(post)
             return
         }
         guard let context = post.managedObjectContext else {
