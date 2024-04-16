@@ -5,6 +5,7 @@
 24.7
 -----
 
+* [**] [Jetpack-only] Reader: Introducing Reading Preferences, an experimental feature that allows users to customize their Reader post content screen with the color, font, and size that they like the most. [#22999]
 * [*] [Jetpack-only] Stats: Optimized the Insights tab to enhance loading and scrolling performance. [#22592]
 
 
