@@ -95,9 +95,12 @@ final class SubmitFeedbackViewController: UIViewController {
         let options = ZendeskUtils.IdentityAlertOptions(
             optionalIdentity: true,
             includesName: true,
-            message: Strings.identityAlertMessage,
+            title: Strings.identityAlertTitle,
+            message: Strings.identityAlertDescription,
             submit: Strings.identityAlertSubmit,
-            cancel: Strings.identityAlertCancel
+            cancel: nil,
+            emailPlaceholder: Strings.identityAlertEmptyEmail,
+            namePlaceholder: Strings.identityAlertEmptyName
         )
 
         ZendeskUtils.sharedInstance.createNewRequest(in: self, alertOptions: options, description: text, tags: tags) { [weak self] result in
@@ -155,22 +158,40 @@ private extension SubmitFeedbackViewController {
             comment: "Notice informing user that their feedback is being submitted."
         )
 
-        static let identityAlertMessage = NSLocalizedString(
-            "submit.feedback.alert.message",
-            value: "Would you share your email address and name so we can follow up on your feedback?",
+        static let submitLoadingAnonymouslyMessage = NSLocalizedString(
+            "submit.feedback.submit.loading",
+            value: "Submitting anonymously...",
+            comment: "Notice informing user that their feedback is being submitted anonymously."
+        )
+
+        static let identityAlertTitle = NSLocalizedString(
+            "submit.feedback.alert.title",
+            value: "Thanks for your feedback",
+            comment: "Alert users are shown when submtiting their feedback."
+        )
+
+        static let identityAlertDescription = NSLocalizedString(
+            "submit.feedback.alert.description",
+            value: "You can optionally include your email and username to help us understand your experience.",
             comment: "Alert users are shown when submtiting their feedback."
         )
 
         static let identityAlertSubmit = NSLocalizedString(
             "submit.feedback.alert.submit",
-            value: "OK",
+            value: "Done",
             comment: "Alert submit option for users to accept sharing their email and name when submitting feedback."
         )
 
-        static let identityAlertCancel = NSLocalizedString(
-            "submit.feedback.alert.cancel",
-            value: "No, thanks",
-            comment: "Alert cancel option for users to not accept sharing their email and name when submitting feedback."
+        static let identityAlertEmptyEmail = NSLocalizedString(
+            "submit.feedback.alert.empty.email",
+            value: "no email entered",
+            comment: "Label we show on an email input field"
+        )
+
+        static let identityAlertEmptyName = NSLocalizedString(
+            "submit.feedback.alert.empty.username",
+            value: "no username entered",
+            comment: "Label we show on an name input field"
         )
     }
 }

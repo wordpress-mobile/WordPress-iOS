@@ -2,6 +2,7 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
+import DesignSystem
 
 import SupportSDK
 import ZendeskCoreSDK
@@ -829,18 +830,24 @@ private extension ZendeskUtils {
                                                 preferredStyle: .alert)
 
         let alertMessage = alertOptions.message
-        alertController.setValue(NSAttributedString(string: alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
-                                 forKey: "attributedMessage")
+        let attributedString = NSMutableAttributedString(attributedString: NSAttributedString(string: alertMessage, attributes: [.font: UIFont.DS.font(.caption)]))
+
+        if let title = alertOptions.title {
+            attributedString.insert(NSAttributedString(string: title + "\n", attributes: [.font: UIFont.DS.font(.bodySmall(.emphasized))]), at: 0)
+        }
+        alertController.setValue(attributedString, forKey: "attributedMessage")
 
         // Cancel Action
-        alertController.addCancelActionWithTitle(alertOptions.cancel) { (_) in
-            completion(false)
-            return
+        if let cancel = alertOptions.cancel {
+            alertController.addCancelActionWithTitle(cancel) { (_) in
+                completion(false)
+                return
+            }
         }
 
         // Submit Action
         let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
-            guard let email = alertController?.textFields?.first?.text else {
+            guard let email = alertController?.textFields?.first?.text, email.count > 0 else {
                 completion(false)
                 return
             }
@@ -867,23 +874,22 @@ private extension ZendeskUtils {
         // Email Text Field
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = .always
-            textField.placeholder = LocalizedText.emailPlaceholder
+            textField.placeholder = alertOptions.emailPlaceholder
             textField.accessibilityLabel = LocalizedText.emailAccessibilityLabel
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
             textField.keyboardType = .emailAddress
-
-            textField.addTarget(self,
-                                action: #selector(emailTextFieldDidChange),
-                                for: UIControl.Event.editingChanged)
+            textField.on(.editingChanged) { textField in
+                Self.emailTextFieldDidChange(textField, alertOptions: alertOptions)
+            }
         })
 
         // Name Text Field
         if alertOptions.includesName {
             alertController.addTextField { textField in
                 textField.clearButtonMode = .always
-                textField.placeholder = LocalizedText.namePlaceholder
+                textField.placeholder = alertOptions.namePlaceholder
                 textField.accessibilityLabel = LocalizedText.nameAccessibilityLabel
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
@@ -901,14 +907,14 @@ private extension ZendeskUtils {
         }
     }
 
-    @objc static func emailTextFieldDidChange(_ textField: UITextField) {
+    static func emailTextFieldDidChange(_ textField: UITextField, alertOptions: IdentityAlertOptions) {
         guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
             let email = alertController.textFields?.first?.text,
             let submitAction = alertController.actions.last else {
                 return
         }
 
-        submitAction.isEnabled = EmailFormatValidator.validate(string: email)
+        submitAction.isEnabled = alertOptions.optionalIdentity || EmailFormatValidator.validate(string: email)
         updateNameFieldForEmail(email)
     }
 
@@ -1147,9 +1153,12 @@ extension ZendeskUtils {
     struct IdentityAlertOptions {
         let optionalIdentity: Bool
         let includesName: Bool
+        var title: String? = nil
         let message: String
         let submit: String
-        let cancel: String
+        var cancel: String? = nil
+        var emailPlaceholder: String = LocalizedText.emailPlaceholder
+        var namePlaceholder: String = LocalizedText.namePlaceholder
 
         static var withName: IdentityAlertOptions {
             return IdentityAlertOptions(
