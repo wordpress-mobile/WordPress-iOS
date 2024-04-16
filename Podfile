@@ -55,8 +55,8 @@ def gravatar
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 16.0.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '7343890fb3b1b6a7be29cddb9194bf88a71a4a2a'
+  pod 'WordPressKit', '~> 17.0.0'
+  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -150,7 +150,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.6'
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.8'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -335,7 +335,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer:)
+  gutenberg_post_install(installer: installer)
 
   project_root = File.dirname(__FILE__)
 

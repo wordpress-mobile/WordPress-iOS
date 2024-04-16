@@ -1,24 +1,18 @@
 # This pipeline is meant to be run via the Buildkite API, and is only used for release builds
 
-# Nodes with values to reuse in the pipeline.
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &common_plugins
-    - automattic/a8c-ci-toolkit#3.1.0
-
 env:
-  IMAGE_ID: xcode-15.1
+  IMAGE_ID: $IMAGE_ID
 
 steps:
 
   - label: ":wordpress: :testflight: WordPress Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-wordpress.sh $BETA_RELEASE"
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     notify:
     - slack: "#build-and-ship"
 
   - label: ":jetpack: :testflight: Jetpack Release Build (App Store Connect)"
     command: ".buildkite/commands/release-build-jetpack.sh"
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     notify:
     - slack: "#build-and-ship"
