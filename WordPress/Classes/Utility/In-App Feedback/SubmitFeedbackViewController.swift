@@ -163,13 +163,13 @@ private extension SubmitFeedbackViewController {
 
         static let submitLoadingMessage = NSLocalizedString(
             "submit.feedback.submit.loading",
-            value: "Submitting...",
+            value: "Sending",
             comment: "Notice informing user that their feedback is being submitted."
         )
 
         static let submitLoadingAnonymouslyMessage = NSLocalizedString(
             "submit.feedback.submit.loading",
-            value: "Submitting anonymously...",
+            value: "Sending anonymously",
             comment: "Notice informing user that their feedback is being submitted anonymously."
         )
 
