@@ -24,6 +24,15 @@ struct PostListEditorPresenter {
             return // It's clear from the UI that the cells are not interactive
         }
 
+        // No editing posts until the conflict has been resolved.
+        if let error = PostCoordinator.shared.syncError(for: post.original()),
+           let saveError = error as? PostRepository.PostSaveError,
+           case .conflict(let latest) = saveError {
+            let post = post.original()
+            PostCoordinator.shared.showResolveConflictView(post: post, remoteRevision: latest, source: .postList)
+            return
+        }
+
         openEditor(with: post, loadAutosaveRevision: false, in: postListViewController, entryPoint: entryPoint)
     }
 

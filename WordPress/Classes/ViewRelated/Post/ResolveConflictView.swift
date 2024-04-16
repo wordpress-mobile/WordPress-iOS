@@ -6,6 +6,7 @@ struct ResolveConflictView: View {
     enum Source: String {
         case editor
         case postList = "post_list"
+        case pageList = "page_list"
     }
 
     let post: AbstractPost
@@ -78,7 +79,7 @@ struct ResolveConflictView: View {
         Task { @MainActor in
             do {
                 try await repository._save(post, overwrite: true)
-                PostCoordinator.shared.notifyConflictResolved(for: post)
+                PostCoordinator.shared.didResolveConflict(for: post)
                 dismiss?()
             } catch {
                 DDLogError("Error resolving conflict picking local version: \(error)")
@@ -91,7 +92,7 @@ struct ResolveConflictView: View {
     private func handleRemoteVersionSelected(for post: AbstractPost, remoteRevision: RemotePost) {
         do {
             try repository._resolveConflict(for: post, pickingRemoteRevision: remoteRevision)
-            PostCoordinator.shared.notifyConflictResolved(for: post)
+            PostCoordinator.shared.didResolveConflict(for: post)
             dismiss?()
         } catch {
             DDLogError("Error resolving conflict picking remote version: \(error)")

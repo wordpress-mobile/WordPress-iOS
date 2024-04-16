@@ -16,7 +16,8 @@ enum PrepublishingSheetResult {
 }
 
 final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate {
-    let post: AbstractPost
+    private(set) var post: AbstractPost
+
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
 
@@ -43,6 +44,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private weak var mediaPollingTimer: Timer?
     private let isStandalone: Bool
+
+    private var cancellables: [AnyCancellable] = []
 
     init(post: AbstractPost,
          isStandalone: Bool,
@@ -115,6 +118,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         configureHeader()
         configureTableView()
+        observePostConflictResolved()
+
         WPStyleGuide.applyBorderStyle(footerSeparator)
 
         title = ""
@@ -179,6 +184,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         return footerView
     }
 
+    private func observePostConflictResolved() {
+        NotificationCenter.default
+            .publisher(for: .postConflictResolved)
+            .sink { [weak self] notification in self?.postConflictResolved(notification) }
+            .store(in: &cancellables)
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -215,6 +227,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         DDLogDebug("\(self): deleting unsaved changes")
         post.original?.deleteRevision()
         post.managedObjectContext.map(ContextManager.shared.saveContextAndWait)
+    }
+
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        // The user will have to re-opened the editor and/or the sheet to make
+        // sure the correct revision is shown.
+        presentingViewController?.dismiss(animated: true)
     }
 
     // MARK: - UIAdaptivePresentationControllerDelegate {

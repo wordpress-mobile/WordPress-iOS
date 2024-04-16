@@ -12,6 +12,7 @@ extension PostEditor {
         }
         settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
+            self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
         }))
         doneButton.accessibilityIdentifier = "close"
