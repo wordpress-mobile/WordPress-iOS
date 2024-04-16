@@ -22,7 +22,7 @@ platform :ios do
     # Make sure that Gutenberg is configured as expected for a successful code freeze
     gutenberg_dep_check
 
-    release_branch_name = compute_release_branch_name(options:, version: release_version_next)
+    release_branch_name = compute_release_branch_name(options: options, version: release_version_next)
 
     # The `release_version_next` is used as the `new internal release version` value because the external and internal
     # release versions are always the same.
@@ -93,7 +93,7 @@ platform :ios do
       extracted_notes_file_path: extracted_release_notes_file_path(app: :jetpack)
     )
     ios_update_release_notes(
-      new_version:,
+      new_version: new_version,
       release_notes_file_path: release_notes_source_path
     )
 
@@ -140,7 +140,7 @@ platform :ios do
       - Update pods and release notes
       - Finalize the code freeze
     MESSAGE
-    buildkite_annotate(context: 'code-freeze-success', style: 'success', message:) if is_ci
+    buildkite_annotate(context: 'code-freeze-success', style: 'success', message: message) if is_ci
   end
 
   # Executes the final steps for the code freeze
@@ -185,7 +185,7 @@ platform :ios do
     message = <<~MESSAGE
       Code freeze completed successfully. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
-    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message:) if is_ci
+    buildkite_annotate(context: 'code-freeze-completed', style: 'success', message: message) if is_ci
   end
 
   # Creates a new beta by bumping the app version appropriately then triggering a beta build on CI
@@ -201,7 +201,7 @@ platform :ios do
     release_version = release_version_current
 
     # Check branch
-    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options: options, version: release_version))
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
@@ -243,7 +243,7 @@ platform :ios do
     push_to_git_remote(tags: false)
 
     pr_url = create_release_management_pull_request(
-      release_version:,
+      release_version: release_version,
       base_branch: DEFAULT_BRANCH,
       title: "Merge changes from #{build_code_current}"
     )
@@ -251,7 +251,7 @@ platform :ios do
     message = <<~MESSAGE
       Beta deployment was successful. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
-    buildkite_annotate(context: 'beta-completed', style: 'success', message:) if is_ci
+    buildkite_annotate(context: 'beta-completed', style: 'success', message: message) if is_ci
   end
 
   lane :create_editorial_branch do |options|
@@ -259,7 +259,7 @@ platform :ios do
 
     release_version = release_version_current
 
-    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options:, version: release_version))
+    unless Fastlane::Helper::GitHelper.checkout_and_pull(compute_release_branch_name(options: options, version: release_version))
       UI.user_error!("Release branch for version #{release_version} doesn't exist.")
     end
 
@@ -322,7 +322,7 @@ platform :ios do
 
     # Create the hotfix branch
     UI.message 'Creating hotfix branch...'
-    Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options:, version: new_version), from: previous_version)
+    Fastlane::Helper::GitHelper.create_branch(compute_release_branch_name(options: options, version: new_version), from: previous_version)
     UI.success "Done! New hotfix branch is: #{git_branch}"
 
     # Bump the hotfix version and build code and write it to the `xcconfig` file
@@ -427,7 +427,7 @@ platform :ios do
     message = <<~MESSAGE
       Release successfully finalized. Next, review and merge the [integration PR](#{pr_url}).
     MESSAGE
-    buildkite_annotate(context: 'finalization-completed', style: 'success', message:) if is_ci
+    buildkite_annotate(context: 'finalization-completed', style: 'success', message: message) if is_ci
   end
 
   # Triggers a beta build on CI
@@ -435,8 +435,8 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_beta_build do |options|
-    branch = compute_release_branch_name(options:)
-    trigger_buildkite_release_build(branch:, beta: true)
+    branch = compute_release_branch_name(options: options)
+    trigger_buildkite_release_build(branch: branch, beta: true)
   end
 
   # Triggers a stable release build on CI
@@ -444,8 +444,8 @@ platform :ios do
   # @option [String] branch The name of the branch we want the CI to build, e.g. `release/19.3`. Defaults to `release/<current version>`
   #
   lane :trigger_release_build do |options|
-    branch = compute_release_branch_name(options:)
-    trigger_buildkite_release_build(branch:, beta: false)
+    branch = compute_release_branch_name(options: options)
+    trigger_buildkite_release_build(branch: branch, beta: false)
   end
 end
 
@@ -462,7 +462,7 @@ def trigger_buildkite_release_build(branch:, beta:)
   buildkite_trigger_build(
     buildkite_organization: BUILDKITE_ORGANIZATION,
     buildkite_pipeline: BUILDKITE_PIPELINE,
-    branch:,
+    branch: branch,
     environment: { BETA_RELEASE: beta },
     pipeline_file: 'release-builds.yml',
     message: beta ? 'Beta Builds' : 'Release Builds'
@@ -572,7 +572,7 @@ def create_release_management_pull_request(release_version:, base_branch:, title
   pr_url = create_pull_request(
     api_token: token,
     repo: 'wordpress-mobile/WordPress-iOS',
-    title:,
+    title: title,
     head: Fastlane::Helper::GitHelper.current_git_branch,
     base: base_branch,
     labels: 'Releases'
@@ -600,5 +600,5 @@ def check_pods_references
 
   style = result[:pods].nil? || result[:pods].empty? ? 'success' : 'warning'
   message = "### Checking Internal Dependencies are all on a **stable** version\n\n#{result[:message]}"
-  buildkite_annotate(context: 'pods-check', style:, message:) if is_ci
+  buildkite_annotate(context: 'pods-check', style: style, message: message) if is_ci
 end
