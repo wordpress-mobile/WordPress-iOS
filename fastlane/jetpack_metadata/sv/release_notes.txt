@@ -1,0 +1,3 @@
+Vi har åtgärdat en handfull problem rörande formatering av markerad text. Resultatet blev riktigt bra, vilket definitivt var en av veckans höjdpunkter.
+Medan vi ändå höll på lyckades vi även lösa de problem som gjorde att flertalet felmeddelanden visades på skärmen Insikter. Inget mer drama, bara data.
+Du bör nu också se den senaste versionen av din webbplats i läsaren – inte en äldre, cachad version. Nytt är alltid bättre.
