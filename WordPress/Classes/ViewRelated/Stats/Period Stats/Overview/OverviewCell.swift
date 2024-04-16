@@ -140,9 +140,9 @@ class OverviewCell: UITableViewCell, NibLoadable {
         self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        setupFilterBar(selectedIndex: tabIndex)
         configureLabelsStackView()
         configureChartView()
-        setupFilterBar(selectedIndex: tabIndex)
         updateLabels()
     }
 
