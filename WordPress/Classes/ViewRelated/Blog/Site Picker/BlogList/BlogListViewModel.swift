@@ -39,7 +39,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
 
         blog.pinnedDate = blog.pinnedDate == nil ? Date() : nil
-        contextManager.saveContextAndWait(contextManager.mainContext)
+        contextManager.save(contextManager.mainContext)
     }
 
     func siteSelected(siteID: NSNumber?) {
@@ -48,7 +48,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
 
         blog.lastUsed = Date()
-        contextManager.saveContextAndWait(contextManager.mainContext)
+        contextManager.save(contextManager.mainContext)
     }
 }
 
