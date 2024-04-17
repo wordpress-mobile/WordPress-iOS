@@ -26,7 +26,9 @@ struct OverviewRow: StatsHashableImmuTableRow {
     // MARK: - Hashable
 
     static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
-        return lhs.tabsData == rhs.tabsData && lhs.period == rhs.period
+        return lhs.tabsData == rhs.tabsData
+            && lhs.period == rhs.period
+            && lhs.chartHighlightIndex == rhs.chartHighlightIndex
     }
 
     func configureCell(_ cell: UITableViewCell) {
