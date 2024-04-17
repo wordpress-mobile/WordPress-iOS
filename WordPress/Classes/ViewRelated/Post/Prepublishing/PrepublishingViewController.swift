@@ -57,7 +57,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         // its own revision.
         self.post = isStandalone ? post._createRevision() : post
         self.isStandalone = isStandalone
-        self.viewModel = PrepublishingViewModel(post: post)
+        self.viewModel = PrepublishingViewModel(post: self.post)
         self.completion = completion
         self.coreDataStack = coreDataStack
         self.persistentStore = persistentStore
