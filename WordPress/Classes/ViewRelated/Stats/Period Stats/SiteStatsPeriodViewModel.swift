@@ -757,7 +757,7 @@ private extension SiteStatsPeriodViewModel {
 
     /// - Returns: Number of bars data to fetch for a given Stats period
     private func chartBarsLimit(for period: StatsPeriodUnit) -> Int {
-        return 14
+        return SiteStatsTableHeaderView.defaultPeriodCount
     }
 }
 
