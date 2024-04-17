@@ -121,6 +121,7 @@ extension BlogListViewModel {
             BlogListView.Site.init
         )
         allBlogs = filteredBlogs(resultsController: allBlogsController)
+        searchSites = allBlogs.compactMap(BlogListView.Site.init)
     }
 
     private func filteredBlogs(resultsController: NSFetchedResultsController<Blog>?) -> [Blog] {
