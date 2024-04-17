@@ -161,7 +161,7 @@ private class CopyLinkActivity: UIActivity {
     }
 
     override var activityImage: UIImage? {
-        return UIImage(systemName: "doc.on.doc")
+        return UIImage(systemName: "link")
     }
 
     override var activityType: UIActivity.ActivityType? {
@@ -191,7 +191,10 @@ private class CopyLinkActivity: UIActivity {
    }
 
    override func perform() {
-    UIPasteboard.general.string = url?.absoluteString
-    activityDidFinish(true)
+       guard let url else {
+           return
+       }
+       UIPasteboard.general.string = url.absoluteString
+       activityDidFinish(true)
    }
 }
