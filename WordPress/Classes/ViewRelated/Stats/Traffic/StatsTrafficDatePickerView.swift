@@ -95,13 +95,13 @@ private extension StatsPeriodUnit {
     var label: String {
         switch self {
         case .day:
-            return NSLocalizedString("stats.traffic.day", value: "By day", comment: "The label for the option to show Stats Traffic by day.")
+            return NSLocalizedString("stats.traffic.days", value: "Days", comment: "The label for the option to show Stats Traffic chart for Days.")
         case .week:
-            return NSLocalizedString("stats.traffic.week", value: "By week", comment: "The label for the option to show Stats Traffic by week.")
+            return NSLocalizedString("stats.traffic.weeks", value: "Weeks", comment: "The label for the option to show Stats Traffic chart for Weeks.")
         case .month:
-            return NSLocalizedString("stats.traffic.month", value: "By month", comment: "The label for the option to show Stats Traffic by month.")
+            return NSLocalizedString("stats.traffic.months", value: "Months", comment: "The label for the option to show Stats Traffic chart for Months.")
         case .year:
-            return NSLocalizedString("stats.traffic.year", value: "By year", comment: "The label for the option to show Stats Traffic by year.")
+            return NSLocalizedString("stats.traffic.years", value: "Years", comment: "The label for the option to show Stats Traffic chart for Years.")
         }
     }
 }
