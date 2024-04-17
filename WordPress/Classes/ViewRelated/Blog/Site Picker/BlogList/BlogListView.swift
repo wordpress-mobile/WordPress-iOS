@@ -4,6 +4,12 @@ import DesignSystem
 struct BlogListView: View {
     private enum Constants {
         static let imageDiameter: CGFloat = 40
+        static let sectionInsets = EdgeInsets(
+            top: .DS.Padding.half,
+            leading: .DS.Padding.double,
+            bottom: -.DS.Padding.half,
+            trailing: .DS.Padding.double
+        )
     }
 
     struct Site: Equatable {
@@ -77,12 +83,7 @@ struct BlogListView: View {
                 sectionHeader(
                     title: Strings.pinnedSectionTitle
                 )
-                .listRowInsets(EdgeInsets(
-                    top: 0,
-                    leading: .DS.Padding.double,
-                    bottom: .DS.Padding.half,
-                    trailing: .DS.Padding.double)
-                )
+                .listRowInsets(Constants.sectionInsets)
             }
         }
     }
@@ -98,12 +99,7 @@ struct BlogListView: View {
                 sectionHeader(
                     title: Strings.allRemainingSitesSectionTitle
                 )
-                .listRowInsets(EdgeInsets(
-                    top: 0,
-                    leading: .DS.Padding.double,
-                    bottom: .DS.Padding.half,
-                    trailing: .DS.Padding.double)
-                )
+                .listRowInsets(Constants.sectionInsets)
             }
         }
     }
@@ -119,12 +115,7 @@ struct BlogListView: View {
                 sectionHeader(
                     title: Strings.recentsSectionTitle
                 )
-                .listRowInsets(EdgeInsets(
-                    top: 0,
-                    leading: .DS.Padding.double,
-                    bottom: .DS.Padding.half,
-                    trailing: .DS.Padding.double)
-                )
+                .listRowInsets(Constants.sectionInsets)
             }
         }
     }

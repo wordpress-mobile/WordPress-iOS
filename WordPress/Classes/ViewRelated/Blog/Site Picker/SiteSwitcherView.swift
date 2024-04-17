@@ -21,6 +21,7 @@ struct SiteSwitcherView: View {
             NavigationStack {
                 VStack(spacing: 0) {
                     blogListView
+                        .offset(y: isSearching ? -.DS.Padding.medium : 0)
                     if !isSearching {
                         addSiteButtonVStack
                     }
@@ -28,7 +29,8 @@ struct SiteSwitcherView: View {
             }
             .searchable(
                 text: $searchText,
-                isPresented: $isSearching
+                isPresented: $isSearching,
+                placement: .navigationBarDrawer(displayMode: .always)
             )
         } else {
             NavigationView {
