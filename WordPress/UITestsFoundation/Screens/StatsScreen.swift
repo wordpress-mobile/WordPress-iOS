@@ -8,7 +8,7 @@ public class StatsScreen: ScreenObject {
     }
 
     private let byDayButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["By day"]
+        $0.buttons["Days"]
     }
 
     private let visitorsButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -16,7 +16,7 @@ public class StatsScreen: ScreenObject {
     }
 
     private let byYearButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["By year"]
+        $0.buttons["Years"]
     }
 
     private let statsDashboardGetter: (XCUIApplication) -> XCUIElement = {
