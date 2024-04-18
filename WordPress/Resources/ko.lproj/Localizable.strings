@@ -140,9 +140,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@에 다시 연결되었습니다.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@(%3$@%%)";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d개의 글이 있습니다.";
 
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "페이지 만들기";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "글 만들기";
 
 /* Button to progress to the next step
@@ -3191,9 +3186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "지원받기";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "시작한 후에는 글을 공유하여 조회수를 높이세요.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "젯팩 앱 알아보기";
 
@@ -3349,9 +3341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "도움말 아이콘";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "지금까지 글의 성과입니다.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "숨김";
@@ -3680,9 +3669,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "잘못된 비밀번호를 입력하신 것 같습니다. 다시 시도해보시겠어요?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "%2$@이(가) 게시된 후 %1$@이(가) 지났습니다. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "%@의 블로깅 시간입니다!";
 
@@ -3903,7 +3889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "좋아요";
@@ -6296,9 +6281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "친구와 젯팩 공유";
 
-/* Label for action to share post. */
-"Share Post" = "글 공유";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "친구와 WordPress 공유";
 
@@ -7984,10 +7966,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "조금 보기";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "더 보기";
@@ -8008,7 +7988,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8706,9 +8685,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "아직 글을 게시하지 않았습니다.";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "아직 글을 게시하지 않았습니다. 게시를 시작하면 최근 글의 요약이 여기에 표시됩니다.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "이정표 🚀에 도달 ";
@@ -9583,9 +9559,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "글에 사진이나 비디오를 추가";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@(%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10972,30 +10945,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "크기";
 
-/* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "맞춤화된 읽기 경험을 위해 직접 선택해 주세요. 여러분에게 맞는 스타일을 선택하세요.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "이 기능에 대한 피드백을 보내주세요";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "아직 개발 중인 기능입니다.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "개";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "여우";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "디자인";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "쓰기";
-
-/* Title text for a preview */
-"reader.preferences.preview.title" = "읽기 기본 설정을 선택하세요";
-
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "블로그 관리";
 
@@ -11362,12 +11311,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "이전 7일";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "이전 7일보다 *%1$@%2$@(%3$@%%)* 많음";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "이전 7일보다 *%1$@%2$@(%3$@%%)* 적음";
-
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "이전 7일과 동일";
 
@@ -11443,9 +11386,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 가장 인기 있는 시간";
 
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "조회수 %d%%";
-
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "활동이 충분하지 않습니다. 나중에 사이트의 방문자가 증가하면 다시 확인하세요!";
 
@@ -11472,27 +11412,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "일 기준";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@(%3$@%%)";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "이전 달보다 %@ 높음\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "이전 달보다 %@ 낮음\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "이전 7일보다 %@ 높음\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "이전 7일보다 %@ 낮음\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "이전 연도보다 %@ 높음\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "이전 연도보다 %@ 낮음\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "월 기준";

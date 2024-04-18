@@ -17,7 +17,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
     func testPinnedSitesWithValidData() throws {
         let siteID = 34984
-        let blog = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID)
             .with(pinnedDate: Date())
             .build()
@@ -34,7 +34,7 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
     func testRecentSitesWithValidData() throws {
         let siteID = 34984
-        let blog = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID)
             .with(lastUsed: Date())
             .with(pinnedDate: nil)
@@ -53,19 +53,19 @@ final class BlogListViewModelTests: CoreDataTestCase {
 
     func testAllRemainingSitesWithValidData() throws {
         let siteID1 = 34984
-        let blog1 = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID1)
             .with(lastUsed: Date())
             .build()
 
         let siteID2 = 13287
-        let blog2 = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID2)
             .with(pinnedDate: Date())
             .build()
 
         let siteID3 = 43788
-        let blog3 = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID3)
             .build()
         try mainContext.save()
@@ -77,18 +77,21 @@ final class BlogListViewModelTests: CoreDataTestCase {
     }
 
     func testTogglePinnedSiteUpdatesPinnedSites() throws {
-        let blog = BlogBuilder(mainContext).build()
+        let id = 23948
+        let blog = BlogBuilder(mainContext)
+            .with(dotComID: id)
+            .build()
         try mainContext.save()
 
         viewModel.togglePinnedSite(siteID: blog.dotComID)
 
-        XCTAssertEqual(viewModel.pinnedSites.first?.id, blog.dotComID)
+        XCTAssertEqual(viewModel.pinnedSites.first?.id, id as NSNumber)
         XCTAssertEqual(viewModel.pinnedSites.count, 1)
     }
 
     func testSiteSelectedUpdatesLastUsedDate() throws {
         let siteID = 4839
-        let blog = BlogBuilder(mainContext)
+        let _ = BlogBuilder(mainContext)
             .with(dotComID: siteID)
             .with(lastUsed: nil)
             .build()

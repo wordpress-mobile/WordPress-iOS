@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-03 10:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-14 21:43:28+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ 已重新連結。";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d 篇文章。";
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "建立頁面";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "建立文章";
 
 /* Button to progress to the next step
@@ -3188,9 +3183,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "取得支援";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "分享你的文章，讓這些文章廣為人知，並增加文章檢視次數。";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "開始瞭解 Jetpack 應用程式";
 
@@ -3347,9 +3339,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "說明圖示";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "文章截至目前為止獲得的迴響如下。";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "隱藏";
 
@@ -3473,7 +3462,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Image Link" = "圖片連結";
 
 /* Title of the screen for choosing an image's size. */
-"Image Size" = "圖片大小";
+"Image Size" = "圖片尺寸";
 
 /* translators: accessibility text. %s: image caption. */
 "Image caption. %s" = "圖片說明。%s";
@@ -3676,9 +3665,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "輸入的密碼似乎有誤。是否要再試一次？";
-
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "自從 %2$@ 發表以來已經過了 %1$@。";
 
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "該在 %@ 新增網誌內容了！";
@@ -3900,7 +3886,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "按讚數";
@@ -6293,9 +6278,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "與親友分享 Jetpack";
 
-/* Label for action to share post. */
-"Share Post" = "分享文章";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "向朋友推薦 WordPress";
 
@@ -7981,10 +7963,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "檢視較少內容…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "檢視更多";
@@ -8005,7 +7985,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8703,9 +8682,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "你尚未發表任何文章";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "你尚未發表任何文章。開始發表文章後，這裡便會顯示最新文章的摘要。";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "你已達到里程碑 🚀 ";
@@ -9589,9 +9565,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在你的文章中新增相片或影片。";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -11002,30 +10975,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "尺寸";
 
-/* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "閱讀是個人的體驗，我們希望你可以全程掌握。 選擇適合你的風格。";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "傳送此功能的意見回饋給我們";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "此功能仍在開發階段。";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "狗";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "狐狸";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "設計";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "寫作";
-
-/* Title text for a preview */
-"reader.preferences.preview.title" = "選擇你的閱讀喜好";
-
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "管理網誌";
 
@@ -11395,12 +11344,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "先前 7 天";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "較先前 7 天 *%1$@%2$@ (%3$@%%)*";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "較前 7 天低 *%1$@%2$@ (%3$@%%)*";
-
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "與先前 7 天一樣多";
 
@@ -11476,9 +11419,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 最熱門的時間";
 
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% 的瀏覽次數";
-
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "沒有足夠的活動。 有更多訪客造訪網站的時候，請再回來查看！";
 
@@ -11505,24 +11445,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "依天";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ 較前一個月高\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ 較前一個月低\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ 較前 7 天高\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ 較前 7 天低\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ 較前一年高\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ 較前一年低\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "依月";

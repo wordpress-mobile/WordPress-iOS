@@ -5,7 +5,7 @@ import DGCharts
 // MARK: - Shared Rows
 
 // TODO: Remove with SiteStatsPeriodViewModelDeprecated
-struct OverviewRow: ImmuTableRow {
+struct OverviewRow: StatsHashableImmuTableRow {
 
     typealias CellType = OverviewCell
 
@@ -128,8 +128,7 @@ struct CellHeaderRow: StatsHashableImmuTableRow {
     }
 }
 
-struct TableFooterRow: ImmuTableRow {
-
+struct TableFooterRow: HashableImmutableRow {
     typealias CellType = StatsTableFooter
 
     static let cell: ImmuTableCell = {
@@ -141,6 +140,10 @@ struct TableFooterRow: ImmuTableRow {
     func configureCell(_ cell: UITableViewCell) {
         // No configuration needed.
         // This method is needed to satisfy ImmuTableRow protocol requirements.
+    }
+
+    static func == (lhs: TableFooterRow, rhs: TableFooterRow) -> Bool {
+        return true
     }
 }
 
@@ -626,8 +629,7 @@ struct CountriesMapRow: StatsHashableImmuTableRow {
 
 // MARK: - Post Stats Rows
 
-struct PostStatsTitleRow: ImmuTableRow {
-
+struct PostStatsTitleRow: HashableImmutableRow {
     typealias CellType = PostStatsTitleCell
 
     static let cell: ImmuTableCell = {
@@ -647,9 +649,14 @@ struct PostStatsTitleRow: ImmuTableRow {
 
         cell.configure(postTitle: postTitle, postURL: postURL, postStatsDelegate: postStatsDelegate)
     }
+
+    static func == (lhs: PostStatsTitleRow, rhs: PostStatsTitleRow) -> Bool {
+        return lhs.postTitle == rhs.postTitle &&
+            lhs.postURL == rhs.postURL
+    }
 }
 
-struct TopTotalsPostStatsRow: ImmuTableRow {
+struct TopTotalsPostStatsRow: HashableImmutableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -676,10 +683,16 @@ struct TopTotalsPostStatsRow: ImmuTableRow {
                        postStatsDelegate: postStatsDelegate,
                        limitRowsDisplayed: limitRowsDisplayed)
     }
+
+    static func == (lhs: TopTotalsPostStatsRow, rhs: TopTotalsPostStatsRow) -> Bool {
+        return lhs.itemSubtitle == rhs.itemSubtitle &&
+            lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.dataRows == rhs.dataRows &&
+            lhs.limitRowsDisplayed == rhs.limitRowsDisplayed
+    }
 }
 
-struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
-
+struct PostStatsEmptyCellHeaderRow: HashableImmutableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
@@ -695,6 +708,10 @@ struct PostStatsEmptyCellHeaderRow: ImmuTableRow {
         }
 
         cell.configure(statSection: .postStatsGraph)
+    }
+
+    static func == (lhs: PostStatsEmptyCellHeaderRow, rhs: PostStatsEmptyCellHeaderRow) -> Bool {
+        return true
     }
 }
 
@@ -810,7 +827,6 @@ struct DetailExpandableChildRow: HashableImmutableRow {
 }
 
 struct DetailSubtitlesHeaderRow: HashableImmutableRow {
-
     typealias CellType = TopTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -863,8 +879,7 @@ struct DetailSubtitlesCountriesHeaderRow: HashableImmutableRow {
     }
 }
 
-struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
-
+struct DetailSubtitlesTabbedHeaderRow: HashableImmutableRow {
     typealias CellType = TabbedTotalsCell
 
     static let cell: ImmuTableCell = {
@@ -888,6 +903,12 @@ struct DetailSubtitlesTabbedHeaderRow: ImmuTableRow {
                        showTotalCount: showTotalCount,
                        selectedIndex: selectedIndex,
                        forDetails: true)
+    }
+
+    static func == (lhs: DetailSubtitlesTabbedHeaderRow, rhs: DetailSubtitlesTabbedHeaderRow) -> Bool {
+        return lhs.tabsData == rhs.tabsData &&
+            lhs.showTotalCount == rhs.showTotalCount &&
+            lhs.selectedIndex == rhs.selectedIndex
     }
 }
 

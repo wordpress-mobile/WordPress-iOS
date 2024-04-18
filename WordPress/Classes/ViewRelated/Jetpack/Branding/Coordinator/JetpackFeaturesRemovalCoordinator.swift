@@ -90,8 +90,9 @@ class JetpackFeaturesRemovalCoordinator: NSObject {
 
     static var currentAppUIType: RootViewCoordinator.AppUIType?
 
-    static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore()) -> GeneralPhase {
-        if AppConfiguration.isJetpack {
+    static func generalPhase(featureFlagStore: RemoteFeatureFlagStore = RemoteFeatureFlagStore(),
+                             isJetpack: Bool = AppConfiguration.isJetpack) -> GeneralPhase {
+        if isJetpack {
             return .normal // Always return normal for Jetpack
         }
 

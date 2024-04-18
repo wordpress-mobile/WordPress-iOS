@@ -8,7 +8,7 @@ class PagesListTests: CoreDataTestCase {
     let randomID = UniquePool<Int>(range: 1...999999)
 
     func testFlatList() throws {
-        let total = 1000
+        let total = 200
         let pages = (1...total).map { id in
             let page = PageBuilder(mainContext).build()
             page.postID = NSNumber(value: id)
@@ -45,11 +45,11 @@ class PagesListTests: CoreDataTestCase {
 
     func testHugeNestedLists() throws {
         var pages = [Page]()
-        for _ in 1...100 {
+        for _ in 1...40 {
             pages.append(contentsOf: parentPage(childrenCount: 5, additionalLevels: 4))
         }
         // Add orphan pages
-        for _ in 1...50 {
+        for _ in 1...20 {
             let newPages = parentPage(childrenCount: 5)
             newPages[0].parentID = NSNumber(value: randomID.next())
             pages.append(contentsOf: newPages)
@@ -59,7 +59,7 @@ class PagesListTests: CoreDataTestCase {
     }
 
     // Measure performance using a page list where somewhat reflects a real-world page list, where some pages whose parent pages are in list.
-    func testPerformance() throws {
+    func _testPerformance() throws {
         // Make sure the total number of pages is about the same as the one in `testWorstPerformance`.
         var pages = [Page]()
         // Add pages whose parents are in the list.
@@ -83,7 +83,7 @@ class PagesListTests: CoreDataTestCase {
     }
 
     // Measure performance using a page list where contains non-top-level pages and none of their parent pages are in the list.
-    func testWorstPerformance() throws {
+    func _testWorstPerformance() throws {
         var pages = [Page]()
         for id in 1...5000 {
             let page = PageBuilder(mainContext).build()

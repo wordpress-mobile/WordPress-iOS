@@ -30,6 +30,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case syncPublishing
     case readerDiscoverEndpoint
     case siteSwitcherRedesign
+    case readingPreferences
+    case readingPreferencesFeedback
 
     var defaultValue: Bool {
         switch self {
@@ -48,7 +50,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .jetpackFeaturesRemovalPhaseSelfHosted:
             return false
         case .jetpackFeaturesRemovalStaticPosters:
-            return false
+            return true
         case .blaze:
             return false
         case .blazeManageCampaigns:
@@ -88,6 +90,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerDiscoverEndpoint:
             return true
         case .siteSwitcherRedesign:
+            return true
+        case .readingPreferences:
+            return true
+        case .readingPreferencesFeedback:
             return true
         }
     }
@@ -152,6 +158,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "reader_discover_new_endpoint"
         case .siteSwitcherRedesign:
             return "site_switcher_redesign"
+        case .readingPreferences:
+            return "reading_preferences"
+        case .readingPreferencesFeedback:
+            return "reading_preferences_feedback"
         }
     }
 
@@ -213,6 +223,10 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Reader Discover New Endpoint"
         case .siteSwitcherRedesign:
             return "Site Switcher Redesign"
+        case .readingPreferences:
+            return "Reading Preferences"
+        case .readingPreferencesFeedback:
+            return "Reading Preferences Feedback"
         }
     }
 
