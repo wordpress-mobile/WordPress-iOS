@@ -76,7 +76,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'Reachability', '3.2'
+  pod 'Reachability', '~> 3.7'
 
   wordpress_kit
 end
