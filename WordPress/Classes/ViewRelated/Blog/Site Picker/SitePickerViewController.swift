@@ -102,6 +102,7 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
                         return
                     }
                     self?.switchToBlog(selectedBlog)
+                    RecentSitesService().touch(blog: selectedBlog)
                     // Dismiss hosting controller with completion block
                     dismissAction?()
                 }, addSiteCallback: { [weak self] in
