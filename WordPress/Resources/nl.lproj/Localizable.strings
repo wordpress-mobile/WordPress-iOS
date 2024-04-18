@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-01 21:22:13+0000 */
+/* Translation-Revision-Date: 2024-04-15 18:26:20+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ is verbonden.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d berichten.";
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Maak pagina";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Maak bericht";
 
 /* Button to progress to the next step
@@ -3191,9 +3186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Krijg ondersteuning";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Breng de bal aan het rollen en vergroot je bericht weergaven door dit bericht te delen.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Leer de Jetpack-app gebruiken";
 
@@ -3349,9 +3341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Help pictogram";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Hier zie je hoe het bericht het tot nu toe heeft gedaan.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Verborgen";
@@ -3680,9 +3669,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Het lijkt erop dat je een onjuist wachtwoord hebt ingevoerd. Wil je het nog eens proberen?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Het is %1$@ sinds %2$@ is gepubliceerd. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Het is tijd om te bloggen op %@!";
 
@@ -3903,7 +3889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Vind-ik-leuks";
@@ -6296,9 +6281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Deel Jetpack met een vriend";
 
-/* Label for action to share post. */
-"Share Post" = "Deel bericht";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Deel WordPress met een vriend";
 
@@ -7984,10 +7966,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Toon minder…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Meer weergeven";
@@ -8008,7 +7988,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8709,9 +8688,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Je hebt nog geen berichten gepubliceerd";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Je hebt nog geen berichten gepubliceerd. Zodra je begint te publiceren, wordt hier een samenvatting van je nieuwste berichten weergegeven.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Je hebt een mijlpaal bereikt 🚀";
@@ -9599,8 +9575,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Voor het toevoegen van foto's of video's aan je berichten.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10851,6 +10827,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonnementen";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Je tags";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Zoeken";
 
@@ -10996,11 +10975,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Abonnement op blog stopzetten";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Candy";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Standaard";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Avond";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -11011,35 +10996,66 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Zacht";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Kleuren";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Gedaan";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Lettertypen";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Grootte";
 
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimenteel>";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Dit is een nieuwe functie die nog in ontwikkeling is. Om ons te helpen het te verbeteren %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "verzend je feedback";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "Lezen is persoonlijk, we willen dat je de controle hebt. Kies de stijlen die bij je passen.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Stuur ons feedback over deze functie";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Deze functie is nog in ontwikkeling.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "honden";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "vos";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "ontwerp";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "schrijven";
+"reader.preferences.preview.body.text" = "Kies je kleuren, lettertypen en formaten. Bekijk je selectie hier en lees berichten met je stijlen zodra je klaar bent.";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "Kies je leesvoorkeuren";
+"reader.preferences.preview.header" = "Leesvoorkeuren";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "kleuren";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "lettertypen";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "aan het lezen";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Voorbeeld tags";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Extra groot";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Extra klein";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Groot";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normaal";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Klein";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Blogs beheren";
@@ -11112,6 +11128,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Negeren";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Leesvoorkeuren";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Duidelijk";
@@ -11411,10 +11430,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Vorige 7 dagen";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* hoger dan de vorige 7 dagen";
+"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* hoger dan de vorige 7 dagen";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* minder dan de vorige 7 dagen";
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* minder dan de voorgaande 7 dagen";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Hetzelfde als de vorige 7 dagen";
@@ -11492,7 +11511,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 Populairste tijd";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% van weergaven";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ van weergaven";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Niet genoeg activiteit. Keer nog eens terug wanneer je site meer bezoekers heeft gehad!";
@@ -11502,6 +11521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Je nieuwste bericht %1$@ heeft %2$@ vind-ik-leuks gekregen.";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Vandaag";
@@ -11520,30 +11542,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Per dag";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ meer dan de afgelopen maand\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ minder dan de afgelopen maand\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ meer dan de afgelopen 7 dagen\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ minder dan de afgelopen 7 dagen\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ meer dan het afgelopen jaar\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ minder dan het afgelopen jaar\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "Per maand";

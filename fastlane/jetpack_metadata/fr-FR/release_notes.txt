@@ -1,3 +1,0 @@
-Nous avons corrigé un certain nombre de problèmes liés au formatage du texte en surbrillance. Nous ne savons pas ce que vous en pensez, mais pour nous, c’est le clou de la semaine.
-Tant qu’à faire, nous avons résolu les problèmes à l’origine de multiples messages d’erreur sur l’écran Tendances. Fini de ronchonner, juste des données.
-Vous devriez également voir la version la plus récente de votre site dans le lecteur, et non une version plus ancienne mise en cache. Quoi de mieux que la nouveauté ?

@@ -8626,6 +8626,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
    Share Extension Content Body Text Placeholder */
 "Share your story here..." = "Share your story here...";
 
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Copy Link";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Dismiss";
 

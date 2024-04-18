@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-03 11:03:25+0000 */
+/* Translation-Revision-Date: 2024-04-17 11:49:39+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ se reconectó.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d entradas.";
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Crear página";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Crear entrada";
 
 /* Button to progress to the next step
@@ -3191,9 +3186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Obtener soporte";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Familiarízate con la aplicación Jetpack";
 
@@ -3349,9 +3341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Icono de ayuda";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Así es como ha funcionado la entrada hasta ahora.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Oculto";
@@ -3680,9 +3669,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Parece que has introducido una contraseña incorrecta ¿Quieres intentarlo de nuevo?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Ha pasado %1$@ desde que se publicó %2$@.";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "¡Es hora de bloguear en %@!";
 
@@ -3903,7 +3889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Me gusta";
@@ -6296,9 +6281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Comparte Jetpack con un amigo";
 
-/* Label for action to share post. */
-"Share Post" = "Compartir entrada";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Comparte WordPress con un amigo";
 
@@ -7984,10 +7966,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Ver menos…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Ver más";
@@ -8008,7 +7988,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8709,9 +8688,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Todavía no has publicado ninguna entrada";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Aún no has publicado ninguna entrada. Una vez empieces a publicar aparecerá aquí un resumen de tus últimas entradas.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Has alcanzado un hito 🚀";
@@ -9599,8 +9575,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Para añadir fotos o vídeos en tus entradas.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -11017,29 +10993,8 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Tamaño";
 
-/* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "La lectura es algo personal, y queremos que tú tengas el control. Elige qué estilos se adaptan a ti.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Envíanos comentarios sobre esta característica";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Esta característica está aún en desarrollo.";
-
 /* Example tag for preview */
-"reader.preferences.preview.tags.1" = "perros";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "zorro";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "diseño";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "escritura";
-
-/* Title text for a preview */
-"reader.preferences.preview.title" = "Elige tus preferencias de lectura";
+"reader.preferences.preview.tags.fonts" = "fuentes";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Gestionar blogs";
@@ -11411,10 +11366,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Siete días anteriores";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "Un *%1$@%2$@ (%3$@%%)* más que en los siete días anteriores";
+"stats.insights.label.totalLikes.higherNumber" = "Un *%1$@%2$@ (%3$@)* más que en los siete días anteriores";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* por debajo de los anteriores 7 días";
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* por debajo de los anteriores 7 días";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Las mismas que en los siete días anteriores";
@@ -11491,9 +11446,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 El momento más popular";
 
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% de vistas";
-
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "No hay suficiente actividad. Vuelve a comprobarlo más tarde, cuando tu sitio haya tenido más visitas.";
 
@@ -11520,30 +11472,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Por día";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ superior al mes anterior\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ inferior al mes anterior\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ superior a los 7 días anteriores\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ inferior a los 7 días anteriores\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ superior al año anterior\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ inferior al año anterior\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "Por mes";

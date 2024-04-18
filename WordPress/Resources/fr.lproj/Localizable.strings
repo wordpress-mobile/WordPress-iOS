@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-03 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-04-17 15:44:22+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ a été reconnecté.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@ %%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d articles.";
@@ -1633,7 +1630,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1974,8 +1970,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Créer une page";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Créer un article";
 
 /* Button to progress to the next step
@@ -3179,9 +3174,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Obtenir de l’aide";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Lancez-vous et augmentez le nombre de vues de votre article en le partageant.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Découvrir l’app Jetpack";
 
@@ -3337,9 +3329,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Icône d’aide";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Voilà les performances de l'article.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Caché";
@@ -3668,9 +3657,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Il semblerait que vous avez saisi un mot de passe incorrect. Voulez-vous réessayer ?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "%2$@ est publié depuis %1$@. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "C’est l’heure de bloguer sur %@ !";
 
@@ -3891,7 +3877,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "J’aime";
@@ -6284,9 +6269,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Partager Jetpack avec un ami";
 
-/* Label for action to share post. */
-"Share Post" = "Partager lʼarticle";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Partager WordPress avec un ami";
 
@@ -7972,10 +7954,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Réduire…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Voir plus";
@@ -7996,7 +7976,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8691,9 +8670,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Vous n'avez pas encore publié d'article";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Vous n’avez pas encore publié d'articles. Lorsque vous commencez à publier, le résumé de votre dernier article apparaît ici.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Vous avez atteint un événement marquant 🚀 ";
@@ -9563,8 +9539,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Pour ajouter des photos ou des vidéos à vos articles.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@ %%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10797,6 +10773,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonnements";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Vos étiquettes";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Rechercher";
 
@@ -10942,11 +10921,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Se désabonner du blog";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Candy";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Par défaut";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Nuit";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the Sepia color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.sepia" = "Sépia";
@@ -10954,32 +10939,60 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Doux";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Couleurs";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Terminé";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Polices";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Taille";
 
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Cette fonctionnalité est encore en cours de développement. Pour nous aider à l’améliorer, %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "envoyez vos commentaires";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "La lecture est un acte personnel, nous voulons vous donner le contrôle. Choisissez les styles qui vous conviennent.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Donnez-nous votre avis sur cette fonctionnalité";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Cette fonctionnalité est encore en cours de développement.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "chiens";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "renard";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "écriture";
+"reader.preferences.preview.body.text" = "Choisissez vos couleurs, polices et tailles. Prévisualisez votre sélection ici et lisez des articles avec vos styles une fois que vous aurez terminé.";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "Définir vos préférences de lecture";
+"reader.preferences.preview.header" = "Préférences de lecture";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "couleurs";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "polices";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "lecture";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Exemple d’étiquettes";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Très grande";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Très petite";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Grande";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normale";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Petite";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Gérer les blogs";
@@ -11052,6 +11065,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Ignorer";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Préférences de lecture";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "J’ai compris";
@@ -11333,10 +11349,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 jours précédents";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+"stats.insights.label.totalLikes.higherNumber" = "supérieur de *%1$@%2$@ (%3$@)* par rapport aux 7 jours précédents";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "supérieur de *%1$@%2$@ (%3$@%%)* par rapport aux 7 jours précédents";
+"stats.insights.label.totalLikes.lowerNumber" = "inférieur de *%1$@%2$@ (%3$@)* par rapport aux 7 jours précédents";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Identique aux 7 jours précédents";
@@ -11414,7 +11430,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 Heure la plus populaire";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% de vues";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ de vues";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Pas assez d’activité. Revenez lorsque votre site aura plus de visiteurs !";
@@ -11424,6 +11440,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Votre dernier article %1$@ a reçu %2$@ mentions J’aime.";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Aujourd’hui";
@@ -11442,27 +11461,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "Par jour";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@ %%)";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "supérieur de %@ par rapport au mois précédent\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "inférieur de %@ par rapport au mois précédent\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "supérieur de %@ par rapport aux 7 jours précédents\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "inférieur de %@ par rapport aux 7 jours précédents\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "supérieur de %@ par rapport à l’année précédente\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "inférieur de %@ par rapport à l’année précédente\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "Par mois";
