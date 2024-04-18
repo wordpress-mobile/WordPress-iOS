@@ -37,7 +37,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
             return
         }
-        
         let isCurrentlyPinned = blog.pinnedDate == nil
 
         if isCurrentlyPinned {
