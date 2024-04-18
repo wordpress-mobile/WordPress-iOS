@@ -18,7 +18,7 @@ Metrics/MethodLength:
   Exclude: *xfiles
 
 Layout/LineLength:
-  Max: 180
+  Max: 165
   Exclude: *xfiles
 
 Layout/EmptyLines:
@@ -36,3 +36,6 @@ Style/AsciiComments:
 Naming/FileName:
   Exclude:
     - fastlane/Matchfile
+
+Style/HashSyntax:
+  EnforcedShorthandSyntax: never

@@ -78,7 +78,7 @@ def gutenberg_pod_options(name:, path:)
   raise "Could not find #{name} pod at #{path}. You can configure the path using the #{LOCAL_GUTENBERG_KEY} environment variable." unless File.exist?(path)
 
   puts "[Gutenberg] Installing pods using local #{name} version from #{path}"
-  { path: }
+  { path: path }
 end
 
 def gutenberg_dependencies(options:)
@@ -95,9 +95,9 @@ def gutenberg_dependencies(options:)
 
   computed_dependencies = DEPENDENCIES.dup
 
-  react_native_version = react_native_version!(gutenberg_path:)
+  react_native_version = react_native_version!(gutenberg_path: gutenberg_path)
   # We need to apply a workaround for the RNReanimated library when using React Native 0.71+.
-  apply_rnreanimated_workaround!(dependencies: computed_dependencies, gutenberg_path:) unless react_native_version[1] < 71
+  apply_rnreanimated_workaround!(dependencies: computed_dependencies, gutenberg_path: gutenberg_path) unless react_native_version[1] < 71
 
   computed_dependencies.each do |pod_name|
     pod pod_name, podspec: "#{podspec_prefix}/#{pod_name}.#{podspec_extension}"
@@ -164,7 +164,7 @@ def local_gutenberg_path
 end
 
 def require_react_native_helpers!(gutenberg_path:)
-  react_native_path = react_native_path!(gutenberg_path:)
+  react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
 
   require_relative File.join(react_native_path, 'scripts', 'react_native_pods')
 
@@ -180,7 +180,7 @@ def react_native_path!(gutenberg_path:)
 end
 
 def react_native_version!(gutenberg_path:)
-  react_native_path = react_native_path!(gutenberg_path:)
+  react_native_path = react_native_path!(gutenberg_path: gutenberg_path)
   package_json_path = File.join(react_native_path, 'package.json')
   package_json_content = File.read(package_json_path)
   package_json_version = JSON.parse(package_json_content)['version']
