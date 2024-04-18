@@ -180,7 +180,7 @@ final class PostRepository {
         do {
             return try await service.patchPost(withID: postID.intValue, parameters: changes)
         } catch {
-            guard let error = error as? PostServiceRemoteUpdatePostError else {
+            guard let error = error as? PostServiceRemoteError else {
                 throw error
             }
             switch error {
