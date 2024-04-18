@@ -114,8 +114,12 @@ final class MediaImageService {
 
     // MARK: - Media (Thumbnails)
 
+    static func isThubmnailSupported(for mediaType: MediaType) -> Bool {
+        mediaType == .image || mediaType == .video
+    }
+
     private func thumbnail(for media: SafeMedia, size: ImageSize) async throws -> UIImage {
-        guard media.mediaType == .image || media.mediaType == .video else {
+        guard MediaImageService.isThubmnailSupported(for: media.mediaType) else {
             assertionFailure("Unsupported thubmnail media type: \(media.mediaType)")
             throw Error.unsupportedMediaType(media.mediaType)
         }

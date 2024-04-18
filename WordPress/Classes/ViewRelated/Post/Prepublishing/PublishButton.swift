@@ -23,7 +23,7 @@ struct PublishButton: View {
             case .loading:
                 ProgressView()
                     .tint(Color.secondary)
-            case let .uploading(title, progress):
+            case let .uploading(title, progress, onInfoTapped):
                 HStack(spacing: 10) {
                     ProgressView()
                         .tint(Color.secondary)
@@ -42,6 +42,13 @@ struct PublishButton: View {
                     .foregroundStyle(Color.primary)
 
                     Spacer()
+
+                    if let onInfoTapped {
+                        Button(action: onInfoTapped, label: {
+                            Image(systemName: "info.circle")
+                                .foregroundStyle(.secondary)
+                        })
+                    }
                 }
                 .padding(.horizontal)
             case let .failed(title, details, onRetryTapped):
@@ -95,44 +102,12 @@ final class PublishButtonViewModel: ObservableObject {
 enum PublishButtonState {
     case `default`
     case loading
-    case uploading(title: String, progress: Progress?)
+    case uploading(title: String, progress: Progress?, onInfoTapped: (() -> Void)? = nil)
     case failed(title: String, details: String? = nil, onRetryTapped: (() -> Void)? = nil)
 
     struct Progress {
         var completed: Int64
         var total: Int64
-    }
-
-    /// Returns the state of the button based on the current upload progress
-    /// for the given post.
-    static func uploadingState(for post: AbstractPost, coordinator: MediaCoordinator = .shared) -> PublishButtonState? {
-        if post.hasFailedMedia {
-            return .failed(title: Strings.mediaUploadFailed, onRetryTapped: {
-                coordinator.uploadMedia(for: post)
-            })
-        }
-        if coordinator.isUploadingMedia(for: post) {
-            var totalUploadProgress = Progress(completed: 0, total: 0)
-            var completedUploadCount = 0
-            var totalUploadCount = 0
-
-            for media in post.media {
-                if let progress = coordinator.progress(for: media) {
-                    if let uploadProgress = progress.userInfo[.uploadProgress] as? Foundation.Progress,
-                    let filesize = media.filesize?.int64Value {
-                        totalUploadProgress.completed += Int64(Double(filesize) * uploadProgress.fractionCompleted)
-                        totalUploadProgress.total += filesize
-                    }
-
-                    if progress.fractionCompleted >= 1.0 {
-                        completedUploadCount += 1
-                    }
-                    totalUploadCount += 1
-                }
-            }
-            return .uploading(title: Strings.uploadingMedia + ": \(completedUploadCount) / \(totalUploadCount)", progress: totalUploadProgress)
-        }
-        return nil
     }
 }
 
@@ -143,8 +118,6 @@ private enum Strings {
     }
 
     static let retry = NSLocalizedString("publishButton.retry", value: "Retry", comment: "Retry button title")
-    static let mediaUploadFailed = NSLocalizedString("prepublishing.mediaUploadFailed", value: "Failed to upload media", comment: "Title for an error messaage in the pre-publishing sheet")
-    static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
 }
 
 #Preview {
