@@ -77,12 +77,15 @@ final class BlogListViewModelTests: CoreDataTestCase {
     }
 
     func testTogglePinnedSiteUpdatesPinnedSites() throws {
-        let blog = BlogBuilder(mainContext).build()
+        let id = 23948
+        let blog = BlogBuilder(mainContext)
+            .with(dotComID: id)
+            .build()
         try mainContext.save()
 
         viewModel.togglePinnedSite(siteID: blog.dotComID)
 
-        XCTAssertEqual(viewModel.pinnedSites.first?.id, blog.dotComID)
+        XCTAssertEqual(viewModel.pinnedSites.first?.id, id as NSNumber)
         XCTAssertEqual(viewModel.pinnedSites.count, 1)
     }
 

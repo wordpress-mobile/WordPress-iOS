@@ -37,7 +37,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
             return
         }
-        let isCurrentlyPinned = blog.pinnedDate == nil
+        let isCurrentlyPinned = blog.pinnedDate != nil
 
         if isCurrentlyPinned {
             moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: blog)
@@ -45,7 +45,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
         blog.pinnedDate = isCurrentlyPinned ? nil : Date()
 
-        contextManager.save(contextManager.mainContext)
+        contextManager.saveContextAndWait(contextManager.mainContext)
     }
 
     func siteSelected(siteID: NSNumber?) {
@@ -57,7 +57,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
         updateExcessRecentBlogsIfNeeded(selectedSiteID: siteID)
 
-        contextManager.save(contextManager.mainContext)
+        contextManager.saveContextAndWait(contextManager.mainContext)
     }
 
     private func moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: Blog) {
