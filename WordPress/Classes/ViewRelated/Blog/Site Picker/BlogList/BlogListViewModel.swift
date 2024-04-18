@@ -13,9 +13,13 @@ final class BlogListViewModel: NSObject, ObservableObject {
     private var allBlogsController: NSFetchedResultsController<Blog>?
 
     private let contextManager: ContextManager
+    private let eventTracker: EventTracker
 
-    init(contextManager: ContextManager = ContextManager.sharedInstance()) {
+    init(contextManager: ContextManager = ContextManager.sharedInstance(),
+         eventTracker: EventTracker = DefaultEventTracker()
+    ) {
         self.contextManager = contextManager
+        self.eventTracker = eventTracker
         super.init()
         setupFetchedResultsControllers()
     }
@@ -39,6 +43,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
         }
         let isCurrentlyPinned = blog.pinnedDate != nil
 
+        trackPinned(blog: blog)
         if isCurrentlyPinned {
             moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: blog)
         }
@@ -53,11 +58,46 @@ final class BlogListViewModel: NSObject, ObservableObject {
             return
         }
 
+        trackSiteSelected(blog: blog)
+
         blog.lastUsed = Date()
 
         updateExcessRecentBlogsIfNeeded(selectedSiteID: siteID)
 
         contextManager.saveContextAndWait(contextManager.mainContext)
+    }
+
+    private func trackPinned(blog: Blog) {
+        eventTracker.track(
+            .siteSwitcherPinUpdated,
+            properties: [
+                "blog_id": blog.dotComID ?? "",
+                "pinned": blog.pinnedDate == nil
+            ]
+        )
+    }
+
+    private func trackSiteSelected(blog: Blog) {
+        let sectionName: String
+
+        if blog.pinnedDate != nil {
+            sectionName = "pinned"
+        } else if blog.lastUsed != nil {
+            sectionName = "recent"
+        } else {
+            sectionName = "all"
+        }
+
+        eventTracker.track(
+            .siteSwitcherSiteTapped,
+            properties: [
+                "section": sectionName,
+            ]
+        )
+    }
+
+    private static func filteredAllRemainingSites(allBlogs: [Blog]) -> [BlogListView.Site] {
+        allBlogs.filter({ $0.pinnedDate == nil && $0.lastUsed == nil }).compactMap(BlogListView.Site.init)
     }
 
     private func moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: Blog) {

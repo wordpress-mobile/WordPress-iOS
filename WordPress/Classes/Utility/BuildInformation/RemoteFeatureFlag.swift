@@ -29,6 +29,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case siteMonitoring
     case syncPublishing
     case readerDiscoverEndpoint
+    case siteSwitcherRedesign
     case readingPreferences
     case readingPreferencesFeedback
 
@@ -87,6 +88,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .syncPublishing:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerDiscoverEndpoint:
+            return true
+        case .siteSwitcherRedesign:
             return true
         case .readingPreferences:
             return true
@@ -153,6 +156,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "_sync_publishing"
         case .readerDiscoverEndpoint:
             return "reader_discover_new_endpoint"
+        case .siteSwitcherRedesign:
+            return "site_switcher_redesign"
         case .readingPreferences:
             return "reading_preferences"
         case .readingPreferencesFeedback:
@@ -216,6 +221,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Synchronous Publishing"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
+        case .siteSwitcherRedesign:
+            return "Site Switcher Redesign"
         case .readingPreferences:
             return "Reading Preferences"
         case .readingPreferencesFeedback:

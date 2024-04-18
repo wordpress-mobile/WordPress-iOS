@@ -6,14 +6,18 @@ struct SiteSwitcherView: View {
     private let selectionCallback: ((NSNumber) -> Void)
     private let addSiteCallback: (() -> Void)
     private let blogListViewModel = BlogListViewModel()
+    private let eventTracker: EventTracker
     @State private var searchText = ""
     @State private var isSearching = false
     @Environment(\.dismiss) private var dismiss
 
     init(selectionCallback: @escaping ((NSNumber) -> Void),
-        addSiteCallback: @escaping (() -> Void)) {
+         addSiteCallback: @escaping (() -> Void),
+         eventTracker: EventTracker = DefaultEventTracker()
+    ) {
         self.selectionCallback = selectionCallback
         self.addSiteCallback = addSiteCallback
+        self.eventTracker = eventTracker
     }
 
     var body: some View {
@@ -79,6 +83,7 @@ struct SiteSwitcherView: View {
     private var editButton: some View {
         Button(action: {
             isEditing.toggle()
+            eventTracker.track(.siteSwitcherToggledPinTapped, properties: ["state": isEditing ? "edit" : "done"])
         }, label: {
             Text(isEditing ? Strings.navigationDoneButtonTitle: Strings.navigationEditButtonTitle)
                 .style(.bodyLarge(.regular))
