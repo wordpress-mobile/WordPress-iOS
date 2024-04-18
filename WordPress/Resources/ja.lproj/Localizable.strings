@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-04 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-04-17 15:44:43+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ を再連携しました。";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d件の投稿。";
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "ページを作成";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "投稿を作成";
 
 /* Button to progress to the next step
@@ -3191,9 +3186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "サポートを受ける";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Jetpack アプリについて知る";
 
@@ -3349,9 +3341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "ヘルプアイコン";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "投稿のこれまでのパフォーマンスは次のとおりです。";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "非表示";
@@ -3680,9 +3669,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "入力したパスワードが正しくないようです。もう一度試しますか ?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "「%2$@」が公開されてから%1$@が経過しました。";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "%@ のブログに投稿する日です !";
 
@@ -3903,7 +3889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "いいね";
@@ -6296,9 +6281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jetpack を友達とシェア";
 
-/* Label for action to share post. */
-"Share Post" = "投稿をシェア";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "WordPress を友達と共有する";
 
@@ -7984,10 +7966,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "コンパクト表示…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "さらに表示";
@@ -8008,7 +7988,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8706,9 +8685,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "まだ公開した投稿がありません";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "公開した投稿はまだありません公開を開始すると、最新の投稿のサマリーがここに表示されます。";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "マイルストーンに到達しました 🚀 ";
@@ -9589,9 +9565,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "投稿に写真または動画を追加する。";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10842,6 +10815,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "サブスクリプション";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "あなたのタグ";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "検索";
 
@@ -10987,6 +10963,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "ブログの購読を中止";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "キャンディー";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "デフォルト";
 
@@ -11002,35 +10981,60 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "ソフト";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "色";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "完了";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "フォント";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "サイズ";
 
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "これはまだ開発中の新機能です。 改善にご協力ください (%1$@)。";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "フィードバックを送る";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "閲覧は個人的なものです。ご自身で管理しましょう。 ご自身に合ったスタイルを選択します。";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "この機能についてフィードバックを送信";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "この機能は現在も開発中です。";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "イヌ";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "キツネ";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "デザイン";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "投稿設定";
+"reader.preferences.preview.body.text" = "カラー、フォント、サイズを選択します。 ここで選択内容をプレビューし、完成後にスタイルを適用して投稿を読むことができます。";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "閲覧の設定を選択";
+"reader.preferences.preview.header" = "閲覧の設定";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "色";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "フォント";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "読み込み中";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "タグ例";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "特大";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "極小";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "大";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "通常";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "小";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "ブログ管理";
@@ -11103,6 +11107,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "閉じる";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "閲覧の設定";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "OK";
@@ -11399,10 +11406,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "前の7日間";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*増加";
+"stats.insights.label.totalLikes.higherNumber" = "前の7日間と比べて*%1$@%2$@ (%3$@)*増加";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*減少";
+"stats.insights.label.totalLikes.lowerNumber" = "前の7日間と比べて*%1$@%2$@ (%3$@)*減少";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "前の7日間と同じ";
@@ -11480,7 +11487,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 最も人気のある時間";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%%回の閲覧";
+"stats.insights.mostPopularCard.viewsNumber" = "表示数の %1$@";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "アクティビティが足りません。 サイトの訪問者数が増えたら後でもう一度確認してください。";
@@ -11508,24 +11515,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "日別";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "先月と比べて%@人増加\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "先月と比べて%@人減少\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "前の7日間と比べて%@人増加\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "前の7日間と比べて%@人減少\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "去年と比べて%@人増加\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "去年と比べて%@人減少\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "月別";
