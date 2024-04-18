@@ -127,7 +127,7 @@ struct AvatarsView: View {
             Image.DS.icon(named: .vector)
                 .resizable()
                 .frame(width: 18, height: 18)
-                .tint(.DS.Background.secondary)
+                .tint(.DS.Foreground.tertiary)
         }
     }
 }
