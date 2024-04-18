@@ -42,8 +42,14 @@ struct BlogListView: View {
         if #available(iOS 16.0, *) {
             contentVStack
                 .scrollContentBackground(.hidden)
+                .onAppear {
+                    viewModel.viewAppeared()
+                }
         } else {
             contentVStack
+                .onAppear {
+                    viewModel.viewAppeared()
+                }
         }
     }
 

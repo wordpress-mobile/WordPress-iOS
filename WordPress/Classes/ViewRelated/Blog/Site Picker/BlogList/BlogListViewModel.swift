@@ -34,21 +34,59 @@ final class BlogListViewModel: NSObject, ObservableObject {
     }
 
     func togglePinnedSite(siteID: NSNumber?) {
-        guard let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
+        guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
             return
         }
+        
+        let isCurrentlyPinned = blog.pinnedDate == nil
 
-        blog.pinnedDate = blog.pinnedDate == nil ? Date() : nil
+        if isCurrentlyPinned {
+            moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: blog)
+        }
+
+        blog.pinnedDate = isCurrentlyPinned ? nil : Date()
+
         contextManager.save(contextManager.mainContext)
     }
 
     func siteSelected(siteID: NSNumber?) {
-        guard let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
+        guard let siteID, let blog = allBlogs.first(where: { $0.dotComID == siteID }) else {
             return
         }
 
         blog.lastUsed = Date()
+
+        updateExcessRecentBlogsIfNeeded(selectedSiteID: siteID)
+
         contextManager.save(contextManager.mainContext)
+    }
+
+    private func moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: Blog) {
+        if let recentBlogs = recentSitesController?.fetchedObjects,
+           recentBlogs.count == 8 {
+            pinnedBlog.lastUsed = nil
+        }
+    }
+
+    private func updateExcessRecentBlogsIfNeeded(selectedSiteID: NSNumber) {
+        if let recentBlogs = recentSitesController?.fetchedObjects,
+           recentBlogs.count == 8,
+           let lastBlog = recentBlogs.last,
+           !recentBlogs.compactMap({ $0.dotComID }).contains(selectedSiteID) {
+            lastBlog.lastUsed = nil
+        }
+    }
+
+    func viewAppeared() {
+        if recentSites.isEmpty && pinnedSites.isEmpty {
+            selectedBlog()?.lastUsed = Date()
+        }
+
+        contextManager.save(contextManager.mainContext)
+    }
+
+    private func selectedBlog() -> Blog? {
+        return RootViewCoordinator.sharedPresenter.currentOrLastBlog()
     }
 }
 
