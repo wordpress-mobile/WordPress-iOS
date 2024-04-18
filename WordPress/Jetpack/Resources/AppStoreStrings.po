@@ -81,11 +81,10 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v24.6-whats-new"
+msgctxt "v24.7-whats-new"
 msgid ""
-"We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.\n"
-"While we were at it, we solved the problems causing multiple error messages on the Insights screen. No drama, just data.\n"
-"You should also see the most current version of your site in the reader—not an older, cached version. Newer is always better.\n"
+"We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.\n"
+"We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
