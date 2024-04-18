@@ -1,3 +1,0 @@
-Hemos solucionado algunos problemas relacionados con el formato de texto resaltado. No sabemos cómo te ha ido la semana, pero esto es lo más destacado de la nuestra.
-Y ya que estábamos, hemos resuelto los problemas que causaban múltiples mensajes de error en la pantalla Detalles. Ningún drama, solo datos.
-También deberías ver la versión más reciente de tu sitio en el lector, no una anterior almacenada en caché. Cuanto más reciente, mejor.

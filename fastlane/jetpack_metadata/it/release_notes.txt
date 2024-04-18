@@ -1,3 +1,0 @@
-Abbiamo risolto alcuni problemi con la formattazione del testo evidenziato. Questo è l'apice della nostra settimana.
-Già che c'eravamo, abbiamo risolto i problemi che causavano diversi messaggi di errore nella schermata Panoramica. Nessun dramma, solo dati.
-Dovresti anche vedere la versione più recente del tuo sito nel lettore, non una vecchia versione cache. Più recente è sempre meglio.
