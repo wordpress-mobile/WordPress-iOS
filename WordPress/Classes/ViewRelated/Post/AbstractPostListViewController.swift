@@ -415,8 +415,6 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        defer { pendingChanges = [] }
-
         // Defensive code to make sure simple operation like moving to trash
         // are animated, but more complex ones simply update the whole list
         // without a risk of creating an invalid set of changes.
