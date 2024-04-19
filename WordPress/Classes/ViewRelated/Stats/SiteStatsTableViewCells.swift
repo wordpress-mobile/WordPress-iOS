@@ -656,7 +656,7 @@ struct PostStatsTitleRow: HashableImmutableRow {
     }
 }
 
-struct TopTotalsPostStatsRow: HashableImmutableRow {
+struct TopTotalsPostStatsRow: StatsHashableImmuTableRow {
 
     typealias CellType = TopTotalsCell
 
@@ -670,6 +670,7 @@ struct TopTotalsPostStatsRow: HashableImmutableRow {
     let limitRowsDisplayed: Bool
     weak var postStatsDelegate: PostStatsDelegate?
     let action: ImmuTableAction? = nil
+    let statSection: StatSection?
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -688,11 +689,12 @@ struct TopTotalsPostStatsRow: HashableImmutableRow {
         return lhs.itemSubtitle == rhs.itemSubtitle &&
             lhs.dataSubtitle == rhs.dataSubtitle &&
             lhs.dataRows == rhs.dataRows &&
-            lhs.limitRowsDisplayed == rhs.limitRowsDisplayed
+            lhs.limitRowsDisplayed == rhs.limitRowsDisplayed &&
+            lhs.statSection == rhs.statSection
     }
 }
 
-struct PostStatsEmptyCellHeaderRow: HashableImmutableRow {
+struct PostStatsEmptyCellHeaderRow: StatsHashableImmuTableRow {
     typealias CellType = StatsCellHeader
 
     static let cell: ImmuTableCell = {
@@ -700,6 +702,7 @@ struct PostStatsEmptyCellHeaderRow: HashableImmutableRow {
     }()
 
     let action: ImmuTableAction? = nil
+    var statSection: StatSection? = nil
 
     func configureCell(_ cell: UITableViewCell) {
 
@@ -711,7 +714,7 @@ struct PostStatsEmptyCellHeaderRow: HashableImmutableRow {
     }
 
     static func == (lhs: PostStatsEmptyCellHeaderRow, rhs: PostStatsEmptyCellHeaderRow) -> Bool {
-        return true
+        return lhs.statSection == rhs.statSection
     }
 }
 

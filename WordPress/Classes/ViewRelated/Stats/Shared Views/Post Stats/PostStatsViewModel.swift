@@ -119,7 +119,7 @@ private extension PostStatsViewModel {
 
     func overviewTableRows() -> [any HashableImmutableRow] {
         var tableRows = [any HashableImmutableRow]()
-        tableRows.append(PostStatsEmptyCellHeaderRow())
+        tableRows.append(PostStatsEmptyCellHeaderRow(statSection: .postStatsGraph))
 
         let lastTwoWeeks = postStats?.lastTwoWeeks ?? []
         let dayData = dayDataFrom(lastTwoWeeks)
@@ -160,7 +160,8 @@ private extension PostStatsViewModel {
                                                dataSubtitle: dataSubtitle,
                                                dataRows: yearsDataRows(forAverages: forAverages),
                                                limitRowsDisplayed: true,
-                                               postStatsDelegate: postStatsDelegate))
+                                               postStatsDelegate: postStatsDelegate,
+                                               statSection: statSection))
 
         return tableRows
     }
@@ -202,12 +203,14 @@ private extension PostStatsViewModel {
     func recentWeeksTableRows() -> [any HashableImmutableRow] {
         var tableRows = [any HashableImmutableRow]()
 
-        tableRows.append(CellHeaderRow(statSection: StatSection.postStatsRecentWeeks))
+        let statSection = StatSection.postStatsRecentWeeks
+        tableRows.append(CellHeaderRow(statSection: statSection))
         tableRows.append(TopTotalsPostStatsRow(itemSubtitle: StatSection.postStatsRecentWeeks.itemSubtitle,
                                                dataSubtitle: StatSection.postStatsRecentWeeks.dataSubtitle,
                                                dataRows: recentWeeksDataRows(),
                                                limitRowsDisplayed: false,
-                                               postStatsDelegate: postStatsDelegate))
+                                               postStatsDelegate: postStatsDelegate,
+                                               statSection: statSection))
 
         return tableRows
     }
