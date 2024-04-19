@@ -82,11 +82,6 @@ struct PublishButton: View {
         }
     }
 
-    @ViewBuilder
-    private func makeUploadingView(title: String, progress: PublishButtonState.Progress) -> some View {
-
-    }
-
     private var isDisabled: Bool {
         switch viewModel.state {
         case .default: false
