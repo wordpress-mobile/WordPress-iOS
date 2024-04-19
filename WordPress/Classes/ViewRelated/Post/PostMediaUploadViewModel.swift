@@ -162,7 +162,7 @@ private extension Media {
 
 private enum Strings {
     static func progress(completed: Int64, total: Int64) -> String {
-        let format = NSLocalizedString("postMediaUploadStatusView.progress", value: "%@ of %@", comment: "Shows the upload progress with two parameters: preformatted completed and total bytes")
+        let format = NSLocalizedString("postMediaUploadStatusView.progress", value: "%1$@ of %2$@", comment: "Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes")
         return String(format: format, ByteCountFormatter.string(fromByteCount: completed, countStyle: .file), ByteCountFormatter.string(fromByteCount: total, countStyle: .file))
     }
 }
