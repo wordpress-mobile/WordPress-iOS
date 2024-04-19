@@ -107,7 +107,8 @@ class SiteStatsDashboardViewController: UIViewController {
     }()
 
     private lazy var subscribersViewController = {
-        return UIViewController()
+        let viewModel = SiteStatsSubscribersViewModel()
+        return SiteStatsSubscribersViewController(viewModel: viewModel)
     }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
