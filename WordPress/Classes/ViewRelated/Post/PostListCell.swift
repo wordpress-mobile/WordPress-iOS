@@ -25,12 +25,11 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
 
     private let headerView = PostListHeaderView()
     private let contentLabel = UILabel()
-    private let featuredImageView = CachedAnimatedImageView()
+    private let featuredImageView = ImageView()
     private let statusLabel = UILabel()
 
     // MARK: - Properties
 
-    private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
     private var viewModel: PostListItemViewModel?
 
     // MARK: - PostSearchResultCell
@@ -60,7 +59,7 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageLoader.prepareForReuse()
+        featuredImageView.prepareForReuse()
         viewModel = nil
     }
 
@@ -73,7 +72,8 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             let host = MediaHost(with: viewModel.post) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
+            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.post.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
+            featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
         statusLabel.text = viewModel.status
