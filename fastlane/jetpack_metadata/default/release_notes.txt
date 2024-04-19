@@ -1,3 +1,2 @@
-We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.
-While we were at it, we solved the problems causing multiple error messages on the Insights screen. No drama, just data.
-You should also see the most current version of your site in the reader—not an older, cached version. Newer is always better.
+We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.
+We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.

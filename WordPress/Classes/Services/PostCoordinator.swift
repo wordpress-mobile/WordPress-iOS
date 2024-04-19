@@ -185,6 +185,10 @@ class PostCoordinator: NSObject {
         }
         if let publishDate = options.publishDate {
             parameters.date = publishDate
+        } else {
+            // If the post was previously scheduled for a different date,
+            // the app has to send a new value to override it.
+            parameters.date = post.shouldPublishImmediately() ? nil : Date()
         }
 
         do {

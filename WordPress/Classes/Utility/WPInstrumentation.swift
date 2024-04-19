@@ -23,7 +23,9 @@ func wpAssert(_ closure: @autoclosure () -> Bool, _ message: StaticString = "–
         return properties
     }())
 
-    WPLoggingStack.shared.crashLogging.logError(NSError(domain: "WPAssertionFailure", code: -1, userInfo: [NSDebugDescriptionErrorKey: "\(filename)–\(line): \(message)"]), userInfo: userInfo)
+    if WPAssertion.shouldSendAssertion(withID: "\(filename)-\(line)") {
+        WPLoggingStack.shared.crashLogging.logError(NSError(domain: "WPAssertionFailure", code: -1, userInfo: [NSDebugDescriptionErrorKey: "\(filename)–\(line): \(message)"]), userInfo: userInfo)
+    }
 
 #if DEBUG
     assertionFailure(message.description + "\n\(userInfo ?? [:])", file: file, line: line)
@@ -32,6 +34,21 @@ func wpAssert(_ closure: @autoclosure () -> Bool, _ message: StaticString = "–
 
 func wpAssertionFailure(_ message: StaticString, userInfo: [String: Any]? = nil, file: StaticString = #file, line: UInt = #line) {
     wpAssert(false, message, userInfo: userInfo, file: file, line: line)
+}
+
+private enum WPAssertion {
+    /// The minimum delay between the reports for the same assetion.
+    static let assertionDelay: TimeInterval = 7 * 86400
+
+    static func shouldSendAssertion(withID assertionID: String) -> Bool {
+        let key = "WPAssertionLastReportDateKey-" + assertionID
+        if let lastReportDate = UserDefaults.standard.object(forKey: key) as? Date,
+           Date().timeIntervalSince(lastReportDate) < WPAssertion.assertionDelay {
+            return false
+        }
+        UserDefaults.standard.set(Date(), forKey: key)
+        return true
+    }
 }
 
 // MARK: - Error Tracking

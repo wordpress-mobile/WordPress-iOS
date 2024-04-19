@@ -2,6 +2,7 @@ import Foundation
 import CoreTelephony
 import WordPressAuthenticator
 import WordPressKit
+import DesignSystem
 
 import SupportSDK
 import ZendeskCoreSDK
@@ -23,8 +24,15 @@ enum ZendeskRequestError: Error {
     case createRequest(String)
 }
 
+enum ZendeskRequestLoadingStatus {
+    case identifyingUser
+    case creatingTicket
+    case creatingTicketAnonymously
+}
+
 protocol ZendeskUtilsProtocol {
     typealias ZendeskNewRequestCompletion = (Result<ZDKRequest, ZendeskRequestError>) -> ()
+    typealias ZendeskNewRequestLoadingStatus = (ZendeskRequestLoadingStatus) -> ()
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion)
 }
 
@@ -174,7 +182,7 @@ protocol ZendeskUtilsProtocol {
     func showSupportEmailPrompt(from controller: UIViewController, completion: @escaping (Bool) -> Void) {
         presentInController = controller
 
-        ZendeskUtils.getUserInformationAndShowPrompt(withName: false) { success in
+        ZendeskUtils.getUserInformationAndShowPrompt(alertOptions: .withoutName) { success in
             completion(success)
         }
     }
@@ -331,12 +339,21 @@ protocol ZendeskUtilsProtocol {
 
 extension ZendeskUtils {
     func createNewRequest(in viewController: UIViewController, description: String, tags: [String], completion: @escaping ZendeskNewRequestCompletion) {
+        createNewRequest(in: viewController, description: description, tags: tags, alertOptions: .withName, completion: completion)
+    }
+
+    func createNewRequest(
+        in viewController: UIViewController,
+        description: String,
+        tags: [String],
+        alertOptions: IdentityAlertOptions,
+        status: ZendeskNewRequestLoadingStatus? = nil,
+        completion: @escaping ZendeskNewRequestCompletion
+    ) {
         presentInController = viewController
-        ZendeskUtils.createIdentity { [weak self] success, newIdentity in
-            guard let self, success else {
-                completion(.failure(.noIdentity))
-                return
-            }
+
+        let createRequest = { [weak self] in
+            guard let self else { return }
 
             self.createRequest() { requestConfig in
                 let provider = ZDKRequestProvider()
@@ -362,6 +379,25 @@ extension ZendeskUtils {
                     }
                 }
             }
+        }
+
+        status?(.identifyingUser)
+
+        ZendeskUtils.createIdentity(alertOptions: alertOptions) { success, newIdentity in
+            guard success else {
+                if alertOptions.optionalIdentity {
+                    let identity = Identity.createAnonymous()
+                    Zendesk.instance?.setIdentity(identity)
+                    status?(.creatingTicketAnonymously)
+                    createRequest()
+                } else {
+                    completion(.failure(.noIdentity))
+                }
+                return
+            }
+
+            status?(.creatingTicket)
+            createRequest()
         }
     }
 }
@@ -403,7 +439,7 @@ private extension ZendeskUtils {
     ///     - Bool indicating there is an identity to use.
     ///     - Bool indicating if a _new_ identity was created.
     ///
-    static func createIdentity(completion: @escaping (Bool, Bool) -> Void) {
+    static func createIdentity(alertOptions: IdentityAlertOptions = .withName, completion: @escaping (Bool, Bool) -> Void) {
 
         // If we already have an identity, and the user has confirmed it, do nothing.
         let haveUserInfo = ZendeskUtils.sharedInstance.haveUserIdentity && ZendeskUtils.sharedInstance.userNameConfirmed
@@ -414,14 +450,14 @@ private extension ZendeskUtils {
         }
 
         // Prompt the user for information.
-        ZendeskUtils.getUserInformationAndShowPrompt(withName: true) { success in
+        ZendeskUtils.getUserInformationAndShowPrompt(alertOptions: alertOptions) { success in
             completion(success, success)
         }
     }
 
-    static func getUserInformationAndShowPrompt(withName: Bool, completion: @escaping (Bool) -> Void) {
+    static func getUserInformationAndShowPrompt(alertOptions: IdentityAlertOptions, completion: @escaping (Bool) -> Void) {
         ZendeskUtils.getUserInformationIfAvailable {
-            ZendeskUtils.promptUserForInformation(withName: withName) { success in
+            ZendeskUtils.promptUserForInformation(alertOptions: alertOptions) { success in
                 guard success else {
                     DDLogInfo("No user information to create Zendesk identity with.")
                     completion(false)
@@ -806,32 +842,38 @@ private extension ZendeskUtils {
 
     // MARK: - User Information Prompt
 
-    static func promptUserForInformation(withName: Bool, completion: @escaping (Bool) -> Void) {
+    static func promptUserForInformation(alertOptions: IdentityAlertOptions, completion: @escaping (Bool) -> Void) {
 
         let alertController = UIAlertController(title: nil,
                                                 message: nil,
                                                 preferredStyle: .alert)
 
-        let alertMessage = withName ? LocalizedText.alertMessageWithName : LocalizedText.alertMessage
-        alertController.setValue(NSAttributedString(string: alertMessage, attributes: [.font: WPStyleGuide.subtitleFont()]),
-                                 forKey: "attributedMessage")
+        let alertMessage = alertOptions.message
+        let attributedString = NSMutableAttributedString(attributedString: NSAttributedString(string: alertMessage, attributes: [.font: UIFont.DS.font(.caption)]))
+
+        if let title = alertOptions.title {
+            attributedString.insert(NSAttributedString(string: title + "\n", attributes: [.font: UIFont.DS.font(.bodySmall(.emphasized))]), at: 0)
+        }
+        alertController.setValue(attributedString, forKey: "attributedMessage")
 
         // Cancel Action
-        alertController.addCancelActionWithTitle(LocalizedText.alertCancel) { (_) in
-            completion(false)
-            return
+        if let cancel = alertOptions.cancel {
+            alertController.addCancelActionWithTitle(cancel) { (_) in
+                completion(false)
+                return
+            }
         }
 
         // Submit Action
-        let submitAction = alertController.addDefaultActionWithTitle(LocalizedText.alertSubmit) { [weak alertController] (_) in
-            guard let email = alertController?.textFields?.first?.text else {
+        let submitAction = alertController.addDefaultActionWithTitle(alertOptions.submit) { [weak alertController] (_) in
+            guard let email = alertController?.textFields?.first?.text, email.count > 0 else {
                 completion(false)
                 return
             }
 
             ZendeskUtils.sharedInstance.userEmail = email
 
-            if withName {
+            if alertOptions.includesName {
                 ZendeskUtils.sharedInstance.userName = alertController?.textFields?.last?.text
                 ZendeskUtils.sharedInstance.userNameConfirmed = true
             }
@@ -851,23 +893,22 @@ private extension ZendeskUtils {
         // Email Text Field
         alertController.addTextField(configurationHandler: { textField in
             textField.clearButtonMode = .always
-            textField.placeholder = LocalizedText.emailPlaceholder
+            textField.placeholder = alertOptions.emailPlaceholder
             textField.accessibilityLabel = LocalizedText.emailAccessibilityLabel
             textField.text = ZendeskUtils.sharedInstance.userEmail
             textField.delegate = ZendeskUtils.sharedInstance
             textField.isEnabled = false
             textField.keyboardType = .emailAddress
-
-            textField.addTarget(self,
-                                action: #selector(emailTextFieldDidChange),
-                                for: UIControl.Event.editingChanged)
+            textField.on(.editingChanged) { textField in
+                Self.emailTextFieldDidChange(textField, alertOptions: alertOptions)
+            }
         })
 
         // Name Text Field
-        if withName {
+        if alertOptions.includesName {
             alertController.addTextField { textField in
                 textField.clearButtonMode = .always
-                textField.placeholder = LocalizedText.namePlaceholder
+                textField.placeholder = alertOptions.namePlaceholder
                 textField.accessibilityLabel = LocalizedText.nameAccessibilityLabel
                 textField.text = ZendeskUtils.sharedInstance.userName
                 textField.delegate = ZendeskUtils.sharedInstance
@@ -885,14 +926,14 @@ private extension ZendeskUtils {
         }
     }
 
-    @objc static func emailTextFieldDidChange(_ textField: UITextField) {
+    static func emailTextFieldDidChange(_ textField: UITextField, alertOptions: IdentityAlertOptions) {
         guard let alertController = ZendeskUtils.sharedInstance.presentInController?.presentedViewController as? UIAlertController,
             let email = alertController.textFields?.first?.text,
             let submitAction = alertController.actions.last else {
                 return
         }
 
-        submitAction.isEnabled = EmailFormatValidator.validate(string: email)
+        submitAction.isEnabled = alertOptions.optionalIdentity || EmailFormatValidator.validate(string: email)
         updateNameFieldForEmail(email)
     }
 
@@ -1125,4 +1166,37 @@ extension ZendeskUtils: UITextFieldDelegate {
         return EmailFormatValidator.validate(string: email)
     }
 
+}
+
+extension ZendeskUtils {
+    struct IdentityAlertOptions {
+        let optionalIdentity: Bool
+        let includesName: Bool
+        var title: String? = nil
+        let message: String
+        let submit: String
+        var cancel: String? = nil
+        var emailPlaceholder: String = LocalizedText.emailPlaceholder
+        var namePlaceholder: String = LocalizedText.namePlaceholder
+
+        static var withName: IdentityAlertOptions {
+            return IdentityAlertOptions(
+                optionalIdentity: false,
+                includesName: true,
+                message: LocalizedText.alertMessageWithName,
+                submit: LocalizedText.alertSubmit,
+                cancel: LocalizedText.alertCancel
+            )
+        }
+
+        static var withoutName: IdentityAlertOptions {
+            return IdentityAlertOptions(
+                optionalIdentity: false,
+                includesName: false,
+                message: LocalizedText.alertMessage,
+                submit: LocalizedText.alertSubmit,
+                cancel: LocalizedText.alertCancel
+            )
+        }
+    }
 }

@@ -88,11 +88,52 @@ final class SubmitFeedbackViewController: UIViewController {
 
     @objc private func didTapSubmit() {
         let text = textView.text ?? ""
-        self.feedbackWasSubmitted = true
-        WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
-        self.view.endEditing(true)
-        self.dismiss(animated: true) {
-            self.onFeedbackSubmitted?(self, text)
+        let tags = ["appreview_jetpack", "in_app_feedback"]
+
+        let options = ZendeskUtils.IdentityAlertOptions(
+            optionalIdentity: true,
+            includesName: true,
+            title: Strings.identityAlertTitle,
+            message: Strings.identityAlertDescription,
+            submit: Strings.identityAlertSubmit,
+            cancel: nil,
+            emailPlaceholder: Strings.identityAlertEmptyEmail,
+            namePlaceholder: Strings.identityAlertEmptyName
+        )
+
+        let loadingStatus = { (status: ZendeskRequestLoadingStatus) in
+            switch status {
+            case .creatingTicket:
+                SVProgressHUD.show(withStatus: Strings.submitLoadingMessage)
+            case .creatingTicketAnonymously:
+                SVProgressHUD.show(withStatus: Strings.submitLoadingAnonymouslyMessage)
+            default:
+                break
+            }
+        }
+
+        ZendeskUtils.sharedInstance.createNewRequest(in: self, description: text, tags: tags, alertOptions: options, status: loadingStatus) { [weak self] result in
+            guard let self else { return }
+
+            let completion = {
+                DispatchQueue.main.async {
+                    SVProgressHUD.dismiss()
+                    WPAnalytics.track(.appReviewsSentFeedback, withProperties: ["feedback": text])
+                    self.feedbackWasSubmitted = true
+                    self.view.endEditing(true)
+                    self.dismiss(animated: true) {
+                        self.onFeedbackSubmitted?(self, text)
+                    }
+                }
+            }
+
+            switch result {
+            case .success:
+                completion()
+            case .failure(let error):
+                DDLogError("Submitting feedback failed: \(error)")
+                completion()
+            }
         }
     }
 }
@@ -118,6 +159,48 @@ private extension SubmitFeedbackViewController {
             "submit.feedback.title",
             value: "Feedback",
             comment: "The title for the the In-App Feedback screen"
+        )
+
+        static let submitLoadingMessage = NSLocalizedString(
+            "submit.feedback.submit.loading",
+            value: "Sending",
+            comment: "Notice informing user that their feedback is being submitted."
+        )
+
+        static let submitLoadingAnonymouslyMessage = NSLocalizedString(
+            "submit.feedback.submit.loading",
+            value: "Sending anonymously",
+            comment: "Notice informing user that their feedback is being submitted anonymously."
+        )
+
+        static let identityAlertTitle = NSLocalizedString(
+            "submit.feedback.alert.title",
+            value: "Thanks for your feedback",
+            comment: "Alert users are shown when submtiting their feedback."
+        )
+
+        static let identityAlertDescription = NSLocalizedString(
+            "submit.feedback.alert.description",
+            value: "You can optionally include your email and username to help us understand your experience.",
+            comment: "Alert users are shown when submtiting their feedback."
+        )
+
+        static let identityAlertSubmit = NSLocalizedString(
+            "submit.feedback.alert.submit",
+            value: "Done",
+            comment: "Alert submit option for users to accept sharing their email and name when submitting feedback."
+        )
+
+        static let identityAlertEmptyEmail = NSLocalizedString(
+            "submit.feedback.alert.empty.email",
+            value: "no email entered",
+            comment: "Label we show on an email input field"
+        )
+
+        static let identityAlertEmptyName = NSLocalizedString(
+            "submit.feedback.alert.empty.username",
+            value: "no username entered",
+            comment: "Label we show on an name input field"
         )
     }
 }

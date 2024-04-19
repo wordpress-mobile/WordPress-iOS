@@ -30,7 +30,6 @@ enum PeriodQuery {
         let period: StatsPeriodUnit
         let chartBarsUnit: StatsPeriodUnit
         let chartBarsLimit: Int
-        let chartTotalsLimit: Int
     }
 
     case allCachedPeriodData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
@@ -282,7 +281,7 @@ private extension StatsPeriodStore {
         switch query {
         case .allCachedPeriodData(let date, let period, let unit):
             loadFromCache(date: date, period: period, unit: unit)
-        case .timeIntervalsSummary(let date, let period):
+        case .timeIntervalsSummary:
             if shouldFetchTimeIntervalsSummary() {
                 fetchTimeIntervalsSummary(date: query.date, period: query.period)
             }
@@ -543,24 +542,6 @@ private extension StatsPeriodStore {
         guard let service = statsRemote() else {
             return
         }
-
-        // Backend doesn't accept a future date when fetching totals in some cases
-        // https://github.com/Automattic/jetpack/issues/36117
-        let totalsOperationDate = min(params.date, StatsDataHelper.currentDateForSite())
-
-        let totalsOperation = PeriodOperation(service: service, for: params.period, unit: params.period, date: totalsOperationDate, limit: params.chartTotalsLimit) { [weak self] (totalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogError("Stats Traffic: Error fetching totals summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats Traffic: Finished fetching total summary.")
-
-            DispatchQueue.main.async {
-                self?.receivedTotalsSummary(totalsSummary, error)
-                self?.storeDataInCache()
-            }
-        }
-        operationQueue.addOperation(totalsOperation)
 
         let chartOperation = PeriodOperation(service: service, for: params.period, unit: params.chartBarsUnit, date: params.date, limit: params.chartBarsLimit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {

@@ -45,9 +45,12 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v24.6-whats-new"
+msgctxt "v24.7-whats-new"
 msgid ""
-"We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.\n"
+"Release notes loading…\n"
+"Release notes loading…\n"
+"Release notes loading…\n"
+"(Just kidding, no new updates. See you in two weeks!)\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

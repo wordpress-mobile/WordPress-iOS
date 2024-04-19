@@ -984,7 +984,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN a server where the post
         stub(condition: { _ in true }) { request in
             // THEN the app sends a partial update
-            XCTAssertEqual(request.getBodyString(), #"<?xml version="1.0"?><methodCall><methodName>metaWeblog.editPost</methodName><params><param><value><i4>974</i4></value></param><param><value><string>test</string></value></param><param><value><string>test</string></value></param><param><value><struct><member><name>title</name><value><string>title-b</string></value></member></struct></value></param></params></methodCall>"#)
+            XCTAssertEqual(request.getBodyString(), #"<?xml version="1.0"?><methodCall><methodName>wp.editPost</methodName><params><param><value><i4>0</i4></value></param><param><value><string>test</string></value></param><param><value><string>test</string></value></param><param><value><i4>974</i4></value></param><param><value><struct><member><name>post_title</name><value><string>title-b</string></value></member></struct></value></param></params></methodCall>"#)
 
             return HTTPStubsResponse(data: """
             <methodResponse>
