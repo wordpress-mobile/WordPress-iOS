@@ -7,6 +7,7 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case months
     case years
     case traffic
+    case subscribers
 
     // This is public as it is needed by FilterTabBarItem.
     var title: String {
@@ -17,6 +18,7 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
         case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
         case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
+        case .subscribers: return NSLocalizedString("stats.dashboard.tab.subscribers", value: "Subscribers", comment: "Title of Subscribers stats tab.")
         }
     }
 
@@ -34,6 +36,8 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
             self = .insights
         case "traffic":
             self = .traffic
+        case "subscribers":
+            self = .subscribers
         default:
             return nil
         }
@@ -57,8 +61,8 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
 
 fileprivate extension StatsTabType {
     static var displayedTabs: [StatsTabType] {
-        if RemoteFeatureFlag.statsTrafficTab.enabled() {
-            return [.traffic, .insights]
+        if RemoteFeatureFlag.statsTrafficSubscribersTabs.enabled() {
+            return [.traffic, .insights, .subscribers]
         } else {
             return [.insights, .days, .weeks, .months, .years]
         }
@@ -72,6 +76,7 @@ fileprivate extension StatsTabType {
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
         case .traffic:  return nil
+        case .subscribers: return .statsSubscribersAccessed
         }
     }
 }
@@ -99,6 +104,10 @@ class SiteStatsDashboardViewController: UIViewController {
         let viewController = SiteStatsPeriodTableViewController(date: date, period: currentPeriod)
         viewController.bannerView = jetpackBannerView
         return viewController
+    }()
+
+    private lazy var subscribersViewController = {
+        return UIViewController()
     }()
     private var pageViewController: UIPageViewController?
     private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
@@ -275,8 +284,14 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
         case .traffic:
-            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+            if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+        case .subscribers:
+            if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([subscribersViewController],
                                                        direction: .forward,
                                                        animated: false)
             }
