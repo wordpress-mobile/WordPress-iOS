@@ -6,7 +6,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
 
     @Published var period: StatsPeriodUnit {
         didSet {
-            updateDate(with: getCurrentDateForSite())
+            updateDate(getCurrentDateForSite())
             period.track()
         }
     }
@@ -62,8 +62,8 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
             withBlogID: SiteStatsInformation.sharedInstance.siteID)
     }
 
-    func updateDate(with intervalDate: Date) {
-        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
+    func updateDate(_ date: Date) {
+        self.date = StatsPeriodHelper().endDate(from: date, period: period)
     }
 }
 
