@@ -8,6 +8,14 @@
 @implementation PostHelper
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
+    [self updatePost:post withRemotePost:remotePost inContext:managedObjectContext overwrite:NO];
+}
+
++ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+        return;
+    }
+
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.
@@ -246,7 +254,12 @@
 
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        NSPredicate *predicate = nil;
+        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+            predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
+        } else {
+            predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        }
         if ([statuses count] > 0) {
             NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];

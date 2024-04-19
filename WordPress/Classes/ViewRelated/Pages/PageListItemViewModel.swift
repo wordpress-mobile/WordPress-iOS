@@ -7,14 +7,16 @@ final class PageListItemViewModel {
     let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
+    let syncStateViewModel: PostSyncStateViewModel
 
-    init(page: Page) {
+    init(page: Page, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.page = page
         self.title = makeContentAttributedString(for: page)
         self.badgeIcon = makeBadgeIcon(for: page)
-        self.badges = makeBadgesString(for: page)
+        self.badges = makeBadgesString(for: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
+        self.syncStateViewModel = PostSyncStateViewModel(post: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
     }
 }
 
@@ -37,7 +39,7 @@ private func makeBadgeIcon(for page: Page) -> UIImage? {
     return nil
 }
 
-private func makeBadgesString(for page: Page) -> NSAttributedString {
+private func makeBadgesString(for page: Page, isSyncPublishingEnabled: Bool) -> NSAttributedString {
     var badges: [String] = []
     var colors: [Int: UIColor] = [:]
     if page.isSiteHomepage {
@@ -57,7 +59,7 @@ private func makeBadgesString(for page: Page) -> NSAttributedString {
     if page.hasPendingReviewState {
         badges.append(Strings.badgePendingReview)
     }
-    if page.hasLocalChanges() {
+    if !isSyncPublishingEnabled && page.hasLocalChanges() {
         badges.append(Strings.badgeLocalChanges)
     }
 

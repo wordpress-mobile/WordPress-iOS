@@ -16,6 +16,7 @@ class EditPostViewController: UIViewController {
     /// the entry point for the editor
     var entryPoint: PostEditorEntryPoint = .unknown
 
+    /// - warning: deprecated (kahu-offline-mode)
     private let loadAutosaveRevision: Bool
 
     @objc fileprivate(set) var post: Post?
@@ -26,6 +27,8 @@ class EditPostViewController: UIViewController {
 
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
     @objc var afterDismiss: (() -> Void)?
+
+    private var originalPostID: NSManagedObjectID?
 
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
@@ -69,6 +72,7 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
+        self.originalPostID = post?.original().objectID
         self.loadAutosaveRevision = loadAutosaveRevision
         if let post = post {
             if !post.originalIsDraft() {
@@ -84,6 +88,10 @@ class EditPostViewController: UIViewController {
         modalTransitionStyle = .coverVertical
         restorationIdentifier = RestorationKey.viewController.rawValue
         restorationClass = EditPostViewController.self
+
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -118,6 +126,15 @@ class EditPostViewController: UIViewController {
             newPost.prepareForPrompt(prompt)
             post = newPost
             return newPost
+        }
+    }
+
+    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
+            closeEditor()
         }
     }
 
@@ -228,7 +245,7 @@ extension EditPostViewController: UIViewControllerRestoration {
                 return nil
         }
 
-        return EditPostViewController(post: reloadedPost)
+        return EditPostViewController(post: reloadedPost.latest() as! Post)
     }
 
     override func encodeRestorableState(with coder: NSCoder) {

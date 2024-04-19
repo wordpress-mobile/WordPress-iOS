@@ -71,7 +71,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
-    private let loggingStack = WPLoggingStack()
+    private let loggingStack = WPLoggingStack.shared
 
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
@@ -328,6 +328,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             self?.uploadsManager.resume()
         }
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            PostCoordinator.shared.initializeSync()
+        }
+
         setupWordPressExtensions()
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
@@ -429,14 +433,16 @@ extension WordPressAppDelegate {
                 return
             }
 
-            let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
-            let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
+            DispatchQueue.main.async {
+                let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
+                let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
 
-            DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-            let newValue = reachability.isReachable()
-            self?.connectionAvailable = newValue
+                DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
+                let newValue = reachability.isReachable()
+                self?.connectionAvailable = newValue
 
-            NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
+                NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
+            }
         }
 
         internetReachability?.reachableBlock = reachabilityBlock

@@ -1,7 +1,12 @@
 import Foundation
 import UIKit
 
-final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
+protocol AbstractPostListCell {
+    /// A post displayed by the cell.
+    var post: AbstractPost? { get }
+}
+
+final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
     var isEnabled = true
 
     // MARK: - Views
@@ -26,6 +31,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
     // MARK: - Properties
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+    private var viewModel: PostListItemViewModel?
 
     // MARK: - PostSearchResultCell
 
@@ -33,6 +39,10 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         get { contentLabel.attributedText }
         set { contentLabel.attributedText = newValue }
     }
+
+    // MARK: AbstractPostListCell
+
+    var post: AbstractPost? { viewModel?.post }
 
     // MARK: - Initializers
 
@@ -51,6 +61,7 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         super.prepareForReuse()
 
         imageLoader.prepareForReuse()
+        viewModel = nil
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
@@ -69,9 +80,18 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
 
-        contentView.isUserInteractionEnabled = viewModel.isEnabled
-
         accessibilityLabel = viewModel.accessibilityLabel
+
+        configure(with: viewModel.syncStateViewModel)
+        self.viewModel = viewModel
+    }
+
+    private func configure(with viewModel: PostSyncStateViewModel) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        contentView.isUserInteractionEnabled = viewModel.isEditable
+        headerView.configure(with: viewModel)
     }
 
     // MARK: - Setup

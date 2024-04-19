@@ -126,7 +126,8 @@ private extension ContentMigrationCoordinator {
                                              NSNumber(value: AbstractPostRemoteStatus.pushing.rawValue),
                                              NSNumber(value: AbstractPostRemoteStatus.failed.rawValue),
                                              NSNumber(value: AbstractPostRemoteStatus.local.rawValue),
-                                             NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue))
+                                             NSNumber(value: AbstractPostRemoteStatus.pushingMedia.rawValue),
+                                             NSNumber(value: AbstractPostRemoteStatus.syncNeeded.rawValue))
         guard let count = try? coreDataStack.mainContext.count(for: fetchRequest) else {
             return false
         }

@@ -3,7 +3,6 @@ import WordPressFlux
 import WordPressUI
 
 protocol PublishingEditor where Self: UIViewController {
-    //TODO: Add publishing things
     var post: AbstractPost { get set }
 
     var isUploadingMedia: Bool { get }
@@ -47,6 +46,7 @@ protocol PublishingEditor where Self: UIViewController {
     /// Debouncer used to save the post locally with a delay
     var debouncer: Debouncer { get }
 
+    /// - warning: deprecated (kahu-offline-mode)
     var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
 
     func emitPostSaveEvent()
@@ -75,7 +75,8 @@ extension PublishingEditor {
                 return
             }
 
-            if self.post.hasLocalChanges() {
+            let hasChanges = RemoteFeatureFlag.syncPublishing.enabled() ? self.post.hasChanges : self.post.hasLocalChanges()
+            if hasChanges {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
@@ -84,15 +85,116 @@ extension PublishingEditor {
         }
     }
 
-    func handlePublishButtonTap() {
+    func handlePrimaryActionButtonTap() {
         let action = self.postEditorStateContext.action
 
-        publishPost(
-            action: action,
-            dismissWhenDone: action.dismissesEditor,
-            analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            publishPost(
+                action: action,
+                dismissWhenDone: action.dismissesEditor,
+                analyticsStat: self.postEditorStateContext.publishActionAnalyticsStat)
+            return
+        }
+
+        performEditorAction(action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    /// - note: deprecated (kahu-offline-mode)
+    func handleSecondaryActionButtonTap() {
+        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
+            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
+            let error = NSError(domain: EditorError.errorDomain, code: EditorError.expectedSecondaryAction.rawValue, userInfo: nil)
+            WordPressAppDelegate.crashLogging?.logError(error)
+            return
+        }
+
+        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
+
+        let publishPostClosure = { [unowned self] in
+            publishPost(action: action, dismissWhenDone: action.dismissesEditor, analyticsStat: secondaryStat)
+        }
+
+        if presentedViewController != nil {
+            dismiss(animated: true, completion: publishPostClosure)
+        } else {
+            publishPostClosure()
+        }
+    }
+
+    func performEditorAction(_ action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
+        if action == .publish {
+            WPAnalytics.track(.editorPostPublishTap)
+        }
+
+        mapUIContentToPostAndSave(immediate: true)
+
+        switch action {
+        case .schedule, .publish:
+            showPublishingConfirmation(for: action, analyticsStat: analyticsStat)
+        case .update:
+            guard !isUploadingMedia else {
+                return displayMediaIsUploadingAlert()
+            }
+            performUpdateAction()
+        case .submitForReview:
+            guard !isUploadingMedia else {
+                return displayMediaIsUploadingAlert()
+            }
+            var changes = RemotePostUpdateParameters()
+            changes.status = Post.Status.pending.rawValue
+            performUpdateAction(changes: changes)
+        case .save, .saveAsDraft, .continueFromHomepageEditing:
+            wpAssertionFailure("No longer used and supported")
+            break
+        }
+    }
+
+    private func showPublishingConfirmation(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
+        displayPublishConfirmationAlert(for: action) { [weak self] result in
+            guard let self else { return }
+            switch result {
+            case .confirmed:
+                wpAssertionFailure("Not used when .syncPublishing is enabled")
+                break
+            case .published:
+                self.emitPostSaveEvent()
+                if let analyticsStat {
+                    self.trackPostSave(stat: analyticsStat)
+                }
+                self.editorSession.end(outcome: action.analyticsEndOutcome)
+
+                let presentBloggingReminders = JetpackNotificationMigrationService.shared.shouldPresentNotifications()
+                self.dismissOrPopView(presentBloggingReminders: presentBloggingReminders)
+            case .cancelled:
+                self.publishingDismissed()
+                WPAnalytics.track(.editorPostPublishDismissed)
+            }
+        }
+    }
+
+    private func performSaveDraftAction() {
+        PostCoordinator.shared.setNeedsSync(for: post)
+        dismissOrPopView()
+    }
+
+    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil) {
+        SVProgressHUD.setDefaultMaskType(.clear)
+        SVProgressHUD.show()
+        postEditorStateContext.updated(isBeingPublished: true)
+
+        Task { @MainActor in
+            do {
+                let post = try await PostCoordinator.shared._save(post, changes: changes)
+                self.post = post
+                self.createRevisionOfPost()
+            } catch {
+                postEditorStateContext.updated(isBeingPublished: false)
+            }
+            await SVProgressHUD.dismiss()
+        }
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
     func publishPost(
         action: PostEditorAction,
         dismissWhenDone: Bool,
@@ -223,52 +325,8 @@ extension PublishingEditor {
         present(alertController, animated: true, completion: nil)
     }
 
-    /// If the user is publishing a post, displays the Prepublishing Nudges
-    /// Otherwise, shows a confirmation Action Sheet.
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
     fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        if let post = post as? Post {
-            displayPrepublishingNudges(post: post, completion: completion)
-        } else {
-            displayPublishConfirmationAlertForPage(for: action, completion: completion)
-        }
-    }
-
-    /// Displays the Prepublishing Nudges Bottom Sheet
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
-    fileprivate func displayPrepublishingNudges(post: Post, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        // End editing to avoid issues with accessibility
-        view.endEditing(true)
-
-        let viewController = PrepublishingViewController(post: post, identifiers: prepublishingIdentifiers, completion: completion)
-        viewController.presentAsSheet(from: topmostPresentedViewController)
-    }
-
-    /// Displays a publish confirmation alert with two options: "Keep Editing" and String for Action.
-    ///
-    /// - Parameters:
-    ///     - action: Publishing action being performed
-    ///
-    fileprivate func displayPublishConfirmationAlertForPage(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        let title = action.publishingActionQuestionLabel
-        let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Button shown when the author is asked for publishing confirmation.")
-        let publishTitle = action.publishActionLabel
-        let style: UIAlertController.Style = UIDevice.isPad() ? .alert : .actionSheet
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: style)
-
-        alertController.addCancelActionWithTitle(keepEditingTitle) { _ in
-            completion(.cancelled)
-        }
-        alertController.addDefaultActionWithTitle(publishTitle) { _ in
-            completion(.confirmed)
-        }
-        present(alertController, animated: true, completion: nil)
+        PrepublishingViewController.show(for: post, action: action, from: self, completion: completion)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
@@ -304,6 +362,28 @@ extension PublishingEditor {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _cancelEditing()
+        }
+
+        guard !post.changes.isEmpty else {
+            return discardAndDismiss()
+        }
+
+        if post.original().isStatus(in: [.draft, .pending]) {
+            showCloseDraftConfirmationAlert()
+        } else {
+            showClosePublishedPostConfirmationAlert()
+        }
+    }
+
+    private func discardAndDismiss() {
+        editorSession.end(outcome: .cancel)
+        discardUnsavedChangesAndUpdateGUI()
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    func _cancelEditing() {
         /// If a post is marked to be auto uploaded and can be saved, it means that the changes
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
@@ -323,6 +403,7 @@ extension PublishingEditor {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     private func resumeSaving() {
         post.shouldAttemptAutoUpload = false
         let action: PostEditorAction = post.status == .draft ? .update : .publish
@@ -335,9 +416,31 @@ extension PublishingEditor {
         dismissOrPopView(didSave: !postDeleted)
     }
 
-    // Returns true when the post is deleted
     @discardableResult
     func discardChanges() -> Bool {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _discardChanges()
+        }
+
+        guard let context = post.managedObjectContext else {
+            wpAssertionFailure("Missing managedObjectContext")
+            return true
+        }
+
+        WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
+
+        // TODO: this is incorrect because there might still be media in the previous revision
+        cancelUploadOfAllMedia(for: post)
+
+        AbstractPost.deleteLatestRevision(post, in: context)
+        ContextManager.shared.saveContextAndWait(context)
+        return true
+    }
+
+    // Returns true when the post is deleted
+    @discardableResult
+    func _discardChanges() -> Bool {
+
         var postDeleted = false
         guard let managedObjectContext = post.managedObjectContext, let originalPost = post.original else {
             return postDeleted
@@ -382,6 +485,33 @@ extension PublishingEditor {
         return postDeleted
     }
 
+    private func showCloseDraftConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.accessibilityIdentifier = "post-has-changes-alert"
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        let discardTitle = post.original().isNewDraft ? Strings.closeConfirmationAlertDelete : Strings.closeConfirmationAlertDiscardChanges
+        alert.addDestructiveActionWithTitle(discardTitle) { _ in
+            self.discardAndDismiss()
+        }
+        alert.addActionWithTitle(Strings.closeConfirmationAlertSaveDraft, style: .default) { _ in
+            self.performSaveDraftAction()
+        }
+        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func showClosePublishedPostConfirmationAlert() {
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.view.accessibilityIdentifier = "post-has-changes-alert"
+        alert.addCancelActionWithTitle(Strings.closeConfirmationAlertCancel)
+        alert.addDestructiveActionWithTitle(Strings.closeConfirmationAlertDiscardChanges) { _ in
+            self.discardAndDismiss()
+        }
+        alert.popoverPresentationController?.barButtonItem = alertBarButtonItem
+        present(alert, animated: true, completion: nil)
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
     func showPostHasChangesAlert() {
         let title = NSLocalizedString("You have unsaved changes.", comment: "Title of message with options that shown when there are unsaved changes and the author is trying to move away from the post.")
         let cancelTitle = NSLocalizedString("Keep Editing", comment: "Button shown if there are unsaved changes and the author is trying to move away from the post.")
@@ -469,8 +599,7 @@ extension PublishingEditor {
 
         consolidateChangesIfPostIsNew()
 
-        PostCoordinator.shared.save(post,
-                                    defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
+        PostCoordinator.shared.save(post, defaultFailureNotice: uploadFailureNotice(action: action)) { [weak self] result in
             guard let self = self else {
                 return
             }
@@ -571,8 +700,35 @@ extension PublishingEditor {
         debouncer.call(immediate: immediate)
     }
 
-    // TODO: Rip this out and put it into the PostService
     func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        }
+        guard let managedObjectContext = post.managedObjectContext else {
+            return wpAssertionFailure("managedObjectContext is missing")
+        }
+
+        wpAssert(post.latest() == post, "Must be opened with the latest verison of the post")
+
+        if !post.isUnsavedRevision {
+            DDLogDebug("Creating new revision")
+            post = post._createRevision()
+        }
+
+        if loadAutosaveRevision {
+            DDLogDebug("Loading autosave")
+            post.postTitle = post.autosaveTitle
+            post.mt_excerpt = post.autosaveExcerpt
+            post.content = post.autosaveContent
+            post = post // Update the UI
+        }
+
+        ContextManager.sharedInstance().save(managedObjectContext)
+    }
+
+    // TODO: Rip this out and put it into the PostService
+    // - note: Deprecated (kahu-offline-mode)
+    func _createRevisionOfPost(loadAutosaveRevision: Bool = false) {
 
         if post.isLocalRevision, post.original?.postTitle == nil, post.original?.content == nil {
             // Editing a locally made revision has bit of weirdness in how autosave and
@@ -632,8 +788,21 @@ extension PublishingEditor {
     }
 }
 
+private enum EditorError: Int {
+    case expectedSecondaryAction = 1
+
+    static let errorDomain = "PostEditor.errorDomain"
+}
+
 struct PostEditorDebouncerConstants {
-    static let autoSavingDelay = Double(0.5)
+    static let autoSavingDelay =  RemoteFeatureFlag.syncPublishing.enabled() ? Double(7.0) : Double(0.5)
+}
+
+private enum Strings {
+    static let closeConfirmationAlertCancel = NSLocalizedString("postEditor.closeConfirmationAlert.keepEditing", value: "Keep Editing", comment: "Button to keep the changes in an alert confirming discaring changes")
+    static let closeConfirmationAlertDelete = NSLocalizedString("postEditor.closeConfirmationAlert.discardDraft", value: "Discard Draft", comment: "Button in an alert confirming discaring a new draft")
+    static let closeConfirmationAlertDiscardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
+    static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
 }
 
 private struct MediaUploadingAlert {

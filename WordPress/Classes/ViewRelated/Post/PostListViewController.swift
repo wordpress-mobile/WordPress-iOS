@@ -70,8 +70,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -103,23 +101,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
-        }
-    }
-
-    // MARK: - Notifications
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post)
-        }
-        if !updatedIndexPaths.isEmpty {
-            tableView.beginUpdates()
-            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
-            tableView.endUpdates()
         }
     }
 
@@ -214,7 +195,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             // No editing posts that are trashed.
             return
         }
-
         WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }
@@ -308,6 +288,13 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return trashPost(post, completion: completion)
+        }
+        return super._trash(post, completion: completion)
+    }
+
+    private func trashPost(_ post: AbstractPost, completion: @escaping () -> Void) {
         if post.status == .draft ||
             post.status == .scheduled {
             deletePost(post)

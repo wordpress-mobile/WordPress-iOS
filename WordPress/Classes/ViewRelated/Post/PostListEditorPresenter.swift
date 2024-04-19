@@ -15,7 +15,29 @@ protocol EditorAnalyticsProperties: AnyObject {
 struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _handle(post: post, in: postListViewController)
+        }
 
+        // Return early if a post is still uploading when the editor's requested.
+        guard !PostCoordinator.shared.isUpdating(post) else {
+            return // It's clear from the UI that the cells are not interactive
+        }
+
+        // No editing posts until the conflict has been resolved.
+        if let error = PostCoordinator.shared.syncError(for: post.original()),
+           let saveError = error as? PostRepository.PostSaveError,
+           case .conflict(let latest) = saveError {
+            let post = post.original()
+            PostCoordinator.shared.showResolveConflictView(post: post, remoteRevision: latest, source: .postList)
+            return
+        }
+
+        openEditor(with: post, loadAutosaveRevision: false, in: postListViewController, entryPoint: entryPoint)
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private static func _handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
         // Return early if a post is still uploading when the editor's requested.
         guard !PostCoordinator.shared.isUploading(post: post) else {
             presentAlertForPostBeingUploaded()
