@@ -87,6 +87,10 @@ class SiteStatsPeriodTableViewControllerDeprecated: UITableViewController, Story
 }
 
 extension SiteStatsPeriodTableViewControllerDeprecated: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {
+        viewModel?.currentTabIndex = tabIndex
+    }
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         if let intervalDate = viewModel?.chartDate(for: entryIndex) {
             tableHeaderView?.updateDate(with: intervalDate)

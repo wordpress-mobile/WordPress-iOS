@@ -93,6 +93,15 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     var accessibilityValue: String? {
         return tabDataStub != nil ? "" : "\(tabData)"
     }
+
+    // MARK: - Equatable
+
+    static func == (lhs: OverviewTabData, rhs: OverviewTabData) -> Bool {
+        return lhs.tabTitle == rhs.tabTitle &&
+            lhs.tabData == rhs.tabData &&
+            lhs.difference == rhs.difference &&
+            lhs.differencePercent == rhs.differencePercent
+    }
 }
 
 class OverviewCell: UITableViewCell, NibLoadable {
@@ -131,7 +140,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
                    barChartStyling: [BarChartStyling] = [],
                    period: StatsPeriodUnit? = nil,
                    statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil,
-                   barChartHighlightIndex: Int? = nil) {
+                   barChartHighlightIndex: Int? = nil,
+                   tabIndex: Int) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -139,9 +149,9 @@ class OverviewCell: UITableViewCell, NibLoadable {
         self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        setupFilterBar(selectedIndex: tabIndex)
         configureLabelsStackView()
         configureChartView()
-        setupFilterBar()
         updateLabels()
     }
 
@@ -159,7 +169,7 @@ private extension OverviewCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    func setupFilterBar() {
+    func setupFilterBar(selectedIndex: Int) {
 
         // If there is only one tab data, this is being displayed on the
         // Post Stats view, which does not have a filterTabBar.
@@ -180,6 +190,7 @@ private extension OverviewCell {
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
         filterTabBar.dividerColor = .clear
+        filterTabBar.setSelectedIndex(selectedIndex, animated: false)
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -189,6 +200,7 @@ private extension OverviewCell {
 
         configureChartView()
         updateLabels()
+        statsBarChartViewDelegate?.statsBarChartTabSelected(filterTabBar.selectedIndex)
     }
 
     func updateLabels() {
