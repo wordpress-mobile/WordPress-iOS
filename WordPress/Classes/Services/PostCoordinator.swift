@@ -935,9 +935,6 @@ class PostCoordinator: NSObject {
             let gutenbergCoverPostUploadProcessor = GutenbergCoverUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergCoverPostUploadProcessor)
 
-            let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
-
         } else if media.mediaType == .video {
             let gutenbergVideoPostUploadProcessor = GutenbergVideoUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
             gutenbergProcessors.append(gutenbergVideoPostUploadProcessor)
@@ -947,9 +944,6 @@ class PostCoordinator: NSObject {
 
             let videoPostUploadProcessor = VideoUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, videoPressID: media.videopressGUID)
             aztecProcessors.append(videoPostUploadProcessor)
-
-            let gutenbergMediaFilesUploadProcessor = GutenbergMediaFilesUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-            gutenbergProcessors.append(gutenbergMediaFilesUploadProcessor)
 
             if let videoPressGUID = media.videopressGUID {
                 let gutenbergVideoPressUploadProcessor = GutenbergVideoPressUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, videoPressGUID: videoPressGUID)
