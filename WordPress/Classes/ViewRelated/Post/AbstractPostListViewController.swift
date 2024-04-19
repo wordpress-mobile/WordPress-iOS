@@ -84,6 +84,8 @@ class AbstractPostListViewController: UIViewController,
 
     private var atLeastSyncedOnce = false
 
+    private var pendingChanges: [(UITableView) -> Void] = []
+
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 
@@ -376,36 +378,39 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - NSFetchedResultsControllerDelegate
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        tableView.beginUpdates()
+        pendingChanges = []
     }
 
     func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
         switch type {
         case .insert:
             guard let newIndexPath else { return }
-            tableView.insertRows(at: [newIndexPath], with: .none)
+            pendingChanges.append { $0.insertRows(at: [newIndexPath], with: .none) }
         case .delete:
             guard let indexPath else { return }
-            tableView.deleteRows(at: [indexPath], with: .fade)
+            pendingChanges.append { $0.deleteRows(at: [indexPath], with: .fade) }
         case .update:
             guard let indexPath else { return }
-            tableView.reloadRows(at: [indexPath], with: .none)
+            pendingChanges.append { $0.reloadRows(at: [indexPath], with: .none) }
         case .move:
             guard let indexPath, let newIndexPath else { return }
-            tableView.moveRow(at: indexPath, to: newIndexPath)
+            pendingChanges.append { $0.moveRow(at: indexPath, to: newIndexPath) }
         @unknown default:
             break
         }
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        do { // Some defensive code, just in case
-            try WPException.objcTry {
-                self.tableView.endUpdates()
-            }
-        } catch {
+        // Defensive code to make sure simple operation like moving to trash
+        // are animated, but more complex ones simply update the whole list
+        // without a risk of creating an invalid set of changes.
+        if pendingChanges.count == 1 {
+            pendingChanges[0](tableView)
+        } else {
             tableView.reloadData()
         }
+        pendingChanges = []
+
         refreshResults()
     }
 
