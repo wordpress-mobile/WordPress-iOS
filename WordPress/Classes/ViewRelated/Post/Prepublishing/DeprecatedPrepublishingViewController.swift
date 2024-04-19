@@ -423,18 +423,6 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
 
     // MARK: - Publish Button
 
-    private func updatePublishButtonState() {
-        if let state = PublishButtonState.uploadingState(for: post) {
-            publishButtonViewModel.state = state
-        } else {
-            if case .loading = publishButtonViewModel.state {
-                // Do nothing
-            } else {
-                publishButtonViewModel.state = .default
-            }
-        }
-    }
-
     private func updatePublishButtonLabel() {
         publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
     }

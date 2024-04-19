@@ -44,6 +44,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private weak var mediaPollingTimer: Timer?
     private let isStandalone: Bool
+    private let uploadsViewModel: PostMediaUploadViewModel
 
     private var cancellables: [AnyCancellable] = []
 
@@ -58,6 +59,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         self.post = isStandalone ? post._createRevision() : post
         self.isStandalone = isStandalone
         self.viewModel = PrepublishingViewModel(post: self.post)
+        self.uploadsViewModel = PostMediaUploadViewModel(post: post)
         self.completion = completion
         self.coreDataStack = coreDataStack
         self.persistentStore = persistentStore
@@ -422,7 +424,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Publish Button
 
     private func updatePublishButtonState() {
-        if let state = PublishButtonState.uploadingState(for: post) {
+        if let state = makeUploadingState() {
             publishButtonViewModel.state = state
         } else {
             if case .loading = publishButtonViewModel.state {
@@ -431,6 +433,29 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
                 publishButtonViewModel.state = .default
             }
         }
+    }
+
+    /// Returns the state of the button based on the current upload progress
+    /// for the given post.
+    private func makeUploadingState() -> PublishButtonState? {
+        let viewModel = uploadsViewModel
+        guard !viewModel.isCompleted else {
+            return nil
+        }
+        let progress = PublishButtonState.Progress(completed: Int64(Double(viewModel.totalFileSize) * viewModel.fractionCompleted), total: viewModel.totalFileSize)
+        return .uploading(title: Strings.uploadingMedia + ": \(viewModel.completedUploadsCount) / \(viewModel.uploads.count)", progress: progress, onInfoTapped: { [weak self] in
+            self?.buttonShowUploadInfoTapped()
+        })
+    }
+
+    private func buttonShowUploadInfoTapped() {
+        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel) { [weak self] in
+            self?.dismiss(animated: true, completion: nil)
+        }
+        let host = UIHostingController(rootView: view)
+        let navigation = UINavigationController(rootViewController: host)
+        navigation.navigationBar.isTranslucent = true // Reset to default
+        present(navigation, animated: true)
     }
 
     private func updatePublishButtonLabel() {
@@ -563,4 +588,5 @@ private enum Strings {
     static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
     static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
+    static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
 }
