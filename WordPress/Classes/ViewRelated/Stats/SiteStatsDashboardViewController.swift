@@ -89,8 +89,34 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
-    private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
-    private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
+    private var pageViewController: UIPageViewController?
+    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
+
+    @objc lazy var manageInsightsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+                image: .gridicon(.cog),
+                style: .plain,
+                target: self,
+                action: #selector(manageInsightsButtonTapped))
+        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
+    // MARK: - Stats View Controllers
+
+    private lazy var insightsTableViewController = {
+        let viewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
+        viewController.tableStyle = .insetGrouped
+        viewController.bannerView = jetpackBannerView
+        return viewController
+    }()
+
+    private lazy var periodTableViewControllerDeprecated = {
+        let viewController = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
+        viewController.bannerView = jetpackBannerView
+        return viewController
+    }()
+
     private lazy var trafficTableViewController = {
         let date: Date
         if let selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
@@ -110,26 +136,12 @@ class SiteStatsDashboardViewController: UIViewController {
         let viewModel = SiteStatsSubscribersViewModel()
         return SiteStatsSubscribersViewController(viewModel: viewModel)
     }()
-    private var pageViewController: UIPageViewController?
-    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
-
-    @objc lazy var manageInsightsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-                image: .gridicon(.cog),
-                style: .plain,
-                target: self,
-                action: #selector(manageInsightsButtonTapped))
-        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
-        return button
-    }()
 
     // MARK: - View
 
     override func viewDidLoad() {
         super.viewDidLoad()
         configureJetpackBanner()
-        configureInsightsTableView()
-        configurePeriodTableViewControllerDeprecated()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
@@ -141,15 +153,6 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
-    }
-
-    func configureInsightsTableView() {
-        insightsTableViewController.tableStyle = .insetGrouped
-        insightsTableViewController.bannerView = jetpackBannerView
-    }
-
-    private func configurePeriodTableViewControllerDeprecated() {
-        periodTableViewControllerDeprecated.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
