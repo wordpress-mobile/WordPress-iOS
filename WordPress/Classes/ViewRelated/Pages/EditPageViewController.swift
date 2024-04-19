@@ -33,8 +33,6 @@ class EditPageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .coverVertical
-        restorationIdentifier = RestorationKey.viewController.rawValue
-        restorationClass = EditPageViewController.self
     }
 
     required init?(coder: NSCoder) {
@@ -120,37 +118,4 @@ class EditPageViewController: UIViewController {
         }
     }
 
-}
-
-extension EditPageViewController: UIViewControllerRestoration {
-    enum RestorationKey: String {
-        case viewController = "EditPageViewControllerRestorationID"
-        case page = "EditPageViewControllerPageRestorationID"
-    }
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let pageURL = coder.decodeObject(forKey: RestorationKey.page.rawValue) as? URL,
-            let pageID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: pageURL),
-            let page = try? context.existingObject(with: pageID),
-            let reloadedPage = page as? Page
-            else {
-                return nil
-        }
-
-        return EditPageViewController(page: reloadedPage)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        if let page = self.page {
-            coder.encode(page.objectID.uriRepresentation(), forKey: RestorationKey.page.rawValue)
-        }
-    }
 }

@@ -4,9 +4,7 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-final class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-    static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
-
+final class PostListViewController: AbstractPostListViewController, InteractivePostViewDelegate {
     /// If set, when the post list appear it will show the tab for this status
     private var initialFilterWithPostStatus: BasePost.Status?
 
@@ -15,7 +13,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
         let vc = PostListViewController()
         vc.blog = blog
-        vc.restorationClass = self
         return vc
     }
 
@@ -26,33 +23,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.blogDetailNavigation)
-    }
-
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: postsViewControllerRestorationKey) as? String,
-              let objectURL = URL(string: blogID),
-              let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-              let restoredBlog = (try? context.existingObject(with: objectID)) as? Blog else {
-
-            return nil
-        }
-
-        return self.controllerWithBlog(restoredBlog)
-    }
-
-    // MARK: - UIStateRestoring
-
-    override func encodeRestorableState(with coder: NSCoder) {
-
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-
-        coder.encode(objectString, forKey: type(of: self).postsViewControllerRestorationKey)
-
-        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController

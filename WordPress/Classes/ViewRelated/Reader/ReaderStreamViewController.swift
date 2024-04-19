@@ -19,10 +19,7 @@ import AutomatticTracks
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc class ReaderStreamViewController: UIViewController, UIViewControllerRestoration, ReaderSiteBlockingControllerDelegate {
-    @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
-    @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
-
+@objc class ReaderStreamViewController: UIViewController, ReaderSiteBlockingControllerDelegate {
     // MARK: - Micro Controllers
 
     /// Object responsible for encapsulating and facililating the site blocking logic.
@@ -280,31 +277,6 @@ import AutomatticTracks
         return controller
     }
 
-    // MARK: - State Restoration
-
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObject(forKey: restorableTopicPathKey) as? String else {
-            return nil
-        }
-
-        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) else {
-            return nil
-        }
-
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
-        controller.readerTopic = topic
-        return controller
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = readerTopic {
-            coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
-        }
-        super.encodeRestorableState(with: coder)
-    }
-
     // MARK: - LifeCycle Methods
 
     deinit {
@@ -317,9 +289,6 @@ import AutomatticTracks
     }
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationIdentifier = type(of: self).restorationClassIdentifier
-        restorationClass = type(of: self)
-
         return super.awakeAfter(using: aDecoder)
     }
 

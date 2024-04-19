@@ -1294,27 +1294,6 @@ extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     }
 }
 
-// MARK: - State Restoration
-
-extension ReaderDetailViewController: UIViewControllerRestoration {
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
-    }
-
-    open override func encodeRestorableState(with coder: NSCoder) {
-        coordinator?.encodeRestorableState(with: coder)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationClass = type(of: self)
-
-        return super.awakeAfter(using: aDecoder)
-    }
-}
-
 // MARK: - Strings
 extension ReaderDetailViewController {
     private struct Strings {

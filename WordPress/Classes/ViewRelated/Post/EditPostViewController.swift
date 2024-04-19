@@ -86,8 +86,6 @@ class EditPostViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
-        restorationIdentifier = RestorationKey.viewController.rawValue
-        restorationClass = EditPostViewController.self
 
         if RemoteFeatureFlag.syncPublishing.enabled() {
             NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
@@ -222,36 +220,49 @@ class EditPostViewController: UIViewController {
 }
 
 // MARK: - State Restoration
-//
-extension EditPostViewController: UIViewControllerRestoration {
-    enum RestorationKey: String {
-        case viewController = "EditPostViewControllerRestorationID"
-        case post = "EditPostViewControllerPostRestorationID"
-    }
 
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
+extension EditPostViewController {
+    static func restore() -> UIViewController? {
+        wpAssert(Thread.isMainThread)
+
+        guard let value = UserDefaults.standard.string(forKey: restorationBlogURLKey),
+              let postURL = URL(string: value) else {
+            return nil
+        }
+        UserDefaults.standard.removeObject(forKey: restorationBlogURLKey)
+        restorationDate = Date()
+
+        let context = ContextManager.sharedInstance().mainContext
+        guard let postID = context.persistentStoreCoordinator?.safeManagedObjectID(forURIRepresentation: postURL),
+              let object = try? context.existingObject(with: postID),
+              let post = (object as? AbstractPost)?.latest() else {
             return nil
         }
 
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let postURL = coder.decodeObject(forKey: RestorationKey.post.rawValue) as? URL,
-            let postID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: postURL),
-            let post = try? context.existingObject(with: postID),
-            let reloadedPost = post as? Post
-            else {
-                return nil
-        }
-
-        return EditPostViewController(post: reloadedPost.latest() as! Post)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        if let post = post {
-            coder.encode(post.objectID.uriRepresentation(), forKey: RestorationKey.post.rawValue)
+        switch post {
+        case let post as Post:
+            return EditPostViewController(post: post)
+        case let page as Page:
+            return EditPageViewController(page: page)
+        default:
+            wpAssertionFailure("unexpected post type", userInfo: [
+                "post_type": type(of: post)
+            ])
+            return nil
         }
     }
+
+    static func encode(post: AbstractPost) {
+        wpAssert(Thread.isMainThread)
+
+        if let restorationDate, Date().timeIntervalSince(restorationDate) < 0.5 {
+            return // Appears to be crashing repeatedly
+        }
+        let postURL = post.original().objectID.uriRepresentation().absoluteString
+        UserDefaults.standard.set(postURL, forKey: restorationBlogURLKey)
+    }
+
+    private static var restorationDate: Date?
+
+    private static let restorationBlogURLKey = "EditPostViewControllerRestorationBlogURLKey"
 }
