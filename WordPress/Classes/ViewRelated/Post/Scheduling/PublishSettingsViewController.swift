@@ -209,6 +209,14 @@ private struct DateAndTimeRow: ImmuTableRow {
 
             if UIDevice.isPad() {
                 let navigation = UINavigationController(rootViewController: viewController)
+
+                if UIAccessibility.isVoiceOverRunning {
+                    let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak navigation] _ in
+                        navigation?.dismiss(animated: true)
+                    }))
+                    viewController.navigationItem.leftBarButtonItem = closeButton
+                }
+
                 navigation.modalPresentationStyle = .popover
                 if let popoverController = navigation.popoverPresentationController {
                     popoverController.sourceView = self?.viewController?.tableView
