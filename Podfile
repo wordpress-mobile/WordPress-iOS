@@ -23,9 +23,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
+  # pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
+  pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: 'a73e2b6a9721fa44356934a768a8c20725fff131'
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
 
