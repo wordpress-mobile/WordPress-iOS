@@ -36,10 +36,8 @@ class StatsTests: XCTestCase {
 
     func testTrafficYearsStatsLoadProperly() throws {
         let yearsStats: [String] = [
-            "Views 9,148",
-            "Visitors 4,216",
-            "Likes 1,351",
-            "Comments 0",
+            "9,148",
+            "+7,933 (653%)",
             "United States, 60",
             "Canada, 44",
             "Germany, 15",
@@ -48,10 +46,21 @@ class StatsTests: XCTestCase {
             "India, 121"
         ]
 
+        let currentYear = Calendar.current.component(.year, from: Date())
+        let yearsChartBars: [String] = [
+            "Views,  \(currentYear): 9148",
+            "Visitors,  \(currentYear): 4216",
+            "Views,  \(currentYear - 1): 1215",
+            "Visitors,  \(currentYear - 1): 632",
+            "Views,  \(currentYear - 2): 788",
+            "Visitors,  \(currentYear - 2): 465"
+        ]
+
         try StatsScreen()
             .switchTo(mode: "traffic")
             .selectByYearPeriod()
             .assertStatsAreLoaded(yearsStats)
+            .assertChartIsLoaded(yearsChartBars)
             .selectVisitorsTab()
     }
 }

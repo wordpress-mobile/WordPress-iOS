@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-04 09:17:19+0000 */
+/* Translation-Revision-Date: 2024-04-16 10:13:54+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ a fost reconectat.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d articole.";
@@ -1639,7 +1636,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1980,8 +1976,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Creează o pagină";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Creează un articol";
 
 /* Button to progress to the next step
@@ -3191,9 +3186,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Ai acces la suport";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Dă-i drumul la treabă și asigură-te că mărești numărul de vizualizări ale articolului tău prin partajarea lui.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Fă cunoștință cu aplicația Jetpack";
 
@@ -3349,9 +3341,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Icon pentru ajutor";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Iată ce a realizat articolul până acum.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Ascunse";
@@ -3680,9 +3669,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Se pare că ai introdus o parolă incorectă. Vrei s-o mai încerci odată?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Au trecut %1$@ de când a fost publicat %2$@.";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Azi trebuie să publici pe %@!";
 
@@ -3903,7 +3889,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Aprecieri";
@@ -6296,9 +6281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Împărtășește Jetpack cu un prieten";
 
-/* Label for action to share post. */
-"Share Post" = "Partajează articolul";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Împărtășește WordPress cu un prieten";
 
@@ -7984,10 +7966,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Vezi mai puțin...";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Vezi mai mult";
@@ -8008,7 +7988,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8709,9 +8688,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Nu ai publicat încă niciun articol";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Nu ai publicat niciun articol până acum. După ce începi să publici, rezumatul ultimului tău articol va apărea aici.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Ai ajuns la un moment de cotitură 🚀";
@@ -9599,8 +9575,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Să adaugi poze sau videouri în articolele tale.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10851,6 +10827,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonamente";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Etichetele tale";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Caută";
 
@@ -10996,11 +10975,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Dezabonează-te la blog";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Candy";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Implicit";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Seara";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -11011,35 +10996,66 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Delicat";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Culori";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Gata";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Fonturi";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Dimensiune";
 
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Aceasta este o funcționalitate nouă, încă în dezvoltare. Pentru a ne ajuta să o îmbunătățim %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "trimite impresii";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "Cititorul este personal, vrem să ai control deplin. Alege stilurile care ți se potrivesc.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Spune-ne părerea ta despre această funcționalitate";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Această funcționalitate este încă în dezvoltare.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "câini";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "vulpe";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "design";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "scriere";
+"reader.preferences.preview.body.text" = "Alegi culorile, fonturile și dimensiunile. După ce ai terminat, previzualizezi aici ce ai selectat și citești articolele în stilul tău.";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "Alege preferințele pentru Cititor";
+"reader.preferences.preview.header" = "Preferințe pentru citire";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "culori";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "fonturi";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "citire";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Exemple de etichete";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Foarte mare";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Foarte mică";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Mare";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normală";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Mică";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Administrează blogurile";
@@ -11112,6 +11128,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Închide";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Preferințe pentru citire";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Am înțeles";
@@ -11411,10 +11430,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 zile anterioare";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "cu *%1$@%2$@ (%3$@%%)* mai mult decât în 7 zile anterioare";
+"stats.insights.label.totalLikes.higherNumber" = "cu *%1$@%2$@ (%3$@)* mai mult decât în 7 zile anterioare";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "cu *%1$@%2$@ (%3$@%%)* mai puțin decât în 7 zile anterioare";
+"stats.insights.label.totalLikes.lowerNumber" = "cu *%1$@%2$@ (%3$@)* mai puțin decât în 7 zile anterioare";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "La fel ca cele din 7 zile anterioare";
@@ -11492,7 +11511,7 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 Cea mai populară oră";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% din vizualizări";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ din vizualizări";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Activitate insuficientă. Revino mai târziu când site-ul va avea mai mulți vizitatori!";
@@ -11502,6 +11521,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ultimul tău articol %1$@ a avut %2$@ apreciere.";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Azi";
@@ -11520,30 +11542,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* The label for the option to show Stats Traffic by day. */
 "stats.traffic.day" = "După zi";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@ %2$@ (%3$@%%)";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@ %2$@";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "Cu %@ mai mult decât în luna trecută\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "Cu %@ mai puțin decât în luna trecută\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "Cu %@ mai mult decât în ultimele 7 zile\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "Cu %@ mai puțin decât în ultimele 7 zile\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "Cu %@ mai mult decât în anul trecut\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "Cu %@ mai puțin decât în anul trecut\n";
 
 /* The label for the option to show Stats Traffic by month. */
 "stats.traffic.month" = "După lună";

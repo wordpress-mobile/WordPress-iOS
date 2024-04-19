@@ -8,7 +8,6 @@ import Combine
     @objc optional func expandedRowUpdated(_ row: StatsTotalRow, didSelectRow: Bool)
     @objc optional func viewMoreSelectedForStatSection(_ statSection: StatSection)
     @objc optional func showPostStats(postID: Int, postTitle: String?, postURL: URL?)
-    @objc optional func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex)
 }
 
 protocol SiteStatsReferrerDelegate: AnyObject {
@@ -69,6 +68,7 @@ final class SiteStatsPeriodTableViewController: SiteStatsBaseTableViewController
                                              selectedPeriod: datePickerViewModel.period,
                                              periodDelegate: self,
                                              referrerDelegate: self)
+        viewModel?.statsBarChartViewDelegate = self
         Publishers.CombineLatest(datePickerViewModel.$date, datePickerViewModel.$period)
             .sink(receiveValue: { [weak self] _, _ in
                 DispatchQueue.main.async {
@@ -149,7 +149,7 @@ private extension SiteStatsPeriodTableViewController {
                 TopTotalsNoSubtitlesPeriodStatsRow.self,
                 CountriesStatsRow.self,
                 CountriesMapRow.self,
-                StatsTrafficBarChartRow.self,
+                OverviewRow.self,
                 TableFooterRow.self,
                 StatsErrorRow.self,
                 StatsGhostChartImmutableRow.self,
@@ -296,10 +296,16 @@ extension SiteStatsPeriodTableViewController: SiteStatsPeriodDelegate {
                                                                                             postURL: postURL)
         navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
+}
 
-    func barChartTabSelected(_ tabIndex: StatsTrafficBarChartTabIndex) {
-        if let tab = StatsTrafficBarChartTabs(rawValue: tabIndex) {
-            trackBarChartTabSelectionEvent(tab: tab, period: datePickerViewModel.period)
+extension SiteStatsPeriodTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {
+        viewModel.currentTabIndex = tabIndex
+    }
+
+    func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
+        if let selectedChartDate = viewModel?.chartDate(for: entryIndex) {
+            datePickerViewModel.updateDate(selectedChartDate)
         }
     }
 }
