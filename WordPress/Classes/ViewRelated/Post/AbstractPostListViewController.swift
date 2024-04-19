@@ -6,6 +6,7 @@ import WordPressShared
 import wpxmlrpc
 import WordPressFlux
 import WordPressUI
+import Combine
 
 class AbstractPostListViewController: UIViewController,
                                       WPContentSyncHelperDelegate,
@@ -115,6 +116,10 @@ class AbstractPostListViewController: UIViewController,
         observeNetworkStatus()
 
         NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postListEditorPresenterWillShowEditor), name: .postListEditorPresenterWillShowEditor, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(postListEditorPresenterDidHideEditor), name: .postListEditorPresenterDidHideEditor, object: nil)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -240,6 +245,15 @@ class AbstractPostListViewController: UIViewController,
             tableView.reloadRows(at: updatedIndexPaths, with: .none)
             tableView.endUpdates()
         }
+    }
+
+    @objc private func postListEditorPresenterWillShowEditor() {
+        fetchResultsController.delegate = nil
+    }
+
+    @objc private func postListEditorPresenterDidHideEditor() {
+        fetchResultsController.delegate = self
+        updateAndPerformFetchRequestRefreshingResults()
     }
 
     // MARK: - Author Filter
@@ -401,6 +415,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        defer { pendingChanges = [] }
+
         // Defensive code to make sure simple operation like moving to trash
         // are animated, but more complex ones simply update the whole list
         // without a risk of creating an invalid set of changes.

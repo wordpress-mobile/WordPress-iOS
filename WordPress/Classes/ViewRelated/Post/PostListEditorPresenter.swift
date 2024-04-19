@@ -75,9 +75,16 @@ struct PostListEditorPresenter {
     }
 
     private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+        /// This is a workaround for the lack of vie wapperance callbacks send
+        /// by `EditPostViewController` due to its weird setup.
+        NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)
+
         let editor = EditPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision)
         editor.modalPresentationStyle = .fullScreen
         editor.entryPoint = entryPoint
+        editor.onClose = { _ in
+            NotificationCenter.default.post(name: .postListEditorPresenterDidHideEditor, object: nil)
+        }
         postListViewController.present(editor, animated: false)
     }
 
@@ -88,12 +95,9 @@ struct PostListEditorPresenter {
         newPost.content = post.content
         newPost.categories = post.categories
         newPost.postFormat = post.postFormat
-        // Open Editor
-        let editor = EditPostViewController(post: newPost, loadAutosaveRevision: false)
-        editor.modalPresentationStyle = .fullScreen
-        editor.entryPoint = .postsList
-        postListViewController.present(editor, animated: false)
-        // Track Analytics event
+
+        openEditor(with: newPost, loadAutosaveRevision: false, in: postListViewController)
+
         WPAppAnalytics.track(.postListDuplicateAction, withProperties: postListViewController.propertiesForAnalytics(), with: post)
     }
 
@@ -176,4 +180,9 @@ struct PostListEditorPresenter {
         alertController.addCancelActionWithTitle(alertCancel, handler: nil)
         alertController.presentFromRootViewController()
     }
+}
+
+extension Foundation.Notification.Name {
+    static let postListEditorPresenterWillShowEditor = Foundation.Notification.Name("org.automattic.postListEditorPresenterWillShowEditor")
+    static let postListEditorPresenterDidHideEditor = Foundation.Notification.Name("org.automattic.postListEditorPresenterDidHideEditor")
 }

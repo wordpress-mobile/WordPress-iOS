@@ -35,8 +35,15 @@ struct PageEditorPresenter {
 
         QuickStartTourGuide.shared.endCurrentTour()
 
+        /// This is a workaround for the lack of vie wapperance callbacks send
+        /// by `EditPostViewController` due to its unconventional setup.
+        NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)
+
         let editorViewController = EditPageViewController(page: page)
         editorViewController.entryPoint = entryPoint
+        editorViewController.onClose = {
+            NotificationCenter.default.post(name: .postListEditorPresenterDidHideEditor, object: nil)
+        }
         presentingViewController.present(editorViewController, animated: false)
         return true
     }
