@@ -54,7 +54,7 @@ final class ImageView: UIView {
 
     // MARK: - Sources
 
-    func setImage(with imageURL: URL, size: CGSize? = nil) {
+    func setImage(with imageURL: URL, host: MediaHost? = nil, size: CGSize? = nil) {
         task?.cancel()
 
         if let image = downloader.cachedImage(for: imageURL, size: size) {
@@ -64,7 +64,12 @@ final class ImageView: UIView {
             task = Task { [downloader, weak self] in
                 do {
                     let options = ImageRequestOptions(size: size)
-                    let image = try await downloader.image(from: imageURL, options: options)
+                    let image: UIImage
+                    if let host {
+                        image = try await downloader.image(from: imageURL, host: host, options: options)
+                    } else {
+                        image = try await downloader.image(from: imageURL, options: options)
+                    }
                     guard !Task.isCancelled else { return }
                     self?.setState(.success(image))
                 } catch {

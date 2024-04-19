@@ -9,17 +9,13 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     private let titleLabel = UILabel()
     private let badgeIconView = UIImageView()
     private let badgesLabel = UILabel()
-    private let featuredImageView = CachedAnimatedImageView()
+    private let featuredImageView = ImageView()
     private let icon = UIImageView()
     private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
     private var indentationIconView = UIImageView()
     private var viewModel: PageListItemViewModel?
-
-    // MARK: - Properties
-
-    private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
 
     // MARK: - PostSearchResultCell
 
@@ -48,7 +44,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageLoader.prepareForReuse()
+        featuredImageView.prepareForReuse()
         viewModel = nil
     }
 
@@ -68,7 +64,8 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
             let host = MediaHost(with: viewModel.page) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
+            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.page.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
+            featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
         separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
