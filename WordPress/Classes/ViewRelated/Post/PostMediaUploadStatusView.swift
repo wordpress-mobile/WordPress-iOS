@@ -17,33 +17,9 @@ struct PostMediaUploadStatusView: View {
             ToolbarItem(placement: .cancellationAction) {
                 Button(Strings.close, action: onCloseTapped)
             }
-            ToolbarItem(placement: .principal) {
-                PostMediaUploadTitleView(viewModel: viewModel)
-            }
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
-private struct PostMediaUploadTitleView: View {
-    @ObservedObject var viewModel: PostMediaUploadViewModel
-
-    var body: some View {
-        if viewModel.isCompleted {
-            Text(Strings.title)
-                .font(.headline)
-        } else {
-            VStack(spacing: 6) {
-                Text(Strings.titleUploading)
-                    .font(.headline)
-                ProgressView(value: viewModel.fractionCompleted)
-                    .progressViewStyle(.linear)
-                    .tint(.secondary)
-                    .background()
-            }
-            .fixedSize()
-        }
     }
 }
 
@@ -123,6 +99,5 @@ private struct MediaThubmnailImageView: View {
 
 private enum Strings {
     static let title = NSLocalizedString("postMediaUploadStatusView.title", value: "Media Uploads", comment: "Title for post media upload status view")
-    static let titleUploading = NSLocalizedString("postMediaUploadStatusView.titleUploading", value: "Uploading media", comment: "Title for a footer view in the post media upload status view")
     static let close = NSLocalizedString("postMediaUploadStatusView.close", value: "Close", comment: "Close button in postMediaUploadStatusView")
 }

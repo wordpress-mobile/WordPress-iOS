@@ -24,7 +24,7 @@ struct PublishButton: View {
                 ProgressView()
                     .tint(Color.secondary)
             case let .uploading(title, progress, onInfoTapped):
-                HStack(spacing: 10) {
+                let content =  HStack(spacing: 10) {
                     ProgressView()
                         .tint(Color.secondary)
 
@@ -43,14 +43,17 @@ struct PublishButton: View {
 
                     Spacer()
 
-                    if let onInfoTapped {
-                        Button(action: onInfoTapped, label: {
-                            Image(systemName: "info.circle")
-                                .foregroundStyle(.secondary)
-                        })
+                    if onInfoTapped != nil {
+                        Image(systemName: "info.circle")
+                            .foregroundStyle(.secondary)
                     }
+                }.padding(.horizontal)
+
+                if let onInfoTapped {
+                    Button(action: onInfoTapped) { content }
+                } else {
+                    content
                 }
-                .padding(.horizontal)
             case let .failed(title, details, onRetryTapped):
                 HStack {
                     Image(systemName: "exclamationmark.triangle.fill")
@@ -77,6 +80,11 @@ struct PublishButton: View {
                 .padding(.horizontal)
             }
         }
+    }
+
+    @ViewBuilder
+    private func makeUploadingView(title: String, progress: PublishButtonState.Progress) -> some View {
+
     }
 
     private var isDisabled: Bool {
