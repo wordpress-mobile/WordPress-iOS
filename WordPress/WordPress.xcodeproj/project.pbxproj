@@ -54,6 +54,10 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		01011E822BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01011E812BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift */; };
+		01011E832BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01011E812BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift */; };
+		01011E852BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01011E842BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift */; };
+		01011E862BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01011E842BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift */; };
 		010459E629153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010459E529153FFF000C7778 /* JetpackNotificationMigrationService.swift */; };
 		010459E729153FFF000C7778 /* JetpackNotificationMigrationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010459E529153FFF000C7778 /* JetpackNotificationMigrationService.swift */; };
 		010459ED2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 010459EC2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift */; };
@@ -5932,6 +5936,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		01011E812BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsSubscribersViewController.swift; sourceTree = "<group>"; };
+		01011E842BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteStatsSubscribersViewModel.swift; sourceTree = "<group>"; };
 		010459E529153FFF000C7778 /* JetpackNotificationMigrationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNotificationMigrationService.swift; sourceTree = "<group>"; };
 		010459EC2915519C000C7778 /* JetpackNotificationMigrationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackNotificationMigrationServiceTests.swift; sourceTree = "<group>"; };
 		0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = JetpackStatsWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -9891,6 +9897,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01011E802BD27DDF003B5C2B /* Subscribers */ = {
+			isa = PBXGroup;
+			children = (
+				01011E812BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift */,
+				01011E842BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift */,
+			);
+			path = Subscribers;
+			sourceTree = "<group>";
+		};
 		0107E0F128FD6A3100DE87DB /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -9964,14 +9979,6 @@
 				0141929F2983F5E800CAEDB0 /* SupportConfigurationTests.swift */,
 			);
 			path = Support;
-			sourceTree = "<group>";
-		};
-		01616C842B5AA6E50023C123 /* Traffic */ = {
-			isa = PBXGroup;
-			children = (
-				01616C852B5AA6E50023C123 /* Chart */,
-			);
-			path = Traffic;
 			sourceTree = "<group>";
 		};
 		01616C852B5AA6E50023C123 /* Chart */ = {
@@ -11414,7 +11421,6 @@
 		3792259E12F6DBCC00F2176A /* Stats */ = {
 			isa = PBXGroup;
 			children = (
-				01616C842B5AA6E50023C123 /* Traffic */,
 				01DC4CD32B5FC889000110E5 /* Deprecated */,
 				9AA0ADAF235F11500027AB5D /* Operation */,
 				73FF702D221F43BB00541798 /* Charts */,
@@ -11425,6 +11431,7 @@
 				931215E2267F4F92008C3B69 /* Referrer Details */,
 				98F89D47219E008600190EE6 /* Shared Views */,
 				B09879712B55ECFF0048256D /* Traffic */,
+				01011E802BD27DDF003B5C2B /* Subscribers */,
 				981C348F2183871100FC2683 /* SiteStatsDashboard.storyboard */,
 				981C3493218388CA00FC2683 /* SiteStatsDashboardViewController.swift */,
 				9874766E219630240080967F /* SiteStatsTableViewCells.swift */,
@@ -15259,6 +15266,7 @@
 		B09879712B55ECFF0048256D /* Traffic */ = {
 			isa = PBXGroup;
 			children = (
+				01616C852B5AA6E50023C123 /* Chart */,
 				B09879752B572E1F0048256D /* StatsTrafficDatePickerViewModel.swift */,
 				B098796E2B55EC010048256D /* StatsTrafficDatePickerView.swift */,
 			);
@@ -21476,6 +21484,7 @@
 				801D94EF2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */,
 				30EABE0918A5903400B73A9C /* WPBlogTableViewCell.m in Sources */,
 				FAB8F76E25AD73C000D5D54A /* JetpackBackupOptionsViewController.swift in Sources */,
+				01011E852BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift in Sources */,
 				175CC17C2723103000622FB4 /* WPAnalytics+Domains.swift in Sources */,
 				7E4123BE20F4097B00DF8486 /* NotificationContentRangeFactory.swift in Sources */,
 				FA332AD429C1FC7A00182FBB /* MovedToJetpackViewModel.swift in Sources */,
@@ -22684,6 +22693,7 @@
 				984F86FB21DEDB070070E0E3 /* TopTotalsCell.swift in Sources */,
 				436D56282117312700CEAA33 /* RegisterDomainDetailsViewController+LocalizedStrings.swift in Sources */,
 				4631359624AD068B0017E65C /* GutenbergLayoutPickerViewController.swift in Sources */,
+				01011E822BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift in Sources */,
 				D8225409219AB2030014D0E2 /* SiteInformation.swift in Sources */,
 				D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */,
 				FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */,
@@ -26082,9 +26092,11 @@
 				FABB25E82602FC2C00C8785C /* JetpackBackupStatusViewController.swift in Sources */,
 				FABB25E92602FC2C00C8785C /* Pinghub.swift in Sources */,
 				FABB25EA2602FC2C00C8785C /* PeopleRoleBadgeLabel.swift in Sources */,
+				01011E832BD27DFF003B5C2B /* SiteStatsSubscribersViewController.swift in Sources */,
 				FABB25EB2602FC2C00C8785C /* ActivityDetailViewController.swift in Sources */,
 				F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */,
 				C32A6A2D2832BF02002E9394 /* SiteDesignCategoryThumbnailSize.swift in Sources */,
+				01011E862BD27E47003B5C2B /* SiteStatsSubscribersViewModel.swift in Sources */,
 				FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */,
 				FABB25EE2602FC2C00C8785C /* ViewMoreRow.swift in Sources */,
 				FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */,

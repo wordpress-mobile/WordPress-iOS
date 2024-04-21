@@ -7,6 +7,7 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case months
     case years
     case traffic
+    case subscribers
 
     // This is public as it is needed by FilterTabBarItem.
     var title: String {
@@ -17,6 +18,7 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
         case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
         case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
         case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
+        case .subscribers: return NSLocalizedString("stats.dashboard.tab.subscribers", value: "Subscribers", comment: "Title of Subscribers stats tab.")
         }
     }
 
@@ -34,6 +36,8 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
             self = .insights
         case "traffic":
             self = .traffic
+        case "subscribers":
+            self = .subscribers
         default:
             return nil
         }
@@ -57,8 +61,8 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
 
 fileprivate extension StatsTabType {
     static var displayedTabs: [StatsTabType] {
-        if RemoteFeatureFlag.statsTrafficTab.enabled() {
-            return [.traffic, .insights]
+        if RemoteFeatureFlag.statsTrafficSubscribersTabs.enabled() {
+            return [.traffic, .insights, .subscribers]
         } else {
             return [.insights, .days, .weeks, .months, .years]
         }
@@ -72,6 +76,7 @@ fileprivate extension StatsTabType {
         case .months:   return .statsPeriodMonthsAccessed
         case .years:    return .statsPeriodYearsAccessed
         case .traffic:  return nil
+        case .subscribers: return .statsSubscribersAccessed
         }
     }
 }
@@ -84,8 +89,34 @@ class SiteStatsDashboardViewController: UIViewController {
     @IBOutlet weak var filterTabBar: FilterTabBar!
     @IBOutlet weak var jetpackBannerView: JetpackBannerView!
 
-    private var insightsTableViewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
-    private lazy var periodTableViewControllerDeprecated = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
+    private var pageViewController: UIPageViewController?
+    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
+
+    @objc lazy var manageInsightsButton: UIBarButtonItem = {
+        let button = UIBarButtonItem(
+                image: .gridicon(.cog),
+                style: .plain,
+                target: self,
+                action: #selector(manageInsightsButtonTapped))
+        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
+        return button
+    }()
+
+    // MARK: - Stats View Controllers
+
+    private lazy var insightsTableViewController = {
+        let viewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
+        viewController.tableStyle = .insetGrouped
+        viewController.bannerView = jetpackBannerView
+        return viewController
+    }()
+
+    private lazy var periodTableViewControllerDeprecated = {
+        let viewController = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
+        viewController.bannerView = jetpackBannerView
+        return viewController
+    }()
+
     private lazy var trafficTableViewController = {
         let date: Date
         if let selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults() {
@@ -100,17 +131,10 @@ class SiteStatsDashboardViewController: UIViewController {
         viewController.bannerView = jetpackBannerView
         return viewController
     }()
-    private var pageViewController: UIPageViewController?
-    private lazy var displayedTabs: [StatsTabType] = StatsTabType.displayedTabs
 
-    @objc lazy var manageInsightsButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-                image: .gridicon(.cog),
-                style: .plain,
-                target: self,
-                action: #selector(manageInsightsButtonTapped))
-        button.accessibilityHint = NSLocalizedString("Tap to customize insights", comment: "Accessibility hint to customize insights")
-        return button
+    private lazy var subscribersViewController = {
+        let viewModel = SiteStatsSubscribersViewModel()
+        return SiteStatsSubscribersViewController(viewModel: viewModel)
     }()
 
     // MARK: - View
@@ -118,8 +142,6 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureJetpackBanner()
-        configureInsightsTableView()
-        configurePeriodTableViewControllerDeprecated()
         setupFilterBar()
         restoreSelectedDateFromUserDefaults()
         restoreSelectedTabFromUserDefaults()
@@ -131,15 +153,6 @@ class SiteStatsDashboardViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         JetpackFeaturesRemovalCoordinator.presentOverlayIfNeeded(in: self, source: .stats)
-    }
-
-    func configureInsightsTableView() {
-        insightsTableViewController.tableStyle = .insetGrouped
-        insightsTableViewController.bannerView = jetpackBannerView
-    }
-
-    private func configurePeriodTableViewControllerDeprecated() {
-        periodTableViewControllerDeprecated.bannerView = jetpackBannerView
     }
 
     func configureNavBar() {
@@ -275,8 +288,14 @@ private extension SiteStatsDashboardViewController {
                                                        animated: false)
             }
         case .traffic:
-            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
+            if oldSelectedTab != .traffic || pageViewControllerIsEmpty {
                 pageViewController?.setViewControllers([trafficTableViewController],
+                                                       direction: .forward,
+                                                       animated: false)
+            }
+        case .subscribers:
+            if oldSelectedTab != .subscribers || pageViewControllerIsEmpty {
+                pageViewController?.setViewControllers([subscribersViewController],
                                                        direction: .forward,
                                                        animated: false)
             }
