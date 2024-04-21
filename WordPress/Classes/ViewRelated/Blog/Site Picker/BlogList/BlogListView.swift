@@ -203,19 +203,19 @@ struct BlogListView: View {
 private extension BlogListView {
     enum Strings {
         static let pinnedSectionTitle = NSLocalizedString(
-            "site_switcher_pinned_section_title",
+            "site_switcher.pinned_section.title",
             value: "Pinned sites",
             comment: "Pinned section title for site switcher."
         )
 
         static let recentsSectionTitle = NSLocalizedString(
-            "site_switcher_recents_section_title",
+            "site_switcher.recents_section.title",
             value: "Recent sites",
             comment: "Recents section title for site switcher."
         )
 
         static let allRemainingSitesSectionTitle = NSLocalizedString(
-            "site_switcher_all_sites_section_title",
+            "site_switcher.all_sites_section.title",
             value: "All sites",
             comment: "All sites section title for site switcher."
         )

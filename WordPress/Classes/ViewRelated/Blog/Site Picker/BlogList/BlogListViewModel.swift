@@ -135,7 +135,7 @@ extension BlogListView.Site {
             id: blog.dotComID,
             title: blog.title ?? "",
             domain: blog.url ?? "",
-            imageURL: blog.hasIcon ? URL(string: blog.icon!) : nil
+            imageURL: blog.hasIcon ? URL(string: blog.icon ?? "") : nil
         )
     }
 }

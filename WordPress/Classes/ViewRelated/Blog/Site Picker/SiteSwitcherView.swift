@@ -5,7 +5,6 @@ struct SiteSwitcherView: View {
     @State private var isEditing: Bool = false
     private let selectionCallback: ((NSNumber) -> Void)
     private let addSiteCallback: (() -> Void)
-    private let blogListViewModel = BlogListViewModel()
     private let eventTracker: EventTracker
     @State private var searchText = ""
     @State private var isSearching = false
