@@ -19,15 +19,15 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
 
-    private let insightsStore = StatsInsightsStore()
+    private let insightsStore: StatsInsightsStore
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StatsPeriodStore()
+    private let periodStore: StatsPeriodStore
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
 
-    private let revampStore = StatsRevampStore()
+    private let revampStore: StatsRevampStore
     private var revampChangeReceipt: Receipt?
 
     private(set) var selectedDate: Date?
@@ -43,11 +43,17 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     init(insightsDetailsDelegate: SiteStatsInsightsDelegate,
          detailsDelegate: SiteStatsDetailsDelegate,
          referrerDelegate: SiteStatsReferrerDelegate,
-         viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate) {
+         viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate,
+         insightsStore: StatsInsightsStore,
+         periodStore: StatsPeriodStore,
+         revampStore: StatsRevampStore) {
         self.insightsDetailsDelegate = insightsDetailsDelegate
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
         self.viewsAndVisitorsDelegate = viewsAndVisitorsDelegate
+        self.insightsStore = insightsStore
+        self.periodStore = periodStore
+        self.revampStore = revampStore
     }
 
     // MARK: - Data Fetching

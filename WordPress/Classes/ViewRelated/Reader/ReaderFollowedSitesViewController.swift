@@ -8,7 +8,7 @@ import Gridicons
 /// for following new sites by URL, and unfollowing existing sites via a swipe
 /// gesture.  Followed sites can be tapped to browse their posts.
 ///
-class ReaderFollowedSitesViewController: UIViewController, UIViewControllerRestoration {
+class ReaderFollowedSitesViewController: UIViewController {
     @IBOutlet var searchBar: UISearchBar!
 
     fileprivate var refreshControl: UIRefreshControl!
@@ -39,18 +39,9 @@ class ReaderFollowedSitesViewController: UIViewController, UIViewControllerResto
         return controller
     }
 
-    // MARK: - State Restoration
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        return controller()
-    }
-
     // MARK: - LifeCycle Methods
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationClass = type(of: self)
-
         return super.awakeAfter(using: aDecoder)
     }
 

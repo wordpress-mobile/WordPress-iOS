@@ -18,8 +18,6 @@ class ReaderTabViewController: UIViewController {
 
         title = ReaderTabConstants.title
 
-        ReaderTabViewController.configureRestoration(on: self)
-
         ReaderCardService().clean()
 
         viewModel.filterTapped = { [weak self] (filter, fromView, completion) in
@@ -110,38 +108,6 @@ extension ReaderTabViewController {
     }
 }
 
-// MARK: - State Restoration
-extension ReaderTabViewController: UIViewControllerRestoration {
-
-    static func configureRestoration(on instance: ReaderTabViewController) {
-        instance.restorationIdentifier = ReaderTabConstants.restorationIdentifier
-        instance.restorationClass = ReaderTabViewController.self
-    }
-
-    static let encodedIndexKey = ReaderTabConstants.encodedIndexKey
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-
-        let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
-
-        let controller = RootViewCoordinator.sharedPresenter.readerTabViewController
-        controller?.setStartIndex(index)
-
-        return controller
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-
-        coder.encode(viewModel.selectedIndex, forKey: ReaderTabViewController.encodedIndexKey)
-    }
-
-    func setStartIndex(_ index: Int) {
-        viewModel.selectedIndex = index
-    }
-}
-
 // MARK: - Notifications
 extension ReaderTabViewController {
     // Ensure that topics and sites are synced when account changes
@@ -167,8 +133,6 @@ extension ReaderTabViewController {
             comment: "Reader search button accessibility label."
         )
         static let storyBoardInitError = "Storyboard instantiation not supported"
-        static let restorationIdentifier = "WPReaderTabControllerRestorationID"
-        static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
         static let discoverIndex = 0
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)

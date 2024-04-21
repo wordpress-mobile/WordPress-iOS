@@ -23,33 +23,7 @@ class PostRepositoryTests: CoreDataTestCase {
         remoteMock = PostServiceRESTMock()
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock
-        repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory)
-    }
-
-    func testGetPost() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "post"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertFalse(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
-    }
-
-    func testGetPage() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "page"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertTrue(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
+        repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory, isSyncPublishingEnabled: false)
     }
 
     func testDeletePost() async throws {
@@ -200,46 +174,6 @@ class PostRepositoryTests: CoreDataTestCase {
         XCTAssertEqual(revisionStatusAfterSync, .trash)
         XCTAssertEqual(revisionStatus, .trash)
      }
-
-    func testRestorePost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        let remotePost = RemotePost(siteID: 1, status: "draft", title: "Post: Test", content: "New content")!
-        remotePost.type = "post"
-        remoteMock.restorePostResult = .success(remotePost)
-        try await repository.restore(postID, to: .publish)
-
-        // The restored post should match the post returned by WordPress API.
-        let (status, content) = try await contextManager.performQuery { context in
-            let post = try context.existingObject(with: postID)
-            return (post.status, post.content)
-        }
-        XCTAssertEqual(status, .draft)
-        XCTAssertEqual(content, "New content")
-    }
-
-    func testRestorePostFailure() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        remoteMock.restorePostResult = .failure(NSError.testInstance())
-
-        do {
-            try await repository.restore(postID, to: .publish)
-            XCTFail("The restore call should throw an error")
-        } catch {
-            let status = try await contextManager.performQuery { context in
-                let post = try context.existingObject(with: postID)
-                return post.status
-            }
-            XCTAssertEqual(status, .trash)
-        }
-    }
 
     func testFetchAllPagesAPIError() async throws {
         // Use an empty array to simulate an HTTP API error
@@ -454,7 +388,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         case fail
     }
 
-    var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [[RemotePost]]() // Each element contains an array of RemotePost for one API request.
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
@@ -473,10 +406,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
     private(set) var invocationsCountOfUpdate = 0
-
-    override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostToReturnOnGetPostWithID)
-    }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
         guard !remotePostsToReturnOnSyncPostsOfType.isEmpty else {
@@ -502,15 +431,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         switch self.trashPostResult {
-        case let .failure(error):
-            failure(error)
-        case let .success(remotePost):
-            success(remotePost)
-        }
-    }
-
-    override func restore(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        switch self.restorePostResult {
         case let .failure(error):
             failure(error)
         case let .success(remotePost):

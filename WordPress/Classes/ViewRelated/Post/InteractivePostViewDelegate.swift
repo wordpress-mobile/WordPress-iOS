@@ -7,6 +7,7 @@ protocol InteractivePostViewDelegate: AnyObject {
     func duplicate(_ post: AbstractPost)
     func publish(_ post: AbstractPost)
     func trash(_ post: AbstractPost, completion: @escaping () -> Void)
+    func delete(_ post: AbstractPost, completion: @escaping () -> Void)
     func draft(_ post: AbstractPost)
     func retry(_ post: AbstractPost)
     func cancelAutoUpload(_ post: AbstractPost)
@@ -28,5 +29,9 @@ extension InteractivePostViewDelegate {
 
     func trash(_ post: AbstractPost) {
         self.trash(post, completion: {})
+    }
+
+    func delete(_ post: AbstractPost) {
+        self.delete(post, completion: {})
     }
 }

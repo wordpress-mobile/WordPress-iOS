@@ -18,6 +18,7 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
 
     private let insightsStore = StatsInsightsStore()
     private let periodStore = StatsPeriodStore()
+    private let revampStore = StatsRevampStore()
 
     private lazy var tableHandler: ImmuTableDiffableViewHandler = {
         return ImmuTableDiffableViewHandler(takeOver: self, with: nil)
@@ -130,7 +131,10 @@ private extension SiteStatsInsightsDetailsTableViewController {
         viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: self,
                                                       detailsDelegate: self,
                                                       referrerDelegate: self,
-                                                      viewsAndVisitorsDelegate: self)
+                                                      viewsAndVisitorsDelegate: self,
+                                                      insightsStore: insightsStore,
+                                                      periodStore: periodStore,
+                                                      revampStore: revampStore)
 
         guard let statSection = statSection else {
             return

@@ -16,7 +16,7 @@ class PostStatsViewModel: Observable {
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
-    private let store = StatsPeriodStore()
+    private let store: StatsPeriodStore
     private var receipt: Receipt?
     private var changeReceipt: Receipt?
     private var postStats: StatsPostDetails?
@@ -50,12 +50,14 @@ class PostStatsViewModel: Observable {
          selectedDate: Date,
          postTitle: String?,
          postURL: URL?,
-         postStatsDelegate: PostStatsDelegate) {
+         postStatsDelegate: PostStatsDelegate,
+         store: StatsPeriodStore) {
         self.selectedDate = selectedDate
         self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
+        self.store = store
 
         self.postStats = store.getPostStats(for: postID)
 

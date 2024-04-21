@@ -2,21 +2,20 @@ import Foundation
 import UIKit
 import Combine
 
-final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
+final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
 
     // MARK: - Views
 
     private let titleLabel = UILabel()
     private let badgeIconView = UIImageView()
     private let badgesLabel = UILabel()
-    private let featuredImageView = CachedAnimatedImageView()
+    private let featuredImageView = ImageView()
+    private let icon = UIImageView()
+    private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
     private let contentStackView = UIStackView()
     private var indentationIconView = UIImageView()
-
-    // MARK: - Properties
-
-    private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+    private var viewModel: PageListItemViewModel?
 
     // MARK: - PostSearchResultCell
 
@@ -24,6 +23,10 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         get { titleLabel.attributedText }
         set { titleLabel.attributedText = newValue }
     }
+
+    // MARK: AbstractPostListCell
+
+    var post: AbstractPost? { viewModel?.page }
 
     // MARK: - Initializers
 
@@ -41,7 +44,8 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageLoader.prepareForReuse()
+        featuredImageView.prepareForReuse()
+        viewModel = nil
     }
 
     func configure(with viewModel: PageListItemViewModel, indentation: Int = 0, isFirstSubdirectory: Bool = false, delegate: InteractivePostViewDelegate? = nil) {
@@ -60,7 +64,8 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
             let host = MediaHost(with: viewModel.page) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
+            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.page.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
+            featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
         separatorInset = UIEdgeInsets(top: 0, left: 16 + CGFloat(indentation) * 32, bottom: 0, right: 0)
@@ -72,6 +77,33 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         )
         indentationIconView.isHidden = indentation == 0
         indentationIconView.alpha = isFirstSubdirectory ? 1 : 0 // Still contribute to layout
+
+        configure(with: viewModel.syncStateViewModel)
+        self.viewModel = viewModel
+    }
+
+    private func configure(with viewModel: PostSyncStateViewModel) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+
+        contentView.isUserInteractionEnabled = viewModel.isEditable
+
+        titleLabel.alpha = viewModel.isEditable ? 1 : 0.5
+        contentStackView.alpha = viewModel.isEditable ? 1 : 0.5
+
+        if let iconInfo = viewModel.iconInfo {
+            icon.image = iconInfo.image
+            icon.tintColor = iconInfo.color
+        }
+
+        ellipsisButton.isHidden = !viewModel.isShowingEllipsis
+        icon.isHidden = viewModel.iconInfo == nil
+        indicator.isHidden = !viewModel.isShowingIndicator
+
+        if viewModel.isShowingIndicator {
+            indicator.startAnimating()
+        }
     }
 
     private func configureEllipsisButton(with page: Page, delegate: InteractivePostViewDelegate) {
@@ -103,12 +135,20 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        contentStackView.addArrangedSubviews([
-            indentationIconView, labelsStackView, featuredImageView, ellipsisButton
-        ])
+        if RemoteFeatureFlag.syncPublishing.enabled() {
+            contentStackView.addArrangedSubviews([
+                indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
+            ])
+        } else {
+            contentStackView.addArrangedSubviews([
+                indentationIconView, labelsStackView, featuredImageView, ellipsisButton
+            ])
+        }
         contentStackView.spacing = 8
         contentStackView.alignment = .center
         contentStackView.isLayoutMarginsRelativeArrangement = true
+
+        indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
         NSLayoutConstraint.activate([
             badgeIconView.heightAnchor.constraint(equalToConstant: 18),
@@ -126,6 +166,17 @@ final class PageListCell: UITableViewCell, PostSearchResultCell, Reusable {
         titleLabel.numberOfLines = 1
 
         badgeIconView.tintColor = UIColor.secondaryLabel
+    }
+
+    private func setupIcon() {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        NSLayoutConstraint.activate([
+            icon.widthAnchor.constraint(equalToConstant: 22),
+            icon.heightAnchor.constraint(equalToConstant: 22)
+        ])
+        icon.contentMode = .scaleAspectFit
     }
 
     private func setupFeaturedImageView() {

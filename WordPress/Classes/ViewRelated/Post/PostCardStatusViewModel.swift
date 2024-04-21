@@ -13,7 +13,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private let isInternetReachable: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
+    private let isSyncPublishingEnabled: Bool
 
+    /// - warning: deprecated (kahu-offline-mode)
     var progressBlock: ((Float) -> Void)? = nil {
         didSet {
             if let _ = oldValue, let uuid = progressObserverUUID {
@@ -33,15 +35,28 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     init(post: Post,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
+         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
+         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
+        self.isSyncPublishingEnabled = isSyncPublishingEnabled
         super.init()
     }
 
     var status: String? {
+        guard isSyncPublishingEnabled else {
+            return _status
+        }
+        if post.isLegacyUnsavedRevision {
+            return StatusMessages.localChanges
+        }
+        return nil
+    }
+
+    /// - note: Deprecated (kahu-offline-mode)
+    private var _status: String? {
         // TODO Move these string constants to the StatusMessages enum
         if MediaCoordinator.shared.isUploadingMedia(for: post) {
             return NSLocalizedString("Uploading media...", comment: "Message displayed on a post's card while the post is uploading media")
@@ -75,6 +90,26 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var statusColor: UIColor {
+        guard isSyncPublishingEnabled else {
+            return _statusColor
+        }
+        if post.isLegacyUnsavedRevision {
+            return .warning
+        }
+        switch post.status ?? .draft {
+        case .pending:
+            return .success
+        case .scheduled:
+            return .primary(.shade40)
+        case .trash:
+            return .error
+        default:
+            return .neutral(.shade70)
+        }
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    var _statusColor: UIColor {
         guard let status = postStatus else {
             return .neutral(.shade70)
         }
@@ -117,6 +152,9 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     var shouldHideProgressView: Bool {
+        if isSyncPublishingEnabled {
+            return true
+        }
         return !(MediaCoordinator.shared.isUploadingMedia(for: post) || post.remoteStatus == .pushing)
     }
 
@@ -142,8 +180,14 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        if !post.isFailed && post.status != .trash {
-            buttons.append(.view)
+        if isSyncPublishingEnabled {
+            if post.status != .trash {
+                buttons.append(.view)
+            }
+        } else {
+            if !post.isFailed && post.status != .trash {
+                buttons.append(.view)
+            }
         }
 
         return AbstractPostButtonSection(buttons: buttons)
@@ -151,6 +195,10 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
+
+        if canPublish {
+            buttons.append(.publish)
+        }
 
         if post.status != .draft {
             buttons.append(.moveToDraft)
@@ -164,18 +212,16 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if autoUploadInteractor.canRetryUpload(of: post) ||
-            autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
-            post.isFailed && isInternetReachable {
-            buttons.append(.retry)
-        }
+        if !isSyncPublishingEnabled {
+            if autoUploadInteractor.canRetryUpload(of: post) ||
+                autoUploadInteractor.autoUploadAttemptState(of: post) == .reachedLimit ||
+                post.isFailed && isInternetReachable {
+                buttons.append(.retry)
+            }
 
-        if canCancelAutoUpload && !isInternetReachable {
-            buttons.append(.cancelAutoUpload)
-        }
-
-        if canPublish {
-            buttons.append(.publish)
+            if canCancelAutoUpload && !isInternetReachable {
+                buttons.append(.cancelAutoUpload)
+            }
         }
 
         return AbstractPostButtonSection(buttons: buttons)
@@ -206,28 +252,34 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
-        return AbstractPostButtonSection(buttons: [.trash])
+        let action: AbstractPostButton = post.original().status == .trash ? .delete : .trash
+        return AbstractPostButtonSection(buttons: [action])
     }
 
     private var canCancelAutoUpload: Bool {
         return autoUploadInteractor.canCancelAutoUpload(of: post)
     }
 
-    /// Returns true if any of the following conditions are true:
-    ///
-    /// * The post is a draft.
-    /// * The post failed to upload and has local changes but the user canceled auto-uploading
-    /// * The upload failed and the user cannot Cancel it anymore. This happens when we reached the maximum number of retries.
     private var canPublish: Bool {
+        guard isSyncPublishingEnabled else {
+            return _canPublish
+        }
+        let userCanPublish = post.blog.capabilities != nil ? post.blog.isPublishingPostsAllowed() : true
+        return (post.status == .draft || post.status == .pending) && userCanPublish
+    }
+
+    /// - warning: deprecated (kahu-offline-mode)
+    private var _canPublish: Bool {
         let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
         return post.isDraft() || isNotCancelableWithFailedToUploadChanges
     }
 
     func statusAndBadges(separatedBy separator: String) -> String {
-        let sticky = post.isStickyPost && !isUploadingOrFailed ? Constants.stickyLabel : ""
+        let sticky = post.isStickyPost ? Constants.stickyLabel : ""
+        let pending = (post.status == .pending && isSyncPublishingEnabled) ? Constants.pendingReview : ""
         let status = self.status ?? ""
 
-        return [status, sticky].filter { !$0.isEmpty }.joined(separator: separator)
+        return [status, pending, sticky].filter { !$0.isEmpty }.joined(separator: separator)
     }
 
     /// Determine what the failed status message should be and return it.
@@ -249,6 +301,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     private enum Constants {
         static let stickyLabel = NSLocalizedString("Sticky", comment: "Label text that defines a post marked as sticky")
+        static let pendingReview = NSLocalizedString("postList.badgePendingReview", value: "Pending review", comment: "Badge for post cells")
     }
 
     enum StatusMessages {

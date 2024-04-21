@@ -41,6 +41,11 @@ import Foundation
     case editorPostExcerptChanged
     case editorPostSiteChanged
 
+    // Resolve post version conflict
+    case resolveConflictScreenShown
+    case resolveConflictSaveTapped
+    case resolveConflictCancelTapped
+
     // App Settings
     case appSettingsAppearanceChanged
 
@@ -293,6 +298,12 @@ import Foundation
     // Page List
     case pageListEditHomepageTapped
     case pageListEditHomepageInfoTapped
+
+    // Posts (Techincal)
+    case postRepositoryPostCreated
+    case postRepositoryPostUpdated
+    case postRepositoryPatchStarted
+    case postRepositoryConflictEncountered
 
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
@@ -564,6 +575,10 @@ import Foundation
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
+    // Assertions & Errors
+    case assertionFailure
+    case postCoordinatorErrorEncountered
+
     // Site monitoring
     case siteMonitoringTabShown
     case siteMonitoringEntryDetailsShown
@@ -640,6 +655,12 @@ import Foundation
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .resolveConflictScreenShown:
+            return "resolve_conflict_screen_shown"
+        case .resolveConflictSaveTapped:
+            return "resolve_conflict_save_tapped"
+        case .resolveConflictCancelTapped:
+            return "resolve_conflict_cancel_tapped"
         case .appSettingsAppearanceChanged:
             return "app_settings_appearance_changed"
         case .gutenbergUnsupportedBlockWebViewShown:
@@ -1090,6 +1111,16 @@ import Foundation
             return "page_list_edit_homepage_item_pressed"
         case .pageListEditHomepageInfoTapped:
             return "page_list_edit_homepage_info_pressed"
+
+        // Posts (Technical)
+        case .postRepositoryPostCreated:
+            return "post_repository_post_created"
+        case .postRepositoryPostUpdated:
+            return "post_repository_post_updated"
+        case .postRepositoryPatchStarted:
+            return "post_repository_patch_started"
+        case .postRepositoryConflictEncountered:
+            return "post_repository_conflict_encountered"
 
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
@@ -1547,6 +1578,12 @@ import Foundation
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
+
+        // Assertions & Errors
+        case .assertionFailure:
+            return "assertion_failure"
+        case .postCoordinatorErrorEncountered:
+            return "post-coordinator-eerror-encountered"
 
         // Site Monitoring
         case .siteMonitoringTabShown:
