@@ -15,7 +15,6 @@ public enum PostEditorAction {
     case publish
     case update
     case submitForReview
-    case continueFromHomepageEditing
 
     /// - note: Deprecated (kahu-offline-mode)
     var dismissesEditor: Bool {
@@ -51,8 +50,6 @@ public enum PostEditorAction {
             return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
         case .update:
             return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
-        case .continueFromHomepageEditing:
-            return NSLocalizedString("Continue", comment: "Continue button (used to finish editing the home page during site creation).")
         }
     }
 
@@ -70,9 +67,6 @@ public enum PostEditorAction {
             return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
         case .update:
             return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
-            // Note: when continue is pressed with no changes, it will close without prompt
-        case .continueFromHomepageEditing:
-            return NSLocalizedString("Are you sure you want to update your homepage?", comment: "Title of message shown when user taps continue during homepage editing in site creation.")
         }
     }
 
@@ -87,9 +81,7 @@ public enum PostEditorAction {
             return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
         case .submitForReview:
             return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
-            // not sure if we want to use "Updating..." or "Publishing..." for home page changes?
-            // Note: when continue is pressed with no changes, it will close without prompt
-        case .update, .continueFromHomepageEditing:
+        case .update:
             return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
         }
     }
@@ -101,7 +93,7 @@ public enum PostEditorAction {
         case .schedule:
             return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
             // Note: when continue is pressed with no changes, it will close without prompt
-        case .save, .saveAsDraft, .submitForReview, .update, .continueFromHomepageEditing:
+        case .save, .saveAsDraft, .submitForReview, .update:
             return NSLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
         }
     }
@@ -111,7 +103,7 @@ public enum PostEditorAction {
         case .save, .saveAsDraft, .update:
             return .save
             // TODO: make a new analytics event(s) for site creation homepage changes
-        case .publish, .schedule, .submitForReview, .continueFromHomepageEditing:
+        case .publish, .schedule, .submitForReview:
             return .publish
         }
     }
@@ -138,8 +130,7 @@ public enum PostEditorAction {
             return .editorScheduledPost
         case .publish:
             return .editorPublishedPost
-            // TODO: make a new analytics event(s)
-        case .update, .continueFromHomepageEditing:
+        case .update:
             return .editorUpdatedPost
         case .submitForReview:
             // TODO: When support is added for submit for review, add a new stat to support it
@@ -451,7 +442,7 @@ public class PostEditorStateContext {
                 publishActionAllowed = hasContent
             case .update:
                 publishActionAllowed = hasContent && hasChanges && !isBeingPublished
-            case .save, .saveAsDraft, .continueFromHomepageEditing:
+            case .save, .saveAsDraft:
                 assertionFailure("No longer used")
                 break
             }

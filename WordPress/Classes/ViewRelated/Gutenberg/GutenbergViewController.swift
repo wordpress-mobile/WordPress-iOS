@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case close
         case more
         case autoSave
-        case continueFromHomepageEditing
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -861,17 +860,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .autoSave:
                 break
-                // Inelegant :(
-            case .continueFromHomepageEditing:
-                continueFromHomepageEditing()
-                break
             }
         }
-    }
-
-    // Not ideal, but seems the least bad of the alternatives
-    @objc func continueFromHomepageEditing() {
-        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {

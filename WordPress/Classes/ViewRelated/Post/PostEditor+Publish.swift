@@ -143,7 +143,7 @@ extension PublishingEditor {
             var changes = RemotePostUpdateParameters()
             changes.status = Post.Status.pending.rawValue
             performUpdateAction(changes: changes)
-        case .save, .saveAsDraft, .continueFromHomepageEditing:
+        case .save, .saveAsDraft:
             wpAssertionFailure("No longer used and supported")
             break
         }
