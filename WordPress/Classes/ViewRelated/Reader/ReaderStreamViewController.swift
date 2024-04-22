@@ -1624,7 +1624,7 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func cell(for tag: ReaderTagTopic) -> UITableViewCell {
         let cell = tableConfiguration.tagCell(tableView)
-        cell.configure(with: tag, isLoggedIn: isLoggedIn)
+        cell.configure(parent: self, tag: tag, isLoggedIn: isLoggedIn)
         cell.selectionStyle = .none
         return cell
     }

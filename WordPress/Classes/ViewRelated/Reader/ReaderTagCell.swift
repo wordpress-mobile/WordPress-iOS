@@ -12,15 +12,14 @@ class ReaderTagCell: UICollectionViewCell {
     @IBOutlet private weak var menuButton: UIButton!
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
+    private var viewModel: ReaderTagCellViewModel?
 
     override func awakeFromNib() {
         super.awakeFromNib()
         setupStyles()
         contentStackView.setCustomSpacing(0, after: featuredImageView)
-        likeButton.setTitle(NSLocalizedString("reader.tags.button.like",
-                                              value: "Like",
-                                              comment: "Text for the 'Like' button on the reader tag cell."),
-                            for: .normal)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSiteTitleTapped))
+        headerStackView.addGestureRecognizer(tapGesture)
     }
 
     override func prepareForReuse() {
@@ -29,7 +28,9 @@ class ReaderTagCell: UICollectionViewCell {
         resetHiddenViews()
     }
 
-    func configure(with post: ReaderPost, isLoggedIn: Bool) {
+    func configure(parent: UIViewController?, post: ReaderPost, isLoggedIn: Bool) {
+        viewModel = ReaderTagCellViewModel(parent: parent, post: post, isLoggedIn: isLoggedIn)
+
         let blogName = post.blogNameForDisplay()
         let postDate = post.shortDateForDisplay()
         let postTitle = post.titleForDisplay()
@@ -47,7 +48,32 @@ class ReaderTagCell: UICollectionViewCell {
         titleLabel.isHidden = postTitle == nil
         summaryLabel.isHidden = postSummary == nil
         countsLabel.isHidden = postCounts == nil
+
+        configureLikeButton(with: post)
         loadFeaturedImage(with: post)
+    }
+
+    @objc private func onSiteTitleTapped() {
+        viewModel?.onSiteTitleTapped()
+    }
+
+    @IBAction private func onLikeButtonTapped(_ sender: Any) {
+        viewModel?.onLikeButtonTapped()
+    }
+
+    @IBAction private func onMenuButtonTapped(_ sender: UIButton) {
+        viewModel?.onMenuButtonTapped(with: sender)
+    }
+
+    private struct Constants {
+        static let likeText = NSLocalizedString("reader.tags.button.like",
+                                                value: "Like",
+                                                comment: "Text for the 'Like' button on the reader tag cell.")
+        static let likedText = NSLocalizedString("reader.tags.button.liked",
+                                                 value: "Liked",
+                                                 comment: "Text for the 'Liked' button on the reader tag cell.")
+        static let likeButtonImage = UIImage(named: "icon-reader-star-outline")?.withRenderingMode(.alwaysTemplate)
+        static let likedButtonImage = UIImage(named: "icon-reader-star-fill")?.withRenderingMode(.alwaysTemplate)
     }
 
 }
@@ -90,6 +116,14 @@ private extension ReaderTagCell {
         featuredImageView.isHidden = false
         countsLabel.isHidden = false
         likeButton.isHidden = false
+    }
+
+    func configureLikeButton(with post: ReaderPost) {
+        let isLiked = post.isLiked
+        likeButton.setTitle(isLiked ? Constants.likedText : Constants.likeText, for: .normal)
+        likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
+        likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
+        likeButton.setTitleColor(likeButton.tintColor, for: .normal)
     }
 
 }
