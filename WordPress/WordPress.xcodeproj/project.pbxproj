@@ -3145,10 +3145,6 @@
 		C9B477BB29CD576F008CBF49 /* LockScreenUnconfiguredViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B477B829CD2FEE008CBF49 /* LockScreenUnconfiguredViewModel.swift */; };
 		C9C21D7829BECFC7009F68E5 /* LockScreenStatsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */; };
 		C9C21D7C29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */; };
-		C9F1D4B72706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */; };
-		C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */; };
-		C9F1D4BA2706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */; };
-		C9F1D4BB2706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */; };
 		C9FE382829C204C100D39841 /* LockScreenSingleStatWidgetViewProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FE382629C204C100D39841 /* LockScreenSingleStatWidgetViewProvider.swift */; };
 		C9FE382F29C204E700D39841 /* LockScreenSingleStatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FE382B29C204E700D39841 /* LockScreenSingleStatViewModel.swift */; };
 		C9FE383229C2053300D39841 /* LockScreenSingleStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FE383029C2053300D39841 /* LockScreenSingleStatView.swift */; };
@@ -8503,8 +8499,6 @@
 		C9C21D7629BECFC1009F68E5 /* LockScreenStatsWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidget.swift; sourceTree = "<group>"; };
 		C9C21D7A29BED18C009F68E5 /* LockScreenStatsWidgetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenStatsWidgetsView.swift; sourceTree = "<group>"; };
 		C9D7DDBF2613B84500104E95 /* WordPress 119.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 119.xcdatamodel"; sourceTree = "<group>"; };
-		C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditHomepageViewController.swift; sourceTree = "<group>"; };
-		C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomepageEditorNavigationBarManager.swift; sourceTree = "<group>"; };
 		C9FE382629C204C100D39841 /* LockScreenSingleStatWidgetViewProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenSingleStatWidgetViewProvider.swift; sourceTree = "<group>"; };
 		C9FE382B29C204E700D39841 /* LockScreenSingleStatViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenSingleStatViewModel.swift; sourceTree = "<group>"; };
 		C9FE383029C2053300D39841 /* LockScreenSingleStatView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockScreenSingleStatView.swift; sourceTree = "<group>"; };
@@ -13358,7 +13352,6 @@
 				912347752216E27200BD9F97 /* GutenbergViewController+Localization.swift */,
 				FFC02B82222687BF00E64FDE /* GutenbergImageLoader.swift */,
 				4625B5472537875E00C04AAD /* Collapsable Header */,
-				C9F1D4B62706ED7C00BDF917 /* EditHomepageViewController.swift */,
 			);
 			path = Gutenberg;
 			sourceTree = "<group>";
@@ -15187,7 +15180,6 @@
 				8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
-				C9F1D4B92706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -23011,7 +23003,6 @@
 				8B15D27428009EBF0076628A /* BlogDashboardAnalytics.swift in Sources */,
 				2F605FA8251430C200F99544 /* PostCategoriesViewController.swift in Sources */,
 				24F3789825E6E62100A27BB7 /* NSManagedObject+Lookup.swift in Sources */,
-				C9F1D4BA2706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift in Sources */,
 				17D4153C22C2308D006378EF /* StatsPeriodHelper.swift in Sources */,
 				7E3E7A5920E44D2F0075D159 /* FooterContentStyles.swift in Sources */,
 				C81CCD7E243BF7A600A83E27 /* TenorMedia.swift in Sources */,
@@ -23039,7 +23030,6 @@
 				934098C3271957A600B3E77E /* SiteStatsInsightsDelegate.swift in Sources */,
 				73C8F06221BEEEDE00DDDF7E /* SiteAssemblyWizardContent.swift in Sources */,
 				738B9A5E21B8632E0005062B /* UITableView+Header.swift in Sources */,
-				C9F1D4B72706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */,
 				80EF9286280D272E0064A971 /* DashboardPostsSyncManager.swift in Sources */,
 				7E3E7A5B20E44D950075D159 /* RichTextContentStyles.swift in Sources */,
 				7E846FF120FD0A0500881F5A /* ContentCoordinator.swift in Sources */,
@@ -24740,7 +24730,6 @@
 				FABB22242602FC2C00C8785C /* GutenbergNetworking.swift in Sources */,
 				0CA10F6E2ADAE86E00CE75AC /* PostSearchSuggestionsService.swift in Sources */,
 				FABB22252602FC2C00C8785C /* NavigationActionHelpers.swift in Sources */,
-				C9F1D4BB2706EEEB00BDF917 /* HomepageEditorNavigationBarManager.swift in Sources */,
 				FABB22262602FC2C00C8785C /* String+Ranges.swift in Sources */,
 				FABB22272602FC2C00C8785C /* ActivityCommentRange.swift in Sources */,
 				FABB22282602FC2C00C8785C /* GutenbergAudioUploadProcessor.swift in Sources */,
@@ -25218,7 +25207,6 @@
 				FABB23742602FC2C00C8785C /* WPStyleGuide+Pages.m in Sources */,
 				FABB23752602FC2C00C8785C /* ReaderInterestsDataSource.swift in Sources */,
 				FABB23762602FC2C00C8785C /* ActivityContentGroup.swift in Sources */,
-				C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */,
 				FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */,
 				019C5B952BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */,
 				3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */,

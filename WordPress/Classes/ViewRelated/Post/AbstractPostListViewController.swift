@@ -203,7 +203,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        assert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
+        wpAssert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
 
         searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
@@ -231,7 +231,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return assertionFailure("missing NSUpdatedObjectsKey")
+            return wpAssertionFailure("missing NSUpdatedObjectsKey")
         }
         let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
             let cell = tableView.cellForRow(at: $0) as? AbstractPostListCell
@@ -343,7 +343,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func updateAndPerformFetchRequest() {
-        assert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
+        wpAssert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
 
         var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
@@ -494,7 +494,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
         guard posts.count > 0 else {
-            assertionFailure("This method should not be called with no posts.")
+            wpAssertionFailure("This method should not be called with no posts.")
             return
         }
         // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
