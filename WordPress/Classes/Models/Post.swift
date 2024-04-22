@@ -55,10 +55,20 @@ class Post: AbstractPost {
         }
     }
 
+    private var cachedContentPreviewForDisplay: String?
+
     // MARK: - NSManagedObject
 
     override class func entityName() -> String {
         return "Post"
+    }
+
+    override func didChangeValue(forKey key: String) {
+        super.didChangeValue(forKey: key)
+
+        if key == "mt_excerpt" || key == "content" {
+            cachedContentPreviewForDisplay = nil
+        }
     }
 
     // MARK: - Format
@@ -272,23 +282,15 @@ class Post: AbstractPost {
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
-        if let excerpt = mt_excerpt, excerpt.count > 0 {
-            if let preview = PostPreviewCache.shared.excerpt[excerpt] {
-                return preview
-            }
-            let preview = excerpt.makePlainText()
-            PostPreviewCache.shared.excerpt[excerpt] = preview
-            return preview
-        } else if let content = content {
-            if let preview = PostPreviewCache.shared.content[content] {
-                return preview
-            }
-            let preview = content.summarized()
-            PostPreviewCache.shared.content[content] = preview
-            return preview
-        } else {
-            return ""
+        if let cachedContentPreviewForDisplay {
+            return cachedContentPreviewForDisplay
         }
+        if let excerpt = mt_excerpt, excerpt.count > 0 {
+            cachedContentPreviewForDisplay = excerpt.makePlainText()
+        } else if let content = content {
+            cachedContentPreviewForDisplay = content.summarized()
+        }
+        return cachedContentPreviewForDisplay ?? ""
     }
 
     override func hasLocalChanges() -> Bool {
@@ -368,22 +370,5 @@ class Post: AbstractPost {
                 hash(for: postFormat ?? ""),
                 hash(for: stringifiedCategories),
                 hash(for: isStickyPost ? 1 : 0)]
-    }
-}
-
-private final class PostPreviewCache {
-    static let shared = PostPreviewCache()
-
-    let excerpt = Cache<String, String>()
-    let content = Cache<String, String>()
-}
-
-private final class Cache<Key: Hashable, Value> {
-    private let lock = NSLock()
-    private var dictionary: [Key: Value] = [:]
-
-    subscript(key: Key) -> Value? {
-        get { lock.withLock { dictionary[key] } }
-        set { lock.withLock { dictionary[key] = newValue } }
     }
 }
