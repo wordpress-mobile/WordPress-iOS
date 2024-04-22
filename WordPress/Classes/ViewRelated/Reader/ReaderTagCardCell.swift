@@ -7,7 +7,16 @@ class ReaderTagCardCell: UITableViewCell, UICollectionViewDelegate {
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
 
-    private var dataSource: DataSource!
+    private lazy var dataSource: DataSource = {
+        DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
+            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
+                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as? ReaderTagCell else {
+                return UICollectionViewCell()
+            }
+            cell.configure(with: post, isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
+            return cell
+        }
+    }()
     private lazy var resultsController: NSFetchedResultsController<ReaderPost> = {
         let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: true)]
@@ -24,7 +33,6 @@ class ReaderTagCardCell: UITableViewCell, UICollectionViewDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         registerTagCell()
-        setupDataSource()
         setupButtonStyles()
         collectionView.delegate = self
         accessibilityElements = [tagButton, collectionView].compactMap { $0 }
@@ -79,17 +87,6 @@ private extension ReaderTagCardCell {
     func registerTagCell() {
         let nib = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.cellIdentifier)
-    }
-
-    func setupDataSource() {
-        dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
-            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as? ReaderTagCell else {
-                return UICollectionViewCell()
-            }
-            cell.configure(with: post, isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
-            return cell
-        }
     }
 
     struct Constants {
