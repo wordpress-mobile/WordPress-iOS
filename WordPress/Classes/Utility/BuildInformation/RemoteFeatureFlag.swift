@@ -90,7 +90,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readerDiscoverEndpoint:
             return true
         case .siteSwitcherRedesign:
-            return true
+            return false
         case .readingPreferences:
             return true
         case .readingPreferencesFeedback:
