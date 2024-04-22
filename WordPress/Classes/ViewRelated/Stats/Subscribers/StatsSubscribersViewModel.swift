@@ -20,6 +20,7 @@ final class StatsSubscribersViewModel {
 
     func addObservers() {
         Publishers.MergeMany(store.emailsSummary)
+            .removeDuplicates()
             .sink { [weak self] _ in
                 self?.updateTableViewSnapshot()
             }
