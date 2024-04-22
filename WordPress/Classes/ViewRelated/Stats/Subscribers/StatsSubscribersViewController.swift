@@ -1,9 +1,9 @@
 import Foundation
 
-final class SiteStatsSubscribersViewController: SiteStatsBaseTableViewController {
-    private let viewModel: SiteStatsSubscribersViewModel
+final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
+    private let viewModel: StatsSubscribersViewModel
 
-    init(viewModel: SiteStatsSubscribersViewModel) {
+    init(viewModel: StatsSubscribersViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
