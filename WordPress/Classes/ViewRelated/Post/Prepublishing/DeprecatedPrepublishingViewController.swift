@@ -91,7 +91,7 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -412,7 +412,7 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
+        let viewController = PublishDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.publishSettingsViewModel.setDate(date)
             self?.reloadData()

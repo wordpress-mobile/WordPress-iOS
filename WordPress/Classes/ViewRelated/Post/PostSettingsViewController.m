@@ -1049,7 +1049,8 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showPublishSchedulingController
 {
-    ImmuTableViewController *vc = [PublishSettingsController viewControllerWithPost:self.apost];
+    BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
+    UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

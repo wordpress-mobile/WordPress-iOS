@@ -57,6 +57,7 @@ struct PublishSettingsViewModel {
 
     private let post: AbstractPost
 
+    var isRequired: Bool { (post.original ?? post).status == .publish }
     let dateFormatter: DateFormatter
     let dateTimeFormatter: DateFormatter
 
@@ -227,7 +228,7 @@ private struct DateAndTimeRow: ImmuTableRow {
 
     func dateTimeCalendarViewController(with model: PublishSettingsViewModel) -> (ImmuTableRow) -> UIViewController {
         return { [weak self] _ in
-            let viewController = SchedulingDatePickerViewController.make(viewModel: model) { [weak self] date in
+            let viewController = PublishDatePickerViewController.make(viewModel: model) { [weak self] date in
                 WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
                 self?.viewModel.setDate(date)
                 NotificationCenter.default.post(name: Foundation.Notification.Name(rawValue: ImmuTableViewController.modelChangedNotification), object: nil)

@@ -77,7 +77,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -411,13 +411,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController()
-        viewController.configuration = SchedulingDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
+        let configuration = PublishDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
         }
+        let viewController = PublishDatePickerViewController(configuration: configuration)
         navigationController?.pushViewController(viewController, animated: true)
     }
 
