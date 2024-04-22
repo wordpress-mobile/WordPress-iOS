@@ -34,6 +34,7 @@
     case postStatsMonthsYears
     case postStatsAverageViews
     case postStatsRecentWeeks
+    case subscribersEmailsSummary
 
     static let allInsights: [StatSection] = [
         .insightsViewsVisitors,
