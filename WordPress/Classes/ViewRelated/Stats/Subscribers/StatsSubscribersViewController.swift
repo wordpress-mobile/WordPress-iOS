@@ -25,6 +25,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
         viewModel.viewMoreDelegate = self
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -54,6 +55,14 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
     private func removeObservers() {
         cancellables = []
+    }
+
+    @objc private func refreshData() {
+        viewModel.refreshData()
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            self.refreshControl.endRefreshing()
+        }
     }
 
     // MARK: - Table View
