@@ -3,6 +3,7 @@ import UIKit
 struct StatsTotalRowData: Equatable {
     var name: String
     var data: String
+    var secondData: String?
     var mediaID: NSNumber?
     var postID: Int?
     var dataBarPercent: Float?
@@ -12,12 +13,14 @@ struct StatsTotalRowData: Equatable {
     var nameDetail: String?
     var showDisclosure: Bool
     var disclosureURL: URL?
+    var multiline: Bool
     var childRows: [StatsTotalRowData]?
     var statSection: StatSection?
     var isReferrerSpam: Bool
 
     init(name: String,
          data: String,
+         secondData: String? = nil,
          mediaID: NSNumber? = nil,
          postID: Int? = nil,
          dataBarPercent: Float? = nil,
@@ -27,11 +30,13 @@ struct StatsTotalRowData: Equatable {
          nameDetail: String? = nil,
          showDisclosure: Bool = false,
          disclosureURL: URL? = nil,
+         multiline: Bool = true,
          childRows: [StatsTotalRowData]? = [StatsTotalRowData](),
          statSection: StatSection? = nil,
          isReferrerSpam: Bool = false) {
         self.name = name
         self.data = data
+        self.secondData = secondData
         self.mediaID = mediaID
         self.postID = postID
         self.dataBarPercent = dataBarPercent
@@ -41,6 +46,7 @@ struct StatsTotalRowData: Equatable {
         self.userIconURL = userIconURL
         self.showDisclosure = showDisclosure
         self.disclosureURL = disclosureURL
+        self.multiline = multiline
         self.childRows = childRows
         self.statSection = statSection
         self.isReferrerSpam = isReferrerSpam
@@ -116,6 +122,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     @IBOutlet weak var rightStackViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightStackView: UIStackView!
     @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var secondDataLabel: UILabel!
     @IBOutlet weak var disclosureImageView: UIImageView!
     @IBOutlet weak var disclosureButton: UIButton!
 
@@ -193,6 +200,8 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         itemLabel.text = rowData.name
         itemDetailLabel.text = rowData.nameDetail
         dataLabel.text = rowData.data
+        secondDataLabel.isHidden = rowData.secondData == nil
+        secondDataLabel.text = rowData.secondData
 
         // Toggle optionals
         configureDisclosureButton()
@@ -201,8 +210,9 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         dataBarView.isHidden = (rowData.dataBarPercent == nil)
         separatorLine.isHidden = !showSeparator
         dataLabel.isHidden = rowData.data.isEmpty
+        secondDataLabel.isHidden = (rowData.secondData ?? "").isEmpty
 
-        applyStyles()
+        applyStyles(rowData)
         prepareForVoiceOver()
     }
 
@@ -246,15 +256,20 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
 private extension StatsTotalRow {
 
-    func applyStyles() {
+    func applyStyles(_ rowData: StatsTotalRowData) {
         backgroundColor = .listForeground
         contentView.backgroundColor = .listForeground
         Style.configureLabelAsCellRowTitle(itemLabel)
         Style.configureLabelItemDetail(itemDetailLabel)
         Style.configureLabelAsData(dataLabel)
+        Style.configureLabelAsData(secondDataLabel)
         Style.configureViewAsSeparator(separatorLine)
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
+
+        [itemLabel, itemDetailLabel].forEach {
+            $0?.numberOfLines = rowData.multiline ? 0 : 1
+        }
     }
 
     func configureDisclosureButton() {
