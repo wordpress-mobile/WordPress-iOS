@@ -24,17 +24,39 @@ final class StatsSubscribersViewModelTests: XCTestCase {
             })
             .store(in: &cancellables)
 
-        store.emailsSummary.send(.loading)
+        store.chartSummary.send(.loading)
 
         wait(for: [expectation], timeout: 1)
     }
 
+    func testTableViewSnapshot_chartSummaryLoaded() throws {
+        let expectation = expectation(description: "Chart section should be loading")
+        var subscriberChartRow: SubscriberChartRow?
+        sut.tableViewSnapshot
+            .sink(receiveValue: { snapshot in
+                if let row = snapshot.itemIdentifiers.first?.immuTableRow as? SubscriberChartRow {
+                    subscriberChartRow = row
+                    expectation.fulfill()
+                }
+            })
+            .store(in: &cancellables)
+
+        let chartSummary = StatsSubscribersSummaryData(history: [
+            .init(date: Date(), count: 1),
+            .init(date: Date(), count: 2),
+        ])
+        store.chartSummary.send(.success(chartSummary))
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertNotNil(subscriberChartRow?.chartData)
+    }
+
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
-        let expectation = expectation(description: "First section should be loading")
+        let expectation = expectation(description: "Email section should be loading")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers.first?.immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers.last?.immuTableRow as? TopTotalsPeriodStatsRow {
                     emailsSummaryRow = row
                     expectation.fulfill()
                 }
@@ -56,8 +78,14 @@ final class StatsSubscribersViewModelTests: XCTestCase {
 }
 
 private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
+    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> = .init(.idle)
+    var updateChartSummaryCalled = false
     var updateEmailsSummaryCalled = false
+
+    func updateChartSummary() {
+        updateChartSummaryCalled = false
+    }
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
         updateEmailsSummaryCalled = true

@@ -69,6 +69,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [
+            SubscriberChartRow.self,
             TopTotalsPeriodStatsRow.self,
             StatsGhostTopImmutableRow.self,
             StatsErrorRow.self
