@@ -107,7 +107,9 @@ struct PublishDatePickerView: View {
                     configuration.date = nil
                 }) {
                     Image(systemName: "minus.circle.fill")
+                        .foregroundStyle(.red)
                 }
+                .buttonStyle(.plain)
             }
         }
     }
