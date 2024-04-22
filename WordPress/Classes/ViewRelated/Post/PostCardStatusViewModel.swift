@@ -204,7 +204,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.moveToDraft)
         }
 
-        if post.status == .publish || post.status == .draft {
+        if post.status == .publish || post.status == .draft || post.status == .pending {
             buttons.append(.duplicate)
         }
 
