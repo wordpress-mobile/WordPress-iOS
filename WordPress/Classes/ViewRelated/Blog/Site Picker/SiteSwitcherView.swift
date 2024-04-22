@@ -99,6 +99,7 @@ struct SiteSwitcherView: View {
             DSButton(title: Strings.addSiteButtonTitle, style: .init(emphasis: .primary, size: .large)) {
                 addSiteCallback()
             }
+            .accessibilityIdentifier("add-site-button")
             .padding(.horizontal, .DS.Padding.medium)
         }
         .background(Color.DS.Background.primary)
