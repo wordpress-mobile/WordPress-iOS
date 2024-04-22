@@ -136,6 +136,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         setupPingHub()
         setupBackgroundRefresh(application)
         setupComponentsAppearance()
+        setupNoticePresenter()
         UITestConfigurator.prepareApplicationForUITests(application)
         DebugMenuViewController.configure(in: window)
 
@@ -307,7 +308,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         AccountService.loadDefaultAccountCookies()
 
         windowManager.showUI()
-        setupNoticePresenter()
         restoreAppState()
     }
 
