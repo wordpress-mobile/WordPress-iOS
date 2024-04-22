@@ -80,6 +80,7 @@ struct PublishDatePickerView: View {
                 }
             }
         }
+        .padding(.top, -8)
         .environment(\.defaultMinListHeaderHeight, 0)
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
