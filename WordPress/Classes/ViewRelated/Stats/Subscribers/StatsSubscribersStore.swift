@@ -23,7 +23,7 @@ struct StatsSubscribersStore {
         guard emailsSummary.value != .loading else { return }
 
         emailsSummary.send(.loading)
-        statsService.getData(quantity: 6, sortField: .postId, sortOrder: .descending) { result in
+        statsService.getData(quantity: 10, sortField: .postId, sortOrder: .descending) { result in
             DispatchQueue.main.async {
                 switch result {
                 case .success(let data):

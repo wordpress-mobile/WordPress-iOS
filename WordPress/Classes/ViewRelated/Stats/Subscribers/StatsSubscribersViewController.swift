@@ -23,6 +23,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        viewModel.viewMoreDelegate = self
         ImmuTable.registerRows(tableRowTypes(), tableView: tableView)
     }
 
@@ -63,5 +64,12 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
             StatsGhostTopImmutableRow.self,
             StatsErrorRow.self
         ]
+    }
+}
+
+extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
+    func viewMoreSelectedForStatSection(_ statSection: StatSection) {
+        // TODO
+        DDLogInfo("\(statSection) selected")
     }
 }

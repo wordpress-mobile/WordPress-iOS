@@ -2,11 +2,12 @@ import Foundation
 import Combine
 import WordPressKit
 
-class StatsSubscribersViewModel {
+final class StatsSubscribersViewModel {
     private let store = StatsSubscribersStore()
     private var cancellables: Set<AnyCancellable> = []
 
     var tableViewSnapshot = PassthroughSubject<ImmuTableDiffableDataSourceSnapshot, Never>()
+    weak var viewMoreDelegate: SiteStatsPeriodDelegate?
 
     init() {
     }
@@ -64,7 +65,7 @@ private extension StatsSubscribersViewModel {
                     secondDataSubtitle: Strings.clicksColumn,
                     dataRows: emailsSummaryDataRows(emailsSummary),
                     statSection: .subscribersEmailsSummary,
-                    siteStatsPeriodDelegate: nil
+                    siteStatsPeriodDelegate: viewMoreDelegate
                 )
             ]
         case .error:
@@ -73,7 +74,7 @@ private extension StatsSubscribersViewModel {
     }
 
     func emailsSummaryDataRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
-        return emailsSummary.posts.prefix(6).map {
+        return emailsSummary.posts.map {
             StatsTotalRowData(
                 name: $0.title,
                 data: $0.opens.abbreviatedString(),
