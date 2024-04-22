@@ -242,8 +242,12 @@ class MediaImageServiceTests: CoreDataTestCase {
         return blog
     }
 
-    /// `Media` is hardcoded to work with a specific direcoty URL managed by `MediaFileManager`
     func makeLocalURL(forResource name: String, fileExtension: String) throws -> URL {
+        try MediaImageServiceTests.makeLocalURL(forResource: name, fileExtension: fileExtension)
+    }
+
+    /// `Media` is hardcoded to work with a specific directory URL managed by `MediaFileManager`
+    static func makeLocalURL(forResource name: String, fileExtension: String) throws -> URL {
         let sourceURL = try XCTUnwrap(Bundle.test.url(forResource: name, withExtension: fileExtension))
         let mediaURL = try MediaFileManager.default.makeLocalMediaURL(withFilename: name, fileExtension: fileExtension)
         try FileManager.default.copyItem(at: sourceURL, to: mediaURL)

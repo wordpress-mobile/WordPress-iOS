@@ -1,3 +1,0 @@
-Es wurden mehrere Probleme mit der Formatierung von markiertem Text behoben. Wir wissen nicht, wie's dir geht, aber wir finden das fantastisch.
-Wo wir gerade dabei waren: Wir haben Probleme behoben, wodurch auf dem Bildschirm für Einsichten mehrere Fehlermeldungen angezeigt wurden. Kein Drama, nur Daten.
-Außerdem sollte dir im Reader nun die aktuellste Version deiner Website angezeigt werden, keine ältere, zwischengespeicherte Version. Neuer ist immer besser.

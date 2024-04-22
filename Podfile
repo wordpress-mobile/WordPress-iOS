@@ -23,9 +23,9 @@ workspace 'WordPress.xcworkspace'
 ## ===================================
 ##
 def wordpress_shared
-  pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
+  # pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
+  pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: '688ee5e4efddc1fc23626626ef17b7e929bdafb0'
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
 
@@ -55,8 +55,8 @@ def gravatar
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 17.0.0'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  # pod 'WordPressKit', '~> 17.0.0'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '1c9aa7ec981fd3369199182605797a5ea4d5efc4'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'

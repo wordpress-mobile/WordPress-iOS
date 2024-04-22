@@ -1,3 +1,0 @@
-We hebben een aantal problemen met de opmaak van gemarkeerde tekst opgelost. Dat was echt de highlight van onze week.
-En terwijl we toch bezig waren, hebben we de problemen opgelost die zorgden voor meerdere foutmeldingen op het scherm Inzichten. Geen drama, alleen data.
-Verder zie je nu als het goed is de meest recente versie van je site in de reader, in plaats van een oude, gecachete versie. Nieuwer is altijd beter.

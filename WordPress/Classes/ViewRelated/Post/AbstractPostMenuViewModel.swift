@@ -22,6 +22,7 @@ enum AbstractPostButton: Equatable {
     case duplicate
     case moveToDraft
     case trash
+    case delete
     case cancelAutoUpload
     case share
     case blaze

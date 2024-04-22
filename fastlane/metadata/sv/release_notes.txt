@@ -1,1 +1,0 @@
-Vi har åtgärdat en handfull problem rörande formatering av markerad text. Resultatet blev riktigt bra, vilket definitivt var en av veckans höjdpunkter.

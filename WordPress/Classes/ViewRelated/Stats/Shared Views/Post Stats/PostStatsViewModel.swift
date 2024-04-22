@@ -16,10 +16,11 @@ class PostStatsViewModel: Observable {
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
-    private let store = StatsPeriodStore()
+    private let store: StatsPeriodStore
     private var receipt: Receipt?
     private var changeReceipt: Receipt?
     private var postStats: StatsPostDetails?
+    var currentTabIndex: Int = 0
 
     private lazy var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
@@ -49,12 +50,14 @@ class PostStatsViewModel: Observable {
          selectedDate: Date,
          postTitle: String?,
          postURL: URL?,
-         postStatsDelegate: PostStatsDelegate) {
+         postStatsDelegate: PostStatsDelegate,
+         store: StatsPeriodStore) {
         self.selectedDate = selectedDate
         self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
+        self.store = store
 
         self.postStats = store.getPostStats(for: postID)
 
@@ -139,7 +142,7 @@ private extension PostStatsViewModel {
             $0.date == selectedDateComponents
         })
 
-        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
+        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight, tabIndex: currentTabIndex)
         tableRows.append(row)
 
         return tableRows

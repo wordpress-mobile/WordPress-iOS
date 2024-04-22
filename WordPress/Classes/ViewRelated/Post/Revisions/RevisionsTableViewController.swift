@@ -2,6 +2,7 @@ class RevisionsTableViewController: UITableViewController {
     typealias RevisionLoadedBlock = (AbstractPost) -> Void
 
     var onRevisionLoaded: RevisionLoadedBlock
+    var onRevisionSelected: ((Revision) -> Void)?
 
     private var post: AbstractPost?
     private var manager: ShowRevisionsListManger?
@@ -146,6 +147,12 @@ private extension RevisionsTableViewController {
     }
 
     private func load(_ revision: Revision) {
+        if let onRevisionSelected {
+            onRevisionSelected(revision)
+            return
+        }
+
+        // - warning: deprecated (kahu-offline-mode_
         guard let blog = post?.blog else {
             return
         }

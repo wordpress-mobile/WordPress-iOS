@@ -1718,6 +1718,9 @@ NSString *const TracksUserDefaultsLoggedInUserIDKey = @"TracksLoggedInUserID";
         case WPAnalyticsStatStatsAccessed:
             eventName = @"stats_accessed";
             break;
+        case WPAnalyticsStatStatsSubscribersAccessed:
+            eventName = @"stats_subscribers_accessed";
+            break;
         case WPAnalyticsStatStatsDateTappedBackward:
             eventName = @"stats_date_tapped_backward";
             break;

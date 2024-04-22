@@ -140,9 +140,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ was reconnected.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d posts.";
 
@@ -1627,7 +1624,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1962,8 +1958,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Create Page";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Create post";
 
 /* Button to progress to the next step
@@ -3170,9 +3165,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Get support" = "Get support";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Get the ball rolling and increase your post views by sharing your post.";
-
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Get to know the Jetpack app";
 
@@ -3328,9 +3320,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Help icon";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Here's how the post performed so far.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Hidden";
@@ -3659,9 +3648,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "It seems like you've entered an incorrect password. Want to give it another try?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "It's been %1$@ since %2$@ was published. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "It's time to blog on %@!";
 
@@ -3882,7 +3868,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
@@ -6275,9 +6260,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Share Jetpack with a friend";
 
-/* Label for action to share post. */
-"Share Post" = "Share Post";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Share WordPress with a friend";
 
@@ -7945,10 +7927,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "View less…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "View more";
@@ -7969,7 +7949,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8661,9 +8640,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "You haven't published any posts yet";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "You hit a milestone 🚀";
@@ -9541,9 +9517,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "To add photos or videos to your posts.";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10819,12 +10792,6 @@ but tapping on this button will remove their like from the post. */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Previous 7-days";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* higher than the previous 7-days";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* lower than the previous 7-days";
-
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "The same as the previous 7-days";
 
@@ -10899,9 +10866,6 @@ but tapping on this button will remove their like from the post. */
 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 Most Popular Time";
-
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% of views";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Not enough activity. Check back later when your site's had more visitors!";

@@ -26,6 +26,14 @@ extension AbstractPostHelper {
             style: .destructive,
             title: post.status == .trash ? Strings.swipeActionDeletePermanently : Strings.swipeActionTrash
         ) { [weak delegate] _, _, completion in
+
+            guard post.status != .trash else {
+                delegate?.delete(post) {
+                    completion(true)
+                }
+                return
+            }
+
             delegate?.trash(post) {
                 completion(true)
             }

@@ -8,8 +8,10 @@ import SVProgressHUD
         let allItems: [Any?] = [title, summary, url]
         let nonNilActivityItems = allItems.compactMap({ $0 })
 
-        let activities = WPActivityDefaults.defaultActivities() as! [UIActivity]
+        var activities: [UIActivity] = [CopyLinkActivity()]
+        activities.append(contentsOf: WPActivityDefaults.defaultActivities() as! [UIActivity])
         let controller = UIActivityViewController(activityItems: nonNilActivityItems, applicationActivities: activities)
+
         if let str = title {
             controller.setValue(str, forKey: "subject")
         }
@@ -144,4 +146,55 @@ import SVProgressHUD
     }
 
     typealias PopoverAnchor = UIPopoverPresentationController.PopoverAnchor
+}
+
+private class CopyLinkActivity: UIActivity {
+    var activityItems = [Any]()
+    private var url = URL(string: "")
+
+    override var activityTitle: String? {
+        return NSLocalizedString(
+            "share.sheet.copy.link.title",
+            value: "Copy Link",
+            comment: "Title for the \"Copy Link\" action in Share Sheet."
+        )
+    }
+
+    override var activityImage: UIImage? {
+        return UIImage(systemName: "link")
+    }
+
+    override var activityType: UIActivity.ActivityType? {
+        return UIActivity.ActivityType(rawValue: "copy.link.activity")
+    }
+
+    override class var activityCategory: UIActivity.Category {
+       return .action
+   }
+
+    override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
+        for activityItem in activityItems {
+           if let _ = activityItem as? URL {
+              return true
+           }
+        }
+        return false
+    }
+
+   override func prepare(withActivityItems activityItems: [Any]) {
+       for activityItem in activityItems {
+           if let url = activityItem as? URL {
+               self.url = url
+           }
+       }
+       self.activityItems = activityItems
+   }
+
+   override func perform() {
+       guard let url else {
+           return
+       }
+       UIPasteboard.general.string = url.absoluteString
+       activityDidFinish(true)
+   }
 }

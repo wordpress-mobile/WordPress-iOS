@@ -86,9 +86,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ ble koblet til på nytt.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d innlegg.";
 
@@ -1102,7 +1099,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1314,8 +1310,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Lag side";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Lag innlegg";
 
 /* Button to progress to the next step
@@ -2083,9 +2078,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed in the Notifications Tab as a message, when the Follow Filter shows no notifications */
 "Get noticed: comment on posts you've read." = "Bli varslet: kommenter på innlegg du har lest.";
 
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Få fart på spredningen og øk dine innleggsvisninger ved å dele ditt innlegg.";
-
 /* Description of a Quick Start Tour */
 "Get your site up and running" = "Få ditt nettsted opp og kjøre";
 
@@ -2198,9 +2190,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Hjelp-ikon";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Her er hvordan innlegget har gjort det så langt.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skjult";
@@ -2404,9 +2393,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Det ser ut som du har skrevet inn feil passord. Vil du gi det et forsøk til?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Det er %1$@ siden %2$@ ble publisert. ";
-
 /* Accessibility label for italic button on formatting toolbar.
    Discoverability title for italic formatting keyboard shortcut. */
 "Italic" = "Kursiv";
@@ -2513,7 +2499,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Liker";
@@ -4291,9 +4276,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Del";
 
-/* Label for action to share post. */
-"Share Post" = "Del innlegg";
-
 /* Informational text for Collect Information setting */
 "Share information with our analytics tool about your use of services while logged in to your WordPress.com account." = "Del informasjon med vårt analyseverktøy om din bruk av våre tjenester mens du er logget inn på din WordPress.com-konto.";
 
@@ -5526,10 +5508,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displays Less Rows */
 "View less…" = "Vis mindre...";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Vis mer";
@@ -5547,7 +5527,6 @@ translators: %s: Block name e.g. \"Image block\" */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -5987,9 +5966,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Du har ikke publisert noen innlegg enda";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Du har ikke publisert noen innlegg ennå. Så fort du publiserer noen, vil en oppsummering av dine nyeste innlegg dukke opp her.";
 
 /* Text rendered at the bottom of the Allowlisted IP Addresses editor, should match Calypso. */
 "You may allowlist an IP address or series of addresses preventing them from ever being blocked by Jetpack. IPv4 and IPv6 are acceptable. To specify a range, enter the low value and high value separated by a dash. Example: 12.12.12.1-12.12.12.100." = "Du kan legge en IP-adresse eller serier med adresses på tillatlisten for å forhindre at de blir blokkert av Jetpack. IPv4 og IPv6 aksepteres. For å spesifisere et utvalg, skriv inn den laveste og høyeste verdien med bindestrek mellom. Eksemepel: 12.12.12.1-12.12.12.100.";

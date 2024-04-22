@@ -14,10 +14,18 @@ struct PublishSettingsViewModel {
         case immediately
 
         init(post: AbstractPost) {
-            if let dateCreated = post.dateCreated, post.shouldPublishImmediately() == false {
-                self = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
+            if RemoteFeatureFlag.syncPublishing.enabled() {
+                if let date = post.dateCreated {
+                    self = date > .now ? .scheduled(date) : .published(date)
+                } else {
+                    self = .immediately
+                }
             } else {
-                self = .immediately
+                if let dateCreated = post.dateCreated, post.shouldPublishImmediately() == false {
+                    self = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
+                } else {
+                    self = .immediately
+                }
             }
         }
     }
@@ -27,6 +35,19 @@ struct PublishSettingsViewModel {
     let title: String?
 
     var detailString: String {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _detailString
+        }
+        switch state {
+        case .scheduled(let date), .published(let date):
+            return dateTimeFormatter.string(from: date)
+        case .immediately:
+            return NSLocalizedString("Immediately", comment: "Undated post time label")
+        }
+    }
+
+    /// - note: deprecated (kahu-offline-mode)
+    var _detailString: String {
         if let date = date, !post.shouldPublishImmediately() {
             return dateTimeFormatter.string(from: date)
         } else {
@@ -40,11 +61,7 @@ struct PublishSettingsViewModel {
     let dateTimeFormatter: DateFormatter
 
     init(post: AbstractPost, context: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
-        if let dateCreated = post.dateCreated, post.shouldPublishImmediately() == false {
-            state = post.hasFuturePublishDate() ? .scheduled(dateCreated) : .published(dateCreated)
-        } else {
-            state = .immediately
-        }
+        state = State(post: post)
 
         self.post = post
 
@@ -74,6 +91,15 @@ struct PublishSettingsViewModel {
     }
 
     mutating func setDate(_ date: Date?) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return _setDate(date)
+        }
+        post.dateCreated = date
+        state = State(post: post)
+    }
+
+    /// - note: deprecated (kahu-offline-mode)
+    mutating func _setDate(_ date: Date?) {
         if let date = date {
             // If a date to schedule the post was given
             post.dateCreated = date
@@ -209,6 +235,14 @@ private struct DateAndTimeRow: ImmuTableRow {
 
             if UIDevice.isPad() {
                 let navigation = UINavigationController(rootViewController: viewController)
+
+                if UIAccessibility.isVoiceOverRunning {
+                    let closeButton = UIBarButtonItem(systemItem: .close, primaryAction: .init(handler: { [weak navigation] _ in
+                        navigation?.dismiss(animated: true)
+                    }))
+                    viewController.navigationItem.leftBarButtonItem = closeButton
+                }
+
                 navigation.modalPresentationStyle = .popover
                 if let popoverController = navigation.popoverPresentationController {
                     popoverController.sourceView = self?.viewController?.tableView

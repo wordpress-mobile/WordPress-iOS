@@ -22,11 +22,11 @@ final class StatsTrafficDatePickerViewModelTests: XCTestCase {
         viewModel.goToPreviousPeriod()
         XCTAssertEqual(yesterday, viewModel.date)
 
-        viewModel.period = .week
+        viewModel = StatsTrafficDatePickerViewModel(period: .week, date: yesterday)
         viewModel.goToPreviousPeriod()
         XCTAssertEqual(aWeekEarlier, viewModel.date)
 
-        viewModel.period = .month
+        viewModel = StatsTrafficDatePickerViewModel(period: .month, date: aWeekEarlier)
         viewModel.goToPreviousPeriod()
         XCTAssertEqual(aMonthEarlier, viewModel.date)
     }
@@ -34,9 +34,8 @@ final class StatsTrafficDatePickerViewModelTests: XCTestCase {
     func testGoToNextPeriod_nextDateAfterCurrentDate() {
         let date = Date("2024-01-20")
         let currentDateGetter: SiteCurrentDateGetter = { date }
-        viewModel = StatsTrafficDatePickerViewModel(period: .day, date: date, currentDateGetter: currentDateGetter)
+        viewModel = StatsTrafficDatePickerViewModel(period: .month, date: date, currentDateGetter: currentDateGetter)
 
-        viewModel.period = .month
         viewModel.goToPreviousPeriod()
         XCTAssertEqual(Date("2023-12-20"), viewModel.date)
 

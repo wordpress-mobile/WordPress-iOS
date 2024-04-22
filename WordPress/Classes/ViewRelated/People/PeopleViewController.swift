@@ -6,7 +6,7 @@ import WordPressShared
 
 // MARK: - PeopleViewController
 
-class PeopleViewController: UITableViewController, UIViewControllerRestoration {
+class PeopleViewController: UITableViewController {
 
     // MARK: Properties
 
@@ -202,29 +202,6 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         }
     }
 
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID),
-            let blog = restoredBlog  as? Blog else {
-                return nil
-        }
-
-        return controllerWithBlog(blog)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-        coder.encode(objectString, forKey: RestorationKeys.blog)
-        super.encodeRestorableState(with: coder)
-    }
-
     // MARK: Action Handlers
 
     @IBAction
@@ -320,10 +297,6 @@ private extension PeopleViewController {
         }
     }
 
-    enum RestorationKeys {
-        static let blog = "peopleBlogRestorationKey"
-    }
-
     enum Storyboard {
         static let inviteSegueIdentifier = "invite"
     }
@@ -348,15 +321,6 @@ private extension PeopleViewController {
 
         do {
             try resultsController.performFetch()
-
-            // Failsafe:
-            // This was causing a glitch after State Restoration. Top Section padding was being initially
-            // set with an incorrect value, and subsequent reloads weren't picking up the right value.
-            //
-            if isHorizontalSizeClassUnspecified() {
-                return
-            }
-
             tableView.reloadData()
         } catch {
             DDLogError("Error fetching People: \(error)")
@@ -577,7 +541,6 @@ extension PeopleViewController {
         }
 
         viewController.blog = blog
-        viewController.restorationClass = self
 
         return viewController
     }
