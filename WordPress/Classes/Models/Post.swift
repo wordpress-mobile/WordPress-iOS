@@ -2,30 +2,6 @@ import Foundation
 import CoreData
 import CocoaLumberjack
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 @objc(Post)
 class Post: AbstractPost {
     @objc static let typeDefaultIdentifier = "post"
@@ -268,15 +244,15 @@ class Post: AbstractPost {
     }
 
     override func hasCategories() -> Bool {
-        return (categories?.count > 0)
+        categories?.isEmpty == false
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().count > 0)
+        tags?.trim().isEmpty == false
     }
 
     override func authorForDisplay() -> String? {
-        return author ?? blog.account?.displayName
+        author ?? blog.account?.displayName
     }
 
     // MARK: - BasePost
