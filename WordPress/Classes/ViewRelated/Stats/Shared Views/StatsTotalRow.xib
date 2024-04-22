@@ -15,35 +15,35 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bi9-y4-md7" userLabel="Content View">
-                    <rect key="frame" x="16" y="31" width="410" height="38"/>
+                    <rect key="frame" x="16" y="31" width="410" height="45.5"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="RuI-Jr-EKZ" userLabel="Left Stack View">
-                            <rect key="frame" x="0.0" y="0.0" width="338" height="38"/>
+                            <rect key="frame" x="0.0" y="0.0" width="338" height="45.5"/>
                             <subviews>
                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="il5-2Z-QId" userLabel="Icon Image View">
-                                    <rect key="frame" x="0.0" y="5" width="28" height="28"/>
+                                    <rect key="frame" x="0.0" y="9" width="28" height="28"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="28" id="Sez-wA-eee"/>
                                         <constraint firstAttribute="height" constant="28" id="vQc-8f-D53"/>
                                     </constraints>
                                 </imageView>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="U2I-mF-Pab" userLabel="Label Stack View">
-                                    <rect key="frame" x="0.0" y="0.0" width="338" height="38"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="338" height="45.5"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV5-rf-zLD" userLabel="Item Label">
-                                            <rect key="frame" x="0.0" y="0.0" width="79.5" height="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Item Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fV5-rf-zLD" userLabel="Item Label">
+                                            <rect key="frame" x="0.0" y="0.0" width="79.5" height="24.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Item Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYo-jW-XP6" userLabel="Item Detail Label">
-                                            <rect key="frame" x="0.0" y="17" width="114.5" height="21"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Item Detail Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AYo-jW-XP6" userLabel="Item Detail Label">
+                                            <rect key="frame" x="0.0" y="24.5" width="114.5" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iS7-PL-Iwy" userLabel="Data Bar View">
-                                            <rect key="frame" x="0.0" y="38" width="338" height="11"/>
+                                            <rect key="frame" x="0.0" y="45.5" width="338" height="11"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4ZS-AN-Jkl" userLabel="Data Bar">
                                                     <rect key="frame" x="0.0" y="6" width="338" height="5"/>
@@ -69,10 +69,10 @@
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="BAZ-QX-R74" userLabel="Right Stack View">
-                            <rect key="frame" x="354" y="0.0" width="56" height="38"/>
+                            <rect key="frame" x="354" y="0.0" width="56" height="45.5"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ivc-26-vsM" userLabel="Data Label">
-                                    <rect key="frame" x="0.0" y="7" width="56" height="24.5"/>
+                                    <rect key="frame" x="0.0" y="10.5" width="56" height="24.5"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="56" id="4ag-Z2-3Ms"/>
                                     </constraints>
@@ -81,7 +81,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="999" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye5-85-nSw" userLabel="Second Data Label">
-                                    <rect key="frame" x="0.0" y="7" width="56" height="24.5"/>
+                                    <rect key="frame" x="0.0" y="10.5" width="56" height="24.5"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="56" id="k65-gz-NUy"/>
                                     </constraints>
@@ -90,7 +90,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="disclosure-chevron" translatesAutoresizingMaskIntoConstraints="NO" id="zUJ-W9-Eeb" userLabel="Disclosure Image View">
-                                    <rect key="frame" x="0.0" y="12.5" width="8" height="13"/>
+                                    <rect key="frame" x="0.0" y="16.5" width="8" height="13"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="13" id="3VV-56-82j"/>
                                         <constraint firstAttribute="width" constant="8" id="W8u-8l-BaG"/>
