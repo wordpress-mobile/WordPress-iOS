@@ -1,7 +1,7 @@
 import UIKit
 
 extension PostCoordinator {
-    static func makeUploadSuccessNotice(for post: AbstractPost, isExistingPost: Bool = false) -> Notice {
+    static func makeUploadSuccessNotice(for post: AbstractPost, previousStatus: AbstractPost.Status? = nil) -> Notice {
         var message: String {
             let title = post.titleForDisplay() ?? ""
             if !title.isEmpty {
@@ -10,18 +10,19 @@ extension PostCoordinator {
             return post.blog.displayURL as String? ?? ""
         }
         let isPublished = post.status == .publish
-        return Notice(title: Strings.publishSuccessTitle(for: post, isExistingPost: isExistingPost),
+        let isUpdated = post.status == previousStatus
+        return Notice(title: Strings.publishSuccessTitle(for: post, isUpdated: isUpdated),
                       message: message,
                       feedbackType: .success,
-                      notificationInfo: makeUploadSuccessNotificationInfo(for: post, isExistingPost: isExistingPost),
+                      notificationInfo: makeUploadSuccessNotificationInfo(for: post, isUpdated: isUpdated),
                       actionTitle: isPublished ? Strings.view : nil,
                       actionHandler: { _ in
             PostNoticeNavigationCoordinator.presentPostEpilogue(for: post)
         })
     }
 
-    private static func makeUploadSuccessNotificationInfo(for post: AbstractPost, isExistingPost: Bool) -> NoticeNotificationInfo {
-        let status = Strings.publishSuccessTitle(for: post, isExistingPost: isExistingPost)
+    private static func makeUploadSuccessNotificationInfo(for post: AbstractPost, isUpdated: Bool) -> NoticeNotificationInfo {
+        let status = Strings.publishSuccessTitle(for: post, isUpdated: isUpdated)
         var title: String {
             let title = post.titleForDisplay() ?? ""
             guard !title.isEmpty else {
@@ -46,10 +47,10 @@ extension PostCoordinator {
 private enum Strings {
     static let view = NSLocalizedString("postNotice.view", value: "View", comment: "Button title. Displays a summary / sharing screen for a specific post.")
 
-    static func publishSuccessTitle(for post: AbstractPost, isExistingPost: Bool = false) -> String {
+    static func publishSuccessTitle(for post: AbstractPost, isUpdated: Bool = false) -> String {
         switch post {
         case let post as Post:
-            guard !isExistingPost else {
+            guard !isUpdated else {
                 return NSLocalizedString("postNotice.postUpdated", value: "Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
             }
             switch post.status {
@@ -63,7 +64,7 @@ private enum Strings {
                 return NSLocalizedString("postNotice.postPublished", value: "Post published", comment: "Title of notification displayed when a post has been successfully published.")
             }
         case let page as Page:
-            guard !isExistingPost else {
+            guard !isUpdated else {
                 return NSLocalizedString("postNotice.pageUpdated", value: "Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
             }
             switch page.status {
