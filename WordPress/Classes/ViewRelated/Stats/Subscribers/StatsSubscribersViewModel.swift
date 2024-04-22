@@ -34,7 +34,7 @@ class StatsSubscribersViewModel {
 
 private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
-        var snapshot = ImmuTableDiffableDataSourceSnapshot.multiSectionSnapshot(
+        let snapshot = ImmuTableDiffableDataSourceSnapshot.multiSectionSnapshot(
             emailsSummaryRows()
         )
         tableViewSnapshot.send(snapshot)
@@ -53,27 +53,42 @@ private extension StatsSubscribersViewModel {
 
 private extension StatsSubscribersViewModel {
     func emailsSummaryRows() -> [any StatsHashableImmuTableRow] {
-
         switch store.emailsSummary.value {
         case .loading, .idle:
             return loadingRows(.subscribersEmailsSummary)
         case .success(let emailsSummary):
             return [
                 TopTotalsPeriodStatsRow(
-                    itemSubtitle: "Latest emails",
-                    dataSubtitle: "Opens/Clicks",
-                    dataRows: emailsSummaryRows(emailsSummary),
+                    itemSubtitle: Strings.titleColumn,
+                    dataSubtitle: Strings.opensColumn,
+                    secondDataSubtitle: Strings.clicksColumn,
+                    dataRows: emailsSummaryDataRows(emailsSummary),
                     statSection: .subscribersEmailsSummary,
-                    siteStatsPeriodDelegate: nil)
+                    siteStatsPeriodDelegate: nil
+                )
             ]
         case .error:
             return errorRows(.subscribersEmailsSummary)
         }
     }
 
-    func emailsSummaryRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
-        return emailsSummary.posts.map { post in
-            StatsTotalRowData(name: post.title, data: "\(post.opens)/\(post.clicks)")
+    func emailsSummaryDataRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
+        return emailsSummary.posts.prefix(6).map {
+            StatsTotalRowData(
+                name: $0.title,
+                data: $0.opens.abbreviatedString(),
+                secondData: $0.clicks.abbreviatedString(),
+                multiline: false,
+                statSection: .subscribersEmailsSummary
+            )
         }
+    }
+}
+
+private extension StatsSubscribersViewModel {
+    struct Strings {
+        static let titleColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
+        static let opensColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
+        static let clicksColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
     }
 }
