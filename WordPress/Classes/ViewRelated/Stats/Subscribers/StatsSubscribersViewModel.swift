@@ -3,17 +3,18 @@ import Combine
 import WordPressKit
 
 final class StatsSubscribersViewModel {
-    private let store = StatsSubscribersStore()
+    private let store: StatsSubscribersStoreProtocol
     private var cancellables: Set<AnyCancellable> = []
 
     var tableViewSnapshot = PassthroughSubject<ImmuTableDiffableDataSourceSnapshot, Never>()
     weak var viewMoreDelegate: SiteStatsPeriodDelegate?
 
-    init() {
+    init(store: StatsSubscribersStoreProtocol = StatsSubscribersStore()) {
+        self.store = store
     }
 
     func refreshData() {
-        store.updateEmailsSummary()
+        store.updateEmailsSummary(quantity: 10, sortField: .postId)
     }
 
     // MARK: - Lifecycle

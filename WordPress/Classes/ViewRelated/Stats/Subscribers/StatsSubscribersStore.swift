@@ -2,7 +2,12 @@ import Foundation
 import Combine
 import WordPressKit
 
-struct StatsSubscribersStore {
+protocol StatsSubscribersStoreProtocol {
+    var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> { get }
+    func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField)
+}
+
+struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
     private let siteID: NSNumber
     private let cache: StatsSubscribersCache = .shared
     private let statsService: StatsServiceRemoteV2
@@ -16,13 +21,10 @@ struct StatsSubscribersStore {
         statsService = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: siteID.intValue, siteTimezone: timeZone)
     }
 
-    func updateEmailsSummary(
-        quantity: Int = 10,
-        sortField: StatsEmailsSummaryData.SortField = .postId,
-        sortOrder: StatsEmailsSummaryData.SortOrder = .descending
-    ) {
+    func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
         guard emailsSummary.value != .loading else { return }
 
+        let sortOrder = StatsEmailsSummaryData.SortOrder.descending
         let cacheKey = StatsSubscribersCache.CacheKey.emailsSummary(quantity: quantity, sortField: sortField.rawValue, sortOrder: sortOrder.rawValue, siteId: siteID)
         let cachedData: StatsEmailsSummaryData? = cache.getValue(key: cacheKey)
 
