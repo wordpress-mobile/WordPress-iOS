@@ -150,7 +150,9 @@ extension BlogListViewModel: NSFetchedResultsControllerDelegate {
             allRemainingSites = (controller.fetchedObjects as? [Blog] ?? []).compactMap(BlogListView.Site.init)
         } else if controller == allBlogsController {
             allBlogs = controller.fetchedObjects as? [Blog] ?? []
-            searchSites = allBlogs.compactMap(BlogListView.Site.init)
+            if searchSites.isEmpty {
+                searchSites = allBlogs.compactMap(BlogListView.Site.init)
+            }
         }
     }
 }
