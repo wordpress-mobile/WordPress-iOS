@@ -137,7 +137,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        restorationClass = type(of: self)
     }
 
     override func viewDidLoad() {
@@ -251,38 +250,6 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
         previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
-    }
-}
-
-// MARK: - State Restoration
-//
-extension NotificationDetailsViewController: UIViewControllerRestoration {
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        let context = AppEnvironment.current.mainContext
-        guard let noteURI = coder.decodeObject(forKey: Restoration.noteIdKey) as? URL,
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: noteURI) else {
-                return nil
-        }
-
-        let notification = try? context.existingObject(with: objectID)
-        guard let restoredNotification = notification as? Notification else {
-            return nil
-        }
-
-        let storyboard = coder.decodeObject(forKey: UIApplication.stateRestorationViewControllerStoryboardKey) as? UIStoryboard
-        guard let vc = storyboard?.instantiateViewController(withIdentifier: Restoration.restorationIdentifier) as? NotificationDetailsViewController else {
-            return nil
-        }
-
-        vc.note = restoredNotification
-
-        return vc
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        coder.encode(note.objectID.uriRepresentation(), forKey: Restoration.noteIdKey)
     }
 }
 
@@ -1399,11 +1366,6 @@ private extension NotificationDetailsViewController {
         static let duration                 = TimeInterval(0.25)
         static let delay                    = TimeInterval(0)
         static let options: UIView.AnimationOptions = [.overrideInheritedDuration, .beginFromCurrentState]
-    }
-
-    enum Restoration {
-        static let noteIdKey                = Notification.classNameWithoutNamespaces()
-        static let restorationIdentifier    = NotificationDetailsViewController.classNameWithoutNamespaces()
     }
 
     enum Settings {

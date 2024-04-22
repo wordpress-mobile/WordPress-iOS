@@ -43,6 +43,7 @@ class SiteStatsPeriodViewModelDeprecated: Observable {
     }
 
     private var currentEntryIndex: Int = 0
+    var currentTabIndex: Int = 0
 
     private let calendar: Calendar = .current
 
@@ -357,7 +358,8 @@ private extension SiteStatsPeriodViewModelDeprecated {
             chartStyling: barChartStyling,
             period: lastRequestedPeriod,
             statsBarChartViewDelegate: statsBarChartViewDelegate,
-            chartHighlightIndex: indexToHighlight)
+            chartHighlightIndex: indexToHighlight,
+            tabIndex: currentTabIndex)
         tableRows.append(row)
 
         return tableRows

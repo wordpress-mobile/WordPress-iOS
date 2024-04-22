@@ -179,7 +179,11 @@ FeaturedImageViewControllerDelegate>
     [super viewWillDisappear:animated];
 
     if (self.isStandalone) {
-        if (!self.isStandaloneEditorDismissingAfterSave) {
+        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+            return; // No longer needed
+        }
+        if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
+            // TODO: Implement it using a ViewModel or a child context to eliminate the risk of accidently saving the changes without uploading them
             [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
         }
     } else {
@@ -284,7 +288,7 @@ FeaturedImageViewControllerDelegate>
 - (void)setupPostDateFormatter
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateStyle = NSDateFormatterLongStyle;
+    dateFormatter.dateStyle = NSDateFormatterMediumStyle;
     dateFormatter.timeStyle = NSDateFormatterShortStyle;
     dateFormatter.timeZone = [self.apost.blog timeZone];
     self.postDateFormatter = dateFormatter;
@@ -666,12 +670,13 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    [metaRows addObjectsFromArray:@[ @(PostSettingsRowPublishDate),
-                                      @(PostSettingsRowStatus),
-                                      @(PostSettingsRowVisibility) ]];
-
-    if (self.apost.password) {
-        [metaRows addObject:@(PostSettingsRowPassword)];
+    if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+        [metaRows addObject:@(PostSettingsRowPublishDate)];
+        [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
+                                          @(PostSettingsRowVisibility) ]];
+        if (self.apost.password) {
+            [metaRows addObject:@(PostSettingsRowPassword)];
+        }
     }
 
     self.postMetaSectionRows = [metaRows copy];
@@ -692,16 +697,12 @@ FeaturedImageViewControllerDelegate>
     } else if (row == PostSettingsRowPublishDate) {
         // Publish date
         cell = [self getWPTableViewDisclosureCell];
+        cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
+        // Note: it's safe to remove `shouldPublishImmediately` when
+        // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
         if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
-            if ([self.apost hasFuturePublishDate]) {
-                cell.textLabel.text = NSLocalizedString(@"Scheduled for", @"Scheduled for [date]");
-            } else {
-                cell.textLabel.text = NSLocalizedString(@"Published on", @"Published on [date]");
-            }
-
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
-            cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
             cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
         }
 

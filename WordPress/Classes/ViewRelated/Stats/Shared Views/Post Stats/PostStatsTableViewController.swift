@@ -107,7 +107,8 @@ private extension PostStatsTableViewController {
                                        selectedDate: selectedDate,
                                        postTitle: postTitle,
                                        postURL: postURL,
-                                       postStatsDelegate: self)
+                                       postStatsDelegate: self,
+                                       store: store)
         refreshTableView()
 
         changeReceipt = viewModel?.onChange { [weak self] in
@@ -219,6 +220,10 @@ extension PostStatsTableViewController: PostStatsDelegate {
 // MARK: - StatsBarChartViewDelegate
 
 extension PostStatsTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {
+        viewModel?.currentTabIndex = tabIndex
+    }
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
     }

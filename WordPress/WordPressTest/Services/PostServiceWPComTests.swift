@@ -36,25 +36,6 @@ class PostServiceWPComTests: CoreDataTestCase {
         remoteMock = nil
     }
 
-    func testGettingANewPostFromTheAPIWillSetTheStatusAfterSyncProperty() {
-        // Arrange
-        let blog = BlogBuilder(mainContext).build()
-        remoteMock.remotePostToReturnOnGetPostWithID = createRemotePost(.scheduled)
-        let expectation = XCTestExpectation()
-
-        // Act
-        var post: AbstractPost?
-        self.service.getPostWithID(123, for: blog, success: { postFromAPI in
-            post = postFromAPI
-            expectation.fulfill()
-        }, failure: self.impossibleFailureBlock)
-        wait(for: [expectation], timeout: timeout)
-
-        // Assert
-        XCTAssertEqual(post?.status, .scheduled)
-        XCTAssertEqual(post?.statusAfterSync, .scheduled)
-    }
-
     func testSyncingPostsWillSetTheStatusAfterSyncProperty() {
         // Arrange
         let blog = BlogBuilder(mainContext).build()
@@ -126,27 +107,6 @@ class PostServiceWPComTests: CoreDataTestCase {
         XCTAssertEqual(post.remoteStatus, .sync)
     }
 
-    func testAutoSavingADraftWillCallTheUpdateEndpointInstead() {
-        // Arrange
-        let post = PostBuilder(mainContext).with(statusAfterSync: .draft).drafted().withRemote().build()
-        try! mainContext.save()
-
-        let remotePost = createRemotePost(.draft)
-        remoteMock.remotePostToReturnOnUpdatePost = remotePost
-        remoteMock.remotePostToReturnOnGetPostWithID = remotePost
-        let expectation = XCTestExpectation()
-
-        // Act
-        self.service.autoSave(post, success: { _, _ in
-            expectation.fulfill()
-        }, failure: self.impossibleFailureBlock)
-        wait(for: [expectation], timeout: timeout)
-
-        // Assert
-        XCTAssertEqual(self.remoteMock.invocationsCountOfUpdate, 1)
-        XCTAssertEqual(post.remoteStatus, .sync)
-    }
-
     /// Local drafts with `.published` status will be created on the server as a `.draft`.
     func testAutoSavingALocallyPublishedDraftWillCreateThePostAsADraft() {
         // Arrange
@@ -186,46 +146,6 @@ class PostServiceWPComTests: CoreDataTestCase {
 
         // Assert
         XCTAssertTrue(failureBlockCalled)
-    }
-
-    func testAutoSavingAnExistingPostWillCallTheAutoSaveEndpoint() {
-        // Arrange
-        let post = PostBuilder(mainContext).published().withRemote().with(remoteStatus: .sync).build()
-        try! mainContext.save()
-
-        remoteMock.autoSaveStubbedBehavior = .success(createRemotePost(.publish))
-        let expectation = XCTestExpectation()
-
-        // Act
-        self.service.autoSave(post, success: { _, _ in
-            expectation.fulfill()
-        }, failure: self.impossibleFailureBlock)
-        wait(for: [expectation], timeout: timeout)
-
-        // Assert
-        XCTAssertEqual(self.remoteMock.invocationsCountOfAutoSave, 1)
-        XCTAssertEqual(post.remoteStatus, .autoSaved)
-    }
-
-    func testAnAutoSaveFailureWillSetTheRemoteStatusToFailed() {
-        // Arrange
-        let post = PostBuilder(mainContext).published().withRemote().with(remoteStatus: .sync).build()
-        try! mainContext.save()
-
-        remoteMock.autoSaveStubbedBehavior = .fail
-        let expectation = XCTestExpectation()
-
-        // Act
-        self.service.autoSave(post, success: { _, _ in
-            expectation.fulfill()
-        }, failure: { _ in
-            expectation.fulfill()
-        })
-        wait(for: [expectation], timeout: timeout)
-
-        // Assert
-        XCTAssertEqual(self.remoteMock.invocationsCountOfAutoSave, 1)
-        XCTAssertEqual(post.remoteStatus, .failed)
     }
 
     func testFetchingPostLikesSuccessfullyShouldCallSuccessBlock() {
@@ -353,7 +273,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         case fail
     }
 
-    var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [RemotePost]()
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
@@ -369,10 +288,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
     private(set) var invocationsCountOfUpdate = 0
-
-    override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostToReturnOnGetPostWithID)
-    }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
         success(self.remotePostsToReturnOnSyncPostsOfType)

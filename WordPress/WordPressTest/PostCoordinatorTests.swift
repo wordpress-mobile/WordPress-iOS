@@ -25,7 +25,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
 
         postCoordinator.save(post)
 
@@ -122,7 +122,7 @@ class PostCoordinatorTests: CoreDataTestCase {
             .with(remoteStatus: .local)
             .build()
         let mediaCoordinatorMock = MediaCoordinatorMock(media: post.media.first!, mediaState: .failed(error: .testInstance()))
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
         var returnedError: Error?
 
         postCoordinator.save(post) { result in
@@ -139,7 +139,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
     func testResumeWillAutoSaveUnconfirmedExistingPosts() {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         _ = PostBuilder(mainContext)
             .withRemote()
             .with(status: .draft)
@@ -153,10 +153,10 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
     }
 
-    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() {
+    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() throws {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         _ = PostBuilder(mainContext)
             .with(status: .publish)
             .with(remoteStatus: .failed)
@@ -171,7 +171,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(postServiceMock.didCallUploadPost).toEventually(beTrue())
         expect(postServiceMock.lastUploadPostInvocation).toEventuallyNot(beNil())
 
-        let invocation = postServiceMock.lastUploadPostInvocation!
+        let invocation = try XCTUnwrap(postServiceMock.lastUploadPostInvocation)
         expect(invocation.post.postTitle).to(equal("Ipsam nihil"))
         expect(invocation.forceDraftIfCreating).to(beTrue())
     }
@@ -243,7 +243,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testChangePostToDraftWhenMovingToDraft() {
         let post = PostBuilder(mainContext).published().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
 
         postCoordinator.moveToDraft(post)
 
@@ -253,7 +253,7 @@ class PostCoordinatorTests: CoreDataTestCase {
     func testTracksAutoUploadPostInvoked() {
         // Arrange
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
         let interactor = PostAutoUploadInteractor()
         let post = PostBuilder(mainContext)
             .withRemote()
@@ -370,8 +370,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
         let actionDispatcherFacadeMock = ActionDispatcherFacadeMock()
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock,
-                                              actionDispatcherFacade: actionDispatcherFacadeMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, actionDispatcherFacade: actionDispatcherFacadeMock, isSyncPublishingEnabled: false)
 
         // Act
         var result: Result<AbstractPost, Error>? = nil
@@ -387,7 +386,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(actionDispatcherFacadeMock.dispatchedActions).toEventuallyNot(beEmpty())
 
         guard case let NoticeAction.post(notice)? = actionDispatcherFacadeMock.dispatchedActions.first else {
-            assertionFailure("The action should be a NoticeAction")
+            XCTFail("The action should be a NoticeAction")
             return
         }
 
@@ -409,7 +408,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
 
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock)
+        let postCoordinator = PostCoordinator(mainService: postServiceMock, mediaCoordinator: mediaCoordinatorMock, isSyncPublishingEnabled: false)
 
         // Act
         var results = [Result<AbstractPost, Error>]()

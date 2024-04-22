@@ -1,6 +1,7 @@
 import Foundation
 
 enum AbstractPostHelper {
+    /// - warning: deprecated (kahu-offline-mode)
     static func editorPublishAction(for post: AbstractPost) -> PostEditorAction {
         post.blog.isPublishingPostsAllowed() ? .publish : .submitForReview
     }

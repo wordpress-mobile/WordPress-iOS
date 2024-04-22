@@ -14,17 +14,20 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusSync,       // Post uploaded
     AbstractPostRemoteStatusPushingMedia, // Push Media
     AbstractPostRemoteStatusAutoSaved,       // Post remote auto-saved
+
+    // All the previous states were deprecated in 24.7 and are no longer used
+    // by the app. To get the status of the uploads, use `PostCoordinator`.
+
+    /// The default state of the newly created local revision.
+    AbstractPostRemoteStatusLocalRevision,
+    /// The user saved the revision, and it needs to be uploaded to a server.
+    AbstractPostRemoteStatusSyncNeeded
 };
 
 @interface AbstractPost : BasePost
 
 // Relationships
 @property (nonatomic, strong) Blog *blog;
-/**
- The dateModified field is used in tandem with date_created_gmt to determine if
- a draft post should be published immediately. A draft post will "publish immediately"
- when the date_created_gmt and the modified date match.
- */
 @property (nonatomic, strong, nullable) NSDate * dateModified;
 @property (nonatomic, strong) NSSet<Media *> *media;
 @property (weak, readonly) AbstractPost *original;
@@ -54,12 +57,20 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 @property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
+/// - warning: deprecated (kahu-offline-mode)
+@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
+@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
+
 // Revision management
 - (AbstractPost *)createRevision;
+/// A new version of `createRevision` that allows you to create revisions based
+/// on other revisions.
+/// 
+/// - warning: Work-in-progress (kahu-offline-mode)
+- (AbstractPost *)_createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (AbstractPost *)updatePostFrom:(AbstractPost *)revision;
-- (void)updateRevision;
 - (BOOL)isRevision;
 - (BOOL)isOriginal;
 
@@ -73,7 +84,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-/// True if either the post failed to upload, or the post has media that failed to upload.
+/// - note: deprecated (kahu-offline-mode)
 @property (nonatomic, assign, readonly) BOOL isFailed;
 
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
@@ -86,7 +97,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
+/// - note: deprecated (kahu-offline-mode)
 - (void)publishImmediately;
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
@@ -156,6 +169,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /**
  Returns YES if the original post is a draft
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)originalIsDraft;
 
 /**
@@ -163,12 +177,14 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  This is different from "isScheduled" in that  a post with a draft, pending, or
  trashed status can also have a date_created_gmt with a future value.
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)hasFuturePublishDate;
 
 /**
  Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal.
  Used when determining if a post should publish immediately.
  */
+/// - note: deprecated (kahu-offline-mode)
 - (BOOL)dateCreatedIsNilOrEqualToDateModified;
 
 /**
@@ -176,6 +192,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  *
  *  @returns    YES if there ever was an attempt to upload this post, NO otherwise.
  */
+/// - warning: deprecated (kahu-offline-mode)
 - (BOOL)hasNeverAttemptedToUpload;
 
 /**

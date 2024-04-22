@@ -1,7 +1,12 @@
 import Foundation
 import UIKit
 
-final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
+protocol AbstractPostListCell {
+    /// A post displayed by the cell.
+    var post: AbstractPost? { get }
+}
+
+final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
     var isEnabled = true
 
     // MARK: - Views
@@ -20,12 +25,12 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
 
     private let headerView = PostListHeaderView()
     private let contentLabel = UILabel()
-    private let featuredImageView = CachedAnimatedImageView()
+    private let featuredImageView = ImageView()
     private let statusLabel = UILabel()
 
     // MARK: - Properties
 
-    private lazy var imageLoader = ImageLoader(imageView: featuredImageView, loadingIndicator: SolidColorActivityIndicator())
+    private var viewModel: PostListItemViewModel?
 
     // MARK: - PostSearchResultCell
 
@@ -33,6 +38,10 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
         get { contentLabel.attributedText }
         set { contentLabel.attributedText = newValue }
     }
+
+    // MARK: AbstractPostListCell
+
+    var post: AbstractPost? { viewModel?.post }
 
     // MARK: - Initializers
 
@@ -50,7 +59,8 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
     override func prepareForReuse() {
         super.prepareForReuse()
 
-        imageLoader.prepareForReuse()
+        featuredImageView.prepareForReuse()
+        viewModel = nil
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
@@ -62,16 +72,26 @@ final class PostListCell: UITableViewCell, PostSearchResultCell, Reusable {
             let host = MediaHost(with: viewModel.post) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
             }
-            imageLoader.loadImage(with: imageURL, from: host, preferredSize: Constants.imageSize)
+            let thumbnailURL = MediaImageService.getResizedImageURL(for: imageURL, blog: viewModel.post.blog, size: Constants.imageSize.scaled(by: UIScreen.main.scale))
+            featuredImageView.setImage(with: thumbnailURL, host: host)
         }
 
         statusLabel.text = viewModel.status
         statusLabel.textColor = viewModel.statusColor
         statusLabel.isHidden = viewModel.status.isEmpty
 
-        contentView.isUserInteractionEnabled = viewModel.isEnabled
-
         accessibilityLabel = viewModel.accessibilityLabel
+
+        configure(with: viewModel.syncStateViewModel)
+        self.viewModel = viewModel
+    }
+
+    private func configure(with viewModel: PostSyncStateViewModel) {
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
+        contentView.isUserInteractionEnabled = viewModel.isEditable
+        headerView.configure(with: viewModel)
     }
 
     // MARK: - Setup

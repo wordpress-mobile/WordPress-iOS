@@ -11,7 +11,6 @@ final class PostListItemViewModel {
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
-    var isEnabled: Bool { syncStateViewModel.isEditable }
 
     init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
@@ -104,6 +103,9 @@ private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateV
     }
     if !shouldHideAuthor, let author = post.authorForDisplay() {
         badges.append((author, nil))
+    }
+    if !syncStateViewModel.isEditable {
+        badges = badges.map { ($0.0, UIColor.textTertiary) }
     }
     return AbstractPostHelper.makeBadgesString(with: badges)
 }

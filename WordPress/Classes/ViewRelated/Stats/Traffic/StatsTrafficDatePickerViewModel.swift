@@ -6,6 +6,7 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
 
     @Published var period: StatsPeriodUnit {
         didSet {
+            updateDate(getCurrentDateForSite())
             period.track()
         }
     }
@@ -25,6 +26,11 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
 
     var isNextPeriodAvailable: Bool {
         return StatsPeriodHelper().dateAvailableAfterDate(date, period: period)
+    }
+
+    var isPreviousPeriodAvailable: Bool {
+        let backLimit = -(SiteStatsTableHeaderView.defaultPeriodCount - 1)
+        return StatsPeriodHelper().dateAvailableBeforeDate(date, period: period, backLimit: backLimit)
     }
 
     func goToPreviousPeriod() {
@@ -54,6 +60,10 @@ class StatsTrafficDatePickerViewModel: ObservableObject {
             isNext ? .statsDateTappedForward : .statsDateTappedBackward,
             withProperties: [StatsPeriodUnit.analyticsPeriodKey: period.description as Any],
             withBlogID: SiteStatsInformation.sharedInstance.siteID)
+    }
+
+    func updateDate(_ date: Date) {
+        self.date = StatsPeriodHelper().endDate(from: date, period: period)
     }
 }
 

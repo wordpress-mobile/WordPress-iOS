@@ -13,7 +13,10 @@ struct AbstractPostMenuHelper {
     /// - parameters:
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
-    func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu {
+    func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu? {
+        if RemoteFeatureFlag.syncPublishing.enabled(), !PostSyncStateViewModel(post: post).isEditable {
+            return nil
+        }
         return UIMenu(title: "", options: .displayInline, children: [
             UIDeferredMenuElement.uncached { [weak presentingView, weak delegate] completion in
                 guard let presentingView, let delegate else { return }
@@ -96,6 +99,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
+        case .delete: return UIImage(systemName: "trash")
         case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
@@ -111,7 +115,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var attributes: UIMenuElement.Attributes? {
         switch self {
-        case .trash:
+        case .trash, .delete:
             return [UIMenuElement.Attributes.destructive]
         default:
             return nil
@@ -122,11 +126,16 @@ extension AbstractPostButton: AbstractPostMenuAction {
         switch self {
         case .retry: return Strings.retry
         case .view: return post.status == .publish ? Strings.view : Strings.preview
-        case .publish: return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
+        case .publish:
+            guard RemoteFeatureFlag.syncPublishing.enabled() else {
+                return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
+            }
+            return Strings.publish
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
         case .moveToDraft: return Strings.draft
-        case .trash: return post.status == .trash ? Strings.delete : Strings.trash
+        case .trash: return Strings.trash
+        case .delete: return Strings.delete
         case .cancelAutoUpload: return Strings.cancelAutoUpload
         case .share: return Strings.share
         case .blaze: return Strings.blaze
@@ -156,6 +165,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.draft(post)
         case .trash:
             delegate.trash(post)
+        case .delete:
+            delegate.delete(post)
         case .cancelAutoUpload:
             delegate.cancelAutoUpload(post)
         case .share:
@@ -190,6 +201,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let trash = NSLocalizedString("posts.trash.actionTitle", value: "Move to trash", comment: "Label for a option that moves a post to the trash folder")
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")
+        static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish", comment: "Label for the publish post button.")
         static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")

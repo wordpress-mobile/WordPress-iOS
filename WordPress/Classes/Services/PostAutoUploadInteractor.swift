@@ -2,6 +2,8 @@
 import Foundation
 
 /// Decides what action should happen for post when it is auto-uploaded.
+///
+/// - note: Deprecated (kahu-offline-mode) (along with all related types)
 final class PostAutoUploadInteractor {
     enum AutoUploadAction: String {
         /// Upload the post as is.

@@ -9,9 +9,7 @@
 #import "WordPress-Swift.h"
 #import "WPAppAnalytics.h"
 
-static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
-
-@interface StatsViewController () <UIViewControllerRestoration, NoResultsViewControllerDelegate>
+@interface StatsViewController () <NoResultsViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL showingJetpackLogin;
 @property (nonatomic, assign) BOOL isActivatingStatsModule;
@@ -26,10 +24,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
 - (instancetype)init
 {
     self = [super init];
-    if (self) {
-        self.restorationClass = [self class];
-        self.restorationIdentifier = NSStringFromClass([self class]);
-    }
     return self;
 }
 
@@ -229,35 +223,6 @@ static NSString *const StatsBlogObjectURLRestorationKey = @"StatsBlogObjectURL";
         [weakSelf showStatsModuleDisabled];
         weakSelf.isActivatingStatsModule = NO;
     }];
-}
-
-#pragma mark - Restoration
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSURL *blogObjectURL = [[self.blog objectID] URIRepresentation];
-    [coder encodeObject:blogObjectURL forKey:StatsBlogObjectURLRestorationKey];
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    NSURL *blogObjectURL = [coder decodeObjectForKey:StatsBlogObjectURLRestorationKey];
-    if (!blogObjectURL) {
-        return nil;
-    }
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSManagedObjectID *blogObjectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:blogObjectURL];
-    Blog *blog = (Blog *)[context existingObjectWithID:blogObjectID error:nil];
-    if (!blog) {
-        return nil;
-    }
-    StatsViewController *viewController = [[self alloc] init];
-    viewController.blog = blog;
-
-    return viewController;
 }
 
 @end

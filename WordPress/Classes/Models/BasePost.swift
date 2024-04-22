@@ -8,6 +8,11 @@ extension BasePost {
     // status to Objc-C since it returns an optional enum.
     // I'd prefer #keyPath over a string constant, but the enum brings way more value.
     static let statusKeyPath = "status"
+
+    /// The status of the post.
+    ///
+    /// - warning: The only component that can change the post status is
+    /// ``PostRepository``. Never change the status of the post directly.
     var status: Status? {
         get {
             return rawValue(forKey: BasePost.statusKeyPath)
@@ -72,6 +77,7 @@ extension BasePost {
 }
 
 extension Sequence where Iterator.Element == BasePost.Status {
+    /// - warning: deprecated (kahu-offline-mode)
     var strings: [String] {
         return map({ $0.rawValue })
     }

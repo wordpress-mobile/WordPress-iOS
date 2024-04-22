@@ -21,12 +21,14 @@ struct OverviewRow: StatsHashableImmuTableRow {
     weak var statsBarChartViewDelegate: StatsBarChartViewDelegate?
     let chartHighlightIndex: Int?
     let statSection: StatSection? = nil
+    let tabIndex: Int
 
     // MARK: - Hashable
 
     static func == (lhs: OverviewRow, rhs: OverviewRow) -> Bool {
-        return lhs.tabsData == rhs.tabsData &&
-            lhs.chartHighlightIndex == rhs.chartHighlightIndex
+        return lhs.tabsData == rhs.tabsData
+            && lhs.period == rhs.period
+            && lhs.chartHighlightIndex == rhs.chartHighlightIndex
     }
 
     func configureCell(_ cell: UITableViewCell) {
@@ -35,33 +37,7 @@ struct OverviewRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex)
-    }
-}
-struct StatsTrafficBarChartRow: StatsHashableImmuTableRow {
-    typealias CellType = StatsTrafficBarChartCell
-    let action: ImmuTableAction?
-    let tabsData: [StatsTrafficBarChartTabData]
-    let chartData: [BarChartDataConvertible]
-    let chartStyling: [StatsTrafficBarChartStyling]
-    let statSection: StatSection? = nil
-    let period: StatsPeriodUnit
-    let unit: StatsPeriodUnit
-    weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
-
-    static let cell: ImmuTableCell = {
-        return ImmuTableCell.class(CellType.self)
-    }()
-
-    func configureCell(_ cell: UITableViewCell) {
-
-        guard let cell = cell as? CellType else { return }
-
-        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, unit: unit, siteStatsPeriodDelegate: siteStatsPeriodDelegate)
-    }
-
-    static func == (lhs: StatsTrafficBarChartRow, rhs: StatsTrafficBarChartRow) -> Bool {
-        return lhs.tabsData == rhs.tabsData && lhs.period == rhs.period && lhs.unit == rhs.unit
+        cell.configure(tabsData: tabsData, barChartData: chartData, barChartStyling: chartStyling, period: period, statsBarChartViewDelegate: statsBarChartViewDelegate, barChartHighlightIndex: chartHighlightIndex, tabIndex: tabIndex)
     }
 }
 

@@ -4,14 +4,13 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 
-final class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+final class PageListViewController: AbstractPostListViewController {
     private struct Constant {
         struct Size {
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
         }
 
         struct Identifiers {
-            static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
             static let pageCellIdentifier = "PageCellIdentifier"
             static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
         }
@@ -58,7 +57,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
-        vc.restorationClass = self
         if QuickStartTourGuide.shared.isCurrentElement(.pages) {
             vc.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
         }
@@ -71,35 +69,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.pages)
-    }
-
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: Constant.Identifiers.pagesViewControllerRestorationKey) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID) as? Blog else {
-
-                return nil
-        }
-
-        return controllerWithBlog(restoredBlog)
-    }
-
-    // MARK: - UIStateRestoring
-
-    override func encodeRestorableState(with coder: NSCoder) {
-
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-
-        coder.encode(objectString, forKey: Constant.Identifiers.pagesViewControllerRestorationKey)
-
-        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController

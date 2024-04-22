@@ -3,9 +3,6 @@ import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {
-    static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
-    static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
-
     let meScenePresenter: ScenePresenter
 
     let becomeActiveTab: () -> Void
@@ -53,7 +50,6 @@ class MySitesCoordinator: NSObject {
     lazy var splitViewController: WPSplitViewController = {
         let splitViewController = WPSplitViewController()
 
-        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
         splitViewController.tabBarItem = navigationController.tabBarItem
@@ -66,7 +62,6 @@ class MySitesCoordinator: NSObject {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
         if FeatureFlag.newTabIcons.enabled {
