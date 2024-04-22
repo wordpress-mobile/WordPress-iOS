@@ -82,6 +82,15 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     fileprivate var selectedNotification: Notification? = nil
 
+    ///
+    ///
+    fileprivate var filter: Filter = .none {
+        didSet {
+            filterTabBar?.setSelectedIndex(filter.rawValue)
+            reloadResultsController()
+        }
+    }
+
     /// JetpackLoginVC being presented.
     ///
     internal var jetpackLoginViewController: JetpackLoginViewController? = nil
@@ -455,7 +464,7 @@ private extension NotificationsViewController {
         navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
     }
 
-    func updateNavigationItems() {
+    func configureNavigationItems() {
         let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
             guard let self else {
                 completion([])
@@ -473,6 +482,18 @@ private extension NotificationsViewController {
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
             return button
         }()
+        self.configureNavigationTitle()
+    }
+
+    private func configureNavigationTitle() {
+        let menu = UIMenu(children: [
+            UIMenu(options: [.displayInline], children: Filter.allCases.map { filter in
+                UIAction(title: filter.title, image: nil) { [weak self] _ in
+                    self?.selectedFilterDidChange(filter: filter)
+                }
+            })
+        ])
+        self.navigationItem.titleView = UIButton.makeMenu(title: "Notifications", menu: menu)
     }
 
     func makeMoreMenuElements() -> [UIAction] {
@@ -580,9 +601,7 @@ private extension NotificationsViewController {
         WPStyleGuide.configureFilterTabBar(filterTabBar)
         filterTabBar.superview?.backgroundColor = .systemBackground
         filterTabBar.backgroundColor = .systemBackground
-
         filterTabBar.items = Filter.allCases
-        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
 
@@ -1286,8 +1305,9 @@ extension NotificationsViewController: NetworkStatusDelegate {
 //
 extension NotificationsViewController {
 
-    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        selectedNotification = nil
+    private func selectedFilterDidChange(filter: Filter) {
+        self.filter = filter
+        self.selectedNotification = nil
 
         let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
@@ -1508,7 +1528,7 @@ private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         noResultsViewController.removeFromView()
         updateSplitViewAppearanceForNoResultsView()
-        updateNavigationItems()
+        configureNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
@@ -1800,17 +1820,6 @@ private extension NotificationsViewController {
 
     var userDefaults: UserPersistentRepository {
         return UserPersistentStoreFactory.instance()
-    }
-
-    var filter: Filter {
-        get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
-            return Filter(rawValue: selectedIndex) ?? .none
-        }
-        set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
-            reloadResultsController()
-        }
     }
 
     enum Filter: Int, FilterTabBarItem, CaseIterable {
