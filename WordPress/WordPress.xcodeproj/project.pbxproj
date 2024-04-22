@@ -204,6 +204,8 @@
 		018FF1372AE67C2600F301C3 /* LockScreenFlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */; };
 		019C5B8D2BD6570D00A69DB0 /* StatsSubscribersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */; };
 		019C5B8E2BD6570D00A69DB0 /* StatsSubscribersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */; };
+		019C5B942BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */; };
+		019C5B952BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */; };
 		019D699E2A5EA963003B676D /* RootViewCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */; };
 		019D69A02A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
 		019D69A12A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */; };
@@ -6001,6 +6003,7 @@
 		018FF1342AE6771A00F301C3 /* LockScreenVerticalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenVerticalCard.swift; sourceTree = "<group>"; };
 		018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFlexibleCard.swift; sourceTree = "<group>"; };
 		019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersStore.swift; sourceTree = "<group>"; };
+		019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersCache.swift; sourceTree = "<group>"; };
 		019D699D2A5EA963003B676D /* RootViewCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewCoordinatorTests.swift; sourceTree = "<group>"; };
 		019D699F2A5EBF47003B676D /* WordPressAuthenticatorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressAuthenticatorProtocol.swift; sourceTree = "<group>"; };
 		01A8508A2A8A126400BD8A97 /* support_chat_widget.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = support_chat_widget.css; sourceTree = "<group>"; };
@@ -9906,6 +9909,7 @@
 				01011E812BD27DFF003B5C2B /* StatsSubscribersViewController.swift */,
 				01011E842BD27E47003B5C2B /* StatsSubscribersViewModel.swift */,
 				019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */,
+				019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */,
 			);
 			path = Subscribers;
 			sourceTree = "<group>";
@@ -22131,6 +22135,7 @@
 				733195832284FE9F0007D904 /* PeriodChart.swift in Sources */,
 				F1450CF52437E1A600A28BFE /* MediaHost.swift in Sources */,
 				08216FC81CDBF96000304BA7 /* MenuItemAbstractPostsViewController.m in Sources */,
+				019C5B942BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */,
 				F1ADCAF7241FEF0C00F150D2 /* AtomicAuthenticationService.swift in Sources */,
 				5703A4C622C003DC0028A343 /* WPStyleGuide+Posts.swift in Sources */,
 				DC8F61F727032B3F0087AC5D /* TimeZoneFormatter.swift in Sources */,
@@ -25211,6 +25216,7 @@
 				FABB23762602FC2C00C8785C /* ActivityContentGroup.swift in Sources */,
 				C9F1D4B82706ED7C00BDF917 /* EditHomepageViewController.swift in Sources */,
 				FABB23772602FC2C00C8785C /* MediaImageExporter.swift in Sources */,
+				019C5B952BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */,
 				3FFDEF8A2918597700B625CE /* MigrationDoneViewController.swift in Sources */,
 				8B55F9DC2614D902007D618E /* CircledIcon.swift in Sources */,
 				FABB23792602FC2C00C8785C /* ChangePasswordViewController.swift in Sources */,
