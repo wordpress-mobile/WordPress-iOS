@@ -228,8 +228,9 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
 
         let itemTitle = itemLabel.text ?? ""
         let dataTitle = dataLabel.text?.accessibilityLabel ?? dataLabel.text ?? ""
+        let secondDataTitle = secondDataLabel.text?.accessibilityLabel ?? secondDataLabel.text ?? ""
 
-        accessibilityLabel = [itemTitle, dataTitle].joined(separator: ", ")
+        accessibilityLabel = [itemTitle, dataTitle, secondDataTitle].joined(separator: ", ")
 
         if let statSection = rowData?.statSection, statSection == .insightsAddInsight {
             accessibilityTraits = .button
