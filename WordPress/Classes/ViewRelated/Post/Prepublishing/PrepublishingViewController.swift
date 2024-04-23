@@ -121,6 +121,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         configureHeader()
         configureTableView()
+        configurePublishButton()
         observePostConflictResolved()
 
         WPStyleGuide.applyBorderStyle(footerSeparator)
@@ -130,14 +131,25 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
             tableView,
-            footerSeparator,
-            setupPublishButton()
+            footerSeparator
         ])
         stackView.axis = .vertical
 
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(stackView)
+        let contentView = VStack {
+            PrepublishingStackView(view: stackView)
+            PublishButton(viewModel: publishButtonViewModel)
+                .tint(Color(uiColor: .primary))
+                .padding() // TODO: ok padding?
+        }.ignoresSafeArea(.keyboard)
+
+        // Making the entire view `UIHostingController` to make sure keyboard
+        // avoidance can be disabled (see https://steipete.com/posts/disabling-keyboard-avoidance-in-swiftui-uihostingcontroller/?utm_campaign=%20SwiftUI%20Weekly&utm_medium=email&utm_source=Revue%20newsletter)
+        let hostingViewController = UIHostingController(rootView: contentView)
+        addChild(hostingViewController)
+
+        view.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(hostingViewController.view)
 
         view.backgroundColor = .systemBackground
 
@@ -168,23 +180,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         tableView.rowHeight = UITableView.automaticDimension
     }
 
-    private func setupPublishButton() -> UIView {
-        let footerView = UIView()
-
-        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
-        addChild(hostingViewController)
-
-        footerView.addSubview(hostingViewController.view)
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
-
+    private func configurePublishButton() {
         updatePublishButtonLabel()
         updatePublishButtonState()
         mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.updatePublishButtonState()
         }
-
-        return footerView
     }
 
     private func observePostConflictResolved() {
@@ -579,6 +580,18 @@ private final class PrepublishingViewModel {
             password: password,
             publishDate: publishDate
         ))
+    }
+}
+
+private struct PrepublishingStackView: UIViewRepresentable {
+    let view: UIStackView
+
+    func makeUIView(context: Context) -> some UIView {
+        view
+    }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        // Do nothing
     }
 }
 
