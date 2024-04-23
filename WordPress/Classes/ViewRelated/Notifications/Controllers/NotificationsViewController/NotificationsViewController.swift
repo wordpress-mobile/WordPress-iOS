@@ -28,10 +28,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     @IBOutlet var tableHeaderView: UIView!
 
-    /// Filtering Tab Bar
-    ///
-    @IBOutlet weak var filterTabBar: FilterTabBar!
-
     /// Jetpack Banner View
     /// Only visible in WordPress
     ///
@@ -161,7 +157,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         setupTableFooterView()
         setupRefreshControl()
         setupNoResultsView()
-        setupFilterBar()
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
@@ -545,7 +540,6 @@ private extension NotificationsViewController {
     func setupConstraints() {
         // Inline prompt is initially hidden!
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
-        filterTabBar.tabBarHeightConstraintPriority = 999
 
         let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
         let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
@@ -603,13 +597,6 @@ private extension NotificationsViewController {
 
     func setupNoResultsView() {
         noResultsViewController.delegate = self
-    }
-
-    func setupFilterBar() {
-        WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.superview?.backgroundColor = .systemBackground
-        filterTabBar.backgroundColor = .systemBackground
-        filterTabBar.items = Filter.allCases
     }
 }
 
@@ -1309,7 +1296,7 @@ extension NotificationsViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - FilterTabBar Methods
+// MARK: - Filters Menu Methods
 //
 extension NotificationsViewController {
 
