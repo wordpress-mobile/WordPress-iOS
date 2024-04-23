@@ -470,6 +470,7 @@ struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
 
     let itemSubtitle: String
     let dataSubtitle: String
+    var secondDataSubtitle: String? = nil
     let dataRows: [StatsTotalRowData]
     var statSection: StatSection?
     weak var siteStatsPeriodDelegate: SiteStatsPeriodDelegate?
@@ -484,6 +485,7 @@ struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
     static func == (lhs: TopTotalsPeriodStatsRow, rhs: TopTotalsPeriodStatsRow) -> Bool {
         return lhs.itemSubtitle == rhs.itemSubtitle &&
             lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.secondDataSubtitle == rhs.secondDataSubtitle &&
             lhs.dataRows == rhs.dataRows &&
             lhs.statSection == rhs.statSection
     }
@@ -496,6 +498,7 @@ struct TopTotalsPeriodStatsRow: StatsHashableImmuTableRow {
 
         cell.configure(itemSubtitle: itemSubtitle,
                        dataSubtitle: dataSubtitle,
+                       secondDataSubtitle: secondDataSubtitle,
                        dataRows: dataRows,
                        statSection: statSection,
                        siteStatsInsightsDelegate: siteStatsInsightsDetailsDelegate,

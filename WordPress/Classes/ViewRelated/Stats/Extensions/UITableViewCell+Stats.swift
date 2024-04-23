@@ -5,6 +5,7 @@ import Foundation
 enum StatType: Int {
     case insights
     case period
+    case subscribers
 }
 
 extension UITableViewCell {
