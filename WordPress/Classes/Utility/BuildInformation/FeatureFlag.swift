@@ -42,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerTagsFeed:
             return false
         case .syncPublishing:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting] || FeatureFlagRolloutStore().isRolloutEnabled(for: self)
         }
     }
 
@@ -103,6 +103,22 @@ extension FeatureFlag: OverridableFlag {
             return false
         default:
             return true
+        }
+    }
+}
+
+extension FeatureFlag: RolloutConfigurableFlag {
+    /// Represents the percentage of users to roll the flag out to.
+    ///
+    /// To set a percentage rollout, return a value between 1 and 100 inclusive.
+    /// If a percentage rollout isn't applicable for the flag, return nil.
+    ///
+    var rolloutPercentage: Int? {
+        switch self {
+        case .syncPublishing:
+            return 1
+        default:
+            return nil
         }
     }
 }
