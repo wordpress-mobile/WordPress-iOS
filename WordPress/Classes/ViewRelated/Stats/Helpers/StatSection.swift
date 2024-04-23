@@ -35,6 +35,7 @@
     case postStatsAverageViews
     case postStatsRecentWeeks
     case subscribersEmailsSummary
+    case subscribersList
 
     static let allInsights: [StatSection] = [
         .insightsViewsVisitors,
@@ -145,6 +146,8 @@
             return PostStatsHeaders.recentWeeks
         case .subscribersEmailsSummary:
             return SubscribersHeaders.emailsSummaryStats
+        case .subscribersList:
+            return SubscribersHeaders.subscribersList
         default:
             return ""
         }
@@ -431,6 +434,7 @@
 
     struct SubscribersHeaders {
         static let emailsSummaryStats = NSLocalizedString("stats.subscribers.emailsSummaryCard.title", value: "Emails", comment: "Stats 'Emails' card header")
+        static let subscribersList = NSLocalizedString("stats.subscribers.subscribersListCard.title", value: "Subscribers", comment: "Stats 'Subscribers' card header")
     }
 
     struct PostStatsHeaders {
