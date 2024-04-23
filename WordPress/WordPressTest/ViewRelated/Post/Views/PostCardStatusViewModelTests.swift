@@ -88,6 +88,26 @@ class PostCardStatusViewModelTests: CoreDataTestCase {
         expect(buttons).to(equal(expectedButtons))
     }
 
+    func testPendingPostButtons() {
+        // Given
+        let post = PostBuilder(mainContext)
+            .pending()
+            .build()
+        let viewModel = PostCardStatusViewModel(post: post, isJetpackFeaturesEnabled: true, isBlazeFlagEnabled: true)
+
+        // When & Then
+        let buttons = viewModel.buttonSections
+            .filter { !$0.buttons.isEmpty }
+            .map { $0.buttons }
+        let expectedButtons: [[AbstractPostButton]] = [
+            [.view],
+            [.publish, .moveToDraft, .duplicate],
+            [.settings],
+            [.trash]
+        ]
+        expect(buttons).to(equal(expectedButtons))
+    }
+
     func testScheduledPostButtons() {
         // Given
         let post = PostBuilder(mainContext)
