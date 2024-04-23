@@ -84,9 +84,22 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
 
     ///
     ///
+    fileprivate lazy var filtersMenuButton: UIButton = {
+        let menu = UIMenu(children: [
+            UIMenu(options: [.displayInline], children: Filter.allCases.map { filter in
+                UIAction(title: filter.title, image: nil) { [weak self] _ in
+                    self?.filtersMenuTapped(filter: filter)
+                }
+            })
+        ])
+        return UIButton.makeMenu(title: filtersMenuButtonTitle(for: filter), menu: menu)
+    }()
+
+    ///
+    ///
     fileprivate var filter: Filter = .none {
         didSet {
-            filterTabBar?.setSelectedIndex(filter.rawValue)
+            filtersMenuButton.configuration = UIButton.menuButtonConfiguration(title: filtersMenuButtonTitle(for: filter))
             reloadResultsController()
         }
     }
@@ -486,14 +499,14 @@ private extension NotificationsViewController {
     }
 
     private func configureNavigationTitle() {
-        let menu = UIMenu(children: [
-            UIMenu(options: [.displayInline], children: Filter.allCases.map { filter in
-                UIAction(title: filter.title, image: nil) { [weak self] _ in
-                    self?.selectedFilterDidChange(filter: filter)
-                }
-            })
-        ])
-        self.navigationItem.titleView = UIButton.makeMenu(title: "Notifications", menu: menu)
+        self.navigationItem.titleView = filtersMenuButton
+    }
+
+    private func filtersMenuButtonTitle(for filter: Filter) -> String {
+        switch filter {
+        case .none: return "All Notifications"
+        default: return filter.title
+        }
     }
 
     func makeMoreMenuElements() -> [UIAction] {
@@ -1305,18 +1318,15 @@ extension NotificationsViewController: NetworkStatusDelegate {
 //
 extension NotificationsViewController {
 
-    private func selectedFilterDidChange(filter: Filter) {
+    private func filtersMenuTapped(filter: Filter) {
         self.filter = filter
         self.selectedNotification = nil
 
         let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
-        updateUnreadNotificationsForFilterTabChange()
-
-        reloadResultsController()
-
-        selectFirstNotificationIfAppropriate()
+        self.updateUnreadNotificationsForFilterTabChange()
+        self.selectFirstNotificationIfAppropriate()
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
