@@ -103,7 +103,7 @@ extension PostEditor {
     }
 
     var editorHasChanges: Bool {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             return !post.changes.isEmpty
         } else {
             return post.hasUnsavedChanges()
@@ -138,7 +138,7 @@ extension PostEditor {
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
         showAutosaveAvailableAlertIfNeeded()

@@ -23,7 +23,7 @@ final class PostRepository {
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
          remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
         self.isSyncPublishingEnabled = isSyncPublishingEnabled

@@ -227,7 +227,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return trashPost(post, completion: completion)
         }
         return super._trash(post, completion: completion)

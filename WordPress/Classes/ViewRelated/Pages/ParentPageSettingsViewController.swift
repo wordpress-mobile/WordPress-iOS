@@ -233,7 +233,7 @@ class ParentPageSettingsViewController: UIViewController {
 
         selectedParentID = selectedRow?.page?.postID
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             Task {
                 await self.saveChanges()
             }

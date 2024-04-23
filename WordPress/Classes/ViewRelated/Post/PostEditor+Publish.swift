@@ -75,7 +75,7 @@ extension PublishingEditor {
                 return
             }
 
-            let hasChanges = RemoteFeatureFlag.syncPublishing.enabled() ? self.post.hasChanges : self.post.hasLocalChanges()
+            let hasChanges = FeatureFlag.syncPublishing.enabled ? self.post.hasChanges : self.post.hasLocalChanges()
             if hasChanges {
                 guard let context = self.post.managedObjectContext else {
                     return
@@ -88,7 +88,7 @@ extension PublishingEditor {
     func handlePrimaryActionButtonTap() {
         let action = self.postEditorStateContext.action
 
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             publishPost(
                 action: action,
                 dismissWhenDone: action.dismissesEditor,
@@ -362,7 +362,7 @@ extension PublishingEditor {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _cancelEditing()
         }
 
@@ -418,7 +418,7 @@ extension PublishingEditor {
 
     @discardableResult
     func discardChanges() -> Bool {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _discardChanges()
         }
 
@@ -701,7 +701,7 @@ extension PublishingEditor {
     }
 
     func createRevisionOfPost(loadAutosaveRevision: Bool = false) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
         }
         guard let managedObjectContext = post.managedObjectContext else {
@@ -795,7 +795,7 @@ private enum EditorError: Int {
 }
 
 struct PostEditorDebouncerConstants {
-    static let autoSavingDelay =  RemoteFeatureFlag.syncPublishing.enabled() ? Double(7.0) : Double(0.5)
+    static let autoSavingDelay =  FeatureFlag.syncPublishing.enabled ? Double(7.0) : Double(0.5)
 }
 
 private enum Strings {

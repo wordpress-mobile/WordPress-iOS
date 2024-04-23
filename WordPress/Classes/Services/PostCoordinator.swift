@@ -68,7 +68,7 @@ class PostCoordinator: NSObject {
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
          coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext

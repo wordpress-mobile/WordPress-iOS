@@ -83,7 +83,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
 
@@ -135,7 +135,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             contentStackView.addArrangedSubviews([
                 indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
             ])
@@ -169,7 +169,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func setupIcon() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
         NSLayoutConstraint.activate([

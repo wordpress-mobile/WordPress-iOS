@@ -85,7 +85,7 @@ import Foundation
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
 
         let predicate: NSPredicate
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let query =
             // existing published/private posts
             "(statusAfterSync = status AND status IN (%@))"
@@ -128,7 +128,7 @@ import Foundation
         let statusesForLocalDrafts: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
 
         let predicate: NSPredicate
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let query =
             // Existing draft/pending posts
             "(statusAfterSync = status AND status IN (%@))"
@@ -170,7 +170,7 @@ import Foundation
         let statuses: [BasePost.Status] = [.scheduled]
 
         let predicate: NSPredicate
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let query =
             // existing scheduled posts
             "(statusAfterSync = status AND status IN (%@))"
@@ -213,7 +213,7 @@ import Foundation
         let statuses: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
 
         let predicate: NSPredicate
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let query =
             // Existing non-trashed posts
             "(statusAfterSync = status AND status IN (%@))"

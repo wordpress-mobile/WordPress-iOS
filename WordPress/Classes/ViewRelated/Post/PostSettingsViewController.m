@@ -181,7 +181,7 @@ FeaturedImageViewControllerDelegate>
     [super viewWillDisappear:animated];
 
     if (self.isStandalone) {
-        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        if ([Feature enabled:FeatureFlagSyncPublishing]) {
             return; // No longer needed
         }
         if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
@@ -672,7 +672,7 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
         if (self.isDraftOrPending) {
             [metaRows addObject:@(PostSettingsRowPendingReview)];
         } else {
