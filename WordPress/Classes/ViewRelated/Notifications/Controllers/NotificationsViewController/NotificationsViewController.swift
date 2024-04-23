@@ -77,13 +77,21 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     /// Menu listing the notifications filters.
     ///
     fileprivate lazy var filtersMenuButton: UIButton = {
-        let menu = UIMenu(children: [
-            UIMenu(options: [.displayInline], children: Filter.allCases.map { filter in
+        let firstSection = [Filter.none]
+        let secondSection = Filter.allCases.filter { $0 != .none }
+        let children: [UIMenuElement] = [firstSection, secondSection].map { section -> UIMenuElement in
+            let actions = section.map { filter in
                 UIAction(title: filter.title, image: nil) { [weak self] _ in
                     self?.filtersMenuTapped(filter: filter)
                 }
-            })
-        ])
+            }
+            if actions.count == 1, let action = actions.first {
+                return action
+            } else {
+                return UIMenu(options: .displayInline, children: actions)
+            }
+        }
+        let menu = UIMenu(children: children)
         return UIButton.makeMenu(title: filtersMenuButtonTitle(for: filter), menu: menu)
     }()
 
