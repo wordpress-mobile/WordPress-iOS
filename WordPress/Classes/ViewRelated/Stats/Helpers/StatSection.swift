@@ -448,6 +448,7 @@
         static let title = NSLocalizedString("Title", comment: "Label for list of stats by content title.")
         static let service = NSLocalizedString("Service", comment: "Label for connected service in Publicize stat.")
         static let follower = NSLocalizedString("Follower", comment: "Label for list of followers.")
+        static let subscriber = NSLocalizedString("stats.section.itemSubtitles.subscriber", value: "Subscriber", comment: "Label for list of subscribers.")
         static let referrer = NSLocalizedString("Referrer", comment: "Label for link title in Referrers stat.")
         static let link = NSLocalizedString("Link", comment: "Label for link title in Clicks stat.")
         static let country = NSLocalizedString("Country", comment: "Label for list of countries.")

@@ -101,7 +101,7 @@ private extension StatsSubscribersViewModel {
         case .success(let subscribers):
             return [
                 TopTotalsPeriodStatsRow(
-                    itemSubtitle: StatSection.ItemSubtitles.follower,
+                    itemSubtitle: StatSection.ItemSubtitles.subscriber,
                     dataSubtitle: StatSection.DataSubtitles.since,
                     dataRows: subscribersListDataRows(subscribers),
                     statSection: .subscribersList,
