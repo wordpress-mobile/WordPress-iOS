@@ -55,7 +55,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
         }
     }
 
-    // MARK: - Followers
+    // MARK: - Subscribers List
 
     func updateSubscribersList(quantity: Int) {
         let cacheKey = StatsSubscribersCache.CacheKey.subscribersList(quantity: quantity, siteId: siteID)
