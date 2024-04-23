@@ -212,33 +212,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         PostListEditorPresenter.handleCopy(post: post, in: self)
     }
 
-    fileprivate func viewStatsForPost(_ post: AbstractPost) {
-        // Check the blog
-        let blog = post.blog
-
-        guard blog.supports(.stats) else {
-            // Needs Jetpack.
-            return
-        }
-
-        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
-
-        // Push the Post Stats ViewController
-        guard let postID = post.postID as? Int else {
-            return
-        }
-
-        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
-        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
-
-        let postURL = URL(string: post.permaLink! as String)
-        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
-                                                                                            postTitle: post.titleForDisplay(),
-                                                                                            postURL: postURL)
-        navigationController?.pushViewController(postStatsTableViewController, animated: true)
-    }
-
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
@@ -247,10 +220,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
     func view(_ post: AbstractPost) {
         viewPost(post)
-    }
-
-    func stats(for post: AbstractPost) {
-        viewStatsForPost(post)
     }
 
     func duplicate(_ post: AbstractPost) {

@@ -26,7 +26,8 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
-            [.setParent, .setHomepage, .setPostsPage, .settings],
+            [.setParent, .setHomepage, .setPostsPage],
+            [.stats, .settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -53,7 +54,8 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
-            [.setParent, .setHomepage, .setPostsPage, .settings],
+            [.setParent, .setHomepage, .setPostsPage],
+            [.stats, .settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -80,7 +82,8 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
-            [.setParent, .setHomepage, .setPostsPage, .settings],
+            [.setParent, .setHomepage, .setPostsPage],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -108,7 +111,8 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.duplicate, .share],
             [.blaze],
-            [.setParent, .setPostsPage, .settings]
+            [.setParent, .setPostsPage],
+            [.stats, .settings]
         ]
         expect(buttons).to(equal(expectedButtons))
     }
@@ -135,7 +139,8 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
-            [.setParent, .setHomepage, .setRegularPage, .settings],
+            [.setParent, .setHomepage, .setRegularPage],
+            [.stats, .settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -156,6 +161,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.publish, .duplicate],
             [.setParent],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -176,6 +182,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft],
             [.setParent],
+            [.settings],
             [.trash]
         ]
         expect(buttons).to(equal(expectedButtons))

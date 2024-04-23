@@ -1,6 +1,7 @@
 24.8
 -----
-
+* [*] Move "Settings" context menu action in "Pages" from the submenu to a separate section to make it easily discoverable and make it available for unpublished posts [#23065]
+* [*] Add "Stats" context menu action to "Pages" [#23065]
 
 24.7
 -----
