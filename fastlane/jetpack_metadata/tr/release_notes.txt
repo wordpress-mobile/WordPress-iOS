@@ -1,3 +1,2 @@
-Vurgulu metin biçimlendirmesiyle ilgili birkaç sorunu düzelttik. Sizi bilemeyiz ancak bizim haftamızın en önemli olayı buydu.
-Bu sırada Öngörüler ekranında birden fazla hata mesajına sebep olan sorunları çözdük. Dramayla değil sadece verilerle uğraştık.
-Ayrıca okuyucuda sitenizin eski, önbelleğe alınmış sürümünü değil, en güncel sürümünü görmelisiniz. Ne kadar yeni, o kadar iyi.
+Okuyucu ekranınızı özelleştirebilmeniz için okuma tercihleri ekledik. Modunuza uyan bir okuma deneyimi için en çok beğendiğiniz rengi, yazı tipini ve boyutu seçin.
+Daha iyi yüklenmesi ve kaydırılması için İçgörüler sekmesini de güncelledik. Titreme yok, bozulma yok, sorun yok.

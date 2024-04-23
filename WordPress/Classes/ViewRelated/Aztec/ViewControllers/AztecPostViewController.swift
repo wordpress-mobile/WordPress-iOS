@@ -357,6 +357,7 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     /// If true, apply autosave content when the editor creates a revision.
     ///
+    /// - warning: deprecated (kahu-offline-mode)
     private let loadAutosaveRevision: Bool
 
     /// Active Downloads
@@ -519,6 +520,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             showDeprecationNotice()
             hasNoticeBeenShown = true
         }
+
+        onViewDidLoad()
     }
 
     private func shouldShowDeprecationNotice() -> Bool {
@@ -1064,31 +1067,11 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIButton) {
-        handlePublishButtonTap()
+        handlePrimaryActionButtonTap()
     }
 
     @IBAction func secondaryPublishButtonTapped() {
-        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
-            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
-            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            WordPressAppDelegate.crashLogging?.logError(error)
-            return
-        }
-
-        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
-
-        let publishPostClosure = { [unowned self] in
-            self.publishPost(
-                action: action,
-                dismissWhenDone: action.dismissesEditor,
-                analyticsStat: secondaryStat)
-        }
-
-        if presentedViewController != nil {
-            dismiss(animated: true, completion: publishPostClosure)
-        } else {
-            publishPostClosure()
-        }
+        handleSecondaryActionButtonTap()
     }
 
     @IBAction func closeWasPressed() {
@@ -1103,7 +1086,6 @@ extension AztecPostViewController {
 // MARK: - Private Helpers
 //
 private extension AztecPostViewController {
-
     /// Presents an alert controller, allowing the user to insert a link to either:
     ///
     /// - Insert a link to the document

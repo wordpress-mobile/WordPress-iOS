@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case close
         case more
         case autoSave
-        case continueFromHomepageEditing
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -353,6 +352,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        onViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -515,6 +516,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func presentNewPageNoticeIfNeeded() {
+        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+            return
+        }
         // Validate if the post is a newly created page or not.
         guard post is Page,
             post.isDraft(),
@@ -845,7 +849,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch reason {
             case .publish:
                 if editorHasContent(title: title, content: html) {
-                    handlePublishButtonTap()
+                    handlePrimaryActionButtonTap()
                 } else {
                     showAlertForEmptyPostPublish()
                 }
@@ -856,17 +860,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .autoSave:
                 break
-                // Inelegant :(
-            case .continueFromHomepageEditing:
-                continueFromHomepageEditing()
-                break
             }
         }
-    }
-
-    // Not ideal, but seems the least bad of the alternatives
-    @objc func continueFromHomepageEditing() {
-        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {

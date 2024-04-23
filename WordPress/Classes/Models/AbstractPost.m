@@ -5,21 +5,6 @@
 #import "BasePost.h"
 @import WordPressKit;
 
-@interface AbstractPost ()
-
-/**
- The following pair of properties is used to confirm that the post we'll be trying to automatically retry uploading,
- hasn't changed since user has tapped on "confirm", and that we're not suddenly trying to auto-upload a post that the user
- might have already forgotten about.
-
- The public-facing counterparts of those is the `shouldAttemptAutoUpload` property.
- */
-
-@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
-@property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
-
-@end
-
 @implementation AbstractPost
 
 @dynamic blog;
@@ -96,6 +81,10 @@
 {
     self.date_created_gmt = localDate;
 
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        return;
+    }
+
     /*
      If the date is nil it means publish immediately so set the status to publish.
      If the date is in the future set the status to scheduled if current status is published.
@@ -159,6 +148,17 @@
     return post;
 }
 
+- (AbstractPost *)_createRevision {
+    NSParameterAssert(self.revision == nil);
+
+    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
+    [post cloneFrom:self];
+    post.remoteStatus = AbstractPostRemoteStatusLocalRevision;
+    [post setValue:self forKey:@"original"];
+    [post setValue:nil forKey:@"revision"];
+    return post;
+}
+
 - (void)deleteRevision
 {
     if (self.revision) {
@@ -193,14 +193,6 @@
     return self;
 }
 
-- (void)updateRevision
-{
-    if ([self isRevision]) {
-        [self cloneFrom:self.original];
-        self.isFeaturedImageChanged = self.original.isFeaturedImageChanged;
-    }
-}
-
 - (BOOL)isRevision
 {
     return (![self isOriginal]);
@@ -213,11 +205,6 @@
 
 - (AbstractPost *)latest
 {
-    // Even though we currently only support 1 revision per-post, we have plans to support multiple
-    // revisions in the future.  That's the reason why we call `[[self revision] latest]` below.
-    //
-    //  - Diego Rey Mendez, May 19, 2016
-    //
     return [self hasRevision] ? [[self revision] latest] : self;
 }
 
@@ -238,7 +225,6 @@
 
     return original;
 }
-
 
 #pragma mark - Helpers
 
@@ -423,6 +409,9 @@
 
 - (BOOL)shouldPublishImmediately
 {
+    /// - warning: Yes, this is WordPress logic and it matches the behavior on
+    /// the web. If `dateCreated` is the same as `dateModified`, the system
+    /// uses it to represent a "no publish date selected" scenario.
     return [self originalIsDraft] && [self dateCreatedIsNilOrEqualToDateModified];
 }
 
@@ -496,6 +485,7 @@
 
 #pragma mark - Post
 
+/// - note: Deprecated (kahu-offline-mode)
 - (BOOL)canSave
 {
     NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];

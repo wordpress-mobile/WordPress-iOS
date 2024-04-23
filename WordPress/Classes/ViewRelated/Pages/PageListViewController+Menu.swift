@@ -1,7 +1,6 @@
 import Foundation
 
 extension PageListViewController: InteractivePostViewDelegate {
-
     func edit(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
 
@@ -12,18 +11,17 @@ extension PageListViewController: InteractivePostViewDelegate {
         viewPost(apost)
     }
 
-    func stats(for apost: AbstractPost) {
-        // Not available for pages
-    }
-
     func duplicate(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
         copyPage(page)
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard let page = post as? Page else { return }
-        trashPage(page, completion: completion)
+        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            guard let page = post as? Page else { return }
+            return trashPage(page, completion: completion)
+        }
+        return super._trash(post, completion: completion)
     }
 
     func draft(_ apost: AbstractPost) {

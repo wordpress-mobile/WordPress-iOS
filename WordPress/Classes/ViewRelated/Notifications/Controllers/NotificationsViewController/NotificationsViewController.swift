@@ -15,10 +15,7 @@ import SwiftUI
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController: UIViewController, UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate {
-
-    @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
-    @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+class NotificationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     typealias TableViewCell = NotificationTableViewCell
 
@@ -128,8 +125,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
-        restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
         startListeningToTimeChangeNotifications()
@@ -268,69 +263,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
 
         tableView.tableHeaderView = tableHeaderView
-    }
-
-    // MARK: - State Restoration
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        return RootViewCoordinator.sharedPresenter.notificationsViewController
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let uriRepresentation = selectedNotification?.objectID.uriRepresentation() {
-            coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
-        }
-
-        // If the filter's 'Unread', we won't save it because the notification
-        // that's selected won't be unread any more once we come back to it.
-        let index: Filter = (filter != .unread) ? filter : .none
-        coder.encode(index.rawValue, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    override func decodeRestorableState(with coder: NSCoder) {
-        decodeSelectedSegmentIndex(with: coder)
-        decodeSelectedNotification(with: coder)
-
-        reloadResultsController()
-
-        super.decodeRestorableState(with: coder)
-    }
-
-    fileprivate func decodeSelectedNotification(with coder: NSCoder) {
-        if let uriRepresentation = coder.decodeObject(forKey: type(of: self).selectedNotificationRestorationIdentifier) as? URL {
-            let context = ContextManager.sharedInstance().mainContext
-            if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uriRepresentation),
-                let object = try? context.existingObject(with: objectID),
-                let notification = object as? Notification {
-                selectedNotification = notification
-            }
-        }
-    }
-
-    fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
-        restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-
-        if let filterTabBar = filterTabBar, filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
-            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
-        }
-    }
-
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-
-        guard let navigationControllers = navigationController?.children else {
-            return
-        }
-
-        // TODO: add check for CommentDetailViewController
-        for case let detailVC as NotificationDetailsViewController in navigationControllers {
-            if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
-                configureDetailsViewController(detailVC, withNote: note)
-            }
-        }
     }
 
     // MARK: - UITableViewDataSource Methods

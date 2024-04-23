@@ -171,7 +171,7 @@ private extension PrepublishingViewController {
     func noConnectionDismissTapped() -> () -> Void {
         return { [weak self] in
             guard let self,
-                  let autoSharingRowIndex = filteredIdentifiers.firstIndex(of: .autoSharing) else {
+                  let autoSharingRowIndex = options.firstIndex(where: { $0.id == .autoSharing }) else {
                 return
             }
 
@@ -181,7 +181,7 @@ private extension PrepublishingViewController {
             self.refreshOptions()
 
             // ensure that the `.autoSharing` identifier is truly removed to prevent table updates from crashing.
-            guard filteredIdentifiers.firstIndex(of: .autoSharing) == nil else {
+            guard options.firstIndex(where: { $0.id == .autoSharing }) == nil else {
                 return
             }
 

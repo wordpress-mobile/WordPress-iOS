@@ -6,6 +6,8 @@ extension AbstractPost {
     static let publicLabel = NSLocalizedString("Public", comment: "Privacy setting for posts set to 'Public' (default). Should be the same as in core WP.")
 
     /// A title describing the status. Ie.: "Public" or "Private" or "Password protected"
+    ///
+    /// - warning: deprecated (kahu-offline-mode) (use ``PostVisibility``)
     @objc var titleForVisibility: String {
         if password != nil {
             return AbstractPost.passwordProtectedLabel

@@ -33,10 +33,6 @@ static NSString *const BlogDetailsJetpackBrandingCardCellIdentifier = @"BlogDeta
 static NSString *const BlogDetailsJetpackInstallCardCellIdentifier = @"BlogDetailsJetpackInstallCardCellIdentifier";
 static NSString *const BlogDetailsSotWCardCellIdentifier = @"BlogDetailsSotWCardCellIdentifier";
 
-NSString * const WPBlogDetailsRestorationID = @"WPBlogDetailsID";
-NSString * const WPBlogDetailsBlogKey = @"WPBlogDetailsBlogKey";
-NSString * const WPBlogDetailsSelectedIndexPathKey = @"WPBlogDetailsSelectedIndexPathKey";
-
 CGFloat const BlogDetailGridiconSize = 24.0;
 CGFloat const BlogDetailGridiconAccessorySize = 17.0;
 CGFloat const BlogDetailQuickStartSectionHeaderHeight = 48.0;
@@ -257,70 +253,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 @implementation BlogDetailsViewController
 @synthesize restorableSelectedIndexPath = _restorableSelectedIndexPath;
 
-#pragma mark - State Restoration
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    NSString *blogID = [coder decodeObjectForKey:WPBlogDetailsBlogKey];
-    if (!blogID) {
-        return nil;
-    }
-
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID) {
-        return nil;
-    }
-
-    NSError *error = nil;
-    Blog *restoredBlog = (Blog *)[context existingObjectWithID:objectID error:&error];
-    if (error || !restoredBlog) {
-        return nil;
-    }
-
-    // If there's already a blog details view controller for this blog in the primary
-    // navigation stack, we'll return that instead of creating a new one.
-    UISplitViewController *splitViewController = [self mySitesCoordinator].splitViewController;
-    UINavigationController *navigationController = splitViewController.viewControllers.firstObject;
-    if (navigationController && [navigationController isKindOfClass:[UINavigationController class]]) {
-        BlogDetailsViewController *topViewController = (BlogDetailsViewController *)navigationController.topViewController;
-        if ([topViewController isKindOfClass:[BlogDetailsViewController class]] && topViewController.blog == restoredBlog) {
-            return topViewController;
-        }
-    }
-
-    BlogDetailsViewController *viewController = [[self alloc] init];
-    viewController.blog = restoredBlog;
-
-    return viewController;
-}
-
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:WPBlogDetailsBlogKey];
-
-    WPSplitViewController *splitViewController = (WPSplitViewController *)self.splitViewController;
-
-    UIViewController *detailViewController = [splitViewController rootDetailViewController];
-    if (detailViewController && [detailViewController conformsToProtocol:@protocol(UIViewControllerRestoration)]) {
-        // If the current detail view controller supports state restoration, store the current selection
-        [coder encodeObject:self.restorableSelectedIndexPath forKey:WPBlogDetailsSelectedIndexPathKey];
-    }
-
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    NSIndexPath *indexPath = [coder decodeObjectForKey:WPBlogDetailsSelectedIndexPathKey];
-    if (indexPath) {
-        self.restorableSelectedIndexPath = indexPath;
-    }
-
-    [super decodeRestorableStateWithCoder:coder];
-}
-
 #pragma mark = Lifecycle Methods
 
 - (void)dealloc
@@ -333,8 +265,6 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     self = [super init];
     
     if (self) {
-        self.restorationIdentifier = WPBlogDetailsRestorationID;
-        self.restorationClass = [self class];
         self.extendedLayoutIncludesOpaqueBars = true;
         self.isScrollEnabled = false;
     }

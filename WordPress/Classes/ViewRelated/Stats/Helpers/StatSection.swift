@@ -34,27 +34,24 @@
     case postStatsMonthsYears
     case postStatsAverageViews
     case postStatsRecentWeeks
+    case subscribersEmailsSummary
 
-    static var allInsights: [StatSection] {
-        var insights: [StatSection?] = [
-            .insightsViewsVisitors,
-            .insightsLikesTotals,
-            .insightsCommentsTotals,
-            .insightsFollowerTotals,
-            .insightsMostPopularTime,
-            .insightsLatestPostSummary,
-            .insightsAllTime,
-            .insightsAnnualSiteStats,
-            RemoteFeatureFlag.statsTrafficTab.enabled() ? nil : .insightsTodaysStats,
-            .insightsPostingActivity,
-            .insightsTagsAndCategories,
-            .insightsFollowersWordPress,
-            .insightsFollowersEmail,
-            .insightsPublicize
-        ]
-
-        return insights.compactMap { $0 }
-    }
+    static let allInsights: [StatSection] = [
+        .insightsViewsVisitors,
+        .insightsLikesTotals,
+        .insightsCommentsTotals,
+        .insightsFollowerTotals,
+        .insightsMostPopularTime,
+        .insightsLatestPostSummary,
+        .insightsAllTime,
+        .insightsAnnualSiteStats,
+        .insightsTodaysStats,
+        .insightsPostingActivity,
+        .insightsTagsAndCategories,
+        .insightsFollowersWordPress,
+        .insightsFollowersEmail,
+        .insightsPublicize
+    ]
 
     static let allPeriods: [StatSection] = [
         .periodOverviewViews,
@@ -146,6 +143,8 @@
             return PostStatsHeaders.averageViewsPerDay
         case .postStatsRecentWeeks:
             return PostStatsHeaders.recentWeeks
+        case .subscribersEmailsSummary:
+            return SubscribersHeaders.emailsSummaryStats
         default:
             return ""
         }
@@ -428,6 +427,10 @@
         static let published = NSLocalizedString("Published", comment: "Period Stats 'Published' header")
         static let videos = NSLocalizedString("Videos", comment: "Period Stats 'Videos' header")
         static let fileDownloads = NSLocalizedString("File Downloads", comment: "Period Stats 'File Downloads' header")
+    }
+
+    struct SubscribersHeaders {
+        static let emailsSummaryStats = NSLocalizedString("stats.subscribers.emailsSummaryCard.title", value: "Emails", comment: "Stats 'Emails' card header")
     }
 
     struct PostStatsHeaders {

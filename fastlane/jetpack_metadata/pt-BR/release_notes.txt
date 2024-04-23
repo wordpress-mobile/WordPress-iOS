@@ -1,3 +1,2 @@
-Corrigimos uma série de problemas na formação de texto em destaque. Não sabemos quanto a você, mas esse é o destaque da nossa semana.
-Aproveitando que já estávamos com a mão na massa, solucionamos os problemas que causavam várias mensagens de erro na tela Informações. Sem drama, só dados.
-Você verá a versão mais atual do seu site no Leitor, e não a versão mais antiga e armazenada em cache. Quanto mais atual, melhor.
+Adicionamos preferências de leitura para você poder personalizar a tela do seu Leitor. Escolha a cor, a fonte e o tamanho que preferir para desfrutar de uma experiência de leitura do seu agrado.
+Também atualizamos a guia Informações para aprimorar o carregamento e a rolagem. Sem tremulação, sem falhas, sem problemas.

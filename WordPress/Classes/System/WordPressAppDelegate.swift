@@ -52,7 +52,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return ContextManager.shared.mainContext
     }
 
-    private var shouldRestoreApplicationState = false
     private lazy var uploadsManager: UploadsManager = {
 
         // It's not great that we're using singletons here.  This change is a good opportunity to
@@ -71,7 +70,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return UploadsManager(uploaders: uploaders)
     }()
 
-    private let loggingStack = WPLoggingStack()
+    private let loggingStack = WPLoggingStack.shared
 
     /// Access the crash logging type
     class var crashLogging: CrashLogging? {
@@ -119,11 +118,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         configureAnalytics()
 
         let solver = WPAuthTokenIssueSolver()
-        let isFixingAuthTokenIssue = solver.fixAuthTokenIssueAndDo { [weak self] in
+        _ = solver.fixAuthTokenIssueAndDo { [weak self] in
             self?.runStartupSequence(with: launchOptions ?? [:])
         }
-
-        shouldRestoreApplicationState = !isFixingAuthTokenIssue
 
         return true
     }
@@ -215,38 +212,9 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         GutenbergSettings().performGutenbergPhase2MigrationIfNeeded()
     }
 
-    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-        return true
-    }
-
-    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-        let lastSavedStateVersionKey = "lastSavedStateVersionKey"
-        let defaults = UserPersistentStoreFactory.instance()
-
-        var shouldRestoreApplicationState = false
-
-        if let currentVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String {
-            if let lastSavedVersion = defaults.string(forKey: lastSavedStateVersionKey),
-                lastSavedVersion.count > 0 && lastSavedVersion == currentVersion {
-                shouldRestoreApplicationState = self.shouldRestoreApplicationState
-            }
-
-            defaults.set(currentVersion, forKey: lastSavedStateVersionKey)
-        }
-        return shouldRestoreApplicationState
-    }
-
     func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
         let handler = WP3DTouchShortcutHandler()
         completionHandler(handler.handleShortcutItem(shortcutItem))
-    }
-
-    func application(_ application: UIApplication, viewControllerWithRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        guard let restoreID = identifierComponents.last else {
-            return nil
-        }
-
-        return Restorer().viewController(identifier: restoreID)
     }
 
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
@@ -328,6 +296,10 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             self?.uploadsManager.resume()
         }
 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            PostCoordinator.shared.initializeSync()
+        }
+
         setupWordPressExtensions()
 
         shortcutCreator.createShortcutsIf3DTouchAvailable(AccountHelper.isLoggedIn)
@@ -336,6 +308,7 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
 
         windowManager.showUI()
         setupNoticePresenter()
+        restoreAppState()
     }
 
     private func mergeDuplicateAccountsIfNeeded() {
@@ -355,6 +328,14 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             if case .failure(let error) = result {
                 DDLogError("Error scheduling background tasks: \(error)")
             }
+        }
+    }
+
+    // MARK: - State Restoration
+
+    private func restoreAppState() {
+        if let viewController = EditPostViewController.restore() {
+            window?.topmostPresentedViewController?.present(viewController, animated: false)
         }
     }
 
@@ -429,14 +410,16 @@ extension WordPressAppDelegate {
                 return
             }
 
-            let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
-            let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
+            DispatchQueue.main.async {
+                let wifi = reachability.isReachableViaWiFi() ? "Y" : "N"
+                let wwan = reachability.isReachableViaWWAN() ? "Y" : "N"
 
-            DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
-            let newValue = reachability.isReachable()
-            self?.connectionAvailable = newValue
+                DDLogInfo("Reachability - Internet - WiFi: \(wifi) WWAN: \(wwan)")
+                let newValue = reachability.isReachable()
+                self?.connectionAvailable = newValue
 
-            NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
+                NotificationCenter.default.post(name: .reachabilityChanged, object: self, userInfo: [Foundation.Notification.reachabilityKey: newValue])
+            }
         }
 
         internetReachability?.reachableBlock = reachabilityBlock

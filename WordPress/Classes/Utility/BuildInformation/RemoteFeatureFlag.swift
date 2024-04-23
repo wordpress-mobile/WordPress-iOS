@@ -25,7 +25,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case bloganuaryDashboardNudge // pcdRpT-4FE-p2
     case wordPressSotWCard
     case inAppRating
-    case statsTrafficTab
+    case statsTrafficSubscribersTabs
     case siteMonitoring
     case syncPublishing
     case readerDiscoverEndpoint
@@ -80,7 +80,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .inAppRating:
             return false
-        case .statsTrafficTab:
+        case .statsTrafficSubscribersTabs:
             return false
         case .siteMonitoring:
             return false
@@ -144,8 +144,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "wp_sotw_2023_nudge"
         case .inAppRating:
             return "in_app_rating_and_feedback"
-        case .statsTrafficTab:
-            return "stats_traffic_tab"
+        case .statsTrafficSubscribersTabs:
+            return "stats_traffic_subscribers_tabs"
         case .siteMonitoring:
             return "site_monitoring"
         case .syncPublishing:
@@ -208,8 +208,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "SoTW Nudge Card for WordPress App"
         case .inAppRating:
             return "In-App Rating and Feedback"
-        case .statsTrafficTab:
-            return "Stats Traffic Tab"
+        case .statsTrafficSubscribersTabs:
+            return "Stats Traffic and Subscribers Tabs"
         case .siteMonitoring:
             return "Site Monitoring"
         case .syncPublishing:

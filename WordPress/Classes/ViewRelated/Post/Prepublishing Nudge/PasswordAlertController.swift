@@ -2,6 +2,8 @@ import UIKit
 import Gridicons
 
 /// Display an Alert Controller that prompts for a password
+///
+/// - warning: deprecated (kahu-offline-mode)
 class PasswordAlertController {
 
     var passwordField: UITextField!

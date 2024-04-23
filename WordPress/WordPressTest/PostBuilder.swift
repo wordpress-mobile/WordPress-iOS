@@ -62,11 +62,6 @@ class PostBuilder {
         return self
     }
 
-    func revision() -> PostBuilder {
-        post.setPrimitiveValue(post, forKey: "original")
-        return self
-    }
-
     func autosaved() -> PostBuilder {
         post.autosaveTitle = "a"
         post.autosaveExcerpt = "b"

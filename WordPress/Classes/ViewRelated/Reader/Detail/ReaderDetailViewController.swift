@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import AutomatticTracks
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
@@ -603,9 +604,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
-        if let post {
+        if let contentForDisplay = post?.contentForDisplay() {
             webView.displaySetting = displaySetting
-            webView.loadHTMLString(post.contentForDisplay())
+            webView.loadHTMLString(contentForDisplay)
+        } else {
+            // It's unexpected for the `post` or `contentForDisplay()` to be nil. Let's keep track of it.
+            CrashLogging.main.logMessage("Expected contentForDisplay() to exist", level: .error)
         }
 
         // Likes view
@@ -1291,27 +1295,6 @@ private extension ReaderDetailViewController {
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
-    }
-}
-
-// MARK: - State Restoration
-
-extension ReaderDetailViewController: UIViewControllerRestoration {
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
-    }
-
-    open override func encodeRestorableState(with coder: NSCoder) {
-        coordinator?.encodeRestorableState(with: coder)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationClass = type(of: self)
-
-        return super.awakeAfter(using: aDecoder)
     }
 }
 
