@@ -27,7 +27,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case inAppRating
     case statsTrafficSubscribersTabs
     case siteMonitoring
-    case syncPublishing
     case readerDiscoverEndpoint
     case readingPreferences
     case readingPreferencesFeedback
@@ -84,8 +83,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return false
         case .siteMonitoring:
             return false
-        case .syncPublishing:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerDiscoverEndpoint:
             return true
         case .readingPreferences:
@@ -148,9 +145,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "stats_traffic_subscribers_tabs"
         case .siteMonitoring:
             return "site_monitoring"
-        case .syncPublishing:
-            /// - warning: Work-in-progress (kahu-offline-mode)
-            return "_sync_publishing"
         case .readerDiscoverEndpoint:
             return "reader_discover_new_endpoint"
         case .readingPreferences:
@@ -212,8 +206,6 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Stats Traffic and Subscribers Tabs"
         case .siteMonitoring:
             return "Site Monitoring"
-        case .syncPublishing:
-            return "Synchronous Publishing"
         case .readerDiscoverEndpoint:
             return "Reader Discover New Endpoint"
         case .readingPreferences:
