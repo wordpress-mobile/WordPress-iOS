@@ -599,7 +599,7 @@ FeaturedImageViewControllerDelegate>
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate) {
-        [self showPublishSchedulingController];
+        [self showPublishDatePicker];
     } else if (cell.tag == PostSettingsRowStatus) {
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
@@ -1047,7 +1047,7 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (void)showPublishSchedulingController
+- (void)showPublishDatePicker
 {
     BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
     UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
