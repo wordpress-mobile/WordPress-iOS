@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-15 18:26:20+0000 */
+/* Translation-Revision-Date: 2024-04-18 19:32:15+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -11209,6 +11209,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Gerelateerde berichten";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Kopieer link";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Negeren";

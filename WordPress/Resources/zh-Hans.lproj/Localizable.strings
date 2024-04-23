@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-17 15:42:21+0000 */
+/* Translation-Revision-Date: 2024-04-19 07:54:29+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -9566,6 +9566,9 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在您的文章内添加照片或视频。";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
@@ -10960,6 +10963,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "夜晚";
 
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
+
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
 
@@ -10992,7 +10998,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "reader.preferences.preview.body.feedback.link" = "发送您的反馈";
 
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.text" = "选择您想要的颜色、字体和尺寸。 在此处预览您的选择，并在完成后阅读以您所选样式呈现的文章。";
+"reader.preferences.preview.body.text" = "选择您想要的颜色、字体和尺寸。 在此处预览您的选择，并阅读在设置完成后以您所选样式呈现的文章。";
 
 /* Title text for a preview */
 "reader.preferences.preview.header" = "阅读偏好";
@@ -11478,7 +11484,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "stats.insights.mostPopularCard.title" = "🔥 人气最高的时间";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewsNumber" = "%1$@ 的浏览量";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ 浏览量";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
@@ -11488,6 +11494,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "描绘所选时间段内评论数的条形图。";
