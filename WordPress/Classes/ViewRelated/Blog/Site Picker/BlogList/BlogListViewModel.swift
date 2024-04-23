@@ -9,7 +9,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
 
     private var pinnedSitesController: NSFetchedResultsController<Blog>?
     private var recentSitesController: NSFetchedResultsController<Blog>?
-    private var allRemainingSitesController: NSFetchedResultsController<Blog>?
     private var allBlogsController: NSFetchedResultsController<Blog>?
 
     private let contextManager: ContextManager
@@ -44,9 +43,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         let isCurrentlyPinned = blog.pinnedDate != nil
 
         trackPinned(blog: blog)
-        if isCurrentlyPinned {
-            moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: blog)
-        }
 
         blog.pinnedDate = isCurrentlyPinned ? nil : Date()
 
@@ -61,8 +57,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         trackSiteSelected(blog: blog)
 
         blog.lastUsed = Date()
-
-        updateExcessRecentBlogsIfNeeded(selectedSiteID: siteID)
 
         contextManager.saveContextAndWait(contextManager.mainContext)
     }
@@ -96,26 +90,6 @@ final class BlogListViewModel: NSObject, ObservableObject {
         )
     }
 
-    private static func filteredAllRemainingSites(allBlogs: [Blog]) -> [BlogListView.Site] {
-        allBlogs.filter({ $0.pinnedDate == nil && $0.lastUsed == nil }).compactMap(BlogListView.Site.init)
-    }
-
-    private func moveRecentPinnedSiteToRemainingSitesIfNeeded(pinnedBlog: Blog) {
-        if let recentBlogs = recentSitesController?.fetchedObjects,
-           recentBlogs.count == 8 {
-            pinnedBlog.lastUsed = nil
-        }
-    }
-
-    private func updateExcessRecentBlogsIfNeeded(selectedSiteID: NSNumber) {
-        if let recentBlogs = recentSitesController?.fetchedObjects,
-           recentBlogs.count == 8,
-           let lastBlog = recentBlogs.last,
-           !recentBlogs.compactMap({ $0.dotComID }).contains(selectedSiteID) {
-            lastBlog.lastUsed = nil
-        }
-    }
-
     func viewAppeared() {
         if recentSites.isEmpty && pinnedSites.isEmpty {
             selectedBlog()?.lastUsed = Date()
@@ -132,7 +106,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
 extension BlogListView.Site {
     init(blog: Blog) {
         self.init(
-            id: blog.dotComID,
+            id: blog.dotComID ?? 0,
             title: blog.title ?? "",
             domain: blog.url ?? "",
             imageURL: blog.hasIcon ? URL(string: blog.icon ?? "") : nil
@@ -142,18 +116,7 @@ extension BlogListView.Site {
 
 extension BlogListViewModel: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-        if controller == pinnedSitesController {
-            pinnedSites = (controller.fetchedObjects as? [Blog] ?? []).compactMap(BlogListView.Site.init)
-        } else if controller == recentSitesController {
-            recentSites = (controller.fetchedObjects as? [Blog] ?? []).compactMap(BlogListView.Site.init)
-        } else if controller == allRemainingSitesController {
-            allRemainingSites = (controller.fetchedObjects as? [Blog] ?? []).compactMap(BlogListView.Site.init)
-        } else if controller == allBlogsController {
-            allBlogs = controller.fetchedObjects as? [Blog] ?? []
-            if searchSites.isEmpty {
-                searchSites = allBlogs.compactMap(BlogListView.Site.init)
-            }
-        }
+        updatePublishedSitesFromControllers()
     }
 }
 
@@ -168,10 +131,6 @@ extension BlogListViewModel {
             descriptor: NSSortDescriptor(key: "lastUsed", ascending: false),
             fetchLimit: 8
         )
-        allRemainingSitesController = createResultsController(
-            with: NSPredicate(format: "lastUsed == nil AND pinnedDate == nil"),
-            descriptor: NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
-        )
         allBlogsController = createResultsController(
             with: nil,
             descriptor: NSSortDescriptor(key: "accountForDefaultBlog.userID", ascending: false)
@@ -180,7 +139,6 @@ extension BlogListViewModel {
         [
             pinnedSitesController,
             recentSitesController,
-            allRemainingSitesController,
             allBlogsController
         ].forEach { [weak self] controller in
             controller?.delegate = self
@@ -196,10 +154,10 @@ extension BlogListViewModel {
         recentSites = filteredBlogs(resultsController: recentSitesController).compactMap(
             BlogListView.Site.init
         )
-        allRemainingSites = filteredBlogs(resultsController: allRemainingSitesController).compactMap(
-            BlogListView.Site.init
-        )
         allBlogs = filteredBlogs(resultsController: allBlogsController)
+        allRemainingSites = allBlogs.compactMap(BlogListView.Site.init).filter({ site in
+            return !pinnedSites.contains(site) && !recentSites.contains(site)
+        })
         searchSites = allBlogs.compactMap(BlogListView.Site.init)
     }
 

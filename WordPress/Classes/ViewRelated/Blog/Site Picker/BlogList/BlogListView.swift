@@ -13,10 +13,14 @@ struct BlogListView: View {
     }
 
     struct Site: Equatable {
-        let id: NSNumber?
+        let id: NSNumber
         let title: String
         let domain: String
         let imageURL: URL?
+
+        static func ==(lhs: Site, rhs: Site) -> Bool {
+            return lhs.id == rhs.id
+        }
     }
 
     @Binding private var isEditing: Bool
@@ -128,29 +132,27 @@ struct BlogListView: View {
 
     @ViewBuilder
     private func siteButton(site: Site) -> some View {
-        if let siteID = site.id {
-            Button {
-                if isEditing {
-                    withAnimation {
-                        viewModel.togglePinnedSite(siteID: siteID)
-                    }
-                } else {
-                    viewModel.siteSelected(siteID: siteID)
-                    selectionCallback(siteID)
+        Button {
+            if isEditing {
+                withAnimation {
+                    viewModel.togglePinnedSite(siteID: site.id)
                 }
-            } label: {
-                siteHStack(site: site)
+            } else {
+                viewModel.siteSelected(siteID: site.id)
+                selectionCallback(site.id)
             }
-            .listRowSeparator(.hidden)
-            .buttonStyle(SelectedButtonStyle(onPress: { isPressed in
-                pressedDomains = pressedDomains.symmetricDifference([site.domain])
-            }))
-            .listRowBackground(
-                pressedDomains.contains(
-                    site.domain
-                ) ? Color.DS.Background.secondary : Color.DS.Background.primary
-            )
+        } label: {
+            siteHStack(site: site)
         }
+        .listRowSeparator(.hidden)
+        .buttonStyle(SelectedButtonStyle(onPress: { isPressed in
+            pressedDomains = pressedDomains.symmetricDifference([site.domain])
+        }))
+        .listRowBackground(
+            pressedDomains.contains(
+                site.domain
+            ) ? Color.DS.Background.secondary : Color.DS.Background.primary
+        )
     }
 
     private func siteHStack(site: Site) -> some View {
