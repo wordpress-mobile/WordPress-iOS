@@ -56,5 +56,27 @@ extension StatsSubscribersStore {
         case loading
         case success(Value)
         case error
+
+        var data: Value? {
+            switch self {
+            case .success(let data):
+                return data
+            default:
+                return nil
+            }
+        }
+
+        var storeFetchingStatus: StoreFetchingStatus {
+            switch self {
+            case .idle:
+                return .idle
+            case .loading:
+                return .loading
+            case .success:
+                return .success
+            case .error:
+                return .error
+            }
+        }
     }
 }
