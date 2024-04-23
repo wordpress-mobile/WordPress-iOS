@@ -495,11 +495,6 @@ private extension NotificationsViewController {
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
             return button
         }()
-        self.configureNavigationTitle()
-    }
-
-    private func configureNavigationTitle() {
-        self.navigationItem.titleView = filtersMenuButton
     }
 
     private func filtersMenuButtonTitle(for filter: Filter) -> String {
@@ -1509,19 +1504,17 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 //
 private extension NotificationsViewController {
     func showFiltersSegmentedControlIfApplicable() {
-        guard filterTabBar.isHidden == true && shouldDisplayFilters == true else {
+        guard shouldDisplayFilters else {
             return
         }
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
-            self.filterTabBar.isHidden = false
-        })
+        self.navigationItem.titleView = filtersMenuButton
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
-        if filterTabBar.isHidden == false && shouldDisplayFilters == false {
-            self.filterTabBar.isHidden = true
+        guard !shouldDisplayFilters else {
+            return
         }
+        self.navigationItem.titleView = nil
     }
 
     var shouldDisplayFilters: Bool {
