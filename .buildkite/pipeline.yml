@@ -92,13 +92,12 @@ steps:
   - group: "Linters"
     steps:
       - label: ":swift: SwiftLint"
-        command: run_swiftlint --strict
-        plugins: [$CI_TOOLKIT_PLUGIN]
+        command: swiftlint
         notify:
           - github_commit_status:
               context: "SwiftLint"
         agents:
-          queue: "default"
+          queue: "linter"
 
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"

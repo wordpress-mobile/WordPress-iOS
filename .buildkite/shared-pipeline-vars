@@ -7,4 +7,4 @@
 XCODE_VERSION=$(sed -E -n 's/^(~> )?(.*)/xcode-\2/p' .xcode-version)
 export IMAGE_ID="$XCODE_VERSION"
 
-export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#3.1.0"
+export CI_TOOLKIT_PLUGIN="automattic/a8c-ci-toolkit#3.3.0"
