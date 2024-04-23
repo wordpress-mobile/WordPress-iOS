@@ -109,7 +109,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
                 let followers = Array(
                     followers
                         .sorted(by: { $0.subscribedDate > $1.subscribedDate })
-                        .prefix(10)
+                        .prefix(quantity)
                 )
                 completion(.success(followers))
             }
