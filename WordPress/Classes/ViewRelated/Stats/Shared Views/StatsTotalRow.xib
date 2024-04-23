@@ -157,6 +157,7 @@
                 <outlet property="dataBarView" destination="iS7-PL-Iwy" id="PHD-tv-NqI"/>
                 <outlet property="dataBarWidthConstraint" destination="u1V-y7-Ial" id="Bs5-ji-G5J"/>
                 <outlet property="dataLabel" destination="Ivc-26-vsM" id="wbJ-ri-8Rh"/>
+                <outlet property="dataLabelWidthConstraint" destination="4ag-Z2-3Ms" id="2Pp-fB-WTt"/>
                 <outlet property="disclosureButton" destination="KoQ-BR-jDc" id="qah-fR-XpV"/>
                 <outlet property="disclosureImageView" destination="zUJ-W9-Eeb" id="RPm-XV-KAU"/>
                 <outlet property="imageHeightConstraint" destination="vQc-8f-D53" id="T9W-c3-pP3"/>

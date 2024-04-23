@@ -122,6 +122,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
     @IBOutlet weak var rightStackViewLeadingConstraint: NSLayoutConstraint!
     @IBOutlet weak var rightStackView: UIStackView!
     @IBOutlet weak var dataLabel: UILabel!
+    @IBOutlet weak var dataLabelWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var secondDataLabel: UILabel!
     @IBOutlet weak var disclosureImageView: UIImageView!
     @IBOutlet weak var disclosureButton: UIButton!
@@ -200,7 +201,6 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         itemLabel.text = rowData.name
         itemDetailLabel.text = rowData.nameDetail
         dataLabel.text = rowData.data
-        secondDataLabel.isHidden = rowData.secondData == nil
         secondDataLabel.text = rowData.secondData
 
         // Toggle optionals
@@ -211,6 +211,7 @@ class StatsTotalRow: UIView, NibLoadable, Accessible {
         separatorLine.isHidden = !showSeparator
         dataLabel.isHidden = rowData.data.isEmpty
         secondDataLabel.isHidden = (rowData.secondData ?? "").isEmpty
+        dataLabelWidthConstraint?.isActive = !secondDataLabel.isHidden
 
         applyStyles(rowData)
         prepareForVoiceOver()

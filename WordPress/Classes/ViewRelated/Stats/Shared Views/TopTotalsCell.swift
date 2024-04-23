@@ -16,6 +16,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+    @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
     @IBOutlet weak var secondDataSubtitleLabel: UILabel!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
@@ -62,6 +63,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         dataSubtitleLabel.text = dataSubtitle
         secondDataSubtitleLabel.text = secondDataSubtitle
         secondDataSubtitleLabel.isHidden = (secondDataSubtitle ?? "").isEmpty
+        dataSubtitleLabelWidthConstraint?.isActive = !secondDataSubtitleLabel.isHidden
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.statSection = statSection
