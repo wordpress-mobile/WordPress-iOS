@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-16 05:38:13+0000 */
+/* Translation-Revision-Date: 2024-04-19 11:21:42+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -3366,6 +3366,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
+
+/* (placeholder) Help the user enter a URL into the field */
+"http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (adres URL)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
