@@ -246,7 +246,8 @@ class ParentPageSettingsViewController: UIViewController {
     private func saveChanges() async {
         do {
             var changes = RemotePostUpdateParameters()
-            changes.parentPageID = selectedParentID?.intValue
+            // - warning: `.some` is important to make sure the parameter is included
+            changes.parentPageID = .some(selectedParentID?.intValue)
             try await PostCoordinator.shared._update(selectedPage.original(), changes: changes)
 
             await SVProgressHUD.dismiss()
