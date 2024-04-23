@@ -116,17 +116,13 @@ private enum Strings {
 
 #Preview("AtomicErrorLogEntry") {
     NavigationView {
-        if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(text: errorLogEntry.attributedDescription)
-        }
+        SiteMonitoringEntryDetailsView(text: errorLogEntry.attributedDescription)
     }
 }
 
 #Preview("AtomicWebServerLogEntry") {
     NavigationView {
-        if #available(iOS 16, *) {
-            SiteMonitoringEntryDetailsView(text: serverLogEntry.attributedDescription)
-        }
+        SiteMonitoringEntryDetailsView(text: serverLogEntry.attributedDescription)
     }
 }
 
