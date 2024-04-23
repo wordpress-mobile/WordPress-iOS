@@ -36,7 +36,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private let headerView = PrepublishingHeaderView()
     let tableView = UITableView(frame: .zero, style: .plain)
-    private let footerSeparator = UIView()
 
     private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
         self?.buttonPublishTapped()
@@ -124,14 +123,11 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         configurePublishButton()
         observePostConflictResolved()
 
-        WPStyleGuide.applyBorderStyle(footerSeparator)
-
         title = ""
 
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
-            tableView,
-            footerSeparator
+            tableView
         ])
         stackView.axis = .vertical
 
@@ -139,7 +135,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             PrepublishingStackView(view: stackView)
             PublishButton(viewModel: publishButtonViewModel)
                 .tint(Color(uiColor: .primary))
-                .padding() // TODO: ok padding?
+                .padding()
         }.ignoresSafeArea(.keyboard)
 
         // Making the entire view `UIHostingController` to make sure keyboard
@@ -193,12 +189,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             .publisher(for: .postConflictResolved)
             .sink { [weak self] notification in self?.postConflictResolved(notification) }
             .store(in: &cancellables)
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        footerSeparator.isHidden = tableView.contentSize.height < tableView.bounds.height
     }
 
     override func viewWillAppear(_ animated: Bool) {
