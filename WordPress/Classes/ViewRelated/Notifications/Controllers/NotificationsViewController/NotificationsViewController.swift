@@ -69,16 +69,12 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
 
-    /// Used to store (and restore) the currently selected filter segment.
-    ///
-    fileprivate var restorableSelectedSegmentIndex: Int = 0
-
     /// Used to keep track of the currently selected notification,
     /// to restore it between table view reloads and state restoration.
     ///
     fileprivate var selectedNotification: Notification? = nil
 
-    ///
+    /// Menu listing the notifications filters.
     ///
     fileprivate lazy var filtersMenuButton: UIButton = {
         let menu = UIMenu(children: [
@@ -91,7 +87,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         return UIButton.makeMenu(title: filtersMenuButtonTitle(for: filter), menu: menu)
     }()
 
-    ///
+    /// Holds the current filter state, updating the filter's menu configuration and reloading results on change.
     ///
     fileprivate var filter: Filter = .none {
         didSet {
