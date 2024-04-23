@@ -95,7 +95,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .retry: return UIImage(systemName: "arrow.clockwise")
         case .view: return UIImage(systemName: "safari")
         case .publish: return UIImage(systemName: "tray.and.arrow.up")
-        case .stats: return UIImage(systemName: "chart.bar.xaxis")
+        case .stats: return UIImage(systemName: "chart.line.uptrend.xyaxis")
         case .duplicate: return UIImage(systemName: "doc.on.doc")
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
