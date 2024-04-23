@@ -78,7 +78,8 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
 extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
-        // TODO
-        DDLogInfo("\(statSection) selected")
+        let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+        detailTableViewController.configure(statSection: statSection)
+        navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 }
