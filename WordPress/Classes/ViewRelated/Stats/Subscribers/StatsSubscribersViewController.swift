@@ -78,7 +78,14 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
 extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
     func viewMoreSelectedForStatSection(_ statSection: StatSection) {
-        // TODO
-        DDLogInfo("\(statSection) selected")
+        switch statSection {
+        case .subscribersList:
+            guard let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog,
+                  let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
+            navigationController?.pushViewController(peopleViewController, animated: true)
+        default:
+            // TODO
+            DDLogInfo("\(statSection) selected")
+        }
     }
 }
