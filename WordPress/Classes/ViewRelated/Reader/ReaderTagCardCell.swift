@@ -35,14 +35,14 @@ class ReaderTagCardCell: UITableViewCell {
         collectionViewHeightConstraint.constant = cellSize.height
     }
 
-    func configure(parent: UIViewController, tag: ReaderTagTopic, isLoggedIn: Bool) {
+    func configure(parent: UIViewController, tag: ReaderTagTopic, isLoggedIn: Bool, shouldSyncRemotely: Bool = false) {
         weak var weakSelf = self
         viewModel = ReaderTagCardCellViewModel(parent: parent,
                                                tag: tag,
                                                collectionView: collectionView,
                                                isLoggedIn: isLoggedIn,
                                                cellSize: weakSelf?.cellSize)
-        viewModel?.fetchTagTopics()
+        viewModel?.fetchTagTopics(syncRemotely: shouldSyncRemotely)
         tagButton.setTitle(tag.title, for: .normal)
     }
 

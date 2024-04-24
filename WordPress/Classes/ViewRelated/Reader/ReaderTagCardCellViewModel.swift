@@ -4,11 +4,16 @@ class ReaderTagCardCellViewModel: NSObject {
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, NSManagedObjectID>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
+    private let coreDataStack: CoreDataStackSwift
     private weak var parentViewController: UIViewController?
     private let slug: String
     private weak var collectionView: UICollectionView?
     private let isLoggedIn: Bool
     private let cellSize: () -> CGSize?
+
+    private lazy var readerPostService: ReaderPostService = {
+        .init(coreDataStack: coreDataStack)
+    }()
 
     private lazy var dataSource: DataSource? = {
         guard let collectionView else {
@@ -38,11 +43,17 @@ class ReaderTagCardCellViewModel: NSObject {
         return resultsController
     }()
 
-    init(parent: UIViewController?, tag: ReaderTagTopic, collectionView: UICollectionView?, isLoggedIn: Bool, cellSize: @escaping @autoclosure () -> CGSize?) {
+    init(parent: UIViewController?,
+         tag: ReaderTagTopic,
+         collectionView: UICollectionView?,
+         isLoggedIn: Bool,
+         coreDataStack: CoreDataStackSwift = ContextManager.shared,
+         cellSize: @escaping @autoclosure () -> CGSize?) {
         self.parentViewController = parent
         self.slug = tag.slug
         self.collectionView = collectionView
         self.isLoggedIn = isLoggedIn
+        self.coreDataStack = coreDataStack
         self.cellSize = cellSize
 
         super.init()
@@ -51,8 +62,28 @@ class ReaderTagCardCellViewModel: NSObject {
         collectionView?.delegate = self
     }
 
-    func fetchTagTopics() {
-        try? resultsController.performFetch()
+    func fetchTagTopics(syncRemotely: Bool) {
+        guard let topic = try? ReaderTagTopic.lookup(withSlug: slug, in: coreDataStack.mainContext) else {
+            return
+        }
+
+        let onRemoteFetchComplete = { [weak self] in
+            try? self?.resultsController.performFetch()
+        }
+
+        guard syncRemotely else {
+            onRemoteFetchComplete()
+            return
+        }
+
+        // TODO: Add loading state.
+
+        readerPostService.fetchPosts(for: topic, earlierThan: Date()) { _, _ in
+            onRemoteFetchComplete()
+        } failure: { _ in
+            // try to show local contents even if the request failed.
+            onRemoteFetchComplete()
+        }
     }
 
     func onTagButtonTapped() {
