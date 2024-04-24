@@ -49,7 +49,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.1.0)
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
-  - Reachability (3.2)
+  - Reachability (3.7.6)
   - Sentry (8.21.0):
     - Sentry/Core (= 8.21.0)
     - SentryPrivate (= 8.21.0)
@@ -115,7 +115,7 @@ DEPENDENCIES:
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
-  - Reachability (= 3.2)
+  - Reachability (~> 3.7)
   - Starscream (~> 4.0)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (= 0.54.0)
@@ -215,7 +215,7 @@ SPEC CHECKSUMS:
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
@@ -239,6 +239,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 2ee1661530a005e266006f993a65e84299509019
+PODFILE CHECKSUM: 2c841e7c9f39bc169a4b75accb5076d2b31e5468
 
 COCOAPODS: 1.15.2
