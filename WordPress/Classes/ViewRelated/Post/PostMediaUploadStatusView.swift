@@ -7,12 +7,7 @@ struct PostMediaUploadStatusView: View {
     let onCloseTapped: () -> Void
 
     var body: some View {
-        List {
-            ForEach(viewModel.uploads) {
-                MediaUploadStatusView(viewModel: $0)
-            }
-        }
-        .listStyle(.plain)
+        contents
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button(Strings.close, action: onCloseTapped)
@@ -20,6 +15,21 @@ struct PostMediaUploadStatusView: View {
         }
         .navigationTitle(Strings.title)
         .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private var contents: some View {
+        if viewModel.uploads.isEmpty {
+            Text(Strings.empty)
+                .foregroundStyle(.secondary)
+        } else {
+            List {
+                ForEach(viewModel.uploads) {
+                    MediaUploadStatusView(viewModel: $0)
+                }
+            }
+            .listStyle(.plain)
+        }
     }
 }
 
@@ -41,22 +51,44 @@ private struct MediaUploadStatusView: View {
                 Text(viewModel.details)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                    .lineLimit(3)
             }
 
             Spacer()
 
             switch viewModel.state {
-            case .uploaded:
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.secondary.opacity(0.5))
             case .uploading:
                 MediaUploadProgressView(progress: viewModel.fractionCompleted)
+                makeMenu()
+            case .failed:
+                Image(systemName: "exclamationmark.circle.fill")
+                    .foregroundStyle(.red)
+                makeMenu()
+            case .uploaded:
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.secondary.opacity(0.33))
             }
         }
         .task {
             await viewModel.loadThumbnail()
         }
+    }
+
+    @ViewBuilder
+    private func makeMenu() -> some View {
+        Menu {
+            Button(action: viewModel.buttonRetryTapped) {
+                Label(Strings.retry, systemImage: "arrow.clockwise")
+            }
+            Button(role: .destructive, action: viewModel.buttonRemoveTapped) {
+                Label(Strings.remove, systemImage: "trash")
+            }
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.footnote)
+                .foregroundStyle(.secondary.opacity(0.75))
+        }
+        .buttonStyle(.plain)
     }
 }
 
@@ -99,5 +131,8 @@ private struct MediaThubmnailImageView: View {
 
 private enum Strings {
     static let title = NSLocalizedString("postMediaUploadStatusView.title", value: "Media Uploads", comment: "Title for post media upload status view")
+    static let empty = NSLocalizedString("postMediaUploadStatusView.noPendingUploads", value: "No pending uploads", comment: "Placeholder text in postMediaUploadStatusView when no uploads remain")
     static let close = NSLocalizedString("postMediaUploadStatusView.close", value: "Close", comment: "Close button in postMediaUploadStatusView")
+    static let retry = NSLocalizedString("postMediaUploadStatusView.retry", value: "Retry", comment: "Retry upload button in postMediaUploadStatusView")
+    static let remove = NSLocalizedString("postMediaUploadStatusView.remove", value: "Remove", comment: "Remove media button in postMediaUploadStatusView")
 }

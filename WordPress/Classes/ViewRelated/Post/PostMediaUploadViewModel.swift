@@ -1,9 +1,10 @@
 import Foundation
 import SwiftUI
+import Combine
 
 /// Manages media upload for the given revision of the post.
 final class PostMediaUploadViewModel: ObservableObject {
-    let uploads: [MediaUploadViewModel]
+    private(set) var uploads: [MediaUploadViewModel]
 
     @Published private(set) var totalFileSize: Int64 = 0
     @Published private(set) var fractionCompleted = 0.0
@@ -14,6 +15,7 @@ final class PostMediaUploadViewModel: ObservableObject {
     private let post: AbstractPost
     private let coordinator: MediaCoordinator
     private weak var timer: Timer?
+    private var cancellables: [AnyCancellable] = []
 
     deinit {
         timer?.invalidate()
@@ -33,6 +35,19 @@ final class PostMediaUploadViewModel: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.update()
         }
+
+        post.publisher(for: \.media).sink { [weak self] in
+            self?.didUpdateMedia($0)
+        }.store(in: &cancellables)
+    }
+
+    private func didUpdateMedia(_ media: Set<Media>) {
+        let remainingObjectIDs = Set(media.map(\.objectID))
+        withAnimation {
+            uploads.removeAll { viewModel in
+                !remainingObjectIDs.contains(viewModel.id)
+            }
+        }
     }
 
     private func update() {
@@ -42,7 +57,7 @@ final class PostMediaUploadViewModel: ObservableObject {
 
         totalFileSize = uploads.map(\.fileSize).reduce(0, +)
         fractionCompleted = uploads.map(\.fractionCompleted).reduce(0, +) / Double(uploads.count)
-        completedUploadsCount = uploads.filter({ $0.state == .uploaded }).count
+        completedUploadsCount = uploads.filter(\.isCompleted).count
     }
 }
 
@@ -84,9 +99,15 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         MediaImageService.isThubmnailSupported(for: media.mediaType) ? 40 : 24
     }
 
+    var isCompleted: Bool {
+        if case .uploaded = state { return true }
+        return false
+    }
+
     enum State {
-        case uploaded
         case uploading
+        case failed(Error)
+        case uploaded
     }
 
     deinit {
@@ -106,6 +127,12 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
     fileprivate func update() {
         self.state = media.isUploadNeeded ? .uploading : .uploaded
         self.fileSize = media.filesize?.int64Value ?? 0 // Should never be `0`
+
+        if let error = media.error, MediaCoordinator.isTerminalError(error) {
+            self.details = error.localizedDescription
+            self.state = .failed(error)
+            return // No retry
+        }
 
         if media.remoteStatus == .failed, retryTimer == nil {
             retryTimer = Timer.scheduledTimer(withTimeInterval: nextRetryDelay, repeats: false) { [weak self] _ in self?.retry() }
@@ -151,6 +178,17 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         } catch {
             // Continue showing placeholder
         }
+    }
+
+    // MARK: - Menu
+
+    func buttonRetryTapped() {
+        retry()
+    }
+
+    func buttonRemoveTapped() {
+        coordinator.cancelUploadAndDeleteMedia(media)
+        // TODO: notify Gutenberg or update the post in a different way
     }
 }
 
