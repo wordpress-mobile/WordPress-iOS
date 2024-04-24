@@ -263,11 +263,11 @@ extension PeopleViewController {
             case .users:
                 return NSLocalizedString("Users", comment: "Blog Users")
             case .followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
+                return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
             case .email:
-                return NSLocalizedString("Email Followers", comment: "Blog Email Followers")
+                return NSLocalizedString("users.list.title.subscribers", value: "Email Subscribers", comment: "Site Email Subscribers")
             }
         }
 
