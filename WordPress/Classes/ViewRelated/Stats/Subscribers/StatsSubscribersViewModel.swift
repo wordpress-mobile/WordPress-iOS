@@ -62,9 +62,9 @@ private extension StatsSubscribersViewModel {
         case .success(let emailsSummary):
             return [
                 TopTotalsPeriodStatsRow(
-                    itemSubtitle: Strings.titleColumn,
-                    dataSubtitle: Strings.opensColumn,
-                    secondDataSubtitle: Strings.clicksColumn,
+                    itemSubtitle: StatSection.ItemSubtitles.emailsSummary,
+                    dataSubtitle: StatSection.DataSubtitles.emailsSummaryOpens,
+                    secondDataSubtitle: StatSection.DataSubtitles.emailsSummaryClicks,
                     dataRows: emailsSummaryDataRows(emailsSummary),
                     statSection: .subscribersEmailsSummary,
                     siteStatsPeriodDelegate: viewMoreDelegate
@@ -85,13 +85,5 @@ private extension StatsSubscribersViewModel {
                 statSection: .subscribersEmailsSummary
             )
         }
-    }
-}
-
-private extension StatsSubscribersViewModel {
-    struct Strings {
-        static let titleColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
-        static let opensColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
-        static let clicksColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
     }
 }
