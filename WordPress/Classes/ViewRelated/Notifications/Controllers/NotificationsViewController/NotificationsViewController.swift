@@ -498,7 +498,7 @@ private extension NotificationsViewController {
 
     private func filtersMenuButtonTitle(for filter: Filter) -> String {
         switch filter {
-        case .none: return "All Notifications"
+        case .none: return Strings.NavigationBar.allNotificationsTitle
         default: return filter.title
         }
     }

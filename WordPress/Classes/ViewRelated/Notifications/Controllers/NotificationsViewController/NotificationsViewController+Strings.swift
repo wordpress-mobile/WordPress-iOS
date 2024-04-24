@@ -19,6 +19,11 @@ extension NotificationsViewController {
                 value: "Navigation Bar Menu Button",
                 comment: "Accessibility label for the navigation bar menu button"
             )
+            static let allNotificationsTitle = NSLocalizedString(
+                "notificationsViewController.navigationBar.filters.allNotifications",
+                value: "All Notifications",
+                comment: "The navigation bar title when 'All' filter is selected"
+            )
         }
     }
 }
