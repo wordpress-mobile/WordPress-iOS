@@ -30,6 +30,7 @@ class ReaderTagCardCellViewModel: NSObject {
         let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: false)]
         fetchRequest.fetchLimit = Constants.displayPostLimit
+        fetchRequest.includesSubentities = false
         let resultsController = NSFetchedResultsController<ReaderPost>(fetchRequest: fetchRequest,
                                                            managedObjectContext: ContextManager.shared.mainContext,
                                                            sectionNameKeyPath: nil,
