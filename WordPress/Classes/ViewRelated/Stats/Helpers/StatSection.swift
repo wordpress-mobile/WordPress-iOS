@@ -109,7 +109,7 @@
                 return InsightsHeaders.comments
             }
         case .insightsFollowersWordPress, .insightsFollowersEmail:
-            return InsightsHeaders.followers
+            return InsightsHeaders.subscribers
         case .insightsTodaysStats:
             return InsightsHeaders.todaysStats
         case .insightsPostingActivity:
@@ -167,7 +167,7 @@
             return ItemSubtitles.service
         case .insightsFollowersWordPress,
              .insightsFollowersEmail:
-            return ItemSubtitles.follower
+            return ItemSubtitles.subscriber
         case .periodReferrers:
             return ItemSubtitles.referrer
         case .periodClicks:
@@ -405,7 +405,7 @@
         static let posts = NSLocalizedString("Posts", comment: "Insights 'Posts' header")
         static let comments = NSLocalizedString("Comments", comment: "Insights 'Comments' header")
         static let topCommenters = NSLocalizedString("Top Commenters", comment: "Insights 'Top Commenters' header")
-        static let followers = NSLocalizedString("Followers", comment: "Insights 'Followers' header")
+        static let subscribers = NSLocalizedString("stats.insights.subscribers.title", value: "Subscribers", comment: "Insights 'Subscribers' header")
         static let tagsAndCategories = NSLocalizedString("Tags and Categories", comment: "Insights 'Tags and Categories' header")
         static let annualSiteStats = NSLocalizedString("This Year", comment: "Insights 'This Year' header")
         static let addCard = NSLocalizedString("Add stats card", comment: "Label for action to add a new Insight.")
@@ -447,8 +447,7 @@
         static let author = NSLocalizedString("Author", comment: "Label for list of stats by content author.")
         static let title = NSLocalizedString("Title", comment: "Label for list of stats by content title.")
         static let service = NSLocalizedString("Service", comment: "Label for connected service in Publicize stat.")
-        static let follower = NSLocalizedString("Follower", comment: "Label for list of followers.")
-        static let subscriber = NSLocalizedString("stats.section.itemSubtitles.subscriber", value: "Subscriber", comment: "Label for list of subscribers.")
+        static let subscriber = NSLocalizedString("stats.section.itemSubtitles.subscriber", value: "Name", comment: "Table column title that shows the names of subscribers.")
         static let referrer = NSLocalizedString("Referrer", comment: "Label for link title in Referrers stat.")
         static let link = NSLocalizedString("Link", comment: "Label for link title in Clicks stat.")
         static let country = NSLocalizedString("Country", comment: "Label for list of countries.")
@@ -461,7 +460,7 @@
         static let comments = NSLocalizedString("Comments", comment: "Label for number of comments.")
         static let views = NSLocalizedString("Views", comment: "Label for number of views.")
         static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
-        static let since = NSLocalizedString("Since", comment: "Label for time period in list of followers.")
+        static let since = NSLocalizedString("stats.section.dataSubtitles.subscriber since", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
         static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
         static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
     }
