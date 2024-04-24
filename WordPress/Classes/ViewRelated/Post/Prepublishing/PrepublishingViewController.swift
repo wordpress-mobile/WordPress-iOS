@@ -72,12 +72,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     func presentAsSheet(from presentingViewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: self)
+        navigationController.navigationBar.isTranslucent = true // Reset to default
         if UIDevice.isPad() {
             navigationController.modalPresentationStyle = .formSheet
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -351,7 +352,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             (self.post as! Post).tags = tags
             self.reloadData()
         }
-
+        tagPickerViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
@@ -371,6 +372,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         categoriesViewController.onCategoriesChanged = { [weak self] in
             self?.tableView.reloadData()
         }
+        categoriesViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(categoriesViewController, animated: true)
     }
 
@@ -394,6 +396,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
         let viewController = UIHostingController(rootView: view)
         viewController.title = PostVisibilityPicker.title
+        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -411,13 +414,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController()
-        viewController.configuration = SchedulingDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
+        let configuration = PublishDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
         }
+        let viewController = PublishDatePickerViewController(configuration: configuration)
+        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
