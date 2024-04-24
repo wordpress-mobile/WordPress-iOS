@@ -81,7 +81,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         let secondSection = Filter.allCases.filter { $0 != .none }
         let children: [UIMenuElement] = [firstSection, secondSection].map { section -> UIMenuElement in
             let actions = section.map { filter in
-                UIAction(title: filter.title, image: filter.icon) { [weak self] _ in
+                UIAction(title: filter.title, image: nil) { [weak self] _ in
                     self?.filtersMenuTapped(filter: filter)
                 }
             }
@@ -1901,16 +1901,6 @@ private extension NotificationsViewController {
                                                      comment: "Displayed in the Notifications Tab as a button title, when there are no notifications")
             case .unread:   return NSLocalizedString("Create a Post",
                                                      comment: "Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications")
-            }
-        }
-
-        var icon: UIImage? {
-            switch self {
-            case .none: return nil
-            case .comment: return UIImage.DS.icon(named: .comment)
-            case .like: return UIImage.DS.icon(named: .starOutline)
-            case .unread: return UIImage.DS.icon(named: .eye)
-            case .follow: return UIImage.DS.icon(named: .avatar)
             }
         }
 

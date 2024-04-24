@@ -14,9 +14,6 @@ public enum IconName: String, CaseIterable {
     case blockShare = "block.share"
     case starFill = "star.fill"
     case starOutline = "star.outline"
-    case avatar
-    case comment
-    case eye
 }
 
 // MARK: - Load Image
