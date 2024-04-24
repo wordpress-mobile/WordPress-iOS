@@ -42,7 +42,7 @@ class ReaderTagCardCell: UITableViewCell {
                                                collectionView: collectionView,
                                                isLoggedIn: isLoggedIn,
                                                cellSize: weakSelf?.cellSize)
-        viewModel?.fetchTagTopics()
+        viewModel?.fetchTagPosts()
         tagButton.setTitle(tag.title, for: .normal)
     }
 

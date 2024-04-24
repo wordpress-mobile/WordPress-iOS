@@ -51,7 +51,7 @@ class ReaderTagCardCellViewModel: NSObject {
         collectionView?.delegate = self
     }
 
-    func fetchTagTopics() {
+    func fetchTagPosts() {
         try? resultsController.performFetch()
     }
 
