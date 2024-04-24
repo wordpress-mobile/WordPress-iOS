@@ -18,20 +18,21 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="evm-eb-QVW">
-                        <rect key="frame" x="16" y="16" width="288" height="186"/>
+                        <rect key="frame" x="16" y="0.0" width="288" height="202"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="evm-eb-QVW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Iz4-zu-uPc"/>
                     <constraint firstAttribute="trailing" secondItem="evm-eb-QVW" secondAttribute="trailing" constant="16" id="f4y-nV-AaL"/>
-                    <constraint firstItem="evm-eb-QVW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="gx5-HF-joq"/>
+                    <constraint firstItem="evm-eb-QVW" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="gx5-HF-joq"/>
                     <constraint firstAttribute="bottom" secondItem="evm-eb-QVW" secondAttribute="bottom" constant="16" id="wjN-Op-hhS"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="chartView" destination="evm-eb-QVW" id="Vkn-bP-b8X"/>
+                <outlet property="topConstraint" destination="gx5-HF-joq" id="84x-I3-WDn"/>
             </connections>
             <point key="canvasLocation" x="138.93129770992365" y="80.985915492957744"/>
         </tableViewCell>
