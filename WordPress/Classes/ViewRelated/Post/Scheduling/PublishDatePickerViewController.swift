@@ -103,12 +103,10 @@ struct PublishDatePickerView: View {
             Spacer()
 
             if configuration.date != nil, !configuration.isRequired {
-                Button(role: .destructive, action: {
-                    configuration.date = nil
-                }) {
-                    Image(systemName: "minus.circle.fill")
-                        .foregroundStyle(.red)
+                Button(action: { configuration.date = nil }) {
+                    Image(systemName: "xmark.circle.fill")
                 }
+                .foregroundStyle(Color.secondary)
                 .buttonStyle(.plain)
             }
         }

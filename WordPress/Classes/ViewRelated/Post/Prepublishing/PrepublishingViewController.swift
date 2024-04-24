@@ -419,9 +419,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
-            if date == nil {
-                self?.navigationController?.popViewController(animated: true)
-            }
         }
         let viewController = PublishDatePickerViewController(configuration: configuration)
         viewController.configureDefaultNavigationBarAppearance()
