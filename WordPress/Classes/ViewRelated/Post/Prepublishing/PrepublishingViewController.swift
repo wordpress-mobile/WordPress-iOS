@@ -437,8 +437,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         guard !viewModel.isCompleted else {
             return nil
         }
-        if let error = viewModel.uploads.lazy.compactMap(\.error).first {
-            return .failed(title: Strings.mediaUploadFailedTitle, details: error.localizedDescription) { [weak self] in
+        let errors = viewModel.uploads.compactMap(\.error)
+        if !errors.isEmpty {
+            let details = errors.count == 1 ? errors[0].localizedDescription : String(format: Strings.mediaUploadFailedDetailsMultipleFailures, errors.count.description)
+            return .failed(title: Strings.mediaUploadFailedTitle, details: details) { [weak self] in
                 self?.buttonShowUploadInfoTapped()
             }
         }
@@ -606,5 +608,5 @@ private enum Strings {
         String(format: count == 1 ? Strings.uploadMediaOneItemRemaining : Strings.uploadMediaManyItemsRemaining, count.description)
     }
     static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
-    static let mediaUploadFailedDetails = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "Some of the uploads failed", comment: "Details for a publish button state in the pre-publishing sheet")
+    static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
 }
