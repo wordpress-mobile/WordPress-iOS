@@ -92,7 +92,7 @@ private struct MediaUploadStatusView: View {
     }
 }
 
-private struct MediaUploadProgressView: View {
+struct MediaUploadProgressView: View {
     let progress: Double
 
     var body: some View {

@@ -104,6 +104,11 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         return false
     }
 
+    var error: Error? {
+        if case .failed(let error) = state { return error }
+        return nil
+    }
+
     enum State {
         case uploading
         case failed(Error)
