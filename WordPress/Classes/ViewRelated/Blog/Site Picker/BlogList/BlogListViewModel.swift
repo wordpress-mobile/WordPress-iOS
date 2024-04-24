@@ -126,7 +126,7 @@ extension BlogListViewModel {
         )
         allBlogsController = createResultsController(
             with: nil,
-            descriptor: NSSortDescriptor(key: "accountForDefaultBlog.userID", ascending: false)
+            descriptor: NSSortDescriptor(key: "settings.name", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))
         )
 
         [
