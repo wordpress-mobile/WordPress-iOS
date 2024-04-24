@@ -64,7 +64,7 @@ struct BlogListView: View {
                     siteButton(site: site)
                 }
                 .onChange(of: searchText) { newValue in
-                    viewModel.updateSearchText(newValue)
+                    viewModel.searchQueryChanged(newValue)
                 }
             } else {
                 pinnedSection

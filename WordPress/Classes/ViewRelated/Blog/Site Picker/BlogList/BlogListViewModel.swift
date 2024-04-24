@@ -6,6 +6,7 @@ final class BlogListViewModel: NSObject, ObservableObject {
     @Published var allRemainingSites: [BlogListView.Site] = []
     @Published var searchSites: [BlogListView.Site] = []
     var allBlogs: [Blog] = []
+    private var searchText: String = ""
 
     private var pinnedSitesController: NSFetchedResultsController<Blog>?
     private var recentSitesController: NSFetchedResultsController<Blog>?
@@ -23,17 +24,9 @@ final class BlogListViewModel: NSObject, ObservableObject {
         setupFetchedResultsControllers()
     }
 
-    func updateSearchText(_ newText: String) {
-        if newText.isEmpty {
-            searchSites = allBlogs.compactMap(BlogListView.Site.init)
-        } else {
-            searchSites = allBlogs
-                .filter {
-                    $0.url?.lowercased().contains(newText.lowercased()) == true
-                    || $0.title?.lowercased().contains(newText.lowercased()) == true
-                }
-                .compactMap(BlogListView.Site.init)
-        }
+    func searchQueryChanged(_ newText: String) {
+        searchText = newText
+        updateSearchResults()
     }
 
     func togglePinnedSite(siteID: NSNumber?) {
@@ -158,7 +151,7 @@ extension BlogListViewModel {
         allRemainingSites = allBlogs.compactMap(BlogListView.Site.init).filter({ site in
             return !pinnedSites.contains(site) && !recentSites.contains(site)
         })
-        searchSites = allBlogs.compactMap(BlogListView.Site.init)
+        updateSearchResults()
     }
 
     private func filteredBlogs(resultsController: NSFetchedResultsController<Blog>?) -> [Blog] {
@@ -172,6 +165,19 @@ extension BlogListViewModel {
             blogs = blogs.filter { $0.supports(.domains) }
         }
         return blogs
+    }
+
+    private func updateSearchResults() {
+        if searchText.isEmpty {
+            searchSites = allBlogs.compactMap(BlogListView.Site.init)
+        } else {
+            searchSites = allBlogs
+                .filter {
+                    $0.url?.lowercased().contains(searchText.lowercased()) == true
+                    || $0.title?.lowercased().contains(searchText.lowercased()) == true
+                }
+                .compactMap(BlogListView.Site.init)
+        }
     }
 
     private func createResultsController(
