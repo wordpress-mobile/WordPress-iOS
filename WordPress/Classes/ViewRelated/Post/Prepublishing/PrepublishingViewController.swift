@@ -437,8 +437,8 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         guard !viewModel.isCompleted else {
             return nil
         }
-        if let error = viewModel.uploads.lazy.map(\.error).first {
-            return .failed(title: Strings.mediaUploadFailedTitle, details: error?.localizedDescription) { [weak self] in
+        if let error = viewModel.uploads.lazy.compactMap(\.error).first {
+            return .failed(title: Strings.mediaUploadFailedTitle, details: error.localizedDescription) { [weak self] in
                 self?.buttonShowUploadInfoTapped()
             }
         }

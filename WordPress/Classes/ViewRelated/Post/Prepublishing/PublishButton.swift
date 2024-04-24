@@ -101,7 +101,7 @@ struct PublishButton: View {
 }
 
 private enum Constants {
-    static let accessoryViewWidth: CGFloat = 22
+    static let accessoryViewWidth: CGFloat = 20
 }
 
 final class PublishButtonViewModel: ObservableObject {

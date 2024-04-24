@@ -17,6 +17,10 @@ final class PostMediaUploadViewModel: ObservableObject {
     private weak var timer: Timer?
     private var cancellables: [AnyCancellable] = []
 
+    var isButtonRetryDisabled: Bool {
+        !(uploads.contains(where: { $0.error != nil }))
+    }
+
     deinit {
         timer?.invalidate()
     }
@@ -58,6 +62,12 @@ final class PostMediaUploadViewModel: ObservableObject {
         totalFileSize = uploads.map(\.fileSize).reduce(0, +)
         fractionCompleted = uploads.map(\.fractionCompleted).reduce(0, +) / Double(uploads.count)
         completedUploadsCount = uploads.filter(\.isCompleted).count
+    }
+
+    func buttonRetryTapped() {
+        for upload in uploads {
+            upload.retry()
+        }
     }
 }
 
@@ -133,7 +143,7 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         self.state = media.isUploadNeeded ? .uploading : .uploaded
         self.fileSize = media.filesize?.int64Value ?? 0 // Should never be `0`
 
-        if let error = media.error, MediaCoordinator.isTerminalError(error) {
+        if media.remoteStatus == .failed, let error = media.error, MediaCoordinator.isTerminalError(error) {
             self.details = error.localizedDescription
             self.state = .failed(error)
             return // No retry
@@ -157,7 +167,7 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         }
     }
 
-    private func retry() {
+    fileprivate func retry() {
         retryTimer = nil
         coordinator.retryMedia(media)
     }
@@ -183,17 +193,6 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         } catch {
             // Continue showing placeholder
         }
-    }
-
-    // MARK: - Menu
-
-    func buttonRetryTapped() {
-        retry()
-    }
-
-    func buttonRemoveTapped() {
-        coordinator.cancelUploadAndDeleteMedia(media)
-        // TODO: notify Gutenberg or update the post in a different way
     }
 }
 

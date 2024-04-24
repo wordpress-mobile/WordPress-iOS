@@ -8,13 +8,22 @@ struct PostMediaUploadStatusView: View {
 
     var body: some View {
         contents
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(Strings.close, action: onCloseTapped)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(Strings.close, action: onCloseTapped)
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button(action: viewModel.buttonRetryTapped) {
+                            Label(Strings.retryUploads, systemImage: "arrow.clockwise")
+                        }.disabled(viewModel.isButtonRetryDisabled)
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                }
             }
-        }
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle(Strings.title)
+            .navigationBarTitleDisplayMode(.inline)
     }
 
     @ViewBuilder
@@ -59,11 +68,9 @@ private struct MediaUploadStatusView: View {
             switch viewModel.state {
             case .uploading:
                 MediaUploadProgressView(progress: viewModel.fractionCompleted)
-                makeMenu()
             case .failed:
                 Image(systemName: "exclamationmark.circle.fill")
                     .foregroundStyle(.red)
-                makeMenu()
             case .uploaded:
                 Image(systemName: "checkmark.circle.fill")
                     .foregroundStyle(.secondary.opacity(0.33))
@@ -72,23 +79,6 @@ private struct MediaUploadStatusView: View {
         .task {
             await viewModel.loadThumbnail()
         }
-    }
-
-    @ViewBuilder
-    private func makeMenu() -> some View {
-        Menu {
-            Button(action: viewModel.buttonRetryTapped) {
-                Label(Strings.retry, systemImage: "arrow.clockwise")
-            }
-            Button(role: .destructive, action: viewModel.buttonRemoveTapped) {
-                Label(Strings.remove, systemImage: "trash")
-            }
-        } label: {
-            Image(systemName: "ellipsis")
-                .font(.footnote)
-                .foregroundStyle(.secondary.opacity(0.75))
-        }
-        .buttonStyle(.plain)
     }
 }
 
@@ -133,6 +123,5 @@ private enum Strings {
     static let title = NSLocalizedString("postMediaUploadStatusView.title", value: "Media Uploads", comment: "Title for post media upload status view")
     static let empty = NSLocalizedString("postMediaUploadStatusView.noPendingUploads", value: "No pending uploads", comment: "Placeholder text in postMediaUploadStatusView when no uploads remain")
     static let close = NSLocalizedString("postMediaUploadStatusView.close", value: "Close", comment: "Close button in postMediaUploadStatusView")
-    static let retry = NSLocalizedString("postMediaUploadStatusView.retry", value: "Retry", comment: "Retry upload button in postMediaUploadStatusView")
-    static let remove = NSLocalizedString("postMediaUploadStatusView.remove", value: "Remove", comment: "Remove media button in postMediaUploadStatusView")
+    static let retryUploads = NSLocalizedString("postMediaUploadStatusView.retryUploads", value: "Retry Uploads", comment: "Retry upload button in postMediaUploadStatusView")
 }
