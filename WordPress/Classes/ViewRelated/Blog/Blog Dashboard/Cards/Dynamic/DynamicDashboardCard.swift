@@ -141,31 +141,31 @@ extension DSButtonStyle {
     }
 }
 
-//#if DEBUG
-//struct DynamicDashboardCard_Previews: PreviewProvider {
-//    static var previews: some View {
-//        DynamicDashboardCard(
-//            input: .init(
-//                featureImageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=400x200")!,
-//                featureImageWidthToHeightRatio: 2,
-//                rows: [
-//                    .init(
-//                        title: "Title first",
-//                        description: "Description first",
-//                        imageURL: URL(string: "https://mobiledotblog.files.wordpress.com/2024/03/perf-icon.png")!
-//                    ),
-//                    .init(
-//                        title: "Title second",
-//                        description: "Description second",
-//                        imageURL: nil
-//                    )
-//                ],
-//                action: .init(title: "Action button", callback: {
-//                    ()
-//                })
-//            )
-//        )
-//        .padding()
-//    }
-//}
-//#endif
+#if DEBUG
+struct DynamicDashboardCard_Previews: PreviewProvider {
+    static var previews: some View {
+        DynamicDashboardCard(
+            input: .init(
+                featureImageURL: URL(string: "https://i.pickadummy.com/index.php?imgsize=400x200")!,
+                featureImageWidthToHeightRatio: 2,
+                rows: [
+                    .init(
+                        title: "Title first",
+                        description: "Description first",
+                        imageURL: URL(string: "https://mobiledotblog.files.wordpress.com/2024/03/perf-icon.png")!
+                    ),
+                    .init(
+                        title: "Title second",
+                        description: "Description second",
+                        imageURL: nil
+                    )
+                ],
+                action: .init(title: "Action button", callback: {
+                    ()
+                })
+            )
+        )
+        .padding()
+    }
+}
+#endif
