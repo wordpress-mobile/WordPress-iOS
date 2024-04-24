@@ -19,13 +19,13 @@ public struct ContentPreview: View {
 
     // MARK: - Init
 
-    init(image: URL?, text: String, action: @escaping () -> Void) {
+    public init(image: URL?, text: String, action: @escaping () -> Void) {
         self.image = image
         self.text = text
         self.action = action
     }
 
-    init(image: String? = nil, text: String, action: @escaping () -> Void) {
+    public init(image: String? = nil, text: String, action: @escaping () -> Void) {
         self.init(image: URL(string: image ?? ""), text: text, action: action)
     }
 
