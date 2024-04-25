@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import WordPressUI
 import DesignSystem
+import Gravatar
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -450,17 +451,21 @@ private extension CommentDetailViewController {
         }
         if let comment = self.parentComment ?? notificationParentComment {
             // if the comment is a reply, show the author of the parent comment.
+            let avatar = CommentHeaderTableViewCell.Avatar(
+                url: comment.avatarURLForDisplay(),
+                email: comment.gravatarEmailForDisplay(),
+                size: CommentHeaderTableViewCell.Constants.imageSize
+            )
             self.headerCell.configure(
-                imageURL: comment.avatarURLForDisplay(),
-                text: comment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines),
+                avatar: avatar,
+                comment: comment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines),
                 action: action,
                 parent: self
             )
         } else {
             // otherwise, if this is a comment to a post, show the post title instead.
             self.headerCell.configure(
-                imageURL: nil,
-                text: comment.titleForDisplay(),
+                post: comment.titleForDisplay(),
                 action: action,
                 parent: self
             )

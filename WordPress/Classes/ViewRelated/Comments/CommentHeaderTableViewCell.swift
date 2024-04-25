@@ -1,7 +1,13 @@
 import UIKit
+import SwiftUI
 import DesignSystem
 
 final class CommentHeaderTableViewCell: HostingTableViewCell<ContentPreview>, Reusable {
+
+    // MARK: Typealias
+
+    typealias Constants = ContentPreview.Constants
+    typealias Avatar = ContentPreview.ImageConfiguration.Avatar
 
     // MARK: Initialization
 
@@ -22,8 +28,13 @@ final class CommentHeaderTableViewCell: HostingTableViewCell<ContentPreview>, Re
 
     // MARK: - Configuration
 
-    func configure(imageURL: URL?, text: String, action: @escaping () -> Void, parent: UIViewController) {
-        let content = ContentPreview(image: imageURL, text: text, action: action)
+    func configure(post: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(text: post, action: action)
+        self.host(content, parent: parent)
+    }
+
+    func configure(avatar: Avatar, comment: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(image: .init(avatar: avatar), text: comment, action: action)
         self.host(content, parent: parent)
     }
 
