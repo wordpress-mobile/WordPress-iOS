@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-02 10:21:18+0000 */
+/* Translation-Revision-Date: 2024-04-19 07:55:40+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -9575,6 +9575,9 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Untuk menambahkan foto atau video ke artikel Anda.";
 
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
@@ -10824,6 +10827,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Langganan";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Tag Anda";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Pencarian";
 
@@ -10969,11 +10975,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Berhenti berlangganan blog";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Candy";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Standar";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Malam";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -10984,11 +10996,60 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Lembut";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Warna";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Selesai";
 
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Font";
+
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Ukuran";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Ini merupakan fitur baru yang masih dikembangkan. Untuk membantu kami meningkatkannya %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "kirim feedback Anda";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.text" = "Pilih warna, font, dan ukuran. Pratinjau pilihan di sini, dan baca pos sesuai gaya pilihan Anda setelah selesai.";
+
+/* Title text for a preview */
+"reader.preferences.preview.header" = "Preferensi Membaca";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "warna";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "font";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "membaca";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Contoh tag";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Ekstra Besar";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Ekstra Kecil";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Besar";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normal";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Kecil";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Kelola Blog";
@@ -11061,6 +11122,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Tutup";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Preferensi Membaca";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Saya mengerti";
@@ -11359,6 +11423,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 hari sebelumnya";
 
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* lebih tinggi dari 7 hari sebelumnya";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* lebih rendah dari 7 hari sebelumnya";
+
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Sama seperti 7 hari sebelumnya";
 
@@ -11434,6 +11504,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 Waktu Paling Populer";
 
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ penayangan";
+
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Aktivitas tidak cukup. Periksa lagi nanti saat situs Anda lebih ramai pengunjung!";
 
@@ -11442,6 +11515,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Pos terbaru Anda %1$@ disukai %2$@ kali.";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Hari ini";

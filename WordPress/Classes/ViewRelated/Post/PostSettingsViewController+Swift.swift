@@ -110,7 +110,7 @@ extension PostSettingsViewController {
         Task { @MainActor in
             do {
                 let coordinator = PostCoordinator.shared
-                if apost.original().status == .draft {
+                if coordinator.isSyncAllowed(for: apost) {
                     coordinator.setNeedsSync(for: apost)
                 } else {
                     try await coordinator._save(apost)

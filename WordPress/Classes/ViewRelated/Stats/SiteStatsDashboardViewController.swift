@@ -133,8 +133,8 @@ class SiteStatsDashboardViewController: UIViewController {
     }()
 
     private lazy var subscribersViewController = {
-        let viewModel = SiteStatsSubscribersViewModel()
-        return SiteStatsSubscribersViewController(viewModel: viewModel)
+        let viewModel = StatsSubscribersViewModel()
+        return StatsSubscribersViewController(viewModel: viewModel)
     }()
 
     // MARK: - View

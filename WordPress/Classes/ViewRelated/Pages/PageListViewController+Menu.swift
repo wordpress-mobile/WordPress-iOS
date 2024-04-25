@@ -11,10 +11,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         viewPost(apost)
     }
 
-    func stats(for apost: AbstractPost) {
-        // Not available for pages
-    }
-
     func duplicate(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
         copyPage(page)

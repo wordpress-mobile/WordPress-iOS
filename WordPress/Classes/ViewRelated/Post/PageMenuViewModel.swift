@@ -15,6 +15,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             createSecondarySection(),
             createBlazeSection(),
             createSetPageAttributesSection(),
+            createNavigationSection(),
             createTrashSection()
         ]
     }
@@ -124,11 +125,18 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         } else {
             buttons.append(.setRegularPage)
         }
+        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+    }
+
+    private func createNavigationSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
+        if isJetpackFeaturesEnabled, page.status == .publish && page.hasRemote() {
+            buttons.append(.stats)
+        }
         if page.status != .trash {
             buttons.append(.settings)
         }
-
-        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
