@@ -36,6 +36,7 @@
     case postStatsRecentWeeks
     case subscribersEmailsSummary
     case subscribersList
+    case subscribersTotal
 
     static let allInsights: [StatSection] = [
         .insightsViewsVisitors,
@@ -92,7 +93,7 @@
         case .insightsCommentsTotals:
             return InsightsHeaders.commentsTotals
         case .insightsFollowerTotals:
-            return InsightsHeaders.followerTotals
+            return InsightsHeaders.subscribersTotal
         case .insightsMostPopularTime:
             return InsightsHeaders.mostPopularTime
         case .insightsTagsAndCategories:
@@ -148,6 +149,8 @@
             return SubscribersHeaders.emailsSummaryStats
         case .subscribersList:
             return SubscribersHeaders.subscribersList
+        case .subscribersTotal:
+            return InsightsHeaders.subscribersTotal
         default:
             return ""
         }
@@ -398,7 +401,7 @@
         static let mostPopularTime = NSLocalizedString("stats.insights.mostPopularCard.title", value: "🔥 Most Popular Time", comment: "Insights 'Most Popular Time' header. Fire emoji should remain part of the string.")
         static let likesTotals = NSLocalizedString("Total Likes", comment: "Insights 'Total Likes' header")
         static let commentsTotals = NSLocalizedString("Total Comments", comment: "Insights 'Total Comments' header")
-        static let followerTotals = NSLocalizedString("Total Followers", comment: "Insights 'Total Followers' header")
+        static let subscribersTotal = NSLocalizedString("stats.insights.totalSubscribers.title", value: "Total Subscribers", comment: "Insights 'Total Subscribers' header")
         static let publicize = NSLocalizedString("Jetpack Social Connections", comment: "Insights 'Jetpack Social Connections' header")
         static let todaysStats = NSLocalizedString("Today", comment: "Insights 'Today' header")
         static let postingActivity = NSLocalizedString("Posting Activity", comment: "Insights 'Posting Activity' header")
