@@ -12,7 +12,7 @@ struct PostMediaUploadStatusView: View {
                     Menu {
                         Button(action: viewModel.buttonRetryTapped) {
                             Label(Strings.retryUploads, systemImage: "arrow.clockwise")
-                        }.disabled(viewModel.isButtonRetryDisabled)
+                        }
                     } label: {
                         Image(systemName: "ellipsis")
                     }

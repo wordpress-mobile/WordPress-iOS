@@ -17,10 +17,6 @@ final class PostMediaUploadViewModel: ObservableObject {
     private weak var timer: Timer?
     private var cancellables: [AnyCancellable] = []
 
-    var isButtonRetryDisabled: Bool {
-        !(uploads.contains(where: { $0.error != nil }))
-    }
-
     deinit {
         timer?.invalidate()
     }
@@ -168,6 +164,7 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
     }
 
     fileprivate func retry() {
+        retryTimer?.invalidate()
         retryTimer = nil
         coordinator.retryMedia(media)
     }
