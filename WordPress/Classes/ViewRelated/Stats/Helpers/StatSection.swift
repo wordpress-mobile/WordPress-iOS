@@ -461,7 +461,7 @@
         static let comments = NSLocalizedString("Comments", comment: "Label for number of comments.")
         static let views = NSLocalizedString("Views", comment: "Label for number of views.")
         static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
-        static let since = NSLocalizedString("stats.section.dataSubtitles.subscriber since", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
+        static let since = NSLocalizedString("stats.section.dataSubtitles.subscriberSince", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
         static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
         static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
         static let emailsSummaryOpens = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
