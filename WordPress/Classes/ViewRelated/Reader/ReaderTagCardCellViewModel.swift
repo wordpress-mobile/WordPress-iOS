@@ -42,6 +42,7 @@ class ReaderTagCardCellViewModel: NSObject {
         let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: false)]
         fetchRequest.fetchLimit = Constants.displayPostLimit
+        fetchRequest.includesSubentities = false
         let resultsController = NSFetchedResultsController<ReaderPost>(fetchRequest: fetchRequest,
                                                            managedObjectContext: ContextManager.shared.mainContext,
                                                            sectionNameKeyPath: nil,
@@ -71,7 +72,7 @@ class ReaderTagCardCellViewModel: NSObject {
         collectionView?.delegate = self
     }
 
-    func fetchTagTopics(syncRemotely: Bool) {
+    func fetchTagPosts(syncRemotely: Bool) {
         guard let topic = try? ReaderTagTopic.lookup(withSlug: slug, in: coreDataStack.mainContext) else {
             return
         }
@@ -124,6 +125,10 @@ extension ReaderTagCardCellViewModel: NSFetchedResultsControllerDelegate {
 extension ReaderTagCardCellViewModel: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let sectionInfo = resultsController.sections?[safe: indexPath.section],
+              indexPath.row < sectionInfo.numberOfObjects else {
+            return
+        }
         let post = resultsController.object(at: indexPath)
         let controller = ReaderDetailViewController.controllerWithPost(post)
         parentViewController?.navigationController?.pushViewController(controller, animated: true)

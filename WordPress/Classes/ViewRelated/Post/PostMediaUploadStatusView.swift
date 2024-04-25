@@ -4,22 +4,37 @@ import SwiftUI
 /// Displays upload progress for the media for the given post.
 struct PostMediaUploadStatusView: View {
     @ObservedObject var viewModel: PostMediaUploadViewModel
-    let onCloseTapped: () -> Void
 
     var body: some View {
-        List {
-            ForEach(viewModel.uploads) {
-                MediaUploadStatusView(viewModel: $0)
+        contents
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Button(action: viewModel.buttonRetryTapped) {
+                            Label(Strings.retryUploads, systemImage: "arrow.clockwise")
+                        }.disabled(viewModel.isButtonRetryDisabled)
+                    } label: {
+                        Image(systemName: "ellipsis")
+                    }
+                }
             }
-        }
-        .listStyle(.plain)
-        .toolbar {
-            ToolbarItem(placement: .cancellationAction) {
-                Button(Strings.close, action: onCloseTapped)
+            .navigationTitle(Strings.title)
+            .navigationBarTitleDisplayMode(.inline)
+    }
+
+    @ViewBuilder
+    private var contents: some View {
+        if viewModel.uploads.isEmpty {
+            Text(Strings.empty)
+                .foregroundStyle(.secondary)
+        } else {
+            List {
+                ForEach(viewModel.uploads) {
+                    MediaUploadStatusView(viewModel: $0)
+                }
             }
+            .listStyle(.plain)
         }
-        .navigationTitle(Strings.title)
-        .navigationBarTitleDisplayMode(.inline)
     }
 }
 
@@ -41,17 +56,20 @@ private struct MediaUploadStatusView: View {
                 Text(viewModel.details)
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-                    .lineLimit(1)
+                    .lineLimit(3)
             }
 
             Spacer()
 
             switch viewModel.state {
-            case .uploaded:
-                Image(systemName: "checkmark.circle.fill")
-                    .foregroundStyle(.secondary.opacity(0.5))
             case .uploading:
                 MediaUploadProgressView(progress: viewModel.fractionCompleted)
+            case .failed:
+                Image(systemName: "exclamationmark.circle.fill")
+                    .foregroundStyle(.red)
+            case .uploaded:
+                Image(systemName: "checkmark.circle.fill")
+                    .foregroundStyle(.secondary.opacity(0.33))
             }
         }
         .task {
@@ -60,7 +78,7 @@ private struct MediaUploadStatusView: View {
     }
 }
 
-private struct MediaUploadProgressView: View {
+struct MediaUploadProgressView: View {
     let progress: Double
 
     var body: some View {
@@ -99,5 +117,7 @@ private struct MediaThubmnailImageView: View {
 
 private enum Strings {
     static let title = NSLocalizedString("postMediaUploadStatusView.title", value: "Media Uploads", comment: "Title for post media upload status view")
+    static let empty = NSLocalizedString("postMediaUploadStatusView.noPendingUploads", value: "No pending uploads", comment: "Placeholder text in postMediaUploadStatusView when no uploads remain")
     static let close = NSLocalizedString("postMediaUploadStatusView.close", value: "Close", comment: "Close button in postMediaUploadStatusView")
+    static let retryUploads = NSLocalizedString("postMediaUploadStatusView.retryUploads", value: "Retry Uploads", comment: "Retry upload button in postMediaUploadStatusView")
 }
