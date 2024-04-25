@@ -28,10 +28,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     @IBOutlet var tableHeaderView: UIView!
 
-    /// Filtering Tab Bar
-    ///
-    @IBOutlet weak var filterTabBar: FilterTabBar!
-
     /// Jetpack Banner View
     /// Only visible in WordPress
     ///
@@ -73,14 +69,40 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     ///
     fileprivate var unreadNotificationIds = Set<NSManagedObjectID>()
 
-    /// Used to store (and restore) the currently selected filter segment.
-    ///
-    fileprivate var restorableSelectedSegmentIndex: Int = 0
-
     /// Used to keep track of the currently selected notification,
     /// to restore it between table view reloads and state restoration.
     ///
     fileprivate var selectedNotification: Notification? = nil
+
+    /// Menu listing the notifications filters.
+    ///
+    fileprivate lazy var filtersMenuButton: UIButton = {
+        let firstSection = [Filter.none]
+        let secondSection = Filter.allCases.filter { $0 != .none }
+        let children: [UIMenuElement] = [firstSection, secondSection].map { section -> UIMenuElement in
+            let actions = section.map { filter in
+                UIAction(title: filter.title, image: nil) { [weak self] _ in
+                    self?.filtersMenuTapped(filter: filter)
+                }
+            }
+            if actions.count == 1, let action = actions.first {
+                return action
+            } else {
+                return UIMenu(options: .displayInline, children: actions)
+            }
+        }
+        let menu = UIMenu(children: children)
+        return UIButton.makeMenu(title: filtersMenuButtonTitle(for: filter), menu: menu)
+    }()
+
+    /// Holds the current filter state, updating the filter's menu configuration and reloading results on change.
+    ///
+    fileprivate var filter: Filter = .none {
+        didSet {
+            filtersMenuButton.configuration = UIButton.menuButtonConfiguration(title: filtersMenuButtonTitle(for: filter))
+            reloadResultsController()
+        }
+    }
 
     /// JetpackLoginVC being presented.
     ///
@@ -139,7 +161,6 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         setupTableFooterView()
         setupRefreshControl()
         setupNoResultsView()
-        setupFilterBar()
 
         tableView.tableHeaderView = tableHeaderView
         setupConstraints()
@@ -452,10 +473,10 @@ private extension NotificationsViewController {
         // we are using a space character because we need a non-empty string to ensure a smooth
         // transition back, with large titles enabled.
         navigationItem.backBarButtonItem = UIBarButtonItem(title: " ", style: .plain, target: nil, action: nil)
-        navigationItem.title = NSLocalizedString("Notifications", comment: "Notifications View Controller title")
+        navigationItem.title = Strings.NavigationBar.title
     }
 
-    func updateNavigationItems() {
+    func configureNavigationItems() {
         let moreMenuItems = UIDeferredMenuElement.uncached { [weak self] completion in
             guard let self else {
                 completion([])
@@ -473,6 +494,13 @@ private extension NotificationsViewController {
             button.accessibilityLabel = Strings.NavigationBar.menuButtonAccessibilityLabel
             return button
         }()
+    }
+
+    private func filtersMenuButtonTitle(for filter: Filter) -> String {
+        switch filter {
+        case .none: return Strings.NavigationBar.allNotificationsTitle
+        default: return filter.title
+        }
     }
 
     func makeMoreMenuElements() -> [UIAction] {
@@ -516,7 +544,6 @@ private extension NotificationsViewController {
     func setupConstraints() {
         // Inline prompt is initially hidden!
         inlinePromptView.translatesAutoresizingMaskIntoConstraints = false
-        filterTabBar.tabBarHeightConstraintPriority = 999
 
         let leading = tableHeaderView.safeLeadingAnchor.constraint(equalTo: tableView.safeLeadingAnchor)
         let trailing = tableHeaderView.safeTrailingAnchor.constraint(equalTo: tableView.safeTrailingAnchor)
@@ -574,15 +601,6 @@ private extension NotificationsViewController {
 
     func setupNoResultsView() {
         noResultsViewController.delegate = self
-    }
-
-    func setupFilterBar() {
-        WPStyleGuide.configureFilterTabBar(filterTabBar)
-        filterTabBar.superview?.backgroundColor = .systemBackground
-        filterTabBar.backgroundColor = .systemBackground
-
-        filterTabBar.items = Filter.allCases
-        filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
     }
 }
 
@@ -1282,21 +1300,19 @@ extension NotificationsViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - FilterTabBar Methods
+// MARK: - Filters Menu Methods
 //
 extension NotificationsViewController {
 
-    @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
-        selectedNotification = nil
+    private func filtersMenuTapped(filter: Filter) {
+        self.filter = filter
+        self.selectedNotification = nil
 
         let properties = [Stats.selectedFilter: filter.analyticsTitle]
         WPAnalytics.track(.notificationsTappedSegmentedControl, withProperties: properties)
 
-        updateUnreadNotificationsForFilterTabChange()
-
-        reloadResultsController()
-
-        selectFirstNotificationIfAppropriate()
+        self.updateUnreadNotificationsForFilterTabChange()
+        self.selectFirstNotificationIfAppropriate()
     }
 
     @objc func selectFirstNotificationIfAppropriate() {
@@ -1479,19 +1495,17 @@ extension NotificationsViewController: WPTableViewHandlerDelegate {
 //
 private extension NotificationsViewController {
     func showFiltersSegmentedControlIfApplicable() {
-        guard filterTabBar.isHidden == true && shouldDisplayFilters == true else {
+        guard shouldDisplayFilters else {
             return
         }
-
-        UIView.animate(withDuration: WPAnimationDurationDefault, animations: {
-            self.filterTabBar.isHidden = false
-        })
+        self.navigationItem.titleView = filtersMenuButton
     }
 
     func hideFiltersSegmentedControlIfApplicable() {
-        if filterTabBar.isHidden == false && shouldDisplayFilters == false {
-            self.filterTabBar.isHidden = true
+        guard !shouldDisplayFilters else {
+            return
         }
+        self.navigationItem.titleView = nil
     }
 
     var shouldDisplayFilters: Bool {
@@ -1508,7 +1522,7 @@ private extension NotificationsViewController {
     func showNoResultsViewIfNeeded() {
         noResultsViewController.removeFromView()
         updateSplitViewAppearanceForNoResultsView()
-        updateNavigationItems()
+        configureNavigationItems()
 
         // Hide the filter header if we're showing the Jetpack prompt
         hideFiltersSegmentedControlIfApplicable()
@@ -1800,17 +1814,6 @@ private extension NotificationsViewController {
 
     var userDefaults: UserPersistentRepository {
         return UserPersistentStoreFactory.instance()
-    }
-
-    var filter: Filter {
-        get {
-            let selectedIndex = filterTabBar?.selectedIndex ?? Filter.none.rawValue
-            return Filter(rawValue: selectedIndex) ?? .none
-        }
-        set {
-            filterTabBar?.setSelectedIndex(newValue.rawValue)
-            reloadResultsController()
-        }
     }
 
     enum Filter: Int, FilterTabBarItem, CaseIterable {
