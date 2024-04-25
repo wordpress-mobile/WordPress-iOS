@@ -42,7 +42,7 @@ class ReaderTagCardCell: UITableViewCell {
                                                collectionView: collectionView,
                                                isLoggedIn: isLoggedIn,
                                                cellSize: weakSelf?.cellSize)
-        viewModel?.fetchTagTopics(syncRemotely: shouldSyncRemotely)
+        viewModel?.fetchTagPosts(syncRemotely: shouldSyncRemotely)
         tagButton.setTitle(tag.title, for: .normal)
     }
 
