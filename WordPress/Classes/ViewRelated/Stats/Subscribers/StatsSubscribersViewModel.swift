@@ -15,17 +15,20 @@ final class StatsSubscribersViewModel {
 
     func refreshData() {
         store.updateEmailsSummary(quantity: 10, sortField: .postId)
+        store.updateSubscribersList(quantity: 10)
     }
 
     // MARK: - Lifecycle
 
     func addObservers() {
-        Publishers.MergeMany(store.emailsSummary)
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.updateTableViewSnapshot()
-            }
-            .store(in: &cancellables)
+        Publishers.CombineLatest(
+            store.emailsSummary.removeDuplicates(),
+            store.subscribersList.removeDuplicates()
+        )
+        .sink { [weak self] _ in
+            self?.updateTableViewSnapshot()
+        }
+        .store(in: &cancellables)
     }
 
     func removeObservers() {
@@ -37,9 +40,9 @@ final class StatsSubscribersViewModel {
 
 private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
-        let snapshot = ImmuTableDiffableDataSourceSnapshot.multiSectionSnapshot(
-            emailsSummaryRows()
-        )
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        snapshot.addSection(subscribersListRows())
+        snapshot.addSection(emailsSummaryRows())
         tableViewSnapshot.send(snapshot)
     }
 
@@ -83,6 +86,40 @@ private extension StatsSubscribersViewModel {
                 secondData: $0.clicks.abbreviatedString(),
                 multiline: false,
                 statSection: .subscribersEmailsSummary
+            )
+        }
+    }
+}
+
+// MARK: - Subscribers List
+
+private extension StatsSubscribersViewModel {
+    func subscribersListRows() -> [any StatsHashableImmuTableRow] {
+        switch store.subscribersList.value {
+        case .loading, .idle:
+            return loadingRows(.subscribersList)
+        case .success(let subscribers):
+            return [
+                TopTotalsPeriodStatsRow(
+                    itemSubtitle: StatSection.ItemSubtitles.subscriber,
+                    dataSubtitle: StatSection.DataSubtitles.since,
+                    dataRows: subscribersListDataRows(subscribers),
+                    statSection: .subscribersList,
+                    siteStatsPeriodDelegate: viewMoreDelegate
+                )
+            ]
+        case .error:
+            return errorRows(.subscribersList)
+        }
+    }
+
+    func subscribersListDataRows(_ subscribers: [StatsFollower]) -> [StatsTotalRowData] {
+        return subscribers.map {
+            return StatsTotalRowData(
+                name: $0.name,
+                data: $0.subscribedDate.relativeStringInPast(),
+                userIconURL: $0.avatarURL,
+                statSection: .subscribersList
             )
         }
     }
