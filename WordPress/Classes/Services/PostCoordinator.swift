@@ -725,6 +725,7 @@ class PostCoordinator: NSObject {
         completion(.success(post))
     }
 
+    // - warning: deprecated (kahu-offline-mode)
     func cancelAnyPendingSaveOf(post: AbstractPost) {
         removeObserver(for: post)
     }
@@ -1023,7 +1024,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Cancel active and pending automatic uploads of the post.
+    // - warning: deprecated (kahu-offline-mode)
     func cancelAutoUploadOf(_ post: AbstractPost) {
         cancelAnyPendingSaveOf(post: post)
 
@@ -1079,7 +1080,6 @@ class PostCoordinator: NSObject {
         do {
             try await PostRepository(coreDataStack: coreDataStack)._trash(post)
 
-            cancelAnyPendingSaveOf(post: post)
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
         } catch {
