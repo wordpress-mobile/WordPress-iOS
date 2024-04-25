@@ -78,7 +78,6 @@ public struct ContentPreview: View {
     // MARK: - Types
 
     public struct ImageConfiguration {
-        
         let url: URL?
         let placeholder: Image?
 
