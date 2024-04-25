@@ -431,6 +431,8 @@
 		0C0453292AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
 		0C04532B2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */; };
 		0C04532C2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */; };
+		0C05E12D2BDAD02200415A5D /* EditorContentProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C05E12C2BDAD02200415A5D /* EditorContentProcessor.swift */; };
+		0C05E12E2BDAD02200415A5D /* EditorContentProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C05E12C2BDAD02200415A5D /* EditorContentProcessor.swift */; };
 		0C0AD1062B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */; };
 		0C0AD1072B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */; };
 		0C0AD10A2B0CCFA400EC06E6 /* MediaPreviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */; };
@@ -6260,6 +6262,7 @@
 		0C03AEC92B7D995F00B64A25 /* PublishButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishButton.swift; sourceTree = "<group>"; };
 		0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaVideoDurationView.swift; sourceTree = "<group>"; };
 		0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaDocumentInfoView.swift; sourceTree = "<group>"; };
+		0C05E12C2BDAD02200415A5D /* EditorContentProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorContentProcessor.swift; sourceTree = "<group>"; };
 		0C0AD1052B0C483F00EC06E6 /* ExternalMediaSelectionTitleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaSelectionTitleView.swift; sourceTree = "<group>"; };
 		0C0AD1092B0CCFA400EC06E6 /* MediaPreviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPreviewController.swift; sourceTree = "<group>"; };
 		0C0AE7582A8FAD6A007D9D6C /* MediaPickerMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPickerMenu.swift; sourceTree = "<group>"; };
@@ -13363,6 +13366,7 @@
 			isa = PBXGroup;
 			children = (
 				B0637542253E7E7A00FD45D2 /* GutenbergSuggestionsViewController.swift */,
+				0C05E12C2BDAD02200415A5D /* EditorContentProcessor.swift */,
 				FF2EC3BE2209A105006176E1 /* Processors */,
 				1ED046CE244F26B1008F6365 /* GutenbergWeb */,
 				4631359224AD057E0017E65C /* Layout Picker */,
@@ -21480,6 +21484,7 @@
 				8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */,
 				7E4123CC20F418A500DF8486 /* ActivityActionsParser.swift in Sources */,
 				FAB37D4627ED84BC00CA993C /* DashboardStatsNudgeView.swift in Sources */,
+				0C05E12D2BDAD02200415A5D /* EditorContentProcessor.swift in Sources */,
 				17F0E1DA20EBDC0A001E9514 /* Routes+Me.swift in Sources */,
 				D83CA3AB20842E5F0060E310 /* StockPhotosResultsPage.swift in Sources */,
 				80EF928A280D28140064A971 /* Atomic.swift in Sources */,
@@ -24753,6 +24758,7 @@
 				FA90EFF0262E74210055AB22 /* JetpackWebViewControllerFactory.swift in Sources */,
 				80A2153E29C35197002FE8EB /* StaticScreensTabBarWrapper.swift in Sources */,
 				FABB220A2602FC2C00C8785C /* FilterChipButton.swift in Sources */,
+				0C05E12E2BDAD02200415A5D /* EditorContentProcessor.swift in Sources */,
 				FABB220C2602FC2C00C8785C /* Blog.m in Sources */,
 				FABB220D2602FC2C00C8785C /* JetpackRemoteInstallStateView.swift in Sources */,
 				F4552086299D147B00D9F6A8 /* BlockedSite.swift in Sources */,

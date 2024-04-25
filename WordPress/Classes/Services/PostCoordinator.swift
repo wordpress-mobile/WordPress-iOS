@@ -559,8 +559,7 @@ class PostCoordinator: NSObject {
     private func startSyncOperation(_ operation: SyncOperation) {
         Task { @MainActor in
             do {
-                operation.log("upload remaining media")
-                try await uploadRemainingResources(for: operation.revision)
+                try await uploadMedia(for: operation)
                 guard !operation.isCancelled else { return }
                 operation.log("sync post contents and settings")
                 operation.state = .syncing
@@ -661,10 +660,22 @@ class PostCoordinator: NSObject {
     // MARK: - Upload Resources
 
     @MainActor
-    private func uploadRemainingResources(for post: AbstractPost) async throws {
+    private func uploadMedia(for operation: SyncOperation) async throws {
+        let revision = operation.revision
+
+        operation.log("start uploading remaining media")
         _ = try await withUnsafeThrowingContinuation { continuation in
-            self.prepareToSave(post, then: continuation.resume(with:))
+            self.prepareToSave(operation.revision, then: continuation.resume(with:))
         }
+        operation.log("finished uploading remaining media")
+
+        let start = CFAbsoluteTimeGetCurrent()
+        let media = revision.media.compactMap(EditorUploadedMedia.init)
+        if let content = revision.content, !content.isEmpty {
+            revision.content = await EditorContentProcessor.updateMediaReferences(for: media, in: revision.content ?? "")
+        }
+        let duration = Int((CFAbsoluteTimeGetCurrent() - start) * 1000)
+        operation.log("finished processing media references in \(duration) ms")
     }
 
     /// If media is still uploading it keeps track of the ongoing media operations and updates the post content when they finish.
@@ -895,7 +906,12 @@ class PostCoordinator: NSObject {
         }, forMediaFor: post)
     }
 
+    // - warning: deprecated (kahu-offline-mode)
     private func updateReferences(to media: Media, in post: AbstractPost) {
+        guard !isSyncPublishingEnabled else {
+            return
+        }
+
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,
             let remoteURLStr = media.remoteURL else {
