@@ -81,6 +81,9 @@
                             <state key="normal" title="Like" image="icon-reader-star-outline">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration"/>
                             </state>
+                            <connections>
+                                <action selector="onLikeButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="O6m-T2-DAS"/>
+                            </connections>
                         </button>
                         <view contentMode="scaleToFill" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="0q4-yh-1OL" userLabel="Spacer">
                             <rect key="frame" x="52" y="0.0" width="144" height="44"/>
@@ -93,6 +96,9 @@
                             </constraints>
                             <inset key="imageEdgeInsets" minX="15" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="more-horizontal-mobile"/>
+                            <connections>
+                                <action selector="onMenuButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="FuW-5y-aZT"/>
+                            </connections>
                         </button>
                     </subviews>
                 </stackView>

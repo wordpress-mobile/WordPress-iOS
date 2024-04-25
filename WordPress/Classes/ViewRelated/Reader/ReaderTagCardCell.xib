@@ -20,6 +20,9 @@
                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                     <state key="normal" title="Button"/>
                     <buttonConfiguration key="configuration" style="filled" title="Tag"/>
+                    <connections>
+                        <action selector="onTagButtonTapped:" destination="iN0-l3-epB" eventType="touchUpInside" id="7G3-4m-23Y"/>
+                    </connections>
                 </button>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="GeQ-Gs-OvG">
                     <rect key="frame" x="24" y="62" width="288" height="297"/>
