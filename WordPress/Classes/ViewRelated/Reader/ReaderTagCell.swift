@@ -141,10 +141,16 @@ extension ReaderTagCell: GhostableView {
         // The ghost loading animation only works on leaf subviews.
         // `CachedAnimatedImageView` by default injects an activity indicator as a subview into the image view,
         // therefore causing the `GhostLayer` to not be applied to the image view.
-        featuredImageView.subviews.forEach { $0.removeFromSuperview() }
+        featuredImageView?.subviews.forEach { $0.removeFromSuperview() }
 
-        siteLabel.text = "Site name"
-        likeButton.setTitle("", for: .normal)
+        siteLabel?.text = "Site name"
+
+        var configuration = UIButton.Configuration.plain()
+        configuration.contentInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 15.0)
+        configuration.imagePadding = .zero
+        configuration.imagePlacement = .leading
+        likeButton?.configuration = configuration
+        likeButton?.setTitle("", for: .normal)
     }
 
 }
