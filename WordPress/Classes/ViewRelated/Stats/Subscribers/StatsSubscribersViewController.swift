@@ -71,6 +71,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
         return [
             TopTotalsPeriodStatsRow.self,
             StatsGhostTopImmutableRow.self,
+            TotalInsightStatsRow.self,
             StatsErrorRow.self
         ]
     }
