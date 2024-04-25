@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-22 20:54:07+0000 */
+/* Translation-Revision-Date: 2024-04-24 12:15:26+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -8987,6 +8987,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Short status description */
 "blazeCampaign.status.rejected" = "مرفوض";
 
+/* Short status description */
+"blazeCampaign.status.scheduled" = "تمت الجدولة";
+
 /* Title for budget stats view */
 "blazeCampaigns.budget" = "الميزانية";
 
@@ -9212,6 +9215,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Boolean User Defaults debug menu item */
 "debugMenu.booleanUserDefaults" = "الإعدادات الافتراضية للمستخدمين في ما يتعلق بالقيم المنطقية";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "الإعدادات الافتراضية للمستخدمين في ما يتعلق بالقيم المنطقية";
 
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "تمييز العلامات";
@@ -11001,6 +11007,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "الحجم";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<تجريبي>";
 
 /* Text format for the feedback line text, to be displayed in the preview section.
 %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
