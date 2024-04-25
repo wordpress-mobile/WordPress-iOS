@@ -622,16 +622,14 @@ class PostCoordinator: NSObject {
     static func isTerminalError(_ error: Error) -> Bool {
         if let saveError = error as? PostRepository.PostSaveError {
             switch saveError {
-            case .deleted:
-                return false
-            case .conflict:
-                return false
+            case .deleted, .conflict:
+                return true
             }
         }
         if let error = error as? SavingError, case .mediaFailure(_, let error) = error {
             return MediaCoordinator.isTerminalError(error)
         }
-        return true
+        return false
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {
