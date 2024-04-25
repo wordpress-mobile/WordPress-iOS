@@ -26,6 +26,7 @@ import Foundation
     case editorPostPublishTap
     case editorPostPublishDismissed
     case editorPostScheduledChanged
+    case editorPostPendingReviewChanged
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
@@ -627,6 +628,8 @@ import Foundation
             return "editor_post_publish_dismissed"
         case .editorPostScheduledChanged:
             return "editor_post_scheduled_changed"
+        case .editorPostPendingReviewChanged:
+            return "editor_post_pending_review_changed"
         case .editorPostTitleChanged:
             return "editor_post_title_changed"
         case .editorPostVisibilityChanged:

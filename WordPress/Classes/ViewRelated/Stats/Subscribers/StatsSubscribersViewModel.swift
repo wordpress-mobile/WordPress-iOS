@@ -16,16 +16,18 @@ final class StatsSubscribersViewModel {
     func refreshData() {
         store.updateChartSummary()
         store.updateEmailsSummary(quantity: 10, sortField: .postId)
+        store.updateSubscribersList(quantity: 10)
     }
 
     // MARK: - Lifecycle
 
     func addObservers() {
-        Publishers.CombineLatest(
+        Publishers.CombineLatest3(
             store.chartSummary.removeDuplicates(),
-            store.emailsSummary.removeDuplicates()
+            store.emailsSummary.removeDuplicates(),
+            store.subscribersList.removeDuplicates()
         )
-        .sink { [weak self] value in
+        .sink { [weak self] _ in
             self?.updateTableViewSnapshot()
         }
         .store(in: &cancellables)
@@ -40,43 +42,42 @@ final class StatsSubscribersViewModel {
 
 private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
-        let rows: [any StatsHashableImmuTableRow] = [
-            chartRow(),
-            emailsSummaryRow(),
-        ]
-        let snapshot = ImmuTableDiffableDataSourceSnapshot.multiSectionSnapshot(rows)
-
+        var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        snapshot.addSection(chartRows())
+        snapshot.addSection(subscribersListRows())
+        snapshot.addSection(emailsSummaryRows())
         tableViewSnapshot.send(snapshot)
     }
 
-    func loadingRow(_ section: StatSection) -> any StatsHashableImmuTableRow {
-        return StatsGhostTopImmutableRow(statSection: section)
+    func loadingRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
+        return [StatsGhostTopImmutableRow(statSection: section)]
     }
 
-    func errorRow(_ section: StatSection) -> any StatsHashableImmuTableRow {
-        return StatsErrorRow(rowStatus: .error, statType: .subscribers, statSection: section)
+    func errorRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
+        return [StatsErrorRow(rowStatus: .error, statType: .subscribers, statSection: section)]
     }
 }
 
 // MARK: - Chart
 
 private extension StatsSubscribersViewModel {
-    func chartRow() -> any StatsHashableImmuTableRow {
+    func chartRows() -> [any StatsHashableImmuTableRow] {
         switch store.chartSummary.value {
         case .loading, .idle:
-            return loadingRow(.subscribersChart)
+            return loadingRows(.subscribersChart)
         case .success(let chartSummary):
             let xAxisDates = chartSummary.history.map { $0.date }
             let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
-            let row = SubscriberChartRow(
-                chartData: viewsChart.lineChartData,
-                chartStyling: viewsChart.lineChartStyling,
-                xAxisDates: xAxisDates,
-                statSection: .subscribersChart
-            )
-            return row
+            return [
+                SubscriberChartRow(
+                    chartData: viewsChart.lineChartData,
+                    chartStyling: viewsChart.lineChartStyling,
+                    xAxisDates: xAxisDates,
+                    statSection: .subscribersChart
+                )
+            ]
         case .error:
-            return errorRow(.subscribersChart)
+            return errorRows(.subscribersChart)
         }
     }
 }
@@ -84,25 +85,27 @@ private extension StatsSubscribersViewModel {
 // MARK: - Emails Summary
 
 private extension StatsSubscribersViewModel {
-    func emailsSummaryRow() -> any StatsHashableImmuTableRow {
+    func emailsSummaryRows() -> [any StatsHashableImmuTableRow] {
         switch store.emailsSummary.value {
         case .loading, .idle:
-            return loadingRow(.subscribersEmailsSummary)
+            return loadingRows(.subscribersEmailsSummary)
         case .success(let emailsSummary):
-            return TopTotalsPeriodStatsRow(
-                itemSubtitle: Strings.titleColumn,
-                dataSubtitle: Strings.opensColumn,
-                secondDataSubtitle: Strings.clicksColumn,
-                dataRows: emailsSummaryDataRow(emailsSummary),
-                statSection: .subscribersEmailsSummary,
-                siteStatsPeriodDelegate: viewMoreDelegate
-            )
+            return [
+                TopTotalsPeriodStatsRow(
+                    itemSubtitle: StatSection.ItemSubtitles.emailsSummary,
+                    dataSubtitle: StatSection.DataSubtitles.emailsSummaryOpens,
+                    secondDataSubtitle: StatSection.DataSubtitles.emailsSummaryClicks,
+                    dataRows: emailsSummaryDataRows(emailsSummary),
+                    statSection: .subscribersEmailsSummary,
+                    siteStatsPeriodDelegate: viewMoreDelegate
+                )
+            ]
         case .error:
-            return errorRow(.subscribersEmailsSummary)
+            return errorRows(.subscribersEmailsSummary)
         }
     }
 
-    func emailsSummaryDataRow(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
+    func emailsSummaryDataRows(_ emailsSummary: StatsEmailsSummaryData) -> [StatsTotalRowData] {
         return emailsSummary.posts.map {
             StatsTotalRowData(
                 name: $0.title,
@@ -115,10 +118,36 @@ private extension StatsSubscribersViewModel {
     }
 }
 
+// MARK: - Subscribers List
+
 private extension StatsSubscribersViewModel {
-    struct Strings {
-        static let titleColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
-        static let opensColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
-        static let clicksColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
+    func subscribersListRows() -> [any StatsHashableImmuTableRow] {
+        switch store.subscribersList.value {
+        case .loading, .idle:
+            return loadingRows(.subscribersList)
+        case .success(let subscribers):
+            return [
+                TopTotalsPeriodStatsRow(
+                    itemSubtitle: StatSection.ItemSubtitles.subscriber,
+                    dataSubtitle: StatSection.DataSubtitles.since,
+                    dataRows: subscribersListDataRows(subscribers),
+                    statSection: .subscribersList,
+                    siteStatsPeriodDelegate: viewMoreDelegate
+                )
+            ]
+        case .error:
+            return errorRows(.subscribersList)
+        }
+    }
+
+    func subscribersListDataRows(_ subscribers: [StatsFollower]) -> [StatsTotalRowData] {
+        return subscribers.map {
+            return StatsTotalRowData(
+                name: $0.name,
+                data: $0.subscribedDate.relativeStringInPast(),
+                userIconURL: $0.avatarURL,
+                statSection: .subscribersList
+            )
+        }
     }
 }

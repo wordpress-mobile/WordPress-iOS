@@ -35,6 +35,7 @@ struct ReaderNotificationKeys {
 enum ReaderPostMenuSource {
     case card
     case details
+    case tagCard
 
     var description: String {
         switch self {
@@ -42,6 +43,8 @@ enum ReaderPostMenuSource {
             return "post_card"
         case .details:
             return "post_details"
+        case .tagCard:
+            return "post_tag_card"
         }
     }
 }

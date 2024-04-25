@@ -30,5 +30,9 @@ final class StatsSubscribersCache {
         static func chartSummary(unit: String, siteId: NSNumber) -> CacheKey {
             return .init(record: .subscribersChart, key: unit, siteID: siteId)
         }
+
+        static func subscribersList(quantity: Int, siteId: NSNumber) -> CacheKey {
+            return .init(record: .subscribersList, key: "\(quantity)", siteID: siteId)
+        }
     }
 }

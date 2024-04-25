@@ -228,9 +228,9 @@ class PostCoordinator: NSObject {
         defer { resumeSyncing(for: post) }
 
         do {
-            let isExistingPost = post.hasRemote()
+            let previousStatus = post.status
             try await PostRepository()._save(post, changes: changes)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
+            show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
             trackError(error, operation: "post-save")

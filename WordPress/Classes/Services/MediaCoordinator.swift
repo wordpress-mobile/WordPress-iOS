@@ -798,6 +798,26 @@ extension MediaCoordinator {
 
         }, for: nil)
     }
+
+    /// Returns `true` if the error can't be resolved by simply retrying and
+    /// requires user interventions, for example, making more room in the
+    /// Media library.
+    static func isTerminalError(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        switch nsError.domain {
+        case MediaServiceErrorDomain:
+            switch nsError.code {
+            case MediaServiceError.fileDoesNotExist.rawValue,
+                MediaServiceError.fileLargerThanMaxFileSize.rawValue,
+                MediaServiceError.fileLargerThanDiskQuotaAvailable.rawValue:
+                return true
+            default:
+                return false
+            }
+        default:
+            return false
+        }
+    }
 }
 
 extension Media {

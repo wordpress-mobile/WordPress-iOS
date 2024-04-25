@@ -34,13 +34,12 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         var subscriberChartRow: SubscriberChartRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers.first?.immuTableRow as? SubscriberChartRow {
+                if let row = snapshot.itemIdentifiers[0].immuTableRow as? SubscriberChartRow {
                     subscriberChartRow = row
                     expectation.fulfill()
                 }
             })
             .store(in: &cancellables)
-
         let chartSummary = StatsSubscribersSummaryData(history: [
             .init(date: Date(), count: 1),
             .init(date: Date(), count: 2),
@@ -51,12 +50,37 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         XCTAssertNotNil(subscriberChartRow?.chartData)
     }
 
+    func testTableViewSnapshot_subscribersListLoaded() throws {
+        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        var subscribersListRow: TopTotalsPeriodStatsRow?
+        sut.tableViewSnapshot
+            .sink(receiveValue: { snapshot in
+                if let row = snapshot.itemIdentifiers[1].immuTableRow as? TopTotalsPeriodStatsRow {
+                    subscribersListRow = row
+                    expectation.fulfill()
+                }
+            })
+            .store(in: &cancellables)
+
+        let subscribers: [StatsFollower] = [
+            .init(name: "First Subscriber", subscribedDate: Date(), avatarURL: nil),
+            .init(name: "Second Subscriber", subscribedDate: Date(), avatarURL: nil),
+            .init(name: "Third Subscriber", subscribedDate: Date(), avatarURL: nil)
+        ]
+        store.subscribersList.send(.success(subscribers))
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertEqual(subscribersListRow?.dataRows.count, 3)
+        XCTAssertEqual(subscribersListRow?.dataRows[0].name, "First Subscriber")
+        XCTAssertEqual(subscribersListRow?.dataRows[2].name, "Third Subscriber")
+    }
+
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
-        let expectation = expectation(description: "Email section should be loading")
+        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers.last?.immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
                     emailsSummaryRow = row
                     expectation.fulfill()
                 }
@@ -78,16 +102,22 @@ final class StatsSubscribersViewModelTests: XCTestCase {
 }
 
 private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
-    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> = .init(.idle)
-    var updateChartSummaryCalled = false
+    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
+    var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<[StatsFollower]>, Never> = .init(.idle)
     var updateEmailsSummaryCalled = false
+    var updateChartSummaryCalled = false
+    var updateSubscribersListCalled = false
+
+    func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
+        updateEmailsSummaryCalled = true
+    }
 
     func updateChartSummary() {
         updateChartSummaryCalled = false
     }
 
-    func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
-        updateEmailsSummaryCalled = true
+    func updateSubscribersList(quantity: Int) {
+        updateSubscribersListCalled = true
     }
 }
