@@ -3,6 +3,8 @@ import JetpackStatsWidgetsCore
 
 /// Type that wraps the backend request for new stats
 class StatsWidgetsService {
+    private var service: StatsServiceRemoteV2?
+
     typealias ResultType = HomeWidgetData
 
     private enum State {
@@ -31,11 +33,7 @@ class StatsWidgetsService {
         state = .loading
 
         do {
-            let token = try SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
-                                                                     andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                                                                     accessGroup: WPAppKeychainAccessGroup)
-            let wpApi = WordPressComRestApi(oAuthToken: token)
-            let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
+            let service = try createStatsService(for: widgetData)
 
             // handle fetching depending on concrete type
             // we need to do like this as there is no unique service call
@@ -174,5 +172,18 @@ private extension Date {
     func convert(from timeZone: TimeZone, comparedWith target: TimeZone = TimeZone.current) -> Date {
         let delta = TimeInterval(timeZone.secondsFromGMT(for: self) - target.secondsFromGMT(for: self))
         return addingTimeInterval(delta)
+    }
+}
+
+private extension StatsWidgetsService {
+    private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
+        let token = try SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
+                                                                 andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+                                                                 accessGroup: WPAppKeychainAccessGroup)
+        let wpApi = WordPressComRestApi(oAuthToken: token)
+        let service = StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
+        self.service = service
+
+        return service
     }
 }
