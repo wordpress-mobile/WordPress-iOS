@@ -223,7 +223,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
                 buttons.append(.cancelAutoUpload)
             }
         }
-
         return AbstractPostButtonSection(buttons: buttons)
     }
 
@@ -252,8 +251,17 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
-        let action: AbstractPostButton = post.original().status == .trash ? .delete : .trash
-        return AbstractPostButtonSection(buttons: [action])
+        var buttons: [AbstractPostButton] = []
+        let original = post.original()
+        if isSyncPublishingEnabled {
+            // If the post has no remote, nothing got synced, so they should
+            // simply delete it.
+            if PostCoordinator.shared.isSyncNeeded(for: original), post.hasRemote() {
+                buttons.append(.discard)
+            }
+        }
+        buttons.append(original.status == .trash ? .delete : .trash)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
     private var canCancelAutoUpload: Bool {

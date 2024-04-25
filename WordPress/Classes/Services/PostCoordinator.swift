@@ -1085,6 +1085,19 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// Discard local changes made to the post.
+    @MainActor
+    func discardChanges(_ post: AbstractPost) async {
+        setUpdating(true, for: post)
+        defer { setUpdating(false, for: post) }
+
+        await pauseSyncing(for: post)
+        defer { resumeSyncing(for: post) }
+
+        MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
+        PostRepository(coreDataStack: coreDataStack).discardChanges(post)
+    }
+
     @MainActor
     func _delete(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())

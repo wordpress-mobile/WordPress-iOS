@@ -100,6 +100,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
         case .delete: return UIImage(systemName: "trash")
+        case .discard: return UIImage(systemName: "xmark.circle")
         case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
@@ -115,7 +116,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var attributes: UIMenuElement.Attributes? {
         switch self {
-        case .trash, .delete:
+        case .trash, .delete, .discard:
             return [UIMenuElement.Attributes.destructive]
         default:
             return nil
@@ -136,6 +137,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .moveToDraft: return Strings.draft
         case .trash: return Strings.trash
         case .delete: return Strings.delete
+        case .discard: return Strings.discard
         case .cancelAutoUpload: return Strings.cancelAutoUpload
         case .share: return Strings.share
         case .blaze: return Strings.blaze
@@ -167,6 +169,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.trash(post)
         case .delete:
             delegate.delete(post)
+        case .discard:
+            delegate.discard(post)
         case .cancelAutoUpload:
             delegate.cancelAutoUpload(post)
         case .share:
@@ -198,6 +202,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let duplicate = NSLocalizedString("posts.duplicate.actionTitle", value: "Duplicate", comment: "Label for post duplicate option. Tapping creates a copy of the post.")
         static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to draft", comment: "Label for an option that moves a post to the draft folder")
         static let delete = NSLocalizedString("posts.delete.actionTitle", value: "Delete permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
+        static let discard = NSLocalizedString("posts.discard.actionTitle", value: "Discard changes", comment: "Label for the discard local changes button. Tapping deletes the local revisions of the post.")
         static let trash = NSLocalizedString("posts.trash.actionTitle", value: "Move to trash", comment: "Label for a option that moves a post to the trash folder")
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")

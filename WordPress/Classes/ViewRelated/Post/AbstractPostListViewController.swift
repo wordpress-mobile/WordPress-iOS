@@ -723,6 +723,19 @@ class AbstractPostListViewController: UIViewController,
         alert.presentFromRootViewController()
     }
 
+    func discard(_ post: AbstractPost) {
+        let post = post.original()
+
+        let alert = UIAlertController(title: Strings.Discard.actionTitle, message: Strings.Discard.message(for: post.latest()), preferredStyle: .alert)
+        alert.addCancelActionWithTitle(Strings.cancelText) { _ in}
+        alert.addDestructiveActionWithTitle(Strings.Discard.actionTitle) { _ in
+            Task {
+                await PostCoordinator.shared.discardChanges(post)
+            }
+        }
+        alert.presentFromRootViewController()
+    }
+
     /// - warning: deprecated (kahu-offline-mode)
     func deletePost(_ post: AbstractPost) {
         Task {
@@ -877,6 +890,15 @@ private enum Strings {
 
         static func message(for post: AbstractPost) -> String {
             let format = NSLocalizedString("postList.trash.alertMessage", value: "Are you sure you want to trash \"%@\"? Any changes that weren't sent previously to the server will be lost.", comment: "Message of the trash post or page confirmation alert.")
+            return String(format: format, post.titleForDisplay() ?? "–")
+        }
+    }
+
+    enum Discard {
+        static let actionTitle = NSLocalizedString("postList.discardChanges.actionTitle", value: "Discard Changes", comment: "Action of the confirmation alert when discarding local changes made to a post or a page.")
+
+        static func message(for post: AbstractPost) -> String {
+            let format = NSLocalizedString("postList.discardChanges.alertMessage", value: "Are you sure you want to discard the local changes made to \"%@\"?", comment: "Message of the confirmation alert when discarding local changes made to a post or a page.")
             return String(format: format, post.titleForDisplay() ?? "–")
         }
     }

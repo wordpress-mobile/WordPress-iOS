@@ -268,13 +268,11 @@ final class PostRepository {
         wpAssert(post.isOriginal())
 
         let context = coreDataStack.mainContext
-
         guard let postID = post.postID?.intValue, postID > 0 else {
             context.deleteObject(post) // Delete all the local data
             ContextManager.shared.saveContextAndWait(context)
             return
         }
-
         post.deleteAllRevisions()
         ContextManager.shared.saveContextAndWait(context)
 
@@ -297,6 +295,15 @@ final class PostRepository {
         }
 
         PostHelper.update(post, with: remotePost, in: context)
+        ContextManager.shared.saveContextAndWait(context)
+    }
+
+    /// Discard local changes made to the post.
+    func discardChanges(_ post: AbstractPost) {
+        wpAssert(post.isOriginal())
+
+        let context = coreDataStack.mainContext
+        post.deleteAllRevisions()
         ContextManager.shared.saveContextAndWait(context)
     }
 
