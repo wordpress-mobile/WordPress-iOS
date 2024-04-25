@@ -371,7 +371,7 @@ extension PublishingEditor {
         }
 
         if post.original().isStatus(in: [.draft, .pending]) {
-            if FeatureFlag.autoSaveDrafts.enabled && !post.original().isNewDraft {
+            if FeatureFlag.autoSaveDrafts.enabled {
                 performSaveDraftAction()
             } else {
                 // The "Discard Changes" behavior is problematic due to the way
