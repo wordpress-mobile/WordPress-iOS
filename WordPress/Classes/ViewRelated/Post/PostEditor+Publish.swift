@@ -371,7 +371,14 @@ extension PublishingEditor {
         }
 
         if post.original().isStatus(in: [.draft, .pending]) {
-            showCloseDraftConfirmationAlert()
+            if FeatureFlag.autoSaveDrafts.enabled && !post.original().isNewDraft {
+                performSaveDraftAction()
+            } else {
+                // The "Discard Changes" behavior is problematic due to the way
+                // the editor and `PostCoordinator` often update the content
+                // in the background without the user interaction.
+                showCloseDraftConfirmationAlert()
+            }
         } else {
             showClosePublishedPostConfirmationAlert()
         }

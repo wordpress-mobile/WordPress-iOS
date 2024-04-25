@@ -13,6 +13,7 @@ enum FeatureFlag: Int, CaseIterable {
     case newTabIcons
     case readerTagsFeed
     case syncPublishing
+    case autoSaveDrafts
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -43,6 +44,8 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .syncPublishing:
             return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting] || FeatureFlagRolloutStore().isRolloutEnabled(for: self)
+        case .autoSaveDrafts:
+            return true
         }
     }
 
@@ -87,6 +90,8 @@ extension FeatureFlag {
             return "Reader Tags Feed"
         case .syncPublishing:
             return "Synchronous Publishing"
+        case .autoSaveDrafts:
+            return "Autosave Drafts"
         }
     }
 }
