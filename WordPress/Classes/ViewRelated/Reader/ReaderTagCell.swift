@@ -1,3 +1,5 @@
+import WordPressUI
+
 class ReaderTagCell: UICollectionViewCell {
 
     @IBOutlet private weak var contentStackView: UIStackView!
@@ -10,6 +12,8 @@ class ReaderTagCell: UICollectionViewCell {
     @IBOutlet private weak var countsLabel: UILabel!
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var menuButton: UIButton!
+    @IBOutlet weak var spacerView: UIView!
+    @IBOutlet weak var countsLabelSpacerView: UIView!
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
     private var viewModel: ReaderTagCellViewModel?
@@ -20,6 +24,9 @@ class ReaderTagCell: UICollectionViewCell {
         contentStackView.setCustomSpacing(0, after: featuredImageView)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onSiteTitleTapped))
         headerStackView.addGestureRecognizer(tapGesture)
+
+        spacerView.isGhostableDisabled = true
+        countsLabelSpacerView.isGhostableDisabled = true
     }
 
     override func prepareForReuse() {
@@ -124,6 +131,15 @@ private extension ReaderTagCell {
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
         likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
+    }
+
+}
+
+extension ReaderTagCell: GhostableView {
+
+    func ghostAnimationWillStart() {
+        siteLabel.text = "Site name"
+        likeButton.setTitle("", for: .normal)
     }
 
 }
