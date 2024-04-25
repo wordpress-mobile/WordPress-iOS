@@ -140,12 +140,22 @@ class StatsWidgetsService {
             }
 
             let summaryData = summary?.summaryData.reversed() ?? []
-            let newWidgetData = HomeWidgetThisWeekData(siteID: widgetData.siteID,
-                                                       siteName: widgetData.siteName,
-                                                       url: widgetData.url,
-                                                       timeZone: widgetData.timeZone,
-                                                       date: Date(),
-                                                       stats: ThisWeekWidgetStats(days: ThisWeekWidgetStats.daysFrom(summaryData: summaryData.map { ThisWeekWidgetStats.Input(periodStartDate: $0.periodStartDate, viewsCount: $0.viewsCount) })))
+            let newWidgetData = HomeWidgetThisWeekData(
+                siteID: widgetData.siteID,
+                siteName: widgetData.siteName,
+                url: widgetData.url,
+                timeZone: widgetData.timeZone,
+                date: Date(),
+                stats: ThisWeekWidgetStats(
+                    days: ThisWeekWidgetStats.daysFrom(
+                        summaryData: summaryData.map {
+                            ThisWeekWidgetStats.Input(
+                                periodStartDate: $0.periodStartDate,
+                                viewsCount: $0.viewsCount)
+                        }
+                    )
+                )
+            )
             completion(.success(newWidgetData))
 
             DispatchQueue.global().async {
@@ -168,10 +178,13 @@ private extension Date {
 }
 
 private extension StatsWidgetsService {
-    private func getInsight<InsightType: StatsInsightData>(widgetData: HomeWidgetData, limit: Int = 10, completion: @escaping ((InsightType?, Error?) -> Void)) {
+    private func getInsight<InsightType: StatsInsightData>(
+        widgetData: HomeWidgetData,
+        limit: Int = 10,
+        completion: @escaping ((InsightType?, Error?) -> Void)
+    ) {
         do {
             self.service = try createStatsService(for: widgetData)
-
             self.service?.getInsight(limit: limit, completion: { [weak self] in
                 completion($0, $1)
                 self?.service = nil
@@ -182,12 +195,14 @@ private extension StatsWidgetsService {
         }
     }
 
-    private func getData<TimeStatsType: StatsTimeIntervalData>(widgetData: HomeWidgetData,
-                                                               for period: StatsPeriodUnit,
-                                                               unit: StatsPeriodUnit? = nil,
-                                                               endingOn: Date,
-                                                               limit: Int = 10,
-                                                               completion: @escaping ((TimeStatsType?, Error?) -> Void)) {
+    private func getData<TimeStatsType: StatsTimeIntervalData>(
+        widgetData: HomeWidgetData,
+        for period: StatsPeriodUnit,
+        unit: StatsPeriodUnit? = nil,
+        endingOn: Date,
+        limit: Int = 10,
+        completion: @escaping ((TimeStatsType?, Error?) -> Void)
+    ) {
         do {
             self.service = try createStatsService(for: widgetData)
             self.service?.getData(for: period, unit: unit, endingOn: endingOn, limit: limit, completion: { [weak self] in
@@ -201,9 +216,11 @@ private extension StatsWidgetsService {
     }
 
     private func createStatsService(for widgetData: HomeWidgetData) throws -> StatsServiceRemoteV2 {
-        let token = try SFHFKeychainUtils.getPasswordForUsername(AppConfiguration.Widget.Stats.keychainTokenKey,
-                                                                 andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
-                                                                 accessGroup: WPAppKeychainAccessGroup)
+        let token = try SFHFKeychainUtils.getPasswordForUsername(
+            AppConfiguration.Widget.Stats.keychainTokenKey,
+            andServiceName: AppConfiguration.Widget.Stats.keychainServiceName,
+            accessGroup: WPAppKeychainAccessGroup
+        )
         let wpApi = WordPressComRestApi(oAuthToken: token)
         return StatsServiceRemoteV2(wordPressComRestApi: wpApi, siteID: widgetData.siteID, siteTimezone: widgetData.timeZone)
     }
