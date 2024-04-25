@@ -4,7 +4,7 @@ import WordPressKit
 
 protocol StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> { get }
-    var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<[StatsFollower]>, Never> { get }
+    var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersData>, Never> { get }
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField)
     func updateSubscribersList(quantity: Int)
@@ -16,7 +16,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
     private let statsService: StatsServiceRemoteV2
 
     var emailsSummary: CurrentValueSubject<State<StatsEmailsSummaryData>, Never> = .init(.idle)
-    var subscribersList: CurrentValueSubject<State<[StatsFollower]>, Never> = .init(.idle)
+    var subscribersList: CurrentValueSubject<State<StatsSubscribersData>, Never> = .init(.idle)
 
     init() {
         self.siteID = SiteStatsInformation.sharedInstance.siteID ?? 0
@@ -59,7 +59,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
 
     func updateSubscribersList(quantity: Int) {
         let cacheKey = StatsSubscribersCache.CacheKey.subscribersList(quantity: quantity, siteId: siteID)
-        let cachedData: [StatsFollower]? = cache.getValue(key: cacheKey)
+        let cachedData: StatsSubscribersData? = cache.getValue(key: cacheKey)
 
         if let cachedData = cachedData {
             self.subscribersList.send(.success(cachedData))
@@ -82,21 +82,22 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
         }
     }
 
-    private func getSubscribers(quantity: Int, completion: @escaping (Result<[StatsFollower], Error>) -> Void) {
+    private func getSubscribers(quantity: Int, completion: @escaping (Result<StatsSubscribersData, Error>) -> Void) {
         let group = DispatchGroup()
-        var followers: [StatsFollower] = []
+        var wpComFollowers: StatsDotComFollowersInsight?
+        var emailFollowers: StatsEmailFollowersInsight?
         var requestError: Error?
 
         group.enter()
-        statsService.getInsight(limit: quantity) { (wpComFollowers: StatsDotComFollowersInsight?, error) in
-            followers.append(contentsOf: wpComFollowers?.topDotComFollowers ?? [])
+        statsService.getInsight(limit: quantity) { (followers: StatsDotComFollowersInsight?, error) in
+            wpComFollowers = followers
             requestError = error
             group.leave()
         }
 
         group.enter()
-        statsService.getInsight(limit: quantity) { (wpComFollowers: StatsEmailFollowersInsight?, error) in
-            followers.append(contentsOf: wpComFollowers?.topEmailFollowers ?? [])
+        statsService.getInsight(limit: quantity) { (followers: StatsEmailFollowersInsight?, error) in
+            emailFollowers = followers
             requestError = error
             group.leave()
         }
@@ -106,16 +107,19 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
                 completion(.failure(error))
             } else {
                 // Combine both wpcom and email subscribers into a single list
-                let followers = Array(
-                    followers
-                        .sorted(by: { $0.subscribedDate > $1.subscribedDate })
-                        .prefix(quantity)
-                )
-                completion(.success(followers))
+                let combinedSubscribers = Array((wpComFollowers?.topDotComFollowers ?? []) + (emailFollowers?.topEmailFollowers ?? [])
+                    .sorted(by: { $0.subscribedDate > $1.subscribedDate })
+                    .prefix(quantity))
+                let combinedTotalsCount = (wpComFollowers?.dotComFollowersCount ?? 0) + (emailFollowers?.emailFollowersCount ?? 0)
+
+                let result = StatsSubscribersData(subscribers: combinedSubscribers, totalCount: combinedTotalsCount)
+                completion(.success(result))
             }
         }
     }
 }
+
+// MARK: - State
 
 extension StatsSubscribersStore {
     enum State<Value: Equatable>: Equatable {
@@ -146,4 +150,11 @@ extension StatsSubscribersStore {
             }
         }
     }
+}
+
+// MARK: - Helper Entities
+
+struct StatsSubscribersData: Equatable {
+    let subscribers: [StatsFollower]
+    let totalCount: Int
 }
