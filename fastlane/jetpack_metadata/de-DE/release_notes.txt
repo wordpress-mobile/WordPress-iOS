@@ -1,0 +1,2 @@
+Wir haben Leseeinstellungen hinzugefügt, damit du deinen Reader-Bildschirm anpassen kannst. Wähle deine bevorzugte Farbe, Schriftart und Größe aus, um dein Leseerlebnis ganz nach deinen Wünschen zu gestalten.
+Zudem haben wir den Tab „Einsichten“ für besseres Laden und Scrollen aktualisiert. Kein Flimmern, keine Abstürze, alles läuft super.
