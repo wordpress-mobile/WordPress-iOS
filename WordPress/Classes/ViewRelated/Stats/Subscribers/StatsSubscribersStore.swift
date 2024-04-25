@@ -55,8 +55,8 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
     func updateChartSummary() {
         guard chartSummary.value != .loading else { return }
 
-        let unit = StatsSubscribersSummaryData.Unit.day
-        let cacheKey = StatsSubscribersCache.CacheKey.chartSummary(unit: unit.rawValue, siteId: siteID)
+        let unit = StatsPeriodUnit.day
+        let cacheKey = StatsSubscribersCache.CacheKey.chartSummary(unit: unit.stringValue, siteId: siteID)
         let cachedData: StatsSubscribersSummaryData? = cache.getValue(key: cacheKey)
 
         if let cachedData = cachedData {
@@ -65,13 +65,13 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
             chartSummary.send(.loading)
         }
 
-        statsService.getSubscribers(unit: unit) { result in
+        statsService.getData(for: unit, endingOn: StatsDataHelper.currentDateForSite(), limit: 30) { (data: StatsSubscribersSummaryData?, error: Error?) in
             DispatchQueue.main.async {
-                switch result {
-                case .success(let data):
+                if let data = data {
                     cache.setValue(data, key: cacheKey)
                     self.chartSummary.send(.success(data))
-                case .failure:
+                }
+            else {
                     if cachedData == nil {
                         self.chartSummary.send(.error)
                     }

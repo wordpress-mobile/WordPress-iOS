@@ -21,18 +21,14 @@ final class StatsSubscribersViewModel {
     // MARK: - Lifecycle
 
     func addObservers() {
-        Publishers.MergeMany(store.chartSummary)
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.updateTableViewSnapshot()
-            }
-            .store(in: &cancellables)
-        Publishers.MergeMany(store.emailsSummary)
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                self?.updateTableViewSnapshot()
-            }
-            .store(in: &cancellables)
+        Publishers.CombineLatest(
+            store.chartSummary.removeDuplicates(),
+            store.emailsSummary.removeDuplicates()
+        )
+        .sink { [weak self] value in
+            self?.updateTableViewSnapshot()
+        }
+        .store(in: &cancellables)
     }
 
     func removeObservers() {
