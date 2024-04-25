@@ -20,11 +20,15 @@ class HostingTableViewCell<Content: View>: UITableViewCell {
             parent.addChild(swiftUICellViewController)
             contentView.addSubview(swiftUICellViewController.view)
             swiftUICellViewController.view.translatesAutoresizingMaskIntoConstraints = false
-            contentView.pinSubviewToAllEdges(swiftUICellViewController.view)
+            layout(hostingView: swiftUICellViewController.view)
 
             swiftUICellViewController.didMove(toParent: parent)
         }
 
         self.controller?.view.invalidateIntrinsicContentSize()
+    }
+
+    func layout(hostingView view: UIView) {
+        self.contentView.pinSubviewToAllEdges(view)
     }
 }

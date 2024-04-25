@@ -1,6 +1,7 @@
 import UIKit
 import CoreData
 import WordPressUI
+import DesignSystem
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -321,7 +322,7 @@ private extension CommentDetailViewController {
     }
 
     struct Constants {
-        static let tableHorizontalInset: CGFloat = 20.0
+        static let tableHorizontalInset: CGFloat = CGFloat.DS.Padding.double
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
         static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
@@ -366,6 +367,7 @@ private extension CommentDetailViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInsetReference = .fromAutomaticInsets
+        tableView.separatorStyle = .none
 
         // get rid of the separator line for the last cell.
         tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
@@ -436,14 +438,21 @@ private extension CommentDetailViewController {
     // MARK: Cell configuration
 
     func configureHeaderCell() {
-        // if the comment is a reply, show the author of the parent comment.
-        if let parentComment = self.parentComment ?? notificationParentComment {
-            return headerCell.configure(for: .reply(parentComment.authorForDisplay()),
-                                        subtitle: parentComment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines))
+        if let comment = self.parentComment ?? notificationParentComment {
+            // if the comment is a reply, show the author of the parent comment.
+            self.headerCell.configure(
+                imageURL: comment.avatarURLForDisplay(),
+                text: comment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines),
+                parent: self
+            )
+        } else {
+            // otherwise, if this is a comment to a post, show the post title instead.
+            self.headerCell.configure(
+                imageURL: nil,
+                text: comment.titleForDisplay(),
+                parent: self
+            )
         }
-
-        // otherwise, if this is a comment to a post, show the post title instead.
-        headerCell.configure(for: .post, subtitle: comment.titleForDisplay())
     }
 
     func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
