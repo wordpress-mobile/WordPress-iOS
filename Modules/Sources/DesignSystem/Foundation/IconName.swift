@@ -10,11 +10,14 @@ import SwiftUI
 public enum IconName: String, CaseIterable {
     case ellipsisHorizontal = "ellipsis.horizontal"
     case checkmark
+    case clock
+    case trash
     case gearshapeFill = "gearshape.fill"
     case blockShare = "block.share"
     case starFill = "star.fill"
     case starOutline = "star.outline"
     case chevronRight = "chevron.right"
+    case exclamationCircle = "exclamation.circle"
 }
 
 // MARK: - Load Image
