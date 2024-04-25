@@ -454,6 +454,7 @@
         static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
         static let period = NSLocalizedString("Period", comment: "Label for date periods.")
         static let file = NSLocalizedString("File", comment: "Label for list of file downloads.")
+        static let emailsSummary = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
     }
 
     struct DataSubtitles {
@@ -463,6 +464,8 @@
         static let since = NSLocalizedString("stats.section.dataSubtitles.subscriber since", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
         static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
         static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
+        static let emailsSummaryOpens = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
+        static let emailsSummaryClicks = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
     }
 
     struct TabTitles {

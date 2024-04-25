@@ -107,9 +107,6 @@ class PostTagPickerViewController: UIViewController {
         textViewContainer.layer.masksToBounds = false
 
         keyboardObserver.tableView = tableView
-
-        let doneButton = UIBarButtonItem(title: NSLocalizedString("Done", comment: "Done button title"), style: .plain, target: self, action: #selector(doneButtonPressed))
-        navigationItem.setRightBarButton(doneButton, animated: false)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -144,10 +141,6 @@ class PostTagPickerViewController: UIViewController {
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         textViewContainer.layer.borderColor = UIColor.divider.cgColor
-    }
-
-    @objc func doneButtonPressed() {
-        navigationController?.popViewController(animated: true)
     }
 
     fileprivate func reloadTableData() {
