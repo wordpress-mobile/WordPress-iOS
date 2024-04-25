@@ -42,6 +42,7 @@ struct CommentModerationOptionsView: View {
             optionsVStack
         }
         .padding(.horizontal, .DS.Padding.double)
+        .background(Color.DS.Background.primary)
     }
 
     private var title: some View {
