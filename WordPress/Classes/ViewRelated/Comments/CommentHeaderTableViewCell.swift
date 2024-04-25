@@ -22,10 +22,8 @@ final class CommentHeaderTableViewCell: HostingTableViewCell<ContentPreview>, Re
 
     // MARK: - Configuration
 
-    func configure(imageURL: URL?, text: String, parent: UIViewController) {
-        let content = ContentPreview(image: imageURL, text: text) {
-            print("Hello World")
-        }
+    func configure(imageURL: URL?, text: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(image: imageURL, text: text, action: action)
         self.host(content, parent: parent)
     }
 

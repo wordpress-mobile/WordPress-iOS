@@ -438,11 +438,22 @@ private extension CommentDetailViewController {
     // MARK: Cell configuration
 
     func configureHeaderCell() {
+        let action = { [weak self] in
+            guard let self else {
+                return
+            }
+            if self.isNotificationComment {
+                self.navigateToNotificationComment()
+            } else {
+                self.comment.hasParentComment() ? self.navigateToParentComment() : self.navigateToPost()
+            }
+        }
         if let comment = self.parentComment ?? notificationParentComment {
             // if the comment is a reply, show the author of the parent comment.
             self.headerCell.configure(
                 imageURL: comment.avatarURLForDisplay(),
                 text: comment.contentPreviewForDisplay().trimmingCharacters(in: .whitespacesAndNewlines),
+                action: action,
                 parent: self
             )
         } else {
@@ -450,6 +461,7 @@ private extension CommentDetailViewController {
             self.headerCell.configure(
                 imageURL: nil,
                 text: comment.titleForDisplay(),
+                action: action,
                 parent: self
             )
         }
@@ -981,12 +993,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         switch sections[indexPath.section] {
         case .content(let rows):
             switch rows[indexPath.row] {
-            case .header:
-                if isNotificationComment {
-                    navigateToNotificationComment()
-                } else {
-                    comment.hasParentComment() ? navigateToParentComment() : navigateToPost()
-                }
             case .replyIndicator:
                 navigateToReplyComment()
             default:
