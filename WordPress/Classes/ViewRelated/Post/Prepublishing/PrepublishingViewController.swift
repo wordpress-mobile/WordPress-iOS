@@ -450,13 +450,9 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func buttonShowUploadInfoTapped() {
-        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
+        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel)
         let host = UIHostingController(rootView: view)
-        let navigation = UINavigationController(rootViewController: host)
-        navigation.navigationBar.isTranslucent = true // Reset to default
-        present(navigation, animated: true)
+        navigationController?.pushViewController(host, animated: true)
     }
 
     private func updatePublishButtonLabel() {

@@ -4,14 +4,10 @@ import SwiftUI
 /// Displays upload progress for the media for the given post.
 struct PostMediaUploadStatusView: View {
     @ObservedObject var viewModel: PostMediaUploadViewModel
-    let onCloseTapped: () -> Void
 
     var body: some View {
         contents
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(Strings.close, action: onCloseTapped)
-                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button(action: viewModel.buttonRetryTapped) {

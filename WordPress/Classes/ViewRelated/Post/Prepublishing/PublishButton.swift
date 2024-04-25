@@ -87,7 +87,7 @@ struct PublishButton: View {
     }
 
     private var chevronUpView: some View {
-        Image(systemName: "chevron.up")
+        Image(systemName: "chevron.right")
             .font(.subheadline.weight(.semibold))
             .tint(Color.secondary)
     }
