@@ -191,6 +191,16 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
             // Continue showing placeholder
         }
     }
+
+    // MARK: - Actions
+
+    func buttonRetryTapped() {
+        retry()
+    }
+
+    func buttonCancelTapped() {
+        coordinator.cancelUploadAndDeleteMedia(media)
+    }
 }
 
 private extension Media {
