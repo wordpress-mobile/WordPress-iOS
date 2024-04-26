@@ -180,6 +180,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
             }
         }
 
+        var secondaryBackground: UIColor {
+            switch self {
+            case .system:
+                return .secondarySystemBackground
+            case .evening, .oled, .hacker:
+                return foreground.withAlphaComponent(0.15) // slightly higher contrast for dark themes.
+            default:
+                return foreground.withAlphaComponent(0.1)
+            }
+        }
+
         var border: UIColor {
             switch self {
             case .system:
