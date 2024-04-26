@@ -71,7 +71,7 @@ final class PostMediaUploadsViewModel: ObservableObject {
 final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
     @Published private(set) var state: State = .uploading
 
-    private let media: Media
+    let media: Media
     private let coordinator: MediaCoordinator
 
     private var completed: Int64 = 0

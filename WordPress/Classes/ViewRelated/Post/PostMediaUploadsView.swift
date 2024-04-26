@@ -42,7 +42,7 @@ private struct PostMediaUploadItemView: View {
     @ObservedObject var viewModel: PostMediaUploadItemViewModel
 
     var body: some View {
-        HStack(alignment: .center, spacing: 0) {
+        let view = HStack(alignment: .center, spacing: 0) {
             MediaThubmnailImageView(image: viewModel.thumbnail)
                 .aspectRatio(viewModel.thumbnailAspectRatio, contentMode: .fit)
                 .frame(maxHeight: viewModel.thumbnailMaxHeight)
@@ -67,26 +67,55 @@ private struct PostMediaUploadItemView: View {
                 case .uploading:
                     MediaUploadProgressView(progress: viewModel.fractionCompleted)
                         .padding(.trailing, 4) // To align with the exlamation mark
-                    makeMenu(for: viewModel)
+                    menu
                 case .failed:
                     Image(systemName: "exclamationmark.circle.fill")
                         .foregroundStyle(.red)
-                    makeMenu(for: viewModel)
+                    menu
                 case .uploaded:
                     Image(systemName: "checkmark.circle.fill")
                         .foregroundStyle(.secondary.opacity(0.33))
                 }
             }
         }
-        .task {
-            await viewModel.loadThumbnail()
+            .task {
+                await viewModel.loadThumbnail()
+            }
+        if #available(iOS 16, *) {
+            view.contextMenu {
+                menuItems
+            } preview: {
+                SiteMediaPreviewView(media: viewModel.media)
+            }
+        } else {
+            view
         }
     }
-}
 
-@ViewBuilder
-private func makeMenu(for viewModel: PostMediaUploadItemViewModel) -> some View {
-    Menu {
+    struct HostDetailsView: UIViewControllerRepresentable {
+        let media: Media
+
+        func makeUIViewController(context: Context) -> MediaItemViewController {
+            MediaItemViewController(media: media)
+        }
+
+        func updateUIViewController(_ uiViewController: MediaItemViewController, context: Context) {
+            // Do nothing
+        }
+    }
+
+    private var menu: some View {
+        Menu {
+            menuItems
+        } label: {
+            Image(systemName: "ellipsis")
+                .font(.subheadline)
+                .tint(.secondary)
+        }
+    }
+
+    @ViewBuilder
+    private var menuItems: some View {
         if viewModel.error != nil {
             Button(action: viewModel.buttonRetryTapped) {
                 Label(Strings.retryUpload, systemImage: "arrow.clockwise")
@@ -95,10 +124,6 @@ private func makeMenu(for viewModel: PostMediaUploadItemViewModel) -> some View 
         Button(role: .destructive, action: viewModel.buttonCancelTapped) {
             Label(Strings.cancelUpload, systemImage: "trash")
         }
-    } label: {
-        Image(systemName: "ellipsis")
-            .font(.subheadline)
-            .tint(.secondary)
     }
 }
 
