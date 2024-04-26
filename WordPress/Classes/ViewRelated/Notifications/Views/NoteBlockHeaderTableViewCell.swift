@@ -2,97 +2,37 @@ import Foundation
 import WordPressShared.WPStyleGuide
 import WordPressUI
 import Gravatar
+import SwiftUI
+import DesignSystem
 
 // MARK: - NoteBlockHeaderTableViewCell
 //
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+    private var hostViewController: UIHostingController<HeaderView>?
 
-    // MARK: - Private
-    private var authorAvatarURL: URL?
-    private typealias Style = WPStyleGuide.Notifications
+    func configure(text: String, avatarURL: URL?, action: @escaping () -> Void) {
+        let headerView = HeaderView(image: avatarURL, text: text, action: action)
+        hostViewController = UIHostingController(rootView: headerView)
+        guard let hostViewController = hostViewController else { return }
+        hostViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(hostViewController.view)
+        contentView.pinSubviewToAllEdges(hostViewController.view)
+    }
+}
 
-    // MARK: - IBOutlets
-    @IBOutlet private var authorAvatarImageView: UIImageView!
-    @IBOutlet private var headerTitleLabel: UILabel!
-    @IBOutlet private var headerDetailsLabel: UILabel!
+private struct HeaderView: View {
+    private let image: URL?
+    private let text: String
+    private let action: () -> Void
 
-    // MARK: - Public Properties
-    @objc var headerTitle: String? {
-        set {
-            headerTitleLabel.text  = newValue
-        }
-        get {
-            return headerTitleLabel.text
-        }
+    public init(image: URL?, text: String, action: @escaping () -> Void) {
+        self.image = image
+        self.text = text
+        self.action = action
     }
 
-    @objc var attributedHeaderTitle: NSAttributedString? {
-        set {
-            headerTitleLabel.attributedText  = newValue
-        }
-        get {
-            return headerTitleLabel.attributedText
-        }
-    }
-
-    @objc var headerDetails: String? {
-        set {
-            headerDetailsLabel.text = newValue
-        }
-        get {
-            return headerDetailsLabel.text
-        }
-    }
-
-    @objc var attributedHeaderDetails: NSAttributedString? {
-        set {
-            headerDetailsLabel.attributedText  = newValue
-        }
-        get {
-            return headerDetailsLabel.attributedText
-        }
-    }
-
-    // MARK: - Public Methods
-
-    @objc(downloadAuthorAvatarWithURL:)
-    func downloadAuthorAvatar(with url: URL?) {
-        guard url != authorAvatarURL else {
-            return
-        }
-
-        authorAvatarURL = url
-
-        guard let url = url else {
-            authorAvatarImageView.image = .gravatarPlaceholderImage
-            return
-        }
-
-        if let gravatar = AvatarURL(url: url) {
-            authorAvatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
-        } else {
-            authorAvatarImageView.downloadSiteIcon(at: url.absoluteString)
-        }
-    }
-
-    // MARK: - View Methods
-
-    override func awakeFromNib() {
-        super.awakeFromNib()
-
-        accessoryType = .disclosureIndicator
-        backgroundColor = Style.blockBackgroundColor
-
-        headerTitleLabel.font = Style.headerTitleBoldFont
-        headerTitleLabel.textColor = Style.headerTitleColor
-        headerDetailsLabel.font = Style.headerDetailsRegularFont
-        headerDetailsLabel.textColor = Style.headerDetailsColor
-        authorAvatarImageView.image = .gravatarPlaceholderImage
-    }
-
-    // MARK: - Overriden Methods
-    override func refreshSeparators() {
-        separatorsView.bottomVisible = true
-        separatorsView.bottomInsets = UIEdgeInsets.zero
+    var body: some View {
+        ContentPreview(image: image, text: text, action: action)
+            .padding(EdgeInsets(top: 16.0, leading: 16.0, bottom: 8.0, trailing: 16.0))
     }
 }

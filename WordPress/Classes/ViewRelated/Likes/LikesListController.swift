@@ -339,11 +339,6 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if showingNotificationLikes && indexPath.section == Constants.headerSectionIndex {
-            delegate?.didSelectHeader?()
-            return
-        }
-
         guard !isLoadingContent,
               let user = likingUsers[safe: indexPath.row] else {
             return
@@ -370,20 +365,18 @@ private extension LikesListController {
     }
 
     func setupHeaderCell(cell: NoteBlockHeaderTableViewCell, group: FormattableContentGroup) {
-        cell.attributedHeaderTitle = nil
-        cell.attributedHeaderDetails = nil
-
         guard let gravatarBlock: NotificationTextContent = group.blockOfKind(.image),
             let snippetBlock: NotificationTextContent = group.blockOfKind(.text) else {
                 return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
-
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.downloadAuthorAvatar(with: mediaURL)
+        cell.configure(
+            text: snippetBlock.text ?? "",
+            avatarURL: notification?.kind == .commentLike || notification?.kind == .follow ? mediaURL : nil,
+            action: { [weak self] in self?.delegate?.didSelectHeader!() }
+        )
     }
 
     func userCell(for indexPath: IndexPath) -> UITableViewCell {

@@ -621,20 +621,18 @@ private extension NotificationDetailsViewController {
         // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
         //
 
-        cell.attributedHeaderTitle = nil
-        cell.attributedHeaderDetails = nil
-
         guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfKind(.image),
             let snippetBlock: NotificationTextContent = blockGroup.blockOfKind(.text) else {
                 return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
-
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.downloadAuthorAvatar(with: mediaURL)
+        cell.configure(
+            text: snippetBlock.text ?? "",
+            avatarURL: note.kind == .commentLike || note.kind == .follow ? mediaURL : nil,
+            action: { [weak self] in self?.didSelectHeader() }
+        )
     }
 
     func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {
