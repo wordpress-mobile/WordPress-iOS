@@ -14,6 +14,7 @@ final class StatsSubscribersViewModel {
     }
 
     func refreshData() {
+        store.updateChartSummary()
         store.updateEmailsSummary(quantity: 10, sortField: .postId)
         store.updateSubscribersList(quantity: 10)
     }
@@ -21,7 +22,8 @@ final class StatsSubscribersViewModel {
     // MARK: - Lifecycle
 
     func addObservers() {
-        Publishers.CombineLatest(
+        Publishers.CombineLatest3(
+            store.chartSummary.removeDuplicates(),
             store.emailsSummary.removeDuplicates(),
             store.subscribersList.removeDuplicates()
         )
@@ -42,6 +44,7 @@ private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
         snapshot.addSection(subscribersTotalsRows())
+        snapshot.addSection(chartRows())
         snapshot.addSection(subscribersListRows())
         snapshot.addSection(emailsSummaryRows())
         tableViewSnapshot.send(snapshot)
@@ -72,6 +75,30 @@ private extension StatsSubscribersViewModel {
             ]
         case .error:
             return errorRows(.subscribersTotal)
+        }
+    }
+
+// MARK: - Chart
+
+private extension StatsSubscribersViewModel {
+    func chartRows() -> [any StatsHashableImmuTableRow] {
+        switch store.chartSummary.value {
+        case .loading, .idle:
+            return loadingRows(.subscribersChart)
+        case .success(let chartSummary):
+            let xAxisDates = chartSummary.history.map { $0.date }
+            let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
+            return [
+                SubscriberChartRow(
+                    history: chartSummary.history,
+                    chartData: viewsChart.lineChartData,
+                    chartStyling: viewsChart.lineChartStyling,
+                    xAxisDates: xAxisDates,
+                    statSection: .subscribersChart
+                )
+            ]
+        case .error:
+            return errorRows(.subscribersChart)
         }
     }
 }

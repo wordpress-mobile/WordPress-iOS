@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-19 07:55:50+0000 */
+/* Translation-Revision-Date: 2024-04-23 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -11158,6 +11158,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "관련 게시물";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "링크 복사";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "해제";

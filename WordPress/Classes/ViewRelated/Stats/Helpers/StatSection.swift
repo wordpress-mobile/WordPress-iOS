@@ -34,6 +34,7 @@
     case postStatsMonthsYears
     case postStatsAverageViews
     case postStatsRecentWeeks
+    case subscribersChart
     case subscribersEmailsSummary
     case subscribersList
     case subscribersTotal
@@ -145,6 +146,8 @@
             return PostStatsHeaders.averageViewsPerDay
         case .postStatsRecentWeeks:
             return PostStatsHeaders.recentWeeks
+        case .subscribersChart:
+            return SubscribersHeaders.chart
         case .subscribersEmailsSummary:
             return SubscribersHeaders.emailsSummaryStats
         case .subscribersList:
@@ -436,6 +439,7 @@
     }
 
     struct SubscribersHeaders {
+        static let chart = NSLocalizedString("stats.subscribers.chart.title", value: "Subscribers", comment: "Stats 'Subscribers' card header, contains chart")
         static let emailsSummaryStats = NSLocalizedString("stats.subscribers.emailsSummaryCard.title", value: "Emails", comment: "Stats 'Emails' card header")
         static let subscribersList = NSLocalizedString("stats.subscribers.subscribersListCard.title", value: "Subscribers", comment: "Stats 'Subscribers' card header")
     }

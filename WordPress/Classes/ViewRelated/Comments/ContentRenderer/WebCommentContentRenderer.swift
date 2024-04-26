@@ -139,28 +139,27 @@ private extension WebCommentContentRenderer {
         ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
     }
 
-    var highlightColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.highlightColor : displaySetting.color.foreground
-    }
-
     var mentionBackgroundColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.mentionBackgroundColor : .clear
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return Constants.mentionBackgroundColor
+        }
+
+        return displaySetting.color == .system ? Constants.mentionBackgroundColor : displaySetting.color.secondaryBackground
     }
 
     var linkColor: UIColor {
         guard ReaderDisplaySetting.customizationEnabled else {
-            return highlightColor
+            return Constants.highlightColor
         }
 
-        return displaySetting.color == .system ? .muriel(color: .init(name: .blue)) : displaySetting.color.foreground
+        return displaySetting.color == .system ? Constants.highlightColor : displaySetting.color.foreground
     }
 
     var secondaryBackgroundColor: UIColor {
-        guard ReaderDisplaySetting.customizationEnabled,
-              displaySetting.color != .system else {
+        guard ReaderDisplaySetting.customizationEnabled else {
             return .secondarySystemBackground
         }
-        return displaySetting.color.border
+        return displaySetting.color.secondaryBackground
     }
 
     /// Cache the HTML template format. We only need read the template once.
@@ -229,8 +228,7 @@ private extension WebCommentContentRenderer {
         return """
         :root {
             --text-color: \(textColor.color(for: trait).cssRGBAString());
-            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString())
-            --primary-color: \(highlightColor.color(for: trait).cssRGBAString());
+            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString());
             --link-color: \(linkColor.color(for: trait).cssRGBAString());
             --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssRGBAString());
             --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssRGBAString());

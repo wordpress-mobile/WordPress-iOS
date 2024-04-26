@@ -437,20 +437,22 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         guard !viewModel.isCompleted else {
             return nil
         }
-        let progress = PublishButtonState.Progress(completed: Int64(Double(viewModel.totalFileSize) * viewModel.fractionCompleted), total: viewModel.totalFileSize)
-        return .uploading(title: Strings.uploadingMedia + ": \(viewModel.completedUploadsCount) / \(viewModel.uploads.count)", progress: progress, onInfoTapped: { [weak self] in
+        let errors = viewModel.uploads.compactMap(\.error)
+        if !errors.isEmpty {
+            let details = errors.count == 1 ? errors[0].localizedDescription : String(format: Strings.mediaUploadFailedDetailsMultipleFailures, errors.count.description)
+            return .failed(title: Strings.mediaUploadFailedTitle, details: details) { [weak self] in
+                self?.buttonShowUploadInfoTapped()
+            }
+        }
+        return .uploading(title: Strings.uploadingMedia, details: Strings.uploadMediaRemaining(count: viewModel.uploads.count - viewModel.completedUploadsCount), progress: viewModel.fractionCompleted, onInfoTapped: { [weak self] in
             self?.buttonShowUploadInfoTapped()
         })
     }
 
     private func buttonShowUploadInfoTapped() {
-        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
+        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel)
         let host = UIHostingController(rootView: view)
-        let navigation = UINavigationController(rootViewController: host)
-        navigation.navigationBar.isTranslucent = true // Reset to default
-        present(navigation, animated: true)
+        navigationController?.pushViewController(host, animated: true)
     }
 
     private func updatePublishButtonLabel() {
@@ -596,4 +598,11 @@ private enum Strings {
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
     static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
     static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaOneItemRemaining = NSLocalizedString("prepublishing.uploadMediaOneItemRemaining", value: "%@ item remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaManyItemsRemaining = NSLocalizedString("prepublishing.uploadMediaManyItemsRemaining", value: "%@ items remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    static func uploadMediaRemaining(count: Int) -> String {
+        String(format: count == 1 ? Strings.uploadMediaOneItemRemaining : Strings.uploadMediaManyItemsRemaining, count.description)
+    }
+    static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
+    static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
 }

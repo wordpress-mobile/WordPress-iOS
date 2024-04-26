@@ -219,6 +219,12 @@ import AutomatticTracks
     private var removedPosts = Set<ReaderPost>()
     private var showConfirmation = true
 
+    // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
+    //
+    // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
+    // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
+    private var tagStreamSyncTracker = Set<String>()
+
     // MARK: - Factory Methods
 
     /// Convenience method for instantiating an instance of ReaderStreamViewController
@@ -901,6 +907,12 @@ import AutomatticTracks
     /// Handles the user initiated pull to refresh action.
     ///
     @objc func handleRefresh(_ sender: UIRefreshControl) {
+        if contentType == .tags {
+            // NOTE: This is a workaround.
+            // Allow all tags to re-fetch posts.
+            tagStreamSyncTracker.removeAll()
+        }
+
         if !canSync() {
             cleanupAfterSync()
 
@@ -1624,7 +1636,14 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func cell(for tag: ReaderTagTopic) -> UITableViewCell {
         let cell = tableConfiguration.tagCell(tableView)
-        cell.configure(with: tag, isLoggedIn: isLoggedIn)
+
+        // check whether we should sync the tag's posts.
+        let shouldSync = !tagStreamSyncTracker.contains(tag.slug)
+        if shouldSync {
+            tagStreamSyncTracker.insert(tag.slug)
+        }
+
+        cell.configure(parent: self, tag: tag, isLoggedIn: isLoggedIn, shouldSyncRemotely: shouldSync)
         cell.selectionStyle = .none
         return cell
     }

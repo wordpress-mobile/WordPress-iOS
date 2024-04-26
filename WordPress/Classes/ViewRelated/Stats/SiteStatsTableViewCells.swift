@@ -77,6 +77,35 @@ struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     }
 }
 
+struct SubscriberChartRow: StatsHashableImmuTableRow {
+    typealias CellType = StatsSubscribersChartCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+    let history: [StatsSubscribersSummaryData.SubscriberData]
+    let chartData: LineChartDataConvertible
+    let chartStyling: LineChartStyling
+    let xAxisDates: [Date]
+    let statSection: StatSection?
+
+    static func == (lhs: SubscriberChartRow, rhs: SubscriberChartRow) -> Bool {
+        return lhs.xAxisDates == rhs.xAxisDates &&
+            lhs.history == rhs.history
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(row: self)
+    }
+}
+
 struct CellHeaderRow: StatsHashableImmuTableRow {
 
     typealias CellType = StatsCellHeader

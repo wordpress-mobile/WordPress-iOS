@@ -75,7 +75,6 @@ figure.wp-block-embed.is-type-video {
 
 /* Temporary override for Reader Customization */
 .reader-full-post__story-content blockquote {
-    color: var(--color-text) !important;
-    border-left: 3px solid var(--color-text) !important;
-    filter: brightness(250%);
+    color: var(--color-text);
+    border-left: 3px solid var(--color-neutral-50);
 }

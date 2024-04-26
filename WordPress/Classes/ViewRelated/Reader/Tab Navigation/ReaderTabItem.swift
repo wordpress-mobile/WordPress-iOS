@@ -1,6 +1,5 @@
 struct ReaderTabItem: FilterTabBarItem, Hashable {
 
-    let id = UUID()
     let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
@@ -20,13 +19,6 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
         shouldHideTagFilter = content.topicType == .organization || FeatureFlag.readerTagsFeed.enabled
     }
 
-    static func == (lhs: ReaderTabItem, rhs: ReaderTabItem) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 }
 
 // MARK: - Localized titles
@@ -88,7 +80,7 @@ enum ReaderContentType {
     case topic
 }
 
-struct ReaderContent {
+struct ReaderContent: Hashable {
 
     private(set) var topic: ReaderAbstractTopic?
     let type: ReaderContentType
