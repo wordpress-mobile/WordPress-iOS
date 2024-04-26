@@ -42,7 +42,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowSlug,
     PostSettingsRowExcerpt,
     PostSettingsRowSocialNoConnections,
-    PostSettingsRowSocialRemainingShares
+    PostSettingsRowSocialRemainingShares,
+    PostSettingsRowMediaUploads
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -418,7 +419,8 @@ FeaturedImageViewControllerDelegate>
                                    @(PostSettingsSectionShare),
                                    disabledTwitterSection,
                                    remainingSharesSection,
-                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
+                                   @(PostSettingsSectionMoreOptions),
+                                   @(PostSettingsSectionMaintenance)] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
@@ -466,6 +468,8 @@ FeaturedImageViewControllerDelegate>
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
+    } else if (sec == PostSettingsSectionMaintenance) {
+        return 1;
     }
 
     return 0;
@@ -502,6 +506,8 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
+    } else if (sec == PostSettingsSectionMaintenance) {
+        return NSLocalizedStringWithDefaultValue(@"postSettings.section.maintenance.header", nil, [NSBundle mainBundle], @"Maintenance", @"Section title for the Maintanence Settings screen");
     }
     return nil;
 }
@@ -584,6 +590,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureRemainingSharesCell];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionMaintenance) {
+        cell = [self configureMaintanenceSectionCellForIndexPath:indexPath];
     }
 
     return cell ?: [UITableViewCell new];
@@ -626,6 +634,8 @@ FeaturedImageViewControllerDelegate>
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
         [self showEditExcerptController];
+    } else if (cell.tag == PostSettingsRowMediaUploads) {
+        [self showMediaUploadsController];
     }
 }
 
@@ -946,6 +956,15 @@ FeaturedImageViewControllerDelegate>
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.tag = PostSettingsRowShareConnection;
     cell.accessibilityIdentifier = [NSString stringWithFormat:@"%@ %@", connection.service, connection.externalDisplay];
+    return cell;
+}
+
+- (UITableViewCell *)configureMaintanenceSectionCellForIndexPath:(NSIndexPath *)indexPath {
+
+    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"postSettings.mediaUploadsRow", nil, [NSBundle mainBundle], @"Media Uploads", @"Post Settings media uploads row title");
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%i", self.apost.media.count];
+    cell.tag = PostSettingsRowMediaUploads;
     return cell;
 }
 

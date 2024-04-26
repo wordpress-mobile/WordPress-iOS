@@ -172,6 +172,13 @@ extension PostSettingsViewController {
     private static var cancellablesKey: UInt8 = 0
 }
 
+extension PostSettingsViewController {
+    @objc func showMediaUploadsController() {
+        let viewController = PostMediaUploadsViewController(post: apost, isShowingOnlyPending: false)
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
 extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         deleteRevision()

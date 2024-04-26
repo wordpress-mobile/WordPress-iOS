@@ -4,8 +4,8 @@ import SwiftUI
 final class PostMediaUploadsViewController: UIHostingController<PostMediaUploadsView> {
     private let viewModel: PostMediaUploadsViewModel
 
-    init(post: AbstractPost) {
-        self.viewModel = PostMediaUploadsViewModel(post: post) // Manange lifecycle
+    init(post: AbstractPost, isShowingOnlyPending: Bool = true) {
+        self.viewModel = PostMediaUploadsViewModel(post: post, isShowingOnlyPending: isShowingOnlyPending) // Manange lifecycle
         super.init(rootView: PostMediaUploadsView(viewModel: viewModel))
     }
 

@@ -21,10 +21,13 @@ final class PostMediaUploadsViewModel: ObservableObject {
         timer?.invalidate()
     }
 
-    init(post: AbstractPost, coordinator: MediaCoordinator = .shared) {
+    init(post: AbstractPost, isShowingOnlyPending: Bool = true, coordinator: MediaCoordinator = .shared) {
         self.post = post
         self.coordinator = coordinator
-        self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
+        let media = Array(post.media).filter {
+            isShowingOnlyPending ? $0.isUploadNeeded : true
+        }
+        self.uploads = media.sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
             PostMediaUploadItemViewModel(media: $0, coordinator: coordinator)
@@ -39,6 +42,10 @@ final class PostMediaUploadsViewModel: ObservableObject {
         post.publisher(for: \.media).sink { [weak self] in
             self?.didUpdateMedia($0)
         }.store(in: &cancellables)
+    }
+
+    static func getPendingUploads(for post: AbstractPost) -> [Media] {
+        Array(post.media).filter(\.isUploadNeeded)
     }
 
     private func didUpdateMedia(_ media: Set<Media>) {
