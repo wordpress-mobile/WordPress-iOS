@@ -600,7 +600,7 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if shouldScheduleRetry(for: error) {
+            if !PostCoordinator.isTerminalError(error) {
                 let delay = worker.nextRetryDelay
                 worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
                     guard let self, let worker else { return }
@@ -617,16 +617,19 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func shouldScheduleRetry(for error: Error) -> Bool {
+    /// Returns `true` if the error can't be resolved by simply retrying and
+    /// requires user interventions, for example, resolving a conflict.
+    static func isTerminalError(_ error: Error) -> Bool {
         if let saveError = error as? PostRepository.PostSaveError {
             switch saveError {
-            case .deleted:
-                return false
-            case .conflict:
-                return false
+            case .deleted, .conflict:
+                return true
             }
         }
-        return true
+        if let error = error as? SavingError, case .mediaFailure(_, let error) = error {
+            return MediaCoordinator.isTerminalError(error)
+        }
+        return false
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {
