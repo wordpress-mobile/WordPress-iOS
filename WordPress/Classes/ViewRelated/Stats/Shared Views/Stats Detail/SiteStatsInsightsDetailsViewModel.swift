@@ -325,12 +325,10 @@ class SiteStatsInsightsDetailsViewModel: Observable {
 
                 let dotComFollowersCount = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
                 let emailFollowersCount = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
-                let publicizeCount = insightsStore.getPublicizeCount()
 
-                if dotComFollowersCount > 0 || emailFollowersCount > 0 || publicizeCount > 0 {
+                if dotComFollowersCount > 0 || emailFollowersCount > 0 {
                     let chartViewModel = StatsFollowersChartViewModel(dotComFollowersCount: dotComFollowersCount,
-                                                                      emailFollowersCount: emailFollowersCount,
-                                                                      publicizeCount: publicizeCount)
+                                                                      emailFollowersCount: emailFollowersCount)
 
                     let chartView: UIView = chartViewModel.makeFollowersChartView()
 
@@ -338,8 +336,7 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                             dataSubtitle: "",
                             dataRows: followersRowData(dotComFollowersCount: dotComFollowersCount,
                                                                              emailFollowersCount: emailFollowersCount,
-                                                                             othersCount: publicizeCount,
-                                                                             totalCount: dotComFollowersCount + emailFollowersCount + publicizeCount),
+                                                                             totalCount: dotComFollowersCount + emailFollowersCount),
                             statSection: StatSection.insightsFollowersWordPress,
                             siteStatsPeriodDelegate: nil, //TODO - look at if I need to be not null
                             siteStatsReferrerDelegate: nil)
@@ -1003,7 +1000,7 @@ private extension SiteStatsInsightsDetailsViewModel {
     }
 
     // MARK: - Followers
-    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, othersCount: Int, totalCount: Int) -> [StatsTotalRowData] {
+    func followersRowData(dotComFollowersCount: Int, emailFollowersCount: Int, totalCount: Int) -> [StatsTotalRowData] {
         var rowData = [StatsTotalRowData]()
 
         rowData.append(
@@ -1016,12 +1013,6 @@ private extension SiteStatsInsightsDetailsViewModel {
                 StatsTotalRowData(name: StatSection.insightsFollowersEmail.tabTitle,
                         data: "\(emailFollowersCount.abbreviatedString()) (\(roundedPercentage(numerator: emailFollowersCount, denominator: totalCount))%)",
                         statSection: .insightsFollowersEmail)
-        )
-
-        rowData.append(
-                StatsTotalRowData(name: StatSection.insightsPublicize.tabTitle,
-                        data: "\(othersCount.abbreviatedString()) (\(roundedPercentage(numerator: othersCount, denominator: totalCount))%)",
-                        statSection: .insightsFollowersWordPress)
         )
 
         return rowData
