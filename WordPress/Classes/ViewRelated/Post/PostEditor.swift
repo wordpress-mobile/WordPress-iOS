@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressFlux
 
 enum EditMode {
     case richText
@@ -142,6 +143,7 @@ extension PostEditor where Self: UIViewController {
             return
         }
         showAutosaveAvailableAlertIfNeeded()
+        showTerminalUploadErrorAlertIfNeeded()
 
         var cancellables: [AnyCancellable] = []
 
@@ -180,6 +182,36 @@ extension PostEditor where Self: UIViewController {
         }))
         alert.addAction(UIAlertAction(title: Strings.autosaveAlertCancel, style: .cancel, handler: nil))
         present(alert, animated: true)
+    }
+
+    private func showTerminalUploadErrorAlertIfNeeded() {
+        let hasTerminalError = post.media.contains {
+            guard let error = $0.error else { return false }
+            return MediaCoordinator.isTerminalError(error)
+        }
+        if hasTerminalError {
+            let notice = Notice(title: Strings.failingMediaUploadsMessage, feedbackType: .error, actionTitle: Strings.failingMediaUploadsViewAction, actionHandler: { [weak self] _ in
+                self?.showMediaUploadDetails()
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(700)) {
+                ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+            } // Delay to let the editor show first
+        }
+    }
+
+    private func showMediaUploadDetails() {
+        let viewController = PostMediaUploadsViewController(post: post)
+        let nav = UINavigationController(rootViewController: viewController)
+        nav.navigationBar.isTranslucent = true // Reset to default
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+        if let sheetController = nav.sheetPresentationController {
+            sheetController.detents = [.medium(), .large()]
+            sheetController.prefersGrabberVisible = true
+            sheetController.preferredCornerRadius = 16
+        }
+        self.present(nav, animated: true)
     }
 
     private func appWillTerminate() {
@@ -242,4 +274,9 @@ private enum Strings {
 
     static let autosaveAlertContinue = NSLocalizedString("autosaveAlert.viewChanges", value: "View Changes", comment: "An alert suggesting to load autosaved revision for a published post")
     static let autosaveAlertCancel = NSLocalizedString("autosaveAlert.cancel", value: "Cancel", comment: "An alert suggesting to load autosaved revision for a published post")
+
+    static let failingMediaUploadsMessage = NSLocalizedString("postEditor.postHasFailingMediaUploadsSnackbar.message", value: "Some media items failed to upload", comment: "A message for a snackbar informing the user that some media files requires their attention")
+
+    static let failingMediaUploadsViewAction = NSLocalizedString("postEditor.postHasFailingMediaUploadsSnackbar.actionView", value: "View", comment: "A 'View' action for a snackbar informing the user that some media files requires their attention")
+
 }
