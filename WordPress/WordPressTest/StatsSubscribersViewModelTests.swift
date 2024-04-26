@@ -43,7 +43,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         let chartSummary = StatsSubscribersSummaryData(history: [
             .init(date: Date(), count: 1),
             .init(date: Date(), count: 2),
-        ])
+        ], period: .day, periodEndDate: Date())
         store.chartSummary.send(.success(chartSummary))
 
         wait(for: [expectation], timeout: 1)
