@@ -77,6 +77,7 @@ private extension StatsSubscribersViewModel {
             return errorRows(.subscribersTotal)
         }
     }
+}
 
 // MARK: - Chart
 

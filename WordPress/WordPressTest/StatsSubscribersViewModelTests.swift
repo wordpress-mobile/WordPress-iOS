@@ -30,7 +30,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_subscribersTotalLoaded() throws {
-        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        let expectation = expectation(description: "First section should be TotalInsightStatsRow")
         var subscribersTotalRow: TotalInsightStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
@@ -48,11 +48,11 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_chartSummaryLoaded() throws {
-        let expectation = expectation(description: "Chart section should be loading")
+        let expectation = expectation(description: "Second section should be SubscriberChartRow")
         var subscriberChartRow: SubscriberChartRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[0].immuTableRow as? SubscriberChartRow {
+                if let row = snapshot.itemIdentifiers[1].immuTableRow as? SubscriberChartRow {
                     subscriberChartRow = row
                     expectation.fulfill()
                 }
@@ -70,11 +70,11 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_subscribersListLoaded() throws {
-        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        let expectation = expectation(description: "Third section should be TopTotalsPeriodStatsRow")
         var subscribersListRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[1].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
                     subscribersListRow = row
                     expectation.fulfill()
                 }
@@ -95,11 +95,11 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
-        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        let expectation = expectation(description: "Fourth section should be TopTotalsPeriodStatsRow")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[3].immuTableRow as? TopTotalsPeriodStatsRow {
                     emailsSummaryRow = row
                     expectation.fulfill()
                 }

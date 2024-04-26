@@ -20,7 +20,6 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<State<StatsEmailsSummaryData>, Never> = .init(.idle)
     var subscribersList: CurrentValueSubject<State<StatsSubscribersData>, Never> = .init(.idle)
     var chartSummary: CurrentValueSubject<State<StatsSubscribersSummaryData>, Never> = .init(.idle)
-    var subscribersList: CurrentValueSubject<State<[StatsFollower]>, Never> = .init(.idle)
 
     init() {
         self.siteID = SiteStatsInformation.sharedInstance.siteID ?? 0
