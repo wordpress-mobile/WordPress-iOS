@@ -118,12 +118,14 @@
             <connections>
                 <outlet property="contentStackView" destination="v9V-wn-SvM" id="Dh0-eP-ubs"/>
                 <outlet property="countsLabel" destination="TWL-MA-3CF" id="SLO-VX-N94"/>
+                <outlet property="countsLabelSpacerView" destination="l2P-MZ-TCd" id="8QA-n2-RoI"/>
                 <outlet property="featuredImageView" destination="Yfj-e7-Vti" id="BCL-Ej-cp3"/>
                 <outlet property="headerStackView" destination="N0b-ln-6rk" id="9VK-Sj-aYS"/>
                 <outlet property="likeButton" destination="B3r-hf-7wD" id="Jua-cj-3ZZ"/>
                 <outlet property="menuButton" destination="RMF-3Z-42A" id="O3N-Cs-hjz"/>
                 <outlet property="postDateLabel" destination="hSx-Fu-Ptn" id="Crv-aS-hBA"/>
                 <outlet property="siteLabel" destination="nBe-Ng-tUu" id="HGg-ZS-QDH"/>
+                <outlet property="spacerView" destination="0q4-yh-1OL" id="Ssw-MQ-d7t"/>
                 <outlet property="summaryLabel" destination="5KT-0Z-POw" id="v2C-Gu-Vcs"/>
                 <outlet property="titleLabel" destination="DsY-TC-klp" id="Qc5-Ye-hs2"/>
             </connections>

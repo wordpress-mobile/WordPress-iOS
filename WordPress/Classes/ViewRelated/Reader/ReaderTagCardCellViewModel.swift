@@ -1,8 +1,15 @@
 
+protocol ReaderTagCardCellViewModelDelegate: NSObjectProtocol {
+    func showLoading()
+    func hideLoading()
+}
+
 class ReaderTagCardCellViewModel: NSObject {
 
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, NSManagedObjectID>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+
+    weak var viewDelegate: ReaderTagCardCellViewModelDelegate? = nil
 
     private let coreDataStack: CoreDataStackSwift
     private weak var parentViewController: UIViewController?
@@ -48,12 +55,14 @@ class ReaderTagCardCellViewModel: NSObject {
          tag: ReaderTagTopic,
          collectionView: UICollectionView?,
          isLoggedIn: Bool,
+         viewDelegate: ReaderTagCardCellViewModelDelegate?,
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          cellSize: @escaping @autoclosure () -> CGSize?) {
         self.parentViewController = parent
         self.slug = tag.slug
         self.collectionView = collectionView
         self.isLoggedIn = isLoggedIn
+        self.viewDelegate = viewDelegate
         self.coreDataStack = coreDataStack
         self.cellSize = cellSize
 
@@ -68,6 +77,8 @@ class ReaderTagCardCellViewModel: NSObject {
             return
         }
 
+        viewDelegate?.showLoading()
+
         let onRemoteFetchComplete = { [weak self] in
             try? self?.resultsController.performFetch()
         }
@@ -76,8 +87,6 @@ class ReaderTagCardCellViewModel: NSObject {
             onRemoteFetchComplete()
             return
         }
-
-        // TODO: Add loading state.
 
         readerPostService.fetchPosts(for: topic, earlierThan: Date()) { _, _ in
             onRemoteFetchComplete()
@@ -104,7 +113,9 @@ extension ReaderTagCardCellViewModel: NSFetchedResultsControllerDelegate {
 
     func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        dataSource?.apply(snapshot as Snapshot, animatingDifferences: false)
+        dataSource?.apply(snapshot as Snapshot, animatingDifferences: false) { [weak self] in
+            self?.viewDelegate?.hideLoading()
+        }
     }
 
 }

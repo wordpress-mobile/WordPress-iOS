@@ -1,8 +1,31 @@
+import WordPressUI
+
 class ReaderTagCardCell: UITableViewCell {
 
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var collectionView: UICollectionView!
     @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
+
+    // A 'fake' collection view that's displayed over the actual collection view.
+    // This view will be displaying the loading animation while the cell is in loading state.
+    //
+    // We can't call our ghost functions on the actual collection view because it uses a
+    // diffable data source, which cannot be "hot-swapped".
+    // See: https://developer.apple.com/documentation/uikit/uicollectionviewdiffabledatasource
+    private lazy var ghostableCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.clipsToBounds = false
+
+        let cellNibName = ReaderTagCell.classNameWithoutNamespaces()
+        let nib = UINib(nibName: cellNibName, bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: cellNibName)
+
+        return collectionView
+    }()
 
     private var viewModel: ReaderTagCardCellViewModel?
 
@@ -28,11 +51,16 @@ class ReaderTagCardCell: UITableViewCell {
         setupButtonStyles()
         accessibilityElements = [tagButton, collectionView].compactMap { $0 }
         collectionViewHeightConstraint.constant = cellSize.height
+
+        // disable ghost animation on the actual collection view to prevent its data source and delegate
+        // from being overridden.
+        collectionView?.isGhostableDisabled = true
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         collectionViewHeightConstraint.constant = cellSize.height
+        hideGhostLoading() // clean up attached ghost views, if any
     }
 
     func configure(parent: UIViewController, tag: ReaderTagTopic, isLoggedIn: Bool, shouldSyncRemotely: Bool = false) {
@@ -41,6 +69,7 @@ class ReaderTagCardCell: UITableViewCell {
                                                tag: tag,
                                                collectionView: collectionView,
                                                isLoggedIn: isLoggedIn,
+                                               viewDelegate: self,
                                                cellSize: weakSelf?.cellSize)
         viewModel?.fetchTagPosts(syncRemotely: shouldSyncRemotely)
         tagButton.setTitle(tag.title, for: .normal)
@@ -57,6 +86,18 @@ class ReaderTagCardCell: UITableViewCell {
         static let padLargeCellSize = CGSize(width: 480, height: 900)
     }
 
+}
+
+// MARK: - ReaderTagCardCellViewModelDelegate
+
+extension ReaderTagCardCell: ReaderTagCardCellViewModelDelegate {
+    func showLoading() {
+        showGhostLoading()
+    }
+
+    func hideLoading() {
+        hideGhostLoading()
+    }
 }
 
 // MARK: - Private methods
@@ -78,6 +119,51 @@ private extension ReaderTagCardCell {
     func registerTagCell() {
         let nib = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces())
+    }
+
+    /// Injects a "fake" UICollectionView for the loading state animation.
+    func showGhostLoading() {
+        guard let collectionView,
+              let containerView = collectionView.superview,
+              ghostableCollectionView.superview == nil else {
+            return
+        }
+
+        // setup the 'fake' collection view.
+        containerView.addSubview(ghostableCollectionView)
+
+        // pin it directly over the current collection view.
+        NSLayoutConstraint.activate([
+            ghostableCollectionView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            ghostableCollectionView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            ghostableCollectionView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+            ghostableCollectionView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
+        ])
+
+        // Important: since the size are fixed, we want to make sure that we feed the exact item size
+        // so that it perfectly overlays on top of the "actual" collection view.
+        if let flowLayout = ghostableCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.itemSize = cellSize
+        }
+
+        let options = GhostOptions(reuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(), rowsPerSection: [3])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+
+        ghostableCollectionView.removeGhostContent()
+        ghostableCollectionView.displayGhostContent(options: options, style: style)
+        ghostableCollectionView.isScrollEnabled = false
+    }
+
+    func hideGhostLoading() {
+        // ensure that the ghostable collection view is present in the view hierarchy.
+        guard ghostableCollectionView.superview != nil else {
+            return
+        }
+
+        ghostableCollectionView.removeGhostContent()
+        ghostableCollectionView.removeFromSuperview()
     }
 
 }
