@@ -340,12 +340,20 @@ extension NotificationDetailsViewController {
 
         navigationItem.backBarButtonItem = backButton
 
-        let next = UIButton(type: .custom)
-        next.setImage(.gridicon(.arrowUp), for: .normal)
+        let next = UIButton(type: .system)
+        if let customIcon = UIImage(named: "arrow-up") {
+            next.setImage(customIcon, for: .normal)
+        } else {
+            next.setImage(.gridicon(.arrowUp), for: .normal)
+        }
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
 
-        let previous = UIButton(type: .custom)
-        previous.setImage(.gridicon(.arrowDown), for: .normal)
+        let previous = UIButton(type: .system)
+        if let customIcon = UIImage(named: "arrow-down") {
+            previous.setImage(customIcon, for: .normal)
+        } else {
+            previous.setImage(.gridicon(.arrowDown), for: .normal)
+        }
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
         previousNavigationButton = previous
