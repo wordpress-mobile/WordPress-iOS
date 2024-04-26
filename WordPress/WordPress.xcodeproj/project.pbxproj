@@ -2239,6 +2239,10 @@
 		836498CC2817301800A2C170 /* BloggingPromptsHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 836498CA2817301800A2C170 /* BloggingPromptsHeaderView.xib */; };
 		836498CE281735CC00A2C170 /* BloggingPromptsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498CD281735CC00A2C170 /* BloggingPromptsHeaderView.swift */; };
 		836498CF281735CC00A2C170 /* BloggingPromptsHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 836498CD281735CC00A2C170 /* BloggingPromptsHeaderView.swift */; };
+		8366FABD2BDC25450099A6AE /* ReaderTagFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8366FABC2BDC25450099A6AE /* ReaderTagFooterView.xib */; };
+		8366FABE2BDC25450099A6AE /* ReaderTagFooterView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8366FABC2BDC25450099A6AE /* ReaderTagFooterView.xib */; };
+		8366FAC02BDC256E0099A6AE /* ReaderTagFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366FABF2BDC256E0099A6AE /* ReaderTagFooterView.swift */; };
+		8366FAC12BDC256E0099A6AE /* ReaderTagFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8366FABF2BDC256E0099A6AE /* ReaderTagFooterView.swift */; };
 		8370D10A11FA499A009D650F /* WPTableViewActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 8370D10911FA499A009D650F /* WPTableViewActivityCell.m */; };
 		837779B12B55D44B00FDA1AC /* EmptyFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837779B02B55D44B00FDA1AC /* EmptyFilterView.swift */; };
 		837779B22B55D44B00FDA1AC /* EmptyFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 837779B02B55D44B00FDA1AC /* EmptyFilterView.swift */; };
@@ -7667,6 +7671,8 @@
 		836498C728172C5900A2C170 /* WPStyleGuide+BloggingPrompts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+BloggingPrompts.swift"; sourceTree = "<group>"; };
 		836498CA2817301800A2C170 /* BloggingPromptsHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BloggingPromptsHeaderView.xib; sourceTree = "<group>"; };
 		836498CD281735CC00A2C170 /* BloggingPromptsHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BloggingPromptsHeaderView.swift; sourceTree = "<group>"; };
+		8366FABC2BDC25450099A6AE /* ReaderTagFooterView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderTagFooterView.xib; sourceTree = "<group>"; };
+		8366FABF2BDC256E0099A6AE /* ReaderTagFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTagFooterView.swift; sourceTree = "<group>"; };
 		8370D10811FA499A009D650F /* WPTableViewActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPTableViewActivityCell.h; sourceTree = "<group>"; };
 		8370D10911FA499A009D650F /* WPTableViewActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPTableViewActivityCell.m; sourceTree = "<group>"; };
 		837779B02B55D44B00FDA1AC /* EmptyFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyFilterView.swift; sourceTree = "<group>"; };
@@ -11073,7 +11079,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -12781,6 +12787,8 @@
 				83317EDB2BC72DB7001AD2F4 /* ReaderTagCell.swift */,
 				83317EDE2BC72DED001AD2F4 /* ReaderTagCell.xib */,
 				83BF48BD2BD6FA3000C0E1A1 /* ReaderTagCellViewModel.swift */,
+				8366FABF2BDC256E0099A6AE /* ReaderTagFooterView.swift */,
+				8366FABC2BDC25450099A6AE /* ReaderTagFooterView.xib */,
 			);
 			name = Cards;
 			sourceTree = "<group>";
@@ -19515,7 +19523,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -19625,6 +19633,7 @@
 				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
 				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
 				1761F17926209AEE000815EF /* wordpress-dark-icon-app-60x60@2x.png in Resources */,
+				8366FABD2BDC25450099A6AE /* ReaderTagFooterView.xib in Resources */,
 				F5A34D0F25DF2F7F00C9654B /* oswald_upper.ttf in Resources */,
 				2FAE970D0E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml in Resources */,
 				9826AE8821B5C73400C851FA /* PostingActivityDay.xib in Resources */,
@@ -20268,6 +20277,7 @@
 				FABB202F2602FC2C00C8785C /* CountriesMapView.xib in Resources */,
 				F465978528E65E1800D5F49A /* blue-on-white-icon-app-60@2x.png in Resources */,
 				FABB20302602FC2C00C8785C /* OverviewCell.xib in Resources */,
+				8366FABE2BDC25450099A6AE /* ReaderTagFooterView.xib in Resources */,
 				F46597E928E6698D00D5F49A /* spectrum-on-black-icon-app-83.5@2x.png in Resources */,
 				FABB20322602FC2C00C8785C /* JetpackRemoteInstallStateView.xib in Resources */,
 				FABB20352602FC2C00C8785C /* TemplatePreviewViewController.xib in Resources */,
@@ -21134,11 +21144,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -21333,13 +21343,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -22459,6 +22469,7 @@
 				931215F2267FE162008C3B69 /* ReferrerDetailsSpamActionRow.swift in Sources */,
 				E66EB6F91C1B7A76003DABC5 /* ReaderSpacerView.swift in Sources */,
 				FAFF7A222B695801006A7CB2 /* WebServerLogsView.swift in Sources */,
+				8366FAC02BDC256E0099A6AE /* ReaderTagFooterView.swift in Sources */,
 				AE2F3125270B6DA000B2A9C2 /* Scanner+QuotedText.swift in Sources */,
 				B560914C208A671F00399AE4 /* WPStyleGuide+SiteCreation.swift in Sources */,
 				014ACD142A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */,
@@ -26132,6 +26143,7 @@
 				8BE6F92D27EE27DB0008BDC7 /* BlogDashboardPostCardGhostCell.swift in Sources */,
 				3FF15A5C291ED21100E1B4E5 /* MigrationNotificationsCenterView.swift in Sources */,
 				FABB25B32602FC2C00C8785C /* ReaderVisitSiteAction.swift in Sources */,
+				8366FAC12BDC256E0099A6AE /* ReaderTagFooterView.swift in Sources */,
 				FABB25B42602FC2C00C8785C /* ReaderCard+CoreDataProperties.swift in Sources */,
 				FABB25B52602FC2C00C8785C /* GutenbergViewController+MoreActions.swift in Sources */,
 				FABB25B62602FC2C00C8785C /* Product.swift in Sources */,

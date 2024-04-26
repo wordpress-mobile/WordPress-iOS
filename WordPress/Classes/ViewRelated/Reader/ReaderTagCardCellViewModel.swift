@@ -9,11 +9,11 @@ class ReaderTagCardCellViewModel: NSObject {
     private typealias DataSource = UICollectionViewDiffableDataSource<Int, NSManagedObjectID>
     private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
 
+    let slug: String
     weak var viewDelegate: ReaderTagCardCellViewModelDelegate? = nil
 
     private let coreDataStack: CoreDataStackSwift
     private weak var parentViewController: UIViewController?
-    private let slug: String
     private weak var collectionView: UICollectionView?
     private let isLoggedIn: Bool
     private let cellSize: () -> CGSize?
@@ -26,7 +26,7 @@ class ReaderTagCardCellViewModel: NSObject {
         guard let collectionView else {
            return nil
         }
-        return DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
             guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
                   let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(), for: indexPath) as? ReaderTagCell else {
                 return UICollectionViewCell()
@@ -36,6 +36,20 @@ class ReaderTagCardCellViewModel: NSObject {
                            isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
             return cell
         }
+        dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+            guard let slug = self?.slug,
+                  kind == UICollectionView.elementKindSectionFooter,
+                  let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces(),
+                                                                             for: indexPath) as? ReaderTagFooterView else {
+                return nil
+            }
+            view.configure(with: slug) { [weak self] in
+                self?.onTagButtonTapped()
+            }
+            return view
+        }
+        return dataSource
     }()
 
     private lazy var resultsController: NSFetchedResultsController<ReaderPost> = {
@@ -103,6 +117,7 @@ class ReaderTagCardCellViewModel: NSObject {
 
     struct Constants {
         static let displayPostLimit = 10
+        static let footerWidth: CGFloat = 200
     }
 
 }
@@ -142,6 +157,12 @@ extension ReaderTagCardCellViewModel: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return cellSize() ?? .zero
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        var viewSize = cellSize() ?? .zero
+        viewSize.width = Constants.footerWidth
+        return viewSize
     }
 
 }
