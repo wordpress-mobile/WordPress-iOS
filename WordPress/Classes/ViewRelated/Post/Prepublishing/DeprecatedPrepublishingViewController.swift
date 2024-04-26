@@ -2,7 +2,6 @@ import UIKit
 import WordPressAuthenticator
 import Combine
 import WordPressUI
-import SwiftUI
 
 /// - warning: deprecated (kahu-offline-mode)
 enum PrepublishingIdentifier {
@@ -55,11 +54,14 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
     let tableView = UITableView(frame: .zero, style: .plain)
     private let footerSeparator = UIView()
 
-    private weak var titleField: UITextField?
+    let publishButton: NUXButton = {
+        let nuxButton = NUXButton()
+        nuxButton.isPrimary = true
+        nuxButton.accessibilityIdentifier = "publish"
+        return nuxButton
+    }()
 
-    private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
-        self?.buttonPublishTapped()
-    }
+    private weak var titleField: UITextField?
 
     /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
     private var hasSelectedText: Bool = false
@@ -91,7 +93,7 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -163,13 +165,11 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
 
     private func setupPublishButton() -> UIView {
         let footerView = UIView()
+        footerView.addSubview(publishButton)
+        publishButton.translatesAutoresizingMaskIntoConstraints = false
+        footerView.pinSubviewToSafeArea(publishButton, insets: Constants.nuxButtonInsets)
 
-        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
-        addChild(hostingViewController)
-
-        footerView.addSubview(hostingViewController.view)
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
+        publishButton.addTarget(self, action: #selector(publish), for: .touchUpInside)
 
         updatePublishButtonLabel()
 
@@ -412,7 +412,7 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
+        let viewController = PublishDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.publishSettingsViewModel.setDate(date)
             self?.reloadData()
@@ -424,34 +424,15 @@ final class DeprecatedPrepublishingViewController: UIViewController, UITableView
     // MARK: - Publish Button
 
     private func updatePublishButtonLabel() {
-        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
+        publishButton.setTitle(post.isScheduled() ? Strings.schedule : Strings.publish, for: .normal)
     }
 
-    private func buttonPublishTapped() {
+    @objc func publish(_ sender: UIButton) {
         didTapPublish = true
-
         let completion = getCompletion()
         navigationController?.dismiss(animated: true) {
             WPAnalytics.track(.editorPostPublishNowTapped)
             completion?(.confirmed)
-        }
-    }
-
-    private func setLoading(_ isLoading: Bool) {
-        publishButtonViewModel.state = isLoading ? .loading : .default
-        isModalInPresentation = isLoading
-        view.isUserInteractionEnabled = !isLoading
-
-        var subviews: [UIView] = [view]
-        while let view = subviews.popLast() {
-            switch view {
-            case let control as UIControl:
-                control.isEnabled = !isLoading
-            case let cell as UITableViewCell:
-                isLoading ? cell.disable() : cell.enable()
-            default:
-                subviews += view.subviews
-            }
         }
     }
 

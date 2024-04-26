@@ -24,9 +24,30 @@ final class StatsSubscribersViewModelTests: XCTestCase {
             })
             .store(in: &cancellables)
 
-        store.emailsSummary.send(.loading)
+        store.chartSummary.send(.loading)
 
         wait(for: [expectation], timeout: 1)
+    }
+
+    func testTableViewSnapshot_chartSummaryLoaded() throws {
+        let expectation = expectation(description: "Chart section should be loading")
+        var subscriberChartRow: SubscriberChartRow?
+        sut.tableViewSnapshot
+            .sink(receiveValue: { snapshot in
+                if let row = snapshot.itemIdentifiers[0].immuTableRow as? SubscriberChartRow {
+                    subscriberChartRow = row
+                    expectation.fulfill()
+                }
+            })
+            .store(in: &cancellables)
+        let chartSummary = StatsSubscribersSummaryData(history: [
+            .init(date: Date(), count: 1),
+            .init(date: Date(), count: 2),
+        ], period: .day, periodEndDate: Date())
+        store.chartSummary.send(.success(chartSummary))
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertNotNil(subscriberChartRow?.chartData)
     }
 
     func testTableViewSnapshot_subscribersListLoaded() throws {
@@ -34,7 +55,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         var subscribersListRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[0].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[1].immuTableRow as? TopTotalsPeriodStatsRow {
                     subscribersListRow = row
                     expectation.fulfill()
                 }
@@ -59,7 +80,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[1].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
                     emailsSummaryRow = row
                     expectation.fulfill()
                 }
@@ -82,12 +103,18 @@ final class StatsSubscribersViewModelTests: XCTestCase {
 
 private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> = .init(.idle)
+    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
     var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<[StatsFollower]>, Never> = .init(.idle)
     var updateEmailsSummaryCalled = false
+    var updateChartSummaryCalled = false
     var updateSubscribersListCalled = false
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField) {
         updateEmailsSummaryCalled = true
+    }
+
+    func updateChartSummary() {
+        updateChartSummaryCalled = false
     }
 
     func updateSubscribersList(quantity: Int) {

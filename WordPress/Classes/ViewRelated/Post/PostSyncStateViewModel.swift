@@ -3,8 +3,9 @@ import Foundation
 final class PostSyncStateViewModel {
     enum State {
         case idle
-        // Has unsynced changes
-        case unsynced
+        /// Syncing changes in the background.
+        case syncing
+        /// Actively updating the post: moving to trash, restoring, etc.
         case uploading
         case offlineChanges
         case failed
@@ -31,9 +32,8 @@ final class PostSyncStateViewModel {
             return .uploading
         }
         if let error = PostCoordinator.shared.syncError(for: post.original()) {
-            if let saveError = error as? PostRepository.PostSaveError,
-               case .conflict = saveError {
-                return .failed // Terminal error
+            if PostCoordinator.isTerminalError(error) {
+                return .failed
             }
             if let urlError = (error as NSError).underlyingErrors.first as? URLError,
                urlError.code == .notConnectedToInternet {
@@ -41,7 +41,7 @@ final class PostSyncStateViewModel {
             }
         }
         if PostCoordinator.shared.isSyncNeeded(for: post) {
-            return .unsynced
+            return .syncing
         }
         return .idle
     }
@@ -66,7 +66,7 @@ final class PostSyncStateViewModel {
     }
 
     var isShowingIndicator: Bool {
-        state == .uploading || state == .unsynced
+        state == .uploading || state == .syncing
     }
 
     var iconInfo: (image: UIImage?, color: UIColor)? {
@@ -75,7 +75,7 @@ final class PostSyncStateViewModel {
             return (UIImage(systemName: "wifi.slash"), UIColor.listIcon)
         case .failed:
             return (UIImage.gridicon(.notice), UIColor.error)
-        case .idle, .uploading, .unsynced:
+        case .idle, .uploading, .syncing:
             return nil
         }
     }
@@ -87,7 +87,7 @@ final class PostSyncStateViewModel {
         switch state {
         case .offlineChanges:
             return Strings.offlineChanges
-        case .failed, .idle, .uploading, .unsynced:
+        case .failed, .idle, .uploading, .syncing:
             return nil
         }
     }

@@ -27,17 +27,7 @@
     color-scheme: light dark;
 
     /* custom variables. */
-    --primary-color: rgba(6, 117, 196, 1);
-    --mention-background-color: rgba(2, 103, 255, .1);
     --monospace-font: ui-monospace, monospace;
-}
-
-/* overrides for dark color scheme. */
-@media(prefers-color-scheme: dark) {
-    :root {
-        --primary-color: rgba(57, 156, 227, 1);
-        --mention-background-color: rgba(2, 103, 255, .2);
-    }
 }
 
 /* disable WebKit text inflation algorithm to prevent text size increase on orientation change. */

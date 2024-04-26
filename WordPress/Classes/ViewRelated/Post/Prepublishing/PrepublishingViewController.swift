@@ -36,7 +36,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private let headerView = PrepublishingHeaderView()
     let tableView = UITableView(frame: .zero, style: .plain)
-    private let footerSeparator = UIView()
 
     private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
         self?.buttonPublishTapped()
@@ -72,12 +71,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     func presentAsSheet(from presentingViewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: self)
+        navigationController.navigationBar.isTranslucent = true // Reset to default
         if UIDevice.isPad() {
             navigationController.modalPresentationStyle = .formSheet
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -120,23 +120,32 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         configureHeader()
         configureTableView()
+        configurePublishButton()
         observePostConflictResolved()
-
-        WPStyleGuide.applyBorderStyle(footerSeparator)
 
         title = ""
 
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
-            tableView,
-            footerSeparator,
-            setupPublishButton()
+            tableView
         ])
         stackView.axis = .vertical
 
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(stackView)
+        let contentView = VStack {
+            PrepublishingStackView(view: stackView)
+            PublishButton(viewModel: publishButtonViewModel)
+                .tint(Color(uiColor: .primary))
+                .padding()
+        }.ignoresSafeArea(.keyboard)
+
+        // Making the entire view `UIHostingController` to make sure keyboard
+        // avoidance can be disabled (see https://steipete.com/posts/disabling-keyboard-avoidance-in-swiftui-uihostingcontroller/?utm_campaign=%20SwiftUI%20Weekly&utm_medium=email&utm_source=Revue%20newsletter)
+        let hostingViewController = UIHostingController(rootView: contentView)
+        addChild(hostingViewController)
+
+        view.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(hostingViewController.view)
 
         view.backgroundColor = .systemBackground
 
@@ -167,23 +176,12 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         tableView.rowHeight = UITableView.automaticDimension
     }
 
-    private func setupPublishButton() -> UIView {
-        let footerView = UIView()
-
-        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
-        addChild(hostingViewController)
-
-        footerView.addSubview(hostingViewController.view)
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
-
+    private func configurePublishButton() {
         updatePublishButtonLabel()
         updatePublishButtonState()
         mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.updatePublishButtonState()
         }
-
-        return footerView
     }
 
     private func observePostConflictResolved() {
@@ -191,12 +189,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             .publisher(for: .postConflictResolved)
             .sink { [weak self] notification in self?.postConflictResolved(notification) }
             .store(in: &cancellables)
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        footerSeparator.isHidden = tableView.contentSize.height < tableView.bounds.height
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -351,7 +343,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             (self.post as! Post).tags = tags
             self.reloadData()
         }
-
+        tagPickerViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
@@ -371,6 +363,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         categoriesViewController.onCategoriesChanged = { [weak self] in
             self?.tableView.reloadData()
         }
+        categoriesViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(categoriesViewController, animated: true)
     }
 
@@ -394,6 +387,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
         let viewController = UIHostingController(rootView: view)
         viewController.title = PostVisibilityPicker.title
+        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -411,13 +405,14 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController()
-        viewController.configuration = SchedulingDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
+        let configuration = PublishDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
             self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
         }
+        let viewController = PublishDatePickerViewController(configuration: configuration)
+        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
@@ -442,20 +437,22 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         guard !viewModel.isCompleted else {
             return nil
         }
-        let progress = PublishButtonState.Progress(completed: Int64(Double(viewModel.totalFileSize) * viewModel.fractionCompleted), total: viewModel.totalFileSize)
-        return .uploading(title: Strings.uploadingMedia + ": \(viewModel.completedUploadsCount) / \(viewModel.uploads.count)", progress: progress, onInfoTapped: { [weak self] in
+        let errors = viewModel.uploads.compactMap(\.error)
+        if !errors.isEmpty {
+            let details = errors.count == 1 ? errors[0].localizedDescription : String(format: Strings.mediaUploadFailedDetailsMultipleFailures, errors.count.description)
+            return .failed(title: Strings.mediaUploadFailedTitle, details: details) { [weak self] in
+                self?.buttonShowUploadInfoTapped()
+            }
+        }
+        return .uploading(title: Strings.uploadingMedia, details: Strings.uploadMediaRemaining(count: viewModel.uploads.count - viewModel.completedUploadsCount), progress: viewModel.fractionCompleted, onInfoTapped: { [weak self] in
             self?.buttonShowUploadInfoTapped()
         })
     }
 
     private func buttonShowUploadInfoTapped() {
-        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel) { [weak self] in
-            self?.dismiss(animated: true, completion: nil)
-        }
+        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel)
         let host = UIHostingController(rootView: view)
-        let navigation = UINavigationController(rootViewController: host)
-        navigation.navigationBar.isTranslucent = true // Reset to default
-        present(navigation, animated: true)
+        navigationController?.pushViewController(host, animated: true)
     }
 
     private func updatePublishButtonLabel() {
@@ -578,6 +575,18 @@ private final class PrepublishingViewModel {
     }
 }
 
+private struct PrepublishingStackView: UIViewRepresentable {
+    let view: UIStackView
+
+    func makeUIView(context: Context) -> some UIView {
+        view
+    }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        // Do nothing
+    }
+}
+
 private enum Strings {
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
@@ -589,4 +598,11 @@ private enum Strings {
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
     static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
     static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaOneItemRemaining = NSLocalizedString("prepublishing.uploadMediaOneItemRemaining", value: "%@ item remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaManyItemsRemaining = NSLocalizedString("prepublishing.uploadMediaManyItemsRemaining", value: "%@ items remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    static func uploadMediaRemaining(count: Int) -> String {
+        String(format: count == 1 ? Strings.uploadMediaOneItemRemaining : Strings.uploadMediaManyItemsRemaining, count.description)
+    }
+    static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
+    static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
 }

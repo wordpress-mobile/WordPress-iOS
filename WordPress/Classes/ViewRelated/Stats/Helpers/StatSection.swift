@@ -34,6 +34,7 @@
     case postStatsMonthsYears
     case postStatsAverageViews
     case postStatsRecentWeeks
+    case subscribersChart
     case subscribersEmailsSummary
     case subscribersList
 
@@ -144,6 +145,8 @@
             return PostStatsHeaders.averageViewsPerDay
         case .postStatsRecentWeeks:
             return PostStatsHeaders.recentWeeks
+        case .subscribersChart:
+            return SubscribersHeaders.chart
         case .subscribersEmailsSummary:
             return SubscribersHeaders.emailsSummaryStats
         case .subscribersList:
@@ -433,6 +436,7 @@
     }
 
     struct SubscribersHeaders {
+        static let chart = NSLocalizedString("stats.subscribers.chart.title", value: "Subscribers", comment: "Stats 'Subscribers' card header, contains chart")
         static let emailsSummaryStats = NSLocalizedString("stats.subscribers.emailsSummaryCard.title", value: "Emails", comment: "Stats 'Emails' card header")
         static let subscribersList = NSLocalizedString("stats.subscribers.subscribersListCard.title", value: "Subscribers", comment: "Stats 'Subscribers' card header")
     }
@@ -454,15 +458,18 @@
         static let searchTerm = NSLocalizedString("Search Term", comment: "Label for list of search term")
         static let period = NSLocalizedString("Period", comment: "Label for date periods.")
         static let file = NSLocalizedString("File", comment: "Label for list of file downloads.")
+        static let emailsSummary = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
     }
 
     struct DataSubtitles {
         static let comments = NSLocalizedString("Comments", comment: "Label for number of comments.")
         static let views = NSLocalizedString("Views", comment: "Label for number of views.")
         static let followers = NSLocalizedString("Followers", comment: "Label for number of followers.")
-        static let since = NSLocalizedString("stats.section.dataSubtitles.subscriber since", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
+        static let since = NSLocalizedString("stats.section.dataSubtitles.subscriberSince", value: "Subscriber since", comment: "Table column title that shows the date since the user became a subscriber.")
         static let clicks = NSLocalizedString("Clicks", comment: "Label for number of clicks.")
         static let downloads = NSLocalizedString("Downloads", comment: "Label for number of file downloads.")
+        static let emailsSummaryOpens = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
+        static let emailsSummaryClicks = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
     }
 
     struct TabTitles {

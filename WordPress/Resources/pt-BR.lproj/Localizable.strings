@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-02-21 21:32:55+0000 */
+/* Translation-Revision-Date: 2024-04-26 11:37:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pt_BR */
@@ -9535,6 +9535,9 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Assinaturas";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Suas tags";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Pesquisar";
 
@@ -9760,6 +9763,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Novo";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Copiar link";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Dispensar";

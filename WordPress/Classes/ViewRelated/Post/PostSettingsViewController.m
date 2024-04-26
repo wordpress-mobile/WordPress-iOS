@@ -27,7 +27,9 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowTags,
     PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
+    // - warning: deprecated (kahu-offline-mode)
     PostSettingsRowStatus,
+    PostSettingsRowPendingReview,
     PostSettingsRowVisibility,
     PostSettingsRowPassword,
     PostSettingsRowFormat,
@@ -50,7 +52,7 @@ static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
-static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
+static NSString *const TableViewToggleCellIdentifier = @"TableViewToggleCellIdentifier";
 static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
 
 
@@ -138,7 +140,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
+    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewToggleCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
@@ -599,7 +601,7 @@ FeaturedImageViewControllerDelegate>
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate) {
-        [self showPublishSchedulingController];
+        [self showPublishDatePicker];
     } else if (cell.tag == PostSettingsRowStatus) {
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
@@ -670,7 +672,19 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        if (self.isDraftOrPending) {
+            [metaRows addObject:@(PostSettingsRowPendingReview)];
+        } else {
+            [metaRows addObjectsFromArray:@[
+                @(PostSettingsRowPublishDate),
+                @(PostSettingsRowVisibility)
+            ]];
+            if (self.apost.password) {
+                [metaRows addObject:@(PostSettingsRowPassword)];
+            }
+        }
+    } else {
         [metaRows addObject:@(PostSettingsRowPublishDate)];
         [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
                                           @(PostSettingsRowVisibility) ]];
@@ -739,6 +753,17 @@ FeaturedImageViewControllerDelegate>
 
     } else if (row == PostSettingsRowPassword) {
         cell = [self configurePasswordCell];
+    } else if (row == PostSettingsRowPendingReview) {
+        // Pending Review
+        __weak __typeof(self) weakSelf = self;
+        SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewToggleCellIdentifier];
+        cell.name = NSLocalizedStringWithDefaultValue(@"postSettings.pendingReview", nil, [NSBundle mainBundle], @"Pending review", @"The 'Pending Review' setting of the post");
+        cell.on = [self.post.status isEqualToString:PostStatusPending];
+        cell.onChange = ^(BOOL newValue) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostPendingReviewChanged properties:@{@"via": @"settings"}];
+            weakSelf.post.status = newValue ? PostStatusPending : PostStatusDraft;
+        };
+        return cell;
     }
 
     return cell;
@@ -826,7 +851,7 @@ FeaturedImageViewControllerDelegate>
 {
     __weak __typeof(self) weakSelf = self;
 
-    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewStickyPostCellIdentifier];
+    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewToggleCellIdentifier];
     cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
     cell.on = self.post.isStickyPost;
     cell.onChange = ^(BOOL newValue) {
@@ -1047,9 +1072,10 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (void)showPublishSchedulingController
+- (void)showPublishDatePicker
 {
-    ImmuTableViewController *vc = [PublishSettingsController viewControllerWithPost:self.apost];
+    BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
+    UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

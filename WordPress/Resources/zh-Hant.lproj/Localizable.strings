@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-19 07:53:58+0000 */
+/* Translation-Revision-Date: 2024-04-23 09:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -11188,6 +11188,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "相關文章";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "複製連結";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "關閉";

@@ -14,6 +14,7 @@ final class StatsSubscribersViewModel {
     }
 
     func refreshData() {
+        store.updateChartSummary()
         store.updateEmailsSummary(quantity: 10, sortField: .postId)
         store.updateSubscribersList(quantity: 10)
     }
@@ -21,7 +22,8 @@ final class StatsSubscribersViewModel {
     // MARK: - Lifecycle
 
     func addObservers() {
-        Publishers.CombineLatest(
+        Publishers.CombineLatest3(
+            store.chartSummary.removeDuplicates(),
             store.emailsSummary.removeDuplicates(),
             store.subscribersList.removeDuplicates()
         )
@@ -41,6 +43,7 @@ final class StatsSubscribersViewModel {
 private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        snapshot.addSection(chartRows())
         snapshot.addSection(subscribersListRows())
         snapshot.addSection(emailsSummaryRows())
         tableViewSnapshot.send(snapshot)
@@ -55,6 +58,31 @@ private extension StatsSubscribersViewModel {
     }
 }
 
+// MARK: - Chart
+
+private extension StatsSubscribersViewModel {
+    func chartRows() -> [any StatsHashableImmuTableRow] {
+        switch store.chartSummary.value {
+        case .loading, .idle:
+            return loadingRows(.subscribersChart)
+        case .success(let chartSummary):
+            let xAxisDates = chartSummary.history.map { $0.date }
+            let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
+            return [
+                SubscriberChartRow(
+                    history: chartSummary.history,
+                    chartData: viewsChart.lineChartData,
+                    chartStyling: viewsChart.lineChartStyling,
+                    xAxisDates: xAxisDates,
+                    statSection: .subscribersChart
+                )
+            ]
+        case .error:
+            return errorRows(.subscribersChart)
+        }
+    }
+}
+
 // MARK: - Emails Summary
 
 private extension StatsSubscribersViewModel {
@@ -65,9 +93,9 @@ private extension StatsSubscribersViewModel {
         case .success(let emailsSummary):
             return [
                 TopTotalsPeriodStatsRow(
-                    itemSubtitle: Strings.titleColumn,
-                    dataSubtitle: Strings.opensColumn,
-                    secondDataSubtitle: Strings.clicksColumn,
+                    itemSubtitle: StatSection.ItemSubtitles.emailsSummary,
+                    dataSubtitle: StatSection.DataSubtitles.emailsSummaryOpens,
+                    secondDataSubtitle: StatSection.DataSubtitles.emailsSummaryClicks,
                     dataRows: emailsSummaryDataRows(emailsSummary),
                     statSection: .subscribersEmailsSummary,
                     siteStatsPeriodDelegate: viewMoreDelegate
@@ -122,13 +150,5 @@ private extension StatsSubscribersViewModel {
                 statSection: .subscribersList
             )
         }
-    }
-}
-
-private extension StatsSubscribersViewModel {
-    struct Strings {
-        static let titleColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.title", value: "Latest emails", comment: "A title for table's column that shows a name of an email")
-        static let opensColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.opens", value: "Opens", comment: "A title for table's column that shows a number of email openings")
-        static let clicksColumn = NSLocalizedString("stats.subscribers.emailsSummary.column.clicks", value: "Clicks", comment: "A title for table's column that shows a number of times a post was opened from an email")
     }
 }

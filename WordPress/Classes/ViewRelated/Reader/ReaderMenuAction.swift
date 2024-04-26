@@ -11,7 +11,8 @@ final class ReaderMenuAction {
                  anchor: UIView,
                  vc: UIViewController,
                  source: ReaderPostMenuSource,
-                 followCommentsService: FollowCommentsService
+                 followCommentsService: FollowCommentsService,
+                 showAdditionalItems: Bool = false
     ) {
         self.execute(
             post: post,
@@ -20,7 +21,8 @@ final class ReaderMenuAction {
             anchor: .view(anchor),
             vc: vc,
             source: source,
-            followCommentsService: followCommentsService
+            followCommentsService: followCommentsService,
+            showAdditionalItems: showAdditionalItems
         )
     }
 
@@ -30,7 +32,8 @@ final class ReaderMenuAction {
                  anchor: ReaderShowMenuAction.PopoverAnchor,
                  vc: UIViewController,
                  source: ReaderPostMenuSource,
-                 followCommentsService: FollowCommentsService
+                 followCommentsService: FollowCommentsService,
+                 showAdditionalItems: Bool = false
     ) {
         let siteTopic: ReaderSiteTopic? = post.isFollowing ? (try? ReaderSiteTopic.lookup(withSiteID: post.siteID, in: context)) : nil
 
@@ -42,7 +45,8 @@ final class ReaderMenuAction {
             anchor: anchor,
             vc: vc,
             source: source,
-            followCommentsService: followCommentsService
+            followCommentsService: followCommentsService,
+            showAdditionalItems: showAdditionalItems
         )
     }
 }

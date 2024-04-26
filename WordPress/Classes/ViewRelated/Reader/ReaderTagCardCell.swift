@@ -1,60 +1,33 @@
-class ReaderTagCardCell: UITableViewCell, UICollectionViewDelegate {
+import WordPressUI
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, NSManagedObjectID>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+class ReaderTagCardCell: UITableViewCell {
 
     @IBOutlet private weak var tagButton: UIButton!
     @IBOutlet private weak var collectionView: UICollectionView!
-    @IBOutlet weak var collectionViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var collectionViewHeightConstraint: NSLayoutConstraint!
 
-    private lazy var dataSource: DataSource = {
-        DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
-            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
-                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier: Constants.cellIdentifier, for: indexPath) as? ReaderTagCell else {
-                return UICollectionViewCell()
-            }
-            cell.configure(with: post, isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
-            return cell
-        }
+    // A 'fake' collection view that's displayed over the actual collection view.
+    // This view will be displaying the loading animation while the cell is in loading state.
+    //
+    // We can't call our ghost functions on the actual collection view because it uses a
+    // diffable data source, which cannot be "hot-swapped".
+    // See: https://developer.apple.com/documentation/uikit/uicollectionviewdiffabledatasource
+    private lazy var ghostableCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.clipsToBounds = false
+
+        let cellNibName = ReaderTagCell.classNameWithoutNamespaces()
+        let nib = UINib(nibName: cellNibName, bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: cellNibName)
+
+        return collectionView
     }()
-    private lazy var resultsController: NSFetchedResultsController<ReaderPost> = {
-        let fetchRequest = NSFetchRequest<ReaderPost>(entityName: ReaderPost.classNameWithoutNamespaces())
-        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "sortRank", ascending: true)]
-        fetchRequest.fetchLimit = Constants.displayPostLimit
-        let resultsController = NSFetchedResultsController<ReaderPost>(fetchRequest: fetchRequest,
-                                                           managedObjectContext: ContextManager.shared.mainContext,
-                                                           sectionNameKeyPath: nil,
-                                                           cacheName: nil)
-        resultsController.delegate = self
-        return resultsController
-    }()
-    private var isLoggedIn: Bool = false
 
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        registerTagCell()
-        setupButtonStyles()
-        collectionView.delegate = self
-        accessibilityElements = [tagButton, collectionView].compactMap { $0 }
-        collectionViewHeightConstraint.constant = cellSize.height
-    }
-
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        collectionViewHeightConstraint.constant = cellSize.height
-    }
-
-    func configure(with tag: ReaderTagTopic, isLoggedIn: Bool) {
-        self.isLoggedIn = isLoggedIn
-        tagButton.setTitle(tag.title, for: .normal)
-        resultsController.fetchRequest.predicate = NSPredicate(format: "topic = %@ AND isSiteBlocked = NO", tag)
-        try? resultsController.performFetch()
-    }
-}
-
-// MARK: - Private methods
-
-private extension ReaderTagCardCell {
+    private var viewModel: ReaderTagCardCellViewModel?
 
     var cellSize: CGSize {
         let isAccessibilityCategory = traitCollection.preferredContentSizeCategory.isAccessibilityCategory
@@ -72,6 +45,65 @@ private extension ReaderTagCardCell {
         }
     }
 
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        registerTagCell()
+        setupButtonStyles()
+        accessibilityElements = [tagButton, collectionView].compactMap { $0 }
+        collectionViewHeightConstraint.constant = cellSize.height
+
+        // disable ghost animation on the actual collection view to prevent its data source and delegate
+        // from being overridden.
+        collectionView?.isGhostableDisabled = true
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        collectionViewHeightConstraint.constant = cellSize.height
+        hideGhostLoading() // clean up attached ghost views, if any
+    }
+
+    func configure(parent: UIViewController, tag: ReaderTagTopic, isLoggedIn: Bool, shouldSyncRemotely: Bool = false) {
+        weak var weakSelf = self
+        viewModel = ReaderTagCardCellViewModel(parent: parent,
+                                               tag: tag,
+                                               collectionView: collectionView,
+                                               isLoggedIn: isLoggedIn,
+                                               viewDelegate: self,
+                                               cellSize: weakSelf?.cellSize)
+        viewModel?.fetchTagPosts(syncRemotely: shouldSyncRemotely)
+        tagButton.setTitle(tag.title, for: .normal)
+    }
+
+    @IBAction private func onTagButtonTapped(_ sender: Any) {
+        viewModel?.onTagButtonTapped()
+    }
+
+    struct Constants {
+        static let phoneDefaultCellSize = CGSize(width: 240, height: 297)
+        static let phoneLargeCellSize = CGSize(width: 240, height: 500)
+        static let padDefaultCellSize = CGSize(width: 480, height: 600)
+        static let padLargeCellSize = CGSize(width: 480, height: 900)
+    }
+
+}
+
+// MARK: - ReaderTagCardCellViewModelDelegate
+
+extension ReaderTagCardCell: ReaderTagCardCellViewModelDelegate {
+    func showLoading() {
+        showGhostLoading()
+    }
+
+    func hideLoading() {
+        hideGhostLoading()
+    }
+}
+
+// MARK: - Private methods
+
+private extension ReaderTagCardCell {
+
     func setupButtonStyles() {
         var buttonConfig = UIButton.Configuration.filled()
         buttonConfig.cornerStyle = .capsule
@@ -86,37 +118,52 @@ private extension ReaderTagCardCell {
 
     func registerTagCell() {
         let nib = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: Constants.cellIdentifier)
+        collectionView.register(nib, forCellWithReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces())
     }
 
-    struct Constants {
-        static let cellIdentifier = ReaderTagCell.classNameWithoutNamespaces()
-        static let displayPostLimit = 10
-        static let phoneDefaultCellSize = CGSize(width: 240, height: 297)
-        static let phoneLargeCellSize = CGSize(width: 240, height: 500)
-        static let padDefaultCellSize = CGSize(width: 480, height: 600)
-        static let padLargeCellSize = CGSize(width: 480, height: 900)
+    /// Injects a "fake" UICollectionView for the loading state animation.
+    func showGhostLoading() {
+        guard let collectionView,
+              let containerView = collectionView.superview,
+              ghostableCollectionView.superview == nil else {
+            return
+        }
+
+        // setup the 'fake' collection view.
+        containerView.addSubview(ghostableCollectionView)
+
+        // pin it directly over the current collection view.
+        NSLayoutConstraint.activate([
+            ghostableCollectionView.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            ghostableCollectionView.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            ghostableCollectionView.topAnchor.constraint(equalTo: collectionView.topAnchor),
+            ghostableCollectionView.bottomAnchor.constraint(equalTo: collectionView.bottomAnchor)
+        ])
+
+        // Important: since the size are fixed, we want to make sure that we feed the exact item size
+        // so that it perfectly overlays on top of the "actual" collection view.
+        if let flowLayout = ghostableCollectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.itemSize = cellSize
+        }
+
+        let options = GhostOptions(reuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(), rowsPerSection: [3])
+        let style = GhostStyle(beatDuration: GhostStyle.Defaults.beatDuration,
+                               beatStartColor: .placeholderElement,
+                               beatEndColor: .placeholderElementFaded)
+
+        ghostableCollectionView.removeGhostContent()
+        ghostableCollectionView.displayGhostContent(options: options, style: style)
+        ghostableCollectionView.isScrollEnabled = false
     }
 
-}
+    func hideGhostLoading() {
+        // ensure that the ghostable collection view is present in the view hierarchy.
+        guard ghostableCollectionView.superview != nil else {
+            return
+        }
 
-// MARK: - NSFetchedResultsControllerDelegate
-
-extension ReaderTagCardCell: NSFetchedResultsControllerDelegate {
-
-    func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>,
-                    didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        dataSource.apply(snapshot as Snapshot, animatingDifferences: false)
-    }
-
-}
-
-// MARK: - UICollectionViewDelegateFlowLayout
-
-extension ReaderTagCardCell: UICollectionViewDelegateFlowLayout {
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
+        ghostableCollectionView.removeGhostContent()
+        ghostableCollectionView.removeFromSuperview()
     }
 
 }

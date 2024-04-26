@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-22 12:54:07+0000 */
+/* Translation-Revision-Date: 2024-04-23 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -11205,7 +11205,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "relatedPostsSettings.title" = "İlgili yazılar";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
-"share.sheet.copy.link.title" = "Bağlantıyı kopyalayın";
+"share.sheet.copy.link.title" = "Bağlantıyı Kopyala";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Kapat";

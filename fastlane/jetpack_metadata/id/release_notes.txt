@@ -1,0 +1,2 @@
+Kami menambahkan preferensi pembaca supaya tampilan Pembaca dapat diatur. Pilih warna, font, dan ukuran yang disukai untuk pengalaman membaca yang sesuai selera.
+Kami juga memperbarui tab Insights agar dapat dimuat dan digulir lebih lancar. Tanpa kedipan, tanpa hambatan, tanpa masalah.

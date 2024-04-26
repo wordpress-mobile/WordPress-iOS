@@ -27,7 +27,7 @@ PODS:
   - Gifu (3.3.1)
   - Gravatar (1.0.1)
   - Gridicons (1.2.0)
-  - Gutenberg (1.117.0)
+  - Gutenberg (1.118.0)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
@@ -107,7 +107,7 @@ DEPENDENCIES:
   - Gifu (= 3.3.1)
   - Gravatar (= 1.0.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.117.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.118.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -121,7 +121,7 @@ DEPENDENCIES:
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
   - WordPressAuthenticator (>= 9.0.8, ~> 9.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `3291ab9b60e88b1bc78f50422efd3b38c30c0eb3`)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `77aee91d607cb8b86d4356c0aebfb3977ff1fcc7`)
   - WordPressShared (from `https://github.com/wordpress-mobile/WordPress-iOS-Shared.git`, commit `688ee5e4efddc1fc23626626ef17b7e929bdafb0`)
   - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
@@ -175,9 +175,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.117.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.118.0.podspec
   WordPressKit:
-    :commit: 3291ab9b60e88b1bc78f50422efd3b38c30c0eb3
+    :commit: 77aee91d607cb8b86d4356c0aebfb3977ff1fcc7
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: 688ee5e4efddc1fc23626626ef17b7e929bdafb0
@@ -188,7 +188,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   WordPressKit:
-    :commit: 3291ab9b60e88b1bc78f50422efd3b38c30c0eb3
+    :commit: 77aee91d607cb8b86d4356c0aebfb3977ff1fcc7
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
   WordPressShared:
     :commit: 688ee5e4efddc1fc23626626ef17b7e929bdafb0
@@ -207,7 +207,7 @@ SPEC CHECKSUMS:
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gravatar: 51437de6811c1d8d6f60c52985f2ca00a85cfc8e
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 2249ee2bdac042ce129297aee696c7926930bc00
+  Gutenberg: 3117b6fe578fb7f0bb75377ba96f436ee05c30fe
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -239,6 +239,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: d5e8587901ad6400bb90366661ff541a6f27f08a
+PODFILE CHECKSUM: 4bbf2ae7c80a5f39db237e7c3514872e9f7eb3ca
 
 COCOAPODS: 1.15.2

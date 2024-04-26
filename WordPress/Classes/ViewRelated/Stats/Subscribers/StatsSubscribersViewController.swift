@@ -69,6 +69,7 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
 
     func tableRowTypes() -> [ImmuTableRow.Type] {
         return [
+            SubscriberChartRow.self,
             TopTotalsPeriodStatsRow.self,
             StatsGhostTopImmutableRow.self,
             StatsErrorRow.self
@@ -83,6 +84,10 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
             guard let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog,
                   let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
             navigationController?.pushViewController(peopleViewController, animated: true)
+        case .subscribersEmailsSummary:
+            let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
+            detailTableViewController.configure(statSection: statSection)
+            navigationController?.pushViewController(detailTableViewController, animated: true)
         default:
             // TODO
             DDLogInfo("\(statSection) selected")

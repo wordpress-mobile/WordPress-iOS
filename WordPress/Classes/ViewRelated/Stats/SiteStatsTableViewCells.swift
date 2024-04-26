@@ -77,6 +77,35 @@ struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     }
 }
 
+struct SubscriberChartRow: StatsHashableImmuTableRow {
+    typealias CellType = StatsSubscribersChartCell
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(CellType.defaultNib, CellType.self)
+    }()
+
+    let action: ImmuTableAction? = nil
+    let history: [StatsSubscribersSummaryData.SubscriberData]
+    let chartData: LineChartDataConvertible
+    let chartStyling: LineChartStyling
+    let xAxisDates: [Date]
+    let statSection: StatSection?
+
+    static func == (lhs: SubscriberChartRow, rhs: SubscriberChartRow) -> Bool {
+        return lhs.xAxisDates == rhs.xAxisDates &&
+            lhs.history == rhs.history
+    }
+
+    func configureCell(_ cell: UITableViewCell) {
+
+        guard let cell = cell as? CellType else {
+            return
+        }
+
+        cell.configure(row: self)
+    }
+}
+
 struct CellHeaderRow: StatsHashableImmuTableRow {
 
     typealias CellType = StatsCellHeader
@@ -817,6 +846,7 @@ struct DetailSubtitlesHeaderRow: HashableImmutableRow {
 
     let itemSubtitle: String
     let dataSubtitle: String
+    var secondDataSubtitle: String? = nil
     let action: ImmuTableAction? = nil
 
     func configureCell(_ cell: UITableViewCell) {
@@ -825,12 +855,13 @@ struct DetailSubtitlesHeaderRow: HashableImmutableRow {
             return
         }
 
-        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, dataRows: [], forDetails: true)
+        cell.configure(itemSubtitle: itemSubtitle, dataSubtitle: dataSubtitle, secondDataSubtitle: secondDataSubtitle, dataRows: [], forDetails: true)
     }
 
     static func == (lhs: DetailSubtitlesHeaderRow, rhs: DetailSubtitlesHeaderRow) -> Bool {
         return lhs.itemSubtitle == rhs.itemSubtitle &&
-            lhs.dataSubtitle == rhs.dataSubtitle
+            lhs.dataSubtitle == rhs.dataSubtitle &&
+            lhs.secondDataSubtitle == rhs.secondDataSubtitle
     }
 }
 
