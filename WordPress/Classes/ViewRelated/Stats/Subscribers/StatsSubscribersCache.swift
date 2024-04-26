@@ -27,6 +27,10 @@ final class StatsSubscribersCache {
             return .init(record: .subscribersEmailsSummary, key: "\(quantity) \(sortField) \(sortOrder)", siteID: siteId)
         }
 
+        static func chartSummary(unit: String, siteId: NSNumber) -> CacheKey {
+            return .init(record: .subscribersChart, key: unit, siteID: siteId)
+        }
+
         static func subscribersList(quantity: Int, siteId: NSNumber) -> CacheKey {
             return .init(record: .subscribersList, key: "\(quantity)", siteID: siteId)
         }

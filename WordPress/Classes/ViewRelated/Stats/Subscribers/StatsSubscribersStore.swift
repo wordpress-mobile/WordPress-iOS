@@ -4,9 +4,11 @@ import WordPressKit
 
 protocol StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> { get }
+    var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> { get }
     var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<[StatsFollower]>, Never> { get }
 
     func updateEmailsSummary(quantity: Int, sortField: StatsEmailsSummaryData.SortField)
+    func updateChartSummary()
     func updateSubscribersList(quantity: Int)
 }
 
@@ -16,6 +18,7 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
     private let statsService: StatsServiceRemoteV2
 
     var emailsSummary: CurrentValueSubject<State<StatsEmailsSummaryData>, Never> = .init(.idle)
+    var chartSummary: CurrentValueSubject<State<StatsSubscribersSummaryData>, Never> = .init(.idle)
     var subscribersList: CurrentValueSubject<State<[StatsFollower]>, Never> = .init(.idle)
 
     init() {
@@ -49,6 +52,34 @@ struct StatsSubscribersStore: StatsSubscribersStoreProtocol {
                 case .failure:
                     if cachedData == nil {
                         self.emailsSummary.send(.error)
+                    }
+                }
+            }
+        }
+    }
+
+    func updateChartSummary() {
+        guard chartSummary.value != .loading else { return }
+
+        let unit = StatsPeriodUnit.day
+        let cacheKey = StatsSubscribersCache.CacheKey.chartSummary(unit: unit.stringValue, siteId: siteID)
+        let cachedData: StatsSubscribersSummaryData? = cache.getValue(key: cacheKey)
+
+        if let cachedData = cachedData {
+            self.chartSummary.send(.success(cachedData))
+        } else {
+            chartSummary.send(.loading)
+        }
+
+        statsService.getData(for: unit, endingOn: StatsDataHelper.currentDateForSite(), limit: 30) { (data: StatsSubscribersSummaryData?, error: Error?) in
+            DispatchQueue.main.async {
+                if let data = data {
+                    cache.setValue(data, key: cacheKey)
+                    self.chartSummary.send(.success(data))
+                }
+            else {
+                    if cachedData == nil {
+                        self.chartSummary.send(.error)
                     }
                 }
             }
