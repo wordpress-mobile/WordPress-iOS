@@ -6,10 +6,9 @@ struct StatsFollowersChartViewModel {
     let emailFollowersCount: Int
 
     func makeFollowersChartView() -> UIView {
-        // The followers chart currently shows 3 segments. If available, it will show:
+        // The followers chart currently shows 2 segments. If available, it will show:
         // - WordPress.com followers
         // - Email followers
-        // - Social
 
         let chartView = DonutChartView()
         chartView.configure(title: "", totalCount: CGFloat(totalCount()), segments: segments())
@@ -43,7 +42,6 @@ struct StatsFollowersChartViewModel {
 
         static let wpComColor: UIColor = .muriel(name: .blue, .shade50)
         static let emailColor: UIColor = .muriel(name: .blue, .shade5)
-        static let socialColor: UIColor = .muriel(name: .orange, .shade30)
 
         static let chartHeight: CGFloat = 231.0
     }
