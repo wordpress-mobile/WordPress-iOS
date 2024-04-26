@@ -56,6 +56,9 @@ extension Blog {
 
     /// Returns the maximum upload byte size supported for a media file on the site.
     @objc var maxUploadSize: NSNumber? {
+        #warning("TEMP")
+        return NSNumber(value: 1024 * 1024)
+
         guard let maxUploadSize = getOptionValue("max_upload_size") as? NSNumber else {
             return nil
         }

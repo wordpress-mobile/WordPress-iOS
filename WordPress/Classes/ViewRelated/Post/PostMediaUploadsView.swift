@@ -2,8 +2,8 @@ import Foundation
 import SwiftUI
 
 /// Displays upload progress for the media for the given post.
-struct PostMediaUploadStatusView: View {
-    @ObservedObject var viewModel: PostMediaUploadViewModel
+struct PostMediaUploadsView: View {
+    @ObservedObject var viewModel: PostMediaUploadsViewModel
 
     var body: some View {
         contents
@@ -30,7 +30,7 @@ struct PostMediaUploadStatusView: View {
         } else {
             List {
                 ForEach(viewModel.uploads) {
-                    MediaUploadStatusView(viewModel: $0)
+                    PostMediaUploadItemView(viewModel: $0)
                 }
             }
             .listStyle(.plain)
@@ -38,8 +38,8 @@ struct PostMediaUploadStatusView: View {
     }
 }
 
-private struct MediaUploadStatusView: View {
-    @ObservedObject var viewModel: MediaUploadViewModel
+private struct PostMediaUploadItemView: View {
+    @ObservedObject var viewModel: PostMediaUploadItemViewModel
 
     var body: some View {
         HStack(alignment: .center, spacing: 16) {
