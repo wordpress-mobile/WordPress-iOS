@@ -27,6 +27,10 @@ class PeopleViewController: UITableViewController {
         }
     }
 
+    /// Default Filter value when People loads
+    ///
+    fileprivate var defaultFilter = Filter.users
+
     /// NoResults Helper
     ///
     private let noResultsViewController = NoResultsViewController.controller()
@@ -240,12 +244,9 @@ extension PeopleViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - Private behavior
+// MARK: - Enum
 
-private extension PeopleViewController {
-
-    // MARK: Enums
-
+extension PeopleViewController {
     enum Filter: String, CaseIterable, FilterTabBarItem {
 
         case users      = "users"
@@ -262,11 +263,11 @@ private extension PeopleViewController {
             case .users:
                 return NSLocalizedString("Users", comment: "Blog Users")
             case .followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
+                return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
             case .email:
-                return NSLocalizedString("Email Followers", comment: "Blog Email Followers")
+                return NSLocalizedString("users.list.title.subscribers", value: "Email Subscribers", comment: "Site Email Subscribers")
             }
         }
 
@@ -296,6 +297,11 @@ private extension PeopleViewController {
             }
         }
     }
+}
+
+// MARK: - Private behavior
+
+private extension PeopleViewController {
 
     enum Storyboard {
         static let inviteSegueIdentifier = "invite"
@@ -497,8 +503,9 @@ private extension PeopleViewController {
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
-        // By default, let's display the Blog's Users
-        filter = .users
+        let indexToSet = Filter.allCases.firstIndex(where: { $0 == defaultFilter }) ?? 0
+        filterBar.setSelectedIndex(indexToSet)
+        filter = defaultFilter
     }
 
     func setupTableView() {
@@ -553,5 +560,19 @@ extension PeopleViewController {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
+    }
+}
+
+extension PeopleViewController {
+    class func controllerWithBlog(_ blog: Blog, selectedFilter: Filter) -> PeopleViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
+            return nil
+        }
+
+        viewController.defaultFilter = selectedFilter
+        viewController.blog = blog
+
+        return viewController
     }
 }
