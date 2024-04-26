@@ -94,7 +94,8 @@ struct UniversalLinkRouter: LinkRouter {
         StatsRoute.insights,
         StatsRoute.dayCategory,
         StatsRoute.annualStats,
-        StatsRoute.activityLog
+        StatsRoute.activityLog,
+        StatsRoute.subscribers
     ]
 
     static let mySitesRoutes: [Route] = MySitesRoute.allCases

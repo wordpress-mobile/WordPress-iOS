@@ -11,6 +11,7 @@ enum StatsRoute {
     case dayCategory
     case annualStats
     case activityLog
+    case subscribers
 
     var tab: StatsTabType? {
         switch self {
@@ -24,6 +25,8 @@ enum StatsRoute {
             return .years
         case .insights:
             return .insights
+        case .subscribers:
+            return .subscribers
         default:
             return nil
         }
@@ -61,6 +64,8 @@ extension StatsRoute: Route {
             return "/stats/annualstats/:domain"
         case .activityLog:
             return "/stats/activity/:domain"
+        case .subscribers:
+            return "/stats/subscribers/:domain"
         }
     }
 
@@ -105,6 +110,8 @@ extension StatsRoute: NavigationAction {
                 showMySitesAndFailureNotice(using: coordinator,
                                             values: values)
             }
+        case .subscribers:
+            showStatsForBlog(from: values, tab: .subscribers, using: coordinator)
         }
     }
 
