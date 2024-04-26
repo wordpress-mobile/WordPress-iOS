@@ -28,13 +28,13 @@ final class PersonViewController: UITableViewController {
         var title: String {
             switch self {
             case .User:
-                return NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.user", value: "Site's User", comment: "Sites's User Profile. Displayed when the name is empty!")
             case .Follower:
-                return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.subscriber", value: "Site's Subscriber", comment: "Site's Subscriber Profile. Displayed when the name is empty!")
             case .Viewer:
-                return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.viewer", value: "Site's Viewer", comment: "Site's Viewers Profile. Displayed when the name is empty!")
             case .Email:
-                return NSLocalizedString("Blog's Email Follower", comment: "Blog's Email Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.emailSubscriber", value: "Site's Email Subscriber", comment: "Site's Email Subscriber Profile. Displayed when the name is empty!")
             }
         }
     }
