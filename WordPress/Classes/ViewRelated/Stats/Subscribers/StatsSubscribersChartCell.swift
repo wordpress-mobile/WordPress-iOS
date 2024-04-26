@@ -17,8 +17,7 @@ class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
     }
 
     func configure(row: SubscriberChartRow) {
-
-        statSection = .subscribersChart
+        statSection = row.statSection
 
         self.chartData = row.chartData
         self.chartStyling = row.chartStyling
