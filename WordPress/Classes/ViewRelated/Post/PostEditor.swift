@@ -210,6 +210,7 @@ extension PostEditor where Self: UIViewController {
             sheetController.detents = [.medium(), .large()]
             sheetController.prefersGrabberVisible = true
             sheetController.preferredCornerRadius = 16
+            nav.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         }
         self.present(nav, animated: true)
     }
