@@ -64,10 +64,17 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     func configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
+        UIView.performWithoutAnimation {
+            _configure(with: viewModel, delegate: delegate)
+        }
+    }
+
+    private func _configure(with viewModel: PostListItemViewModel, delegate: InteractivePostViewDelegate? = nil) {
         headerView.configure(with: viewModel, delegate: delegate)
         contentLabel.attributedText = viewModel.content
 
         featuredImageView.isHidden = viewModel.imageURL == nil
+        featuredImageView.layer.opacity = viewModel.syncStateViewModel.isEditable ? 1 : 0.25
         if let imageURL = viewModel.imageURL {
             let host = MediaHost(with: viewModel.post) { error in
                 WordPressAppDelegate.crashLogging?.logError(error)
