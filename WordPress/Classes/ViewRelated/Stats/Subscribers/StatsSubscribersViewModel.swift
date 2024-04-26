@@ -70,6 +70,7 @@ private extension StatsSubscribersViewModel {
             let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
             return [
                 SubscriberChartRow(
+                    history: chartSummary.history,
                     chartData: viewsChart.lineChartData,
                     chartStyling: viewsChart.lineChartStyling,
                     xAxisDates: xAxisDates,

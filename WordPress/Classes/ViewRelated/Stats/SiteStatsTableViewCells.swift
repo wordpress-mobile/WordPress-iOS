@@ -85,13 +85,15 @@ struct SubscriberChartRow: StatsHashableImmuTableRow {
     }()
 
     let action: ImmuTableAction? = nil
+    let history: [StatsSubscribersSummaryData.SubscriberData]
     let chartData: LineChartDataConvertible
     let chartStyling: LineChartStyling
     let xAxisDates: [Date]
     let statSection: StatSection?
 
     static func == (lhs: SubscriberChartRow, rhs: SubscriberChartRow) -> Bool {
-        return lhs.xAxisDates == rhs.xAxisDates
+        return lhs.xAxisDates == rhs.xAxisDates &&
+            lhs.history == rhs.history
     }
 
     func configureCell(_ cell: UITableViewCell) {
