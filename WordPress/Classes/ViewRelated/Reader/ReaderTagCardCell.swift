@@ -67,7 +67,7 @@ class ReaderTagCardCell: UITableViewCell {
         if viewModel?.slug == tag.slug {
             return
         }
-        collectionView.scrollToStart(animated: false)
+        resetScrollPosition()
         weak var weakSelf = self
         viewModel = ReaderTagCardCellViewModel(parent: parent,
                                                tag: tag,
@@ -172,6 +172,15 @@ private extension ReaderTagCardCell {
 
         ghostableCollectionView.removeGhostContent()
         ghostableCollectionView.removeFromSuperview()
+    }
+
+    func resetScrollPosition() {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+        if isRTL {
+            collectionView.scrollToEnd(animated: false)
+        } else {
+            collectionView.scrollToStart(animated: false)
+        }
     }
 
 }
