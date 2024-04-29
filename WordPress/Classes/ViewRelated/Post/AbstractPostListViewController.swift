@@ -600,7 +600,11 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        refreshControl.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(330)) {
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+        }
         setFooterHidden(true)
         noResultsViewController.removeFromView()
 
