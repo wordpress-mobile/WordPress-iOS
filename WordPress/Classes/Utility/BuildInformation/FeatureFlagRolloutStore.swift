@@ -4,10 +4,10 @@ import Foundation
 // feature flags to use in test cases.
 //
 protocol RolloutConfigurableFlag: CustomStringConvertible {
-    var rolloutPercentage: Int? { get }
+    var rolloutPercentage: Double? { get }
 }
 
-/// Used to configure rollout groups for feature flags
+/// Used to determine if a feature flag should be enabled, depending on the specified rollout percentage.
 ///
 struct FeatureFlagRolloutStore {
     private let store: KeyValueDatabase
@@ -16,19 +16,19 @@ struct FeatureFlagRolloutStore {
         self.store = store
     }
 
-    /// Returns `true` if the assigned group is included in the specificed rollout.
+    /// Returns `true` if the specified feature flag can be rolled out.
     ///
     func isRolloutEnabled(for featureFlag: RolloutConfigurableFlag) -> Bool {
         guard let rolloutPercentage = featureFlag.rolloutPercentage else {
             return false
         }
-        assert(rolloutPercentage >= 1 && rolloutPercentage <= 100, "Value must be between 1 and 100 inclusive")
-        let rolloutThreshold = rolloutPercentage * Constants.multiplier
+        assert((0.0..<1.0).contains(rolloutPercentage), "Rollout percentage value must be between 0.0 and 1.0")
+        let rolloutThreshold = Int(rolloutPercentage * 100) * Constants.multiplier
         return (1..<rolloutThreshold).contains(rolloutGroup)
     }
 
-    /// Returns the assigned rollout group for the specified feature flag.
-    /// If the feature flag hasn't been assigned to a rollout group yet, assigns the flag to a group.
+    /// Returns the assigned rollout group.
+    /// If a rollout group hasn't been assigned yet, assigns a group.
     ///
     private var rolloutGroup: Int {
         if let value = store.object(forKey: Constants.rolloutGroupKey) as? Int {

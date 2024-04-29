@@ -110,13 +110,13 @@ extension FeatureFlag: OverridableFlag {
 extension FeatureFlag: RolloutConfigurableFlag {
     /// Represents the percentage of users to roll the flag out to.
     ///
-    /// To set a percentage rollout, return a value between 1 and 100 inclusive.
+    /// To set a percentage rollout, return a value between 0.0 and 1.0.
     /// If a percentage rollout isn't applicable for the flag, return nil.
     ///
-    var rolloutPercentage: Int? {
+    var rolloutPercentage: Double? {
         switch self {
         case .syncPublishing:
-            return 1
+            return 0.01  // 1%
         default:
             return nil
         }
