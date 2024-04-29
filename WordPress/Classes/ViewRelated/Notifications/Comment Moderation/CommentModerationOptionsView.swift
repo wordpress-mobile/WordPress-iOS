@@ -6,33 +6,28 @@ struct CommentModerationOptionsView: View {
         let title: String
         let iconName: IconName
         let tintColor: Color
-        let backgroundColor: Color
     }
 
     private let items = [
         Item(
             title: Strings.approveTitle,
-            iconName: .checkmark,
-            tintColor: .DS.Background.primary,
-            backgroundColor: .DS.Foreground.brand(isJetpack: true)
+            iconName: .checkmarkCircle,
+            tintColor: .DS.Foreground.brand(isJetpack: true)
         ),
         Item(
             title: Strings.pendingTitle,
             iconName: .clock,
-            tintColor: .DS.Background.primary,
-            backgroundColor: .DS.Foreground.secondary
+            tintColor: .DS.Foreground.secondary
         ),
         Item(
             title: Strings.trashTitle,
             iconName: .trash,
-            tintColor: .DS.Background.primary,
-            backgroundColor: .DS.Foreground.warning
+            tintColor: .DS.Foreground.warning
         ),
         Item(
             title: Strings.spamTitle,
             iconName: .exclamationCircle,
-            tintColor: .DS.Background.primary,
-            backgroundColor: .DS.Foreground.error
+            tintColor: .DS.Foreground.error
         ),
     ]
 
@@ -61,21 +56,14 @@ struct CommentModerationOptionsView: View {
 
     private func optionHStack(item: Item) -> some View {
         HStack(spacing: .DS.Padding.double) {
-            Circle()
-                .fill(item.backgroundColor)
+            Image.DS.icon(named: item.iconName)
+                .resizable()
+                .renderingMode(.template)
+                .foregroundStyle(item.tintColor)
                 .frame(
-                    width: .DS.Padding.large,
-                    height: .DS.Padding.large
+                    width: .DS.Padding.medium,
+                    height: .DS.Padding.medium
                 )
-                .overlay {
-                    Image.DS.icon(named: item.iconName)
-                        .resizable()
-                        .foregroundStyle(item.tintColor)
-                        .frame(
-                            width: .DS.Padding.medium,
-                            height: .DS.Padding.medium
-                        )
-                }
 
             Text(item.title)
                 .font(.DS.Body.large)
