@@ -346,6 +346,8 @@ private extension PeopleViewController {
     // MARK: Sync Helpers
 
     func refreshPeople() {
+        self.isInitialLoad = true
+        self.refreshNoResultsView()
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.isInitialLoad = false
             self?.refreshNoResultsView()
