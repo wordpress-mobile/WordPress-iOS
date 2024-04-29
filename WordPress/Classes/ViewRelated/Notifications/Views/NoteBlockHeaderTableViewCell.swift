@@ -32,7 +32,7 @@ private struct HeaderView: View {
     }
 
     var body: some View {
-        ContentPreview(image: image, text: text, action: action)
+        ContentPreview(image: image != nil ? .init(url: image) : nil, text: text, action: action)
             .padding(EdgeInsets(top: 16.0, leading: 16.0, bottom: 8.0, trailing: 16.0))
     }
 }
