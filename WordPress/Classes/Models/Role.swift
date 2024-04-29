@@ -23,16 +23,29 @@ extension Role {
 }
 
 extension Role {
-    @objc var color: UIColor {
+    @objc var backgroundColor: UIColor {
         switch slug {
         case .some("super-admin"):
-            return WPStyleGuide.People.superAdminColor
+            return WPStyleGuide.People.Color.Admin.background
         case .some("administrator"):
-            return WPStyleGuide.People.adminColor
+            return WPStyleGuide.People.Color.Admin.background
         case .some("editor"):
-            return WPStyleGuide.People.editorColor
+            return WPStyleGuide.People.Color.Other.background
         default:
-            return WPStyleGuide.People.otherRoleColor
+            return WPStyleGuide.People.Color.Other.background
+        }
+    }
+
+    @objc var textColor: UIColor {
+        switch slug {
+        case .some("super-admin"):
+            return WPStyleGuide.People.Color.Admin.text
+        case .some("administrator"):
+            return WPStyleGuide.People.Color.Admin.text
+        case .some("editor"):
+            return WPStyleGuide.People.Color.Other.text
+        default:
+            return WPStyleGuide.People.Color.Other.text
         }
     }
 }

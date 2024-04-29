@@ -28,16 +28,12 @@ struct PeopleCellViewModel {
         return .text
     }
 
-    var roleBorderColor: UIColor {
-        return role?.color ?? WPStyleGuide.People.otherRoleColor
-    }
-
     var roleBackgroundColor: UIColor {
-        return role?.color ?? WPStyleGuide.People.otherRoleColor
+        return role?.backgroundColor ?? WPStyleGuide.People.Color.Other.background
     }
 
     var roleTextColor: UIColor {
-        return WPStyleGuide.People.RoleBadge.textColor
+        return role?.textColor ?? WPStyleGuide.People.Color.Other.text
     }
 
     var roleText: String {
@@ -52,12 +48,8 @@ struct PeopleCellViewModel {
         return NSLocalizedString("Super Admin", comment: "User role badge")
     }
 
-    var superAdminBorderColor: UIColor {
-        return superAdminBackgroundColor
-    }
-
     var superAdminBackgroundColor: UIColor {
-        return WPStyleGuide.People.superAdminColor
+        return WPStyleGuide.People.Color.Admin.background
     }
 
     var superAdminHidden: Bool {
