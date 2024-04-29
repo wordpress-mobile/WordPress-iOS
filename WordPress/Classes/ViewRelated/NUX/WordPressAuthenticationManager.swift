@@ -651,6 +651,7 @@ private extension WordPressAuthenticationManager {
     ///
     private func syncWPCom(authToken: String, isJetpackLogin: Bool, onCompletion: @escaping () -> ()) {
         let service = WordPressComSyncService()
+        var didLoginSuccessfully = false
 
         // Create a dispatch group to wait for both API calls.
         let syncGroup = DispatchGroup()
@@ -664,7 +665,7 @@ private extension WordPressAuthenticationManager {
             ///
             let notification = isJetpackLogin == true ? .wordpressLoginFinishedJetpackLogin : Foundation.Notification.Name(rawValue: WordPressAuthenticator.WPSigninDidFinishNotification)
             NotificationCenter.default.post(name: notification, object: account)
-
+            didLoginSuccessfully = true
             syncGroup.leave()
         }, onFailure: { _ in
             syncGroup.leave()
@@ -678,7 +679,9 @@ private extension WordPressAuthenticationManager {
 
         // Sync done
         syncGroup.notify(queue: .main) {
-            onCompletion()
+            if didLoginSuccessfully {
+                onCompletion()
+            }
         }
     }
 
