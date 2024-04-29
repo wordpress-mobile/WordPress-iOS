@@ -282,6 +282,9 @@ class MediaCoordinator: NSObject {
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
         delete(media: [media])
+        if FeatureFlag.syncPublishing.enabled {
+            notifyObserversForMedia(media, ofStateChange: .cancelled)
+        }
     }
 
     /// Cancels any ongoing upload for the media object
@@ -588,6 +591,8 @@ class MediaCoordinator: NSObject {
         case ended
         case failed(error: NSError)
         case progress(value: Double)
+        /// The upload was cancelled by the user.
+        case cancelled
 
         var debugDescription: String {
             switch self {
@@ -603,6 +608,8 @@ class MediaCoordinator: NSObject {
                 return "Failed: \(error)"
             case .progress(let value):
                 return "Progress: \(value)"
+            case .cancelled:
+                return "Cancelled"
             }
         }
     }
