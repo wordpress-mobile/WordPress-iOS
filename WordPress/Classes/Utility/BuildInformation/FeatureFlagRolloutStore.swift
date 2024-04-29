@@ -16,10 +16,6 @@ struct FeatureFlagRolloutStore {
         self.store = store
     }
 
-    private func key(for featureFlag: RolloutConfigurableFlag) -> String {
-        return "ff-rollout-group-\(String(describing: featureFlag))"
-    }
-
     /// Returns `true` if the assigned group is included in the specificed rollout.
     ///
     func isRolloutEnabled(for featureFlag: RolloutConfigurableFlag) -> Bool {
@@ -28,24 +24,24 @@ struct FeatureFlagRolloutStore {
         }
         assert(rolloutPercentage >= 1 && rolloutPercentage <= 100, "Value must be between 1 and 100 inclusive")
         let rolloutThreshold = rolloutPercentage * Constants.multiplier
-        return (1..<rolloutThreshold).contains(rolloutGroup(for: featureFlag))
+        return (1..<rolloutThreshold).contains(rolloutGroup)
     }
 
     /// Returns the assigned rollout group for the specified feature flag.
     /// If the feature flag hasn't been assigned to a rollout group yet, assigns the flag to a group.
     ///
-    private func rolloutGroup(for featureFlag: RolloutConfigurableFlag) -> Int {
-        let key = key(for: featureFlag)
-        if let value = store.object(forKey: key) as? Int {
+    private var rolloutGroup: Int {
+        if let value = store.object(forKey: Constants.rolloutGroupKey) as? Int {
             return value
         }
         let group = Int.random(in: 0..<Constants.groupSize)
-        store.set(group, forKey: key)
+        store.set(group, forKey: Constants.rolloutGroupKey)
         return group
     }
 }
 
 private enum Constants {
+    static let rolloutGroupKey = "ff-rollout-group-key"
     static let groupSize = 100 * multiplier
     static let multiplier = 10
 }
