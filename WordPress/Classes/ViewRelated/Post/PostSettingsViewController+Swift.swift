@@ -16,7 +16,7 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = RemoteFeatureFlag.syncPublishing.enabled() ? post._createRevision() : post.latest()
+        let revision = FeatureFlag.syncPublishing.enabled ? post._createRevision() : post.latest()
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
@@ -31,7 +31,7 @@ extension PostSettingsViewController {
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
 
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _setupStandaloneEditor()
         }
 
@@ -93,14 +93,14 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             deleteRevision()
         }
         presentingViewController?.dismiss(animated: true)
     }
 
     @objc private func buttonSaveTapped() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _buttonSaveTapped()
         }
 

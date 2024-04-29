@@ -30,7 +30,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-        isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()
+        isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled
     ) {
         self.page = page
         self.isSiteHomepage = isSiteHomepage

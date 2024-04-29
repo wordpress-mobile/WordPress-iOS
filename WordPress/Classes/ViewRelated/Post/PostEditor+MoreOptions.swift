@@ -32,7 +32,7 @@ extension PostEditor {
     }
 
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _savePostBeforePreview(completion: completion)
         }
 
@@ -115,7 +115,7 @@ extension PostEditor {
             return
         }
 
-        if !RemoteFeatureFlag.syncPublishing.enabled() {
+        if !FeatureFlag.syncPublishing.enabled {
             guard post.remoteStatus != .pushing else {
                 displayPostIsUploadingAlert()
                 return
@@ -158,7 +158,7 @@ extension PostEditor {
     }
 
     func displayHistory() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             _displayHistory()
             return
         }

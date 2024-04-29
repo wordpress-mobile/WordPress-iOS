@@ -10,7 +10,7 @@ struct PublishSettingsViewModel {
         case immediately
 
         init(post: AbstractPost) {
-            if RemoteFeatureFlag.syncPublishing.enabled() {
+            if FeatureFlag.syncPublishing.enabled {
                 if let date = post.dateCreated {
                     self = date > .now ? .scheduled(date) : .published(date)
                 } else {
@@ -31,7 +31,7 @@ struct PublishSettingsViewModel {
     let title: String?
 
     var detailString: String {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _detailString
         }
         switch state {
@@ -79,7 +79,7 @@ struct PublishSettingsViewModel {
     }
 
     mutating func setDate(_ date: Date?) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _setDate(date)
         }
         post.dateCreated = date

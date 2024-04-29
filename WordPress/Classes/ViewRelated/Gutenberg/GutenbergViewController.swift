@@ -516,7 +516,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func presentNewPageNoticeIfNeeded() {
-        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard !FeatureFlag.syncPublishing.enabled else {
             return
         }
         // Validate if the post is a newly created page or not.
