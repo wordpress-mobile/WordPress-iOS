@@ -917,9 +917,6 @@
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Are you sure you want to update?";
 
@@ -1016,6 +1013,18 @@
 
 /* No comment provided by engineer. */
 "Autoplay may cause usability issues for some users." = "Autoplay may cause usability issues for some users.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Cancel";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "You've made unsaved changes to this post from a different device. Edited: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Autosave Available";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "View Changes";
 
 /* Whether a plugin has enabled automatic updates */
 "Autoupdates" = "Autoupdates";
@@ -1265,18 +1274,6 @@
 /* Create new Blog Post button title */
 "Blog post" = "Blog post";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Blog's Follower";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog's User";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Blog's Viewer";
-
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "Learn more";
 
@@ -1425,7 +1422,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -2048,7 +2044,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2488,9 +2483,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a threat */
 "Database threat" = "Database threat";
-
-/* Date and Time */
-"Date and Time" = "Date and Time";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -3161,9 +3153,6 @@ Example: Reply to Pamela Nguyen */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Email Address";
 
-/* Blog Email Followers */
-"Email Followers" = "Email Followers";
-
 /* Notification Settings Channel */
 "Email from WordPress.com" = "Email from WordPress.com";
 
@@ -3636,13 +3625,10 @@ Example: Reply to Pamela Nguyen */
    Section title for sites the user has followed. */
 "Followed Sites" = "Followed Sites";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Follower";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Followers";
 
 /* User is following the blog. */
@@ -4895,6 +4881,9 @@ Please install the %3$@ to use the app with this site.";
 /* No comment provided by engineer. */
 "Link inserted" = "Link inserted";
 
+/* No comment provided by engineer. */
+"Link label" = "Link label";
+
 /* Link name field placeholder */
 "Link Name" = "Link Name";
 
@@ -4903,9 +4892,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Noun. Title for screen in editor that allows to configure link options */
 "Link Settings" = "Link Settings";
-
-/* No comment provided by engineer. */
-"Link text" = "Link text";
 
 /* Noun. Label for the text of a link in the editor */
 "Link Text" = "Link Text";
@@ -6795,26 +6781,11 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a post has been successfully updated. */
 "Post updated" = "Post updated";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Created %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Deleting post...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Edited %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Moving post to trash...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Published %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Scheduled %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Trashed %@";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postal Code";
@@ -6824,6 +6795,27 @@ Please install the %3$@ to use the app with this site.";
 
 /* Accessibility label for the blog name in the Reader's post details, without date. Placeholders are blog title, blog URL, author name */
 "Posted in %@, at %@, by %@." = "Posted in %1$@, at %2$@, by %3$@.";
+
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Discard Changes";
+
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Discard Draft";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Keep Editing";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Save Draft";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Creating autosave...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Revision loaded";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Saving draft...";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -6841,6 +6833,24 @@ Please install the %3$@ to use the app with this site.";
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Badge for post cells */
+"postList.badgePendingReview" = "Pending review";
+
+/* Cancels an Action */
+"postList.cancel" = "Cancel";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Delete Permanently";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Are you sure you want to permanently delete \"%@\"?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "The app is uploading previously made changes to the server. Please try again later.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Something went wrong";
+
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Offline changes";
 
@@ -6855,6 +6865,36 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "View";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Move to Trash";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Are you sure you want to trash \"%@\"? Any changes that weren't sent previously to the server will be lost.";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Close";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "No pending uploads";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ of %2$@";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Retry Uploads";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Media Uploads";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "An error occured";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "The app is uploading previously made changes to the server. Please try again later.";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Page draft uploaded";
@@ -6885,9 +6925,6 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Post updated";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Upload failed";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "View";
@@ -6943,6 +6980,9 @@ Please install the %3$@ to use the app with this site.";
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Preview";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publish";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Retry";
 
@@ -6973,6 +7013,15 @@ Please install the %3$@ to use the app with this site.";
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "View";
 
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "The content was modified on another device";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" was permanently deleted and can no longer be updated";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Untitled";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Dismiss";
 
@@ -6984,6 +7033,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Featured Image Options";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Pending review";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
@@ -7021,6 +7073,36 @@ Please install the %3$@ to use the app with this site.";
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Posts by me";
 
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Only visible to site admins and editors";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Private";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Visibile to everyone but requires a password";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Password protected";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Visible to everyone";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Public";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Cancel";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Visibility";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Password";
+
+/* Button save */
+"postVisibilityPicker.save" = "Save";
+
 /* Browse premium themes selection title */
 "Premium" = "Premium";
 
@@ -7042,8 +7124,11 @@ Please install the %3$@ to use the app with this site.";
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Failed to upload media";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ items failed to upload";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Failed to upload media";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Title";
@@ -7053,6 +7138,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Publish Date";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Immediately";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publishing to";
@@ -7124,6 +7212,12 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Uploading media";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ items remaining";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ item remaining";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Visibility";
@@ -7221,8 +7315,7 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publish";
 
 /* Title of a Quick Start Tour */
@@ -7240,14 +7333,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Text displayed in the share extension's summary view. It describes the publish post action. */
 "Publish post on:" = "Publish post on:";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ of %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Publish Date";
 
-/* Retry button title */
-"publishButton.retry" = "Retry";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "The date in your current time zone:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Now";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Immediately";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Remove Publish Date";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Select Publish Date";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Time Zone";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publish Date";
@@ -7259,9 +7361,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Published just now on";
-
-/* Published on [date] */
-"Published on" = "Published on";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publishing page...";
@@ -7775,6 +7874,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Add a Tag";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Like";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Liked";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Discover more tags";
 
@@ -8120,6 +8225,24 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The largest resolution allowed for uploading */
 "Resolution" = "Resolution";
 
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Another device";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Current device";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "The post was modified on another device. Please select the version of the post to keep.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Cancel";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Save";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Resolve Conflict";
+
 /* Title for the fix section in Threat Details: Threat is not fixable */
 "Resolving the threat" = "Resolving the threat";
 
@@ -8306,9 +8429,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Scheduled";
-
-/* Scheduled for [date] */
-"Scheduled for" = "Scheduled for";
 
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Scheduled for %@ on";
@@ -8744,9 +8864,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Sign up with Email";
 
-/* Label for time period in list of followers. */
-"Since" = "Since";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Since you're on a free plan, you'll see limited events in your Activity Log.";
 
@@ -8851,6 +8968,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for a button that opens plan and domain purchasing flow. */
 "site.domains.purchaseWithPlan.buttons.title" = "Upgrade to a plan";
+
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "All sites";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Pinned sites";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Recent sites";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Add a site";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Cancel";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Done";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Edit";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Choose a site";
 
 /* Back button title shown in Site Creation flow to come back from Plan selection to Domain selection */
 "siteCreation.domain.backButton.title" = "Domains";
@@ -8998,10 +9139,8 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "So far, there are no ignored threats on your site.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -9179,6 +9318,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Stats not loaded";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Subscribers";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Traffic";
 
@@ -9275,6 +9417,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Not enough activity. Check back later when your site's had more visitors!";
 
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Subscribers";
+
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Your latest post %1$@ has received %2$@ likes.";
 
@@ -9286,6 +9431,33 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Today";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Subscriber since";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Name";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "Subscribers";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Clicks";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Opens";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Latest emails";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "Emails";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Subscribers";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Table showing %1$@, %2$@, and %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Bar Chart depicting Comments for the selected period.";
@@ -9299,17 +9471,17 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Bar Chart depicting Visitors for the selected period.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "By day";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Days";
 
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "By month";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Months";
 
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "By week";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Weeks";
 
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "By year";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Years";
 
 /* The status of the post. Should be the same as in core WP. */
 "Status" = "Status";
@@ -9368,8 +9540,27 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Submit for Review";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "You can optionally include your email and username to help us understand your experience.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "no email entered";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "no username entered";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Done";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Thanks for your feedback";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Submit";
+
+/* Notice informing user that their feedback is being submitted anonymously.
+   Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Sending";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -10730,6 +10921,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader.";
 
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "Site's Email Subscriber";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Site's Subscriber";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Site's User";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Site's Viewer";
+
 /* A placeholder for the twitter username
    Accessibility label for the username text field in the self-hosted login page.
    Account Settings Username label
@@ -10752,6 +10955,10 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Blog Users */
 "Users" = "Users";
+
+/* Site Email Subscribers
+   Site Subscribers */
+"users.list.title.subscribers" = "Subscribers";
 
 /* Menus label for describing which menu the location uses in the header. */
 "USES" = "USES";
