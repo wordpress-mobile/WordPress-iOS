@@ -1,80 +1,46 @@
 import UIKit
+import SwiftUI
+import DesignSystem
 
-class CommentHeaderTableViewCell: UITableViewCell, Reusable {
+final class CommentHeaderTableViewCell: HostingTableViewCell<ContentPreview>, Reusable {
 
-    enum Title {
-        /// Title for a top-level comment on a post.
-        case post
+    // MARK: Typealias
 
-        /// Title for the comment threads.
-        case thread
-
-        /// Title for a comment that's a reply to another comment.
-        /// Requires a String describing the replied author's name.
-        case reply(String)
-
-        var stringValue: String {
-            switch self {
-            case .post:
-                return .postCommentTitleText
-            case .thread:
-                return .commentThreadTitleText
-            case .reply(let author):
-                return String(format: .replyCommentTitleFormat, author)
-            }
-        }
-    }
+    typealias Constants = ContentPreview.Constants
+    typealias Avatar = ContentPreview.ImageConfiguration.Avatar
 
     // MARK: Initialization
 
     required init() {
         super.init(style: .subtitle, reuseIdentifier: Self.defaultReuseID)
-        configureStyle()
+        self.selectionStyle = .none
+        self.contentView.directionalLayoutMargins = .init(
+            top: CGFloat.DS.Padding.double,
+            leading: 0,
+            bottom: CGFloat.DS.Padding.double,
+            trailing: 0
+        )
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    /// Configures the header cell.
-    /// - Parameters:
-    ///   - title: The title type for the header. See `Title`.
-    ///   - subtitle: A text snippet of the parent object.
-    ///   - showsDisclosureIndicator: When this is `false`, the cell is configured to look non-interactive.
-    func configure(for title: Title, subtitle: String, showsDisclosureIndicator: Bool = true) {
-        textLabel?.setText(title.stringValue)
-        detailTextLabel?.setText(subtitle)
-        accessoryType = showsDisclosureIndicator ? .disclosureIndicator : .none
-        selectionStyle = showsDisclosureIndicator ? .default : .none
+    // MARK: - Configuration
+
+    func configure(post: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(text: post, action: action)
+        self.host(content, parent: parent)
     }
 
-    // MARK: Helpers
-
-    private typealias Style = WPStyleGuide.CommentDetail.Header
-
-    private func configureStyle() {
-        accessoryType = .disclosureIndicator
-
-        textLabel?.font = Style.font
-        textLabel?.textColor = Style.textColor
-        textLabel?.numberOfLines = 2
-
-        detailTextLabel?.font = Style.detailFont
-        detailTextLabel?.textColor = Style.detailTextColor
-        detailTextLabel?.numberOfLines = 1
+    func configure(avatar: Avatar, comment: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(image: .init(avatar: avatar), text: comment, action: action)
+        self.host(content, parent: parent)
     }
 
-}
+    // MARK: - Layout
 
-// MARK: Localization
-
-private extension String {
-    static let postCommentTitleText = NSLocalizedString("Comment on", comment: "Provides hint that the current screen displays a comment on a post. "
-                                                            + "The title of the post will displayed below this string. "
-                                                            + "Example: Comment on \n My First Post")
-    static let replyCommentTitleFormat = NSLocalizedString("Reply to %1$@", comment: "Provides hint that the screen displays a reply to a comment."
-                                                           + "%1$@ is a placeholder for the comment author that's been replied to."
-                                                           + "Example: Reply to Pamela Nguyen")
-    static let commentThreadTitleText = NSLocalizedString("Comments on", comment: "Sentence fragment. "
-                                                          + "The full phrase is 'Comments on' followed by the title of a post on a separate line.")
+    override func layout(hostingView view: UIView) {
+        self.contentView.pinSubviewToAllEdgeMargins(view)
+    }
 }

@@ -2,9 +2,15 @@ import SwiftUI
 
 public struct ContentPreview: View {
 
+    // MARK: - Constants
+
+    public enum Constants {
+        public static let imageSize: CGFloat = 32
+    }
+
     // MARK: - Metrics
 
-    @ScaledMetric private var imageSize: CGFloat = 32
+    @ScaledMetric private var imageSize: CGFloat = Constants.imageSize
     @ScaledMetric private var height: CGFloat = 40
 
     private var leadingPadding: CGFloat {
@@ -13,20 +19,16 @@ public struct ContentPreview: View {
 
     // MARK: - Properties
 
-    private let image: URL?
+    private let image: ImageConfiguration?
     private let text: String
     private let action: () -> Void
 
     // MARK: - Init
 
-    public init(image: URL?, text: String, action: @escaping () -> Void) {
+    public init(image: ImageConfiguration? = nil, text: String, action: @escaping () -> Void) {
         self.image = image
         self.text = text
         self.action = action
-    }
-
-    public init(image: String? = nil, text: String, action: @escaping () -> Void) {
-        self.init(image: URL(string: image ?? ""), text: text, action: action)
     }
 
     // MARK: - Body
@@ -34,8 +36,8 @@ public struct ContentPreview: View {
     public var body: some View {
         Button(action: action) {
             HStack(spacing: CGFloat.DS.Padding.half) {
-                if let url = image {
-                    image(url: url)
+                if let configuration = image {
+                    image(configuration: configuration)
                 }
                 Text(text)
                     .style(.bodyLarge(.regular))
@@ -53,31 +55,55 @@ public struct ContentPreview: View {
         }
     }
 
-    private func image(url: URL) -> some View {
-        AsyncImage(url: url) { phase in
+    private func image(configuration: ImageConfiguration) -> some View {
+        AsyncImage(url: configuration.url) { phase in
             Group {
                 switch phase {
                 case .success(let image):
                     image.resizable()
                 default:
-                    Color.DS.Background.tertiary
+                    if let placeholder = configuration.placeholder {
+                        placeholder
+                            .resizable()
+                    } else {
+                        Color.DS.Background.tertiary
+                    }
                 }
             }
             .frame(width: imageSize, height: imageSize)
             .clipShape(Circle())
         }
     }
+
+    // MARK: - Types
+
+    public struct ImageConfiguration {
+        let url: URL?
+        let placeholder: Image?
+
+        public init(url: URL?, placeholder: Image? = nil) {
+            self.url = url
+            self.placeholder = placeholder
+        }
+
+        public init(url: String?, placeholder: Image? = nil) {
+            self.init(url: URL(string: url ?? ""), placeholder: placeholder)
+        }
+    }
 }
 
 #Preview {
     VStack {
-        ContentPreview(image: "https://i.pravatar.cc/300",
+        ContentPreview(image: .init(url: "https://i.pravatar.cc/300"),
                        text: "Great post! ❤️",
                        action: {})
         ContentPreview(text: "The Beauty of Off-the-Beaten-Path Adventures",
                        action: {})
-        ContentPreview(image: "https://i.pravatar.cc/300",
+        ContentPreview(image: .init(url: "https://i.pravatar.cc/300"),
                        text: "Absolutely loved the tips in your latest post! 😊",
+                       action: {})
+        ContentPreview(image: .init(url: URL(string: "invalid-url")),
+                       text: "Just stumbled upon your latest art piece and wow, I'm blown away!",
                        action: {})
     }
         .padding(.horizontal, CGFloat.DS.Padding.double)
