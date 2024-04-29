@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-18 11:55:02+0000 */
+/* Translation-Revision-Date: 2024-04-29 14:48:11+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Willst du diesen Artikel wirklich löschen?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Bist du sicher, dass du deine Startseite aktualisieren möchtest?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Bist du sicher, dass du ein Update vornehmen möchtest?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogbeitrag";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-Mail-Follower des Blogs";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Follower des Blogs";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog-Benutzer";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Betrachter des Blogs";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloggen";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Zeitraum";
-
-/* Date and Time */
-"Date and Time" = "Datum und Uhrzeit";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-Mail-Adresse";
-
-/* Blog Email Followers */
-"Email Followers" = "E-Mail-Follower";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Abonnierte Websites";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Follower";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Follower";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Link eingefügt";
 
 /* No comment provided by engineer. */
-"Link text" = "Link-Text";
+"Link label" = "Link-Label";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Mit bestehendem Inhalt verlinken";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publizieren";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Gerade veröffentlicht auf";
-
-/* Published on [date] */
-"Published on" = "Publiziert am";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Veröffentliche Seite...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Geplant";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Geplant für";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Geplant für %@ auf";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Mit E-Mail-Adresse registrieren";
 
-/* Label for time period in list of followers. */
-"Since" = "Seit";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Da du einen Free-Tarif hast, siehst du nur begrenzte Ereignisse in deinem Aktivitätsprotokoll.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Bis jetzt gibt es keine ignorierten Bedrohungen auf deiner Website.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social Media";
 
 /* Title of a Quick Start Tour */
@@ -10346,26 +10308,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Tarife";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Erstellt %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Der Beitrag wird gelöscht …";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Bearbeitet %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Der Beitrag wird in den Papierkorb verschoben …";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Veröffentlicht %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Geplant %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "In den Papierkorb verschoben %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Von %@.";
@@ -10424,9 +10371,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Beitrag aktualisiert";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Upload fehlgeschlagen";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Anzeigen";
 
@@ -10474,6 +10418,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Vorschau";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Veröffentlichen";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Erneut versuchen";
@@ -10541,8 +10488,8 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Das Hochladen von Medien ist fehlgeschlagen";
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Das Hochladen von Medien ist fehlgeschlagen";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titel";
@@ -10625,15 +10572,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle Antworten anzeigen";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ von %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Erneut versuchen";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Jetzt";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Veröffentlichungsdatum";
@@ -11542,18 +11480,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Balkendiagramm, das die Besucher für den ausgewählten Zeitraum darstellt.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Nach Tag";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Nach Monat";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Nach Woche";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Nach Jahr";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Verwerfen";

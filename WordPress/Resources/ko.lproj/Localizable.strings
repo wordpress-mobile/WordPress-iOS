@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-23 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-04-28 01:30:16+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "정말로 이 글을 삭제하기를 원하시나요?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "홈페이지를 업데이트하시겠습니까?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "업데이트하시겠습니까?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "블로그 글";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "블로그의 이메일 팔로워";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "블로그 팔로워";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "블로그 사용자";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "블로그 방문자";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "블로깅";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "날짜 범위";
-
-/* Date and Time */
-"Date and Time" = "날짜 및 시간";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2562,7 +2542,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Editing synced patterns is not yet supported on %s for Android" = "Android용 %s에서는 동기화된 패턴 편집이 아직 지원되지 않습니다.";
 
 /* translators: %s: name of the host app (e.g. WordPress) */
-"Editing synced patterns is not yet supported on %s for iOS" = "iOS용 %s에서는 동기화된 패턴 편집이 아직 지원되지 않습니다.\n";
+"Editing synced patterns is not yet supported on %s for iOS" = "IOS용 %s에서는 동기화된 패턴 편집이 아직 지원되지 않습니다.";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "이 GIF를 편집하면 애니메이션이 제거됩니다.";
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "이메일 주소";
-
-/* Blog Email Followers */
-"Email Followers" = "이메일 팔로워";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "팔로우된 사이트";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "팔로워";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "팔로워";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "링크 삽입됨";
 
 /* No comment provided by engineer. */
-"Link text" = "링크 텍스트";
+"Link label" = "링크 레이블";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "기존 콘텐츠에 연결";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "발행하기";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "지금 게시하기";
-
-/* Published on [date] */
-"Published on" = "발행일자";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "페이지 발행 중...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "예약됨";
 
-/* Scheduled for [date] */
-"Scheduled for" = "다음으로 예약됨";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "%@에 예약됨";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "이메일로 가입";
 
-/* Label for time period in list of followers. */
-"Since" = "부터";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "무료 요금제 사용자이므로 활동 로그에 제한된 이벤트가 표시됩니다.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "아직 회원님 사이트에서 무시한 보안 위협이 없습니다.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "소셜";
 
 /* Title of a Quick Start Tour */
@@ -8071,6 +8033,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Title for Jetpack Restore Warning screen */
 "Warning" = "경고";
 
+/* No comment provided by engineer. */
+"Warning message" = "경고 메시지";
+
 /* Caption displayed in promotional screens shown during the login flow. */
 "Watch your audience grow with in-depth analytics." = "깊이 있는 분석으로 독자가 늘어나는 것을 확인하세요.";
 
@@ -9005,6 +8970,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Context menu button title */
 "blogHeader.actionCopyURL" = "URL 복사";
 
+/* Context menu button title */
+"blogHeader.actionVisitSite" = "사이트 방문";
+
 /* Title for a button that, when tapped, shows more info about participating in Bloganuary. */
 "bloganuary.dashboard.card.button.learnMore" = "더 알아보기";
 
@@ -9206,6 +9174,12 @@ Example: Reply to Pamela Nguyen */
 
 /* Debug menu item title */
 "debugMenu.analytics" = "분석";
+
+/* Boolean User Defaults debug menu item */
+"debugMenu.booleanUserDefaults" = "Boolean 사용자 기본값";
+
+/* Boolean User Defaults Debug Menu screen title */
+"debugMenu.booleanUserDefaults.title" = "Boolean 사용자 기본값";
 
 /* Feature flags menu item */
 "debugMenu.featureFlags" = "기능 플래그";
@@ -9412,6 +9386,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for confirmation navigation bar button item */
 "externalMediaPicker.add" = "추가";
+
+/* Bottom toolbar title in the selection mode */
+"externalMediaPicker.toolbarSelectItemsPrompt" = "이미지 선택";
 
 /* Bottom toolbar title in the selection mode */
 "externalMediaPicker.toolbarViewSelected" = "선택한 내용 보기(%@)";
@@ -9896,6 +9873,21 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD after successfully deleting a media item */
 "mediaLibrary.deletionSuccessMessage" = "삭제되었습니다.";
 
+/* The name of the media filter */
+"mediaLibrary.filterAll" = "모두";
+
+/* The name of the media filter */
+"mediaLibrary.filterAudio" = "오디오";
+
+/* The name of the media filter */
+"mediaLibrary.filterDocuments" = "문서";
+
+/* The name of the media filter */
+"mediaLibrary.filterImages" = "이미지";
+
+/* The name of the media filter */
+"mediaLibrary.filterVideos" = "비디오";
+
 /* User action to delete un-uploaded media. */
 "mediaLibrary.retryOptionsAlert.delete" = "삭제";
 
@@ -9973,6 +9965,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The name of the action in the context menu */
 "mediaPicker.takeVideo" = "비디오 촬영";
+
+/* Navigation title for media preview. Example: 1 of 3 */
+"mediaPreview.NofM" = "%1$@\/%2$@";
 
 /* Max image size in pixels (e.g. 300x300px) */
 "mediaSizeSlider.valueFormat" = "%1$d×%2$dpx";
@@ -10145,8 +10140,17 @@ Example: Reply to Pamela Nguyen */
 /* Menu title for the share site option */
 "mySite.siteActions.shareSite" = "사이트 공유";
 
+/* Menu title for the change site icon option */
+"mySite.siteActions.siteIcon" = "사이트 아이콘 변경";
+
 /* Menu title for the change site title option */
 "mySite.siteActions.siteTitle" = "사이트 제목 변경";
+
+/* Menu title for the switch site option */
+"mySite.siteActions.switchSite" = "사이트 전환";
+
+/* Menu title for the visit site option */
+"mySite.siteActions.visitSite" = "사이트 방문";
 
 /* A no results message displayed on the atomic logs screen. */
 "noLogs.empty" = "이 시간 범위 내에 로그 항목 없음";
@@ -10304,26 +10308,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "요금제";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "%@ 생성됨";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "글 삭제 중...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "%@ 편집됨";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "휴지통으로 글 이동 중...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "%@ 공개됨";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "%@ 예약됨";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "%@ 삭제됨";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ 작성.";
@@ -10381,9 +10370,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "글 업데이트됨";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "업로드 실패";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "보기";
@@ -10496,8 +10482,8 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "닫기";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "미디어 업로드 실패";
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "젯팩 소셜";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "제목";
@@ -10580,15 +10566,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "모든 응답 보기";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@\/%2$@";
-
-/* Retry button title */
-"publishButton.retry" = "다시 시도";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "지금";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "발행일";
@@ -10963,6 +10940,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "크기";
 
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
+
 /* Text format for the feedback line text, to be displayed in the preview section.
 %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
 Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
@@ -11249,6 +11232,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Accessibility label for media item preview for user's viewing an item in their media library */
 "siteMediaItem.contentViewAccessibilityLabel" = "미디어 미리보기";
 
+/* Title for confirmation navigation bar button item */
+"siteMediaPicker.add" = "추가";
+
 /* Button selection media in media picker */
 "siteMediaPicker.deselect" = "선택 해제";
 
@@ -11489,20 +11475,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "선택한 기간의 방문자 수가 표시되는 막대그래프입니다.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "일 기준";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "월 기준";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "주 기준";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "연도 기준";
-
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
+
+/* Subtitle for placeholder in Free Photos. The company name 'Pexels' should always be written as it is. */
+"stockPhotos.subtitle" = "Pexels 제공 사진";
 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "미디어 라이브러리에 추가할 무료 사진을 검색하여 찾으세요!";
