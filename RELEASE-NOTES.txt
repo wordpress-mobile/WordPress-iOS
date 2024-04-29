@@ -1,8 +1,12 @@
+24.9
+-----
+
+
 24.8
 -----
 * [*] [internal] Update Reachability. [#23030]
 * [*] Move "Settings" context menu action in "Pages" from the submenu to a separate section to make it easily discoverable and make it available for unpublished posts [#23065]
-* [*] Add "Stats" context menu action to "Pages" [#23065]
+* [*] [Jetpack-only] Add "Stats" context menu action to "Pages" [#23065]
 
 24.7
 -----
