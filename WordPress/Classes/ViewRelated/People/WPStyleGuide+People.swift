@@ -1,27 +1,31 @@
 import Foundation
-import WordPressShared
+import DesignSystem
 
 extension WPStyleGuide {
-    public struct People {
-        public struct RoleBadge {
+    struct People {
+        struct RoleBadge {
             // MARK: Metrics
-            public static let padding = CGFloat(4)
-            public static let borderWidth = CGFloat(1)
-            public static let cornerRadius = CGFloat(2)
+            static let horizontalPadding: CGFloat = .DS.Padding.single
+            static let verticalPadding: CGFloat = .DS.Padding.half
+            static let cornerRadius: CGFloat = .DS.Radius.small
 
             // MARK: Typography
-            public static var font: UIFont {
-                return WPStyleGuide.fontForTextStyle(.caption2)
+            static var font: UIFont {
+                return .DS.font(.footnote)
             }
-
-            // MARK: Colors
-            public static let textColor = UIColor.textInverted
         }
 
         // MARK: Colors
-        public static let superAdminColor = UIColor.accentDark
-        public static let adminColor = UIColor.neutral(.shade70)
-        public static let editorColor = UIColor.primaryDark
-        public static let otherRoleColor: UIColor = .primary
+        struct Color {
+            struct Admin {
+                static let background: UIColor = .DS.Foreground.primary
+                static let text: UIColor = .DS.Background.primary
+            }
+
+            struct Other {
+                static let background: UIColor = .DS.Background.secondary
+                static let text: UIColor = .DS.Foreground.primary
+            }
+        }
     }
 }
