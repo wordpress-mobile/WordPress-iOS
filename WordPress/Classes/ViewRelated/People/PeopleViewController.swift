@@ -180,8 +180,13 @@ class PeopleViewController: UITableViewController {
             }
             navigationController?.pushViewController(viewController, animated: true)
         case .followers:
-            // TBD
-            break
+            let url = URL(string: "https://wordpress.com/subscribers/\(blogId)/\(personAtIndexPath(indexPath).ID)")
+            let configuration = WebViewControllerConfiguration(url: url)
+            configuration.authenticateWithDefaultAccount()
+            configuration.secureInteraction = true
+            let viewController = WebKitViewController(configuration: configuration)
+            let navWrapper = LightNavigationController(rootViewController: viewController)
+            navigationController?.present(navWrapper, animated: true)
         }
     }
 
