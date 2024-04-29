@@ -1,6 +1,19 @@
 import UIKit
 import Gifu
 import AVKit
+import SwiftUI
+
+struct SiteMediaPreviewView: UIViewControllerRepresentable {
+    let media: Media
+
+    func makeUIViewController(context: Context) -> SiteMediaPreviewViewController {
+        SiteMediaPreviewViewController(media: media)
+    }
+
+    func updateUIViewController(_ vc: SiteMediaPreviewViewController, context: Context) {
+        // Do nothing
+    }
+}
 
 final class SiteMediaPreviewViewController: UIViewController {
     private let imageView = GIFImageView()

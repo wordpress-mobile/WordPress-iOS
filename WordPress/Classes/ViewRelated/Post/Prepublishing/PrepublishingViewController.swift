@@ -43,7 +43,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private weak var mediaPollingTimer: Timer?
     private let isStandalone: Bool
-    private let uploadsViewModel: PostMediaUploadViewModel
+    private let uploadsViewModel: PostMediaUploadsViewModel
 
     private var cancellables: [AnyCancellable] = []
 
@@ -58,7 +58,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         self.post = isStandalone ? post._createRevision() : post
         self.isStandalone = isStandalone
         self.viewModel = PrepublishingViewModel(post: self.post)
-        self.uploadsViewModel = PostMediaUploadViewModel(post: post)
+        self.uploadsViewModel = PostMediaUploadsViewModel(post: post)
         self.completion = completion
         self.coreDataStack = coreDataStack
         self.persistentStore = persistentStore
@@ -450,7 +450,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     private func buttonShowUploadInfoTapped() {
-        let view = PostMediaUploadStatusView(viewModel: uploadsViewModel)
+        let view = PostMediaUploadsView(viewModel: uploadsViewModel)
         let host = UIHostingController(rootView: view)
         navigationController?.pushViewController(host, animated: true)
     }

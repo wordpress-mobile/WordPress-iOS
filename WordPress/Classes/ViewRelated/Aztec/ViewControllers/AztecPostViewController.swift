@@ -2179,6 +2179,8 @@ extension AztecPostViewController {
             handleError(error, onAttachment: attachment)
         case .progress(let value):
             handleProgress(value, forMedia: media, onAttachment: attachment)
+        case .cancelled:
+            richTextView.remove(attachmentID: attachment.identifier)
         }
     }
 
