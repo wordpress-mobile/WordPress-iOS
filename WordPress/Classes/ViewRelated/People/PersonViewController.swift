@@ -70,6 +70,13 @@ final class PersonViewController: UITableViewController {
         super.init(coder: coder)
     }
 
+    class func controllerWithBlog(_ blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) -> PersonViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        return storyboard.instantiateViewController(identifier: "PersonViewController") { coder in
+            PersonViewController(coder: coder, blog: blog, context: context, person: person, screenMode: screenMode)
+        }
+    }
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
