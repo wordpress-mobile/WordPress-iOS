@@ -92,6 +92,7 @@ public struct ContentPreview: View {
     }
 }
 
+#if DEBUG
 #Preview {
     VStack {
         ContentPreview(image: .init(url: "https://i.pravatar.cc/300"),
@@ -108,3 +109,4 @@ public struct ContentPreview: View {
     }
         .padding(.horizontal, CGFloat.DS.Padding.double)
 }
+#endif
