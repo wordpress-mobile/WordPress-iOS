@@ -163,6 +163,28 @@ class PeopleViewController: UITableViewController {
         loadMorePeopleIfNeeded()
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let blog = blog, let blogId = blog.dotComID?.intValue else { return }
+
+        switch filter {
+        case .users, .viewers:
+            guard let viewController = PersonViewController.controllerWithBlog(
+                blog,
+                context: viewContext,
+                person: personAtIndexPath(indexPath),
+                screenMode: filter.screenMode
+            ) else {
+                return
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        case .followers:
+            // TBD
+            break
+        }
+    }
+
     // MARK: UIViewController
 
     override func viewDidLoad() {
@@ -187,16 +209,6 @@ class PeopleViewController: UITableViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
-    }
-
-    @IBSegueAction func createPersonViewController(_ coder: NSCoder) -> PersonViewController? {
-        guard let selectedIndexPath = tableView.indexPathForSelectedRow, let blog = blog else { return nil }
-
-        return PersonViewController(coder: coder,
-                                    blog: blog,
-                                    context: viewContext,
-                                    person: personAtIndexPath(selectedIndexPath),
-                                    screenMode: filter.screenMode)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
