@@ -6872,6 +6872,9 @@ Please install the %3$@ to use the app with this site.";
 /* Message of the trash post or page confirmation alert. */
 "postList.trash.alertMessage" = "Are you sure you want to trash \"%@\"? Any changes that weren't sent previously to the server will be lost.";
 
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Cancel Upload";
+
 /* Close button in postMediaUploadStatusView */
 "postMediaUploadStatusView.close" = "Close";
 
@@ -6880,6 +6883,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
 "postMediaUploadStatusView.progress" = "%1$@ of %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Retry Upload";
 
 /* Retry upload button in postMediaUploadStatusView */
 "postMediaUploadStatusView.retryUploads" = "Retry Uploads";
