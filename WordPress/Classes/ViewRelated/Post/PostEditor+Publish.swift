@@ -371,7 +371,14 @@ extension PublishingEditor {
         }
 
         if post.original().isStatus(in: [.draft, .pending]) {
-            showCloseDraftConfirmationAlert()
+            if FeatureFlag.autoSaveDrafts.enabled {
+                performSaveDraftAction()
+            } else {
+                // The "Discard Changes" behavior is problematic due to the way
+                // the editor and `PostCoordinator` often update the content
+                // in the background without the user interaction.
+                showCloseDraftConfirmationAlert()
+            }
         } else {
             showClosePublishedPostConfirmationAlert()
         }
@@ -429,8 +436,15 @@ extension PublishingEditor {
 
         WPAppAnalytics.track(.editorDiscardedChanges, withProperties: [WPAppAnalyticsKeyEditorSource: analyticsEditorSource], with: post)
 
-        // TODO: this is incorrect because there might still be media in the previous revision
-        cancelUploadOfAllMedia(for: post)
+        // Cancel upload of only newly inserted media items
+        if let previous = post.original {
+            for media in post.media.subtracting(previous.media) {
+                DDLogInfo("post-editor: cancel upload for \(media.filename ?? media.description)")
+                MediaCoordinator.shared.cancelUpload(of: media)
+            }
+        } else {
+            wpAssertionFailure("the editor must be working with a revision")
+        }
 
         AbstractPost.deleteLatestRevision(post, in: context)
         ContextManager.shared.saveContextAndWait(context)

@@ -195,7 +195,11 @@ extension PostEditor where Self: UIViewController {
         if post.changes.isEmpty {
             AbstractPost.deleteLatestRevision(post, in: context)
         } else {
-            EditPostViewController.encode(post: post)
+            if FeatureFlag.autoSaveDrafts.enabled, PostCoordinator.shared.isSyncAllowed(for: post) {
+                PostCoordinator.shared.setNeedsSync(for: post)
+            } else {
+                EditPostViewController.encode(post: post)
+            }
         }
         if context.hasChanges {
             ContextManager.sharedInstance().saveContextAndWait(context)

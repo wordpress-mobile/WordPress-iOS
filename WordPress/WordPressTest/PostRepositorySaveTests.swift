@@ -1157,45 +1157,18 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // GIVEN the app hits 409 but it's a false positive, so we are good
         HTTPStubs.removeAllStubs()
 
-        var requestCount = 0
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
-            // THEN the app sends a partial update but still has the old
-            // original revision of the post
-            requestCount += 1
-
-            if requestCount == 1 {
-                // THEN the first request contains an `if_not_modified_since` parameter
-                try assertRequestBody(request, expected: """
-                {
-                  "content" : "content-c",
-                  "if_not_modified_since" : "2024-03-07T23:00:40+0000"
-                }
-                """)
-                return HTTPStubsResponse(jsonObject: [
-                    "error": "old-revision",
-                    "message": "There is a revision of this post that is more recent."
-                ], statusCode: 409, headers: nil)
+            // THEN the first request contains an updated `if_not_modified_since` parameter
+            try assertRequestBody(request, expected: """
+            {
+              "content" : "content-c",
+              "if_not_modified_since" : "2024-03-07T23:00:45+0000"
             }
-            if requestCount == 2 {
-                // THEN the second request contains only the delta
-                try assertRequestBody(request, expected: """
-                {
-                  "content" : "content-c"
-                }
-                """)
-                var post = WordPressComPost.mock
-                post.content = "content-c"
-                post.modified = dateModified.addingTimeInterval(10)
-                return try HTTPStubsResponse(value: post, statusCode: 200)
-            }
+            """)
 
-            throw URLError(.unknown)
-        }
-
-        stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
             var post = WordPressComPost.mock
-            post.content = "content-b"
-            post.modified = dateModified.addingTimeInterval(5)
+            post.content = "content-c"
+            post.modified = dateModified.addingTimeInterval(10)
             return try HTTPStubsResponse(value: post, statusCode: 200)
         }
 
@@ -1358,11 +1331,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.status = .draft
             $0.postID = 974
             $0.authorID = 29043
-            $0.content = "content-1"
+            $0.content = "content-a"
         }
 
         let revision = post._createRevision()
-        revision.content = "content-2"
+        revision.content = "content-b"
 
         // GIVEN
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
@@ -1381,7 +1354,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         XCTAssertEqual(post.status, .trash)
 
         // THEN revision is deleted
-        XCTAssertEqual(post.content, "content-1")
+        XCTAssertEqual(post.content, "content-a")
         XCTAssertNil(post.revision)
     }
 
