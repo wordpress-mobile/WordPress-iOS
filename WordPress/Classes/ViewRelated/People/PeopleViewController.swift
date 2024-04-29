@@ -74,7 +74,7 @@ class PeopleViewController: UITableViewController {
         // Followers must be sorted out by creationDate!
         //
         switch filter {
-        case .followers, .email:
+        case .followers:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
@@ -251,11 +251,10 @@ extension PeopleViewController {
 
         case users      = "users"
         case followers  = "followers"
-        case email      = "email"
         case viewers    = "viewers"
 
         static var defaultFilters: [Filter] {
-            return [.users, .followers, .email]
+            return [.users, .followers]
         }
 
         var title: String {
@@ -266,8 +265,6 @@ extension PeopleViewController {
                 return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
-            case .email:
-                return NSLocalizedString("users.list.title.subscribers", value: "Email Subscribers", comment: "Site Email Subscribers")
             }
         }
 
@@ -279,8 +276,6 @@ extension PeopleViewController {
                 return .follower
             case .viewers:
                 return .viewer
-            case .email:
-                return .emailFollower
             }
         }
 
@@ -292,8 +287,6 @@ extension PeopleViewController {
                 return .Follower
             case .viewers:
                 return .Viewer
-            case .email:
-                return .Email
             }
         }
     }
@@ -382,8 +375,6 @@ private extension PeopleViewController {
             loadUsersPage(offset, success: success)
         case .viewers:
             service.loadViewersPage(offset, success: success)
-        case .email:
-            service.loadEmailFollowersPage(offset, success: success)
         }
     }
 
