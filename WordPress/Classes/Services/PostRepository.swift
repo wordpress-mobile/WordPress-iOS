@@ -23,7 +23,7 @@ final class PostRepository {
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
          remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
         self.isSyncPublishingEnabled = isSyncPublishingEnabled
@@ -158,16 +158,10 @@ final class PostRepository {
         }
 
         if revision.revision == nil {
-            // No more revisions were created during the upload, so it's safe
-            // to fully replace the local version with the remote data
             PostHelper.update(post, with: remotePost, in: context, overwrite: true)
         } else {
-            // We have to keep the local changes to make sure the delta can
-            // still be computed accurately (a smarter algo could merge the changes)
-            post.clone(from: revision)
-            post.postID = remotePost.postID // important!
+            apply(remotePost, to: post, revision: revision)
         }
-
         post.deleteSyncedRevisions(until: revision)
 
         if isCreated {
@@ -177,6 +171,33 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
 
         WPAnalytics.track(isCreated ? .postRepositoryPostCreated : .postRepositoryPostUpdated, properties: post.analyticsUserInfo)
+    }
+
+    // The app currently computes changes between revision to track what
+    // needs to be uploaded on the server to reduce the risk of overwriting changes.
+    //
+    // The problem arises if you have more than one saved revision. Let's
+    // say you start with revision R1, then save save R2, and, while R2 is
+    // still syncing, save another revision – R3:
+    //
+    // R1 → R2 → R3
+    //
+    // This scenario is problematic for the conflict detection mechanism.
+    // When uploading `post.content`, the server might ever so slightly
+    // change it – e.g. remove redundant spaces in tag attributes. So,
+    // unless the app saves the new `dateModified` and/or saves the
+    // changed `content`, it *will* detect a false-positive data conflict.
+    //
+    // Another caveat is that R1 could be a new draft, and then the app
+    // needs to save the `postID`.
+    private func apply(_ remotePost: RemotePost, to original: AbstractPost, revision: AbstractPost) {
+        // Keep the changes consistent across revisions.
+        original.clone(from: revision)
+
+        // But update the parts that might end up leading to data conflicts.
+        original.postID = remotePost.postID
+        original.content = remotePost.content
+        original.dateModified = remotePost.dateModified
     }
 
     /// Patches the post.
@@ -235,11 +256,11 @@ final class PostRepository {
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
-                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
+                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
-                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
+                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
 
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil

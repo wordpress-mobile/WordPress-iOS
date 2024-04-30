@@ -14,7 +14,7 @@ struct AbstractPostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu? {
-        if RemoteFeatureFlag.syncPublishing.enabled(), !PostSyncStateViewModel(post: post).isEditable {
+        if FeatureFlag.syncPublishing.enabled, !PostSyncStateViewModel(post: post).isEditable {
             return nil
         }
         return UIMenu(title: "", options: .displayInline, children: [
@@ -127,7 +127,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .retry: return Strings.retry
         case .view: return post.status == .publish ? Strings.view : Strings.preview
         case .publish:
-            guard RemoteFeatureFlag.syncPublishing.enabled() else {
+            guard FeatureFlag.syncPublishing.enabled else {
                 return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
             }
             return Strings.publish

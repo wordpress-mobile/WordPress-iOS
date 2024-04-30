@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-18 19:32:15+0000 */
+/* Translation-Revision-Date: 2024-04-29 13:06:29+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Weet je zeker dat je dit bericht naar de prullenbak wilt verplaatsen?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Weet je zeker dat je je startpagina wilt bijwerken?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogbericht";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-mailvolger van je blog";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Blog's volger";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Gebruiker van de blog";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Blog's bezoeker";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloggen";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Datumbereik";
-
-/* Date and Time */
-"Date and Time" = "Datum en tijd";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mailadres";
-
-/* Blog Email Followers */
-"Email Followers" = "E-mailvolgers";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Gevolgde sites";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Volger";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Volgers";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Link ingevoegd";
 
 /* No comment provided by engineer. */
-"Link text" = "Linktekst";
+"Link label" = "Link label";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link naar bestaande inhoud";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publiceren";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Zojuist gepubliceerd";
-
-/* Published on [date] */
-"Published on" = "Gepubliceerd op";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Pagina aan het publiceren...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Gepland";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Gepland voor";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Gepland voor %@ op";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Inschrijven met e-mail";
 
-/* Label for time period in list of followers. */
-"Since" = "Sinds";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Aangezien je een gratis abonnement gebruikt, zie je een beperkt aantal gebeurtenissen in je activiteitenlogboek.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Tot nu toe zijn er geen genegeerde bedreigingen op je site.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sociaal";
 
 /* Title of a Quick Start Tour */
@@ -8900,6 +8862,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audiobestand";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Annuleren";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Je hebt niet-opgeslagen wijzigingen aangebracht in dit bericht vanaf een ander apparaat. Bewerkt: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Automatisch opslaan beschikbaar";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Wijzigingen bekijken";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Kan de afbeelding niet laden. Voer een andere in of probeer het later opnieuw.";
 
@@ -10346,26 +10320,32 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Abonnementen";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "%@ aangemaakt";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Bericht verwijderen";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Edited %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Bezig met verplaatsen naar de prullenbak …";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "%@ gepubliceerd";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Wijzigingen negeren";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "%@ gepland";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Concept negeren";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "%@ verplaatst naar prullenbak";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Blijf bewerken";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Concept opslaan";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Autosave aan het maken...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Revisie geladen";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Concept aan het opslaan...";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Door %@.";
@@ -10378,6 +10358,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "In afwachting van beoordeling";
+
+/* Cancels an Action */
+"postList.cancel" = "Annuleren";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Permanent verwijderen";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Weet je zeker dat je \"%@\" permanent wil verwijderen?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "De app is bezig met het uploaden van eerder gemaakte wijzigingen naar de server. Probeer het later opnieuw.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Er ging iets mis";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Offline wijzigingen";
@@ -10393,6 +10391,27 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Weergave";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Naar prullenbak verplaatsen";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Weet je zeker dat je \"%@\" naar de prullenbak wil verplaatsen? Eventuele wijzigingen die nog niet eerder naar de server zijn verzonden, gaan verloren.";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Sluiten";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ van %2$@";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Opnieuw uploaden";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Media uploads";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Er is een fout opgetreden";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Paginaconcept geüpload";
@@ -10423,9 +10442,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Bericht bijgewerkt";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Upload mislukt";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Weergeven";
@@ -10474,6 +10490,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Voorbeeld";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publiceren";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Opnieuw proberen";
@@ -10541,8 +10560,8 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Uploaden van media mislukt";
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Uploaden van media mislukt";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titel";
@@ -10625,15 +10644,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle reacties bekijken";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ van %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Opnieuw proberen";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Nu";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publiceerdatum";
@@ -11542,18 +11552,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Staafgrafiek waarin het aantal bezoekers tijdens de geselecteerde periode staat weergegeven.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Per dag";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Per maand";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Per week";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Per jaar";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Negeren";

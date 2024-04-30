@@ -17,7 +17,7 @@ extension PageListViewController: InteractivePostViewDelegate {
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             guard let page = post as? Page else { return }
             return trashPage(page, completion: completion)
         }

@@ -247,7 +247,7 @@ public class PostEditorStateContext {
         newPostStatus: BasePost.Status,
         userCanPublish: Bool
     ) -> PostEditorAction {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             return action(status: originalPostStatus ?? .draft, userCanPublish: userCanPublish)
         } else {
             return _action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
@@ -384,7 +384,7 @@ public class PostEditorStateContext {
 
     /// - note: deprecated (kahu-offline-mode)
     var isSecondaryPublishButtonShown: Bool {
-        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard !FeatureFlag.syncPublishing.enabled else {
             return false
         }
 
@@ -436,7 +436,7 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             switch action {
             case .schedule, .publish, .submitForReview:
                 publishActionAllowed = hasContent
