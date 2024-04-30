@@ -394,7 +394,7 @@ extension NotificationDetailsViewController {
     /// since notification kind may change.
     func setupTableDelegates() {
         if note.kind == .like || note.kind == .commentLike,
-           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
+           let likesListController = LikesListController(tableView: tableView, notification: note, parent: self, delegate: self) {
             tableView.delegate = likesListController
             tableView.dataSource = likesListController
             self.likesListController = likesListController
@@ -631,7 +631,8 @@ private extension NotificationDetailsViewController {
         cell.configure(
             text: snippetBlock.text ?? "",
             avatarURL: note.kind == .commentLike || note.kind == .follow ? mediaURL : nil,
-            action: { [weak self] in self?.didSelectHeader() }
+            action: { [weak self] in self?.didSelectHeader() },
+            parent: self
         )
     }
 

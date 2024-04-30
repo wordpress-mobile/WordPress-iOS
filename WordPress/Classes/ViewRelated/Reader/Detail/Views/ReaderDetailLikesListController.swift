@@ -41,7 +41,7 @@ private extension ReaderDetailLikesListController {
         tableView.register(LikeUserTableViewCell.defaultNib,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
 
-        likesListController = LikesListController(tableView: tableView, post: post, delegate: self)
+        likesListController = LikesListController(tableView: tableView, post: post, parent: self, delegate: self)
         tableView.delegate = likesListController
         tableView.dataSource = likesListController
 

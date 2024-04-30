@@ -8,15 +8,28 @@ import DesignSystem
 // MARK: - NoteBlockHeaderTableViewCell
 //
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
-    private var hostViewController: UIHostingController<HeaderView>?
+    private var controller: UIHostingController<HeaderView>?
 
-    func configure(text: String, avatarURL: URL?, action: @escaping () -> Void) {
+    func configure(text: String, avatarURL: URL?, action: @escaping () -> Void, parent: UIViewController) {
         let headerView = HeaderView(image: avatarURL, text: text, action: action)
-        hostViewController = UIHostingController(rootView: headerView)
-        guard let hostViewController = hostViewController else { return }
-        hostViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(hostViewController.view)
-        contentView.pinSubviewToAllEdges(hostViewController.view)
+        if let controller = controller {
+            controller.rootView = headerView
+            controller.view.layoutIfNeeded()
+        } else {
+            let cellViewController = UIHostingController(rootView: headerView)
+            controller = cellViewController
+
+            parent.addChild(cellViewController)
+            contentView.addSubview(cellViewController.view)
+            cellViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            layout(hostingView: cellViewController.view)
+
+            cellViewController.didMove(toParent: parent)
+        }
+    }
+
+    func layout(hostingView view: UIView) {
+        self.contentView.pinSubviewToAllEdges(view)
     }
 }
 

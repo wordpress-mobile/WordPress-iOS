@@ -22,6 +22,7 @@ import WordPressKit
 
 class LikesListController: NSObject {
 
+    private let parent: UIViewController
     private let formatter = FormattableContentFormatter()
     private let content: ContentIdentifier
     private let siteID: NSNumber
@@ -87,7 +88,7 @@ class LikesListController: NSObject {
 
     /// Init with Notification
     ///
-    init?(tableView: UITableView, notification: Notification, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, notification: Notification, parent: UIViewController, delegate: LikesListControllerDelegate? = nil) {
 
         guard let siteID = notification.metaSiteID else {
             return nil
@@ -113,6 +114,7 @@ class LikesListController: NSObject {
             return nil
         }
 
+        self.parent = parent
         self.notification = notification
         self.siteID = siteID
         self.tableView = tableView
@@ -124,7 +126,7 @@ class LikesListController: NSObject {
 
     /// Init with ReaderPost
     ///
-    init?(tableView: UITableView, post: ReaderPost, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, post: ReaderPost, parent: UIViewController, delegate: LikesListControllerDelegate? = nil) {
 
         guard let postID = post.postID else {
             return nil
@@ -133,6 +135,7 @@ class LikesListController: NSObject {
         content = .post(id: postID)
         readerPost = post
         siteID = post.siteID
+        self.parent = parent
         self.tableView = tableView
         self.delegate = delegate
 
@@ -375,7 +378,8 @@ private extension LikesListController {
         cell.configure(
             text: snippetBlock.text ?? "",
             avatarURL: notification?.kind == .commentLike || notification?.kind == .follow ? mediaURL : nil,
-            action: { [weak self] in self?.delegate?.didSelectHeader!() }
+            action: { [weak self] in self?.delegate?.didSelectHeader!() },
+            parent: parent
         )
     }
 
