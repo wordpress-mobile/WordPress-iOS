@@ -262,6 +262,7 @@
 		069A4AA72664448F00413FA9 /* GutenbergFeaturedImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 069A4AA52664448F00413FA9 /* GutenbergFeaturedImageHelper.swift */; };
 		080C44A91CE14A9F00B3A02F /* MenuDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */; };
 		0815CF461E96F22600069916 /* MediaImportService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0815CF451E96F22600069916 /* MediaImportService.swift */; };
+		08169B9D2BDA68F600055454 /* CommentModerationOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08169B9C2BDA68F600055454 /* CommentModerationOptionsView.swift */; };
 		081E4B4C281C019A0085E89C /* TooltipAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 081E4B4B281C019A0085E89C /* TooltipAnchor.swift */; };
 		08216FAA1CDBF95100304BA7 /* MenuItemEditing.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */; };
 		08216FAB1CDBF95100304BA7 /* MenuItemEditingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 08216FA91CDBF95100304BA7 /* MenuItemEditingViewController.m */; };
@@ -6036,6 +6037,7 @@
 		080C449D1CE14A9F00B3A02F /* MenuDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuDetailsViewController.h; sourceTree = "<group>"; };
 		080C449E1CE14A9F00B3A02F /* MenuDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenuDetailsViewController.m; sourceTree = "<group>"; };
 		0815CF451E96F22600069916 /* MediaImportService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaImportService.swift; sourceTree = "<group>"; };
+		08169B9C2BDA68F600055454 /* CommentModerationOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModerationOptionsView.swift; sourceTree = "<group>"; };
 		081E4B4B281C019A0085E89C /* TooltipAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TooltipAnchor.swift; sourceTree = "<group>"; };
 		08216FA71CDBF95100304BA7 /* MenuItemEditing.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MenuItemEditing.storyboard; sourceTree = "<group>"; };
 		08216FA81CDBF95100304BA7 /* MenuItemEditingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenuItemEditingViewController.h; sourceTree = "<group>"; };
@@ -10174,6 +10176,14 @@
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		08169B9B2BDA68E000055454 /* Comment Moderation */ = {
+			isa = PBXGroup;
+			children = (
+				08169B9C2BDA68F600055454 /* CommentModerationOptionsView.swift */,
+			);
+			path = "Comment Moderation";
 			sourceTree = "<group>";
 		};
 		081E4B4A281BFB520085E89C /* Feature Highlight */ = {
@@ -16530,6 +16540,7 @@
 		CC1D800D1656D8B2002A542F /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
+				08169B9B2BDA68E000055454 /* Comment Moderation */,
 				3FEC241325D73C53007AFE63 /* Milestone Notifications */,
 				402FFB1D218C2B8D00FF4A0B /* Style */,
 				B5FD453E199D0F2800286FBB /* Controllers */,
@@ -22458,6 +22469,7 @@
 				8B0CE7D12481CFE8004C4799 /* ReaderDetailHeaderView.swift in Sources */,
 				E240859C183D82AE002EB0EF /* WPAnimatedBox.m in Sources */,
 				4A1E77CC2989F2F7006281CC /* WPAccount+DeduplicateBlogs.swift in Sources */,
+				08169B9D2BDA68F600055454 /* CommentModerationOptionsView.swift in Sources */,
 				08472A201C727E020040769D /* PostServiceOptions.m in Sources */,
 				9A38DC6A218899FB006A409B /* DiffTitleValue.swift in Sources */,
 				B0AC50DD251E96270039E022 /* ReaderCommentsViewController.swift in Sources */,
