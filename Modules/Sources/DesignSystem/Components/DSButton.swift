@@ -43,9 +43,7 @@ public struct DSButton: View {
             } else {
                 buttonContent
                     .contentShape(
-                        RoundedRectangle(
-                            cornerRadius: .DS.Radius.small
-                        )
+                        RoundedRectangle(cornerRadius: .DS.Radius.small, style: .continuous)
                     )
             }
         }
