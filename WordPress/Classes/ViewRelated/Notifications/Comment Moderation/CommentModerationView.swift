@@ -2,18 +2,10 @@ import SwiftUI
 import DesignSystem
 
 struct CommentModerationView: View {
-    struct Model {
-        let imageURL: URL?
-        let userName: String
-    }
+    @StateObject private var viewModel: CommentModerationViewModel
 
-    var viewModel: CommentModerationViewModel?
-    @State private var state: ModerationState
-    private var model: Model
-
-    init(state: ModerationState, model: Model) {
-        _state = State(initialValue: state)
-        self.model = model
+    init(viewModel: CommentModerationViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var body: some View {
@@ -31,7 +23,7 @@ struct CommentModerationView: View {
 
     private var titleHStack: some View {
         HStack(spacing: .DS.Padding.half) {
-            switch state {
+            switch viewModel.state {
             case .pending:
                 Image.DS.icon(named: .exclamationCircle)
                     .font(.DS.caption)
@@ -43,7 +35,7 @@ struct CommentModerationView: View {
             case .trash:
                 EmptyView()
             }
-            Text(state.title)
+            Text(viewModel.state.title)
                 .style(.caption)
                 .foregroundStyle(Color.DS.Foreground.secondary)
         }
@@ -51,7 +43,7 @@ struct CommentModerationView: View {
 
     @ViewBuilder
     private var mainActionView: some View {
-        switch state.mainAction {
+        switch viewModel.state.mainAction {
         case let .cta(title, iconName):
             DSButton(
                 title: title,
@@ -61,43 +53,41 @@ struct CommentModerationView: View {
                     size: .large
                 )) {
                     withAnimation(.smooth) {
-                        if case .pending = state {
-                            state = .approved
-                        }
+                        viewModel.didTapPrimaryCTA()
                     }
                 }
         case .reply:
             ContentPreview(
-                image: .init(url: model.imageURL),
-                text: model.userName
+                image: .init(url: viewModel.imageURL),
+                text: viewModel.userName
             ) {
-                viewModel?.didTapReply()
+                viewModel.didTapReply()
             }
         }
     }
 
     @ViewBuilder
     private var secondaryActionView: some View {
-        if case .more = state.secondaryAction {
+        if case .more = viewModel.state.secondaryAction {
             DSButton(
                 title: Strings.moreOptionsButtonTitle,
                 style: .init(emphasis: .tertiary, size: .large)) {
-                    // More options action
+                    viewModel.didTapMore()
                 }
-        } else if case .like = state.secondaryAction {
+        } else if case .like = viewModel.state.secondaryAction {
             DSButton(
-                title: state == .approved ? String(
+                title: viewModel.state == .approved ? String(
                     format: Strings.commentLikeTitle,
-                    model.userName
+                    viewModel.userName
                 ) : Strings.commentLikedTitle,
-                iconName: state == .approved ? .starOutline : .starFill,
+                iconName: viewModel.state == .approved ? .starOutline : .starFill,
                 style: .init(
                     emphasis: .tertiary,
                     size: .large
                 )
             ) {
                 withAnimation(.interactiveSpring) {
-                    state = state == .approved ? .liked : .approved
+                    viewModel.didTapLike()
                 }
             }
         }
@@ -126,80 +116,73 @@ private extension CommentModerationView {
     }
 }
 
-extension CommentModerationView {
-    enum ModerationState: CaseIterable {
-        case pending
-        case approved
-        case liked
-        case trash
+private extension CommentModerationState {
+    enum MainAction {
+        case cta(title: String, iconName: IconName)
+        case reply
+    }
 
-        fileprivate enum MainAction {
-            case cta(title: String, iconName: IconName)
-            case reply
+    enum SecondaryAction {
+        case more
+        case like
+        case none
+    }
+
+    var title: String {
+        switch self {
+        case .pending:
+            return NSLocalizedString(
+                "notifications.comment.moderation.pending.title",
+                value: "Comment pending moderation",
+                comment: "Title for Comment Moderation Pending State")
+        case .approved, .liked:
+            return NSLocalizedString(
+                "notifications.comment.moderation.approved.title",
+                value: "Comment approved",
+                comment: "Title for Comment Moderation Approved State")
+        case .trash:
+            return NSLocalizedString(
+                "notifications.comment.moderation.trash.title",
+                value: "Comment in trash",
+                comment: "Title for Comment Moderation Trash State")
         }
+    }
 
-        fileprivate enum SecondaryAction {
-            case more
-            case like
-            case none
+    var mainAction: MainAction {
+        switch self {
+        case .pending:
+            return .cta(
+                title: NSLocalizedString(
+                    "notifications.comment.approval.cta.title",
+                    value: "Approve Comment",
+                    comment: "Title for Comment Approval CTA"
+                ),
+                iconName: .checkmark
+            )
+        case .approved:
+            return .reply
+        case .liked:
+            return .reply
+        case .trash:
+            return .cta(
+                title: NSLocalizedString(
+                    "notifications.comment.delete.cta.title",
+                    value: "Delete Permanently",
+                    comment: "Title for Comment Deletion CTA"
+                ),
+                iconName: .trash
+            )
         }
+    }
 
-        fileprivate var title: String {
-            switch self {
-            case .pending:
-                return NSLocalizedString(
-                    "notifications.comment.moderation.pending.title",
-                    value: "Comment pending moderation",
-                    comment: "Title for Comment Moderation Pending State")
-            case .approved, .liked:
-                return NSLocalizedString(
-                    "notifications.comment.moderation.approved.title",
-                    value: "Comment approved",
-                    comment: "Title for Comment Moderation Approved State")
-            case .trash:
-                return NSLocalizedString(
-                    "notifications.comment.moderation.trash.title",
-                    value: "Comment in trash",
-                    comment: "Title for Comment Moderation Trash State")
-            }
-        }
-
-        fileprivate var mainAction: MainAction {
-            switch self {
-            case .pending:
-                return .cta(
-                    title: NSLocalizedString(
-                        "notifications.comment.approval.cta.title",
-                        value: "Approve Comment",
-                        comment: "Title for Comment Approval CTA"
-                    ),
-                    iconName: .checkmark
-                )
-            case .approved:
-                return .reply
-            case .liked:
-                return .reply
-            case .trash:
-                return .cta(
-                    title: NSLocalizedString(
-                        "notifications.comment.delete.cta.title",
-                        value: "Delete Permanently",
-                        comment: "Title for Comment Deletion CTA"
-                    ),
-                    iconName: .trash
-                )
-            }
-        }
-
-        fileprivate var secondaryAction: SecondaryAction {
-            switch self {
-            case .pending:
-                return .more
-            case .approved, .liked:
-                return .like
-            case .trash:
-                return .none
-            }
+    var secondaryAction: SecondaryAction {
+        switch self {
+        case .pending:
+            return .more
+        case .approved, .liked:
+            return .like
+        case .trash:
+            return .none
         }
     }
 }
@@ -210,8 +193,8 @@ extension CommentModerationView {
             ScrollView(.horizontal) {
                 LazyHStack(spacing: 0) {
                     CommentModerationView(
-                        state: .pending,
-                        model: .init(
+                        viewModel: CommentModerationViewModel(
+                            state: .pending,
                             imageURL: URL(string: "https://i.pravatar.cc/300"),
                             userName: "John Smith"
                         )
@@ -220,8 +203,8 @@ extension CommentModerationView {
                         width: proxy.size.width
                     )
                     CommentModerationView(
-                        state: .approved,
-                        model: .init(
+                        viewModel: CommentModerationViewModel(
+                            state: .approved,
                             imageURL: URL(string: "https://i.pravatar.cc/300"),
                             userName: "Jane Smith"
                         )
@@ -230,8 +213,8 @@ extension CommentModerationView {
                         width: proxy.size.width
                     )
                     CommentModerationView(
-                        state: .liked,
-                        model: .init(
+                        viewModel: CommentModerationViewModel(
+                            state: .liked,
                             imageURL: URL(string: "https://i.pravatar.cc/300"),
                             userName: "John Smith"
                         )
@@ -240,8 +223,8 @@ extension CommentModerationView {
                         width: proxy.size.width
                     )
                     CommentModerationView(
-                        state: .trash,
-                        model: .init(
+                        viewModel: CommentModerationViewModel(
+                            state: .trash,
                             imageURL: URL(string: "https://i.pravatar.cc/300"),
                             userName: "Jane Smith"
                         )
