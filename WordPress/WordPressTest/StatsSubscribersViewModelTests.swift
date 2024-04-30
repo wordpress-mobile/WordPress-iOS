@@ -29,17 +29,36 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         wait(for: [expectation], timeout: 1)
     }
 
+    func testTableViewSnapshot_subscribersTotalLoaded() throws {
+        let expectation = expectation(description: "First section should be TotalInsightStatsRow")
+        var subscribersTotalRow: TotalInsightStatsRow?
+        sut.tableViewSnapshot
+            .sink(receiveValue: { snapshot in
+                if let row = snapshot.itemIdentifiers[0].immuTableRow as? TotalInsightStatsRow {
+                    subscribersTotalRow = row
+                    expectation.fulfill()
+                }
+            })
+            .store(in: &cancellables)
+
+        store.subscribersList.send(.success(.init(subscribers: [], totalCount: 54)))
+
+        wait(for: [expectation], timeout: 1)
+        XCTAssertEqual(subscribersTotalRow?.dataRow.count, 54)
+    }
+
     func testTableViewSnapshot_chartSummaryLoaded() throws {
-        let expectation = expectation(description: "Chart section should be loading")
+        let expectation = expectation(description: "Second section should be SubscriberChartRow")
         var subscriberChartRow: SubscriberChartRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[0].immuTableRow as? SubscriberChartRow {
+                if let row = snapshot.itemIdentifiers[1].immuTableRow as? SubscriberChartRow {
                     subscriberChartRow = row
                     expectation.fulfill()
                 }
             })
             .store(in: &cancellables)
+
         let chartSummary = StatsSubscribersSummaryData(history: [
             .init(date: Date(), count: 1),
             .init(date: Date(), count: 2),
@@ -51,11 +70,11 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_subscribersListLoaded() throws {
-        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        let expectation = expectation(description: "Third section should be TopTotalsPeriodStatsRow")
         var subscribersListRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[1].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
                     subscribersListRow = row
                     expectation.fulfill()
                 }
@@ -67,7 +86,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
             .init(name: "Second Subscriber", subscribedDate: Date(), avatarURL: nil),
             .init(name: "Third Subscriber", subscribedDate: Date(), avatarURL: nil)
         ]
-        store.subscribersList.send(.success(subscribers))
+        store.subscribersList.send(.success(.init(subscribers: subscribers, totalCount: 0)))
 
         wait(for: [expectation], timeout: 1)
         XCTAssertEqual(subscribersListRow?.dataRows.count, 3)
@@ -76,11 +95,11 @@ final class StatsSubscribersViewModelTests: XCTestCase {
     }
 
     func testTableViewSnapshot_emailsSummaryLoaded() throws {
-        let expectation = expectation(description: "First section should be TopTotalsPeriodStatsRow")
+        let expectation = expectation(description: "Fourth section should be TopTotalsPeriodStatsRow")
         var emailsSummaryRow: TopTotalsPeriodStatsRow?
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let row = snapshot.itemIdentifiers[2].immuTableRow as? TopTotalsPeriodStatsRow {
+                if let row = snapshot.itemIdentifiers[3].immuTableRow as? TopTotalsPeriodStatsRow {
                     emailsSummaryRow = row
                     expectation.fulfill()
                 }
@@ -103,8 +122,9 @@ final class StatsSubscribersViewModelTests: XCTestCase {
 
 private class StatsSubscribersStoreMock: StatsSubscribersStoreProtocol {
     var emailsSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsEmailsSummaryData>, Never> = .init(.idle)
+    var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersData>, Never> = .init(.idle)
     var chartSummary: CurrentValueSubject<StatsSubscribersStore.State<StatsSubscribersSummaryData>, Never> = .init(.idle)
-    var subscribersList: CurrentValueSubject<StatsSubscribersStore.State<[StatsFollower]>, Never> = .init(.idle)
+
     var updateEmailsSummaryCalled = false
     var updateChartSummaryCalled = false
     var updateSubscribersListCalled = false
