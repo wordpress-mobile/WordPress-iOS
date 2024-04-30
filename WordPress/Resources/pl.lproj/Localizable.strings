@@ -2806,9 +2806,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
 
-/* Insights 'Total Followers' header */
-"Total Followers" = "Całkowita liczba obserwujących";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";
 

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-28 01:30:16+0000 */
+/* Translation-Revision-Date: 2024-04-30 02:15:15+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -7384,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "전체 댓글";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "총 이메일 팔로워: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "총 팔로워 수";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "총 좋아요 클릭 수";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "총 글 수";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "총 WordPress.com 팔로워: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "총 단어 수";
@@ -8862,6 +8853,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "취소";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "다른 기기에서 이 글을 저장하지 않은 상태로 변경했습니다. 편집됨: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "자동 저장 가능";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "변경 사항 보기";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "이미지를 로드할 수 없습니다. 다른 하나를 선택하거나 나중에 다시 시도하세요.";
 
@@ -10314,6 +10317,27 @@ Example: Reply to Pamela Nguyen */
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "휴지통으로 글 이동 중...";
 
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "변경사항 폐기";
+
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "임시글 삭제";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "계속 편집";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "임시 글로 저장";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "자동 저장 만들기...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "로드된 리비전";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "임시글 저장중…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ 작성.";
 
@@ -10325,6 +10349,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "대기중인 리뷰";
+
+/* Cancels an Action */
+"postList.cancel" = "취소";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "영구 삭제";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "\"%@\"을 영구 삭제하시겠습니까?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "앱이 이전에 변경한 내용을 서버에 업로드하는 중입니다. 나중에 다시 시도하세요.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "문제가 발생했습니다.";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "오프라인 변경 사항";
@@ -10340,6 +10382,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "보기";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "휴지통으로 이동";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "\"%@\"을 휴지통에 버리시겠습니까? 이전에 서버로 전송되지 않은 변경 내용은 모두 손실됩니다.";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "닫기";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "대기 중인 리뷰 없음";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@\/%2$@";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "업로드 재시도";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "미디어 업로드";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "오류가 발생했습니다";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "앱이 이전에 변경한 내용을 서버에 업로드하는 중입니다. 나중에 다시 시도하세요.";
+
+/* Button OK */
+"postNotice.ok" = "승인";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "페이지 임시글 업로드됨";
@@ -10374,6 +10446,15 @@ Example: Reply to Pamela Nguyen */
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "보기";
 
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "다른 기기에서 콘텐츠가 수정되었습니다.";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\"이 영구적으로 삭제되어 더 이상 업데이트할 수 없습니다.";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "제목이 없습니다";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "해제";
 
@@ -10386,6 +10467,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "대기중인 리뷰";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 자동 공유를 더는 이용할 수 없음";
 
@@ -10394,6 +10478,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "글 설정 업데이트 실패";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "사이트 관리자와 편집자에게만 표시";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "비공개";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "모든 사람이 볼 수 있지만 비밀번호가 필요합니다.";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "비밀번호 보호";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "모든 사람에게 공개";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "공개";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "취소";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "가시성";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "비밀번호";
+
+/* Button save */
+"postVisibilityPicker.save" = "저장";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze로 홍보";
@@ -10418,6 +10532,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "미리보기";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "발행";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "다시 시도";
@@ -10485,6 +10602,12 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "젯팩 소셜";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ 항목을 업로드하지 못했습니다.";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "미디어 업로드에 실패했습니다.";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "제목";
 
@@ -10493,6 +10616,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "발행일";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "즉시";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "발행 위치";
@@ -10558,6 +10684,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "태그";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "남은 항목 %@";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "남은 항목 %@";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "미디어 업로드하기";
 
@@ -10566,6 +10698,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "모든 응답 보기";
+
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "발행일";
+
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "현재 표준 시간대의 날짜입니다:";
+
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "즉시";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "게시일 제거";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "게시일 선택";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "시간대";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "발행일";
@@ -11040,6 +11190,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "태그 추가";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "좋아요";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "좋아요 표시됨";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "추가 태그 검색";
 
@@ -11141,6 +11297,24 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "관련 게시물";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "다른 기기";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "현재 기기";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "게시글이 다른 디바이스에서 수정되었습니다. 보관할 글의 버전을 선택하세요.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "취소";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "저장";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "충돌 해결";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "링크 복사";
@@ -11319,6 +11493,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "알 수 없음";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "모든 사이트";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "고정한 사이트";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "최근 사이트";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "사이트 추가";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "취소";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "완료";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "편집";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "사이트 선택";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "알림";
 
@@ -11354,6 +11552,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter의 약관 및 가격 변경으로 인해 Twitter 자동 공유를 더는 이용할 수 없습니다.";
+
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "구독자";
 
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "트래픽";
@@ -11451,6 +11652,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "활동이 충분하지 않습니다. 나중에 사이트의 방문자가 증가하면 다시 확인하세요!";
 
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "구독자";
+
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "최신 글%1$@에 %2$@개의 좋아요가 있습니다.";
 
@@ -11462,6 +11666,33 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "오늘";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "구독 시작 일시";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "이름";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "구독자";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "클릭";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "열기";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "최신 이메일";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "이메일";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "구독자";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "%1$@, %2$@ 및 %3$@을 표시하는 테이블";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "선택한 기간의 댓글 수가 표시되는 막대그래프입니다.";
@@ -11475,6 +11706,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "선택한 기간의 방문자 수가 표시되는 막대그래프입니다.";
 
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "일";
+
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "월";
+
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "주";
+
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "년";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "무시";
 
@@ -11484,8 +11727,27 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "미디어 라이브러리에 추가할 무료 사진을 검색하여 찾으세요!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "선택적으로 이메일과 사용자 이름을 입력하면 사용자의 경험을 이해하는 데 도움이 됩니다.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "입력한 이메일이 없습니다.";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "입력한 사용자 이름이 없습니다.";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "완료";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "피드백을 보내주셔서 감사합니다.";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "제출";
+
+/* Notice informing user that their feedback is being submitted anonymously.
+   Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "전송 중…";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "피드백";
@@ -11657,6 +11919,22 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "읽지 않음";
+
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "사이트의 이메일 구독자";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "사이트 구독자";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "사이트 사용자";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "블로그 방문자";
+
+/* Site Email Subscribers
+   Site Subscribers */
+"users.list.title.subscribers" = "구독자";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "설명서 페이지 방문";

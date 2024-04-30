@@ -2645,12 +2645,6 @@
 /* Label for total followers */
 "Total" = "Total";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total de seguidores por email: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total de seguidores em WordPress.com: %@";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfego";
 
