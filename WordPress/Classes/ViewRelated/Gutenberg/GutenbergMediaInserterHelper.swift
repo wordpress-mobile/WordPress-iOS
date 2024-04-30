@@ -180,7 +180,7 @@ class GutenbergMediaInserterHelper: NSObject {
             // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: url, serverID: nil)
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, url: url)
             break
         case .uploading:
             break
