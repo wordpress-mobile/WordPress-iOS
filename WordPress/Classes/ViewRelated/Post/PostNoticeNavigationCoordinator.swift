@@ -52,7 +52,7 @@ class PostNoticeNavigationCoordinator {
             }
         } else {
             viewController.modalPresentationStyle = .formSheet
-            viewController.preferredContentSize = CGSize(width: 420, height: 420)
+            viewController.preferredContentSize = CGSize(width: 460, height: 460)
         }
         presenter.present(viewController, animated: true)
         context.viewController = viewController
