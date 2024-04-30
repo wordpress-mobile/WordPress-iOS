@@ -15,6 +15,8 @@ public enum IconName: String, CaseIterable {
     case starFill = "star.fill"
     case starOutline = "star.outline"
     case chevronRight = "chevron.right"
+	case arrowUp = "arrow.up"
+	case arrowDown = "arrow.down"
 }
 
 // MARK: - Load Image
