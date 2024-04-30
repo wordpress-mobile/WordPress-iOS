@@ -8,15 +8,27 @@ import DesignSystem
 // MARK: - NoteBlockHeaderTableViewCell
 //
 class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+    typealias Constants = ContentPreview.Constants
+    typealias Avatar = ContentPreview.ImageConfiguration.Avatar
+
     private var controller: UIHostingController<HeaderView>?
 
-    func configure(text: String, avatarURL: URL?, action: @escaping () -> Void, parent: UIViewController) {
-        let headerView = HeaderView(image: avatarURL, text: text, action: action)
+    func configure(post: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(text: post, action: action)
+        host(HeaderView(preview: content), parent: parent)
+    }
+
+    func configure(avatar: Avatar, comment: String, action: @escaping () -> Void, parent: UIViewController) {
+        let content = ContentPreview(image: .init(avatar: avatar), text: comment, action: action)
+        host(HeaderView(preview: content), parent: parent)
+    }
+
+    private func host(_ content: HeaderView, parent: UIViewController) {
         if let controller = controller {
-            controller.rootView = headerView
+            controller.rootView = content
             controller.view.layoutIfNeeded()
         } else {
-            let cellViewController = UIHostingController(rootView: headerView)
+            let cellViewController = UIHostingController(rootView: content)
             controller = cellViewController
 
             parent.addChild(cellViewController)
@@ -34,18 +46,13 @@ class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
 }
 
 private struct HeaderView: View {
-    private let image: URL?
-    private let text: String
-    private let action: () -> Void
+    private let preview: ContentPreview
 
-    public init(image: URL?, text: String, action: @escaping () -> Void) {
-        self.image = image
-        self.text = text
-        self.action = action
+    public init(preview: ContentPreview) {
+        self.preview = preview
     }
 
     var body: some View {
-        ContentPreview(image: image != nil ? .init(url: image) : nil, text: text, action: action)
-            .padding(EdgeInsets(top: 16.0, leading: 16.0, bottom: 8.0, trailing: 16.0))
+        preview.padding(EdgeInsets(top: 16.0, leading: 16.0, bottom: 8.0, trailing: 16.0))
     }
 }

@@ -628,12 +628,28 @@ private extension NotificationDetailsViewController {
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.configure(
-            text: snippetBlock.text ?? "",
-            avatarURL: note.kind == .commentLike || note.kind == .follow ? mediaURL : nil,
-            action: { [weak self] in self?.didSelectHeader() },
-            parent: self
-        )
+        let content = snippetBlock.text ?? ""
+        let action: () -> Void = { [weak self] in self?.didSelectHeader() }
+
+        if note?.kind == .commentLike || note?.kind == .follow {
+            let avatar = NoteBlockHeaderTableViewCell.Avatar(
+                url: mediaURL,
+                email: nil,
+                size: NoteBlockHeaderTableViewCell.Constants.imageSize
+            )
+            cell.configure(
+                avatar: avatar,
+                comment: content,
+                action: action,
+                parent: self
+            )
+        } else {
+            cell.configure(
+                post: content,
+                action: action,
+                parent: self
+            )
+        }
     }
 
     func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {

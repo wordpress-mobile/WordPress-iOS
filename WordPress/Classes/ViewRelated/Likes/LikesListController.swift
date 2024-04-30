@@ -375,12 +375,28 @@ private extension LikesListController {
 
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.configure(
-            text: snippetBlock.text ?? "",
-            avatarURL: notification?.kind == .commentLike || notification?.kind == .follow ? mediaURL : nil,
-            action: { [weak self] in self?.delegate?.didSelectHeader!() },
-            parent: parent
-        )
+        let content = snippetBlock.text ?? ""
+        let action: () -> Void = { [weak self] in self?.delegate?.didSelectHeader!() }
+
+        if notification?.kind == .commentLike || notification?.kind == .follow {
+            let avatar = NoteBlockHeaderTableViewCell.Avatar(
+                url: mediaURL,
+                email: nil,
+                size: NoteBlockHeaderTableViewCell.Constants.imageSize
+            )
+            cell.configure(
+                avatar: avatar,
+                comment: content,
+                action: action,
+                parent: parent
+            )
+        } else {
+            cell.configure(
+				post: content,
+                action: action,
+                parent: parent
+            )
+        }
     }
 
     func userCell(for indexPath: IndexPath) -> UITableViewCell {
