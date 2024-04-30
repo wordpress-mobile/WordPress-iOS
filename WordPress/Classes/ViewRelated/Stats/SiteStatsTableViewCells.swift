@@ -87,6 +87,7 @@ struct SubscriberChartRow: StatsHashableImmuTableRow {
     let action: ImmuTableAction? = nil
     let history: [StatsSubscribersSummaryData.SubscriberData]
     let chartData: LineChartDataConvertible
+    let areDataValuesIdentical: Bool
     let chartStyling: LineChartStyling
     let xAxisDates: [Date]
     let statSection: StatSection?

@@ -268,6 +268,7 @@ private extension ViewsVisitorsLineChartCell {
         }
 
         let configuration = StatsLineChartConfiguration(data: chartData[selectedSegmentIndex],
+                                                        areDataValuesIdentical: false,
                                                        styling: chartStyling[selectedSegmentIndex],
                                                        analyticsGranularity: period?.analyticsGranularityLine,
                                                        indexToHighlight: 0,

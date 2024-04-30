@@ -35,6 +35,9 @@ class StatsLineChartView: LineChartView {
     ///
     private let lineChartData: LineChartDataConvertible
 
+    /// True if the chart is flat i.e. all its data points are the same
+    private let areDataValuesIdentical: Bool
+
     /// This influences the visual appearance of the chart to be rendered.
     ///
     private let styling: LineChartStyling
@@ -73,6 +76,7 @@ class StatsLineChartView: LineChartView {
 
     init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil, statsInsightsFilterDimension: StatsInsightsFilterDimension = .views) {
         self.lineChartData = configuration.data
+        self.areDataValuesIdentical = configuration.areDataValuesIdentical
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
         self.statsLineChartViewDelegate = delegate
@@ -102,7 +106,6 @@ private extension StatsLineChartView {
         configureChartViewBaseProperties()
 
         configureXAxis()
-        configureYAxis()
     }
 
     func captureAnalyticsEvent() {
@@ -130,7 +133,7 @@ private extension StatsLineChartView {
 
         data = lineChartData
 
-        configureYAxisMaximum()
+        configureYAxis()
     }
 
     func configureLineChartViewBaseProperties() {
@@ -232,7 +235,6 @@ private extension StatsLineChartView {
         let yAxis = leftAxis
 
         yAxis.axisLineColor = styling.lineColor
-        yAxis.axisMinimum = 0.0
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
@@ -246,16 +248,13 @@ private extension StatsLineChartView {
         // This adjustment is intended to prevent clipping observed with some labels
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
         extraTopOffset = Constants.topOffset
-    }
 
-    func configureYAxisMaximum() {
-        let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
-
-        if let maxY = data?.getYMax(axis: .left),
-           maxY >= lowestMaxValue {
-            leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
-        } else {
-            leftAxis.axisMaximum = lowestMaxValue
+        if areDataValuesIdentical {
+            yAxis.axisMinimum = 0
+            yAxis.axisMaximum = (data?.getYMax(axis: .left) ?? 0) * 2
+        } else if let data {
+            yAxis.axisMinimum = data.getYMin(axis: .left)
+            yAxis.axisMaximum = data.getYMax(axis: .left)
         }
     }
 
