@@ -47,7 +47,7 @@ class ReaderTagCardCell: UITableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        registerTagCell()
+        registerCells()
         setupButtonStyles()
         accessibilityElements = [tagButton, collectionView].compactMap { $0 }
         collectionViewHeightConstraint.constant = cellSize.height
@@ -64,6 +64,10 @@ class ReaderTagCardCell: UITableViewCell {
     }
 
     func configure(parent: UIViewController, tag: ReaderTagTopic, isLoggedIn: Bool, shouldSyncRemotely: Bool = false) {
+        if viewModel?.slug == tag.slug {
+            return
+        }
+        resetScrollPosition()
         weak var weakSelf = self
         viewModel = ReaderTagCardCellViewModel(parent: parent,
                                                tag: tag,
@@ -116,9 +120,13 @@ private extension ReaderTagCardCell {
         tagButton.configuration = buttonConfig
     }
 
-    func registerTagCell() {
-        let nib = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
-        collectionView.register(nib, forCellWithReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces())
+    func registerCells() {
+        let tagCell = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
+        let footerView = UINib(nibName: ReaderTagFooterView.classNameWithoutNamespaces(), bundle: nil)
+        collectionView.register(tagCell, forCellWithReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces())
+        collectionView.register(footerView,
+                                forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
+                                withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces())
     }
 
     /// Injects a "fake" UICollectionView for the loading state animation.
@@ -164,6 +172,15 @@ private extension ReaderTagCardCell {
 
         ghostableCollectionView.removeGhostContent()
         ghostableCollectionView.removeFromSuperview()
+    }
+
+    func resetScrollPosition() {
+        let isRTL = UIView.userInterfaceLayoutDirection(for: .unspecified) == .rightToLeft
+        if isRTL {
+            collectionView.scrollToEnd(animated: false)
+        } else {
+            collectionView.scrollToStart(animated: false)
+        }
     }
 
 }
