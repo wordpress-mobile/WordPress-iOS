@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-29 16:30:32+0000 */
+/* Translation-Revision-Date: 2024-04-30 07:03:04+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -909,7 +909,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Authenticating" = "Autenticando";
 
 /* Title for the error view when the authentication failed for any reason */
-"Authentication Failed" = "Ha fallado la autentificación";
+"Authentication Failed" = "Identificación fallida";
 
 /* Accessibility label for the 2FA text field.
    Placeholder for the 2FA code textfield. */
@@ -7384,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Total de comentarios";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Seguidores totales por correo electrónico: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Total de seguidores";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Total de «Me gusta»";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Total de entradas";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Seguidores totales de WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Total de palabras";
@@ -10398,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 /* Message of the trash post or page confirmation alert. */
 "postList.trash.alertMessage" = "¿Estás seguro de que quieres eliminar \"%@\"? Cualquier cambio que no se haya enviado previamente al servidor se perderá.";
 
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Cancelar la subida";
+
 /* Close button in postMediaUploadStatusView */
 "postMediaUploadStatusView.close" = "Cerrar";
 
@@ -10406,6 +10400,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
 "postMediaUploadStatusView.progress" = "%1$@ de %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Reintentar la subida";
 
 /* Retry upload button in postMediaUploadStatusView */
 "postMediaUploadStatusView.retryUploads" = "Reintentar subidas";
@@ -10611,6 +10608,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "Ha fallado la subida de %@ elementos";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Se ha producido un error al subir medios";
 
@@ -10689,6 +10689,12 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiquetas";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ elementos restantes";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ elemento restante";
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Subiendo medios";
@@ -11193,6 +11199,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for the 'Like' button on the reader tag cell. */
 "reader.tags.button.like" = "Me gusta";
 
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Gustado";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descubrir más etiquetas";
 
@@ -11492,6 +11501,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* All sites section title for site switcher. */
 "site_switcher.all_sites_section.title" = "Todos los sitios";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Sitios anclados";
 
 /* Recents section title for site switcher. */
 "site_switcher.recents_section.title" = "Sitios recientes";

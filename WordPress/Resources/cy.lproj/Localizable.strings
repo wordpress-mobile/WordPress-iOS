@@ -2212,12 +2212,6 @@
 /* Label for total followers */
 "Total" = "Cyfanswm";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Cyfanswm Dilynwyr E-bost: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Cyfanswm Dilynwyr WordPress.com: %@";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */

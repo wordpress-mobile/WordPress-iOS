@@ -7384,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "סך כל התגובות";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "סה\"כ עוקבי אימייל: ‎%@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "סך כל העוקבים";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "סך כל הלייקים";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "סך כל הפוסטים";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "סה\"כ עוקבי וורדפרס.קום: ‎%@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "סך כל המילים";

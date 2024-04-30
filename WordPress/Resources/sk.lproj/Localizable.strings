@@ -3707,12 +3707,6 @@
 /* Label for total followers */
 "Total" = "Celkom";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Celkový počet sledujúcich cez e-mail: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Celkový počet sledujúcich WordPress.com: %@";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Prenos";
 

@@ -2392,12 +2392,6 @@
 /* Label for total followers */
 "Total" = "Samtals";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Heildarfjöldi fylgjenda í tölvupósti: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Heildarfjöldi WordPress.com fylgjenda: %@";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */

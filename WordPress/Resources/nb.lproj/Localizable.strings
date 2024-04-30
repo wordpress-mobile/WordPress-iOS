@@ -5076,18 +5076,12 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Total Comments' header */
 "Total Comments" = "Antall kommentarer";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Totalt antall e-postfølgere: %@";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Antall liker";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Antall innlegg";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Totalt antall WordPress.com-følgere: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Antall ord";

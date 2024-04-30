@@ -7384,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "総コメント数";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "メールフォロワーの合計数: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "フォロワー総数";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "総いいね数";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "総投稿数";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "WordPress.com フォロワーの合計数: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "総単語数";

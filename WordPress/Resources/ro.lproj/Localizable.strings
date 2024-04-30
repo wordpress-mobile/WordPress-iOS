@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-29 16:38:00+0000 */
+/* Translation-Revision-Date: 2024-04-30 06:00:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -7384,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Total comentarii";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total urmăritori pe email: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Total urmăritori";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Total aprecieri";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Total articole";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total urmăritori de pe WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Total cuvinte";
@@ -8863,6 +8854,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "audio file" = "fișier audio";
 
 /* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Anulează";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Ai făcut modificări la acest articol de pe un alt dispozitiv și nu le-ai salvat. Editat: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Salvarea automată este disponibilă";
+
+/* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Vezi modificările";
 
 /* Alert message when something goes wrong with the selected image. */
@@ -10320,6 +10320,9 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Renunță la modificări";
 
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Renunță la ciornă";
+
 /* Button to keep the changes in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.keepEditing" = "Continuă editarea";
 
@@ -10359,6 +10362,9 @@ Example: Reply to Pamela Nguyen */
 /* Message of the confirmation alert when deleting a page from the trash. */
 "postList.deletePermanently.alertMessage" = "Sigur vrei să ștergi definitiv „%@”?";
 
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Aplicația încarcă pe server modificările făcute mai înainte. Te rog să reîncerci mai târziu.";
+
 /* A generic error message title */
 "postList.genericErrorMessage" = "Ceva nu a mers bine";
 
@@ -10383,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 /* Message of the trash post or page confirmation alert. */
 "postList.trash.alertMessage" = "Sigur vrei să arunci la gunoi „%@”? Toate modificări care nu au fost trimise mai înainte pe server vor fi pierdute.";
 
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Anulează încărcarea";
+
 /* Close button in postMediaUploadStatusView */
 "postMediaUploadStatusView.close" = "Închide";
 
@@ -10391,6 +10400,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
 "postMediaUploadStatusView.progress" = "%1$@ din %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Reîncearcă încărcarea";
 
 /* Retry upload button in postMediaUploadStatusView */
 "postMediaUploadStatusView.retryUploads" = "Reîncearcă încărcările";
@@ -10527,6 +10539,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Previzualizează";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publică";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Reîncearcă";
 
@@ -10595,6 +10610,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ elemente au eșuat la încărcare";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Încărcarea media a eșuat";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titlu";
