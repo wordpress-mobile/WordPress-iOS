@@ -495,8 +495,8 @@
     }
 
     struct TotalFollowers {
-        static let wordPress = NSLocalizedString("Total WordPress.com Followers: %@", comment: "Label displaying total number of WordPress.com followers. %@ is the total.")
-        static let email = NSLocalizedString("Total Email Followers: %@", comment: "Label displaying total number of Email followers. %@ is the total.")
+        static let wordPress = NSLocalizedString("stats.insights.totalSubscribers.dotcomCount", value: "Total WordPress.com Subscribers: %@", comment: "Label displaying total number of WordPress.com subscribers. %@ is the total.")
+        static let email = NSLocalizedString("stats.insights.totalSubscribers.emailCount", value: "Total Email Subscribers: %@", comment: "Label displaying total number of email subscribers. %@ is the total.")
     }
 
     static let noPostTitle = NSLocalizedString("(No Title)", comment: "Empty Post Title")
