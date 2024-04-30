@@ -7608,6 +7608,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader Settings";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Add a blog";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Discover Blogs";
 
@@ -7633,7 +7636,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "Go to Subscriptions";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Add a blog";
+"reader.no.tags.title" = "Add a tag";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Unable to block blog";
@@ -9573,9 +9576,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Submit";
 
-/* Notice informing user that their feedback is being submitted anonymously.
-   Notice informing user that their feedback is being submitted. */
+/* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Sending";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Sending anonymously";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -10962,8 +10967,10 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Blog Users */
 "Users" = "Users";
 
-/* Site Email Subscribers
-   Site Subscribers */
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Email Subscribers";
+
+/* Site Subscribers */
 "users.list.title.subscribers" = "Subscribers";
 
 /* Menus label for describing which menu the location uses in the header. */
