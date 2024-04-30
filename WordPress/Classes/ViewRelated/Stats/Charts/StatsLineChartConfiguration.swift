@@ -1,5 +1,10 @@
-
 struct StatsLineChartConfiguration {
+    enum StatType {
+        case viewsAndVisitors
+        case subscribers
+    }
+
+    let type: StatType
     let data: LineChartDataConvertible
     let areDataValuesIdentical: Bool
     let styling: LineChartStyling

@@ -31,11 +31,16 @@ class StatsLineChartView: LineChartView {
         static let numberDaysInWeek         = 7
     }
 
+    /// The type of stat shown on the chart i.e. subscribers, views & visitors, etc.
+    ///
+    private let statType: StatsLineChartConfiguration.StatType
+
     /// This adapts the data set for presentation by the Charts framework.
     ///
     private let lineChartData: LineChartDataConvertible
 
     /// True if the chart is flat i.e. all its data points are the same
+    ///
     private let areDataValuesIdentical: Bool
 
     /// This influences the visual appearance of the chart to be rendered.
@@ -75,6 +80,7 @@ class StatsLineChartView: LineChartView {
     }
 
     init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil, statsInsightsFilterDimension: StatsInsightsFilterDimension = .views) {
+        self.statType = configuration.type
         self.lineChartData = configuration.data
         self.areDataValuesIdentical = configuration.areDataValuesIdentical
         self.styling = configuration.styling
@@ -259,8 +265,15 @@ private extension StatsLineChartView {
     }
 
     func drawChartMarker(for entry: ChartDataEntry) {
-        marker = ViewsVisitorsChartMarker.init(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "")
-        if let customMarker = self.marker as? ViewsVisitorsChartMarker {
+        switch statType {
+        case .viewsAndVisitors:
+            marker = ViewsVisitorsChartMarker(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "")
+        case .subscribers:
+            let date = xAxisDates[Int(entry.x)]
+            marker = SubscribersChartMarker(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "", date: date)
+        }
+
+        if let customMarker = self.marker as? StatsChartMarker {
             customMarker.chartView = self
         }
     }
@@ -312,7 +325,7 @@ extension StatsLineChartView: Accessible {
     }
 }
 
-private class DateValueFormatter: NSObject, AxisValueFormatter {
+class DateValueFormatter: NSObject, AxisValueFormatter {
     var dateFormatter: DateFormatter
     var xAxisDates: [Date] = []
 

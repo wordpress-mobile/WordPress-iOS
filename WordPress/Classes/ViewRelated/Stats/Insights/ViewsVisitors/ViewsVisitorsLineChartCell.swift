@@ -267,12 +267,13 @@ private extension ViewsVisitorsLineChartCell {
             return
         }
 
-        let configuration = StatsLineChartConfiguration(data: chartData[selectedSegmentIndex],
+        let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors,
+                                                        data: chartData[selectedSegmentIndex],
                                                         areDataValuesIdentical: false,
-                                                       styling: chartStyling[selectedSegmentIndex],
-                                                       analyticsGranularity: period?.analyticsGranularityLine,
-                                                       indexToHighlight: 0,
-                                                       xAxisDates: xAxisDates)
+                                                        styling: chartStyling[selectedSegmentIndex],
+                                                        analyticsGranularity: period?.analyticsGranularityLine,
+                                                        indexToHighlight: 0,
+                                                        xAxisDates: xAxisDates)
 
         let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
 

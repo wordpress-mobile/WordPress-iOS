@@ -2,7 +2,75 @@ import Foundation
 import DGCharts
 import UIKit
 
-final class ViewsVisitorsChartMarker: MarkerView {
+class ViewsVisitorsChartMarker: StatsChartMarker {
+    override func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+        let yValue = Int(entry.y).description
+
+        guard let data = chartView?.data, data.dataSetCount > 1, let lineChartDataSetPrevWeek = data.dataSet(at: 1) as? LineChartDataSet else {
+            return nil
+        }
+
+        let entryPrevWeek = lineChartDataSetPrevWeek.entries[Int(entry.x)]
+        let difference = Int(entry.y - entryPrevWeek.y)
+        let differenceStr = difference < 0 ? "\(difference)" : "+\(difference)"
+
+        var roundedPercentage = 0
+        if entryPrevWeek.y > 0 {
+            let percentage = (Float(difference) / Float(entryPrevWeek.y)) * 100
+            roundedPercentage = Int(round(percentage))
+        }
+
+        let topRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
+                                                               .paragraphStyle: paragraphStyle,
+                                                               .foregroundColor: UIColor.white.withAlphaComponent(0.8)]
+        let bottomRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .headline),
+                                                                  .paragraphStyle: paragraphStyle,
+                                                                  .foregroundColor: UIColor.white]
+
+        let topRowStr = NSMutableAttributedString(string: "\(differenceStr) (\(roundedPercentage.percentageString()))\n", attributes: topRowAttributes)
+        let bottomRowStr = NSAttributedString(string: "\(yValue) \(name)", attributes: bottomRowAttributes)
+
+        topRowStr.append(bottomRowStr)
+
+        return (topRowStr, topRowStr.size())
+    }
+}
+
+class SubscribersChartMarker: StatsChartMarker {
+    let date: Date
+
+    init(dotColor: UIColor, name: String, date: Date) {
+        self.date = date
+        super.init(dotColor: dotColor, name: name)
+    }
+
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+
+        let subscriberCountRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .headline),
+                                                                           .paragraphStyle: paragraphStyle,
+                                                                           .foregroundColor: UIColor.white]
+
+        let subscriberLabelRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
+                                                                           .paragraphStyle: paragraphStyle,
+                                                                           .foregroundColor: UIColor.white]
+
+        let subscriberDateRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
+                                                                          .paragraphStyle: paragraphStyle,
+                                                                          .foregroundColor: UIColor.white.withAlphaComponent(0.8)]
+
+        let attrString = NSMutableAttributedString()
+        attrString.append(NSAttributedString(string: entry.y.abbreviatedString() + "\n", attributes: subscriberCountRowAttributes))
+        attrString.append(NSAttributedString(string: "\(name)\n", attributes: subscriberLabelRowAttributes))
+        attrString.append(NSAttributedString(string: DateValueFormatter().dateFormatter.string(from: date), attributes: subscriberDateRowAttributes))
+        return (attrString, attrString.size())
+    }
+}
+
+class StatsChartMarker: MarkerView {
     var dotColor: UIColor
     var name: String
     var minimumSize = CGSize()
@@ -10,7 +78,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
     private var tooltipLabel: NSMutableAttributedString?
     private var labelSize: CGSize = CGSize()
     private var size: CGSize = CGSize()
-    private var paragraphStyle: NSMutableParagraphStyle = {
+    fileprivate var paragraphStyle: NSMutableParagraphStyle = {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = .center
         paragraphStyle.lineSpacing = 4.0
@@ -241,37 +309,16 @@ final class ViewsVisitorsChartMarker: MarkerView {
         context.restoreGState()
     }
 
+    func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+        return nil
+    }
+
     override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
-        let yValue = Int(entry.y).description
 
-        guard let data = chartView?.data, data.dataSetCount > 1, let lineChartDataSetPrevWeek = data.dataSet(at: 1) as? LineChartDataSet else {
-            return
-        }
+        guard let (text, textSize) = text(for: entry) else { return }
+        tooltipLabel = text
 
-        let entryPrevWeek = lineChartDataSetPrevWeek.entries[Int(entry.x)]
-        let difference = Int(entry.y - entryPrevWeek.y)
-        let differenceStr = difference < 0 ? "\(difference)" : "+\(difference)"
-
-        var roundedPercentage = 0
-        if entryPrevWeek.y > 0 {
-            let percentage = (Float(difference) / Float(entryPrevWeek.y)) * 100
-            roundedPercentage = Int(round(percentage))
-        }
-
-        let topRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
-                                                               .paragraphStyle: paragraphStyle,
-                                                               .foregroundColor: UIColor.white.withAlphaComponent(0.8)]
-        let bottomRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .headline),
-                                                                  .paragraphStyle: paragraphStyle,
-                                                                  .foregroundColor: UIColor.white]
-
-        let topRowStr = NSMutableAttributedString(string: "\(differenceStr) (\(roundedPercentage.percentageString()))\n", attributes: topRowAttributes)
-        let bottomRowStr = NSAttributedString(string: "\(yValue) \(name)", attributes: bottomRowAttributes)
-
-        topRowStr.append(bottomRowStr)
-        tooltipLabel = topRowStr
-
-        labelSize = topRowStr.size()
+        labelSize = textSize
         size.width = labelSize.width + Constants.insets.left + Constants.insets.right
         size.height = labelSize.height + Constants.insets.top + Constants.insets.bottom
         size.width = max(minimumSize.width, size.width)
@@ -279,7 +326,7 @@ final class ViewsVisitorsChartMarker: MarkerView {
     }
 }
 
-private extension ViewsVisitorsChartMarker {
+private extension StatsChartMarker {
     enum Constants {
         static var tooltipColor: UIColor {
             return UIColor(color: .muriel(name: .blue, .shade100))
