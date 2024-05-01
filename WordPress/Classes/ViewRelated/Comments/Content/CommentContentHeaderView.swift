@@ -19,7 +19,9 @@ struct CommentContentHeaderView: View {
                     .lineLimit(1)
             }
             Spacer()
-            CommentContentHeaderMenu(menu: config.menu)
+            if !config.menu.isEmpty {
+                CommentContentHeaderMenu(menu: config.menu)
+            }
         }
     }
 
@@ -28,6 +30,13 @@ struct CommentContentHeaderView: View {
         let username: String
         let handleAndTimestamp: String
         let menu: MenuList
+
+        init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: MenuList) {
+            self.avatarURL = avatarURL
+            self.username = username
+            self.handleAndTimestamp = handleAndTimestamp
+            self.menu = menu.filter { !$0.isEmpty }
+        }
     }
 
     typealias MenuItem = CommentContentHeaderMenu.Item
@@ -53,15 +62,13 @@ struct CommentContentHeaderMenu: View {
     var body: some View {
         Menu {
             ForEach(Array(menu.enumerated()), id: \.offset) { sectionIndex, section in
-                if !section.isEmpty {
-                    SwiftUI.Section {
-                        ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
-                            button(for: menuItem)
-                        }
+                SwiftUI.Section {
+                    ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
+                        button(for: menuItem)
                     }
-                    if sectionIndex < menu.count - 1 && !menu[sectionIndex + 1].isEmpty {
-                        Divider()
-                    }
+                }
+                if sectionIndex < menu.count - 1 {
+                    Divider()
                 }
             }
         } label: {
@@ -177,7 +184,7 @@ struct CommentContentHeaderMenu: View {
                 avatarURL: URL(string: "invalid-url"),
                 username: "Jordan Fisher",
                 handleAndTimestamp: "@FishyJord • 4h ago",
-                menu: [.userInfo({}), .share({})]
+                menu: [[.userInfo({}), .share({})], []]
             )
         )
         CommentContentHeaderView(
@@ -186,6 +193,14 @@ struct CommentContentHeaderMenu: View {
                 username: "Casey Hart",
                 handleAndTimestamp: "@HartOfTheMatter • 9h ago",
                 menu: [[.userInfo({}), .share({})], [.editComment({}), .changeStatus({ _ in })]]
+            )
+        )
+        CommentContentHeaderView(
+            config: .init(
+                avatarURL: URL(string: "https://i.pravatar.cc/600"),
+                username: " Emily Stanton",
+                handleAndTimestamp: "@StarryEm • 8h ago",
+                menu: [] as CommentContentHeaderView.MenuList
             )
         )
     }
