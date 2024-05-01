@@ -22,16 +22,21 @@ struct CommentModerationView: View {
     }
 
     private var titleHStack: some View {
-        HStack(spacing: .DS.Padding.half) {
+        HStack(spacing: 0) {
             switch viewModel.state {
             case .pending:
-                Image.DS.icon(named: .exclamationCircle)
-                    .font(.DS.caption)
+                Image.DS.icon(named: .clock)
+                    .resizable()
+                    .renderingMode(.template)
+                    .frame(width: .DS.Padding.double, height: .DS.Padding.double)
                     .foregroundStyle(Color.DS.Foreground.secondary)
+                    .padding(.trailing, .DS.Padding.half)
             case .approved, .liked:
                 Image.DS.icon(named: .checkmark)
-                    .font(.DS.caption)
+                    .resizable()
+                    .frame(width: 20, height: 20)
                     .foregroundStyle(Color.DS.Foreground.secondary)
+                    .padding(.trailing, 2)
             case .trash:
                 EmptyView()
             }

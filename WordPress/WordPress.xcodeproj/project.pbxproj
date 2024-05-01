@@ -333,6 +333,10 @@
 		088134FF2A56C5240027C086 /* CompliancePopoverViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088134FE2A56C5240027C086 /* CompliancePopoverViewModelTests.swift */; };
 		0884821A2BE139E30017AD8B /* CommentModerationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088482192BE139E30017AD8B /* CommentModerationViewModel.swift */; };
 		0884821C2BE13CC00017AD8B /* CommentModerationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884821B2BE13CC00017AD8B /* CommentModerationState.swift */; };
+		0884821D2BE262F10017AD8B /* CommentModerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844BF862BDFBC7200AAFC02 /* CommentModerationView.swift */; };
+		0884821E2BE262F30017AD8B /* CommentModerationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088482192BE139E30017AD8B /* CommentModerationViewModel.swift */; };
+		0884821F2BE262F50017AD8B /* CommentModerationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0884821B2BE13CC00017AD8B /* CommentModerationState.swift */; };
+		088482202BE262F90017AD8B /* CommentModerationOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08169B9C2BDA68F600055454 /* CommentModerationOptionsView.swift */; };
 		0885A3671E837AFE00619B4D /* URLIncrementalFilenameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0885A3661E837AFE00619B4D /* URLIncrementalFilenameTests.swift */; };
 		088B89891DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088B89881DA6F93B000E8DEF /* ReaderPostCardContentLabel.swift */; };
 		088CC594282BEC41007B9421 /* TooltipPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 088CC593282BEC41007B9421 /* TooltipPresenter.swift */; };
@@ -24518,6 +24522,7 @@
 				803BB97A2959543D00B3F6D6 /* RootViewCoordinator.swift in Sources */,
 				FABB21782602FC2C00C8785C /* NotificationActionsService.swift in Sources */,
 				83DC5C472A4B769000DAA422 /* JetpackSocialSettingsRemainingSharesView.swift in Sources */,
+				0884821E2BE262F30017AD8B /* CommentModerationViewModel.swift in Sources */,
 				FABB21792602FC2C00C8785C /* JetpackScanService.swift in Sources */,
 				FABB217B2602FC2C00C8785C /* WPAddPostCategoryViewController.m in Sources */,
 				FABB217C2602FC2C00C8785C /* ReaderSearchTopic.swift in Sources */,
@@ -24638,6 +24643,7 @@
 				C3BC86F729528997005D1A01 /* PeopleViewController+JetpackBannerViewController.swift in Sources */,
 				FABB21CC2602FC2C00C8785C /* MeHeaderView.m in Sources */,
 				FABB21CD2602FC2C00C8785C /* WebProgressView.swift in Sources */,
+				088482202BE262F90017AD8B /* CommentModerationOptionsView.swift in Sources */,
 				FABB21CF2602FC2C00C8785C /* BlogDetailsViewController+SectionHelpers.swift in Sources */,
 				4A9314E8297A0C5000360232 /* PostCategory+Lookup.swift in Sources */,
 				FEC26031283FBA1A003D886A /* BloggingPromptCoordinator.swift in Sources */,
@@ -24693,6 +24699,7 @@
 				FABB21F12602FC2C00C8785C /* GutenbergSettings.swift in Sources */,
 				C7234A432832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */,
 				176BA53C268266E70025E4A3 /* BlogService+Reminders.swift in Sources */,
+				0884821F2BE262F50017AD8B /* CommentModerationState.swift in Sources */,
 				FE25C236271F23000084E1DB /* ReaderCommentsNotificationSheetViewController.swift in Sources */,
 				FABB21F32602FC2C00C8785C /* ReaderStreamHeader.swift in Sources */,
 				FABB21F42602FC2C00C8785C /* Progress+Helpers.swift in Sources */,
@@ -25675,6 +25682,7 @@
 				F195C42D26DFBE3A000EC884 /* WordPressBackgroundTaskEventHandler.swift in Sources */,
 				3F3DD0B726FD18EB00F5F121 /* Blog+DomainsDashboardView.swift in Sources */,
 				FABB24AF2602FC2C00C8785C /* ReaderSeenAction.swift in Sources */,
+				0884821D2BE262F10017AD8B /* CommentModerationView.swift in Sources */,
 				0C23F3372AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */,
 				FABB24B02602FC2C00C8785C /* SchedulingDate+Helpers.swift in Sources */,
 				08E39B4628A3DEB200874CB8 /* UserPersistentStoreFactory.swift in Sources */,
