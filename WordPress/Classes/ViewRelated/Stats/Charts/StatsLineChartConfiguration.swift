@@ -1,6 +1,6 @@
 struct StatsLineChartConfiguration {
     enum StatType {
-        case viewsAndVisitors
+        case viewsAndVisitors(StatsInsightsFilterDimension)
         case subscribers
     }
 

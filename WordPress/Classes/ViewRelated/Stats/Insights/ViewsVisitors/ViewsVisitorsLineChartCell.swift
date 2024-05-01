@@ -267,7 +267,8 @@ private extension ViewsVisitorsLineChartCell {
             return
         }
 
-        let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors,
+        let filter: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
+        let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors(filter),
                                                         data: chartData[selectedSegmentIndex],
                                                         areDataValuesIdentical: false,
                                                         styling: chartStyling[selectedSegmentIndex],
@@ -275,9 +276,7 @@ private extension ViewsVisitorsLineChartCell {
                                                         indexToHighlight: 0,
                                                         xAxisDates: xAxisDates)
 
-        let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
-
-        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate, statsInsightsFilterDimension: statsInsightsFilterDimension)
+        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)

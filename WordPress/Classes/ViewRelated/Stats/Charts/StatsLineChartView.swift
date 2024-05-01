@@ -59,8 +59,6 @@ class StatsLineChartView: LineChartView {
     ///
     private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
 
-    private var statsInsightsFilterDimension: StatsInsightsFilterDimension
-
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
@@ -79,7 +77,7 @@ class StatsLineChartView: LineChartView {
         updateXAxisTicks()
     }
 
-    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil, statsInsightsFilterDimension: StatsInsightsFilterDimension = .views) {
+    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
         self.statType = configuration.type
         self.lineChartData = configuration.data
         self.areDataValuesIdentical = configuration.areDataValuesIdentical
@@ -87,7 +85,6 @@ class StatsLineChartView: LineChartView {
         self.analyticsGranularity = configuration.analyticsGranularity
         self.statsLineChartViewDelegate = delegate
         self.xAxisDates = configuration.xAxisDates
-        self.statsInsightsFilterDimension = statsInsightsFilterDimension
 
         super.init(frame: .zero)
 
@@ -121,7 +118,9 @@ private extension StatsLineChartView {
             properties[LineChartAnalyticsPropertyGranularityKey] = specifiedAnalyticsGranularity.rawValue
         }
 
-        properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
+        if case let .viewsAndVisitors(statsInsightsFilterDimension) = statType {
+            properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
+        }
 
         WPAnalytics.track(.statsLineChartTapped, properties: properties)
     }
@@ -257,7 +256,7 @@ private extension StatsLineChartView {
         guard let data else { return }
         let yAxisMax = data.getYMax(axis: .left)
 
-        if statType == .viewsAndVisitors {
+        if case .viewsAndVisitors = statType {
             yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
 
             yAxis.axisMinimum = 0
@@ -269,7 +268,7 @@ private extension StatsLineChartView {
             } else {
                 leftAxis.axisMaximum = lowestMaxValue
             }
-        } else if statType == .subscribers {
+        } else if case .subscribers = statType {
             if areDataValuesIdentical {
                 yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
 
