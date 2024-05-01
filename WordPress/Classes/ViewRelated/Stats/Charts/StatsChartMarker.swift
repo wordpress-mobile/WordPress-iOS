@@ -239,16 +239,16 @@ class StatsChartMarker: MarkerView {
         context.restoreGState()
     }
 
-    func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+    func text(for entry: ChartDataEntry) -> NSMutableAttributedString? {
         return nil
     }
 
     override func refreshContent(entry: ChartDataEntry, highlight: Highlight) {
 
-        guard let (text, textSize) = text(for: entry) else { return }
+        guard let text = text(for: entry) else { return }
         tooltipLabel = text
 
-        labelSize = textSize
+        labelSize = text.size()
         size.width = labelSize.width + Constants.insets.left + Constants.insets.right
         size.height = labelSize.height + Constants.insets.top + Constants.insets.bottom
         size.width = max(minimumSize.width, size.width)

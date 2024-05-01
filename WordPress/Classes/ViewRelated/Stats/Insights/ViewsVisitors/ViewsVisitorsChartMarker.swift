@@ -3,7 +3,7 @@ import DGCharts
 import UIKit
 
 class ViewsVisitorsChartMarker: StatsChartMarker {
-    override func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+    override func text(for entry: ChartDataEntry) -> NSMutableAttributedString? {
         let yValue = Int(entry.y).description
 
         guard let data = chartView?.data, data.dataSetCount > 1, let lineChartDataSetPrevWeek = data.dataSet(at: 1) as? LineChartDataSet else {
@@ -32,6 +32,6 @@ class ViewsVisitorsChartMarker: StatsChartMarker {
 
         topRowStr.append(bottomRowStr)
 
-        return (topRowStr, topRowStr.size())
+        return topRowStr
     }
 }

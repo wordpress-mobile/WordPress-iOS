@@ -12,7 +12,7 @@ class SubscribersChartMarker: StatsChartMarker {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func text(for entry: ChartDataEntry) -> (NSMutableAttributedString, CGSize)? {
+    override func text(for entry: ChartDataEntry) -> NSMutableAttributedString? {
 
         let subscriberCountRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .headline),
                                                                            .paragraphStyle: paragraphStyle,
@@ -30,6 +30,6 @@ class SubscribersChartMarker: StatsChartMarker {
         attrString.append(NSAttributedString(string: entry.y.abbreviatedString() + "\n", attributes: subscriberCountRowAttributes))
         attrString.append(NSAttributedString(string: "\(name)\n", attributes: subscriberLabelRowAttributes))
         attrString.append(NSAttributedString(string: DateValueFormatter().dateFormatter.string(from: date), attributes: subscriberDateRowAttributes))
-        return (attrString, attrString.size())
+        return attrString
     }
 }
