@@ -281,8 +281,12 @@ private extension StatsLineChartView {
                 let yAxisLabelCount = min(yAxisDelta + 1, Constants.verticalAxisLabelCount)
                 yAxis.setLabelCount(yAxisLabelCount, force: true)
 
-                yAxis.axisMinimum = yAxisMin
-                yAxis.axisMaximum = yAxisMax
+                // When a line appears on axis minimum or maximum it loses half of its width
+                // Add/subtract little offset so line would appear full width
+                let yAxisOffset = ((yAxisMax - yAxisMin) / 100)
+
+                yAxis.axisMinimum = yAxisMin - yAxisOffset
+                yAxis.axisMaximum = yAxisMax + yAxisOffset
             }
         }
     }
