@@ -8,67 +8,87 @@ struct PostNoticePublishSuccessView: View {
     let onDoneTapped: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 33) {
-            Spacer()
-
-            HStack(alignment: .center, spacing: 24) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(Strings.title)
-                        .font(.subheadline)
-
-                    Text(post.titleForDisplay())
-                        .font(.title3.weight(.semibold))
-                        .lineLimit(2)
-
-                    Button(action: buttonViewTapped) {
-                        HStack {
-                            let domain = post.blog.primaryDomainAddress
-                            if !domain.isEmpty {
-                                Text(String(format: Strings.viewOn, domain))
-                            } else {
-                                Text(Strings.view)
-                            }
-                            Image("icon-post-actionbar-view")
-                        }
-                        .font(.subheadline)
-                        .lineLimit(1)
-                    }
-                    .tint(.secondary)
-                }
-
-                Spacer()
-
-                Image("post-published")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 90)
-            }
-
-            VStack(alignment: .leading, spacing: 16) {
-                Text(Strings.trafficSectionTitle)
-                HStack {
-                    Button(action: buttonShareTapped) {
-                        Label(Strings.share, systemImage: "square.and.arrow.up")
-                    }
-                    if BlazeHelper.isBlazeFlagEnabled() && post.canBlaze {
-                        Button(action: buttonBlazeTapped) {
-                            Label(Strings.promoteWithBlaze, image: "icon-blaze")
-                        }
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .tint(.primary)
-            }
-
-            Spacer()
-
-            DSButton(title: Strings.done, style: .init(emphasis: .secondary, size: .large), action: onDoneTapped)
+        Form {
+            Section { header }
+            Section { actions }
+                .tint(Color.primary)
         }
-        .dynamicTypeSize(.medium ... .accessibility3)
-        .padding()
+        .safeAreaInset(edge: .bottom) {
+            Button(action: onDoneTapped, label: {
+                Text(Strings.done)
+                    .font(.headline)
+            })
+            .tint(.primary)
+            .padding(.bottom, 16)
+        }
         .onAppear {
             WPAnalytics.track(.postEpilogueDisplayed)
         }
+    }
+
+    private var header: some View {
+        HStack(alignment: .center, spacing: 24) {
+            VStack(alignment: .leading, spacing: 8) {
+                Text(Strings.title)
+                    .font(.title3.weight(.semibold))
+
+                Text(post.titleForDisplay())
+                    .font(.subheadline)
+                    .lineLimit(2)
+
+                let domain = post.blog.primaryDomainAddress
+                if !domain.isEmpty {
+                    Button(action: buttonOpenDomainTapped) {
+                        Text(domain)
+                            .font(.footnote)
+                            .lineLimit(1)
+                    }
+                    .tint(.secondary)
+                }
+            }
+
+            Spacer()
+
+            Image("post-published")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 90)
+        }
+        .dynamicTypeSize(.medium ... .accessibility3)
+        .listRowBackground(Color.clear)
+        .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+    }
+
+    @ViewBuilder
+    private var actions: some View {
+        Button(action: buttonViewTapped, label: {
+            HStack {
+                Text(Strings.view)
+                Spacer()
+                Image(systemName: "safari")
+            }
+        })
+        Button(action: buttonShareTapped, label: {
+            HStack {
+                Text(Strings.share)
+                Spacer()
+                Image(systemName: "square.and.arrow.up")
+            }
+        })
+        if BlazeHelper.isBlazeFlagEnabled() && post.canBlaze {
+            Button(action: buttonBlazeTapped, label: {
+                HStack {
+                    Text(Strings.promoteWithBlaze)
+                    Spacer()
+                    Image("icon-blaze")
+                }
+            })
+        }
+    }
+
+    private func buttonOpenDomainTapped() {
+        guard let url = URL(string: post.blog.primaryDomainAddress) else { return }
+        UIApplication.shared.open(url)
     }
 
     private func buttonViewTapped() {
@@ -107,9 +127,8 @@ struct PostNoticePublishSuccessView: View {
 private enum Strings {
     static let title = NSLocalizedString("publishSuccessView.title", value: "Post published!", comment: "Post publish success view: title")
     static let trafficSectionTitle = NSLocalizedString("publishSuccessView.trafficSectionTitle", value: "Get more traffic:", comment: "Post publish success view: section 'Get more traffic:' title")
-    static let share = NSLocalizedString("publishSuccessView.share", value: "Share", comment: "Post publish success view: button 'Share'")
-    static let view = NSLocalizedString("publishSuccessView.view", value: "View", comment: "Post publish success view: button 'View'")
-    static let viewOn = NSLocalizedString("publishSuccessView.viewOn", value: "View on %@", comment: "Post publish success view: button 'View on <name-of-domain>'")
+    static let view = NSLocalizedString("publishSuccessView.view", value: "View post", comment: "Post publish success view: button 'View post'")
+    static let share = NSLocalizedString("publishSuccessView.share", value: "Share post", comment: "Post publish success view: button 'Share post'")
     static let promoteWithBlaze = NSLocalizedString("publishSuccessView.promoteWithBlaze", value: "Promote with Blaze", comment: "Post publish success view: button 'Promote with Blaze'")
     static let done = NSLocalizedString("publishSuccessView.done", value: "Done", comment: "Post publish success view: button 'Done'")
 }
