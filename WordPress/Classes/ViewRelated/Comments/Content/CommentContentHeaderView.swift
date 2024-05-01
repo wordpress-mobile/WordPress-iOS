@@ -27,10 +27,12 @@ struct CommentContentHeaderView: View {
         let avatarURL: URL?
         let username: String
         let handleAndTimestamp: String
-        let menu: [[MenuItem]]
+        let menu: MenuList
     }
 
     typealias MenuItem = CommentContentHeaderMenu.Item
+    typealias MenuSection = CommentContentHeaderMenu.Section
+    typealias MenuList = CommentContentHeaderMenu.List
 }
 
 extension CommentContentHeaderView.Configuration {
@@ -46,13 +48,13 @@ extension CommentContentHeaderView.Configuration {
 }
 
 struct CommentContentHeaderMenu: View {
-    let menu: [[Item]]
+    let menu: List
 
     var body: some View {
         Menu {
             ForEach(Array(menu.enumerated()), id: \.offset) { sectionIndex, section in
                 if !section.isEmpty {
-                    Section {
+                    SwiftUI.Section {
                         ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
                             button(for: menuItem)
                         }
@@ -117,6 +119,9 @@ struct CommentContentHeaderMenu: View {
             case approve, trash, spam, pending
         }
     }
+
+    typealias Section = [Item]
+    typealias List = [Section]
 
     private enum Strings {
         static let userInfo = NSLocalizedString(
