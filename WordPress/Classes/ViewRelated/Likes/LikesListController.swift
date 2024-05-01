@@ -22,7 +22,6 @@ import WordPressKit
 
 class LikesListController: NSObject {
 
-    private let parent: UIViewController
     private let formatter = FormattableContentFormatter()
     private let content: ContentIdentifier
     private let siteID: NSNumber
@@ -31,6 +30,7 @@ class LikesListController: NSObject {
     private let tableView: UITableView
     private var loadingIndicator = UIActivityIndicatorView()
     private weak var delegate: LikesListControllerDelegate?
+    private unowned var parent: UIViewController
 
     // Used to control pagination.
     private var isFirstLoad = true
