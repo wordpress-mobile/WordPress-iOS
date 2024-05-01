@@ -164,7 +164,6 @@ struct CommentContentHeaderMenu: View {
 
 // MARK: - Preview
 
-#if DEBUG
 #Preview {
     VStack(alignment: .leading) {
         CommentContentHeaderView(
@@ -194,4 +193,3 @@ struct CommentContentHeaderMenu: View {
     }
     .padding(.horizontal, .DS.Padding.double)
 }
-#endif
