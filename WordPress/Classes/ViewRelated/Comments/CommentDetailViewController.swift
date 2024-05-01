@@ -378,7 +378,7 @@ private extension CommentDetailViewController {
                                                    bottom: tableView.directionalLayoutMargins.bottom,
                                                    trailing: Constants.tableHorizontalInset)
 
-        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        tableView.register(CommentDetailContentTableViewCell.self, forCellReuseIdentifier: CommentDetailContentTableViewCell.defaultReuseID)
     }
 
     func configureContentRows() -> [RowType] {
@@ -471,8 +471,8 @@ private extension CommentDetailViewController {
         }
     }
 
-    func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { [weak self] _ in
+    func configureContentCell(_ cell: CommentDetailContentTableViewCell, comment: Comment) {
+        cell.onContentLoaded = { [weak self] _ in
             self?.tableView.performBatchUpdates({})
         }
 
@@ -482,18 +482,7 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
 
-        cell.accessoryButtonType = .info
-        cell.accessoryButtonAction = { [weak self] senderView in
-            self?.presentUserInfoSheet(senderView)
-        }
-
-        cell.likeButtonAction = { [weak self] in
-            self?.toggleCommentLike()
-        }
-
-        cell.replyButtonAction = { [weak self] in
-            self?.showReplyView()
-        }
+        cell.configure(with: comment, parent: self)
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
@@ -946,7 +935,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return headerCell
 
             case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentDetailContentTableViewCell.defaultReuseID) as? CommentDetailContentTableViewCell else {
                     return .init()
                 }
 

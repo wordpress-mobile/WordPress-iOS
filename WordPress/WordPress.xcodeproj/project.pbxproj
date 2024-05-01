@@ -3892,8 +3892,8 @@
 		F4C1FC672A44836300AD7CB0 /* PrivacySettingsAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */; };
 		F4C34C832BDA7B1B00B7E472 /* ContentProvider+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C822BDA7B1B00B7E472 /* ContentProvider+Gravatar.swift */; };
 		F4C34C842BDA7D1D00B7E472 /* ContentProvider+Gravatar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C822BDA7B1B00B7E472 /* ContentProvider+Gravatar.swift */; };
-		F4C34C862BDFA62900B7E472 /* CommentContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C852BDFA62900B7E472 /* CommentContentView.swift */; };
-		F4C34C872BDFA62900B7E472 /* CommentContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C852BDFA62900B7E472 /* CommentContentView.swift */; };
+		F4C34C862BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C852BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift */; };
+		F4C34C872BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C852BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift */; };
 		F4C34C8A2BDFCDFA00B7E472 /* CommentContentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C892BDFCDFA00B7E472 /* CommentContentHeaderView.swift */; };
 		F4C34C8B2BDFCDFA00B7E472 /* CommentContentHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4C34C892BDFCDFA00B7E472 /* CommentContentHeaderView.swift */; };
 		F4CBE3D429258AE1004FFBB6 /* MeHeaderViewConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4FB0ACC292587D500F651F9 /* MeHeaderViewConfiguration.swift */; };
@@ -9308,7 +9308,7 @@
 		F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalyticsTracker.swift; sourceTree = "<group>"; };
 		F4C1FC652A44836300AD7CB0 /* PrivacySettingsAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalytics.swift; sourceTree = "<group>"; };
 		F4C34C822BDA7B1B00B7E472 /* ContentProvider+Gravatar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContentProvider+Gravatar.swift"; sourceTree = "<group>"; };
-		F4C34C852BDFA62900B7E472 /* CommentContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentView.swift; sourceTree = "<group>"; };
+		F4C34C852BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailContentTableViewCell.swift; sourceTree = "<group>"; };
 		F4C34C892BDFCDFA00B7E472 /* CommentContentHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentContentHeaderView.swift; sourceTree = "<group>"; };
 		F4CBE3D329258AD6004FFBB6 /* MeHeaderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MeHeaderView.h; sourceTree = "<group>"; };
 		F4CBE3D5292597E3004FFBB6 /* SupportTableViewControllerConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTableViewControllerConfiguration.swift; sourceTree = "<group>"; };
@@ -18133,7 +18133,7 @@
 		F4C34C882BDFCDE500B7E472 /* Content */ = {
 			isa = PBXGroup;
 			children = (
-				F4C34C852BDFA62900B7E472 /* CommentContentView.swift */,
+				F4C34C852BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift */,
 				F4C34C892BDFCDFA00B7E472 /* CommentContentHeaderView.swift */,
 			);
 			path = Content;
@@ -23205,7 +23205,7 @@
 				46F583AD2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
 				FAD256932611B01700EDAF88 /* UIColor+WordPressColors.swift in Sources */,
 				E174F6E6172A73960004F23A /* WPAccount.m in Sources */,
-				F4C34C862BDFA62900B7E472 /* CommentContentView.swift in Sources */,
+				F4C34C862BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift in Sources */,
 				FF619DD51C75246900903B65 /* CLPlacemark+Formatting.swift in Sources */,
 				98467A3F221CD48500DF51AE /* SiteStatsDetailTableViewController.swift in Sources */,
 				83BFAE482A6EBF1F00C7B683 /* DashboardJetpackSocialCardCell.swift in Sources */,
@@ -25100,7 +25100,7 @@
 				80C523A82995D73C00B1C14B /* BlazeCreateCampaignWebViewModel.swift in Sources */,
 				982DDF97263238A6002B3904 /* LikeUserPreferredBlog+CoreDataProperties.swift in Sources */,
 				FABB22B82602FC2C00C8785C /* QuickStartChecklistManager.swift in Sources */,
-				F4C34C872BDFA62900B7E472 /* CommentContentView.swift in Sources */,
+				F4C34C872BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift in Sources */,
 				0CED1FEE2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */,
 				C3234F4F27EB96AB004ADB29 /* IntentCell.swift in Sources */,
 				98AA6D1226B8CE7200920C8B /* Comment+CoreDataClass.swift in Sources */,

@@ -1,7 +1,7 @@
 import UIKit
 import SwiftUI
 
-final class CommentContentView: UIView {
+final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
 
     // MARK: - Views
 
@@ -15,10 +15,18 @@ final class CommentContentView: UIView {
 
     private var authorHostingController: UIHostingController<CommentContentHeaderView>?
 
+    // MARK: - Callbacks
+
+    // Callback to be called once the content has been loaded. Provides the new content height as parameter.
+    var onContentLoaded: ((CGFloat) -> Void)?
+
+    //
+    var contentLinkTapAction: ((URL) -> Void)? = nil
+
     // MARK: - Init
 
-    init() {
-        super.init(frame: .zero)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.setup()
     }
 
@@ -28,8 +36,9 @@ final class CommentContentView: UIView {
 
     private func setup() {
         self.stackView.translatesAutoresizingMaskIntoConstraints = false
-        self.addSubview(stackView)
-        self.pinSubviewToAllEdges(stackView)
+        self.contentView.addSubview(stackView)
+        self.contentView.pinSubviewToAllEdgeMargins(stackView)
+        self.selectionStyle = .none
     }
 
     // MARK: - Updating UI
@@ -39,25 +48,21 @@ final class CommentContentView: UIView {
     /// - Parameters:
     ///   - comment: The `Comment` object to display.
     ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
-    ///   - onContentLoaded: Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    func update(
+    func configure(
         with comment: Comment,
         renderMethod: RenderMethod = .web,
-        onContentLoaded: ((CGFloat) -> Void)?,
         parent: UIViewController
     ) {
-        let menuConfig = CommentContentHeaderView.MenuConfiguration(
-            userInfo: true,
-            share: true,
-            editComment: true,
-            changeStatus: true
-        ) { option in
-        }
+        let menu: CommentContentHeaderView.MenuList = {
+            let firstSection: CommentContentHeaderView.MenuSection = [.userInfo({}), .share({})]
+            let secondSection: CommentContentHeaderView.MenuSection = comment.allowsModeration() ? [.editComment({}), .changeStatus({ _ in })] : []
+            return [firstSection, secondSection]
+        }()
         let config = CommentContentHeaderView.Configuration(
             avatarURL: comment.avatarURLForDisplay(),
             username: comment.authorForDisplay(),
-            handleAndTimestamp: "@TurnUpAlex • 2h ago",
-            menu: menuConfig
+            handleAndTimestamp: comment.dateForDisplay()?.toMediumString() ?? "",
+            menu: menu
         )
         self.updateHeader(with: config, parent: parent)
     }
@@ -74,6 +79,7 @@ final class CommentContentView: UIView {
             stackView.addArrangedSubview(hostingController.view)
             parent.addChild(hostingController)
             hostingController.didMove(toParent: parent)
+            self.authorHostingController = hostingController
         }
 
         self.authorHostingController?.view?.invalidateIntrinsicContentSize()
