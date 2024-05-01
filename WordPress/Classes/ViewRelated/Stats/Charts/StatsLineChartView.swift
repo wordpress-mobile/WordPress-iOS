@@ -255,12 +255,25 @@ private extension StatsLineChartView {
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
         extraTopOffset = Constants.topOffset
 
+        guard let data else { return }
         if areDataValuesIdentical {
             yAxis.axisMinimum = 0
-            yAxis.axisMaximum = (data?.getYMax(axis: .left) ?? 0) * 2
-        } else if let data {
-            yAxis.axisMinimum = data.getYMin(axis: .left)
-            yAxis.axisMaximum = data.getYMax(axis: .left)
+            yAxis.axisMaximum = data.getYMax(axis: .left) * 2
+        } else {
+            if statType == .viewsAndVisitors {
+                yAxis.axisMinimum = 0
+
+                let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+                let dataYMax = data.getYMax(axis: .left)
+                if dataYMax >= lowestMaxValue {
+                    yAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(dataYMax)
+                } else {
+                    leftAxis.axisMaximum = lowestMaxValue
+                }
+            } else if statType == .subscribers {
+                yAxis.axisMinimum = data.getYMin(axis: .left)
+                yAxis.axisMaximum = data.getYMax(axis: .left)
+            }
         }
     }
 
