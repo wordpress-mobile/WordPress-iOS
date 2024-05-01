@@ -13,13 +13,17 @@ class SubscribersChartMarker: StatsChartMarker {
     }
 
     override func text(for entry: ChartDataEntry) -> NSMutableAttributedString? {
+        let tightParagraphStyle = NSMutableParagraphStyle()
+        tightParagraphStyle.lineSpacing = 0
+        tightParagraphStyle.lineHeightMultiple = 0.8
+        tightParagraphStyle.alignment = .center
 
         let subscriberCountRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .headline),
-                                                                           .paragraphStyle: paragraphStyle,
+                                                                           .paragraphStyle: tightParagraphStyle,
                                                                            .foregroundColor: UIColor.white]
 
         let subscriberLabelRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
-                                                                           .paragraphStyle: paragraphStyle,
+                                                                           .paragraphStyle: tightParagraphStyle,
                                                                            .foregroundColor: UIColor.white]
 
         let subscriberDateRowAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.preferredFont(forTextStyle: .footnote),
