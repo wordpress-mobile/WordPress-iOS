@@ -76,35 +76,28 @@ struct CommentContentHeaderMenu: View {
     func button(for menuItem: Item) -> some View {
         switch menuItem {
         case .userInfo(let action):
-            Button(action: action) {
-                Label {
-                    Text(Strings.userInfo)
-                } icon: {
-                    Image.DS.icon(named: .avatar)
-                }
-            }
+            button(text: Strings.userInfo, icon: .avatar, action: action)
         case .share(let action):
-            Button(action: action) {
-                Label {
-                    Text(Strings.share)
-                } icon: {
-                    Image.DS.icon(named: .blockShare)
-                }
-            }
+            button(text: Strings.share, icon: .blockShare, action: action)
         case .editComment(let action):
-            Button(action: action) {
-                Label {
-                    Text(Strings.editComment)
-                } icon: {
-                    Image.DS.icon(named: .edit)
-                }
-            }
+            button(text: Strings.editComment, icon: .edit, action: action)
         case .changeStatus(let action):
             Menu(Strings.changeStatus) {
                 Button(Strings.approve, action: { action(.approve) })
                 Button(Strings.pending, action: { action(.pending) })
                 Button(Strings.trash, action: { action(.trash) })
                 Button(Strings.spam, action: { action(.spam) })
+            }
+        }
+    }
+
+    @ViewBuilder
+    func button(text: String, icon: IconName, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label {
+                Text(text)
+            } icon: {
+                Image.DS.icon(named: icon)
             }
         }
     }
