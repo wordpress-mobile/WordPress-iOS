@@ -93,7 +93,11 @@ struct PostNoticePublishSuccessView: View {
     }
 
     private func buttonOpenDomainTapped() {
-        guard let url = URL(string: post.blog.primaryDomainAddress) else { return }
+        guard let urlString = post.blog.homeURL as String?,
+              let url = URL(string: urlString) else {
+            return
+        }
+        WPAppAnalytics.track(.openedViewSite, withProperties: [WPAppAnalyticsKeyTapSource: "publish_success_view"], with: post.blog)
         UIApplication.shared.open(url)
     }
 
