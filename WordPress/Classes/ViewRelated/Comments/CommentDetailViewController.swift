@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import WordPressUI
 import DesignSystem
+import SwiftUI
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -345,6 +346,17 @@ private extension CommentDetailViewController {
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
         containerStackView.addArrangedSubview(tableView)
+        if comment.allowsModeration() {
+            let commentModerationView = CommentModerationView(
+                viewModel: CommentModerationViewModel(
+                    state: .pending,
+                    imageURL: URL(string: comment.authorAvatarURL),
+                    userName: comment.author
+                )
+            )
+            let hostingController = UIHostingController(rootView: commentModerationView)
+            containerStackView.addArrangedSubview(hostingController.view)
+        }
         view.pinSubviewToAllEdges(containerStackView)
     }
 
@@ -392,24 +404,10 @@ private extension CommentDetailViewController {
         return rows
     }
 
-    func configureModerationRows() -> [RowType] {
-        var rows: [RowType] = []
-        rows.append(.status(status: .approved))
-        rows.append(.status(status: .pending))
-        rows.append(.status(status: .spam))
-
-        rows.append(.deleteComment)
-
-        return rows
-    }
-
     func configureSections() {
         var sections: [SectionType] = []
 
         sections.append(.content(configureContentRows()))
-        if comment.allowsModeration() {
-            sections.append(.moderation(configureModerationRows()))
-        }
         self.sections = sections
     }
 
