@@ -17,9 +17,15 @@ struct PostNoticePublishSuccessView: View {
             Button(action: onDoneTapped, label: {
                 Text(Strings.done)
                     .font(.headline)
+                    .frame(maxWidth: .infinity, minHeight: 44)
             })
+            .background(
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(.secondary.opacity(0.15))
+            )
             .tint(.primary)
-            .padding(.bottom, 16)
+            .padding(.horizontal, 20)
+            .padding(.vertical)
         }
         .onAppear {
             WPAnalytics.track(.postEpilogueDisplayed)
