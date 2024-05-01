@@ -247,7 +247,6 @@ private extension StatsLineChartView {
         yAxis.gridColor = styling.lineColor
         yAxis.labelTextColor = styling.labelColor
         yAxis.labelFont = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: [], maximumPointSize: WPStyleGuide.Stats.maximumChartAxisFontPointSize)
-        yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         yAxis.valueFormatter = styling.yAxisValueFormatter
         yAxis.zeroLineColor = styling.lineColor
 
@@ -256,23 +255,34 @@ private extension StatsLineChartView {
         extraTopOffset = Constants.topOffset
 
         guard let data else { return }
-        if areDataValuesIdentical {
-            yAxis.axisMinimum = 0
-            yAxis.axisMaximum = data.getYMax(axis: .left) * 2
-        } else {
-            if statType == .viewsAndVisitors {
-                yAxis.axisMinimum = 0
+        let yAxisMax = data.getYMax(axis: .left)
 
-                let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
-                let dataYMax = data.getYMax(axis: .left)
-                if dataYMax >= lowestMaxValue {
-                    yAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(dataYMax)
-                } else {
-                    leftAxis.axisMaximum = lowestMaxValue
-                }
-            } else if statType == .subscribers {
-                yAxis.axisMinimum = data.getYMin(axis: .left)
-                yAxis.axisMaximum = data.getYMax(axis: .left)
+        if statType == .viewsAndVisitors {
+            yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
+
+            yAxis.axisMinimum = 0
+
+            let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+            let dataYMax = yAxisMax
+            if dataYMax >= lowestMaxValue {
+                yAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(dataYMax)
+            } else {
+                leftAxis.axisMaximum = lowestMaxValue
+            }
+        } else if statType == .subscribers {
+            if areDataValuesIdentical {
+                yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
+
+                yAxis.axisMinimum = 0
+                yAxis.axisMaximum = yAxisMax * 2
+            } else {
+                let yAxisMin = data.getYMin(axis: .left)
+                let yAxisDelta = Int(yAxisMax) - Int(yAxisMin)
+                let yAxisLabelCount = min(yAxisDelta + 1, Constants.verticalAxisLabelCount)
+                yAxis.setLabelCount(yAxisLabelCount, force: true)
+
+                yAxis.axisMinimum = yAxisMin
+                yAxis.axisMaximum = yAxisMax
             }
         }
     }
