@@ -3,6 +3,7 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
+    let shouldHideBlogFilter: Bool
 
     let content: ReaderContent
 
@@ -14,9 +15,12 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     init(_ content: ReaderContent) {
         self.content = content
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
-        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType)
+        && content.type != .selfHostedFollowing
+        && content.type != .tags
         shouldHideSettingsButton = content.type == .selfHostedFollowing
-        shouldHideTagFilter = content.topicType == .organization || FeatureFlag.readerTagsFeed.enabled
+        shouldHideTagFilter = content.topicType == .organization || (content.type != .tags && FeatureFlag.readerTagsFeed.enabled)
+        shouldHideBlogFilter = content.type == .tags
     }
 
 }
