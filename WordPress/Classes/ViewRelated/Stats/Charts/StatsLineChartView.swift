@@ -28,7 +28,7 @@ class StatsLineChartView: LineChartView {
         static let xAxisWidth               = 4.0
         static let xAxisTickWidth           = 2.0
         static let lineWidth                = 2.0
-        static let numberDaysInWeek         = 7
+        static let numberOfXAxisTicks       = 7
     }
 
     /// The type of stat shown on the chart i.e. subscribers, views & visitors, etc.
@@ -231,7 +231,7 @@ private extension StatsLineChartView {
         if contentRect.width > 0 {
             xAxis.axisLineWidth = Constants.xAxisWidth
 
-            let count = max(xAxisDates.count, Constants.numberDaysInWeek)
+            let count = Constants.numberOfXAxisTicks
             let contentWidthMinusTicks = contentRect.width - (Constants.xAxisTickWidth * CGFloat(count))
             xAxis.axisLineDashLengths = [Constants.xAxisTickWidth, (contentWidthMinusTicks / CGFloat(count - 1))]
         }
