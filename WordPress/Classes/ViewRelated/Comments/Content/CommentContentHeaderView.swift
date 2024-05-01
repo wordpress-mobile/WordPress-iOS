@@ -35,7 +35,7 @@ struct CommentContentHeaderView: View {
 
 extension CommentContentHeaderView.Configuration {
 
-     init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: [CommentContentHeaderView.MenuItem]) {
+    init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: [CommentContentHeaderView.MenuItem]) {
         self.init(
             avatarURL: avatarURL,
             username: username,
@@ -46,77 +46,77 @@ extension CommentContentHeaderView.Configuration {
 }
 
 struct CommentContentHeaderMenu: View {
-   let menu: [[Item]]
+    let menu: [[Item]]
 
-   var body: some View {
-       Menu {
-           ForEach(Array(menu.enumerated()), id: \.offset) { sectionIndex, section in
-               if !section.isEmpty {
-                   Section {
-                       ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
-                           button(for: menuItem)
-                       }
-                   }
-                   if sectionIndex < menu.count - 1 && !menu[sectionIndex + 1].isEmpty {
-                       Divider()
-                   }
-               }
-           }
-       } label: {
-           Image.DS.icon(named: .ellipsisHorizontal)
-               .imageScale(.small)
-               .frame(width: .DS.Padding.medium, height: .DS.Padding.medium)
-               .foregroundStyle(Color.DS.Foreground.secondary)
-       }
-   }
+    var body: some View {
+        Menu {
+            ForEach(Array(menu.enumerated()), id: \.offset) { sectionIndex, section in
+                if !section.isEmpty {
+                    Section {
+                        ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
+                            button(for: menuItem)
+                        }
+                    }
+                    if sectionIndex < menu.count - 1 && !menu[sectionIndex + 1].isEmpty {
+                        Divider()
+                    }
+                }
+            }
+        } label: {
+            Image.DS.icon(named: .ellipsisHorizontal)
+                .imageScale(.small)
+                .frame(width: .DS.Padding.medium, height: .DS.Padding.medium)
+                .foregroundStyle(Color.DS.Foreground.secondary)
+        }
+    }
 
-   @ViewBuilder
-   func button(for menuItem: Item) -> some View {
-       switch menuItem {
-       case .userInfo(let action):
-           Button(action: action) {
-               Label {
-                   Text(Strings.userInfo)
-               } icon: {
-                   Image.DS.icon(named: .avatar)
-               }
-           }
-       case .share(let action):
-           Button(action: action) {
-               Label {
-                   Text(Strings.share)
-               } icon: {
-                   Image.DS.icon(named: .blockShare)
-               }
-           }
-       case .editComment(let action):
-           Button(action: action) {
-               Label {
-                   Text(Strings.editComment)
-               } icon: {
-                   Image.DS.icon(named: .edit)
-               }
-           }
-       case .changeStatus(let action):
-           Menu(Strings.changeStatus) {
-               Button(Strings.approve, action: { action(.approve) })
-               Button(Strings.pending, action: { action(.pending) })
-               Button(Strings.trash, action: { action(.trash) })
-               Button(Strings.spam, action: { action(.spam) })
-           }
-       }
-   }
+    @ViewBuilder
+    func button(for menuItem: Item) -> some View {
+        switch menuItem {
+        case .userInfo(let action):
+            Button(action: action) {
+                Label {
+                    Text(Strings.userInfo)
+                } icon: {
+                    Image.DS.icon(named: .avatar)
+                }
+            }
+        case .share(let action):
+            Button(action: action) {
+                Label {
+                    Text(Strings.share)
+                } icon: {
+                    Image.DS.icon(named: .blockShare)
+                }
+            }
+        case .editComment(let action):
+            Button(action: action) {
+                Label {
+                    Text(Strings.editComment)
+                } icon: {
+                    Image.DS.icon(named: .edit)
+                }
+            }
+        case .changeStatus(let action):
+            Menu(Strings.changeStatus) {
+                Button(Strings.approve, action: { action(.approve) })
+                Button(Strings.pending, action: { action(.pending) })
+                Button(Strings.trash, action: { action(.trash) })
+                Button(Strings.spam, action: { action(.spam) })
+            }
+        }
+    }
 
-   enum Item {
-       case userInfo(() -> Void)
-       case share(() -> Void)
-       case editComment(() -> Void)
-       case changeStatus((Status) -> Void)
+    enum Item {
+        case userInfo(() -> Void)
+        case share(() -> Void)
+        case editComment(() -> Void)
+        case changeStatus((Status) -> Void)
 
-       enum Status {
-           case approve, trash, spam, pending
-       }
-   }
+        enum Status {
+            case approve, trash, spam, pending
+        }
+    }
 
     private enum Strings {
         static let userInfo = NSLocalizedString(
