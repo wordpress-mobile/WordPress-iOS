@@ -110,8 +110,6 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: buttons)
         }
 
-        buttons.append(.setParent)
-
         guard page.status == .publish else {
             return AbstractPostButtonSection(buttons: buttons)
         }

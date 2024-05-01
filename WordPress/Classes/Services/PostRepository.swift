@@ -459,6 +459,28 @@ final class PostRepository {
             }
         }
     }
+
+    @MainActor
+    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
+        assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
+
+        let coreDataStack = ContextManager.shared
+        return try await coreDataStack.performQuery { context in
+            var pages = [Page]()
+
+            if let pageIDs {
+                pages = try pageIDs.map(context.existingObject(with:))
+            } else if let request {
+                pages = try context.fetch(request)
+            }
+
+            pages = pages.setHomePageFirst()
+
+            // The `hierarchyIndex` is not a managed property, so it needs to be returend along with the page object id.
+            return PageTree.hierarchyList(of: pages)
+                .map { (TaggedManagedObjectID($0), $0.hierarchyIndex) }
+        }
+    }
 }
 
 private extension PostRepository {

@@ -32,22 +32,12 @@ private struct Row: ImmuTableRow {
     }
 }
 
-extension Row: Equatable {
-    static func == (lhs: Row, rhs: Row) -> Bool {
-        return lhs.page?.postID == rhs.page?.postID
-    }
-}
-
 class ParentPageSettingsViewController: UIViewController {
     var onClose: (() -> Void)?
-    var onSuccess: (() -> Void)?
 
-    @IBOutlet private var cancelButton: UIBarButtonItem!
-    @IBOutlet private var doneButton: UIBarButtonItem!
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var searchBar: UISearchBar!
 
-    private let postService = PostService(managedObjectContext: ContextManager.sharedInstance().mainContext)
     private lazy var noResultsViewController = NoResultsViewController.controller()
     private var isSearching = false
     private var sections: [ImmuTableSection] {
@@ -59,14 +49,6 @@ class ParentPageSettingsViewController: UIViewController {
     private var rows: [ImmuTableSection]!
     private var filteredRows: [ImmuTableSection]!
     private var selectedPage: Page!
-    private var originalRow: Row?
-    private var selectedRow: Row? {
-        didSet {
-            doneButton.isEnabled = selectedRow != originalRow
-        }
-    }
-
-    private var selectedParentID: NSNumber?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,9 +71,6 @@ class ParentPageSettingsViewController: UIViewController {
 
     func set(pages: [Page], for page: Page) {
         selectedPage = page
-        selectedParentID = selectedPage.parentID
-        originalRow = originalRow(with: pages)
-        selectedRow = originalRow
 
         filteredRows = []
 
@@ -103,15 +82,10 @@ class ParentPageSettingsViewController: UIViewController {
     // MARK: - Private methods
 
     private func setupUI() {
-        navigationItem.title = NSLocalizedString("Set Parent", comment: "Navigation title displayed on the navigation bar")
-
-        cancelButton.title = NSLocalizedString("Cancel", comment: "Text displayed by the left navigation button title")
-        doneButton.title = NSLocalizedString("Done", comment: "Text displayed by the right navigation button title")
+        navigationItem.title = NSLocalizedString("parentPageSettings.title", value: "Parent Page", comment: "Navigation title displayed on the navigation bar")
 
         searchBar.delegate = self
 
-        WPStyleGuide.setRightBarButtonItemWithCorrectSpacing(doneButton, for: navigationItem)
-        WPStyleGuide.setLeftBarButtonItemWithCorrectSpacing(cancelButton, for: navigationItem)
         WPStyleGuide.configureSearchBar(searchBar)
 
         setupTableView()
@@ -173,20 +147,12 @@ class ParentPageSettingsViewController: UIViewController {
         tableView.reloadSections(sections, with: animation)
     }
 
-    private func updatePage(_ completion: ((_ page: AbstractPost?, _ error: Error?) -> Void)?) {
-        postService.uploadPost(selectedPage, success: { uploadedPost in
-            completion?(uploadedPost, nil)
-        }) { error in
-            completion?(nil, error)
-        }
-    }
-
     private func originalRow(with pages: [Page]) -> Row? {
         if selectedPage.isTopLevelPage {
             return Row()
         }
 
-        guard let parent = (pages.first { $0.postID == selectedParentID }) else {
+        guard let parent = (pages.first { $0.postID == selectedPage.parentID }) else {
             return nil
         }
 
@@ -216,70 +182,6 @@ class ParentPageSettingsViewController: UIViewController {
             noResultsViewController.removeFromView()
         }
     }
-
-    private func dismiss() {
-        onClose?()
-        dismiss(animated: true)
-    }
-
-    // MARK: IBAction
-
-    @IBAction func doneAction(_ sender: UIBarButtonItem) {
-        WPAnalytics.track(.pageSetParentDonePressed)
-
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Updating...",
-                                                         comment: "Text displayed in HUD while a draft or scheduled post is being updated."))
-
-        selectedParentID = selectedRow?.page?.postID
-
-        if FeatureFlag.syncPublishing.enabled {
-            Task {
-                await self.saveChanges()
-            }
-        } else {
-            _saveChanges()
-        }
-    }
-
-    @MainActor
-    private func saveChanges() async {
-        do {
-            var changes = RemotePostUpdateParameters()
-            // - warning: `.some` is important to make sure the parameter is included
-            changes.parentPageID = .some(selectedParentID?.intValue)
-            try await PostCoordinator.shared._update(selectedPage.original(), changes: changes)
-
-            await SVProgressHUD.dismiss()
-            self.dismiss()
-            self.onSuccess?()
-        } catch {
-            await SVProgressHUD.dismiss()
-        }
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    private func _saveChanges() {
-        let parentId: NSNumber? = selectedPage.parentID
-        selectedPage.parentID = selectedRow?.page?.postID
-        updatePage { [weak self] (_, error) in
-            SVProgressHUD.dismiss()
-
-            if let error = error {
-                DDLogError("Error publishing post: \(error.localizedDescription)")
-                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring saving",
-                                                                                 comment: "Text displayed in HUD after attempting to save a draft post and an error occurred."))
-                self?.selectedPage.parentID = parentId
-            } else {
-                self?.dismiss()
-                self?.onSuccess?()
-            }
-        }
-    }
-
-    @IBAction func cancelAction(_ sender: UIBarButtonItem) {
-        dismiss()
-    }
 }
 
 extension ParentPageSettingsViewController: UITableViewDataSource {
@@ -297,7 +199,7 @@ extension ParentPageSettingsViewController: UITableViewDataSource {
         }
 
         let cell: CheckmarkTableViewCell = self.cell(for: tableView, at: indexPath, identifier: row.reusableIdentifier)
-        cell.on = selectedRow == row
+        cell.on = row.page?.postID == selectedPage.parentID
         row.configureCell(cell)
         return cell
     }
@@ -316,12 +218,10 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let row = sections[indexPath.section].rows[indexPath.row] as? Row,
-            row != selectedRow else {
+        guard let row = sections[indexPath.section].rows[indexPath.row] as? Row else {
             return
         }
-
-        selectedRow = row
+        selectedPage.parentID = row.page?.postID
         tableView.reloadData()
     }
 }
@@ -329,18 +229,14 @@ extension ParentPageSettingsViewController: UITableViewDelegate {
 /// ParentPageSettingsViewController class constructor
 //
 extension ParentPageSettingsViewController {
-    class func navigationController(with pages: [Page], selectedPage: Page, onClose: (() -> Void)? = nil, onSuccess: (() -> Void)? = nil) -> UINavigationController {
-        let storyBoard = UIStoryboard(name: "Pages", bundle: Bundle.main)
-        guard let controller = storyBoard.instantiateViewController(withIdentifier: "ParentPageSettings") as? UINavigationController else {
-            fatalError("A navigation view controller is required for Parent Page Settings")
+    class func make(with pages: [Page], selectedPage: Page, onClose: @escaping () -> Void) -> UIViewController {
+        let storyboard = UIStoryboard(name: "Pages", bundle: Bundle.main)
+        guard let viewController = storyboard.instantiateViewController(withIdentifier: "ParentPageSettings") as? ParentPageSettingsViewController else {
+            fatalError("A ParentPageSettingsViewController view controller is required for Parent Page Settings")
         }
-        guard let parentPageSettingsViewController = controller.viewControllers.first as? ParentPageSettingsViewController else {
-            fatalError("A ParentPageSettingsViewController is required for Parent Page Settings")
-        }
-        parentPageSettingsViewController.set(pages: pages, for: selectedPage)
-        parentPageSettingsViewController.onClose = onClose
-        parentPageSettingsViewController.onSuccess = onSuccess
-        return controller
+        viewController.set(pages: pages, for: selectedPage)
+        viewController.onClose = onClose
+        return viewController
     }
 }
 
