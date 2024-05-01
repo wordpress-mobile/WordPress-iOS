@@ -224,6 +224,45 @@ import AutomatticTracks
     // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
     // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
     private var tagStreamSyncTracker = Set<String>()
+    lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
+        let title = NSLocalizedString(
+            "reader.select.tags.title",
+            value: "Discover and follow blogs you love",
+            comment: "Reader select interests title label text"
+        )
+        let subtitle = NSLocalizedString(
+            "reader.select.tags.subtitle",
+            value: "Choose your tags",
+            comment: "Reader select interests subtitle label text"
+        )
+        let buttonTitleEnabled = NSLocalizedString(
+            "reader.select.tags.done",
+            value: "Done",
+            comment: "Reader select interests next button enabled title text"
+        )
+        let buttonTitleDisabled = NSLocalizedString(
+            "reader.select.tags.continue",
+            value: "Select a few to continue",
+            comment: "Reader select interests next button disabled title text"
+        )
+        let loading = NSLocalizedString(
+            "reader.select.tags.loading",
+            value: "Finding blogs and stories you’ll love...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
+        )
+
+        return ReaderSelectInterestsViewController(configuration: configuration)
+    }()
+    /// Tracks whether or not we should force sync
+    /// This is set to true after the Reader Manage view is dismissed
+    var shouldForceRefresh = false
 
     // MARK: - Factory Methods
 
@@ -680,6 +719,8 @@ import AutomatticTracks
             displayNoResultsView()
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
+        } else if contentType == .tags, content.isEmpty {
+            showSelectInterestsView()
         }
     }
 
@@ -1836,6 +1877,8 @@ extension ReaderStreamViewController {
                 displayNoResultsForSavedPosts()
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
                 displayNoResultsViewForDiscover()
+            } else if contentType == .tags {
+                showSelectInterestsView()
             }
             return
         }
@@ -1918,7 +1961,53 @@ extension ReaderStreamViewController {
         hideGhost()
     }
 
+    func showSelectInterestsView() {
+        guard selectInterestsViewController.parent == nil else {
+            return
+        }
+
+        selectInterestsViewController.view.frame = self.view.bounds
+        self.add(selectInterestsViewController)
+
+        selectInterestsViewController.didSaveInterests = { [weak self] _ in
+            guard let self else {
+                return
+            }
+            self.hideSelectInterestsView()
+        }
+    }
+
+    func hideSelectInterestsView(showLoadingStream: Bool = true) {
+        let isTagsFeed = contentType == .tags
+        guard selectInterestsViewController.parent != nil else {
+            if shouldForceRefresh {
+                scrollViewToTop()
+                if !isTagsFeed {
+                    displayLoadingStream()
+                }
+                syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
+            }
+
+            return
+        }
+
+        scrollViewToTop()
+        if !isTagsFeed {
+            displayLoadingStream()
+        }
+        syncIfAppropriate(forceSync: true)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.selectInterestsViewController.view.alpha = 0
+        }) { _ in
+            self.selectInterestsViewController.remove()
+            self.selectInterestsViewController.view.alpha = 1
+        }
+    }
+
     func hideResultsStatus() {
+        hideSelectInterestsView()
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
