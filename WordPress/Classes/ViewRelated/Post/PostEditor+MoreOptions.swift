@@ -157,7 +157,7 @@ extension PostEditor {
         }
     }
 
-    func displayHistory() {
+    func displayRevisionsList() {
         guard FeatureFlag.syncPublishing.enabled else {
             _displayHistory()
             return

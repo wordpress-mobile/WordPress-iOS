@@ -56,7 +56,7 @@ extension GutenbergViewController {
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [weak self] _ in
-                self?.displayHistory()
+                self?.displayRevisionsList()
                 ActionDispatcher.dispatch(NoticeAction.unlock)
             }
         }
@@ -125,7 +125,7 @@ extension GutenbergViewController {
         let revisionCount = (post.revisions ?? []).count
         if revisionCount > 0 {
             actions.append(UIAction(title: Strings.revisions + " (\(revisionCount))", image: UIImage(systemName: "clock.arrow.circlepath")) { [weak self] _ in
-                self?.displayHistory()
+                self?.displayRevisionsList()
             })
         }
 

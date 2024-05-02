@@ -36,7 +36,7 @@ class RevisionsTableViewController: UITableViewController {
     required init(post: AbstractPost, onRevisionLoaded: @escaping RevisionLoadedBlock) {
         self.post = post
         self.onRevisionLoaded = onRevisionLoaded
-        super.init(nibName: nil, bundle: nil)
+        super.init(style: .insetGrouped)
     }
 
     required init?(coder aDecoder: NSCoder) {
