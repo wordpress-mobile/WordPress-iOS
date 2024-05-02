@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 /// This class simply exists to coordinate the display of various sections of
 /// the app in response to actions taken by the user from Post notifications.
@@ -20,7 +21,7 @@ class PostNoticeNavigationCoordinator {
 
     private static func presentViewPage(for page: Page) {
         guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController else {
-                return
+            return wpAssertionFailure("presenter missing")
         }
 
         let controller = PreviewWebKitViewController(post: page, source: "post_notice_preview")
@@ -36,13 +37,25 @@ class PostNoticeNavigationCoordinator {
 
     private static func presentPostEpilogue(for post: Post) {
         guard let presenter = UIApplication.shared.delegate?.window??.topmostPresentedViewController else {
-                return
+            return wpAssertionFailure("presenter missing")
         }
 
-        let viewController = UIStoryboard(name: "PostPublishSuccessViewController", bundle: nil).instantiateViewController(withIdentifier: "PostPublishSuccessViewController") as! PostPublishSuccessViewController
-        viewController.setup(post: post)
-        viewController.modalPresentationStyle = .formSheet
+        let context = PostNoticePublishSuccessView.Context()
+        let view = PostNoticePublishSuccessView(post: post, context: context) {
+            presenter.dismiss(animated: true)
+        }
+        let viewController = UIHostingController(rootView: view)
+        if UIDevice.current.userInterfaceIdiom == .phone {
+            if let sheetController = viewController.sheetPresentationController {
+                sheetController.detents = [.medium()]
+                sheetController.preferredCornerRadius = 20
+            }
+        } else {
+            viewController.modalPresentationStyle = .formSheet
+            viewController.preferredContentSize = CGSize(width: 460, height: 460)
+        }
         presenter.present(viewController, animated: true)
+        context.viewController = viewController
     }
 
     static func retryPostUpload(with userInfo: NSDictionary) {
