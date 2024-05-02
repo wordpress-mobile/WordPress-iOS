@@ -3,6 +3,11 @@ import SwiftUI
 
 final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
 
+    // MARK: - Typealias
+
+    typealias ContentConfiguration = CommentDetailContentView.Configuration
+    typealias HeaderConfiguration = CommentContentHeaderView.Configuration
+
     // MARK: - Views
 
     private let stackView: UIStackView = {
@@ -15,13 +20,7 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
 
     private var authorHostingController: UIHostingController<CommentContentHeaderView>?
 
-    // MARK: - Callbacks
-
-    // Callback to be called once the content has been loaded. Provides the new content height as parameter.
-    var onContentLoaded: ((CGFloat) -> Void)?
-
-    //
-    var contentLinkTapAction: ((URL) -> Void)? = nil
+    private var commentView = CommentDetailContentView()
 
     // MARK: - Init
 
@@ -35,6 +34,7 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
     }
 
     private func setup() {
+        self.stackView.addArrangedSubview(commentView)
         self.stackView.translatesAutoresizingMaskIntoConstraints = false
         self.contentView.addSubview(stackView)
         self.contentView.pinSubviewToAllEdgeMargins(stackView)
@@ -43,16 +43,40 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
 
     // MARK: - Updating UI
 
-    /// Configures the view with a `Comment` object.
-    ///
-    /// - Parameters:
-    ///   - comment: The `Comment` object to display.
-    ///   - renderMethod: Specifies how to display the comment body. See `RenderMethod`.
-    func configure(
-        with comment: Comment,
-        renderMethod: RenderMethod = .web,
-        parent: UIViewController
-    ) {
+    func configure(with headerConfig: HeaderConfiguration, contentConfig: ContentConfiguration, parent: UIViewController) {
+        self.updateHeader(with: headerConfig, parent: parent)
+        self.commentView.configure(with: contentConfig)
+    }
+
+    func configure(with contentConfig: ContentConfiguration, parent: UIViewController) {
+        self.updateHeader(with: headerConfiguration(from: contentConfig.comment), parent: parent)
+        self.commentView.configure(with: contentConfig)
+    }
+}
+
+// MARK: - Helpers
+
+private extension CommentDetailContentTableViewCell {
+
+    private func updateHeader(with config: CommentContentHeaderView.Configuration, parent: UIViewController) {
+        let content = CommentContentHeaderView(config: config)
+
+        if let hostingController = authorHostingController {
+            hostingController.rootView = content
+        } else {
+            let hostingController = UIHostingController<CommentContentHeaderView>(rootView: content)
+            hostingController.view.backgroundColor = .clear
+            hostingController.willMove(toParent: parent)
+            stackView.insertArrangedSubview(hostingController.view, at: 0)
+            parent.addChild(hostingController)
+            hostingController.didMove(toParent: parent)
+            self.authorHostingController = hostingController
+        }
+
+        self.authorHostingController?.view?.invalidateIntrinsicContentSize()
+    }
+
+    private func headerConfiguration(from comment: Comment) -> CommentContentHeaderView.Configuration {
         let menu: CommentContentHeaderView.MenuList = {
             let firstSection: CommentContentHeaderView.MenuSection = [.userInfo({}), .share({})]
             let secondSection: CommentContentHeaderView.MenuSection = comment.allowsModeration() ? [.editComment({}), .changeStatus({ _ in })] : []
@@ -64,34 +88,6 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
             handleAndTimestamp: comment.dateForDisplay()?.toMediumString() ?? "",
             menu: menu
         )
-        self.updateHeader(with: config, parent: parent)
-    }
-
-    private func updateHeader(with config: CommentContentHeaderView.Configuration, parent: UIViewController) {
-        let content = CommentContentHeaderView(config: config)
-
-        if let hostingController = authorHostingController {
-            hostingController.rootView = content
-        } else {
-            let hostingController = UIHostingController<CommentContentHeaderView>(rootView: content)
-            hostingController.view.backgroundColor = .clear
-            hostingController.willMove(toParent: parent)
-            stackView.addArrangedSubview(hostingController.view)
-            parent.addChild(hostingController)
-            hostingController.didMove(toParent: parent)
-            self.authorHostingController = hostingController
-        }
-
-        self.authorHostingController?.view?.invalidateIntrinsicContentSize()
-    }
-
-    // MARK: - Types
-
-    enum RenderMethod: Equatable {
-        /// Uses WebKit to render the comment body.
-        case web
-
-        /// Uses WPRichContent to render the comment body.
-        case richContent(NSAttributedString)
+        return config
     }
 }

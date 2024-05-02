@@ -472,17 +472,16 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentDetailContentTableViewCell, comment: Comment) {
-        cell.onContentLoaded = { [weak self] _ in
-            self?.tableView.performBatchUpdates({})
-        }
-
-        cell.contentLinkTapAction = { [weak self] url in
+        let config: CommentDetailContentTableViewCell.ContentConfiguration = .init(comment: comment) { [weak self] _ in
+            UIView.performWithoutAnimation {
+                self?.tableView.performBatchUpdates({})
+            }
+        } onContentLinkTapped: { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
             self?.openWebView(for: url)
         }
-
-        cell.configure(with: comment, parent: self)
+        cell.configure(with: config, parent: self)
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {

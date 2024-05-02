@@ -3858,6 +3858,8 @@
 		F479995F2AFD241E0023F4FB /* RegisterDomainTransferFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F479995D2AFD241E0023F4FB /* RegisterDomainTransferFooterView.swift */; };
 		F47E154A29E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47E154929E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift */; };
 		F47E154B29E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47E154929E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift */; };
+		F47FE1052BE3BA8D0057D159 /* CommentDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47FE1042BE3BA8D0057D159 /* CommentDetailContentView.swift */; };
+		F47FE1062BE3BA8D0057D159 /* CommentDetailContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F47FE1042BE3BA8D0057D159 /* CommentDetailContentView.swift */; };
 		F484D4EA2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4E92A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift */; };
 		F484D4EB2A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4E92A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift */; };
 		F484D4ED2A32C4520050BE15 /* CATransaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */; };
@@ -9290,6 +9292,7 @@
 		F478B151292FC1BC00AA8645 /* MigrationAppearance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAppearance.swift; sourceTree = "<group>"; };
 		F479995D2AFD241E0023F4FB /* RegisterDomainTransferFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterDomainTransferFooterView.swift; sourceTree = "<group>"; };
 		F47E154929E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteCreationPurchasingWebFlowController.swift; sourceTree = "<group>"; };
+		F47FE1042BE3BA8D0057D159 /* CommentDetailContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailContentView.swift; sourceTree = "<group>"; };
 		F484D4E92A32B51C0050BE15 /* RootViewPresenter+AppSettingsNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RootViewPresenter+AppSettingsNavigation.swift"; sourceTree = "<group>"; };
 		F484D4EC2A32C4520050BE15 /* CATransaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CATransaction+Extension.swift"; sourceTree = "<group>"; };
 		F48D44B5298992C30051EAA6 /* BlockedSite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockedSite.swift; sourceTree = "<group>"; };
@@ -18135,6 +18138,7 @@
 			children = (
 				F4C34C852BDFA62900B7E472 /* CommentDetailContentTableViewCell.swift */,
 				F4C34C892BDFCDFA00B7E472 /* CommentContentHeaderView.swift */,
+				F47FE1042BE3BA8D0057D159 /* CommentDetailContentView.swift */,
 			);
 			path = Content;
 			sourceTree = "<group>";
@@ -22501,6 +22505,7 @@
 				4A5DE7382B0D511900363171 /* PageTree.swift in Sources */,
 				FAE4327425874D140039EB8C /* ReaderSavedPostCellActions.swift in Sources */,
 				7E4123C220F4097B00DF8486 /* FormattableContentFormatter.swift in Sources */,
+				F47FE1052BE3BA8D0057D159 /* CommentDetailContentView.swift in Sources */,
 				9887560C2810BA7A00AD7589 /* BloggingPromptsIntroductionPresenter.swift in Sources */,
 				7E21C765202BBF4400837CF5 /* SearchAdsAttribution.swift in Sources */,
 				5DF8D26119E82B1000A2CD95 /* ReaderCommentsViewController.m in Sources */,
@@ -26223,6 +26228,7 @@
 				FABB25BE2602FC2C00C8785C /* SettingsPickerViewController.swift in Sources */,
 				4A878551290F2C7D0083AB78 /* Media+Sync.swift in Sources */,
 				FABB25C02602FC2C00C8785C /* ReaderTopicCollectionViewCoordinator.swift in Sources */,
+				F47FE1062BE3BA8D0057D159 /* CommentDetailContentView.swift in Sources */,
 				FABB25C12602FC2C00C8785C /* WPAppAnalytics.m in Sources */,
 				FABB25C22602FC2C00C8785C /* SettingsSelectionViewController.m in Sources */,
 				FABB25C32602FC2C00C8785C /* FormattableContentActionCommand.swift in Sources */,
