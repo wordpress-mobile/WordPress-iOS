@@ -146,6 +146,10 @@ enum PostVisibility: Identifiable, CaseIterable {
         }
     }
 
+    init(post: AbstractPost) {
+        self.init(status: post.status ?? .draft, password: post.password)
+    }
+
     var id: PostVisibility { self }
 
     var localizedTitle: String {
@@ -163,7 +167,6 @@ enum PostVisibility: Identifiable, CaseIterable {
         case .private: NSLocalizedString("postVisibility.private.details", value: "Only visible to site admins and editors", comment: "Details for a 'Private' privacy setting")
         }
     }
-
 }
 
 private enum Strings {

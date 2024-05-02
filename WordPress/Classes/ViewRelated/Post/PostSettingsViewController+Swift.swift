@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import Combine
 import WordPressKit
+import SwiftUI
 
 extension PostSettingsViewController {
     static func make(for post: AbstractPost) -> PostSettingsViewController {
@@ -175,6 +176,32 @@ extension PostSettingsViewController {
 extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         deleteRevision()
+    }
+}
+
+// MARK: - PostSettingsViewController (Visibility)
+
+extension PostSettingsViewController {
+    @objc func showUpdatedPostVisibilityPicker() {
+        let view = PostVisibilityPicker(visibility: PostVisibility(post: apost)) { [weak self] selection in
+            guard let self else { return }
+
+            switch selection.visibility {
+            case .public:
+                self.apost.status = .publish
+            case .private:
+                self.apost.status = .publishPrivate
+            case .protected:
+                self.apost.status = .publish
+            }
+            self.apost.password = selection.password
+            self.navigationController?.popViewController(animated: true)
+            self.reloadData()
+        }
+        let viewController = UIHostingController(rootView: view)
+        viewController.title = PostVisibilityPicker.title
+        viewController.configureDefaultNavigationBarAppearance()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }
 
