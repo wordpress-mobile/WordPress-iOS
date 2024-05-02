@@ -6,8 +6,13 @@ protocol ReaderTagCardCellViewModelDelegate: NSObjectProtocol {
 
 class ReaderTagCardCellViewModel: NSObject {
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, NSManagedObjectID>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, NSManagedObjectID>
+    enum CardCellItem: Hashable {
+        case empty
+        case post(id: NSManagedObjectID)
+    }
+
+    private typealias DataSource = UICollectionViewDiffableDataSource<Int, CardCellItem>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CardCellItem>
 
     let slug: String
     weak var viewDelegate: ReaderTagCardCellViewModelDelegate? = nil
@@ -22,29 +27,23 @@ class ReaderTagCardCellViewModel: NSObject {
         .init(coreDataStack: coreDataStack)
     }()
 
-    private lazy var dataSource: DataSource? = {
-        guard let collectionView else {
+    private lazy var dataSource: DataSource? = { [weak self] in
+        guard let self,
+              let collectionView else {
            return nil
         }
-        let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, objectID in
-            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
-                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(), for: indexPath) as? ReaderTagCell else {
-                return UICollectionViewCell()
-            }
-            cell.configure(parent: self?.parentViewController,
-                           post: post,
-                           isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
-            return cell
-        }
-        dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
-            guard let slug = self?.slug,
+
+        let dataSource = DataSource(collectionView: collectionView, cellProvider: self.cardCellProvider)
+        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
+            guard let item = dataSource.itemIdentifier(for: indexPath),
+                  item != .empty,
                   kind == UICollectionView.elementKindSectionFooter,
                   let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                              withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces(),
                                                                              for: indexPath) as? ReaderTagFooterView else {
                 return nil
             }
-            view.configure(with: slug) { [weak self] in
+            view.configure(with: self.slug) { [weak self] in
                 self?.onTagButtonTapped()
             }
             return view
@@ -122,13 +121,60 @@ class ReaderTagCardCellViewModel: NSObject {
 
 }
 
+// MARK: - Private Methods
+
+private extension ReaderTagCardCellViewModel {
+    /// Configures and returns a collection view cell according to the index path and `CardCellItem`.
+    /// This method that satisfies the `UICollectionViewDiffableDataSource.CellProvider` closure signature.
+    func cardCellProvider(_ collectionView: UICollectionView,
+                          _ indexPath: IndexPath,
+                          _ item: CardCellItem) -> UICollectionViewCell? {
+        switch item {
+        case .empty:
+            return nil // TODO
+
+        case .post(let objectID):
+            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
+                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(),
+                                                                for: indexPath) as? ReaderTagCell else {
+                return UICollectionViewCell() // TODO: will crash at this point.
+            }
+
+            cell.configure(parent: parentViewController, post: post, isLoggedIn: isLoggedIn)
+            return cell
+        }
+    }
+
+    /// Translates a diffable snapshot from `NSFetchedResultsController` to a snapshot that fits the collection view.
+    ///
+    /// Snapshots returned from `NSFetchedResultsController` always have the type `<String, NSManagedObjectID>`, so
+    /// it needs to be converted to match the correct type required by the collection view..
+    ///
+    /// - Parameter snapshotRef: The snapshot returned from the `NSFetchedResultsController`
+    /// - Returns: `Snapshot`
+    private func collectionViewSnapshot(from snapshotRef: NSDiffableDataSourceSnapshotReference) -> Snapshot {
+        let coreDataSnapshot = snapshotRef as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+        var snapshot = Snapshot()
+
+        // there needs to be at least one section.
+        snapshot.appendSections([.zero])
+
+        if coreDataSnapshot.numberOfItems == .zero {
+            snapshot.appendItems([.empty])
+        } else {
+            snapshot.appendItems(coreDataSnapshot.itemIdentifiers.map { .post(id: $0) })
+        }
+
+        return snapshot
+    }
+}
+
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension ReaderTagCardCellViewModel: NSFetchedResultsControllerDelegate {
-
     func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>,
                     didChangeContentWith snapshot: NSDiffableDataSourceSnapshotReference) {
-        dataSource?.apply(snapshot as Snapshot, animatingDifferences: false) { [weak self] in
+        dataSource?.apply(collectionViewSnapshot(from: snapshot), animatingDifferences: false) { [weak self] in
             self?.viewDelegate?.hideLoading()
         }
     }
@@ -156,6 +202,7 @@ extension ReaderTagCardCellViewModel: UICollectionViewDelegate {
 extension ReaderTagCardCellViewModel: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // TODO: Cell size for the empty state.
         return cellSize() ?? .zero
     }
 
