@@ -113,7 +113,7 @@ extension GutenbergViewController {
         var actions: [UIAction] = []
 
         let toggleModeTitle = mode == .richText ? Strings.codeEditor : Strings.visualEditor
-        let toggleModeIconName = mode == .richText ? "ellipsis.curlybraces" : "doc.richtext"
+        let toggleModeIconName = mode == .richText ? "curlybraces" : "doc.richtext"
         actions.append(UIAction(title: toggleModeTitle, image: UIImage(systemName: toggleModeIconName)) { [weak self] _ in
             self?.toggleEditingMode()
         })
