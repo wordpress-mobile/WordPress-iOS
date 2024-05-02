@@ -432,6 +432,8 @@
 		0A9687BC28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */; };
 		0C01A6EA2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
 		0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */; };
+		0C02E6C52BE3B6E30055F0F6 /* PostTrashedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */; };
+		0C02E6C62BE3B6E30055F0F6 /* PostTrashedOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */; };
 		0C03AECA2B7D995F00B64A25 /* PublishButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C03AEC92B7D995F00B64A25 /* PublishButton.swift */; };
 		0C03AECB2B7D995F00B64A25 /* PublishButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C03AEC92B7D995F00B64A25 /* PublishButton.swift */; };
 		0C0453282AC73343003079C8 /* SiteMediaVideoDurationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */; };
@@ -6290,6 +6292,7 @@
 		0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSuggestion+Comparable.swift"; sourceTree = "<group>"; };
 		0A9687BB28B40771009DCD2F /* FullScreenCommentReplyViewModelMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenCommentReplyViewModelMock.swift; sourceTree = "<group>"; };
 		0C01A6E92AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaCollectionCellSelectionOverlayView.swift; sourceTree = "<group>"; };
+		0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTrashedOverlayView.swift; sourceTree = "<group>"; };
 		0C03AEC92B7D995F00B64A25 /* PublishButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PublishButton.swift; sourceTree = "<group>"; };
 		0C0453272AC73343003079C8 /* SiteMediaVideoDurationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaVideoDurationView.swift; sourceTree = "<group>"; };
 		0C04532A2AC77245003079C8 /* SiteMediaDocumentInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaDocumentInfoView.swift; sourceTree = "<group>"; };
@@ -15270,6 +15273,7 @@
 				8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
+				0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */,
 			);
 			path = Post;
 			sourceTree = "<group>";
@@ -22865,6 +22869,7 @@
 				FAB8004925AEDC2300D5D54A /* JetpackBackupCompleteViewController.swift in Sources */,
 				9A8ECE0C2254A3260043C8DA /* JetpackLoginViewController.swift in Sources */,
 				46F583A92624CE790010A723 /* BlockEditorSettings+CoreDataClass.swift in Sources */,
+				0C02E6C52BE3B6E30055F0F6 /* PostTrashedOverlayView.swift in Sources */,
 				B50C0C641EF42B3A00372C65 /* Header+WordPress.swift in Sources */,
 				FAA5C90F2B7FC74C002E073B /* PostSyncStateViewModel.swift in Sources */,
 				F504D2B125D60C5900A2764C /* StoryMediaLoader.swift in Sources */,
@@ -25047,6 +25052,7 @@
 				FABB22A72602FC2C00C8785C /* BlogListViewController+Activity.swift in Sources */,
 				3F810A5B2616870C00ADDCC2 /* UnifiedPrologueIntroContentView.swift in Sources */,
 				FABB22A82602FC2C00C8785C /* TableDataCoordinator.swift in Sources */,
+				0C02E6C62BE3B6E30055F0F6 /* PostTrashedOverlayView.swift in Sources */,
 				FABB22A92602FC2C00C8785C /* SettingsMultiTextViewController.m in Sources */,
 				FABB22AA2602FC2C00C8785C /* FilterSheetViewController.swift in Sources */,
 				FABB22AB2602FC2C00C8785C /* Plan.swift in Sources */,
