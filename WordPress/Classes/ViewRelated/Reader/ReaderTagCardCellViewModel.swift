@@ -6,13 +6,18 @@ protocol ReaderTagCardCellViewModelDelegate: NSObjectProtocol {
 
 class ReaderTagCardCellViewModel: NSObject {
 
+    enum Section: Int {
+        case emptyState = 101
+        case posts
+    }
+
     enum CardCellItem: Hashable {
         case empty
         case post(id: NSManagedObjectID)
     }
 
-    private typealias DataSource = UICollectionViewDiffableDataSource<Int, CardCellItem>
-    private typealias Snapshot = NSDiffableDataSourceSnapshot<Int, CardCellItem>
+    private typealias DataSource = UICollectionViewDiffableDataSource<Section, CardCellItem>
+    private typealias Snapshot = NSDiffableDataSourceSnapshot<Section, CardCellItem>
 
     let slug: String
     weak var viewDelegate: ReaderTagCardCellViewModelDelegate? = nil
@@ -35,9 +40,7 @@ class ReaderTagCardCellViewModel: NSObject {
 
         let dataSource = DataSource(collectionView: collectionView, cellProvider: self.cardCellProvider)
         dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard let item = dataSource.itemIdentifier(for: indexPath),
-                  item != .empty,
-                  kind == UICollectionView.elementKindSectionFooter,
+            guard kind == UICollectionView.elementKindSectionFooter,
                   let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
                                                                              withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces(),
                                                                              for: indexPath) as? ReaderTagFooterView else {
@@ -63,6 +66,8 @@ class ReaderTagCardCellViewModel: NSObject {
         resultsController.delegate = self
         return resultsController
     }()
+
+    // MARK: Methods
 
     init(parent: UIViewController?,
          tag: ReaderTagTopic,
@@ -131,13 +136,22 @@ private extension ReaderTagCardCellViewModel {
                           _ item: CardCellItem) -> UICollectionViewCell? {
         switch item {
         case .empty:
-            return nil // TODO
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCardEmptyCell.defaultReuseID,
+                                                                for: indexPath) as? ReaderTagCardEmptyCell else {
+                return UICollectionViewCell()
+            }
+
+            cell.configure(tagTitle: slug) { [weak self] in
+                self?.fetchTagPosts(syncRemotely: true)
+            }
+
+            return cell
 
         case .post(let objectID):
             guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
                   let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(),
                                                                 for: indexPath) as? ReaderTagCell else {
-                return UICollectionViewCell() // TODO: will crash at this point.
+                return UICollectionViewCell()
             }
 
             cell.configure(parent: parentViewController, post: post, isLoggedIn: isLoggedIn)
@@ -148,22 +162,18 @@ private extension ReaderTagCardCellViewModel {
     /// Translates a diffable snapshot from `NSFetchedResultsController` to a snapshot that fits the collection view.
     ///
     /// Snapshots returned from `NSFetchedResultsController` always have the type `<String, NSManagedObjectID>`, so
-    /// it needs to be converted to match the correct type required by the collection view..
+    /// it needs to be converted to match the correct type required by the collection view.
     ///
     /// - Parameter snapshotRef: The snapshot returned from the `NSFetchedResultsController`
     /// - Returns: `Snapshot`
     private func collectionViewSnapshot(from snapshotRef: NSDiffableDataSourceSnapshotReference) -> Snapshot {
         let coreDataSnapshot = snapshotRef as NSDiffableDataSourceSnapshot<String, NSManagedObjectID>
+        let isEmpty = coreDataSnapshot.numberOfItems == .zero
         var snapshot = Snapshot()
 
-        // there needs to be at least one section.
-        snapshot.appendSections([.zero])
-
-        if coreDataSnapshot.numberOfItems == .zero {
-            snapshot.appendItems([.empty])
-        } else {
-            snapshot.appendItems(coreDataSnapshot.itemIdentifiers.map { .post(id: $0) })
-        }
+        // there must be at least one section.
+        snapshot.appendSections([isEmpty ? .emptyState : .posts])
+        snapshot.appendItems(isEmpty ? [.empty] : coreDataSnapshot.itemIdentifiers.map { .post(id: $0) })
 
         return snapshot
     }
@@ -186,7 +196,9 @@ extension ReaderTagCardCellViewModel: NSFetchedResultsControllerDelegate {
 extension ReaderTagCardCellViewModel: UICollectionViewDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let sectionInfo = resultsController.sections?[safe: indexPath.section],
+        guard let section = dataSource?.sectionIdentifier(for: indexPath.section),
+              section == .posts,
+              let sectionInfo = resultsController.sections?[safe: indexPath.section],
               indexPath.row < sectionInfo.numberOfObjects else {
             return
         }
@@ -202,11 +214,25 @@ extension ReaderTagCardCellViewModel: UICollectionViewDelegate {
 extension ReaderTagCardCellViewModel: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        // TODO: Cell size for the empty state.
-        return cellSize() ?? .zero
+        guard let section = dataSource?.sectionIdentifier(for: indexPath.section),
+              let size = cellSize() else {
+            return .zero
+        }
+
+        switch section {
+        case .emptyState:
+            return CGSize(width: collectionView.frame.width, height: size.height)
+        case .posts:
+            return size
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard let sectionIdentifier = dataSource?.sectionIdentifier(for: section),
+              sectionIdentifier == .posts else {
+            return .zero
+        }
+
         var viewSize = cellSize() ?? .zero
         viewSize.width = Constants.footerWidth
         return viewSize
