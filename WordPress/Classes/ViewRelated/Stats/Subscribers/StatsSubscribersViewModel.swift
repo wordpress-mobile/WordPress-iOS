@@ -67,13 +67,11 @@ private extension StatsSubscribersViewModel {
             return loadingRows(.subscribersChart)
         case .success(let chartSummary):
             let xAxisDates = chartSummary.history.map { $0.date }
-            let areDataValuesIdentical = Set(chartSummary.history.map { $0.count }).count <= 1
             let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
             return [
                 SubscriberChartRow(
                     history: chartSummary.history,
                     chartData: viewsChart.lineChartData,
-                    areDataValuesIdentical: areDataValuesIdentical,
                     chartStyling: viewsChart.lineChartStyling,
                     xAxisDates: xAxisDates,
                     statSection: .subscribersChart

@@ -270,7 +270,6 @@ private extension ViewsVisitorsLineChartCell {
         let filter: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
         let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors(filter),
                                                         data: chartData[selectedSegmentIndex],
-                                                        areDataValuesIdentical: false,
                                                         styling: chartStyling[selectedSegmentIndex],
                                                         analyticsGranularity: period?.analyticsGranularityLine,
                                                         indexToHighlight: 0,

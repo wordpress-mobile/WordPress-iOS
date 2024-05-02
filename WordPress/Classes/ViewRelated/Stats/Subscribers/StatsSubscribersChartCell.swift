@@ -7,7 +7,6 @@ class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var chartView: UIView!
 
     private var chartData: LineChartDataConvertible!
-    private var areDataValuesIdentical: Bool!
     private var chartStyling: LineChartStyling!
     private var xAxisDates: [Date]!
 
@@ -21,7 +20,6 @@ class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
         statSection = row.statSection
 
         self.chartData = row.chartData
-        self.areDataValuesIdentical = row.areDataValuesIdentical
         self.chartStyling = row.chartStyling
         self.xAxisDates = row.xAxisDates
 
@@ -34,7 +32,6 @@ private extension StatsSubscribersChartCell {
     func configureChartView() {
         let configuration = StatsLineChartConfiguration(type: .subscribers,
                                                         data: chartData,
-                                                        areDataValuesIdentical: areDataValuesIdentical,
                                                         styling: chartStyling,
                                                         analyticsGranularity: .days,
                                                         indexToHighlight: 0,

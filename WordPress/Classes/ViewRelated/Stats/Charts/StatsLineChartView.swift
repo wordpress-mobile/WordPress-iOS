@@ -39,10 +39,6 @@ class StatsLineChartView: LineChartView {
     ///
     private let lineChartData: LineChartDataConvertible
 
-    /// True if the chart is flat i.e. all its data points are the same
-    ///
-    private let areDataValuesIdentical: Bool
-
     /// This influences the visual appearance of the chart to be rendered.
     ///
     private let styling: LineChartStyling
@@ -80,7 +76,6 @@ class StatsLineChartView: LineChartView {
     init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
         self.statType = configuration.type
         self.lineChartData = configuration.data
-        self.areDataValuesIdentical = configuration.areDataValuesIdentical
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
         self.statsLineChartViewDelegate = delegate
@@ -269,13 +264,14 @@ private extension StatsLineChartView {
                 leftAxis.axisMaximum = lowestMaxValue
             }
         } else if case .subscribers = statType {
-            if areDataValuesIdentical {
+            let yAxisMin = data.getYMin(axis: .left)
+            if yAxisMax == yAxisMin {
                 yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
 
                 yAxis.axisMinimum = 0
                 yAxis.axisMaximum = yAxisMax * 2
             } else {
-                let yAxisMin = data.getYMin(axis: .left)
+
                 let yAxisDelta = Int(yAxisMax) - Int(yAxisMin)
                 let yAxisLabelCount = min(yAxisDelta + 1, Constants.verticalAxisLabelCount)
                 yAxis.setLabelCount(yAxisLabelCount, force: true)

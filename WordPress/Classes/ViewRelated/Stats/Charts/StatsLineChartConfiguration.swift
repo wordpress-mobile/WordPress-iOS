@@ -6,7 +6,6 @@ struct StatsLineChartConfiguration {
 
     let type: StatType
     let data: LineChartDataConvertible
-    let areDataValuesIdentical: Bool
     let styling: LineChartStyling
     let analyticsGranularity: LineChartAnalyticsPropertyGranularityValue?
     let indexToHighlight: Int?
