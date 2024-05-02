@@ -19,6 +19,7 @@ struct PostNoticePublishSuccessView: View {
                     .font(.headline)
                     .frame(maxWidth: .infinity, minHeight: 44)
             })
+            .accessibilityIdentifier("doneButton")
             .background(
                 RoundedRectangle(cornerRadius: 8, style: .continuous)
                     .fill(.secondary.opacity(0.15))
@@ -33,14 +34,16 @@ struct PostNoticePublishSuccessView: View {
     }
 
     private var header: some View {
-        HStack(alignment: .center, spacing: 24) {
+        HStack(alignment: .center, spacing: 12) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(Strings.title)
                     .font(.title3.weight(.semibold))
+                    .accessibilityIdentifier("publishedPostStatusLabel")
 
                 Text(post.titleForDisplay())
                     .font(.subheadline)
                     .lineLimit(2)
+                    .accessibilityIdentifier("postTitle")
 
                 let domain = post.blog.primaryDomainAddress
                 if !domain.isEmpty {
@@ -49,6 +52,7 @@ struct PostNoticePublishSuccessView: View {
                             .font(.footnote)
                             .lineLimit(1)
                     }
+                    .accessibilityIdentifier("siteUrl")
                     .tint(.secondary)
                 }
             }
@@ -74,6 +78,8 @@ struct PostNoticePublishSuccessView: View {
                 Image(systemName: "safari")
             }
         })
+        .accessibilityIdentifier("viewPostButton")
+
         Button(action: buttonShareTapped, label: {
             HStack {
                 Text(Strings.share)
@@ -81,6 +87,8 @@ struct PostNoticePublishSuccessView: View {
                 Image(systemName: "square.and.arrow.up")
             }
         })
+        .accessibilityIdentifier("sharePostButton")
+
         if BlazeHelper.isBlazeFlagEnabled() && post.canBlaze {
             Button(action: buttonBlazeTapped, label: {
                 HStack {
@@ -89,6 +97,7 @@ struct PostNoticePublishSuccessView: View {
                     Image("icon-blaze")
                 }
             })
+            .accessibilityIdentifier("blazePostButton")
         }
     }
 
