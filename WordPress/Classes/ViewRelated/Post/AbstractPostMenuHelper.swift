@@ -105,7 +105,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble.right")
         case .settings: return UIImage(systemName: "gearshape")
-        case .setParent: return UIImage(systemName: "text.append")
         case .setHomepage: return UIImage(systemName: "house")
         case .setPostsPage: return UIImage(systemName: "text.word.spacing")
         case .setRegularPage: return UIImage(systemName: "arrow.uturn.backward")
@@ -141,7 +140,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
         case .settings: return Strings.settings
-        case .setParent: return Strings.setParent
         case .setHomepage: return Strings.setHomepage
         case .setPostsPage: return Strings.setPostsPage
         case .setRegularPage: return Strings.setRegularPage
@@ -177,8 +175,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.comments(post)
         case .settings:
             delegate.showSettings(for: post)
-        case .setParent:
-            delegate.setParent(for: post)
         case .setHomepage:
             delegate.setHomepage(for: post)
         case .setPostsPage:
@@ -205,7 +201,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
-        static let setParent = NSLocalizedString("posts.setParent.actionTitle", value: "Set parent", comment: "Set the parent page for the selected page.")
         static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")
         static let setPostsPage = NSLocalizedString("posts.setPostsPage.actionTitle", value: "Set as posts page", comment: "Set the selected page as a posts page.")
         static let setRegularPage = NSLocalizedString("posts.setRegularPage.actionTitle", value: "Set as regular page", comment: "Set the selected page as a regular page.")

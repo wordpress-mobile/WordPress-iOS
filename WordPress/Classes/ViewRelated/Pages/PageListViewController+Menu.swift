@@ -60,13 +60,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         PostSettingsViewController.showStandaloneEditor(for: post, from: self)
     }
 
-    func setParent(for apost: AbstractPost) {
-        guard let page = apost as? Page else { return }
-        Task {
-            await setParentPage(for: page)
-        }
-    }
-
     func setHomepage(for apost: AbstractPost) {
         guard let page = apost as? Page else { return }
         WPAnalytics.track(.postListSetAsPostsPageAction)

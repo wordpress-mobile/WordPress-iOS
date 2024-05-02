@@ -42,7 +42,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowSlug,
     PostSettingsRowExcerpt,
     PostSettingsRowSocialNoConnections,
-    PostSettingsRowSocialRemainingShares
+    PostSettingsRowSocialRemainingShares,
+    PostSettingsRowParentPage
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -466,6 +467,8 @@ FeaturedImageViewControllerDelegate>
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        return 1;
     }
 
     return 0;
@@ -502,6 +505,8 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        return NSLocalizedStringWithDefaultValue(@"postSettings.section.pageAttributes", nil, [NSBundle mainBundle], @"Page Attributes", @"Section title for Page Attributes");
     }
     return nil;
 }
@@ -584,6 +589,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureRemainingSharesCell];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        cell = [self configurePageAttributesCellForIndexPath:indexPath];
     }
 
     return cell ?: [UITableViewCell new];
@@ -626,6 +633,8 @@ FeaturedImageViewControllerDelegate>
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
         [self showEditExcerptController];
+    } else if (cell.tag == PostSettingsRowParentPage) {
+        [self showParentPageController];
     }
 }
 
@@ -1397,6 +1406,23 @@ FeaturedImageViewControllerDelegate>
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
                           withRowAnimation:UITableViewRowAnimationFade];
+}
+
+// MARK: - Page Attributes
+
+- (UITableViewCell *)configurePageAttributesCellForIndexPath:(NSIndexPath *)indexPath
+{
+    return [self configureParentPageCell];
+}
+
+- (UITableViewCell *)configureParentPageCell
+{
+    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"postSettings.parentPage", nil, [NSBundle mainBundle], @"Parent page", @"The 'Parent Page' setting of the post");
+    cell.detailTextLabel.text = [self getParentPageTitle];
+    cell.tag = PostSettingsRowParentPage;
+    cell.accessibilityIdentifier = @"Parent";
+    return cell;
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate

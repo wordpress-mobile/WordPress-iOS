@@ -178,6 +178,65 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
     }
 }
 
+// MARK: - PostSettingsViewController (Page Attributes)
+
+extension PostSettingsViewController {
+    @objc func showParentPageController() {
+        guard let page = (self.apost as? Page) else {
+            wpAssertionFailure("post has to be a page")
+            return
+        }
+        Task {
+            await showParentPageController(for: page)
+        }
+    }
+
+    @MainActor
+    private func showParentPageController(for page: Page) async {
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        let filter = PostListFilter.publishedFilter()
+        request.predicate = filter.predicate(for: apost.blog, author: .everyone)
+        request.sortDescriptors = filter.sortDescriptors
+        do {
+            let context = ContextManager.shared.mainContext
+            var pages = try await PostRepository().buildPageTree(request: request)
+                .map { pageID, hierarchyIndex in
+                    let page = try context.existingObject(with: pageID)
+                    page.hierarchyIndex = hierarchyIndex
+                    return page
+                }
+            if let index = pages.firstIndex(of: page) {
+                pages = pages.remove(from: index)
+            }
+            let viewController = ParentPageSettingsViewController.make(with: pages, selectedPage: page) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.tableView.reloadData()
+            }
+            viewController.isModalInPresentation = true
+            navigationController?.pushViewController(viewController, animated: true)
+        } catch {
+            wpAssertionFailure("Failed to fetch pages", userInfo: ["error": "\(error)"]) // This should never happen
+        }
+    }
+
+    @objc func getParentPageTitle() -> String? {
+        guard let page = (self.apost as? Page) else {
+            wpAssertionFailure("post has to be a page")
+            return nil
+        }
+        guard let pageID = page.parentID else {
+            return nil
+        }
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "postID == %@", pageID)
+        guard let parent = try? (page.managedObjectContext?.fetch(request))?.first else {
+            return nil
+        }
+        return parent.titleForDisplay()
+    }
+}
+
 private enum Strings {
     static let errorMessage = NSLocalizedString("postSettings.updateFailedMessage", value: "Failed to update the post settings", comment: "Error message on post/page settings screen")
 }
