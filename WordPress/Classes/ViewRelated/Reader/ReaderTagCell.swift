@@ -2,6 +2,8 @@ import WordPressUI
 
 class ReaderTagCell: UICollectionViewCell {
 
+    private typealias AccessibilityConstants = ReaderPostCardCell.Constants.Accessibility
+
     @IBOutlet private weak var contentStackView: UIStackView!
     @IBOutlet private weak var headerStackView: UIStackView!
     @IBOutlet private weak var siteLabel: UILabel!
@@ -38,24 +40,7 @@ class ReaderTagCell: UICollectionViewCell {
     func configure(parent: UIViewController?, post: ReaderPost, isLoggedIn: Bool) {
         viewModel = ReaderTagCellViewModel(parent: parent, post: post, isLoggedIn: isLoggedIn)
 
-        let blogName = post.blogNameForDisplay()
-        let postDate = post.shortDateForDisplay()
-        let postTitle = post.titleForDisplay()
-        let postSummary = post.summaryForDisplay(isPad: traitCollection.userInterfaceIdiom == .pad)
-        let postCounts = post.countsForDisplay(isLoggedIn: isLoggedIn)
-
-        siteLabel.text = blogName
-        postDateLabel.text = postDate
-        titleLabel.text = postTitle
-        summaryLabel.text = postSummary
-        countsLabel.text = postCounts
-
-        siteLabel.isHidden = blogName == nil
-        postDateLabel.isHidden = postDate == nil
-        titleLabel.isHidden = postTitle == nil
-        summaryLabel.isHidden = postSummary == nil
-        countsLabel.isHidden = postCounts == nil
-
+        setupLabels(with: post, isLoggedIn: isLoggedIn)
         configureLikeButton(with: post)
         loadFeaturedImage(with: post)
     }
@@ -131,6 +116,35 @@ private extension ReaderTagCell {
         likeButton.setImage(isLiked ? Constants.likedButtonImage : Constants.likeButtonImage, for: .normal)
         likeButton.tintColor = isLiked ? .jetpackGreen : .secondaryLabel
         likeButton.setTitleColor(likeButton.tintColor, for: .normal)
+        likeButton.accessibilityHint = post.isLiked ? AccessibilityConstants.likedButtonHint : AccessibilityConstants.likeButtonHint
+    }
+
+    func setupLabels(with post: ReaderPost, isLoggedIn: Bool) {
+        let blogName = post.blogNameForDisplay()
+        let postDate = post.shortDateForDisplay()
+        let postTitle = post.titleForDisplay()
+        let postSummary = post.summaryForDisplay(isPad: traitCollection.userInterfaceIdiom == .pad)
+        let postCounts = post.countsForDisplay(isLoggedIn: isLoggedIn)
+
+        siteLabel.text = blogName
+        postDateLabel.text = postDate
+        titleLabel.text = postTitle
+        summaryLabel.text = postSummary
+        countsLabel.text = postCounts
+
+        siteLabel.isHidden = blogName == nil
+        postDateLabel.isHidden = postDate == nil
+        titleLabel.isHidden = postTitle == nil
+        summaryLabel.isHidden = postSummary == nil
+        countsLabel.isHidden = postCounts == nil
+
+        headerStackView.isAccessibilityElement = true
+        headerStackView.accessibilityLabel = [blogName, postDate].compactMap { $0 }.joined(separator: ", ")
+        headerStackView.accessibilityHint = AccessibilityConstants.siteStackViewHint
+        headerStackView.accessibilityTraits = .button
+        countsLabel.accessibilityLabel = postCounts?.replacingOccurrences(of: " • ", with: ", ")
+        menuButton.accessibilityLabel = AccessibilityConstants.menuButtonLabel
+        menuButton.accessibilityHint = AccessibilityConstants.menuButtonHint
     }
 
 }
