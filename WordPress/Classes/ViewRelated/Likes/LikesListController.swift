@@ -30,7 +30,7 @@ class LikesListController: NSObject {
     private let tableView: UITableView
     private var loadingIndicator = UIActivityIndicatorView()
     private weak var delegate: LikesListControllerDelegate?
-    private unowned var parent: UIViewController
+    private weak var parent: UIViewController?
 
     // Used to control pagination.
     private var isFirstLoad = true
@@ -378,6 +378,9 @@ private extension LikesListController {
         let content = snippetBlock.text ?? ""
         let action: () -> Void = { [weak self] in self?.delegate?.didSelectHeader!() }
 
+        guard let parent = parent else {
+            return
+        }
         if notification?.kind == .commentLike || notification?.kind == .follow {
             let avatar = NoteBlockHeaderTableViewCell.Avatar(
                 url: mediaURL,
