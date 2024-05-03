@@ -594,6 +594,11 @@ import Foundation
     case readingPreferencesSaved
     case readingPreferencesClosed
 
+    // Stats Subscribers
+    case statsSubscribersViewMoreTapped
+    case statsEmailsViewMoreTapped
+    case statsSubscribersChartTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1614,6 +1619,14 @@ import Foundation
             return "reader_reading_preferences_saved"
         case .readingPreferencesClosed:
             return "reader_reading_preferences_closed"
+
+        // Stats Subscribers
+        case .statsSubscribersViewMoreTapped:
+            return "stats_subscribers_view_more_tapped"
+        case .statsEmailsViewMoreTapped:
+            return "stats_emails_view_more_tapped"
+        case .statsSubscribersChartTapped:
+            return "stats_subscribers_chart_tapped"
 
         } // END OF SWITCH
     }
