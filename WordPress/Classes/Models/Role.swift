@@ -21,31 +21,3 @@ extension Role {
         return context.firstObject(ofType: Role.self, matching: predicate)
     }
 }
-
-extension Role {
-    @objc var backgroundColor: UIColor {
-        switch slug {
-        case .some("super-admin"):
-            return .DS.Foreground.primary
-        case .some("administrator"):
-            return .DS.Foreground.primary
-        case .some("editor"):
-            return .DS.Background.secondary
-        default:
-            return .DS.Background.secondary
-        }
-    }
-
-    @objc var textColor: UIColor {
-        switch slug {
-        case .some("super-admin"):
-            return .DS.Background.primary
-        case .some("administrator"):
-            return .DS.Background.primary
-        case .some("editor"):
-            return .DS.Foreground.primary
-        default:
-            return .DS.Foreground.primary
-        }
-    }
-}

@@ -30,11 +30,21 @@ struct PeopleCellViewModel {
     }
 
     var roleBackgroundColor: UIColor {
-        return role?.backgroundColor ?? .DS.Background.secondary
+        switch role?.slug {
+        case .some("super-admin"), .some("administrator"):
+            return .DS.Foreground.primary
+        default:
+            return .DS.Background.secondary
+        }
     }
 
     var roleTextColor: UIColor {
-        return role?.textColor ?? .DS.Foreground.primary
+        switch role?.slug {
+        case .some("super-admin"), .some("administrator"):
+            return .DS.Background.primary
+        default:
+            return .DS.Foreground.primary
+        }
     }
 
     var roleText: String {
