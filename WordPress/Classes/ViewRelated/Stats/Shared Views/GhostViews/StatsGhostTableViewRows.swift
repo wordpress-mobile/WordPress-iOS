@@ -47,6 +47,7 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
 
     var hideTopBorder = false
     var hideBottomBorder = false
+    var numberOfColumns: Int = 2
     var statSection: StatSection? = nil
 
     // MARK: - Hashable
@@ -66,6 +67,7 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
             detailCell.topBorder?.isHidden = hideTopBorder
             detailCell.bottomBorder?.isHidden = hideBottomBorder
             detailCell.statSection = statSection
+            detailCell.numberOfColumns = numberOfColumns
         }
     }
 }

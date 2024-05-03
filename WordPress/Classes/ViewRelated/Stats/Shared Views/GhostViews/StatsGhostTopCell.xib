@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,71 +12,46 @@
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" rowHeight="88" id="nvH-i5-fa2" customClass="StatsGhostTopCell" customModule="WordPress" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="385" height="88"/>
             <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nvH-i5-fa2" id="z3U-Dz-KW3">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="nvH-i5-fa2" id="z3U-Dz-KW3">
                 <rect key="frame" x="0.0" y="0.0" width="385" height="88"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aIz-HO-onk">
-                        <rect key="frame" x="16" y="7" width="50" height="16"/>
+                        <rect key="frame" x="16" y="8" width="50" height="16"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="16" id="THd-y7-PIC"/>
                             <constraint firstAttribute="width" constant="50" id="uhQ-AY-YaT"/>
                         </constraints>
                     </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DmG-JX-3gY">
-                        <rect key="frame" x="319" y="7" width="50" height="16"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <stackView opaque="NO" contentMode="scaleToFill" placeholderIntrinsicWidth="60" placeholderIntrinsicHeight="16" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="jxt-jZ-8QN">
+                        <rect key="frame" x="309" y="8" width="60" height="16"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="16" id="0Vd-eQ-9pC"/>
-                            <constraint firstAttribute="width" constant="50" id="csa-Wh-xgf"/>
+                            <constraint firstAttribute="height" constant="16" id="1Y7-DG-Ys9"/>
                         </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K4M-bQ-piX">
-                        <rect key="frame" x="16" y="45" width="28" height="28"/>
+                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1H4-fM-muj" customClass="StatsGhostTopCellRow" customModule="WordPress" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="29" width="385" height="53"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="28" id="Ts8-dz-WPq"/>
-                            <constraint firstAttribute="width" constant="28" id="n8Q-7w-nqb"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cpf-Oy-Tmi">
-                        <rect key="frame" x="60" y="39" width="309" height="20"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="20" id="TqM-kO-gWN"/>
-                        </constraints>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KAb-Vl-aXI">
-                        <rect key="frame" x="60" y="64" width="309" height="15"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="15" id="3n8-eE-jLQ"/>
-                        </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="K4M-bQ-piX" firstAttribute="leading" secondItem="z3U-Dz-KW3" secondAttribute="leading" constant="16" id="08B-Ng-CS2"/>
-                    <constraint firstItem="aIz-HO-onk" firstAttribute="top" secondItem="DmG-JX-3gY" secondAttribute="top" id="0Uv-So-yIF"/>
-                    <constraint firstItem="DmG-JX-3gY" firstAttribute="top" secondItem="z3U-Dz-KW3" secondAttribute="top" constant="7" id="6Wf-Xv-zCd"/>
+                    <constraint firstItem="aIz-HO-onk" firstAttribute="top" secondItem="jxt-jZ-8QN" secondAttribute="top" id="2HP-Hn-zWz"/>
                     <constraint firstItem="aIz-HO-onk" firstAttribute="leading" secondItem="z3U-Dz-KW3" secondAttribute="leading" constant="16" id="HRa-iE-rFC"/>
-                    <constraint firstAttribute="bottom" secondItem="KAb-Vl-aXI" secondAttribute="bottom" constant="16" id="SBM-vd-ABT"/>
-                    <constraint firstItem="KAb-Vl-aXI" firstAttribute="top" secondItem="cpf-Oy-Tmi" secondAttribute="bottom" constant="5" id="WU2-9V-Z4Q"/>
-                    <constraint firstItem="K4M-bQ-piX" firstAttribute="top" secondItem="aIz-HO-onk" secondAttribute="bottom" constant="22" id="ZfL-bL-kBB"/>
-                    <constraint firstItem="cpf-Oy-Tmi" firstAttribute="leading" secondItem="K4M-bQ-piX" secondAttribute="trailing" constant="16" id="cZJ-bA-2o5"/>
-                    <constraint firstItem="cpf-Oy-Tmi" firstAttribute="top" secondItem="aIz-HO-onk" secondAttribute="bottom" constant="16" id="nPp-Iw-UuB"/>
-                    <constraint firstAttribute="trailing" secondItem="KAb-Vl-aXI" secondAttribute="trailing" constant="16" id="r25-vV-UiR"/>
-                    <constraint firstAttribute="trailing" secondItem="DmG-JX-3gY" secondAttribute="trailing" constant="16" id="s54-fV-G8m"/>
-                    <constraint firstItem="KAb-Vl-aXI" firstAttribute="leading" secondItem="K4M-bQ-piX" secondAttribute="trailing" constant="16" id="vQS-Df-VPO"/>
+                    <constraint firstItem="jxt-jZ-8QN" firstAttribute="top" secondItem="z3U-Dz-KW3" secondAttribute="top" constant="8" id="Kql-5Q-mvs"/>
+                    <constraint firstAttribute="bottom" secondItem="1H4-fM-muj" secondAttribute="bottom" constant="6" id="MkE-Xp-9nb"/>
+                    <constraint firstAttribute="trailing" secondItem="jxt-jZ-8QN" secondAttribute="trailing" constant="16" id="Vny-n9-5Zd"/>
+                    <constraint firstItem="1H4-fM-muj" firstAttribute="top" secondItem="jxt-jZ-8QN" secondAttribute="bottom" constant="5" id="cm7-dx-TAh"/>
+                    <constraint firstItem="1H4-fM-muj" firstAttribute="leading" secondItem="z3U-Dz-KW3" secondAttribute="leading" id="fA8-sZ-0N4"/>
+                    <constraint firstAttribute="trailing" secondItem="1H4-fM-muj" secondAttribute="trailing" id="lc0-OR-DzU"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-            <constraints>
-                <constraint firstAttribute="trailing" secondItem="cpf-Oy-Tmi" secondAttribute="trailing" constant="16" id="AHP-3y-Wu8"/>
-            </constraints>
             <connections>
-                <outlet property="topConstraint" destination="6Wf-Xv-zCd" id="Ofu-JB-lIE"/>
+                <outlet property="topCellHeaders" destination="jxt-jZ-8QN" id="Jei-Iq-gJH"/>
+                <outlet property="topCellRow" destination="1H4-fM-muj" id="P5d-zM-egq"/>
+                <outlet property="topConstraint" destination="Kql-5Q-mvs" id="IV5-Hm-R57"/>
             </connections>
             <point key="canvasLocation" x="113.768115942029" y="153.34821428571428"/>
         </tableViewCell>
