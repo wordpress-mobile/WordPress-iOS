@@ -186,6 +186,8 @@ extension PostSettingsViewController {
         let view = PostVisibilityPicker(visibility: PostVisibility(post: apost)) { [weak self] selection in
             guard let self else { return }
 
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+
             switch selection.visibility {
             case .public:
                 self.apost.status = .publish

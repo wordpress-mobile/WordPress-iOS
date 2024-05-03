@@ -711,7 +711,7 @@ FeaturedImageViewControllerDelegate>
         cell.tag = PostSettingsRowAuthor;
     } else if (row == PostSettingsRowPublishDate) {
         // Publish date
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
         // Note: it's safe to remove `shouldPublishImmediately` when
         // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
@@ -746,7 +746,7 @@ FeaturedImageViewControllerDelegate>
 
     } else if (row == PostSettingsRowVisibility) {
         // Visibility
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self.apost titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
@@ -1016,12 +1016,15 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewDisclosureCell
+- (WPTableViewCell *)getWPTableViewDisclosureCell {
+    return [self getWPTableViewDisclosureCellWithIdentifier:@"WPTableViewDisclosureCellIdentifier"];
+}
+
+- (WPTableViewCell *)getWPTableViewDisclosureCellWithIdentifier:(NSString *)identifier
 {
-    static NSString *WPTableViewDisclosureCellIdentifier = @"WPTableViewDisclosureCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDisclosureCellIdentifier];
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDisclosureCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [WPStyleGuide configureTableViewCell:cell];
     }
