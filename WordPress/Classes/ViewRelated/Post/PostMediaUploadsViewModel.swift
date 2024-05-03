@@ -3,8 +3,8 @@ import SwiftUI
 import Combine
 
 /// Manages media upload for the given revision of the post.
-final class PostMediaUploadViewModel: ObservableObject {
-    private(set) var uploads: [MediaUploadViewModel]
+final class PostMediaUploadsViewModel: ObservableObject {
+    private(set) var uploads: [PostMediaUploadItemViewModel]
 
     @Published private(set) var totalFileSize: Int64 = 0
     @Published private(set) var fractionCompleted = 0.0
@@ -27,7 +27,7 @@ final class PostMediaUploadViewModel: ObservableObject {
         self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
-            MediaUploadViewModel(media: $0, coordinator: coordinator)
+            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator)
         }
 
         coordinator.uploadMedia(for: post)
@@ -68,10 +68,10 @@ final class PostMediaUploadViewModel: ObservableObject {
 }
 
 /// Manages individual media upload.
-final class MediaUploadViewModel: ObservableObject, Identifiable {
+final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
     @Published private(set) var state: State = .uploading
 
-    private let media: Media
+    let media: Media
     private let coordinator: MediaCoordinator
 
     private var completed: Int64 = 0
@@ -190,6 +190,16 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         } catch {
             // Continue showing placeholder
         }
+    }
+
+    // MARK: - Actions
+
+    func buttonRetryTapped() {
+        retry()
+    }
+
+    func buttonCancelTapped() {
+        coordinator.cancelUploadAndDeleteMedia(media)
     }
 }
 

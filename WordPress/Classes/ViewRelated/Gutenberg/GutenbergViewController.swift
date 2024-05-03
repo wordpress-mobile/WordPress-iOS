@@ -315,7 +315,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        if !FeatureFlag.syncPublishing.enabled {
+            PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        }
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -516,7 +518,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func presentNewPageNoticeIfNeeded() {
-        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard !FeatureFlag.syncPublishing.enabled else {
             return
         }
         // Validate if the post is a newly created page or not.

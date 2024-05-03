@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-18 15:05:51+0000 */
+/* Translation-Revision-Date: 2024-04-30 06:00:52+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Sigur vrei să arunci la gunoi acest articol?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Sigur vrei să actualizezi prima pagină?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Sigur vrei să actualizezi?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Articol blog";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Urmăritor prin email al blogului";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Urmăritor blog";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Utilizator blog";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Vizitator blog";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogging";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Interval de date";
-
-/* Date and Time */
-"Date and Time" = "Dată și oră";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Adresă email";
-
-/* Blog Email Followers */
-"Email Followers" = "Urmăritori prin email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Site-uri urmărite";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Urmăritor";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Urmăritori";
 
 /* User is following the blog. */
@@ -3774,7 +3748,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Button shown if there are unsaved changes and the author is trying to move away from the post.
    Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
-"Keep Editing" = "Stai în editare";
+"Keep Editing" = "Continuă editarea";
 
 /* Button to cancel the replacement of a featured image. */
 "Keep current" = "Păstrează imaginea curentă";
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Am inserat legătura";
 
 /* No comment provided by engineer. */
-"Link text" = "Text legătură";
+"Link label" = "Etichetă legătură";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Leagă-te la conținutul existent";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publică";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Publicat chiar acum pe";
-
-/* Published on [date] */
-"Published on" = "Publicat la";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Public pagina...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programat";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Programat pentru";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Programat pentru %@ pe";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Înregistrare prin email";
 
-/* Label for time period in list of followers. */
-"Since" = "De la";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Deoarece ai un plan gratuit, vei vedea numai anumite evenimente în jurnalul de activități.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Până acum, nu există amenințări ignorate pe site-ul tău.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -7422,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Total comentarii";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total urmăritori pe email: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Total urmăritori";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Total aprecieri";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Total articole";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total urmăritori de pe WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Total cuvinte";
@@ -8900,6 +8853,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Anulează";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Ai făcut modificări la acest articol de pe un alt dispozitiv și nu le-ai salvat. Editat: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Salvarea automată este disponibilă";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Vezi modificările";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Nu pot să încarc imaginea. Te rog alege alta sau reîncearcă mai târziu.";
 
@@ -10239,7 +10204,7 @@ Example: Reply to Pamela Nguyen */
 "pageList.badgeLocalChanges" = "Schimbări locale";
 
 /* Badge for page cells */
-"pageList.badgePendingReview" = "Revizie în așteptare";
+"pageList.badgePendingReview" = "Recenzie în așteptare";
 
 /* Badge for page cells */
 "pageList.badgePosts" = "Pagină articole";
@@ -10346,26 +10311,32 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Planuri";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Creat %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Șterg articolul...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Editat %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Arunc articolul la gunoi...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Publicat %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Renunță la modificări";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Programat %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Renunță la ciornă";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Aruncat la gunoi %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Continuă editarea";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Salvează ciorna";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Creez salvarea automată...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Am încărcat revizia";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Salvez ciorna...";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "De %@.";
@@ -10378,6 +10349,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "Recenzie în așteptare";
+
+/* Cancels an Action */
+"postList.cancel" = "Anulează";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Șterge definitiv";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Sigur vrei să ștergi definitiv „%@”?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Aplicația încarcă pe server modificările făcute mai înainte. Te rog să reîncerci mai târziu.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Ceva nu a mers bine";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Modificări offline";
@@ -10393,6 +10382,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Vizualizează";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Aruncă la gunoi";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Sigur vrei să arunci la gunoi „%@”? Toate modificări care nu au fost trimise mai înainte pe server vor fi pierdute.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Anulează încărcarea";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Închide";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "Nicio încărcare în așteptare";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ din %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Reîncearcă încărcarea";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Reîncearcă încărcările";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Încărcări media";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "A apărut o eroare";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Aplicația încarcă pe server modificările făcute mai înainte. Te rog să reîncerci mai târziu.";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Am încărcat ciorna paginii";
@@ -10424,11 +10449,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Am actualizat articolul";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Încărcarea a eșuat";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Vezi";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Conținutul a fost modificat pe alt dispozitiv";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "„%@” a fost șters definitiv și nu mai poate fi actualizat";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Fără titlu";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Închide";
@@ -10442,6 +10473,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opțiuni imagine reprezentativă";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Recenzie în așteptare";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Partajarea automată pe Twitter nu mai este disponibilă";
 
@@ -10450,6 +10484,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Actualizarea setărilor pentru articole a eșuat";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Vizibil numai pentru administratorii și editorii site-ului";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Privat";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Vizibil pentru toată lumea, dar necesită o parolă";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Protejat cu parolă";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Vizibil pentru toată lumea";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Public";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Anulează";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Vizibilitate";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Parolă";
+
+/* Button save */
+"postVisibilityPicker.save" = "Salvează";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovează cu Blaze";
@@ -10474,6 +10538,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Previzualizează";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publică";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Reîncearcă";
@@ -10541,8 +10608,11 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Încărcarea media a eșuat";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ elemente au eșuat la încărcare";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Încărcarea media a eșuat";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titlu";
@@ -10552,6 +10622,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Data publicării";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Imediat";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicare în";
@@ -10617,6 +10690,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etichete";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ elemente rămase";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ element rămas";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Încărcare media";
 
@@ -10626,14 +10705,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Vezi toate răspunsurile";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ din %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Data publicării";
 
-/* Retry button title */
-"publishButton.retry" = "Reîncearcă";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Data în fusul orar actual:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Acum";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Imediat";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Înlătură data publicării";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Selectează data publicării";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Fus orar";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Data publicării";
@@ -11108,6 +11196,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Adaugă o etichetă";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Apreciază";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Apreciat";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descoperă mai multe etichete";
 
@@ -11209,6 +11303,24 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Articole similare";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Un alt dispozitiv";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Dispozitivul curent";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "Articolul a fost modificat pe un alt dispozitiv. Te rog să selectezi versiunea pe care vrei să o păstrezi pentru acest articol.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Anulează";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Salvează";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Rezolvă conflictul";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Copiază legătura";
@@ -11387,6 +11499,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Necunoscut";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Toate site-urile";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Site-uri fixate";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Site-uri recente";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Adaugă un site";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Anulează";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Gata";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Editează";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Alege un site";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Reamintiri";
 
@@ -11422,6 +11558,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Partajarea automată pe Twitter nu mai este disponibilă deoarece Twitter a făcut modificări la termeni și prețuri.";
+
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Abonați";
 
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Trafic";
@@ -11519,6 +11658,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Activitate insuficientă. Revino mai târziu când site-ul va avea mai mulți vizitatori!";
 
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Abonați";
+
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ultimul tău articol %1$@ a avut %2$@ aprecieri.";
 
@@ -11530,6 +11672,33 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Azi";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Abonat de la";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Nume";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "Abonați";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Clicuri";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Deschideri";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Ultimele emailuri";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "Emailuri";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Abonați";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Tabel arătând %1$@, %2$@ și %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Diagramă cu bare care descrie comentariile pentru perioada selectată.";
@@ -11543,17 +11712,17 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Diagramă cu bare care descrie vizitatorii pentru perioada selectată.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "După zi";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Zile";
 
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "După lună";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Luni";
 
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "După săptămână";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Săptămâni";
 
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "După an";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Ani";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Refuză";
@@ -11564,8 +11733,27 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Caută pentru a găsi fotografii gratuite pe care să le adaugi în biblioteca ta Media!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Opțional, poți să incluzi adresa ta de email și numele tău de utilizator pentru a ne ajuta să înțelegem mai bine experiența ta.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "nu ai introdus niciun email";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "nu ai introdus niciun nume de utilizator";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Gata";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Îți mulțumim pentru impresii";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Trimite";
+
+/* Notice informing user that their feedback is being submitted anonymously.
+   Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Trimitere";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Impresii";
@@ -11737,6 +11925,22 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "necitite";
+
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "Abonat prin email la site";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Abonat la site";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Utilizator pe site";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Vizitator pe site";
+
+/* Site Email Subscribers
+   Site Subscribers */
+"users.list.title.subscribers" = "Abonați";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "vizitează pagina cu documentație";

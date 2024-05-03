@@ -467,7 +467,7 @@ private extension NotificationSettingsViewController {
             case .blog:
                 return NSLocalizedString("Your Sites", comment: "Displayed in the Notification Settings View")
             case .followedSites:
-                return NSLocalizedString("Followed Sites", comment: "Displayed in the Notification Settings View")
+                return NSLocalizedString("notification.settings.header.subscribedSites", value: "Subscribed Sites", comment: "Displayed in the Notification Settings View")
             case .other:
                 return NSLocalizedString("Other", comment: "Displayed in the Notification Settings View")
             case .wordPressCom:
@@ -483,8 +483,8 @@ private extension NotificationSettingsViewController {
                 return NSLocalizedString("Customize your site settings for Likes, Comments, Follows, and more.",
                                          comment: "Notification Settings for your own blogs")
             case .followedSites:
-                return NSLocalizedString("Customize your followed site settings for New Posts and Comments",
-                                         comment: "Notification Settings for your followed sites")
+                return NSLocalizedString("notification.settings.footer.subscribedSites", value: "Customize your subscribed site settings for New Posts and Comments",
+                                         comment: "Notification Settings for your subscribed sites")
             case .other:
                 return nil
             case .wordPressCom:

@@ -26,7 +26,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setHomepage, .setPostsPage],
             [.stats, .settings],
             [.trash]
         ]
@@ -54,7 +54,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setHomepage, .setPostsPage],
             [.stats, .settings],
             [.trash]
         ]
@@ -82,7 +82,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft, .duplicate, .share],
-            [.setParent, .setHomepage, .setPostsPage],
+            [.setHomepage, .setPostsPage],
             [.settings],
             [.trash]
         ]
@@ -111,7 +111,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.duplicate, .share],
             [.blaze],
-            [.setParent, .setPostsPage],
+            [.setPostsPage],
             [.stats, .settings]
         ]
         expect(buttons).to(equal(expectedButtons))
@@ -139,7 +139,7 @@ final class PageMenuViewModelTests: CoreDataTestCase {
             [.view],
             [.moveToDraft, .duplicate, .share],
             [.blaze],
-            [.setParent, .setHomepage, .setRegularPage],
+            [.setHomepage, .setRegularPage],
             [.stats, .settings],
             [.trash]
         ]
@@ -160,7 +160,6 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.publish, .duplicate],
-            [.setParent],
             [.settings],
             [.trash]
         ]
@@ -181,7 +180,6 @@ final class PageMenuViewModelTests: CoreDataTestCase {
         let expectedButtons: [[AbstractPostButton]] = [
             [.view],
             [.moveToDraft],
-            [.setParent],
             [.settings],
             [.trash]
         ]

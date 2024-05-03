@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-23 17:54:09+0000 */
+/* Translation-Revision-Date: 2024-04-29 21:08:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Вы уверены, что хотите удалить эту запись?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Уверены, что хотите обновить главную страницу?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Запись блога";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Общее количество подписчиков по электронной почте";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Читатель блога";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Пользователь блога";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Обозреватель блога";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Ведение блога";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Период";
-
-/* Date and Time */
-"Date and Time" = "Дата и время";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Адрес электронной почты";
-
-/* Blog Email Followers */
-"Email Followers" = "Подписчики по электронной почте";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Веб-сайты, на которые вы подписаны";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Читатель";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Читатели";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Ссылка вставлена";
 
 /* No comment provided by engineer. */
-"Link text" = "Текст ссылки";
+"Link label" = "Ярлык ссылки";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Ссылка на имеющееся содержимое";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Опубликовать";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Опубликовано только что на";
-
-/* Published on [date] */
-"Published on" = "Опубликовано";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Публикация страницы...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Запланировано";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Планируемая публикация: ";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Назначено на %@ на";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Зарегистрироваться с адресом Email";
 
-/* Label for time period in list of followers. */
-"Since" = "С";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Для бесплатного тарифа доступно ограниченное количество записей журнала активности.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Пока что у вашего сайта нет проигнорированных угроз.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Соцсети";
 
 /* Title of a Quick Start Tour */
@@ -7422,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Всего комментариев";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Общее количество подписчиков по электронной почте: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Общее количество подписчиков";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Всего отметок \"нравится\"";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Записей всего";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Общее количество подписчиков WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Всего слов";
@@ -10346,26 +10299,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Тарифы";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Создана %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Удаление записи...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Изменено %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Удаление записи в корзину...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Опубликовано %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Запланировано %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "В корзине %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Автор: %@.";
@@ -10424,9 +10362,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Запись обновлена";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Загрузка не удалась";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Просмотр";
 
@@ -10474,6 +10409,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Предварительный просмотр";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Опубликовать";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Повторить попытку";
@@ -10540,9 +10478,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
-
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Не удалось загрузить медиафайлы";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Заголовок";
@@ -10625,15 +10560,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Посмотреть все ответы";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ из %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Повторить";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Сейчас";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Дата публикации";
@@ -11536,18 +11462,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Столбчатая диаграмма, представляющая посетителей за выбранный период.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "По дню";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "По месяцу";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "По неделе";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "По году";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Закрыть";

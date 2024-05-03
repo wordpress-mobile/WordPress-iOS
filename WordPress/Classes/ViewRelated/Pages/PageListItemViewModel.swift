@@ -9,7 +9,7 @@ final class PageListItemViewModel {
     let accessibilityIdentifier: String?
     let syncStateViewModel: PostSyncStateViewModel
 
-    init(page: Page, isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+    init(page: Page, isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.page = page
         self.title = makeContentAttributedString(for: page)
         self.badgeIcon = makeBadgeIcon(for: page)

@@ -389,7 +389,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -790,9 +789,6 @@
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Kokplt";
 
-/* Date and Time */
-"Date and Time" = "Data i godzina";
-
 /* Title of Days stats filter. */
 "Days" = "Dni";
 
@@ -1140,9 +1136,7 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Obserwowane witryny";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Obserwujący";
 
 /* User is following the blog. */
@@ -2130,8 +2124,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Opublikuj";
 
 /* Label for the publish date button. */
@@ -2144,9 +2137,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Opublikowano";
-
-/* Published on [date] */
-"Published on" = "Opublikowano dnia ";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikowanie wpisu…";
@@ -2346,9 +2336,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zaplanowano";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Zaplanowano na ";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Planowanie…";
 
@@ -2520,10 +2507,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection. */
 "Skip" = "Pomiń";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Społeczności";
 
 /* Title for a label that appears when the scan failed
@@ -2820,9 +2805,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Today' header
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Całkowita liczba obserwujących";
 
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";

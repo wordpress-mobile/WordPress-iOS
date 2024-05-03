@@ -43,6 +43,7 @@ final class StatsSubscribersViewModel {
 private extension StatsSubscribersViewModel {
     func updateTableViewSnapshot() {
         var snapshot = ImmuTableDiffableDataSourceSnapshot()
+        snapshot.addSection(subscribersTotalsRows())
         snapshot.addSection(chartRows())
         snapshot.addSection(subscribersListRows())
         snapshot.addSection(emailsSummaryRows())
@@ -55,6 +56,26 @@ private extension StatsSubscribersViewModel {
 
     func errorRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
         return [StatsErrorRow(rowStatus: .error, statType: .subscribers, statSection: section)]
+    }
+}
+
+// MARK: - Subscribers Totals
+
+private extension StatsSubscribersViewModel {
+    func subscribersTotalsRows() -> [any StatsHashableImmuTableRow] {
+        switch store.subscribersList.value {
+        case .loading, .idle:
+            return loadingRows(.subscribersTotal)
+        case .success(let subscribersData):
+            return [
+                TotalInsightStatsRow(
+                    dataRow: .init(count: subscribersData.totalCount),
+                    statSection: .subscribersTotal
+                )
+            ]
+        case .error:
+            return errorRows(.subscribersTotal)
+        }
     }
 }
 
@@ -126,12 +147,12 @@ private extension StatsSubscribersViewModel {
         switch store.subscribersList.value {
         case .loading, .idle:
             return loadingRows(.subscribersList)
-        case .success(let subscribers):
+        case .success(let subscribersData):
             return [
                 TopTotalsPeriodStatsRow(
                     itemSubtitle: StatSection.ItemSubtitles.subscriber,
                     dataSubtitle: StatSection.DataSubtitles.since,
-                    dataRows: subscribersListDataRows(subscribers),
+                    dataRows: subscribersListDataRows(subscribersData.subscribers),
                     statSection: .subscribersList,
                     siteStatsPeriodDelegate: viewMoreDelegate
                 )

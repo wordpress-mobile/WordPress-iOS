@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "この投稿を本当にゴミ箱へ移動してよいですか ?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "ホームページを更新してもよろしいですか ?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "更新してもよいですか ?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "ブログ投稿";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "ブログのメールフォロワー";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "ブログのフォロワー";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "ブログのユーザー";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "ブログの読者";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "ブログ";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "日付の範囲";
-
-/* Date and Time */
-"Date and Time" = "日付と時刻";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "メールアドレス";
-
-/* Blog Email Followers */
-"Email Followers" = "メールフォロワー";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "フォローしたサイト";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "フォロワー";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "フォロワー";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "リンクを挿入しました";
 
 /* No comment provided by engineer. */
-"Link text" = "リンクテキスト";
+"Link label" = "リンクラベル";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "既存のコンテンツへのリンク";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "公開";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "投稿を公開しました: ";
-
-/* Published on [date] */
-"Published on" = "公開日時:";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "ページを公開しています...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "予約済み";
 
-/* Scheduled for [date] */
-"Scheduled for" = "予約済み:";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "%@に投稿予約: ";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "メールアドレスで登録";
 
-/* Label for time period in list of followers. */
-"Since" = "以降";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "無料プランをご利用のため、アクティビティログで確認できるイベントは限られています。";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "これまでのところ、サイトで無視された脅威は見つかりませんでした。";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "ソーシャル";
 
 /* Title of a Quick Start Tour */
@@ -7422,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "総コメント数";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "メールフォロワーの合計数: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "フォロワー総数";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "総いいね数";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "総投稿数";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "WordPress.com フォロワーの合計数: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "総単語数";
@@ -10334,26 +10287,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "プラン";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "%@に作成済み";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "投稿を削除中...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "%@に編集済み";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "投稿をゴミ箱に移動中...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "%@に公開";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "%@に予約";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "%@にゴミ箱に移動";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作成者: %@。";
@@ -10411,9 +10349,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "投稿を更新しました";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "アップロードに失敗しました";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "表示";
@@ -10529,9 +10464,6 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack ソーシャル";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "メディアのアップロードに失敗";
-
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "タイトル";
 
@@ -10613,15 +10545,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "すべての回答を表示";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ \/ %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "再試行";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "現在";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "公開日";
@@ -11515,18 +11438,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "選択した期間の訪問者を表す棒グラフ。";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "日別";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "月別";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "週別";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "年別";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";

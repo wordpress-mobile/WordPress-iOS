@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Vuoi davvero eliminare questo articolo?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Vuoi davvero aggiornare la homepage?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Vuoi davvero aggiornare?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Articolo del blog";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Follower tramite email del blog";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Follower del blog";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Utente del blog";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Visitatore del blog";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Creazione di un blog";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Intervallo di date";
-
-/* Date and Time */
-"Date and Time" = "Data e ora";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2590,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Indirizzo email";
-
-/* Blog Email Followers */
-"Email Followers" = "Follower tramite email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3050,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Siti seguiti";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Follower";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Seguaci";
 
 /* User is following the blog. */
@@ -3940,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Link inserito";
 
 /* No comment provided by engineer. */
-"Link text" = "Testo del link";
+"Link label" = "Etichetta del link";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Inserisci un link a un contenuto esistente";
@@ -5478,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Pubblica";
 
 /* Label for the publish date button. */
@@ -5504,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Pubblicato proprio ora su";
-
-/* Published on [date] */
-"Published on" = "Pubblicato il";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Pubblicazione della pagina in corso...";
@@ -5986,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programmato";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Programmato per";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Pianificato per %@ su";
 
@@ -6400,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registrati con l'email";
 
-/* Label for time period in list of followers. */
-"Since" = "Da";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Poiché hai un piano Gratuito, nel Log delle attività visualizzerai un numero limitato di eventi.";
 
@@ -6495,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Al momento, non ci sono minacce ignorate sul tuo sito.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -7419,21 +7381,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Commenti totali";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Totale follower via email: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Follower totali";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Mi piace totali";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Articoli totali";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Follower WordPress.com totali: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Parole totali";
@@ -10331,26 +10284,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Piani";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Creazione: %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Eliminazione dell'articolo in corso...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Modifica: %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Spostamento dell'articolo nel cestino in corso...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Pubblicazione: %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Pianificazione: %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Spostamento nel cestino: %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Di %@.";
@@ -10405,9 +10343,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Articolo aggiornato";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Caricamento non riuscito";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Visualizza";
@@ -10517,9 +10452,6 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Chiudi";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Caricamento del media non riuscito";
-
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Pubblicazione";
 
@@ -10589,9 +10521,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Visualizza tutte le risposte";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Ora";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignora";
@@ -11485,18 +11414,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Barra del grafico che indica i Visitatori per il periodo selezionato.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Per giorno";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Per mese";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Per settimana";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Per anno";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Ignora";

@@ -30,7 +30,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
         isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-        isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()
+        isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled
     ) {
         self.page = page
         self.isSiteHomepage = isSiteHomepage
@@ -109,8 +109,6 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         guard page.status != .trash else {
             return AbstractPostButtonSection(buttons: buttons)
         }
-
-        buttons.append(.setParent)
 
         guard page.status == .publish else {
             return AbstractPostButtonSection(buttons: buttons)

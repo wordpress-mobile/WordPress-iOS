@@ -17,7 +17,7 @@ final class PostSyncStateViewModel {
 
     init(post: AbstractPost,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isSyncPublishingEnabled = isSyncPublishingEnabled
