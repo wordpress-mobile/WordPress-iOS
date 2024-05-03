@@ -141,6 +141,12 @@ private class StatsGhostTopCellColumn: UIView {
         topView.startGhostAnimation(style: GhostCellStyle.muriel)
         bottomView.startGhostAnimation(style: GhostCellStyle.muriel)
     }
+
+    override func tintColorDidChange() {
+        super.tintColorDidChange()
+        topView.restartGhostAnimation(style: GhostCellStyle.muriel)
+        bottomView.restartGhostAnimation(style: GhostCellStyle.muriel)
+    }
 }
 
 fileprivate extension StatsGhostTopCell {
