@@ -188,29 +188,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return appearance
     }()
 
-    // MARK: Nav Bar Buttons
-
-    private(set) lazy var editBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .edit,
-                               target: self,
-                               action: #selector(editButtonTapped))
-        button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
-        return button
-    }()
-
-    private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: comment.allowsModeration()
-            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
-            : UIImage(systemName: Style.Content.shareIconImageName),
-            style: .plain,
-            target: self,
-            action: #selector(shareCommentURL)
-        )
-        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
-        return button
-    }()
-
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -351,16 +328,6 @@ private extension CommentDetailViewController {
     func configureNavigationBar() {
         navigationItem.standardAppearance = blurredBarAppearance
         navigationController?.navigationBar.isTranslucent = true
-        configureNavBarButton()
-    }
-
-    func configureNavBarButton() {
-        var barItems: [UIBarButtonItem] = []
-        barItems.append(shareBarButtonItem)
-        if comment.allowsModeration() {
-            barItems.append(editBarButtonItem)
-        }
-        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     func configureTable() {
@@ -416,7 +383,6 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
-        configureNavBarButton()
         configureSections()
         tableView.reloadData()
     }
@@ -472,7 +438,22 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentDetailContentTableViewCell, comment: Comment) {
-        let config: CommentDetailContentTableViewCell.ContentConfiguration = .init(comment: comment) { [weak self] _ in
+        let onOptionSelected: (CommentDetailContentTableViewCell.MenuOption) -> Void = { [weak self] option in
+            guard let self else {
+                return
+            }
+            switch option {
+            case .userInfo:
+                presentUserInfoSheet()
+            case .editComment:
+                editButtonTapped()
+            case .share:
+                shareCommentURL()
+            case .changeStatus(let status):
+                print("Option \(status) tapped")
+            }
+        }
+        let contentConfig = CommentDetailContentTableViewCell.ContentConfiguration(comment: comment) { [weak self] _ in
             UIView.performWithoutAnimation {
                 self?.tableView.performBatchUpdates({})
             }
@@ -481,7 +462,7 @@ private extension CommentDetailViewController {
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
             self?.openWebView(for: url)
         }
-        cell.configure(with: config, parent: self)
+        cell.configure(with: contentConfig, onOptionSelected: onOptionSelected, parent: self)
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
@@ -704,7 +685,7 @@ private extension CommentDetailViewController {
         })
     }
 
-    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
+    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem? = nil) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -717,7 +698,7 @@ private extension CommentDetailViewController {
         present(activityViewController, animated: true, completion: nil)
     }
 
-    func presentUserInfoSheet(_ senderView: UIView) {
+    func presentUserInfoSheet() {
         let viewModel = CommentDetailInfoViewModel(
             url: comment.authorURL(),
             urlToDisplay: comment.authorUrlForDisplay(),

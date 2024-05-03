@@ -7,6 +7,8 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
 
     typealias ContentConfiguration = CommentDetailContentView.Configuration
     typealias HeaderConfiguration = CommentContentHeaderView.Configuration
+    typealias MenuConfiguration = CommentContentHeaderView.MenuConfiguration
+    typealias MenuOption = CommentContentHeaderView.MenuConfiguration.Option
 
     // MARK: - Views
 
@@ -48,8 +50,8 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
         self.commentView.configure(with: contentConfig)
     }
 
-    func configure(with contentConfig: ContentConfiguration, parent: UIViewController) {
-        self.updateHeader(with: headerConfiguration(from: contentConfig.comment), parent: parent)
+    func configure(with contentConfig: ContentConfiguration, onOptionSelected: @escaping (MenuConfiguration.Option) -> Void, parent: UIViewController) {
+        self.updateHeader(with: headerConfiguration(from: contentConfig.comment, onOptionSelected: onOptionSelected), parent: parent)
         self.commentView.configure(with: contentConfig)
     }
 }
@@ -76,12 +78,15 @@ private extension CommentDetailContentTableViewCell {
         self.authorHostingController?.view?.invalidateIntrinsicContentSize()
     }
 
-    private func headerConfiguration(from comment: Comment) -> CommentContentHeaderView.Configuration {
-        let menu: CommentContentHeaderView.MenuList = {
-            let firstSection: CommentContentHeaderView.MenuSection = [.userInfo({}), .share({})]
-            let secondSection: CommentContentHeaderView.MenuSection = comment.allowsModeration() ? [.editComment({}), .changeStatus({ _ in })] : []
-            return [firstSection, secondSection]
-        }()
+    private func headerConfiguration(from comment: Comment, onOptionSelected: @escaping (MenuConfiguration.Option) -> Void) -> CommentContentHeaderView.Configuration {
+        let allowsModeration = comment.allowsModeration()
+        let menu: CommentContentHeaderView.MenuConfiguration = .init(
+            userInfo: true,
+            share: true,
+            editComment: allowsModeration,
+            changeStatus: allowsModeration,
+            onOptionSelected: onOptionSelected
+        )
         let config = CommentContentHeaderView.Configuration(
             avatarURL: comment.avatarURLForDisplay(),
             username: comment.authorForDisplay(),
