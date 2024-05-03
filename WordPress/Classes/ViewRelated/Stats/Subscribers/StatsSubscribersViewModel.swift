@@ -85,7 +85,7 @@ private extension StatsSubscribersViewModel {
     func chartRows() -> [any StatsHashableImmuTableRow] {
         switch store.chartSummary.value {
         case .loading, .idle:
-            return loadingRows(.subscribersChart)
+            return [StatsGhostLineChartRow(statSection: .subscribersChart)]
         case .success(let chartSummary):
             let xAxisDates = chartSummary.history.map { $0.date }
             let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
