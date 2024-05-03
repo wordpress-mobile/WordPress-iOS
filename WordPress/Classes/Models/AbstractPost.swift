@@ -265,3 +265,14 @@ extension AbstractPost {
         }
     }
 }
+
+extension AbstractPost {
+    var postHash: Int {
+        var hasher = Hasher()
+        hasher.combine(authorID)
+        hasher.combine(postTitle)
+        hasher.combine(content)
+        hasher.combine(dateCreated)
+        return hasher.finalize()
+    }
+}
