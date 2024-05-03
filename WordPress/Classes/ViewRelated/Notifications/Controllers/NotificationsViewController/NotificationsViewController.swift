@@ -1835,7 +1835,7 @@ private extension NotificationsViewController {
             case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
             case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .follow:   return NSLocalizedString("notifications.filter.subscribers.title", value: "Subscribers", comment: "Filters Subscribers Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
@@ -1855,7 +1855,7 @@ private extension NotificationsViewController {
             case .none:     return ""
             case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
             case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
-            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .follow:   return NSLocalizedString("notifications.filter.subscriptions.confirmationMessageTitle", value: "subscribe", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
             case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
@@ -1868,8 +1868,8 @@ private extension NotificationsViewController {
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
             case .comment:  return NSLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
+            case .follow:   return NSLocalizedString("notifications.noresults.subscribers", value: "No subscribers yet",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications")
             case .like:     return NSLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }
