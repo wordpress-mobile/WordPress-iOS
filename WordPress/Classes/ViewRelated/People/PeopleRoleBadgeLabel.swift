@@ -1,5 +1,5 @@
 import UIKit
-import WordPressShared.WPStyleGuide
+import DesignSystem
 
 class PeopleRoleBadgeLabel: BadgeLabel {
     override init(frame: CGRect) {
@@ -14,9 +14,9 @@ class PeopleRoleBadgeLabel: BadgeLabel {
 
     private func setupView() {
         adjustsFontSizeToFitWidth = true
-        horizontalPadding = WPStyleGuide.People.RoleBadge.horizontalPadding
-        verticalPadding = WPStyleGuide.People.RoleBadge.verticalPadding
-        font = WPStyleGuide.People.RoleBadge.font
-        layer.cornerRadius = WPStyleGuide.People.RoleBadge.cornerRadius
+        horizontalPadding = CGFloat.DS.Padding.single
+        verticalPadding = .DS.Padding.half
+        font = .DS.font(.footnote)
+        layer.cornerRadius = .DS.Radius.small
     }
 }

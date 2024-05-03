@@ -26,26 +26,26 @@ extension Role {
     @objc var backgroundColor: UIColor {
         switch slug {
         case .some("super-admin"):
-            return WPStyleGuide.People.Color.Admin.background
+            return .DS.Foreground.primary
         case .some("administrator"):
-            return WPStyleGuide.People.Color.Admin.background
+            return .DS.Foreground.primary
         case .some("editor"):
-            return WPStyleGuide.People.Color.Other.background
+            return .DS.Background.secondary
         default:
-            return WPStyleGuide.People.Color.Other.background
+            return .DS.Background.secondary
         }
     }
 
     @objc var textColor: UIColor {
         switch slug {
         case .some("super-admin"):
-            return WPStyleGuide.People.Color.Admin.text
+            return .DS.Background.primary
         case .some("administrator"):
-            return WPStyleGuide.People.Color.Admin.text
+            return .DS.Background.primary
         case .some("editor"):
-            return WPStyleGuide.People.Color.Other.text
+            return .DS.Foreground.primary
         default:
-            return WPStyleGuide.People.Color.Other.text
+            return .DS.Foreground.primary
         }
     }
 }

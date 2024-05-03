@@ -1,5 +1,6 @@
 import Foundation
 import WordPressShared
+import DesignSystem
 
 struct PeopleCellViewModel {
     let displayName: String
@@ -29,11 +30,11 @@ struct PeopleCellViewModel {
     }
 
     var roleBackgroundColor: UIColor {
-        return role?.backgroundColor ?? WPStyleGuide.People.Color.Other.background
+        return role?.backgroundColor ?? .DS.Background.secondary
     }
 
     var roleTextColor: UIColor {
-        return role?.textColor ?? WPStyleGuide.People.Color.Other.text
+        return role?.textColor ?? .DS.Foreground.primary
     }
 
     var roleText: String {
@@ -49,7 +50,7 @@ struct PeopleCellViewModel {
     }
 
     var superAdminBackgroundColor: UIColor {
-        return WPStyleGuide.People.Color.Admin.background
+        return .DS.Foreground.primary
     }
 
     var superAdminHidden: Bool {
