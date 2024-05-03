@@ -2818,6 +2818,10 @@
 		B038A81F2BD70FCA00763731 /* StatsSubscribersChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B038A81B2BD70FCA00763731 /* StatsSubscribersChartCell.xib */; };
 		B038A8212BD7164F00763731 /* StatsSubscribersLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038A8202BD7164F00763731 /* StatsSubscribersLineChart.swift */; };
 		B038A8222BD7164F00763731 /* StatsSubscribersLineChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038A8202BD7164F00763731 /* StatsSubscribersLineChart.swift */; };
+		B038BD152BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038BD142BE1A37D009FD7E9 /* SubscribersChartMarker.swift */; };
+		B038BD162BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038BD142BE1A37D009FD7E9 /* SubscribersChartMarker.swift */; };
+		B038BD182BE1A3CC009FD7E9 /* StatsChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038BD172BE1A3CC009FD7E9 /* StatsChartMarker.swift */; };
+		B038BD192BE1A3CC009FD7E9 /* StatsChartMarker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B038BD172BE1A3CC009FD7E9 /* StatsChartMarker.swift */; };
 		B03B9234250BC593000A40AF /* SuggestionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9233250BC593000A40AF /* SuggestionService.swift */; };
 		B03B9236250BC5FD000A40AF /* Suggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = B03B9235250BC5FD000A40AF /* Suggestion.swift */; };
 		B0637527253E7CEC00FD45D2 /* SuggestionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0637526253E7CEB00FD45D2 /* SuggestionsTableView.swift */; };
@@ -8210,6 +8214,8 @@
 		B038A81A2BD70FCA00763731 /* StatsSubscribersChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersChartCell.swift; sourceTree = "<group>"; };
 		B038A81B2BD70FCA00763731 /* StatsSubscribersChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsSubscribersChartCell.xib; sourceTree = "<group>"; };
 		B038A8202BD7164F00763731 /* StatsSubscribersLineChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersLineChart.swift; sourceTree = "<group>"; };
+		B038BD142BE1A37D009FD7E9 /* SubscribersChartMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscribersChartMarker.swift; sourceTree = "<group>"; };
+		B038BD172BE1A3CC009FD7E9 /* StatsChartMarker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsChartMarker.swift; sourceTree = "<group>"; };
 		B03B9233250BC593000A40AF /* SuggestionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestionService.swift; sourceTree = "<group>"; };
 		B03B9235250BC5FD000A40AF /* Suggestion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Suggestion.swift; sourceTree = "<group>"; };
 		B0637526253E7CEB00FD45D2 /* SuggestionsTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SuggestionsTableView.swift; path = Suggestions/SuggestionsTableView.swift; sourceTree = "<group>"; };
@@ -9964,6 +9970,7 @@
 				B038A81A2BD70FCA00763731 /* StatsSubscribersChartCell.swift */,
 				B038A81B2BD70FCA00763731 /* StatsSubscribersChartCell.xib */,
 				B038A8202BD7164F00763731 /* StatsSubscribersLineChart.swift */,
+				B038BD142BE1A37D009FD7E9 /* SubscribersChartMarker.swift */,
 			);
 			path = Subscribers;
 			sourceTree = "<group>";
@@ -13202,6 +13209,7 @@
 				73D86968223AF4040064920F /* StatsChartLegendView.swift */,
 				1756F1DE2822BB6F00CD0915 /* SparklineView.swift */,
 				1756DBDE28328B76006E6DB9 /* DonutChartView.swift */,
+				B038BD172BE1A3CC009FD7E9 /* StatsChartMarker.swift */,
 			);
 			path = Charts;
 			sourceTree = "<group>";
@@ -21647,6 +21655,7 @@
 				019C5B8D2BD6570D00A69DB0 /* StatsSubscribersStore.swift in Sources */,
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
+				B038BD152BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
 				3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */,
 				0C7E09202A4286A00052324C /* PostMetaButton.m in Sources */,
 				F47E154A29E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift in Sources */,
@@ -23104,6 +23113,7 @@
 				C7BB601F2863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */,
 				FFCB9F4B22A125BD0080A45F /* WPException.m in Sources */,
 				9A9E3FAD230E9DD000909BC4 /* StatsGhostCells.swift in Sources */,
+				B038BD182BE1A3CC009FD7E9 /* StatsChartMarker.swift in Sources */,
 				E14DF70620C922F200959BA9 /* NotificationCenter+ObserveOnce.swift in Sources */,
 				E125F1E41E8E595E00320B67 /* SharePost.swift in Sources */,
 				B56FEB791CD8E13C00E621F9 /* RoleViewController.swift in Sources */,
@@ -24424,6 +24434,7 @@
 				8BD66ED52787530C00CCD95A /* PostsCardViewModel.swift in Sources */,
 				FABB20F22602FC2C00C8785C /* PlanService.swift in Sources */,
 				FABB20F32602FC2C00C8785C /* Routes+Mbar.swift in Sources */,
+				B038BD162BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
 				FEFA264026C5AE9E009CCB7E /* ShareAppTextActivityItemSource.swift in Sources */,
 				FABB20F42602FC2C00C8785C /* PostListEditorPresenter.swift in Sources */,
 				C7BB60202863B9E800748FD9 /* QRLoginCameraSession.swift in Sources */,
@@ -25723,6 +25734,7 @@
 				FABB24822602FC2C00C8785C /* ReaderSearchSuggestion.swift in Sources */,
 				DCF892CA282FA37100BB71E1 /* SiteStatsBaseTableViewController.swift in Sources */,
 				FABB24832602FC2C00C8785C /* ReaderSearchViewController.swift in Sources */,
+				B038BD192BE1A3CC009FD7E9 /* StatsChartMarker.swift in Sources */,
 				FABB24842602FC2C00C8785C /* SiteStatsTableHeaderView.swift in Sources */,
 				FABB24852602FC2C00C8785C /* MediaSizeSliderCell.swift in Sources */,
 				80B016D22803AB9F00D15566 /* DashboardPostsListCardCell.swift in Sources */,

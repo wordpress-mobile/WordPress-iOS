@@ -28,8 +28,12 @@ class StatsLineChartView: LineChartView {
         static let xAxisWidth               = 4.0
         static let xAxisTickWidth           = 2.0
         static let lineWidth                = 2.0
-        static let numberDaysInWeek         = 7
+        static let numberOfXAxisTicks       = 7
     }
+
+    /// The type of stat shown on the chart i.e. subscribers, views & visitors, etc.
+    ///
+    private let statType: StatsLineChartConfiguration.StatType
 
     /// This adapts the data set for presentation by the Charts framework.
     ///
@@ -51,8 +55,6 @@ class StatsLineChartView: LineChartView {
     ///
     private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
 
-    private var statsInsightsFilterDimension: StatsInsightsFilterDimension
-
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
@@ -71,13 +73,13 @@ class StatsLineChartView: LineChartView {
         updateXAxisTicks()
     }
 
-    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil, statsInsightsFilterDimension: StatsInsightsFilterDimension = .views) {
+    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
+        self.statType = configuration.type
         self.lineChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
         self.statsLineChartViewDelegate = delegate
         self.xAxisDates = configuration.xAxisDates
-        self.statsInsightsFilterDimension = statsInsightsFilterDimension
 
         super.init(frame: .zero)
 
@@ -102,7 +104,6 @@ private extension StatsLineChartView {
         configureChartViewBaseProperties()
 
         configureXAxis()
-        configureYAxis()
     }
 
     func captureAnalyticsEvent() {
@@ -112,7 +113,9 @@ private extension StatsLineChartView {
             properties[LineChartAnalyticsPropertyGranularityKey] = specifiedAnalyticsGranularity.rawValue
         }
 
-        properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
+        if case let .viewsAndVisitors(statsInsightsFilterDimension) = statType {
+            properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
+        }
 
         WPAnalytics.track(.statsLineChartTapped, properties: properties)
     }
@@ -130,7 +133,7 @@ private extension StatsLineChartView {
 
         data = lineChartData
 
-        configureYAxisMaximum()
+        configureYAxis()
     }
 
     func configureLineChartViewBaseProperties() {
@@ -222,7 +225,7 @@ private extension StatsLineChartView {
         if contentRect.width > 0 {
             xAxis.axisLineWidth = Constants.xAxisWidth
 
-            let count = max(xAxisDates.count, Constants.numberDaysInWeek)
+            let count = Constants.numberOfXAxisTicks
             let contentWidthMinusTicks = contentRect.width - (Constants.xAxisTickWidth * CGFloat(count))
             xAxis.axisLineDashLengths = [Constants.xAxisTickWidth, (contentWidthMinusTicks / CGFloat(count - 1))]
         }
@@ -232,36 +235,67 @@ private extension StatsLineChartView {
         let yAxis = leftAxis
 
         yAxis.axisLineColor = styling.lineColor
-        yAxis.axisMinimum = 0.0
         yAxis.drawAxisLineEnabled = false
         yAxis.drawLabelsEnabled = true
         yAxis.drawZeroLineEnabled = true
         yAxis.gridColor = styling.lineColor
         yAxis.labelTextColor = styling.labelColor
         yAxis.labelFont = WPStyleGuide.fontForTextStyle(.footnote, symbolicTraits: [], maximumPointSize: WPStyleGuide.Stats.maximumChartAxisFontPointSize)
-        yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
         yAxis.valueFormatter = styling.yAxisValueFormatter
         yAxis.zeroLineColor = styling.lineColor
 
         // This adjustment is intended to prevent clipping observed with some labels
         // Potentially relevant : https://github.com/danielgindi/Charts/issues/992
         extraTopOffset = Constants.topOffset
-    }
 
-    func configureYAxisMaximum() {
-        let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+        guard let data else { return }
+        let yAxisMax = data.getYMax(axis: .left)
 
-        if let maxY = data?.getYMax(axis: .left),
-           maxY >= lowestMaxValue {
-            leftAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(maxY)
-        } else {
-            leftAxis.axisMaximum = lowestMaxValue
+        if case .viewsAndVisitors = statType {
+            yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
+
+            yAxis.axisMinimum = 0
+
+            let lowestMaxValue = Double(Constants.verticalAxisLabelCount - 1)
+            let dataYMax = yAxisMax
+            if dataYMax >= lowestMaxValue {
+                yAxis.axisMaximum = VerticalAxisFormatter.roundUpAxisMaximum(dataYMax)
+            } else {
+                leftAxis.axisMaximum = lowestMaxValue
+            }
+        } else if case .subscribers = statType {
+            let yAxisMin = data.getYMin(axis: .left)
+            if yAxisMax == yAxisMin {
+                yAxis.setLabelCount(Constants.verticalAxisLabelCount, force: true)
+
+                yAxis.axisMinimum = 0
+                yAxis.axisMaximum = yAxisMax * 2
+            } else {
+
+                let yAxisDelta = Int(yAxisMax) - Int(yAxisMin)
+                let yAxisLabelCount = min(yAxisDelta + 1, Constants.verticalAxisLabelCount)
+                yAxis.setLabelCount(yAxisLabelCount, force: true)
+
+                // When a line appears on axis minimum or maximum it loses half of its width
+                // Add/subtract little offset so line would appear full width
+                let yAxisOffset = ((yAxisMax - yAxisMin) / 100)
+
+                yAxis.axisMinimum = yAxisMin - yAxisOffset
+                yAxis.axisMaximum = yAxisMax + yAxisOffset
+            }
         }
     }
 
     func drawChartMarker(for entry: ChartDataEntry) {
-        marker = ViewsVisitorsChartMarker.init(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "")
-        if let customMarker = self.marker as? ViewsVisitorsChartMarker {
+        switch statType {
+        case .viewsAndVisitors:
+            marker = ViewsVisitorsChartMarker(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "")
+        case .subscribers:
+            let date = xAxisDates[Int(entry.x)]
+            marker = SubscribersChartMarker(dotColor: styling.primaryLineColor, name: styling.legendTitle ?? "", date: date)
+        }
+
+        if let customMarker = self.marker as? StatsChartMarker {
             customMarker.chartView = self
         }
     }
@@ -313,7 +347,7 @@ extension StatsLineChartView: Accessible {
     }
 }
 
-private class DateValueFormatter: NSObject, AxisValueFormatter {
+class DateValueFormatter: NSObject, AxisValueFormatter {
     var dateFormatter: DateFormatter
     var xAxisDates: [Date] = []
 
