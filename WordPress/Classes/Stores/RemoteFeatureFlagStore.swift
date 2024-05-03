@@ -1,14 +1,10 @@
 import Foundation
 import WordPressKit
 
-fileprivate extension DispatchQueue {
-    static let remoteFeatureFlagStoreQueue = DispatchQueue(label: "remote-feature-flag-store-queue")
-}
-
 class RemoteFeatureFlagStore {
 
     /// Thread Safety Coordinator
-    private var queue: DispatchQueue
+    private var lock = NSLock()
     private var persistenceStore: UserPersistentRepository
     private lazy var operationQueue: OperationQueue = {
         var queue = OperationQueue()
@@ -30,9 +26,7 @@ class RemoteFeatureFlagStore {
         return deviceID
     }
 
-    init(queue: DispatchQueue = .remoteFeatureFlagStoreQueue,
-                 persistenceStore: UserPersistentRepository = UserDefaults.standard) {
-        self.queue = queue
+    init(persistenceStore: UserPersistentRepository = UserDefaults.standard) {
         self.persistenceStore = persistenceStore
     }
 
@@ -79,14 +73,12 @@ extension RemoteFeatureFlagStore {
     /// The local cache stores feature flags between runs so that the most recently fetched set are ready to go as soon as this object is instantiated.
     private var cache: [String: Bool] {
         get {
-            // Read from the cache in a thread-safe way
-            queue.sync {
+            lock.withLock {
                 persistenceStore.dictionary(forKey: Constants.CachedFlagsKey) as? [String: Bool] ?? [:]
             }
         }
         set {
-            // Write to the cache in a thread-safe way.
-            self.queue.sync {
+            lock.withLock {
                 persistenceStore.set(newValue, forKey: Constants.CachedFlagsKey)
             }
         }

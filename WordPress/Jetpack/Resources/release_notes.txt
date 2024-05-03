@@ -1,2 +1,1 @@
-We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.
-We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.
+We made some updates to the Pages menu. You’ll now find Settings in its own section, right underneath Stats (which we also moved). It’s available for both published and unpublished posts. Groovy.

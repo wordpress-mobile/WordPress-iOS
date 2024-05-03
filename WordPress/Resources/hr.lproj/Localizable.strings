@@ -84,7 +84,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -615,8 +614,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Objavi";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -626,9 +624,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Objavljeno";
-
-/* Published on [date] */
-"Published on" = "Objavljeno";
 
 /* Name of the Reader feature.
    Noun. Name of the Reader feature
@@ -710,9 +705,6 @@
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tempirano";
-
-/* Scheduled for [date] */
-"Scheduled for" = "Tempirano za";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.

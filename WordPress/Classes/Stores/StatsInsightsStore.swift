@@ -827,23 +827,12 @@ extension StatsInsightsStore {
     func getTotalFollowerCount() -> Int {
         let totalDotComFollowers = getDotComFollowers()?.dotComFollowersCount ?? 0
         let totalEmailFollowers = getEmailFollowers()?.emailFollowersCount ?? 0
-        let totalPublicize = getPublicizeCount()
 
-        return totalDotComFollowers + totalEmailFollowers + totalPublicize
+        return totalDotComFollowers + totalEmailFollowers
     }
 
     func getPublicize() -> StatsPublicizeInsight? {
         return state.publicizeFollowers
-    }
-
-    func getPublicizeCount() -> Int {
-        var totalPublicize = 0
-        if let publicize = getPublicize(),
-           !publicize.publicizeServices.isEmpty {
-            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
-        }
-
-        return totalPublicize
     }
 
     func getTopCommentsInsight() -> StatsCommentsInsight? {

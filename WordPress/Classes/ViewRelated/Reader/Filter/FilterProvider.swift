@@ -157,7 +157,7 @@ extension ReaderSiteTopic {
         }
 
         let emptyTitle = NSLocalizedString(
-            "reader.no.tags.title",
+            "reader.no.blog.title",
             value: "Add a blog",
             comment: "No Tags View Button Label"
         )

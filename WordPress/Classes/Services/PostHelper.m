@@ -12,7 +12,7 @@
 }
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
-    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+    if ([Feature enabled:FeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
         return;
     }
 
@@ -255,7 +255,7 @@
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
         NSPredicate *predicate = nil;
-        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        if ([Feature enabled:FeatureFlagSyncPublishing]) {
             predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
         } else {
             predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];

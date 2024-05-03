@@ -2,15 +2,13 @@ import Foundation
 
 struct StatsFollowersChartViewModel {
 
-    public let dotComFollowersCount: Int
-    public let emailFollowersCount: Int
-    public let publicizeCount: Int
+    let dotComFollowersCount: Int
+    let emailFollowersCount: Int
 
     func makeFollowersChartView() -> UIView {
-        // The followers chart currently shows 3 segments. If available, it will show:
+        // The followers chart currently shows 2 segments. If available, it will show:
         // - WordPress.com followers
         // - Email followers
-        // - Social
 
         let chartView = DonutChartView()
         chartView.configure(title: "", totalCount: CGFloat(totalCount()), segments: segments())
@@ -20,14 +18,13 @@ struct StatsFollowersChartViewModel {
     }
 
     internal func totalCount() -> Int {
-        return dotComFollowersCount + emailFollowersCount + publicizeCount
+        return dotComFollowersCount + emailFollowersCount
     }
 
     internal func segments() -> [DonutChartView.Segment] {
         var segments: [DonutChartView.Segment] = []
         segments.append(segmentWith(title: Constants.wpComGroupTitle, count: dotComFollowersCount, color: Constants.wpComColor))
         segments.append(segmentWith(title: Constants.emailGroupTitle, count: emailFollowersCount, color: Constants.emailColor))
-        segments.append(segmentWith(title: Constants.socialGroupTitle, count: publicizeCount, color: Constants.socialColor))
         return segments
     }
 
@@ -42,11 +39,9 @@ struct StatsFollowersChartViewModel {
     private enum Constants {
         static let wpComGroupTitle = NSLocalizedString("WordPress", comment: "Title of Stats section that shows WordPress.com followers.")
         static let emailGroupTitle = NSLocalizedString("Email", comment: "Title of Stats section that shows email followers.")
-        static let socialGroupTitle = NSLocalizedString("Social", comment: "Title of Stats section that shows social followers.")
 
         static let wpComColor: UIColor = .muriel(name: .blue, .shade50)
         static let emailColor: UIColor = .muriel(name: .blue, .shade5)
-        static let socialColor: UIColor = .muriel(name: .orange, .shade30)
 
         static let chartHeight: CGFloat = 231.0
     }

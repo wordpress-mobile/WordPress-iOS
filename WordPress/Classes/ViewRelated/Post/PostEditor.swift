@@ -103,7 +103,7 @@ extension PostEditor {
     }
 
     var editorHasChanges: Bool {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             return !post.changes.isEmpty
         } else {
             return post.hasUnsavedChanges()
@@ -138,7 +138,7 @@ extension PostEditor {
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
         showAutosaveAvailableAlertIfNeeded()
@@ -195,7 +195,11 @@ extension PostEditor where Self: UIViewController {
         if post.changes.isEmpty {
             AbstractPost.deleteLatestRevision(post, in: context)
         } else {
-            EditPostViewController.encode(post: post)
+            if FeatureFlag.autoSaveDrafts.enabled, PostCoordinator.shared.isSyncAllowed(for: post) {
+                PostCoordinator.shared.setNeedsSync(for: post)
+            } else {
+                EditPostViewController.encode(post: post)
+            }
         }
         if context.hasChanges {
             ContextManager.sharedInstance().saveContextAndWait(context)

@@ -1,2 +1,4 @@
-We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.
-We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.
+* [*] [internal] Update Reachability. [#23030]
+* [*] Move "Settings" context menu action in "Pages" from the submenu to a separate section to make it easily discoverable and make it available for unpublished posts [#23065]
+* [*] Add "Stats" context menu action to "Pages" [#23065]
+

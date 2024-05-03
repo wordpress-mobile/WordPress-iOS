@@ -16,7 +16,7 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = RemoteFeatureFlag.syncPublishing.enabled() ? post._createRevision() : post.latest()
+        let revision = FeatureFlag.syncPublishing.enabled ? post._createRevision() : post.latest()
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
@@ -31,7 +31,7 @@ extension PostSettingsViewController {
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
 
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _setupStandaloneEditor()
         }
 
@@ -93,14 +93,14 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             deleteRevision()
         }
         presentingViewController?.dismiss(animated: true)
     }
 
     @objc private func buttonSaveTapped() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _buttonSaveTapped()
         }
 
@@ -110,7 +110,7 @@ extension PostSettingsViewController {
         Task { @MainActor in
             do {
                 let coordinator = PostCoordinator.shared
-                if apost.original().status == .draft {
+                if coordinator.isSyncAllowed(for: apost) {
                     coordinator.setNeedsSync(for: apost)
                 } else {
                     try await coordinator._save(apost)
@@ -175,6 +175,65 @@ extension PostSettingsViewController {
 extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
     public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
         deleteRevision()
+    }
+}
+
+// MARK: - PostSettingsViewController (Page Attributes)
+
+extension PostSettingsViewController {
+    @objc func showParentPageController() {
+        guard let page = (self.apost as? Page) else {
+            wpAssertionFailure("post has to be a page")
+            return
+        }
+        Task {
+            await showParentPageController(for: page)
+        }
+    }
+
+    @MainActor
+    private func showParentPageController(for page: Page) async {
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        let filter = PostListFilter.publishedFilter()
+        request.predicate = filter.predicate(for: apost.blog, author: .everyone)
+        request.sortDescriptors = filter.sortDescriptors
+        do {
+            let context = ContextManager.shared.mainContext
+            var pages = try await PostRepository().buildPageTree(request: request)
+                .map { pageID, hierarchyIndex in
+                    let page = try context.existingObject(with: pageID)
+                    page.hierarchyIndex = hierarchyIndex
+                    return page
+                }
+            if let index = pages.firstIndex(of: page) {
+                pages = pages.remove(from: index)
+            }
+            let viewController = ParentPageSettingsViewController.make(with: pages, selectedPage: page) { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
+                self?.tableView.reloadData()
+            }
+            viewController.isModalInPresentation = true
+            navigationController?.pushViewController(viewController, animated: true)
+        } catch {
+            wpAssertionFailure("Failed to fetch pages", userInfo: ["error": "\(error)"]) // This should never happen
+        }
+    }
+
+    @objc func getParentPageTitle() -> String? {
+        guard let page = (self.apost as? Page) else {
+            wpAssertionFailure("post has to be a page")
+            return nil
+        }
+        guard let pageID = page.parentID else {
+            return nil
+        }
+        let request = NSFetchRequest<Page>(entityName: Page.entityName())
+        request.fetchLimit = 1
+        request.predicate = NSPredicate(format: "postID == %@", pageID)
+        guard let parent = try? (page.managedObjectContext?.fetch(request))?.first else {
+            return nil
+        }
+        return parent.titleForDisplay()
     }
 }
 

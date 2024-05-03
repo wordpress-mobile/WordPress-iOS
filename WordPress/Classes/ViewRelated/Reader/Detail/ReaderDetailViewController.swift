@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import AutomatticTracks
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
@@ -603,9 +604,12 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
-        if let post {
+        if let contentForDisplay = post?.contentForDisplay() {
             webView.displaySetting = displaySetting
-            webView.loadHTMLString(post.contentForDisplay())
+            webView.loadHTMLString(contentForDisplay)
+        } else {
+            // It's unexpected for the `post` or `contentForDisplay()` to be nil. Let's keep track of it.
+            CrashLogging.main.logMessage("Expected contentForDisplay() to exist", level: .error)
         }
 
         // Likes view

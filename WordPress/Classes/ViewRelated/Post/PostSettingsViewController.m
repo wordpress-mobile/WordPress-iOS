@@ -27,7 +27,9 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowTags,
     PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
+    // - warning: deprecated (kahu-offline-mode)
     PostSettingsRowStatus,
+    PostSettingsRowPendingReview,
     PostSettingsRowVisibility,
     PostSettingsRowPassword,
     PostSettingsRowFormat,
@@ -40,7 +42,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowSlug,
     PostSettingsRowExcerpt,
     PostSettingsRowSocialNoConnections,
-    PostSettingsRowSocialRemainingShares
+    PostSettingsRowSocialRemainingShares,
+    PostSettingsRowParentPage
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -50,7 +53,7 @@ static NSString *const PostSettingsAnalyticsTrackingSource = @"post_settings";
 static NSString *const TableViewActivityCellIdentifier = @"TableViewActivityCellIdentifier";
 static NSString *const TableViewProgressCellIdentifier = @"TableViewProgressCellIdentifier";
 static NSString *const TableViewFeaturedImageCellIdentifier = @"TableViewFeaturedImageCellIdentifier";
-static NSString *const TableViewStickyPostCellIdentifier = @"TableViewStickyPostCellIdentifier";
+static NSString *const TableViewToggleCellIdentifier = @"TableViewToggleCellIdentifier";
 static NSString *const TableViewGenericCellIdentifier = @"TableViewGenericCellIdentifier";
 
 
@@ -138,7 +141,7 @@ FeaturedImageViewControllerDelegate>
     [self.tableView registerNib:[UINib nibWithNibName:@"WPTableViewActivityCell" bundle:nil] forCellReuseIdentifier:TableViewActivityCellIdentifier];
     [self.tableView registerClass:[WPProgressTableViewCell class] forCellReuseIdentifier:TableViewProgressCellIdentifier];
     [self.tableView registerClass:[PostFeaturedImageCell class] forCellReuseIdentifier:TableViewFeaturedImageCellIdentifier];
-    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewStickyPostCellIdentifier];
+    [self.tableView registerClass:[SwitchTableViewCell class] forCellReuseIdentifier:TableViewToggleCellIdentifier];
     [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:TableViewGenericCellIdentifier];
 
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 0.0, 44.0)]; // add some vertical padding
@@ -179,7 +182,7 @@ FeaturedImageViewControllerDelegate>
     [super viewWillDisappear:animated];
 
     if (self.isStandalone) {
-        if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+        if ([Feature enabled:FeatureFlagSyncPublishing]) {
             return; // No longer needed
         }
         if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
@@ -464,6 +467,8 @@ FeaturedImageViewControllerDelegate>
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
         return 2;
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        return 1;
     }
 
     return 0;
@@ -500,6 +505,8 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionMoreOptions) {
         return NSLocalizedString(@"More Options", @"Label for the More Options area in post settings. Should use the same translation as core WP.");
 
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        return NSLocalizedStringWithDefaultValue(@"postSettings.section.pageAttributes", nil, [NSBundle mainBundle], @"Page Attributes", @"Section title for Page Attributes");
     }
     return nil;
 }
@@ -582,6 +589,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureRemainingSharesCell];
     } else if (sec == PostSettingsSectionMoreOptions) {
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionPageAttributes) {
+        cell = [self configurePageAttributesCellForIndexPath:indexPath];
     }
 
     return cell ?: [UITableViewCell new];
@@ -599,7 +608,7 @@ FeaturedImageViewControllerDelegate>
     } else if (cell.tag == PostSettingsRowTags) {
         [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate) {
-        [self showPublishSchedulingController];
+        [self showPublishDatePicker];
     } else if (cell.tag == PostSettingsRowStatus) {
         [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
@@ -624,6 +633,8 @@ FeaturedImageViewControllerDelegate>
         [self showEditSlugController];
     } else if (cell.tag == PostSettingsRowExcerpt) {
         [self showEditExcerptController];
+    } else if (cell.tag == PostSettingsRowParentPage) {
+        [self showParentPageController];
     }
 }
 
@@ -670,7 +681,19 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    if (![RemoteFeature enabled:RemoteFeatureFlagSyncPublishing] || !self.isDraftOrPending) {
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
+        if (self.isDraftOrPending) {
+            [metaRows addObject:@(PostSettingsRowPendingReview)];
+        } else {
+            [metaRows addObjectsFromArray:@[
+                @(PostSettingsRowPublishDate),
+                @(PostSettingsRowVisibility)
+            ]];
+            if (self.apost.password) {
+                [metaRows addObject:@(PostSettingsRowPassword)];
+            }
+        }
+    } else {
         [metaRows addObject:@(PostSettingsRowPublishDate)];
         [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
                                           @(PostSettingsRowVisibility) ]];
@@ -739,6 +762,17 @@ FeaturedImageViewControllerDelegate>
 
     } else if (row == PostSettingsRowPassword) {
         cell = [self configurePasswordCell];
+    } else if (row == PostSettingsRowPendingReview) {
+        // Pending Review
+        __weak __typeof(self) weakSelf = self;
+        SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewToggleCellIdentifier];
+        cell.name = NSLocalizedStringWithDefaultValue(@"postSettings.pendingReview", nil, [NSBundle mainBundle], @"Pending review", @"The 'Pending Review' setting of the post");
+        cell.on = [self.post.status isEqualToString:PostStatusPending];
+        cell.onChange = ^(BOOL newValue) {
+            [WPAnalytics trackEvent:WPAnalyticsEventEditorPostPendingReviewChanged properties:@{@"via": @"settings"}];
+            weakSelf.post.status = newValue ? PostStatusPending : PostStatusDraft;
+        };
+        return cell;
     }
 
     return cell;
@@ -826,7 +860,7 @@ FeaturedImageViewControllerDelegate>
 {
     __weak __typeof(self) weakSelf = self;
 
-    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewStickyPostCellIdentifier];
+    SwitchTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:TableViewToggleCellIdentifier];
     cell.name = NSLocalizedString(@"Stick post to the front page", @"This is the cell title.");
     cell.on = self.post.isStickyPost;
     cell.onChange = ^(BOOL newValue) {
@@ -1047,9 +1081,10 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (void)showPublishSchedulingController
+- (void)showPublishDatePicker
 {
-    ImmuTableViewController *vc = [PublishSettingsController viewControllerWithPost:self.apost];
+    BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
+    UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -1371,6 +1406,23 @@ FeaturedImageViewControllerDelegate>
     NSIndexPath *featureImageCellPath = [NSIndexPath indexPathForRow:0 inSection:[self.sections indexOfObject:@(PostSettingsSectionFeaturedImage)]];
     [self.tableView reloadRowsAtIndexPaths:@[featureImageCellPath]
                           withRowAnimation:UITableViewRowAnimationFade];
+}
+
+// MARK: - Page Attributes
+
+- (UITableViewCell *)configurePageAttributesCellForIndexPath:(NSIndexPath *)indexPath
+{
+    return [self configureParentPageCell];
+}
+
+- (UITableViewCell *)configureParentPageCell
+{
+    UITableViewCell *cell = [self getWPTableViewDisclosureCell];
+    cell.textLabel.text = NSLocalizedStringWithDefaultValue(@"postSettings.parentPage", nil, [NSBundle mainBundle], @"Parent page", @"The 'Parent Page' setting of the post");
+    cell.detailTextLabel.text = [self getParentPageTitle];
+    cell.tag = PostSettingsRowParentPage;
+    cell.accessibilityIdentifier = @"Parent";
+    return cell;
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate

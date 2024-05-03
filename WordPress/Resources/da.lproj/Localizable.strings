@@ -96,16 +96,12 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Bloggens Følgere";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Fed";
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -473,13 +469,10 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Fulgte websteder";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Følger";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Følgere";
 
 /* User is following the blog. */
@@ -974,8 +967,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Udgiv";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -985,9 +977,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Udgivet";
-
-/* Published on [date] */
-"Published on" = "Udgivet den";
 
 /* Mobile Push Notifications */
 "Push Notifications" = "Push meddelelser";
@@ -1113,9 +1102,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Planlagt til";
-
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
@@ -1150,9 +1136,6 @@
 
 /* Button title. Tapping begins the process of creating a WordPress.com account. */
 "Sign up for WordPress.com" = "Registrer dig på WordPress.com";
-
-/* Label for time period in list of followers. */
-"Since" = "Siden";
 
 /* Title for the Language Picker View */
 "Site Language" = "Webstedets sprog";
@@ -1335,12 +1318,6 @@
 
 /* Shortened version of the main title to be used in back navigation */
 "Topic" = "Emne";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Antal følgere på e-mail: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Antal følgere på WordPress.com: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment

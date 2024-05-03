@@ -80,11 +80,6 @@ class MySitesCoordinator: NSObject {
         return navigationController
     }()
 
-    @objc
-    private(set) lazy var blogListViewController: BlogListViewController = {
-        BlogListViewController(configuration: .defaultConfig, meScenePresenter: self.meScenePresenter)
-    }()
-
     private lazy var mySiteViewController: MySiteViewController = {
         makeMySiteViewController()
     }()

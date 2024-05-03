@@ -68,7 +68,7 @@ class PostCoordinator: NSObject {
          failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
          coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
@@ -228,9 +228,9 @@ class PostCoordinator: NSObject {
         defer { resumeSyncing(for: post) }
 
         do {
-            let isExistingPost = post.hasRemote()
+            let previousStatus = post.status
             try await PostRepository()._save(post, changes: changes)
-            show(PostCoordinator.makeUploadSuccessNotice(for: post, isExistingPost: isExistingPost))
+            show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
             trackError(error, operation: "post-save")
@@ -600,7 +600,7 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if shouldScheduleRetry(for: error) {
+            if !PostCoordinator.isTerminalError(error) {
                 let delay = worker.nextRetryDelay
                 worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
                     guard let self, let worker else { return }
@@ -617,16 +617,19 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func shouldScheduleRetry(for error: Error) -> Bool {
+    /// Returns `true` if the error can't be resolved by simply retrying and
+    /// requires user interventions, for example, resolving a conflict.
+    static func isTerminalError(_ error: Error) -> Bool {
         if let saveError = error as? PostRepository.PostSaveError {
             switch saveError {
-            case .deleted:
-                return false
-            case .conflict:
-                return false
+            case .deleted, .conflict:
+                return true
             }
         }
-        return true
+        if let error = error as? SavingError, case .mediaFailure(_, let error) = error {
+            return MediaCoordinator.isTerminalError(error)
+        }
+        return false
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {
@@ -722,6 +725,7 @@ class PostCoordinator: NSObject {
         completion(.success(post))
     }
 
+    // - warning: deprecated (kahu-offline-mode)
     func cancelAnyPendingSaveOf(post: AbstractPost) {
         removeObserver(for: post)
     }
@@ -1020,7 +1024,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Cancel active and pending automatic uploads of the post.
+    // - warning: deprecated (kahu-offline-mode)
     func cancelAutoUploadOf(_ post: AbstractPost) {
         cancelAnyPendingSaveOf(post: post)
 
@@ -1076,7 +1080,6 @@ class PostCoordinator: NSObject {
         do {
             try await PostRepository(coreDataStack: coreDataStack)._trash(post)
 
-            cancelAnyPendingSaveOf(post: post)
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
         } catch {

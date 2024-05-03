@@ -36,7 +36,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-         isSyncPublishingEnabled: Bool = RemoteFeatureFlag.syncPublishing.enabled()) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
         self.post = post
         self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
@@ -204,7 +204,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.moveToDraft)
         }
 
-        if post.status == .publish || post.status == .draft {
+        if post.status == .publish || post.status == .draft || post.status == .pending {
             buttons.append(.duplicate)
         }
 

@@ -7,17 +7,10 @@ class EditPageViewController: UIViewController {
     fileprivate var postTitle: String?
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
-    fileprivate var isHomePageEditor = false
     var onClose: (() -> Void)?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
-    }
-
-    convenience init(homepage: Page, completion: @escaping () -> Void) {
-        self.init(page: homepage)
-        isHomePageEditor = true
-        onClose = completion
     }
 
     convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
@@ -41,12 +34,9 @@ class EditPageViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         if  !hasShownEditor {
-            if isHomePageEditor {
-                showHomepageEditor()
-            } else {
-                showEditor()
-            }
+            showEditor()
             hasShownEditor = true
         }
     }
@@ -65,15 +55,6 @@ class EditPageViewController: UIViewController {
             self.page = newPage
             return newPage
         }
-    }
-
-    fileprivate func showHomepageEditor() {
-        let editorFactory = EditorFactory()
-        let gutenbergVC = editorFactory.createHomepageGutenbergVC(with: self.pageToEdit(), loadAutosaveRevision: false, replaceEditor: { [weak self] (editor, replacement) in
-            self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        show(gutenbergVC)
     }
 
     fileprivate func showEditor() {

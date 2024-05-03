@@ -193,6 +193,9 @@ import AutomatticTracks
             if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
+            } else if oldValue != .tags, contentType == .tags {
+                updateContent(synchronize: false)
+                // TODO: Analytics
             }
             postCellActions?.visibleConfirmation = contentType != .saved
             showConfirmation = contentType != .saved
@@ -215,6 +218,51 @@ import AutomatticTracks
 
     private var removedPosts = Set<ReaderPost>()
     private var showConfirmation = true
+
+    // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
+    //
+    // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
+    // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
+    private var tagStreamSyncTracker = Set<String>()
+    lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
+        let title = NSLocalizedString(
+            "reader.select.tags.title",
+            value: "Discover and follow blogs you love",
+            comment: "Reader select interests title label text"
+        )
+        let subtitle = NSLocalizedString(
+            "reader.select.tags.subtitle",
+            value: "Choose your tags",
+            comment: "Reader select interests subtitle label text"
+        )
+        let buttonTitleEnabled = NSLocalizedString(
+            "reader.select.tags.done",
+            value: "Done",
+            comment: "Reader select interests next button enabled title text"
+        )
+        let buttonTitleDisabled = NSLocalizedString(
+            "reader.select.tags.continue",
+            value: "Select a few to continue",
+            comment: "Reader select interests next button disabled title text"
+        )
+        let loading = NSLocalizedString(
+            "reader.select.tags.loading",
+            value: "Finding blogs and stories you’ll love...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
+        )
+
+        return ReaderSelectInterestsViewController(configuration: configuration)
+    }()
+    /// Tracks whether or not we should force sync
+    /// This is set to true after the Reader Manage view is dismissed
+    var shouldForceRefresh = false
 
     // MARK: - Factory Methods
 
@@ -328,7 +376,7 @@ import AutomatticTracks
             return
         }
 
-        if readerTopic != nil || contentType == .saved {
+        if readerTopic != nil || contentType == .saved || contentType == .tags {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             updateContent(synchronize: false)
@@ -671,6 +719,8 @@ import AutomatticTracks
             displayNoResultsView()
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
+        } else if contentType == .tags, content.isEmpty {
+            showSelectInterestsView()
         }
     }
 
@@ -898,6 +948,12 @@ import AutomatticTracks
     /// Handles the user initiated pull to refresh action.
     ///
     @objc func handleRefresh(_ sender: UIRefreshControl) {
+        if contentType == .tags {
+            // NOTE: This is a workaround.
+            // Allow all tags to re-fetch posts.
+            tagStreamSyncTracker.removeAll()
+        }
+
         if !canSync() {
             cleanupAfterSync()
 
@@ -1299,6 +1355,10 @@ import AutomatticTracks
             NSPredicate(format: "isSavedForLater == YES") :
             NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
+        if contentType == .tags {
+            return NSPredicate(format: "following = true")
+        }
+
         guard let topic = readerTopic else {
             return predicateForNilTopic
         }
@@ -1316,7 +1376,9 @@ import AutomatticTracks
     }
 
     func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
+        let sortDescriptor = contentType == .tags ?
+        NSSortDescriptor(key: "title", ascending: true) :
+        NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
 
@@ -1493,7 +1555,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let entityName = contentType == .tags ? ReaderTagTopic.classNameWithoutNamespaces() : ReaderPost.classNameWithoutNamespaces()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         return fetchRequest
@@ -1555,17 +1618,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content as? [ReaderPost],
-              let post = posts[safe: indexPath.row] else {
-            return UITableViewCell()
+        if let posts = content.content as? [ReaderPost] {
+            if let post = posts[safe: indexPath.row] {
+                return cell(for: post, at: indexPath)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+                return .init()
+            }
+        } else if let tags = content.content as? [ReaderTagTopic] {
+            if let tag = tags[safe: indexPath.row] {
+                return cell(for: tag)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: tags.count))
+                return .init()
+            }
         }
-
-        guard let post = posts[safe: indexPath.row] else {
-            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
-            return .init()
-        }
-
-        return cell(for: post, at: indexPath)
+        assertionFailure("Unexpected content type.")
+        return UITableViewCell()
     }
 
     func cell(for post: ReaderPost, at indexPath: IndexPath, showsSeparator: Bool = true) -> UITableViewCell {
@@ -1603,6 +1672,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
                                                     showsSeparator: showsSeparator,
                                                     parentViewController: self)
         cell.configure(with: viewModel)
+        return cell
+    }
+
+    func cell(for tag: ReaderTagTopic) -> UITableViewCell {
+        let cell = tableConfiguration.tagCell(tableView)
+
+        // check whether we should sync the tag's posts.
+        let shouldSync = !tagStreamSyncTracker.contains(tag.slug)
+        if shouldSync {
+            tagStreamSyncTracker.insert(tag.slug)
+        }
+
+        cell.configure(parent: self, tag: tag, isLoggedIn: isLoggedIn, shouldSyncRemotely: shouldSync)
+        cell.selectionStyle = .none
         return cell
     }
 
@@ -1676,7 +1759,9 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
-            DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            if !(content.content is [ReaderTagTopic]) {
+                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            }
             return
         }
 
@@ -1792,6 +1877,8 @@ extension ReaderStreamViewController {
                 displayNoResultsForSavedPosts()
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
                 displayNoResultsViewForDiscover()
+            } else if contentType == .tags {
+                showSelectInterestsView()
             }
             return
         }
@@ -1874,7 +1961,53 @@ extension ReaderStreamViewController {
         hideGhost()
     }
 
+    func showSelectInterestsView() {
+        guard selectInterestsViewController.parent == nil else {
+            return
+        }
+
+        selectInterestsViewController.view.frame = self.view.bounds
+        self.add(selectInterestsViewController)
+
+        selectInterestsViewController.didSaveInterests = { [weak self] _ in
+            guard let self else {
+                return
+            }
+            self.hideSelectInterestsView()
+        }
+    }
+
+    func hideSelectInterestsView(showLoadingStream: Bool = true) {
+        let isTagsFeed = contentType == .tags
+        guard selectInterestsViewController.parent != nil else {
+            if shouldForceRefresh {
+                scrollViewToTop()
+                if !isTagsFeed {
+                    displayLoadingStream()
+                }
+                syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
+            }
+
+            return
+        }
+
+        scrollViewToTop()
+        if !isTagsFeed {
+            displayLoadingStream()
+        }
+        syncIfAppropriate(forceSync: true)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.selectInterestsViewController.view.alpha = 0
+        }) { _ in
+            self.selectInterestsViewController.remove()
+            self.selectInterestsViewController.view.alpha = 1
+        }
+    }
+
     func hideResultsStatus() {
+        hideSelectInterestsView()
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
