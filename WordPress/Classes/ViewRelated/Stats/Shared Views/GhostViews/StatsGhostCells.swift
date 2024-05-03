@@ -114,3 +114,5 @@ fileprivate extension Date {
         return days
     }
 }
+
+class StatsGhostSingleValueCell: StatsGhostBaseCell, NibLoadable { }
