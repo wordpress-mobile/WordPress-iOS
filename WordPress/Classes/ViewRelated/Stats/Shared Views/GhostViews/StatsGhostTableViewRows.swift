@@ -142,3 +142,11 @@ struct StatsGhostSingleValueRow: StatsRowGhostable {
         return ImmuTableCell.nib(StatsGhostSingleValueCell.defaultNib, StatsGhostSingleValueCell.self)
     }()
 }
+
+struct StatsGhostLineChartRow: StatsRowGhostable {
+    let statSection: StatSection?
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.nib(StatsGhostLineChartCell.defaultNib, StatsGhostLineChartCell.self)
+    }()
+}
