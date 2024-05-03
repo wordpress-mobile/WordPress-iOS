@@ -541,7 +541,7 @@ class AbstractPostListViewController: UIViewController,
         let posts = try result.map { try coreDataStack.mainContext.existingObject(with: $0) }
         let hasMore = result.count >= number
 
-        return (posts, hasMore)
+        return (posts.deduplicated(by: \.postHash), hasMore)
     }
 
     func syncHelper(_ syncHelper: WPContentSyncHelper, syncContentWithUserInteraction userInteraction: Bool, success: ((_ hasMore: Bool) -> ())?, failure: ((_ error: NSError) -> ())?) {
