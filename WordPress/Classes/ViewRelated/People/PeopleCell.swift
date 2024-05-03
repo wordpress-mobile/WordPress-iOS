@@ -22,6 +22,12 @@ class PeopleCell: WPTableViewCell {
         usernameLabel.font = .DS.font(.bodyMedium(.regular))
     }
 
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        avatarImageView.image = UIImage(named: "gravatar")
+    }
+
     func bindViewModel(_ viewModel: PeopleCellViewModel) {
         setAvatarURL(viewModel.avatarURL as URL?)
         displayNameLabel.text = viewModel.displayName
