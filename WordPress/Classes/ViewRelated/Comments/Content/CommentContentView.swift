@@ -46,11 +46,18 @@ final class CommentContentView: UIView {
         onContentLoaded: ((CGFloat) -> Void)?,
         parent: UIViewController
     ) {
+        let menuConfig = CommentContentHeaderView.MenuConfiguration(
+            userInfo: true,
+            share: true,
+            editComment: true,
+            changeStatus: true
+        ) { option in
+        }
         let config = CommentContentHeaderView.Configuration(
             avatarURL: comment.avatarURLForDisplay(),
             username: comment.authorForDisplay(),
             handleAndTimestamp: "@TurnUpAlex • 2h ago",
-            menu: [] as [CommentContentHeaderView.MenuItem]
+            menu: menuConfig
         )
         self.updateHeader(with: config, parent: parent)
     }

@@ -4,6 +4,13 @@ import DesignSystem
 struct CommentContentHeaderView: View {
 
     let config: Configuration
+    var menu: MenuConfiguration {
+        return config.menu
+    }
+
+    private var shouldShowMenu: Bool {
+        return [menu.userInfo, menu.share, menu.editComment, menu.changeStatus].reduce(false) { $0 || $1 }
+    }
 
     var body: some View {
         HStack(spacing: .DS.Padding.split) {
@@ -19,8 +26,8 @@ struct CommentContentHeaderView: View {
                     .lineLimit(1)
             }
             Spacer()
-            if !config.menu.isEmpty {
-                CommentContentHeaderMenu(menu: config.menu)
+            if shouldShowMenu {
+                CommentContentHeaderMenu(config: config.menu)
             }
         }
     }
@@ -29,46 +36,69 @@ struct CommentContentHeaderView: View {
         let avatarURL: URL?
         let username: String
         let handleAndTimestamp: String
-        let menu: MenuList
+        let menu: MenuConfiguration
 
-        init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: MenuList) {
+        init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: MenuConfiguration) {
             self.avatarURL = avatarURL
             self.username = username
             self.handleAndTimestamp = handleAndTimestamp
-            self.menu = menu.filter { !$0.isEmpty }
+            self.menu = menu
         }
     }
 
-    typealias MenuItem = CommentContentHeaderMenu.Item
-    typealias MenuSection = CommentContentHeaderMenu.Section
-    typealias MenuList = CommentContentHeaderMenu.List
-}
+    struct MenuConfiguration {
+        let userInfo: Bool
+        let share: Bool
+        let editComment: Bool
+        let changeStatus: Bool
+        let onOptionSelected: (Option) -> Void
 
-extension CommentContentHeaderView.Configuration {
+        enum Option {
+            case userInfo, share, editComment, changeStatus(Status)
+        }
 
-    init(avatarURL: URL?, username: String, handleAndTimestamp: String, menu: [CommentContentHeaderView.MenuItem]) {
-        self.init(
-            avatarURL: avatarURL,
-            username: username,
-            handleAndTimestamp: handleAndTimestamp,
-            menu: [menu]
-        )
+        enum Status {
+            case approve, pending, spam, trash
+        }
     }
 }
 
-struct CommentContentHeaderMenu: View {
-    let menu: List
+// MARK: - Menu
+
+private struct CommentContentHeaderMenu: View {
+
+    typealias Configuration = CommentContentHeaderView.MenuConfiguration
+
+    private let config: Configuration
+
+    init(config: Configuration) {
+        self.config = config
+    }
+
+    private var shouldShowDivider: Bool {
+        return config.editComment || config.changeStatus
+    }
 
     var body: some View {
         Menu {
-            ForEach(Array(menu.enumerated()), id: \.offset) { sectionIndex, section in
-                SwiftUI.Section {
-                    ForEach(Array(section.enumerated()), id: \.offset) { itemIndex, menuItem in
-                        button(for: menuItem)
-                    }
-                }
-                if sectionIndex < menu.count - 1 {
-                    Divider()
+            if config.userInfo {
+                button(title: Strings.userInfo, icon: .avatar) { config.onOptionSelected(.userInfo) }
+            }
+            if config.share {
+                button(title: Strings.share, icon: .blockShare) { config.onOptionSelected(.share) }
+            }
+            if shouldShowDivider {
+                Divider()
+            }
+            if config.editComment {
+                button(title: Strings.editComment, icon: .edit) { config.onOptionSelected(.editComment) }
+            }
+            if config.changeStatus {
+                Menu(Strings.changeStatus) {
+                    button(title: Strings.approve) { config.onOptionSelected(.changeStatus(.approve)) }
+                    button(title: Strings.pending) { config.onOptionSelected(.changeStatus(.pending)) }
+                    button(title: Strings.spam) { config.onOptionSelected(.changeStatus(.spam)) }
+                    button(title: Strings.trash) { config.onOptionSelected(.changeStatus(.trash)) }
                 }
             }
         } label: {
@@ -80,50 +110,23 @@ struct CommentContentHeaderMenu: View {
     }
 
     @ViewBuilder
-    func button(for menuItem: Item) -> some View {
-        switch menuItem {
-        case .userInfo(let action):
-            button(text: Strings.userInfo, icon: .avatar, action: action)
-        case .share(let action):
-            button(text: Strings.share, icon: .blockShare, action: action)
-        case .editComment(let action):
-            button(text: Strings.editComment, icon: .edit, action: action)
-        case .changeStatus(let action):
-            Menu(Strings.changeStatus) {
-                Button(Strings.approve, action: { action(.approve) })
-                Button(Strings.pending, action: { action(.pending) })
-                Button(Strings.trash, action: { action(.trash) })
-                Button(Strings.spam, action: { action(.spam) })
-            }
-        }
-    }
-
-    @ViewBuilder
-    func button(text: String, icon: IconName, action: @escaping () -> Void) -> some View {
+    private func button(title: String, icon: IconName? = nil, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label {
-                Text(text)
+                Text(title)
             } icon: {
-                Image.DS.icon(named: icon)
+                if let icon {
+                    Image.DS.icon(named: icon)
+                }
             }
+
         }
     }
+}
 
-    enum Item {
-        case userInfo(() -> Void)
-        case share(() -> Void)
-        case editComment(() -> Void)
-        case changeStatus((Status) -> Void)
+private extension CommentContentHeaderMenu {
 
-        enum Status {
-            case approve, trash, spam, pending
-        }
-    }
-
-    typealias Section = [Item]
-    typealias List = [Section]
-
-    private enum Strings {
+    enum Strings {
         static let userInfo = NSLocalizedString(
             "comment.moderation.content.menu.userInfo.title",
             value: "User info",
@@ -176,7 +179,7 @@ struct CommentContentHeaderMenu: View {
                 avatarURL: URL(string: "https://i.pravatar.cc/300"),
                 username: "Alex Turner",
                 handleAndTimestamp: "@TurnUpAlex • 2h ago",
-                menu: [[.userInfo({}), .share({})], [.editComment({}), .changeStatus({ _ in })]]
+                menu: .init(userInfo: true, share: true, editComment: true, changeStatus: true) { _ in }
             )
         )
         CommentContentHeaderView(
@@ -184,7 +187,7 @@ struct CommentContentHeaderMenu: View {
                 avatarURL: URL(string: "invalid-url"),
                 username: "Jordan Fisher",
                 handleAndTimestamp: "@FishyJord • 4h ago",
-                menu: [[.userInfo({}), .share({})], []]
+                menu: .init(userInfo: true, share: true, editComment: false, changeStatus: false) { _ in }
             )
         )
         CommentContentHeaderView(
@@ -192,7 +195,7 @@ struct CommentContentHeaderMenu: View {
                 avatarURL: URL(string: "https://i.pravatar.cc/400"),
                 username: "Casey Hart",
                 handleAndTimestamp: "@HartOfTheMatter • 9h ago",
-                menu: [[.userInfo({}), .share({})], [.editComment({}), .changeStatus({ _ in })]]
+                menu: .init(userInfo: true, share: true, editComment: true, changeStatus: true) { _ in }
             )
         )
         CommentContentHeaderView(
@@ -200,7 +203,7 @@ struct CommentContentHeaderMenu: View {
                 avatarURL: URL(string: "https://i.pravatar.cc/600"),
                 username: " Emily Stanton",
                 handleAndTimestamp: "@StarryEm • 8h ago",
-                menu: [] as CommentContentHeaderView.MenuList
+                menu: .init(userInfo: false, share: false, editComment: false, changeStatus: false) { _ in }
             )
         )
     }
