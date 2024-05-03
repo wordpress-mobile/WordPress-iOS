@@ -434,8 +434,12 @@ platform :ios do
       changelog: File.read(whats_new_path),
       distribute_external: true,
       groups: distribution_groups,
-      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
-      reject_build_waiting_for_review: true
+      # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
+      # Unfortunately, this is not (no longer?) possible via the ASC API.
+      # See https://github.com/fastlane/fastlane/issues/18408
+      #
+      # As a quick workaround to avoid CI failures, let's explicitly disable rejecting builds waiting for review.
+      reject_build_waiting_for_review: false
     )
   end
 

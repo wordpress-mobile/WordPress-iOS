@@ -236,6 +236,8 @@ class GutenbergMediaInserterHelper: NSObject {
             }
         case .progress(let value):
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: Float(value), url: nil, serverID: nil)
+        case .cancelled:
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .reset, progress: 0, url: nil, serverID: nil)
         }
     }
 

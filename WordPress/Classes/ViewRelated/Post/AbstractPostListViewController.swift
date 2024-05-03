@@ -203,7 +203,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     private func configureSearchController() {
-        assert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
+        wpAssert(self is InteractivePostViewDelegate, "The subclass has to implement InteractivePostViewDelegate protocol")
 
         searchResultsViewController.configure(searchController, self as? InteractivePostViewDelegate)
 
@@ -231,7 +231,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
         guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return assertionFailure("missing NSUpdatedObjectsKey")
+            return wpAssertionFailure("missing NSUpdatedObjectsKey")
         }
         let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
             let cell = tableView.cellForRow(at: $0) as? AbstractPostListCell
@@ -343,7 +343,7 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func updateAndPerformFetchRequest() {
-        assert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
+        wpAssert(Thread.isMainThread, "AbstractPostListViewController Error: NSFetchedResultsController accessed in BG")
 
         var predicate = predicateForFetchRequest()
         let sortDescriptors = sortDescriptorsForFetchRequest()
@@ -494,7 +494,7 @@ class AbstractPostListViewController: UIViewController,
 
     @objc func updateFilter(_ filter: PostListFilter, withSyncedPosts posts: [AbstractPost], hasMore: Bool) {
         guard posts.count > 0 else {
-            assertionFailure("This method should not be called with no posts.")
+            wpAssertionFailure("This method should not be called with no posts.")
             return
         }
         // Reset the filter to only show the latest sync point, based on the oldest post date in the posts just synced.
@@ -600,7 +600,11 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
-        refreshControl.endRefreshing()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(330)) {
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
+        }
         setFooterHidden(true)
         noResultsViewController.removeFromView()
 
@@ -728,6 +732,37 @@ class AbstractPostListViewController: UIViewController,
         Task {
             await PostCoordinator.shared.delete(post)
         }
+    }
+
+    func stats(for post: AbstractPost) {
+        viewStatsForPost(post)
+    }
+
+    fileprivate func viewStatsForPost(_ post: AbstractPost) {
+        // Check the blog
+        let blog = post.blog
+
+        guard blog.supports(.stats) else {
+            // Needs Jetpack.
+            return
+        }
+
+        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
+
+        // Push the Post Stats ViewController
+        guard let postID = post.postID as? Int else {
+            return
+        }
+
+        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
+        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
+        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
+
+        let postURL = URL(string: post.permaLink! as String)
+        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
+                                                                                            postTitle: post.titleForDisplay(),
+                                                                                            postURL: postURL)
+        navigationController?.pushViewController(postStatsTableViewController, animated: true)
     }
 
     @objc func copyPostLink(_ post: AbstractPost) {

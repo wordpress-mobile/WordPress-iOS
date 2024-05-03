@@ -18,31 +18,6 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return ReaderCardService()
     }()
 
-    /// Tracks whether or not we should force sync
-    /// This is set to true after the Reader Manage view is dismissed
-    private var shouldForceRefresh = false
-
-    private lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
-        let title = NSLocalizedString("Discover and follow blogs you love", comment: "Reader select interests title label text")
-        let subtitle = NSLocalizedString(
-            "reader.select.tags.subtitle",
-            value: "Choose your tags",
-            comment: "Reader select interests subtitle label text"
-        )
-        let buttonTitleEnabled = NSLocalizedString("Done", comment: "Reader select interests next button enabled title text")
-        let buttonTitleDisabled = NSLocalizedString("Select a few to continue", comment: "Reader select interests next button disabled title text")
-        let loading = NSLocalizedString("Finding blogs and stories you’ll love...", comment: "Label displayed to the user while loading their selected interests")
-
-        let configuration = ReaderSelectInterestsConfiguration(
-            title: title,
-            subtitle: subtitle,
-            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
-            loading: loading
-        )
-
-        return ReaderSelectInterestsViewController(configuration: configuration)
-    }()
-
     /// Whether the current view controller is visible
     private var isVisible: Bool {
         return isViewLoaded && view.window != nil
@@ -259,46 +234,6 @@ private extension ReaderCardsStreamViewController {
             } else {
                 self.showSelectInterestsView()
             }
-        }
-    }
-
-    func hideSelectInterestsView() {
-        guard selectInterestsViewController.parent != nil else {
-            if shouldForceRefresh {
-                scrollViewToTop()
-                displayLoadingStream()
-                super.syncIfAppropriate(forceSync: true)
-                shouldForceRefresh = false
-            }
-
-            return
-        }
-
-        scrollViewToTop()
-        displayLoadingStream()
-        super.syncIfAppropriate(forceSync: true)
-
-        UIView.animate(withDuration: 0.2, animations: {
-            self.selectInterestsViewController.view.alpha = 0
-        }) { _ in
-            self.selectInterestsViewController.remove()
-            self.selectInterestsViewController.view.alpha = 1
-        }
-    }
-
-    func showSelectInterestsView() {
-        guard selectInterestsViewController.parent == nil else {
-            return
-        }
-
-        selectInterestsViewController.view.frame = self.view.bounds
-        self.add(selectInterestsViewController)
-
-        selectInterestsViewController.didSaveInterests = { [weak self] _ in
-            guard let self else {
-                return
-            }
-            self.hideSelectInterestsView()
         }
     }
 }

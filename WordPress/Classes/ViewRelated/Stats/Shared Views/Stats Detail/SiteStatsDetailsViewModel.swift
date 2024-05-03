@@ -1,5 +1,6 @@
 import Foundation
 import WordPressFlux
+import Combine
 
 /// The view model used by SiteStatsDetailTableViewController to show
 /// all data for a selected stat.
@@ -16,13 +17,16 @@ class SiteStatsDetailsViewModel: Observable {
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
 
-    private let insightsStore = StatsInsightsStore()
+    private let insightsStore: StatsInsightsStore
     private var insightsReceipt: Receipt?
     private var insightsChangeReceipt: Receipt?
 
-    private let periodStore = StatsPeriodStore()
+    private let periodStore: StatsPeriodStore
     private var periodReceipt: Receipt?
     private var periodChangeReceipt: Receipt?
+
+    private let subscribersStore: StatsSubscribersStoreProtocol
+    private var cancellables: Set<AnyCancellable> = []
 
     private var selectedDate: Date?
     private var selectedPeriod: StatsPeriodUnit?
@@ -33,9 +37,15 @@ class SiteStatsDetailsViewModel: Observable {
     // MARK: - Init
 
     init(detailsDelegate: SiteStatsDetailsDelegate,
-         referrerDelegate: SiteStatsReferrerDelegate) {
+         referrerDelegate: SiteStatsReferrerDelegate,
+         insightsStore: StatsInsightsStore,
+         periodStore: StatsPeriodStore,
+         subscribersStore: StatsSubscribersStoreProtocol = StatsSubscribersStore()) {
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
+        self.insightsStore = insightsStore
+        self.periodStore = periodStore
+        self.subscribersStore = subscribersStore
     }
 
     // MARK: - Data Fetching
@@ -68,6 +78,13 @@ class SiteStatsDetailsViewModel: Observable {
                 self?.emitChange()
             }
             periodReceipt = periodStore.query(.postStats(postID: postID))
+        } else if statSection == .subscribersEmailsSummary {
+            subscribersStore.emailsSummary
+                .sink { [weak self] _ in
+                    self?.emitChange()
+                }
+                .store(in: &cancellables)
+            refreshEmailsSummary()
         } else {
             DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
         }
@@ -87,6 +104,8 @@ class SiteStatsDetailsViewModel: Observable {
                 return true
             }
             return periodStore.fetchingFailed(for: .postStats(postID: postID))
+        } else if statSection == .subscribersEmailsSummary {
+            return subscribersStore.emailsSummary.value == .error
         } else {
             DDLogError("Stats Details cannot be loaded for StatSection: \(statSection)")
             return true
@@ -123,6 +142,8 @@ class SiteStatsDetailsViewModel: Observable {
             return periodStore.isFetchingFileDownloads
         case .postStatsMonthsYears, .postStatsAverageViews:
             return periodStore.isFetchingPostStats(for: postID)
+        case .subscribersEmailsSummary:
+            return subscribersStore.emailsSummary.value == .loading
         default:
             return false
         }
@@ -286,6 +307,15 @@ class SiteStatsDetailsViewModel: Observable {
                 rows.append(contentsOf: postStatsRows(forAverages: true, status: status))
                 return rows
             }
+        case .subscribersEmailsSummary:
+            return periodImmuTable(for: subscribersStore.emailsSummary.value.storeFetchingStatus) { status in
+                var rows = [any HashableImmutableRow]()
+                rows.append(DetailSubtitlesHeaderRow(itemSubtitle: StatSection.ItemSubtitles.emailsSummary,
+                                                     dataSubtitle: StatSection.DataSubtitles.emailsSummaryOpens,
+                                                     secondDataSubtitle: StatSection.DataSubtitles.emailsSummaryClicks))
+                rows.append(contentsOf: dataRowsFor(emailsSummaryPosts(), status: status))
+                return rows
+            }
         default:
             return ImmuTableDiffableDataSourceSnapshot()
         }
@@ -387,6 +417,10 @@ class SiteStatsDetailsViewModel: Observable {
             return
         }
         ActionDispatcher.dispatch(PeriodAction.refreshPeriod(query: .postStats(postID: postID)))
+    }
+
+    func refreshEmailsSummary() {
+        subscribersStore.updateEmailsSummary(quantity: 30, sortField: .opens)
     }
 }
 
@@ -825,6 +859,20 @@ private extension SiteStatsDetailsViewModel {
         }
 
         return yearRows
+    }
+
+    // MARK: - Emails Summary
+
+    func emailsSummaryPosts() -> [StatsTotalRowData] {
+        let emailsSummaryPosts = subscribersStore.emailsSummary.value.data?.posts ?? []
+
+        return emailsSummaryPosts.map {
+            StatsTotalRowData(name: $0.title,
+                              data: $0.opens.abbreviatedString(),
+                              secondData: $0.clicks.abbreviatedString(),
+                              multiline: false,
+                              statSection: .subscribersEmailsSummary)
+        }
     }
 
     // MARK: - Helpers

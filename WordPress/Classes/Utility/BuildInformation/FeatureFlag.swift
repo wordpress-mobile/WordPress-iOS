@@ -12,6 +12,8 @@ enum FeatureFlag: Int, CaseIterable {
     case googleDomainsCard
     case newTabIcons
     case readerTagsFeed
+    case syncPublishing
+    case autoSaveDrafts
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,6 +42,10 @@ enum FeatureFlag: Int, CaseIterable {
             return true
         case .readerTagsFeed:
             return false
+        case .syncPublishing:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting] || FeatureFlagRolloutStore().isRolloutEnabled(for: self)
+        case .autoSaveDrafts:
+            return true
         }
     }
 
@@ -82,6 +88,10 @@ extension FeatureFlag {
             return "New Tab Icons"
         case .readerTagsFeed:
             return "Reader Tags Feed"
+        case .syncPublishing:
+            return "Synchronous Publishing"
+        case .autoSaveDrafts:
+            return "Autosave Drafts"
         }
     }
 }
@@ -98,6 +108,22 @@ extension FeatureFlag: OverridableFlag {
             return false
         default:
             return true
+        }
+    }
+}
+
+extension FeatureFlag: RolloutConfigurableFlag {
+    /// Represents the percentage of users to roll the flag out to.
+    ///
+    /// To set a percentage rollout, return a value between 0.0 and 1.0.
+    /// If a percentage rollout isn't applicable for the flag, return nil.
+    ///
+    var rolloutPercentage: Double? {
+        switch self {
+        case .syncPublishing:
+            return 0.01  // 1%
+        default:
+            return nil
         }
     }
 }

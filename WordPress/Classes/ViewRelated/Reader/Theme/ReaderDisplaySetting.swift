@@ -180,6 +180,17 @@ struct ReaderDisplaySetting: Codable, Equatable {
             }
         }
 
+        var secondaryBackground: UIColor {
+            switch self {
+            case .system:
+                return .secondarySystemBackground
+            case .evening, .oled, .hacker:
+                return foreground.withAlphaComponent(0.15) // slightly higher contrast for dark themes.
+            default:
+                return foreground.withAlphaComponent(0.1)
+            }
+        }
+
         var border: UIColor {
             switch self {
             case .system:
@@ -336,10 +347,12 @@ class ReaderDisplaySettingStore: NSObject {
             return ReaderDisplaySetting.customizationEnabled ? _setting : .standard
         }
         set {
-            guard ReaderDisplaySetting.customizationEnabled else {
+            guard ReaderDisplaySetting.customizationEnabled,
+                  newValue != _setting else {
                 return
             }
             _setting = newValue
+            broadcastChangeNotification()
         }
     }
 
@@ -352,7 +365,6 @@ class ReaderDisplaySettingStore: NSObject {
                 return
             }
             repository.set(dictionary, forKey: Constants.key)
-            broadcastChangeNotification()
         }
     }
 

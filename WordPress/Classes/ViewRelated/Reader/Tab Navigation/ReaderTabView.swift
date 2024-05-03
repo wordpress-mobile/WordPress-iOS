@@ -20,6 +20,8 @@ class ReaderTabView: UIView {
 
     private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
     private var previouslySelectedIndex: Int = 0
+    private var currentTabItems: [ReaderTabItem] = []
+    private weak var childController: UIViewController?
 
     private var discoverIndex: Int? {
         return viewModel.tabItems.firstIndex(where: { $0.content.topicType == .discover })
@@ -55,7 +57,11 @@ class ReaderTabView: UIView {
         }
 
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
+            if self?.childController != nil && self?.currentTabItems == tabItems {
+                return
+            }
             self?.addContentToContainerView(index: index)
+            self?.currentTabItems = tabItems
         }
 
         setupViewElements()
@@ -118,6 +124,8 @@ extension ReaderTabView {
         }
         controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
+
+        self.childController = childController
 
         if viewModel.shouldShowCommentSpotlight {
             let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")

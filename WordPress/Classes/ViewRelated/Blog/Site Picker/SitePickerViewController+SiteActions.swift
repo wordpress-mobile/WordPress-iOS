@@ -73,7 +73,7 @@ extension SitePickerViewController {
 
     // MARK: - Add site
 
-    private func addSiteTapped() {
+    func addSiteTapped() {
         let canCreateWPComSite = defaultAccount() != nil
         let canAddSelfHostedSite = AppConfiguration.showAddSelfHostedSiteButton
 
@@ -103,18 +103,30 @@ extension SitePickerViewController {
         actionSheet.popoverPresentationController?.sourceRect = sourceView.bounds
         actionSheet.popoverPresentationController?.permittedArrowDirections = .up
 
-        parent?.present(actionSheet, animated: true)
+        presentedViewController?.present(actionSheet, animated: true)
     }
 
     private func launchSiteCreation() {
-        guard let parent = parent as? MySiteViewController else {
-            return
-        }
-        parent.launchSiteCreation(source: "my_site")
+        let viewController = presentedViewController ?? self
+        let source = "my_site"
+        JetpackFeaturesRemovalCoordinator.presentSiteCreationOverlayIfNeeded(in: viewController, source: source, onDidDismiss: {
+            guard JetpackFeaturesRemovalCoordinator.siteCreationPhase() != .two else {
+                return
+            }
+
+            // Display site creation flow if not in phase two
+            let wizardLauncher = SiteCreationWizardLauncher()
+            guard let wizard = wizardLauncher.ui else {
+                return
+            }
+            RootViewCoordinator.shared.isSiteCreationActive = true
+            viewController.present(wizard, animated: true)
+            SiteCreationAnalyticsHelper.trackSiteCreationAccessed(source: source)
+        })
     }
 
     private func launchLoginForSelfHostedSite() {
-        WordPressAuthenticator.showLoginForSelfHostedSite(self)
+        WordPressAuthenticator.showLoginForSelfHostedSite(presentedViewController ?? self)
     }
 
     // MARK: - Personalize home

@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Are you sure you want to trash this post?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Are you sure you want to update your homepage?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Are you sure you want to update?";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blog post";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blog's Email Follower";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Blog's Follower";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog's User";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Blog's Viewer";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogging";
 
@@ -1220,7 +1205,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1791,7 +1775,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2127,9 +2110,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Date Range";
-
-/* Date and Time */
-"Date and Time" = "Date and Time";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2575,9 +2555,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Email Address";
-
-/* Blog Email Followers */
-"Email Followers" = "Email Followers";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3032,13 +3009,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Followed Sites";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Follower";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Followers";
 
 /* User is following the blog. */
@@ -3920,9 +3894,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Link inserted" = "Link inserted";
-
-/* No comment provided by engineer. */
-"Link text" = "Link text";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Link to existing content";
@@ -5460,8 +5431,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publish";
 
 /* Label for the publish date button. */
@@ -5486,9 +5456,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Published just now on";
-
-/* Published on [date] */
-"Published on" = "Published on";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publishing page...";
@@ -5968,9 +5935,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Scheduled";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Scheduled for";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Scheduled for %@ on";
 
@@ -6382,9 +6346,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Sign up with Email";
 
-/* Label for time period in list of followers. */
-"Since" = "Since";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Since you're on a free plan, you'll see limited events in your Activity Log.";
 
@@ -6477,10 +6438,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "So far, there are no ignored threats on your site.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -7395,21 +7354,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Total Comments";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total Email Followers: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Total Followers";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Total Likes";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Total Posts";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total WordPress.com Followers: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Total Words";
@@ -10304,26 +10254,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Plans";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Created %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Deleting post...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Edited %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Moving post to trash...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Published %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Scheduled %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Trashed %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "By %@.";
@@ -10460,9 +10395,6 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Failed to upload media";
-
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Title";
 
@@ -10544,15 +10476,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "View all responses";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ of %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Retry";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Now";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publish Date";
@@ -11319,18 +11242,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Bar Chart depicting Visitors for the selected period.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "By day";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "By month";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "By week";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "By year";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Dismiss";

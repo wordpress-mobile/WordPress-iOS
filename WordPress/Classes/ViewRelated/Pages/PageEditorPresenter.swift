@@ -13,7 +13,7 @@ struct PageEditorPresenter {
             return false
         }
 
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             guard !PostCoordinator.shared.isUpdating(page) else {
                 return false // It's clear from the UI that the cells are not interactive
             }
