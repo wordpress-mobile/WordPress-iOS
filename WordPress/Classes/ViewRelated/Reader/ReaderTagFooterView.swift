@@ -12,10 +12,14 @@ class ReaderTagFooterView: UICollectionReusableView {
         setupStyles()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onViewTapped))
         addGestureRecognizer(tapGesture)
+        isAccessibilityElement = true
+        accessibilityTraits = .button
     }
 
     func configure(with slug: String, onTapped: @escaping () -> Void) {
-        moreLabel.setText(String(format: Constants.moreText, slug))
+        let moreText = String(format: Constants.moreText, slug)
+        moreLabel.setText(moreText)
+        accessibilityLabel = moreText
         self.onTapped = onTapped
     }
 
