@@ -301,7 +301,7 @@ private enum Strings {
     static let autosaveAlertCancel = NSLocalizedString("autosaveAlert.cancel", value: "Cancel", comment: "An alert suggesting to load autosaved revision for a published post")
 
     static let trashedPostSheetTitle = NSLocalizedString("postEditor.recoverTrashedPostAlert.title", value: "Trashed %@", comment: "Editor, alert for recovering a trashed post")
-    static let trashedPostSheetMessage = NSLocalizedString("postEditor.recoverTrashedPostAlert.message", value: "Trashed %1$@ can't be edited. To edit this %1$@, you'll need to restore it by moving it back to a draft.", comment: "Editor, alert for recovering a trashed post")
+    static let trashedPostSheetMessage = NSLocalizedString("postEditor.recoverTrashedPostAlert.message", value: "A trashed %1$@ can't be edited. To edit this %1$@, you'll need to restore it by moving it back to a draft.", comment: "Editor, alert for recovering a trashed post")
     static let trashedPostSheetCancel = NSLocalizedString("postEditor.recoverTrashedPostAlert.cancel", value: "Cancel", comment: "Editor, alert for recovering a trashed post")
     static let trashedPostSheetRecover = NSLocalizedString("postEditor.recoverTrashedPostAlert.restore", value: "Restore", comment: "Editor, alert for recovering a trashed post")
     static let trashedPostRestored = NSLocalizedString("postEditor.recoverTrashedPost.postRecoveredNoticeTitle", value: "Post restored as a draft", comment: "Editor, notice for successful recovery a trashed post")
