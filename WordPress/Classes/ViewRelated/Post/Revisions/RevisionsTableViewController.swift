@@ -229,16 +229,8 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
         return Sizes.cellEstimatedRowHeight
     }
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        guard let sectionInfo = tableViewHandler.resultsController?.sections?[section],
-            let headerView = Bundle.main.loadNibNamed(PageListSectionHeaderView.classNameWithoutNamespaces(),
-                                                      owner: nil,
-                                                      options: nil)?.first as? PageListSectionHeaderView else {
-                return UIView()
-        }
-
-        headerView.setTitle(sectionInfo.name)
-        return headerView
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        tableViewHandler.resultsController?.sections?[section].name
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
