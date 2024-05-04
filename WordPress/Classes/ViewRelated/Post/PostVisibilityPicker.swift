@@ -10,7 +10,7 @@ struct PostVisibilityPicker: View {
         var password = ""
 
         init(post: AbstractPost) {
-            self.type = PostVisibility(status: post.status ?? .draft, password: post.password)
+            self.type = PostVisibility(post: post)
             self.password = post.password ?? ""
         }
     }
@@ -143,6 +143,10 @@ enum PostVisibility: Identifiable, CaseIterable {
     case `public`
     case `private`
     case protected
+
+    init(post: AbstractPost) {
+        self.init(status: post.status ?? .draft, password: post.password)
+    }
 
     init(status: AbstractPost.Status, password: String?) {
         if let password, !password.isEmpty {

@@ -10,7 +10,7 @@ extension AbstractPost {
         guard FeatureFlag.syncPublishing.enabled else {
             return _titleForVisibility
         }
-        return PostVisibility(status: status ?? .draft, password: password).localizedTitle
+        return PostVisibility(post: self).localizedTitle
     }
 
     /// - warning: deprecated (kahu-offline-mode) (use ``PostVisibility``)
