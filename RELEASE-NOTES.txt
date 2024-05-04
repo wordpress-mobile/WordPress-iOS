@@ -3,6 +3,7 @@
 * [*] Add "Parent Page" to "Page Settings" [#23136]
 * [*] Add "Slug" and "Excerpt" fields to "Page Settings" [#23135]
 * [*] Make it easier to "Share" and "Blaze" a published post with an updated success view [##23128]
+* [*] Add support for viewing trashed posts and pages and restoring them from the editor [#23142]
 
 24.8
 -----

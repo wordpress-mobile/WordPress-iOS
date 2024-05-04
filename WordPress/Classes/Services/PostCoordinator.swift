@@ -256,7 +256,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func handleError(_ error: Error, for post: AbstractPost) {
+    func handleError(_ error: Error, for post: AbstractPost) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             wpAssertionFailure("Failed to show an error alert")
             return
@@ -330,6 +330,16 @@ class PostCoordinator: NSObject {
     private func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
+    }
+
+    /// Restores a trashed post by moving it to draft.
+    @MainActor
+    func restore(_ post: AbstractPost) async throws {
+        wpAssert(post.isOriginal())
+
+        var changes = RemotePostUpdateParameters()
+        changes.status = Post.Status.draft.rawValue
+        try await _update(post, changes: changes)
     }
 
     /// Sets the post state to "updating" and performs the given changes.

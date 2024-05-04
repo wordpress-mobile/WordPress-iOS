@@ -9,7 +9,8 @@ struct PageEditorPresenter {
             return false
         }
 
-        guard page.status != .trash else {
+        if page.status == .trash && !FeatureFlag.syncPublishing.enabled {
+            // No editing posts that are trashed.
             return false
         }
 
