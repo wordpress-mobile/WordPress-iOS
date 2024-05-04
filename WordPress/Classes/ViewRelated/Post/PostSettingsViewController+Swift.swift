@@ -190,12 +190,17 @@ extension PostSettingsViewController {
 
             switch selection.type {
             case .public, .protected:
-                if self.apost.status == .scheduled {
+                if self.apost.original().status == .scheduled {
                     // Keep it scheduled
                 } else {
                     self.apost.status = .publish
                 }
             case .private:
+                if self.apost.original().status == .scheduled {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+                        self.showWarningPostWillBePublishedAlert()
+                    }
+                }
                 self.apost.status = .publishPrivate
             }
             self.apost.password = selection.password.isEmpty ? nil : selection.password
@@ -206,6 +211,12 @@ extension PostSettingsViewController {
         viewController.title = PostVisibilityPicker.title
         viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func showWarningPostWillBePublishedAlert() {
+        let alert = UIAlertController(title: nil, message: Strings.warningPostWillBePublishedAlertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Ok", comment: "Ok"), style: .default))
+        present(alert, animated: true)
     }
 }
 
@@ -270,4 +281,6 @@ extension PostSettingsViewController {
 
 private enum Strings {
     static let errorMessage = NSLocalizedString("postSettings.updateFailedMessage", value: "Failed to update the post settings", comment: "Error message on post/page settings screen")
+
+    static let warningPostWillBePublishedAlertMessage = NSLocalizedString("postSettings.warningPostWillBePublishedAlertMessage", value: "By changing the visibility to 'Private', the post will be published immediately", comment: "An alert message explaning that by changing the visibility to private, the post will be published immediately to your site")
 }
