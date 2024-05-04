@@ -758,7 +758,9 @@ class AbstractPostListViewController: UIViewController,
         SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
         SiteStatsInformation.sharedInstance.siteID = blog.dotComID
 
-        let postURL = URL(string: post.permaLink! as String)
+        guard let postURL = post.permaLink.flatMap(URL.init) else {
+            return wpAssertionFailure("permalink missing or invalid")
+        }
         let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
                                                                                             postTitle: post.titleForDisplay(),
                                                                                             postURL: postURL)
