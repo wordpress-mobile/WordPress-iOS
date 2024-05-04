@@ -9,7 +9,7 @@ struct CommentContentHeaderView: View {
     }
 
     private var shouldShowMenu: Bool {
-        return [menu.userInfo, menu.share, menu.editComment, menu.changeStatus].reduce(false) { $0 || $1 }
+        return Set([menu.userInfo, menu.share, menu.editComment, menu.changeStatus]).contains(true)
     }
 
     var body: some View {
