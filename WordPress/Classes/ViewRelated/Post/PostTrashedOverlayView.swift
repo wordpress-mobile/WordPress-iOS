@@ -1,7 +1,7 @@
 import UIKit
 
-final class TrashedPostOverlayView: UIView {
-    var onOverlayTapped: ((TrashedPostOverlayView) -> Void)?
+final class PostTrashedOverlayView: UIView {
+    var onOverlayTapped: ((PostTrashedOverlayView) -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)

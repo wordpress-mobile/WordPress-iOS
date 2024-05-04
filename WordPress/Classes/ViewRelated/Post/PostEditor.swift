@@ -231,14 +231,14 @@ extension PostEditor where Self: UIViewController {
     // MARK: - Restore Trashed Post
 
     private func showPostTrashedOverlay() {
-        let overlay = TrashedPostOverlayView()
+        let overlay = PostTrashedOverlayView()
         view.addSubview(overlay)
         overlay.translatesAutoresizingMaskIntoConstraints = false
         overlay.onOverlayTapped = { [weak self] in self?.showRestorePostAlert(with: $0) }
         view.pinSubviewToAllEdges(overlay)
     }
 
-    private func showRestorePostAlert(with overlay: TrashedPostOverlayView) {
+    private func showRestorePostAlert(with overlay: PostTrashedOverlayView) {
         overlay.isUserInteractionEnabled = false
 
         let postType = post.localizedPostType.lowercased()
