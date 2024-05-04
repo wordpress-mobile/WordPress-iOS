@@ -187,6 +187,7 @@ extension PostSettingsViewController {
             guard let self else { return }
 
             WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+            NSLog("set-visibility: \(selection)")
 
             switch selection.type {
             case .public:
@@ -196,7 +197,7 @@ extension PostSettingsViewController {
             case .protected:
                 self.apost.status = .publish
             }
-            self.apost.password = selection.password
+            self.apost.password = selection.password.isEmpty ? nil : selection.password
             self.navigationController?.popViewController(animated: true)
             self.reloadData()
         }
