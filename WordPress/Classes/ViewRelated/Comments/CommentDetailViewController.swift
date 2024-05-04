@@ -438,8 +438,8 @@ private extension CommentDetailViewController {
     }
 
     func configureContentCell(_ cell: CommentDetailContentTableViewCell, comment: Comment) {
-        let onOptionSelected: (CommentDetailContentTableViewCell.MenuOption) -> Void = { [weak self] option in
-            guard let self else {
+        let onOptionSelected: (CommentDetailContentTableViewCell.MenuOption) -> Void = { [weak self, weak cell] option in
+            guard let self, let cell else {
                 return
             }
             switch option {
@@ -448,7 +448,7 @@ private extension CommentDetailViewController {
             case .editComment:
                 editButtonTapped()
             case .share:
-                shareCommentURL()
+                shareCommentURL(sourceView: cell)
             case .changeStatus(let status):
                 print("Option \(status) tapped")
             }
@@ -685,7 +685,7 @@ private extension CommentDetailViewController {
         })
     }
 
-    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem? = nil) {
+    @objc func shareCommentURL(sourceView: UIView) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -694,7 +694,7 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+        activityViewController.popoverPresentationController?.sourceView = sourceView
         present(activityViewController, animated: true, completion: nil)
     }
 
