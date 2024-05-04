@@ -1,22 +1,26 @@
 import SwiftUI
 
 struct PostVisibilityPicker: View {
-    @State private var selection: PostVisibility = .public
-    @State private var password = ""
+    @State private var selection: Selection
     @State private var isEnteringPassword = false
     @State private var isDismissing = false
 
     struct Selection {
-        var visibility: PostVisibility
-        var password: String?
+        var type: PostVisibility
+        var password = ""
+
+        init(post: AbstractPost) {
+            self.type = PostVisibility(status: post.status ?? .draft, password: post.password)
+            self.password = post.password ?? ""
+        }
     }
 
     private let onSubmit: (Selection) -> Void
 
     static var title: String { Strings.title }
 
-    init(visibility: PostVisibility, onSubmit: @escaping (Selection) -> Void) {
-        self._selection = State(initialValue: visibility)
+    init(selection: Selection, onSubmit: @escaping (Selection) -> Void) {
+        self._selection = State(initialValue: selection)
         self.onSubmit = onSubmit
     }
 
@@ -36,8 +40,8 @@ struct PostVisibilityPicker: View {
                 if visibility == .protected {
                     isEnteringPassword = true
                 } else {
-                    selection = visibility
-                    onSubmit(Selection(visibility: visibility, password: nil))
+                    selection.type = visibility
+                    onSubmit(selection)
                 }
             }
         }, label: {
@@ -52,7 +56,7 @@ struct PostVisibilityPicker: View {
                 Spacer()
                 Image(systemName: "checkmark")
                     .tint(Color(uiColor: .primary))
-                    .opacity((selection == visibility && !isEnteringPassword) ? 1 : 0)
+                    .opacity((selection.type == visibility && !isEnteringPassword) ? 1 : 0)
             }
         })
         .tint(.primary)
@@ -65,13 +69,13 @@ struct PostVisibilityPicker: View {
 
     @ViewBuilder
     private var enterPasswordRows: some View {
-        PasswordField(password: $password)
+        PasswordField(password: $selection.password)
             .onSubmit(savePassword)
 
         HStack {
             Button(Strings.cancel) {
                 withAnimation {
-                    password = ""
+                    selection.password = ""
                     isEnteringPassword = false
                 }
             }
@@ -79,7 +83,7 @@ struct PostVisibilityPicker: View {
             Spacer()
             Button(Strings.save, action: savePassword)
                 .font(.body.weight(.medium))
-                .disabled(password.isEmpty)
+                .disabled(selection.password.isEmpty)
         }
         .buttonStyle(.plain)
         .foregroundStyle(Color(uiColor: .brand))
@@ -87,12 +91,12 @@ struct PostVisibilityPicker: View {
 
     private func savePassword() {
         withAnimation {
-            selection = .protected
+            selection.type = .protected
             isEnteringPassword = false
             isDismissing = true
             // Let the keyboard dismiss first to avoid janky animation
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(550)) {
-                onSubmit(Selection(visibility: .protected, password: password))
+                onSubmit(selection)
             }
         }
     }
@@ -137,17 +141,13 @@ enum PostVisibility: Identifiable, CaseIterable {
     case protected
 
     init(status: AbstractPost.Status, password: String?) {
-        if password != nil {
+        if let password, !password.isEmpty {
             self = .protected
         } else if status == .publishPrivate {
             self = .private
         } else {
             self = .public
         }
-    }
-
-    init(post: AbstractPost) {
-        self.init(status: post.status ?? .draft, password: post.password)
     }
 
     var id: PostVisibility { self }

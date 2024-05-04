@@ -183,12 +183,12 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
 
 extension PostSettingsViewController {
     @objc func showUpdatedPostVisibilityPicker() {
-        let view = PostVisibilityPicker(visibility: PostVisibility(post: apost)) { [weak self] selection in
+        let view = PostVisibilityPicker(selection: .init(post: apost)) { [weak self] selection in
             guard let self else { return }
 
             WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
 
-            switch selection.visibility {
+            switch selection.type {
             case .public:
                 self.apost.status = .publish
             case .private:
