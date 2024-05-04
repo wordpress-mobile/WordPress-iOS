@@ -1,3 +1,5 @@
+import UIKit
+
 class RevisionsTableViewController: UITableViewController {
     typealias RevisionLoadedBlock = (AbstractPost) -> Void
 
@@ -76,7 +78,9 @@ private extension RevisionsTableViewController {
         refreshControl.addTarget(self, action: #selector(refreshRevisions), for: .valueChanged)
         self.refreshControl = refreshControl
 
-        tableView.tableFooterView = tableViewFooter
+        if post?.original().isStatus(in: [.draft, .pending]) == false {
+            tableView.tableFooterView = tableViewFooter
+        }
 
         tableView.separatorColor = .divider
         WPStyleGuide.configureColors(view: view, tableView: tableView)
@@ -230,7 +234,11 @@ extension RevisionsTableViewController: WPTableViewHandlerDelegate {
     }
 
     override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        tableViewHandler.resultsController?.sections?[section].name
+        guard let sections = tableViewHandler.resultsController?.sections,
+              sections.indices.contains(section) else {
+            return nil
+        }
+        return sections[section].name
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -303,7 +311,7 @@ private extension Date {
 
     private static let shortDateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateStyle = .short
+        formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
