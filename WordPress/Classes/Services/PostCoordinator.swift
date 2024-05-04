@@ -512,10 +512,11 @@ class PostCoordinator: NSObject {
     }
 
     private func startSync(for post: AbstractPost) {
-        guard let revision = post.getLatestRevisionNeedingSync() else {
-            let worker = getWorker(for: post)
+        if let worker = workers[post.objectID], worker.error != nil {
             worker.error = nil
             postDidUpdateNotification(for: post)
+        }
+        guard let revision = post.getLatestRevisionNeedingSync() else {
             return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
         }
         startSync(for: post, revision: revision)
