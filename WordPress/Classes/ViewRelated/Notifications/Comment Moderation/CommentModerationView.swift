@@ -56,7 +56,7 @@ private struct Container<T: View, V: View>: View {
         .padding(.horizontal, .DS.Padding.double)
         .transition(
             .asymmetric(
-                insertion: .opacity.animation(animation.delay(animationDuration * 1)),
+                insertion: .opacity.animation(animation.delay(animationDuration * 0.8)),
                 removal: .opacity.animation(animation)
             )
         )
