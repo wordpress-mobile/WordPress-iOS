@@ -1,6 +1,6 @@
 final class CommentModerationViewModel: ObservableObject {
     @Published var state: CommentModerationState
-    
+
     let imageURL: URL?
     let userName: String
 
