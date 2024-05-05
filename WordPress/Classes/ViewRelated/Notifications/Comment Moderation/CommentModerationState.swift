@@ -1,6 +1,6 @@
-enum CommentModerationState: CaseIterable {
+enum CommentModerationState: Equatable {
     case pending
-    case approved
-    case liked
+    case approved(liked: Bool)
+    case spam
     case trash
 }
