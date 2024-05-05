@@ -268,7 +268,7 @@ struct CommentModerationView_Previews: PreviewProvider {
                 Button("Pending") {
                     viewModel.state = .pending
                 }
-                Button("Approve") {
+                Button("Approved") {
                     viewModel.state = .approved(liked: false)
                 }
                 Button("Spam") {
