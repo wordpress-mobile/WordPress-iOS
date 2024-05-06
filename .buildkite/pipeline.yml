@@ -91,6 +91,16 @@ steps:
   #################
   - group: "Linters"
     steps:
+      - label: "☢️ Danger - PR Check"
+        command: danger
+        key: danger
+        if: "build.pull_request.id != null"
+        retry:
+          manual:
+            permit_on_passed: true
+        agents:
+          queue: "linter"
+
       - label: ":swift: SwiftLint"
         command: swiftlint
         notify:
