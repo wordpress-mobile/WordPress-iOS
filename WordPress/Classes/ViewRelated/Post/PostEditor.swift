@@ -163,6 +163,11 @@ extension PostEditor where Self: UIViewController {
                 self?.postConflictResolved(notification)
             }.store(in: &cancellables)
 
+        post.original().publisher(for: \.statusString, options: [.new])
+            .compactMap { $0 }.sink { [weak self] in
+                self?.postDidChangeStatus($0)
+            }.store(in: &cancellables)
+
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
@@ -257,7 +262,6 @@ extension PostEditor where Self: UIViewController {
 
     @MainActor
     private func restorePostFromTrash() async {
-        SVProgressHUD.show()
         defer { SVProgressHUD.dismiss() }
         let coordinator = PostCoordinator.shared
         do {
@@ -272,6 +276,14 @@ extension PostEditor where Self: UIViewController {
     private func configureWithUpdatedPost(_ post: AbstractPost) {
         self.post = post // Even if it's the same instance, it's how you currently refresh the editor
         self.createRevisionOfPost()
+    }
+
+    // MARK: - Observations
+
+    private func postDidChangeStatus(_ status: String) {
+        if status == PostStatusTrash {
+            onClose?(true)
+        }
     }
 }
 

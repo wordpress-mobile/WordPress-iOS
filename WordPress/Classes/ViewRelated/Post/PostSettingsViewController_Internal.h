@@ -11,7 +11,8 @@ typedef enum {
     PostSettingsSectionSharesRemaining,
     PostSettingsSectionGeolocation,
     PostSettingsSectionMoreOptions,
-    PostSettingsSectionPageAttributes
+    PostSettingsSectionPageAttributes,
+    PostSettingsSectionManage
 } PostSettingsSection;
 
 

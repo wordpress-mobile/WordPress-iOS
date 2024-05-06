@@ -14,7 +14,8 @@
         @(PostSettingsSectionMeta),
         @(PostSettingsSectionFeaturedImage),
         @(PostSettingsSectionMoreOptions),
-        @(PostSettingsSectionPageAttributes)
+        @(PostSettingsSectionPageAttributes),
+        @(PostSettingsSectionManage)
     ];
 }
 

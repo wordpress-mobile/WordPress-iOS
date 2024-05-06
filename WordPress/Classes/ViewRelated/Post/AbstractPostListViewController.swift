@@ -689,26 +689,13 @@ class AbstractPostListViewController: UIViewController,
 
     func _trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let post = post.original()
-
-        func performAction() {
+        AbstractPostHelper.confirmTrashing(for: post) { isConfirmed in
+            completion()
+            guard isConfirmed else { return }
             Task {
                 await PostCoordinator.shared.trash(post)
             }
         }
-
-        guard !(post.status == .draft || post.status == .pending) || post.revision != nil else {
-            return performAction()
-        }
-
-        let alert = UIAlertController(title: Strings.Trash.actionTitle, message: Strings.Trash.message(for: post.latest()), preferredStyle: .alert)
-        alert.addCancelActionWithTitle(Strings.cancelText) { _ in
-            completion()
-        }
-        alert.addDestructiveActionWithTitle(Strings.Trash.actionTitle) { _ in
-            performAction()
-            completion()
-        }
-        alert.presentFromRootViewController()
     }
 
     func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
@@ -870,6 +857,24 @@ extension AbstractPostListViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         WPAnalytics.track(.postListNoResultsButtonPressed, withProperties: propertiesForAnalytics())
         createPost()
+    }
+}
+
+extension AbstractPostHelper {
+    static func confirmTrashing(for post: AbstractPost, _ completion: @escaping (Bool) -> Void) {
+        guard !(post.status == .draft || post.status == .pending) || post.revision != nil else {
+            completion(true)
+            return
+        }
+
+        let alert = UIAlertController(title: Strings.Trash.actionTitle, message: Strings.Trash.message(for: post.latest()), preferredStyle: .alert)
+        alert.addCancelActionWithTitle(Strings.cancelText) { _ in
+            completion(false)
+        }
+        alert.addDestructiveActionWithTitle(Strings.Trash.actionTitle) { _ in
+            completion(true)
+        }
+        alert.presentFromRootViewController()
     }
 }
 

@@ -43,7 +43,8 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowExcerpt,
     PostSettingsRowSocialNoConnections,
     PostSettingsRowSocialRemainingShares,
-    PostSettingsRowParentPage
+    PostSettingsRowParentPage,
+    PostSettingsRowDelete
 };
 
 static CGFloat CellHeight = 44.0f;
@@ -67,6 +68,7 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
+@property (nonatomic, strong) NSArray *sectionManageRows;
 @property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) UIImage *featuredImage;
@@ -174,6 +176,7 @@ FeaturedImageViewControllerDelegate>
 
     [self setupPublicizeConnections]; // Refresh in case the user disconnects from unsupported services.
     [self configureMetaSectionRows];
+    [self configureManageSectionRows];
     [self reloadData];
 }
 
@@ -419,7 +422,7 @@ FeaturedImageViewControllerDelegate>
                                    @(PostSettingsSectionShare),
                                    disabledTwitterSection,
                                    remainingSharesSection,
-                                   @(PostSettingsSectionMoreOptions) ] mutableCopy];
+                                   @(PostSettingsSectionMoreOptions)] mutableCopy];
     // Remove sticky post section for self-hosted non Jetpack site
     // and non admin user
     //
@@ -433,6 +436,10 @@ FeaturedImageViewControllerDelegate>
 
     if (![self showRemainingShares]) {
         [sections removeObject:remainingSharesSection];
+    }
+
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
+        [sections addObject:@(PostSettingsSectionManage)];
     }
 
     self.sections = [sections copy];
@@ -469,6 +476,8 @@ FeaturedImageViewControllerDelegate>
         return 2;
     } else if (sec == PostSettingsSectionPageAttributes) {
         return 1;
+    } else if (sec == PostSettingsSectionManage) {
+        return self.sectionManageRows.count;
     }
 
     return 0;
@@ -591,6 +600,8 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureMoreOptionsCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionPageAttributes) {
         cell = [self configurePageAttributesCellForIndexPath:indexPath];
+    } else if (sec == PostSettingsSectionManage) {
+        cell = [self configureManageCellForIndexPath:indexPath];
     }
 
     return cell ?: [UITableViewCell new];
@@ -703,6 +714,11 @@ FeaturedImageViewControllerDelegate>
     }
 
     self.postMetaSectionRows = [metaRows copy];
+}
+
+- (void)configureManageSectionRows
+{
+    self.sectionManageRows = @[@(PostSettingsRowDelete)];
 }
 
 - (UITableViewCell *)configureMetaPostMetaCellForIndexPath:(NSIndexPath *)indexPath
@@ -1408,7 +1424,7 @@ FeaturedImageViewControllerDelegate>
                           withRowAnimation:UITableViewRowAnimationFade];
 }
 
-// MARK: - Page Attributes
+#pragma mark - Page Attributes
 
 - (UITableViewCell *)configurePageAttributesCellForIndexPath:(NSIndexPath *)indexPath
 {
@@ -1423,6 +1439,12 @@ FeaturedImageViewControllerDelegate>
     cell.tag = PostSettingsRowParentPage;
     cell.accessibilityIdentifier = @"Parent";
     return cell;
+}
+
+#pragma mark - Manage
+
+- (UITableViewCell *)configureManageCellForIndexPath:(NSIndexPath *)indexPath {
+    return [self makeMoveToTrashCell];
 }
 
 #pragma mark - PostCategoriesViewControllerDelegate

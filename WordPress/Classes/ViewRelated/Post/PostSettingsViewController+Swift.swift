@@ -63,6 +63,11 @@ extension PostSettingsViewController {
             self?.didUpdateSettings()
         }.store(in: &cancellables)
 
+        apost.original().publisher(for: \.statusString, options: [.new])
+            .compactMap { $0 }.sink { [weak self] in
+                self?.postDidChangeStatus($0)
+            }.store(in: &cancellables)
+
         objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
@@ -104,8 +109,7 @@ extension PostSettingsViewController {
             return _buttonSaveTapped()
         }
 
-        navigationItem.rightBarButtonItem = .activityIndicator
-        setEnabled(false)
+        setLoading(true)
 
         Task { @MainActor in
             do {
@@ -117,7 +121,7 @@ extension PostSettingsViewController {
                 }
                 presentingViewController?.dismiss(animated: true)
             } catch {
-                setEnabled(true)
+                setLoading(false)
                 refreshNavigationBarButtons()
             }
         }
@@ -150,6 +154,13 @@ extension PostSettingsViewController {
         }
     }
 
+    private func postDidChangeStatus(_ status: String) {
+        if status == PostStatusTrash {
+            // At this point, the revision should be deleted by the coordinator
+            dismiss(animated: true)
+        }
+    }
+
     private var changes: RemotePostUpdateParameters {
         guard let original = apost.original else {
             return RemotePostUpdateParameters()
@@ -160,6 +171,15 @@ extension PostSettingsViewController {
     private func deleteRevision() {
         apost.original?.deleteRevision()
         apost.managedObjectContext.map(ContextManager.shared.saveContextAndWait)
+    }
+
+    private func setLoading(_ isLoading: Bool) {
+        setEnabled(!isLoading)
+        if isLoading {
+            navigationItem.rightBarButtonItem = .activityIndicator
+        } else {
+            refreshNavigationBarButtons()
+        }
     }
 
     private func setEnabled(_ isEnabled: Bool) {
@@ -237,6 +257,82 @@ extension PostSettingsViewController {
     }
 }
 
+// MARK: - PostSettingsViewController (Manage)
+
+extension PostSettingsViewController {
+    @objc func makeMoveToTrashCell() -> UITableViewCell {
+        let cell = ButtonTableViewCell()
+
+        cell.button.addAction(UIAction { [weak cell] _ in
+            guard let cell else { return }
+            self.buttonMoveToTrashTapped(in: cell)
+        }, for: .touchUpInside)
+
+        var configuration = UIButton.Configuration.borderless()
+        configuration.title = Strings.trash
+        configuration.baseForegroundColor = UIColor.systemRed
+        configuration.contentInsets = .init(top: 16, leading: 16, bottom: 16, trailing: 16)
+        cell.button.configuration = configuration
+
+        return cell
+    }
+
+    private func buttonMoveToTrashTapped(in cell: ButtonTableViewCell) {
+        AbstractPostHelper.confirmTrashing(for: apost.original()) { isConfirmed in
+            guard isConfirmed else { return }
+            Task {
+                await self.moveToTrash(cell: cell)
+            }
+        }
+    }
+
+    @MainActor
+    private func moveToTrash(cell: ButtonTableViewCell) async {
+        setEnabled(false)
+        cell.isLoading = true
+        defer {
+            setEnabled(true)
+            cell.isLoading = false
+        }
+        await PostCoordinator.shared.trash(apost.original())
+
+    }
+}
+
+private final class ButtonTableViewCell: UITableViewCell {
+    let button = UIButton(type: .system)
+    let activityIndicator = UIActivityIndicatorView(style: .medium)
+
+    var isLoading: Bool = false {
+        didSet {
+            button.isHidden = isLoading
+            _ = isLoading ? activityIndicator.startAnimating() : activityIndicator.stopAnimating()
+        }
+    }
+
+    convenience init() {
+        self.init(style: .default, reuseIdentifier: nil)
+    }
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubview(button)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewToAllEdges(button)
+
+        contentView.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        contentView.pinSubviewAtCenter(activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 private enum Strings {
     static let errorMessage = NSLocalizedString("postSettings.updateFailedMessage", value: "Failed to update the post settings", comment: "Error message on post/page settings screen")
+    static let trash = NSLocalizedString("postSettings.moveToTrash", value: "Move to trash", comment: "Label for a option that moves a post to the trash folder")
 }
