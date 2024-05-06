@@ -147,6 +147,6 @@ struct StatsGhostLineChartRow: StatsRowGhostable {
     let statSection: StatSection?
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostLineChartCell.defaultNib, StatsGhostLineChartCell.self)
+        return ImmuTableCell.class(StatsGhostLineChartCell.self)
     }()
 }

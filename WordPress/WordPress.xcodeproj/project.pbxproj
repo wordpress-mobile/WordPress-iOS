@@ -137,8 +137,6 @@
 		011896A629D5B72500D34BA9 /* DomainsDashboardCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A429D5B72500D34BA9 /* DomainsDashboardCoordinator.swift */; };
 		011896A829D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */; };
 		011896A929D5BBB400D34BA9 /* DomainsDashboardFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */; };
-		011F156F2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011F156E2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib */; };
-		011F15702BE4E8CE008029ED /* StatsGhostSingleValueCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 011F156E2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib */; };
 		011F52BD2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */; };
 		011F52BE2A15327700B04114 /* BaseDashboardDomainsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */; };
 		011F52C02A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */; };
@@ -204,6 +202,8 @@
 		0189AF062ACAD89700F63393 /* ShoppingCartService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0189AF042ACAD89700F63393 /* ShoppingCartService.swift */; };
 		018FF1352AE6771A00F301C3 /* LockScreenVerticalCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018FF1342AE6771A00F301C3 /* LockScreenVerticalCard.swift */; };
 		018FF1372AE67C2600F301C3 /* LockScreenFlexibleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */; };
+		019105862BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019105852BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift */; };
+		019105872BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019105852BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift */; };
 		019C5B8D2BD6570D00A69DB0 /* StatsSubscribersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */; };
 		019C5B8E2BD6570D00A69DB0 /* StatsSubscribersStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */; };
 		019C5B942BD6917600A69DB0 /* StatsSubscribersCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */; };
@@ -224,8 +224,6 @@
 		01B7590B2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B7590A2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift */; };
 		01B7590C2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B7590A2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift */; };
 		01B7590E2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */; };
-		01C447292BE4F8490006F787 /* StatsGhostLineChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C447282BE4F8490006F787 /* StatsGhostLineChartCell.xib */; };
-		01C4472A2BE4F8490006F787 /* StatsGhostLineChartCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 01C447282BE4F8490006F787 /* StatsGhostLineChartCell.xib */; };
 		01C4472C2BE4F8560006F787 /* StatsGhostLineChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C4472B2BE4F8560006F787 /* StatsGhostLineChartCell.swift */; };
 		01C4472D2BE4F8560006F787 /* StatsGhostLineChartCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C4472B2BE4F8560006F787 /* StatsGhostLineChartCell.swift */; };
 		01C591452BDBD63D0071515C /* StatsGhostTopCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C591442BDBD63D0071515C /* StatsGhostTopCell.swift */; };
@@ -6005,7 +6003,6 @@
 		011896A429D5B72500D34BA9 /* DomainsDashboardCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardCoordinator.swift; sourceTree = "<group>"; };
 		011896A729D5BBB400D34BA9 /* DomainsDashboardFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsDashboardFactory.swift; sourceTree = "<group>"; };
 		011A2815DB0DE7E3973CBC0E /* Pods-Apps-Jetpack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-Jetpack.release.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack.release.xcconfig"; sourceTree = "<group>"; };
-		011F156E2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostSingleValueCell.xib; sourceTree = "<group>"; };
 		011F52BC2A15327700B04114 /* BaseDashboardDomainsCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseDashboardDomainsCardCell.swift; sourceTree = "<group>"; };
 		011F52BF2A1538EC00B04114 /* FreeToPaidPlansDashboardCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardCell.swift; sourceTree = "<group>"; };
 		011F52C22A153A3400B04114 /* FreeToPaidPlansDashboardCardHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreeToPaidPlansDashboardCardHelper.swift; sourceTree = "<group>"; };
@@ -6053,6 +6050,7 @@
 		0189AF042ACAD89700F63393 /* ShoppingCartService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingCartService.swift; sourceTree = "<group>"; };
 		018FF1342AE6771A00F301C3 /* LockScreenVerticalCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenVerticalCard.swift; sourceTree = "<group>"; };
 		018FF1362AE67C2600F301C3 /* LockScreenFlexibleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFlexibleCard.swift; sourceTree = "<group>"; };
+		019105852BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGhostSingleValueCell.swift; sourceTree = "<group>"; };
 		019C5B8C2BD6570D00A69DB0 /* StatsSubscribersStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersStore.swift; sourceTree = "<group>"; };
 		019C5B932BD6917600A69DB0 /* StatsSubscribersCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersCache.swift; sourceTree = "<group>"; };
 		019C5B962BD6A49900A69DB0 /* StatsSubscribersViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsSubscribersViewModelTests.swift; sourceTree = "<group>"; };
@@ -6064,7 +6062,6 @@
 		01B759072B3ECAF300179AE6 /* DomainsStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainsStateView.swift; sourceTree = "<group>"; };
 		01B7590A2B3ED63B00179AE6 /* DomainDetailsWebViewControllerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DomainDetailsWebViewControllerWrapper.swift; sourceTree = "<group>"; };
 		01B7590D2B3EEEA400179AE6 /* SiteDomainsViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteDomainsViewModelTests.swift; sourceTree = "<group>"; };
-		01C447282BE4F8490006F787 /* StatsGhostLineChartCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostLineChartCell.xib; sourceTree = "<group>"; };
 		01C4472B2BE4F8560006F787 /* StatsGhostLineChartCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGhostLineChartCell.swift; sourceTree = "<group>"; };
 		01C591442BDBD63D0071515C /* StatsGhostTopCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGhostTopCell.swift; sourceTree = "<group>"; };
 		01CE5006290A889F00A9C2E0 /* TracksConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TracksConfiguration.swift; sourceTree = "<group>"; };
@@ -15003,13 +15000,12 @@
 				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
 				9A19D440236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
-				011F156E2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib */,
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
 				9A73CB072350DE4C002EF20C /* StatsGhostSingleRowCell.xib */,
 				9AB36B83236B25D900FAD72A /* StatsGhostTitleCell.xib */,
 				FA347AF126EB7A420096604B /* StatsGhostGrowAudienceCell.xib */,
-				01C447282BE4F8490006F787 /* StatsGhostLineChartCell.xib */,
 				01C4472B2BE4F8560006F787 /* StatsGhostLineChartCell.swift */,
+				019105852BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift */,
 			);
 			path = GhostViews;
 			sourceTree = "<group>";
@@ -19644,7 +19640,6 @@
 				17222D9B261DDDF90047B163 /* black-icon-app-76x76.png in Resources */,
 				DC772B0828201F5300664C02 /* ViewsVisitorsLineChartCell.xib in Resources */,
 				5D6C4AF61B603CA3005E3C43 /* WPTableViewActivityCell.xib in Resources */,
-				01C447292BE4F8490006F787 /* StatsGhostLineChartCell.xib in Resources */,
 				A01C55480E25E0D000D411F2 /* defaultPostTemplate.html in Resources */,
 				17222D89261DDDF90047B163 /* celadon-icon-app-60x60@3x.png in Resources */,
 				08BA4BC9298A9AD500015BD2 /* JetpackInstallPluginLogoAnimation_ltr.json in Resources */,
@@ -19666,7 +19661,6 @@
 				FA1A55FF25A6F07F0033967D /* RestoreStatusView.xib in Resources */,
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				1761F17226209AEE000815EF /* open-source-dark-icon-app-60x60@3x.png in Resources */,
-				011F156F2BE4E8CE008029ED /* StatsGhostSingleValueCell.xib in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
 				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
 				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
@@ -20213,7 +20207,6 @@
 				FABB1FCE2602FC2C00C8785C /* StatsChildRowsView.xib in Resources */,
 				F41E4EEE28F247D3001880C6 /* white-on-green-icon-app-76.png in Resources */,
 				FABB1FD02602FC2C00C8785C /* xhtml1-transitional.dtd in Resources */,
-				011F15702BE4E8CE008029ED /* StatsGhostSingleValueCell.xib in Resources */,
 				8BF281FA27CE8E4100AF8CF3 /* DashboardGhostCardContent.xib in Resources */,
 				F465979A28E65FC800D5F49A /* dark-green-icon-app-60@3x.png in Resources */,
 				FABB1FD22602FC2C00C8785C /* RestoreStatusView.xib in Resources */,
@@ -20316,7 +20309,6 @@
 				FABB20302602FC2C00C8785C /* OverviewCell.xib in Resources */,
 				83A8A2972BDC557F001F9133 /* ReaderTagFooterView.xib in Resources */,
 				F46597E928E6698D00D5F49A /* spectrum-on-black-icon-app-83.5@2x.png in Resources */,
-				01C4472A2BE4F8490006F787 /* StatsGhostLineChartCell.xib in Resources */,
 				FABB20322602FC2C00C8785C /* JetpackRemoteInstallStateView.xib in Resources */,
 				FABB20352602FC2C00C8785C /* TemplatePreviewViewController.xib in Resources */,
 				F46597BB28E6687800D5F49A /* neumorphic-dark-icon-app-76@2x.png in Resources */,
@@ -22141,6 +22133,7 @@
 				436D56292117312700CEAA33 /* RegisterDomainDetailsViewController.swift in Sources */,
 				F4EDAA4C29A516EA00622D3D /* ReaderPostService.swift in Sources */,
 				01C4472C2BE4F8560006F787 /* StatsGhostLineChartCell.swift in Sources */,
+				019105862BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */,
 				F5E29036243E4F5F00C19CA5 /* FilterProvider.swift in Sources */,
 				F4FE743429C3767300AC2729 /* AddressTableViewCell+ViewModel.swift in Sources */,
 				027AC51D227896540033E56E /* DomainCreditEligibilityChecker.swift in Sources */,
@@ -25422,6 +25415,7 @@
 				F41E32FF287B47A500F89082 /* SuggestionsListViewModel.swift in Sources */,
 				F4EDAA5129A795C600622D3D /* BlockedAuthor.swift in Sources */,
 				FABB238E2602FC2C00C8785C /* NotificationSettingsService.swift in Sources */,
+				019105872BE8BD6000CDFB16 /* StatsGhostSingleValueCell.swift in Sources */,
 				8091019429078CFE00FCB4EA /* JetpackFullscreenOverlayViewController.swift in Sources */,
 				FA347AEE26EB6E300096604B /* GrowAudienceCell.swift in Sources */,
 				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,

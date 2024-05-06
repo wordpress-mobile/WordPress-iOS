@@ -1,8 +1,28 @@
 import UIKit
 import WordPressShared
+import DesignSystem
 
-class StatsGhostLineChartCell: StatsGhostBaseCell, NibLoadable {
-    @IBOutlet private weak var lineChart: StatsGhostLineChartView!
+final class StatsGhostLineChartCell: StatsGhostBaseCell {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        let lineChart = StatsGhostLineChartView()
+        headingLabel.isGhostableDisabled = true
+        lineChart.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(lineChart)
+        topConstraint = lineChart.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0)
+        topConstraint?.isActive = true
+        NSLayoutConstraint.activate([
+            lineChart.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .DS.Padding.double),
+            contentView.trailingAnchor.constraint(equalTo: lineChart.trailingAnchor, constant: .DS.Padding.double),
+            contentView.bottomAnchor.constraint(equalTo: lineChart.bottomAnchor, constant: .DS.Padding.single),
+            lineChart.heightAnchor.constraint(equalToConstant: 190),
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 final class StatsGhostLineChartView: UIView {
