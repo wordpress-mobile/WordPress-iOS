@@ -429,6 +429,10 @@ extension PublishingEditor {
             return _discardChanges()
         }
 
+        guard post.status != .trash else {
+            return true // No revision is created for trashed posts
+        }
+
         guard let context = post.managedObjectContext else {
             wpAssertionFailure("Missing managedObjectContext")
             return true
@@ -724,7 +728,7 @@ extension PublishingEditor {
 
         wpAssert(post.latest() == post, "Must be opened with the latest verison of the post")
 
-        if !post.isUnsavedRevision {
+        if !post.isUnsavedRevision && post.status != .trash {
             DDLogDebug("Creating new revision")
             post = post._createRevision()
         }

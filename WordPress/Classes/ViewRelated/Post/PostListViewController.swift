@@ -161,7 +161,7 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
 
         let post = postAtIndexPath(indexPath)
 
-        guard post.status != .trash else {
+        if post.status == .trash && !FeatureFlag.syncPublishing.enabled {
             // No editing posts that are trashed.
             return
         }

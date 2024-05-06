@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import WordPressFlux
 
 enum EditMode {
     case richText
@@ -141,7 +142,12 @@ extension PostEditor where Self: UIViewController {
         guard FeatureFlag.syncPublishing.enabled else {
             return
         }
-        showAutosaveAvailableAlertIfNeeded()
+
+        if post.original().status == .trash {
+            showPostTrashedOverlay()
+        } else {
+            showAutosaveAvailableAlertIfNeeded()
+        }
 
         var cancellables: [AnyCancellable] = []
 
@@ -159,6 +165,8 @@ extension PostEditor where Self: UIViewController {
 
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
+
+    // MARK: - Autosave
 
     private func showAutosaveAvailableAlertIfNeeded() {
         // The revision has unsaved local changes, takes precedence over autosave
@@ -181,6 +189,8 @@ extension PostEditor where Self: UIViewController {
         alert.addAction(UIAlertAction(title: Strings.autosaveAlertCancel, style: .cancel, handler: nil))
         present(alert, animated: true)
     }
+
+    // MARK: - App Termination
 
     private func appWillTerminate() {
         guard let context = post.managedObjectContext else {
@@ -206,6 +216,8 @@ extension PostEditor where Self: UIViewController {
         }
     }
 
+    // MARK: - Conflict Resolution
+
     private func postConflictResolved(_ notification: Foundation.Notification) {
         guard
             let userInfo = notification.userInfo,
@@ -213,8 +225,53 @@ extension PostEditor where Self: UIViewController {
         else {
             return
         }
-        self.post = post
-        createRevisionOfPost()
+        self.configureWithUpdatedPost(post)
+    }
+
+    // MARK: - Restore Trashed Post
+
+    private func showPostTrashedOverlay() {
+        let overlay = PostTrashedOverlayView()
+        view.addSubview(overlay)
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.onOverlayTapped = { [weak self] in self?.showRestorePostAlert(with: $0) }
+        view.pinSubviewToAllEdges(overlay)
+    }
+
+    private func showRestorePostAlert(with overlay: PostTrashedOverlayView) {
+        overlay.isUserInteractionEnabled = false
+
+        let postType = post.localizedPostType.lowercased()
+        let alert = UIAlertController(title: String(format: Strings.trashedPostSheetTitle, postType), message: String(format: Strings.trashedPostSheetMessage, postType), preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: Strings.trashedPostSheetCancel, style: .cancel) { _ in
+            overlay.isUserInteractionEnabled = true
+        })
+        alert.addAction(UIAlertAction(title: Strings.trashedPostSheetRecover, style: .default) { [weak self] _ in
+            guard let self else { return }
+            Task {
+                await self.restorePostFromTrash()
+            }
+        })
+        present(alert, animated: true)
+    }
+
+    @MainActor
+    private func restorePostFromTrash() async {
+        SVProgressHUD.show()
+        defer { SVProgressHUD.dismiss() }
+        let coordinator = PostCoordinator.shared
+        do {
+            try await coordinator.restore(post)
+            ActionDispatcher.dispatch(NoticeAction.post(Notice(title: Strings.trashedPostRestored)))
+            self.configureWithUpdatedPost(post)
+        } catch {
+            coordinator.handleError(error, for: post)
+        }
+    }
+
+    private func configureWithUpdatedPost(_ post: AbstractPost) {
+        self.post = post // Even if it's the same instance, it's how you currently refresh the editor
+        self.createRevisionOfPost()
     }
 }
 
@@ -242,4 +299,10 @@ private enum Strings {
 
     static let autosaveAlertContinue = NSLocalizedString("autosaveAlert.viewChanges", value: "View Changes", comment: "An alert suggesting to load autosaved revision for a published post")
     static let autosaveAlertCancel = NSLocalizedString("autosaveAlert.cancel", value: "Cancel", comment: "An alert suggesting to load autosaved revision for a published post")
+
+    static let trashedPostSheetTitle = NSLocalizedString("postEditor.recoverTrashedPostAlert.title", value: "Trashed %@", comment: "Editor, alert for recovering a trashed post")
+    static let trashedPostSheetMessage = NSLocalizedString("postEditor.recoverTrashedPostAlert.message", value: "A trashed %1$@ can't be edited. To edit this %1$@, you'll need to restore it by moving it back to a draft.", comment: "Editor, alert for recovering a trashed post")
+    static let trashedPostSheetCancel = NSLocalizedString("postEditor.recoverTrashedPostAlert.cancel", value: "Cancel", comment: "Editor, alert for recovering a trashed post")
+    static let trashedPostSheetRecover = NSLocalizedString("postEditor.recoverTrashedPostAlert.restore", value: "Restore", comment: "Editor, alert for recovering a trashed post")
+    static let trashedPostRestored = NSLocalizedString("postEditor.recoverTrashedPost.postRecoveredNoticeTitle", value: "Post restored as a draft", comment: "Editor, notice for successful recovery a trashed post")
 }

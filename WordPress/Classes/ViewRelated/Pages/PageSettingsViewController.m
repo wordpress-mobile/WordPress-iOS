@@ -13,6 +13,7 @@
     self.sections = @[
         @(PostSettingsSectionMeta),
         @(PostSettingsSectionFeaturedImage),
+        @(PostSettingsSectionMoreOptions),
         @(PostSettingsSectionPageAttributes)
     ];
 }

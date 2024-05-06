@@ -30,7 +30,8 @@ class StatsSubscribersChartCell: StatsBaseCell, NibLoadable {
 private extension StatsSubscribersChartCell {
 
     func configureChartView() {
-        let configuration = StatsLineChartConfiguration(data: chartData,
+        let configuration = StatsLineChartConfiguration(type: .subscribers,
+                                                        data: chartData,
                                                         styling: chartStyling,
                                                         analyticsGranularity: .days,
                                                         indexToHighlight: 0,
