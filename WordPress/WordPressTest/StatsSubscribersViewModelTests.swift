@@ -18,7 +18,7 @@ final class StatsSubscribersViewModelTests: XCTestCase {
         let expectation = expectation(description: "First section should be loading")
         sut.tableViewSnapshot
             .sink(receiveValue: { snapshot in
-                if let _ = snapshot.itemIdentifiers.first?.immuTableRow as? StatsGhostTopImmutableRow {
+                if let _ = snapshot.itemIdentifiers.first?.immuTableRow as? (any StatsRowGhostable) {
                     expectation.fulfill()
                 }
             })

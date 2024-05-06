@@ -50,8 +50,8 @@ private extension StatsSubscribersViewModel {
         tableViewSnapshot.send(snapshot)
     }
 
-    func loadingRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
-        return [StatsGhostTopImmutableRow(statSection: section)]
+    func loadingRows(_ section: StatSection, numberOfColumns: Int) -> [any StatsHashableImmuTableRow] {
+        return [StatsGhostTopImmutableRow(numberOfColumns: numberOfColumns, statSection: section)]
     }
 
     func errorRows(_ section: StatSection) -> [any StatsHashableImmuTableRow] {
@@ -65,7 +65,7 @@ private extension StatsSubscribersViewModel {
     func subscribersTotalsRows() -> [any StatsHashableImmuTableRow] {
         switch store.subscribersList.value {
         case .loading, .idle:
-            return loadingRows(.subscribersTotal)
+            return [StatsGhostSingleValueRow(statSection: .subscribersTotal)]
         case .success(let subscribersData):
             return [
                 TotalInsightStatsRow(
@@ -85,7 +85,7 @@ private extension StatsSubscribersViewModel {
     func chartRows() -> [any StatsHashableImmuTableRow] {
         switch store.chartSummary.value {
         case .loading, .idle:
-            return loadingRows(.subscribersChart)
+            return [StatsGhostLineChartRow(statSection: .subscribersChart)]
         case .success(let chartSummary):
             let xAxisDates = chartSummary.history.map { $0.date }
             let viewsChart = StatsSubscribersLineChart(counts: chartSummary.history.map { $0.count })
@@ -110,7 +110,7 @@ private extension StatsSubscribersViewModel {
     func emailsSummaryRows() -> [any StatsHashableImmuTableRow] {
         switch store.emailsSummary.value {
         case .loading, .idle:
-            return loadingRows(.subscribersEmailsSummary)
+            return loadingRows(.subscribersEmailsSummary, numberOfColumns: 3)
         case .success(let emailsSummary):
             return [
                 TopTotalsPeriodStatsRow(
@@ -146,7 +146,7 @@ private extension StatsSubscribersViewModel {
     func subscribersListRows() -> [any StatsHashableImmuTableRow] {
         switch store.subscribersList.value {
         case .loading, .idle:
-            return loadingRows(.subscribersList)
+            return loadingRows(.subscribersList, numberOfColumns: 2)
         case .success(let subscribersData):
             return [
                 TopTotalsPeriodStatsRow(

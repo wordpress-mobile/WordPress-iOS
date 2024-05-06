@@ -42,11 +42,12 @@ struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
 
 struct StatsGhostTopImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
+        return ImmuTableCell.class(StatsGhostTopCell.self)
     }()
 
     var hideTopBorder = false
     var hideBottomBorder = false
+    var numberOfColumns: Int = 2
     var statSection: StatSection? = nil
 
     // MARK: - Hashable
@@ -66,6 +67,7 @@ struct StatsGhostTopImmutableRow: StatsRowGhostable {
             detailCell.topBorder?.isHidden = hideTopBorder
             detailCell.bottomBorder?.isHidden = hideBottomBorder
             detailCell.statSection = statSection
+            detailCell.numberOfColumns = numberOfColumns
         }
     }
 }
@@ -131,4 +133,20 @@ struct StatsGhostTitleRow: StatsRowGhostable {
 
 enum GhostCellStyle {
     static let muriel = GhostStyle(beatStartColor: .placeholderElement, beatEndColor: .placeholderElementFaded)
+}
+
+struct StatsGhostSingleValueRow: StatsRowGhostable {
+    let statSection: StatSection?
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(StatsGhostSingleValueCell.self)
+    }()
+}
+
+struct StatsGhostLineChartRow: StatsRowGhostable {
+    let statSection: StatSection?
+
+    static let cell: ImmuTableCell = {
+        return ImmuTableCell.class(StatsGhostLineChartCell.self)
+    }()
 }
