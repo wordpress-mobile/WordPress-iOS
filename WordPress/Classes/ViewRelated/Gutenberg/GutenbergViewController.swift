@@ -438,7 +438,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
 
         // Add bottom border line
         let screenScale = UIScreen.main.scale
@@ -481,6 +480,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
 
     func toggleEditingMode() {

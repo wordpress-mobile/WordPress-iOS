@@ -115,9 +115,10 @@ private extension StatsLineChartView {
 
         if case let .viewsAndVisitors(statsInsightsFilterDimension) = statType {
             properties[LineChartAnalyticsPropertyKey] = statsInsightsFilterDimension.analyticsProperty
+            WPAnalytics.track(.statsLineChartTapped, properties: properties)
+        } else if case .subscribers = statType {
+            WPAnalytics.track(.statsSubscribersChartTapped)
         }
-
-        WPAnalytics.track(.statsLineChartTapped, properties: properties)
     }
 
     func configureAndPopulateData() {
