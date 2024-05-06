@@ -546,6 +546,7 @@ private extension PeopleViewController {
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
         tableView.separatorStyle = .none
+        tableView.backgroundColor = .DS.Background.primary
 
         setupFilterBar()
         setupTableView()
