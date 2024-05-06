@@ -2,6 +2,7 @@ import UIKit
 import WordPressShared
 import WordPressUI
 import Gravatar
+import DesignSystem
 
 class PeopleCell: WPTableViewCell {
     @IBOutlet private weak var avatarImageView: CircularImageView!
@@ -14,8 +15,17 @@ class PeopleCell: WPTableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        WPStyleGuide.configureLabel(displayNameLabel, textStyle: .callout)
-        WPStyleGuide.configureLabel(usernameLabel, textStyle: .caption2)
+        displayNameLabel.textColor = .DS.Foreground.primary
+        displayNameLabel.font = .DS.font(.bodyMedium(.regular))
+
+        usernameLabel.textColor = .DS.Foreground.secondary
+        usernameLabel.font = .DS.font(.bodyMedium(.regular))
+    }
+
+    override func prepareForReuse() {
+        super.prepareForReuse()
+
+        avatarImageView.image = UIImage(named: "gravatar")
     }
 
     func bindViewModel(_ viewModel: PeopleCellViewModel) {
@@ -24,14 +34,12 @@ class PeopleCell: WPTableViewCell {
         displayNameLabel.textColor = viewModel.usernameColor
         usernameLabel.text = viewModel.usernameText
         usernameLabel.isHidden = viewModel.usernameHidden
-        roleBadge.borderColor = viewModel.roleBorderColor
         roleBadge.backgroundColor = viewModel.roleBackgroundColor
         roleBadge.textColor = viewModel.roleTextColor
         roleBadge.text = viewModel.roleText
         roleBadge.isHidden = viewModel.roleHidden
         superAdminRoleBadge.text = viewModel.superAdminText
         superAdminRoleBadge.isHidden = viewModel.superAdminHidden
-        superAdminRoleBadge.borderColor = viewModel.superAdminBorderColor
         superAdminRoleBadge.backgroundColor = viewModel.superAdminBackgroundColor
         badgeStackView.isHidden = viewModel.roleHidden && viewModel.superAdminHidden
     }

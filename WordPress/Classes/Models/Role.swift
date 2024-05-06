@@ -21,18 +21,3 @@ extension Role {
         return context.firstObject(ofType: Role.self, matching: predicate)
     }
 }
-
-extension Role {
-    @objc var color: UIColor {
-        switch slug {
-        case .some("super-admin"):
-            return WPStyleGuide.People.superAdminColor
-        case .some("administrator"):
-            return WPStyleGuide.People.adminColor
-        case .some("editor"):
-            return WPStyleGuide.People.editorColor
-        default:
-            return WPStyleGuide.People.otherRoleColor
-        }
-    }
-}
