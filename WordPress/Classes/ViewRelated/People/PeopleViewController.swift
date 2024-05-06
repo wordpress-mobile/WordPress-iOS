@@ -150,7 +150,7 @@ class PeopleViewController: UITableViewController {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
+        return .DS.Padding.single
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
