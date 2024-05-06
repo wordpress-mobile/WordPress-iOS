@@ -6,7 +6,6 @@ final class StatsGhostSingleValueCell: StatsGhostBaseCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
-        headingLabel.isGhostableDisabled = true
         let ghostView = UIView()
         ghostView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(ghostView)

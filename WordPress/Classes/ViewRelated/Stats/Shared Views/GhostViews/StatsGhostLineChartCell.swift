@@ -7,7 +7,6 @@ final class StatsGhostLineChartCell: StatsGhostBaseCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         let lineChart = StatsGhostLineChartView()
-        headingLabel.isGhostableDisabled = true
         lineChart.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(lineChart)
         topConstraint = lineChart.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0)
