@@ -139,7 +139,7 @@ struct StatsGhostSingleValueRow: StatsRowGhostable {
     let statSection: StatSection?
 
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostSingleValueCell.defaultNib, StatsGhostSingleValueCell.self)
+        return ImmuTableCell.class(StatsGhostSingleValueCell.self)
     }()
 }
 
