@@ -42,7 +42,7 @@ struct StatsGhostTwoColumnImmutableRow: StatsRowGhostable {
 
 struct StatsGhostTopImmutableRow: StatsRowGhostable {
     static let cell: ImmuTableCell = {
-        return ImmuTableCell.nib(StatsGhostTopCell.defaultNib, StatsGhostTopCell.self)
+        return ImmuTableCell.class(StatsGhostTopCell.self)
     }()
 
     var hideTopBorder = false

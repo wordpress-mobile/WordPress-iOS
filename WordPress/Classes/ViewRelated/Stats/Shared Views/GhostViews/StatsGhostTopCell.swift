@@ -3,8 +3,27 @@ import DesignSystem
 import WordPressUI
 
 final class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable {
-    @IBOutlet private weak var topCellRow: StatsGhostTopCellRow!
-    @IBOutlet private weak var topCellHeaders: UIStackView!
+    private let titleHeader: UIView = {
+        let header = UIView()
+        header.translatesAutoresizingMaskIntoConstraints = false
+        return header
+    }()
+
+    private let valueHeaders: UIStackView = {
+        let headers = UIStackView()
+        headers.translatesAutoresizingMaskIntoConstraints = false
+        headers.spacing = .DS.Padding.double
+        headers.distribution = .fill
+        headers.alignment = .fill
+        headers.axis = .horizontal
+        return headers
+    }()
+
+    private let contentRows: StatsGhostTopCellRow = {
+        let contentRows = StatsGhostTopCellRow()
+        contentRows.translatesAutoresizingMaskIntoConstraints = false
+        return contentRows
+    }()
 
     var numberOfColumns: Int = 2 {
         didSet {
@@ -12,17 +31,44 @@ final class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable {
         }
     }
 
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        contentView.addSubviews([titleHeader, valueHeaders, contentRows])
+
+        topConstraint = valueHeaders.topAnchor.constraint(equalTo: contentView.topAnchor, constant: .DS.Padding.single)
+        topConstraint?.isActive = true
+        NSLayoutConstraint.activate([
+            titleHeader.topAnchor.constraint(equalTo: valueHeaders.topAnchor),
+            titleHeader.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: .DS.Padding.double),
+            titleHeader.widthAnchor.constraint(equalToConstant: 50),
+            titleHeader.heightAnchor.constraint(equalToConstant: .DS.Padding.double),
+
+            valueHeaders.heightAnchor.constraint(equalToConstant: .DS.Padding.double),
+            valueHeaders.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -.DS.Padding.double),
+
+            contentRows.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: 0),
+            contentRows.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 0),
+            contentRows.topAnchor.constraint(equalTo: valueHeaders.bottomAnchor, constant: .DS.Padding.half),
+            contentRows.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -.DS.Padding.single)
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private func configureCell(with count: Int) {
         updateHeaders(count: count)
-        topCellRow.updateColumns(count: count)
+        contentRows.updateColumns(count: count)
     }
 
     private func updateHeaders(count: Int) {
-        topCellHeaders.removeAllSubviews()
+        valueHeaders.removeAllSubviews()
         let headers = Array(repeating: UIView(), count: count-1)
         headers.forEach { header in
             configureHeader(header)
-            topCellHeaders.addArrangedSubview(header)
+            valueHeaders.addArrangedSubview(header)
         }
     }
 
@@ -32,7 +78,7 @@ final class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable {
     }
 }
 
-class StatsGhostTopCellRow: UIView {
+final class StatsGhostTopCellRow: UIView {
     private let avatarView = UIView()
     private let columnsStackView = createStackView()
     private let mainColumn = StatsGhostTopCellColumn()

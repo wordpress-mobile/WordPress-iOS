@@ -2784,7 +2784,6 @@
 		9A9E3FA3230D5F0A00909BC4 /* StatsStackViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E3FA2230D5F0A00909BC4 /* StatsStackViewCell.swift */; };
 		9A9E3FAD230E9DD000909BC4 /* StatsGhostCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAB230E9DD000909BC4 /* StatsGhostCells.swift */; };
 		9A9E3FAE230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */; };
-		9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */; };
 		9A9E3FB2230EB74300909BC4 /* StatsGhostTabbedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */; };
 		9A9E3FB4230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */; };
 		9AA0ADB1235F11700027AB5D /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */; };
@@ -4186,7 +4185,6 @@
 		FABB1FD22602FC2C00C8785C /* RestoreStatusView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1A55FE25A6F07F0033967D /* RestoreStatusView.xib */; };
 		FABB1FD32602FC2C00C8785C /* PluginDetailViewHeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4058F4191FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib */; };
 		FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 406A0EEF224D39C50016AD6A /* Flags.xcassets */; };
-		FABB1FD52602FC2C00C8785C /* StatsGhostTopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */; };
 		FABB1FD62602FC2C00C8785C /* CustomizeInsightsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 985793C722F23D7000643DBF /* CustomizeInsightsCell.xib */; };
 		FABB1FD92602FC2C00C8785C /* oswald_upper.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0625DF2F7700C9654B /* oswald_upper.ttf */; };
 		FABB1FDB2602FC2C00C8785C /* xhtmlValidatorTemplate.xhtml in Resources */ = {isa = PBXBuildFile; fileRef = 2FAE97080E33B21600CA8540 /* xhtmlValidatorTemplate.xhtml */; };
@@ -8179,7 +8177,6 @@
 		9A9E3FA2230D5F0A00909BC4 /* StatsStackViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsStackViewCell.swift; sourceTree = "<group>"; };
 		9A9E3FAB230E9DD000909BC4 /* StatsGhostCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsGhostCells.swift; sourceTree = "<group>"; };
 		9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTwoColumnCell.xib; sourceTree = "<group>"; };
-		9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTopCell.xib; sourceTree = "<group>"; };
 		9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostTabbedCell.xib; sourceTree = "<group>"; };
 		9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = StatsGhostPostingActivityCell.xib; sourceTree = "<group>"; };
 		9AA0ADB0235F116F0027AB5D /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
@@ -14997,7 +14994,6 @@
 				01C591442BDBD63D0071515C /* StatsGhostTopCell.swift */,
 				9A9E3FB3230EC4F700909BC4 /* StatsGhostPostingActivityCell.xib */,
 				9A9E3FB1230EB74300909BC4 /* StatsGhostTabbedCell.xib */,
-				9A9E3FAF230EA7A300909BC4 /* StatsGhostTopCell.xib */,
 				9A19D440236C7C7500D393E5 /* StatsGhostTopHeaderCell.xib */,
 				9A9E3FAC230E9DD000909BC4 /* StatsGhostTwoColumnCell.xib */,
 				9AC3C69A231543C2007933CD /* StatsGhostChartCell.xib */,
@@ -19662,7 +19658,6 @@
 				4058F41A1FF40EE1000D5559 /* PluginDetailViewHeaderCell.xib in Resources */,
 				1761F17226209AEE000815EF /* open-source-dark-icon-app-60x60@3x.png in Resources */,
 				406A0EF0224D39C50016AD6A /* Flags.xcassets in Resources */,
-				9A9E3FB0230EA7A300909BC4 /* StatsGhostTopCell.xib in Resources */,
 				985793C922F23D7000643DBF /* CustomizeInsightsCell.xib in Resources */,
 				1761F17926209AEE000815EF /* wordpress-dark-icon-app-60x60@2x.png in Resources */,
 				83A8A2962BDC557F001F9133 /* ReaderTagFooterView.xib in Resources */,
@@ -20213,7 +20208,6 @@
 				FABB1FD32602FC2C00C8785C /* PluginDetailViewHeaderCell.xib in Resources */,
 				FABB1FD42602FC2C00C8785C /* Flags.xcassets in Resources */,
 				FE3E427826A868E300C596CE /* ListTableViewCell.xib in Resources */,
-				FABB1FD52602FC2C00C8785C /* StatsGhostTopCell.xib in Resources */,
 				C7124E4E2638528F00929318 /* JetpackPrologueViewController.xib in Resources */,
 				F465978628E65E1800D5F49A /* blue-on-white-icon-app-83.5@2x.png in Resources */,
 				FABB1FD62602FC2C00C8785C /* CustomizeInsightsCell.xib in Resources */,
