@@ -7,7 +7,7 @@ on:
 jobs:
   dangermattic:
     if: ${{ (github.event.pull_request.draft == false) }}
-    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@iangmaia/gha-triggering-danger
+    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.0
     with:
       org-slug: "automattic"
       pipeline-slug: "wordpress-ios"
