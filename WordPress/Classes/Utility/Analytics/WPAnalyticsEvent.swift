@@ -1595,7 +1595,7 @@ import Foundation
         case .assertionFailure:
             return "assertion_failure"
         case .postCoordinatorErrorEncountered:
-            return "post-coordinator-eerror-encountered"
+            return "post_coordinator_error_encountered"
 
         // Site Monitoring
         case .siteMonitoringTabShown:
