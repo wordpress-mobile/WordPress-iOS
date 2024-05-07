@@ -67,7 +67,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
-@property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) NSData *animatedFeaturedImageData;
@@ -130,10 +129,6 @@ FeaturedImageViewControllerDelegate>
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
-
-    self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                           NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
-                           NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
 
     [self setupFormatsList];
     [self setupPublicizeConnections];
@@ -689,9 +684,6 @@ FeaturedImageViewControllerDelegate>
                 @(PostSettingsRowPublishDate),
                 @(PostSettingsRowVisibility)
             ]];
-            if (self.apost.password) {
-                [metaRows addObject:@(PostSettingsRowPassword)];
-            }
         }
     } else {
         [metaRows addObject:@(PostSettingsRowPublishDate)];
@@ -719,7 +711,7 @@ FeaturedImageViewControllerDelegate>
         cell.tag = PostSettingsRowAuthor;
     } else if (row == PostSettingsRowPublishDate) {
         // Publish date
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
         // Note: it's safe to remove `shouldPublishImmediately` when
         // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
@@ -754,7 +746,7 @@ FeaturedImageViewControllerDelegate>
 
     } else if (row == PostSettingsRowVisibility) {
         // Visibility
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self.apost titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
@@ -1024,12 +1016,15 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewDisclosureCell
+- (WPTableViewCell *)getWPTableViewDisclosureCell {
+    return [self getWPTableViewDisclosureCellWithIdentifier:@"WPTableViewDisclosureCellIdentifier"];
+}
+
+- (WPTableViewCell *)getWPTableViewDisclosureCellWithIdentifier:(NSString *)identifier
 {
-    static NSString *WPTableViewDisclosureCellIdentifier = @"WPTableViewDisclosureCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDisclosureCellIdentifier];
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDisclosureCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [WPStyleGuide configureTableViewCell:cell];
     }
@@ -1119,6 +1114,10 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showPostVisibilitySelector
 {
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
+        [self showUpdatedPostVisibilityPicker];
+        return;
+    }
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
     vc.completion = ^(NSString *__unused visibility) {

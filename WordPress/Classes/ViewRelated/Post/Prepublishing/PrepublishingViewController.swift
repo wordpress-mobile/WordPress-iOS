@@ -370,18 +370,17 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     // MARK: - Visibility
 
     private func configureVisibilityCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = viewModel.visibility.localizedTitle
+        cell.detailTextLabel?.text = viewModel.visibility.type.localizedTitle
     }
 
     private func didTapVisibilityCell() {
-        let view = PostVisibilityPicker(visibility: viewModel.visibility) { [weak self] selection in
+        let view = PostVisibilityPicker(selection: viewModel.visibility) { [weak self] selection in
             guard let self else { return }
-            self.viewModel.visibility = selection.visibility
-            if selection.visibility == .private {
+            self.viewModel.visibility = selection
+            if selection.type == .private {
                 self.viewModel.publishDate = nil
                 self.updatePublishButtonLabel()
             }
-            self.viewModel.password = selection.password
             self.reloadData()
             self.navigationController?.popViewController(animated: true)
         }
@@ -401,7 +400,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         } else {
             cell.detailTextLabel?.text = Strings.immediately
         }
-        viewModel.visibility == .private ? cell.disable() : cell.enable()
+        viewModel.visibility.type == .private ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
@@ -543,8 +542,7 @@ extension PrepublishingOption {
 private final class PrepublishingViewModel {
     private let post: AbstractPost
 
-    var visibility: PostVisibility
-    var password: String?
+    var visibility: PostVisibilityPicker.Selection
     var publishDate: Date?
 
     var publishButtonTitle: String {
@@ -557,8 +555,7 @@ private final class PrepublishingViewModel {
     init(post: AbstractPost) {
         self.post = post
 
-        self.visibility = PostVisibility(status: post.status ?? .draft, password: post.password)
-        self.password = post.password
+        self.visibility = .init(post: post)
         // Ask the user to provide the date every time (ignore the obscure WP dateCreated/dateModified logic)
         self.publishDate = nil
     }
@@ -568,8 +565,8 @@ private final class PrepublishingViewModel {
         wpAssert(post.isRevision())
 
         try await coordinator._publish(post.original(), options: .init(
-            visibility: visibility,
-            password: password,
+            visibility: visibility.type,
+            password: visibility.password,
             publishDate: publishDate
         ))
     }
