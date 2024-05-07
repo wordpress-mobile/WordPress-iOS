@@ -29,6 +29,17 @@ extension Blog {
         request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND postID = %ld", self, postID)
         return (try? context.fetch(request))?.first
     }
+
+    /// Lookup a post in the blog.
+    ///
+    /// - Parameter foreignID: The foreidgn ID associated with the post; used to deduplicate new posts.
+    /// - Returns: The `AbstractPost` associated with the given post ID.
+    @objc(lookupPostWithForeignID:inContext:)
+    func lookupPost(withForeignID foreignID: String, in context: NSManagedObjectContext) -> AbstractPost? {
+        let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
+        request.predicate = NSPredicate(format: "blog = %@ AND original = NULL AND foreignID = %@", self, foreignID)
+        return (try? context.fetch(request))?.first
+    }
 }
 
 // MARK: - Create posts

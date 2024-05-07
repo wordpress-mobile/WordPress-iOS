@@ -204,7 +204,7 @@
     if (!post.hasRemote) {
         post.foreignID = [[NSUUID UUID] UUIDString];
         NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        uuidDictionary[@"key"] = @"wp_jp_foreign_id";
+        uuidDictionary[@"key"] = [BasePost foreignIDKey];
         uuidDictionary[@"value"] = post.foreignID;
         [metadata addObject:uuidDictionary];
     }
@@ -247,7 +247,12 @@
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        AbstractPost *post;
+        if (remotePost.foreignID != nil) {
+            post = [blog lookupPostWithForeignID:remotePost.foreignID inContext:context];
+        } else {
+            post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        }
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
