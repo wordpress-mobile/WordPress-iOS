@@ -147,6 +147,7 @@ extension PostEditor where Self: UIViewController {
             showPostTrashedOverlay()
         } else {
             showAutosaveAvailableAlertIfNeeded()
+            showTerminalUploadErrorAlertIfNeeded()
         }
 
         var cancellables: [AnyCancellable] = []
@@ -273,6 +274,39 @@ extension PostEditor where Self: UIViewController {
         self.post = post // Even if it's the same instance, it's how you currently refresh the editor
         self.createRevisionOfPost()
     }
+
+    // MARK: - Failed Media Uploads
+
+    private func showTerminalUploadErrorAlertIfNeeded() {
+        let hasTerminalError = post.media.contains {
+            guard let error = $0.error else { return false }
+            return MediaCoordinator.isTerminalError(error)
+        }
+        if hasTerminalError {
+            let notice = Notice(title: Strings.failingMediaUploadsMessage, feedbackType: .error, actionTitle: Strings.failingMediaUploadsViewAction, actionHandler: { [weak self] _ in
+                self?.showMediaUploadDetails()
+            })
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(700)) {
+                ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+            } // Delay to let the editor show first
+        }
+    }
+
+    private func showMediaUploadDetails() {
+        let viewController = PostMediaUploadsViewController(post: post)
+        let nav = UINavigationController(rootViewController: viewController)
+        nav.navigationBar.isTranslucent = true // Reset to default
+        viewController.navigationItem.leftBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [weak self] _ in
+            self?.dismiss(animated: true)
+        })
+        if let sheetController = nav.sheetPresentationController {
+            sheetController.detents = [.medium(), .large()]
+            sheetController.prefersGrabberVisible = true
+            sheetController.preferredCornerRadius = 16
+            nav.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
+        }
+        self.present(nav, animated: true)
+    }
 }
 
 private var cancellablesKey: UInt8 = 0
@@ -305,4 +339,8 @@ private enum Strings {
     static let trashedPostSheetCancel = NSLocalizedString("postEditor.recoverTrashedPostAlert.cancel", value: "Cancel", comment: "Editor, alert for recovering a trashed post")
     static let trashedPostSheetRecover = NSLocalizedString("postEditor.recoverTrashedPostAlert.restore", value: "Restore", comment: "Editor, alert for recovering a trashed post")
     static let trashedPostRestored = NSLocalizedString("postEditor.recoverTrashedPost.postRecoveredNoticeTitle", value: "Post restored as a draft", comment: "Editor, notice for successful recovery a trashed post")
+
+    static let failingMediaUploadsMessage = NSLocalizedString("postEditor.postHasFailingMediaUploadsSnackbar.message", value: "Some media items failed to upload", comment: "A message for a snackbar informing the user that some media files requires their attention")
+
+    static let failingMediaUploadsViewAction = NSLocalizedString("postEditor.postHasFailingMediaUploadsSnackbar.actionView", value: "View", comment: "A 'View' action for a snackbar informing the user that some media files requires their attention")
 }
