@@ -51,8 +51,8 @@ final class CommentDetailContentTableViewCell: UITableViewCell, Reusable {
     }
 
     func configure(with contentConfig: ContentConfiguration, onOptionSelected: @escaping (MenuConfiguration.Option) -> Void, parent: UIViewController) {
-        self.updateHeader(with: headerConfiguration(from: contentConfig.comment, onOptionSelected: onOptionSelected), parent: parent)
-        self.commentView.configure(with: contentConfig)
+        let headerConfig = headerConfiguration(from: contentConfig.comment, onOptionSelected: onOptionSelected)
+        self.configure(with: headerConfig, contentConfig: contentConfig, parent: parent)
     }
 }
 
