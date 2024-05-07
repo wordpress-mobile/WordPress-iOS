@@ -198,7 +198,16 @@
 }
 
 + (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
+    
+    /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
+    if (!post.hasRemote) {
+        post.foreignID = [[NSUUID UUID] UUIDString];
+        NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        uuidDictionary[@"key"] = @"wp_jp_foreign_id";
+        uuidDictionary[@"value"] = post.foreignID;
+        [metadata addObject:uuidDictionary];
+    }
 
     if (post.publicID) {
         NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
