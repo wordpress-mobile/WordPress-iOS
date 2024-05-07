@@ -2,7 +2,7 @@ name: ☢️ Trigger Danger On Buildkite
 
 on:
   pull_request:
-    types: [ready_for_review, labeled, unlabeled, milestoned, demilestoned]
+    types: [labeled, unlabeled, milestoned, demilestoned]
 
 jobs:
   dangermattic:
