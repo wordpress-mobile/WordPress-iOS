@@ -9521,9 +9521,6 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Ir para Assinaturas";
 
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Adicionar um blog";
-
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Não foi possível bloquear o blog";
 

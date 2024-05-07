@@ -1,0 +1,1 @@
+Vi har gjort vissa uppdateringar i menyn för sidor. Nu finns alla inställningar i en egen sektion och de är alltid tillgängliga, oberoende av om ett inlägg är publicerat eller inte. Härligt.
