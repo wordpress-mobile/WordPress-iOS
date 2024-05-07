@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-30 02:15:15+0000 */
+/* Translation-Revision-Date: 2024-05-06 03:03:50+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -10389,6 +10389,9 @@ Example: Reply to Pamela Nguyen */
 /* Message of the trash post or page confirmation alert. */
 "postList.trash.alertMessage" = "\"%@\"을 휴지통에 버리시겠습니까? 이전에 서버로 전송되지 않은 변경 내용은 모두 손실됩니다.";
 
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "업로드 취소";
+
 /* Close button in postMediaUploadStatusView */
 "postMediaUploadStatusView.close" = "닫기";
 
@@ -10397,6 +10400,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
 "postMediaUploadStatusView.progress" = "%1$@\/%2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "업로드 재시도";
 
 /* Retry upload button in postMediaUploadStatusView */
 "postMediaUploadStatusView.retryUploads" = "업로드 재시도";
@@ -10943,7 +10949,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "구독으로 이동";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "블로그 추가";
+"reader.no.tags.title" = "태그 추가";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "블로그를 차단할 수 없음";
@@ -11661,6 +11667,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "최신 글 %1$@에 %2$@개의 좋아요가 있습니다.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "총 워드프레스닷컴 구독자: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "총 이메일 구독자: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "구독자 합계";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@(%3$@)";
 
@@ -11745,8 +11760,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "제출";
 
-/* Notice informing user that their feedback is being submitted anonymously.
-   Notice informing user that their feedback is being submitted. */
+/* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "전송 중…";
 
 /* The title for the the In-App Feedback screen */
@@ -11932,8 +11946,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "블로그 방문자";
 
-/* Site Email Subscribers
-   Site Subscribers */
+/* Site Subscribers */
 "users.list.title.subscribers" = "구독자";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-24 12:15:26+0000 */
+/* Translation-Revision-Date: 2024-05-05 16:02:21+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -8853,6 +8853,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ملف صوت";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "إلغاء";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "لقد أجريت تغييرات غير محفوظة على هذه التدوينة من جهاز مختلف. المحرَّر: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "الحفظ التلقائي متاح";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "عرض التغييرات";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "يتعذر تحميل الصورة. يرجى اختيار صورة مختلفة أو المحاولة مرة أخرى لاحقًا.";
 
@@ -10305,6 +10317,27 @@ Example: Reply to Pamela Nguyen */
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "جارٍ نقل التدوينة إلى سلة المهملات...";
 
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "تجاهل التغييرات";
+
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "تجاهل المسودة";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "متابعة التحرير";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "حفظ المسودة";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "جار إنشاء الحفظ التلقائي...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "تم تحميل المراجعة";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "جار حفظ المسودة...";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "بواسطة %@.";
 
@@ -10316,6 +10349,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@، %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "في انتظار المراجعة";
+
+/* Cancels an Action */
+"postList.cancel" = "إلغاء";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "الحذف نهائيًا";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "هل تريد بالتأكيد حذف \"%@s\" نهائيًا؟";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "يرفع التطبيق التغييرات التي سبق إجراؤها على الخادم. يرجى المحاولة مرة أخرى لاحقًا.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "حدث خطأ ما";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "تغييرات من دون اتصال بالإنترنت";
@@ -10331,6 +10382,39 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "عرض";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "نقل إلى سلة المهملات";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "هل تريد بالتأكيد وضع \"%@\" في سلة المهملات؟ ستُفقد أي تغييرات لم يسبق إرسالها إلى الخادم.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "إلغاء الرفع";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "إغلاق";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "لا توجد عمليات رفع معلَّقة";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ من %2$@";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "إعادة محاولة عمليات الرفع";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "عمليات رفع الوسائط";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "حدث خطأ ما";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "يرفع التطبيق التغييرات التي سبق إجراؤها على الخادم. يرجى المحاولة مرة أخرى لاحقًا.";
+
+/* Button OK */
+"postNotice.ok" = "موافق";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "تم رفع مسودة الصفحة";
@@ -10365,6 +10449,15 @@ Example: Reply to Pamela Nguyen */
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "عرض";
 
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "تم تعديل المحتوى على جهاز آخر";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "تم حذف \"%@\" بشكل دائم، ويتعذر تحديثه بعد الآن";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "من دون عنوان";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "تجاهل";
 
@@ -10377,6 +10470,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "خيارات الصور المتميزة";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "في انتظار المراجعة";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "لا تتوافر ميزة المشاركة التلقائية في تويتر بعد الآن";
 
@@ -10385,6 +10481,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "فشل تحديث إعدادات التدوينة";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "غير مرئية إلا لمسؤولي المواقع والمحررين";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "خاص";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "مرئية للجميع لكن يلزم كلمة مرور";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "محمية بكلمة مرور";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "مرئية للجميع.";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "عام";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "إلغاء";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "إمكانية الرؤية";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "كلمة المرور";
+
+/* Button save */
+"postVisibilityPicker.save" = "حفظ";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "الترويج مع الإبراز";
@@ -10409,6 +10535,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "معاينة";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "نشر";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "إعادة المحاولة";
@@ -10476,6 +10605,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "وسائل التواصل الاجتماعي الخاصة بJetpack";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "فشل رفع %@ من العناصر";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "العنوان";
 
@@ -10484,6 +10616,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "تاريخ النشر";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "فورًا";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "نشر إلى";
@@ -10549,6 +10684,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "الوسوم";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "يتبقى %@ من العناصر";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "يتبقى %@ من العناصر";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "رفع الوسائط";
 
@@ -10557,6 +10698,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "عرض كل الردود";
+
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "تاريخ النشر";
+
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "التاريخ في منطقتك الزمنية الحالية:";
+
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "فورًا";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "إزالة تاريخ النشر";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "تحديد تاريخ النشر";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "المنطقة الزمنية";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "تاريخ النشر";
@@ -10759,6 +10918,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "إعدادات القارئ";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "إضافة مدونة";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "اكتشاف المدونات";
 
@@ -10782,9 +10944,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "الانتقال إلى الاشتراكات";
-
-/* No Tags View Button Label */
-"reader.no.tags.title" = "إضافة مدونة";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "يتعذر حظر المدونة";
@@ -11031,6 +11190,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "إضافة وسم";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "إعجاب";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "أعجبني";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "اكتشاف مزيد من الوسوم";
 
@@ -11132,6 +11297,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "التدوينات ذات الصلة";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "جهاز آخر";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "الجهاز الحالي";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "إلغاء";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "حفظ";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "نسخ الرابط";
@@ -11310,6 +11487,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "غير معروف";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "جميع المواقع";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "المواقع المثبَّتة";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "المواقع الأحدث";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "إضافة موقع";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "إلغاء";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "تم";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "تحرير";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "اختيار موقع";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "التذكيرات";
 
@@ -11345,6 +11546,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "لا تتوافر ميزة المشاركة التلقائية على تويتر بعد الآن بسبب التغييرات التي أجرتها تويتر في الشروط والأسعار.";
+
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "المشتركون";
 
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "حركة المرور";
@@ -11442,17 +11646,44 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "لا يوجد نشاط كافٍ. تحقَّق من هذا مرة أخرى لاحقًا عندما يكون لدى موقعك مزيد من الزائرين!";
 
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "المشتركون";
+
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "إجمالي المشتركين";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "اليوم";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "مشترك منذ";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "الاسم";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "المشتركون";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "نقرات";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "رسائل البريد الإلكتروني";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "المشتركون";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "جدول يعرض %1$@ و%2$@ و%3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "رسم بياني شريطي يوضّح التعليقات للفترة المحددة.";
@@ -11466,6 +11697,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "رسم بياني شريطي يوضّح الزائرين للفترة المحددة.";
 
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "الأيام";
+
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "أشهر";
+
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "الأسابيع";
+
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "سنوات";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "تجاهُل";
 
@@ -11475,8 +11718,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "ابحث للعثور على صور مجانية لإضافتها إلى مكتبة الوسائط الخاصة بك!";
 
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "لم يتم إدخال أي بريد إلكتروني";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "لم يتم إدخال اسم المستخدم";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "تم";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "شكرًا لملاحظاتك";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "إرسال";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "جار الإرسال";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "ملاحظات";
@@ -11648,6 +11906,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "غير مقروء";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "المشترك بالموقع";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "مشتركي البريد الإلكتروني";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "المشتركون";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "زيارة صفحة الوثائق الخاصة بنا";
