@@ -406,12 +406,12 @@ FeaturedImageViewControllerDelegate>
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
     NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
     NSNumber *remainingSharesSection = @(PostSettingsSectionSharesRemaining);
-    NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
-                                   @(PostSettingsSectionMeta),
-                                   @(PostSettingsSectionFormat),
+    NSNumber *shareSection = @(PostSettingsSectionShare);
+    NSMutableArray *sections = [@[ @(PostSettingsSectionMeta),
                                    @(PostSettingsSectionFeaturedImage),
+                                   @(PostSettingsSectionTaxonomy),
                                    stickyPostSection,
-                                   @(PostSettingsSectionShare),
+                                   shareSection,
                                    disabledTwitterSection,
                                    remainingSharesSection,
                                    @(PostSettingsSectionMoreOptions) ] mutableCopy];
@@ -424,6 +424,10 @@ FeaturedImageViewControllerDelegate>
 
     if (self.unsupportedConnections.count == 0) {
         [sections removeObject:disabledTwitterSection];
+    }
+
+    if ([self numberOfRowsForShareSection] == 0) {
+        [sections removeObject:shareSection];
     }
 
     if (![self showRemainingShares]) {
@@ -448,8 +452,6 @@ FeaturedImageViewControllerDelegate>
         return 2;
     } else if (sec == PostSettingsSectionMeta) {
         return [self.postMetaSectionRows count];
-    } else if (sec == PostSettingsSectionFormat) {
-        return 1;
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
     } else if (sec == PostSettingsSectionStickyPost) {
@@ -461,7 +463,7 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionSharesRemaining) {
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
-        return 2;
+        return 3;
     } else if (sec == PostSettingsSectionPageAttributes) {
         return 1;
     }
@@ -477,9 +479,6 @@ FeaturedImageViewControllerDelegate>
 
     } else if (sec == PostSettingsSectionMeta) {
         return NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
-
-    } else if (sec == PostSettingsSectionFormat) {
-        return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
 
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
@@ -572,8 +571,6 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureTaxonomyCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMeta) {
         cell = [self configureMetaPostMetaCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionFormat) {
-        cell = [self configurePostFormatCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
@@ -990,6 +987,8 @@ FeaturedImageViewControllerDelegate>
 - (UITableViewCell *)configureMoreOptionsCellForIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
+        return [self configurePostFormatCellForIndexPath:indexPath];
+    } else if (indexPath.row == 1) {
         return [self configureSlugCellForIndexPath:indexPath];
     } else {
         return [self configureExcerptCellForIndexPath:indexPath];
