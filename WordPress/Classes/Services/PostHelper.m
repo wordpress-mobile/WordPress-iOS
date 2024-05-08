@@ -247,7 +247,7 @@
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
                 post = [blog createPost];
             } else {
-                post = [blog createCustomPost]
+                post = [blog createCustomPost:syncPostType];
             }
         }
         [PostHelper updatePost:post withRemotePost:remotePost inContext:context];

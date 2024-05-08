@@ -68,7 +68,7 @@ extension Blog {
 
     /// Create a post in the blog.
     @objc
-    func createCustomPost(postType: String) -> CustomPost {
+    func createCustomPost(_ postType: String) -> CustomPost {
         guard let context = managedObjectContext else {
             fatalError("The `Blog` instance is not associated with an `NSManagedObjectContext`")
         }
