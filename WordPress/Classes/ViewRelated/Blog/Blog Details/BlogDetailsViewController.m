@@ -726,7 +726,22 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 - (BlogDetailsRow *)customPostTypeForWithType:(PostType *)postType
 {
     __weak __typeof(self) weakSelf = self;
-    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:postType.label accessibilityIdentifier:@"Site Pages Row" image:[UIImage imageNamed:@"site-menu-pages"] callback:^{
+
+    if ([postType.label isEqualToString:@"Posts"]) {
+        return [self postsRow];
+    }
+    if ([postType.label isEqualToString:@"Pages"]) {
+        return [self pagesRow];
+    }
+
+    UIImage *image = [UIImage imageNamed:@"site-menu-plugins"];
+    if ([postType.label isEqualToString:@"Posts"]) {
+        image = [UIImage imageNamed:@"site-menu-posts"];
+    } else if ([postType.label isEqualToString:@"Pages"]) {
+        image = [UIImage imageNamed:@"site-menu-pages"];
+    }
+
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:postType.label accessibilityIdentifier:@"Site Pages Row" image:image callback:^{
         [weakSelf showPostsWithType:postType];
     }];
     row.quickStartIdentifier = QuickStartTourElementPages;
@@ -734,8 +749,11 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 }
 
 - (void)showPostsWithType:(PostType *)postType {
- // TODO:
-// showPageListFromSource:BlogDetailsNavigationSourceRow];
+
+    CustomPostTypePostListViewController *viewController = [CustomPostTypePostListViewController controllerWithBlog:self.blog postType:postType];
+//    viewController.blog = blog;
+//    viewController.postType = postType;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (BlogDetailsRow *)mediaRow

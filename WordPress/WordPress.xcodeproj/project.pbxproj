@@ -607,6 +607,8 @@
 		0CE7833E2B08F3C300B114EB /* ExternalMediaPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */; };
 		0CE783412B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
 		0CE783422B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */; };
+		0CE9D5C22BEBD77300B0E710 /* CustomPostTypePostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE9D5C12BEBD77300B0E710 /* CustomPostTypePostListViewController.swift */; };
+		0CE9D5C32BEBD77300B0E710 /* CustomPostTypePostListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE9D5C12BEBD77300B0E710 /* CustomPostTypePostListViewController.swift */; };
 		0CEA55522BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
 		0CEA55532BC55940008D0FE5 /* WPInstrumentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */; };
 		0CED1FED2B61AAF600E6DD52 /* AtomicSiteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */; };
@@ -6388,6 +6390,7 @@
 		0CE58A2C2B35C91900E87D1E /* SiteMediaPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaPreviewViewController.swift; sourceTree = "<group>"; };
 		0CE7833C2B08F3C300B114EB /* ExternalMediaPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerViewController.swift; sourceTree = "<group>"; };
 		0CE783402B08FB2E00B114EB /* ExternalMediaPickerCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExternalMediaPickerCollectionCell.swift; sourceTree = "<group>"; };
+		0CE9D5C12BEBD77300B0E710 /* CustomPostTypePostListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPostTypePostListViewController.swift; sourceTree = "<group>"; };
 		0CEA55512BC55940008D0FE5 /* WPInstrumentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WPInstrumentation.swift; sourceTree = "<group>"; };
 		0CED1FEC2B61AAF600E6DD52 /* AtomicSiteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicSiteService.swift; sourceTree = "<group>"; };
 		0CED1FFF2B6809CB00E6DD52 /* FilterCompactButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCompactButton.swift; sourceTree = "<group>"; };
@@ -12913,6 +12916,7 @@
 			children = (
 				591232681CCEAA5100B86207 /* AbstractPostListViewController.swift */,
 				590E873A1CB8205700D1B734 /* PostListViewController.swift */,
+				0CE9D5C12BEBD77300B0E710 /* CustomPostTypePostListViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -22249,6 +22253,7 @@
 				91138455228373EB00FB02B7 /* GutenbergVideoUploadProcessor.swift in Sources */,
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
+				0CE9D5C22BEBD77300B0E710 /* CustomPostTypePostListViewController.swift in Sources */,
 				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
 				F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */,
 				982DDF92263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */,
@@ -24883,6 +24888,7 @@
 				FABB22322602FC2C00C8785C /* StatsNoDataRow.swift in Sources */,
 				FABB22332602FC2C00C8785C /* ReaderTableCardCell.swift in Sources */,
 				FABB22342602FC2C00C8785C /* ShareNoticeNavigationCoordinator.swift in Sources */,
+				0CE9D5C32BEBD77300B0E710 /* CustomPostTypePostListViewController.swift in Sources */,
 				C77FC90A28009C7000726F00 /* OnboardingQuestionsPromptViewController.swift in Sources */,
 				FABB22362602FC2C00C8785C /* HomeWidgetCache.swift in Sources */,
 				0839F88B2993C0C000415038 /* JetpackDefaultOverlayCoordinator.swift in Sources */,

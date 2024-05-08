@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 #import "AbstractPost.h"
+#import "PostType.h"
 
 @protocol FeaturedImageDelegate
 
