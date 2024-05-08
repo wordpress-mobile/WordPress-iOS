@@ -346,10 +346,11 @@ private extension CommentDetailViewController {
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
         containerStackView.addArrangedSubview(tableView)
-        if comment.allowsModeration() {
+        if comment.allowsModeration(),
+            let moderationState = CommentModerationState(comment: comment) {
             let commentModerationView = CommentModerationView(
                 viewModel: CommentModerationViewModel(
-                    state: .pending,
+                    state: moderationState,
                     comment: comment,
                     coordinator: CommentModerationCoordinator(presentingViewController: self)
                 )
