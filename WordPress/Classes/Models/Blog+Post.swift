@@ -32,8 +32,8 @@ extension Blog {
 
     /// Lookup a post in the blog.
     ///
-    /// - Parameter foreignID: The foreidgn ID associated with the post; used to deduplicate new posts.
-    /// - Returns: The `AbstractPost` associated with the given post ID.
+    /// - Parameter foreignID: The foreign ID associated with the post; used to deduplicate new posts.
+    /// - Returns: The `AbstractPost` associated with the given foreign ID.
     @objc(lookupPostWithForeignID:inContext:)
     func lookupPost(withForeignID foreignID: String, in context: NSManagedObjectContext) -> AbstractPost? {
         let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
