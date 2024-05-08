@@ -20,13 +20,16 @@ final class PostRepository {
     private let coreDataStack: CoreDataStackSwift
     private let remoteFactory: PostServiceRemoteFactory
     private let isSyncPublishingEnabled: Bool
+    private let foreignIdGenerator: (() -> String)
 
     init(coreDataStack: CoreDataStackSwift = ContextManager.shared,
          remoteFactory: PostServiceRemoteFactory = PostServiceRemoteFactory(),
-         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
+         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled,
+         foreignIdGenerator: (() -> String)? = nil) {
         self.coreDataStack = coreDataStack
         self.remoteFactory = remoteFactory
         self.isSyncPublishingEnabled = isSyncPublishingEnabled
+        self.foreignIdGenerator = foreignIdGenerator ?? { UUID().uuidString }
     }
 
     /// Sync a specific post from the API
@@ -225,7 +228,7 @@ final class PostRepository {
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
-        post.foreignID = UUID().uuidString
+        post.foreignID = foreignIdGenerator()
         var parameters = RemotePostCreateParameters(post: post)
         if let changes {
             parameters.apply(changes)

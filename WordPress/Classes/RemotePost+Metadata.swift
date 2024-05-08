@@ -3,6 +3,9 @@ import Foundation
 @objc
 extension RemotePost {
     var foreignID: String? {
+        guard let metadata else {
+            return nil
+        }
         let metadataItems = metadata.compactMap { value -> RemotePostMetadataItem? in
             guard let dictionary = value as? [String: Any] else {
                 assertionFailure("Unexpected value: \(value)")

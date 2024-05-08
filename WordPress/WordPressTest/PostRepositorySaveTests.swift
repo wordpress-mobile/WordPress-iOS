@@ -17,7 +17,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             .build()
         try mainContext.save()
 
-        repository = PostRepository(coreDataStack: contextManager)
+        repository = PostRepository(coreDataStack: contextManager, foreignIdGenerator: { "foreign-id" })
     }
 
     override func tearDown() {
@@ -47,6 +47,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "draft",
               "title" : "Hello",
               "type" : "post"
@@ -108,6 +115,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "excerpt" : "excerpt-a",
               "featured_image" : 92,
               "format" : "format-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "password" : "1234",
               "slug" : "slug-a",
               "status" : "draft",
@@ -153,6 +167,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "publish",
               "title" : "Hello",
               "type" : "post"
@@ -193,6 +214,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "future",
               "title" : "Hello",
               "type" : "post"
@@ -235,6 +263,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "publish",
               "title" : "Hello",
               "type" : "post"
@@ -1203,6 +1238,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
             {
               "author" : 29043,
               "content" : "content-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "draft",
               "title" : "title-a",
               "type" : "post"
@@ -1285,6 +1327,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
             {
               "author" : 29043,
               "content" : "content-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "foreign-id"
+                }
+              ],
               "status" : "draft",
               "title" : "title-a",
               "type" : "post"
