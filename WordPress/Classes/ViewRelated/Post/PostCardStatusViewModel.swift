@@ -181,7 +181,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         var buttons = [AbstractPostButton]()
 
         if isSyncPublishingEnabled {
-            if post.status != .trash {
+            if !isTerminalError, post.status != .trash {
                 buttons.append(.view)
             }
         } else {
@@ -204,7 +204,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             buttons.append(.moveToDraft)
         }
 
-        if post.status == .publish || post.status == .draft || post.status == .pending {
+        if !isTerminalError && (post.status == .publish || post.status == .draft || post.status == .pending) {
             buttons.append(.duplicate)
         }
 
@@ -244,7 +244,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
         }
-        if post.status != .trash {
+        if !isTerminalError, post.status != .trash {
             buttons.append(.settings)
         }
 
@@ -254,6 +254,13 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     private func createTrashSection() -> AbstractPostButtonSection {
         let action: AbstractPostButton = post.original().status == .trash ? .delete : .trash
         return AbstractPostButtonSection(buttons: [action])
+    }
+
+    private var isTerminalError: Bool {
+        guard isSyncPublishingEnabled else {
+            return false
+        }
+        return PostSyncStateViewModel(post: post).state == .failed
     }
 
     private var canCancelAutoUpload: Bool {

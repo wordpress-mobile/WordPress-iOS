@@ -44,7 +44,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         var buttons = [AbstractPostButton]()
 
         if isSyncPublishingEnabled {
-            if page.status != .trash {
+            if !isTerminalError, page.status != .trash {
                 buttons.append(.view)
             }
         } else {
@@ -67,7 +67,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.moveToDraft)
         }
 
-        if page.status == .publish || page.status == .draft {
+        if !isTerminalError && (page.status == .publish || page.status == .draft) {
             buttons.append(.duplicate)
         }
 
@@ -82,6 +82,13 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         }
 
         return AbstractPostButtonSection(buttons: buttons)
+    }
+
+    private var isTerminalError: Bool {
+        guard isSyncPublishingEnabled else {
+            return false
+        }
+        return PostSyncStateViewModel(post: page).state == .failed
     }
 
     private var canPublish: Bool {
@@ -106,7 +113,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private func createSetPageAttributesSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
-        guard page.status != .trash else {
+        guard !isTerminalError, page.status != .trash else {
             return AbstractPostButtonSection(buttons: buttons)
         }
 
@@ -133,7 +140,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         if isJetpackFeaturesEnabled, page.status == .publish && page.hasRemote() {
             buttons.append(.stats)
         }
-        if page.status != .trash {
+        if !isTerminalError, page.status != .trash {
             buttons.append(.settings)
         }
         return AbstractPostButtonSection(buttons: buttons)
