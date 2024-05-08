@@ -33,7 +33,7 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        title = NSLocalizedString("Posts", comment: "Title of the screen showing the list of posts for a blog.")
+        title = postType.label
 
         configureInitialFilterIfNeeded()
         listenForAppComingToForeground()
@@ -105,7 +105,7 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
     // MARK: - Sync Methods
 
     override func postTypeToSync() -> PostServiceType {
-        return .post
+        return PostServiceType(rawValue: postType.name!)
     }
 
     // MARK: - Data Model Interaction
@@ -143,8 +143,36 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
             predicates.append(authorPredicate)
         }
 
+        predicates.append(NSPredicate(format: "customPostType = %@", postType.name))
+
         let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: predicates)
         return predicate
+    }
+
+    @MainActor
+    override func syncPosts(isFirstPage: Bool) async throws -> SyncPostResult {
+        let postType = postTypeToSync()
+        let filter = filterSettings.currentPostListFilter()
+        let author = filterSettings.shouldShowOnlyMyPosts() ? blogUserID() : nil
+
+        let coreDataStack = ContextManager.shared
+        let blogID = TaggedManagedObjectID(blog)
+        let number = numberOfLoadedElement.intValue
+
+        let repository = PostRepository(coreDataStack: coreDataStack)
+        let result = try await repository.paginateCustom(
+            postType: postType.rawValue,
+            statuses: filter.statuses,
+            authorUserID: author,
+            offset: isFirstPage ? 0 : fetchResultsController.fetchedObjects?.count ?? 0,
+            number: number,
+            in: blogID
+        )
+
+        let posts = try result.map { try coreDataStack.mainContext.existingObject(with: $0) }
+        let hasMore = result.count >= number
+
+        return (posts, hasMore)
     }
 
     // MARK: - UITableViewDataSource

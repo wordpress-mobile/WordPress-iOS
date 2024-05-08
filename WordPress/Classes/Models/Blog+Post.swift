@@ -66,6 +66,38 @@ extension Blog {
         return post
     }
 
+    /// Create a post in the blog.
+    @objc
+    func createCustomPost(postType: String) -> CustomPost {
+        guard let context = managedObjectContext else {
+            fatalError("The `Blog` instance is not associated with an `NSManagedObjectContext`")
+        }
+
+        let post = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(CustomPost.self), into: context) as! CustomPost
+        post.blog = self
+        post.remoteStatus = .sync
+        post.customPostType = postType
+
+//        if let categoryID = settings?.defaultCategoryID,
+//           categoryID.intValue != PostCategoryUncategorized,
+//           let category = try? PostCategory.lookup(withBlogID: objectID, categoryID: categoryID, in: context) {
+//            post.addCategoriesObject(category)
+//        }
+
+//        post.postFormat = settings?.defaultPostFormat
+//        post.postType = postType
+
+//        if let userID = userID, let author = getAuthorWith(id: userID) {
+//            post.authorID = author.userID
+//            post.author = author.displayName
+//        }
+
+        try? context.obtainPermanentIDs(for: [post])
+        precondition(!post.objectID.isTemporaryID, "The new post for this blog must have a permanent ObjectID")
+
+        return post
+    }
+
     /// Create a draft post in the blog.
     func createDraftPost() -> Post {
         let post = createPost()

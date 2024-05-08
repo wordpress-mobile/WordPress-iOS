@@ -30,7 +30,7 @@ class AbstractPostListViewController: UIViewController,
         return postTypeToSync() == .page ? 0 : Int(numberOfPostsPerSync())
     }
 
-    private var numberOfLoadedElement: NSNumber {
+    var numberOfLoadedElement: NSNumber {
         return postTypeToSync() == .page ? NSNumber(value: type(of: self).pagesNumberOfLoadedElement) : NSNumber(value: numberOfPostsPerSync())
     }
 

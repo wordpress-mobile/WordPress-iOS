@@ -613,6 +613,38 @@ extension PostRepository {
         )
     }
 
+    /// Fetch posts or pages from the given site page by page. All fetched posts are saved to the local database.
+    ///
+    /// - Parameters:
+    ///   - type: `Post.self` and `Page.self` are the only acceptable types.
+    ///   - statuses: Filter posts or pages with given status.
+    ///   - authorUserID: Filter posts or pages that are authored by given user.
+    ///   - offset: The position of the paginated request. Pass 0 for the first page and count of already fetched results for following pages.
+    ///   - number: Number of posts or pages should be fetched.
+    ///   - blogID: The blog from which to fetch posts or pages
+    /// - Returns: Object identifiers of the fetched posts.
+    /// - SeeAlso: https://developer.wordpress.com/docs/api/1.1/get/sites/%24site/posts/
+    func paginateCustom(
+        postType: String,
+        statuses: [BasePost.Status],
+        authorUserID: NSNumber? = nil,
+        offset: Int,
+        number: Int,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> [TaggedManagedObjectID<CustomPost>] {
+        try await fetchCustom(
+            postType: postType,
+            statuses: statuses,
+            authorUserID: authorUserID,
+            range: offset..<(offset + max(number, 0)),
+            orderBy: .byDate,
+            descending: true,
+            // Only delete other local posts if the current call is the first pagination request.
+            deleteOtherLocalPosts: offset == 0,
+            in: blogID
+        )
+    }
+
     /// Search posts or pages in the given site. All fetched posts are saved to the local database.
     ///
     /// - Parameters:
@@ -777,6 +809,63 @@ extension PostRepository {
                 guard let post = aPost as? P else {
                     // FIXME: This issue is tracked in https://github.com/wordpress-mobile/WordPress-iOS/issues/22255
                     DDLogWarn("Expecting a \(postType) as \(type), but got \(aPost)")
+                    return nil
+                }
+                return TaggedManagedObjectID(post)
+            }
+        }
+
+        return updatedPosts
+    }
+
+    private func fetchCustom(
+        postType: String,
+        searchInput: String? = nil,
+        statuses: [BasePost.Status]?,
+        tag: String? = nil,
+        authorUserID: NSNumber?,
+        range: Range<Int>,
+        orderBy: PostServiceResultsOrdering = .byDate,
+        descending: Bool = true,
+        deleteOtherLocalPosts: Bool,
+        in blogID: TaggedManagedObjectID<Blog>
+    ) async throws -> [TaggedManagedObjectID<CustomPost>] {
+        wpAssert(range.lowerBound >= 0)
+
+        let remote = try await coreDataStack.performQuery { [remoteFactory] context in
+            let blog = try context.existingObject(with: blogID)
+            return remoteFactory.forBlog(blog)
+        }
+        guard let remote else {
+            throw PostRepository.Error.remoteAPIUnavailable
+        }
+
+        let options = PostRepositoryPostsSerivceRemoteOptions(options: .init(
+            statuses: statuses?.strings,
+            number: range.count,
+            offset: range.lowerBound,
+            order: descending ? .descending : .ascending,
+            orderBy: orderBy,
+            authorID: authorUserID,
+            search: searchInput,
+            tag: tag
+        ))
+        let remotePosts = try await remote.getPosts(ofType: postType, options: options)
+
+        let updatedPosts = try await coreDataStack.performAndSave { context in
+            let updatedPosts = PostHelper.merge(
+                remotePosts,
+                ofType: postType,
+                withStatuses: statuses?.strings,
+                byAuthor: authorUserID,
+                for: try context.existingObject(with: blogID),
+                purgeExisting: deleteOtherLocalPosts,
+                in: context
+            )
+            return updatedPosts.compactMap { aPost -> TaggedManagedObjectID<CustomPost>? in
+                guard let post = aPost as? CustomPost else {
+                    // FIXME: This issue is tracked in https://github.com/wordpress-mobile/WordPress-iOS/issues/22255
+                    DDLogWarn("Expecting a \(postType)), but got \(aPost)")
                     return nil
                 }
                 return TaggedManagedObjectID(post)

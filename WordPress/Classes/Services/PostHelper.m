@@ -243,9 +243,11 @@
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
                 post = [blog createPage];
-            } else {
+            } else if ([remotePost.type isEqualToString:PostServiceTypePost]) {
                 // Create a Post entity for any other posts that have a remote post type of "post" or a custom post type.
                 post = [blog createPost];
+            } else {
+                post = [blog createCustomPost]
             }
         }
         [PostHelper updatePost:post withRemotePost:remotePost inContext:context];

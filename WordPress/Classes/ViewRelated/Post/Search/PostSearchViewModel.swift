@@ -44,7 +44,9 @@ final class PostSearchViewModel: NSObject, PostSearchServiceDelegate {
         switch settings.postType {
         case .post: self.entityName = String(describing: Post.self)
         case .page: self.entityName = String(describing: Page.self)
-        default: fatalError("Unsupported post type: \(settings.postType)")
+        default:
+            self.entityName = String(describing: AbstractPost.self)
+//        default: fatalError("Unsupported post type: \(settings.postType)")
         }
 
         super.init()
