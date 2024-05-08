@@ -136,6 +136,7 @@ private extension NotificationCommentDetailViewController {
         if let comment = comment,
            comment.allowsModeration(),
            let commentDetailViewController = commentDetailViewController {
+            barButtonItems.append(commentDetailViewController.editBarButtonItem)
         }
 
         navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
