@@ -10,6 +10,7 @@
         <attribute name="confirmedChangesHash" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="confirmedChangesTimestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="dateModified" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
+        <attribute name="foreignID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="metaIsLocal" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="metaPublishImmediately" attributeType="Boolean" defaultValueString="YES" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="revisions" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" syncable="YES"/>
@@ -77,7 +78,6 @@
         <attribute name="authorID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="content" optional="YES" attributeType="String"/>
         <attribute name="date_created_gmt" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="foreignID" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="mt_excerpt" optional="YES" attributeType="String"/>
         <attribute name="password" optional="YES" attributeType="String"/>
         <attribute name="pathForDisplayImage" optional="YES" attributeType="String" syncable="YES"/>

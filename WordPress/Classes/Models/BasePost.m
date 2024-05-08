@@ -20,7 +20,6 @@
 @dynamic wp_slug;
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
-@dynamic foreignID;
 
 @synthesize isFeaturedImageChanged;
 @synthesize isFirstTimePublish;

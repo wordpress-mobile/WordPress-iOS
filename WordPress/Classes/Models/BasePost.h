@@ -22,9 +22,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSString * suggested_slug;
 @property (nonatomic, strong, nullable) NSNumber * remoteStatusNumber;
 
-/// Used to deduplicate new posts
-@property (nonatomic, strong, nullable) NSString * foreignID;
-
 // Helpers
 /**
  Cached path of an image from the post to use for display purposes. 
