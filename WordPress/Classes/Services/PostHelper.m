@@ -204,7 +204,7 @@
     /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
     if (!post.hasRemote && post.foreignID) {
         NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        uuidDictionary[@"key"] = [BasePost foreignIDKey];
+        uuidDictionary[@"key"] = [self foreignIDKey];
         uuidDictionary[@"value"] = post.foreignID;
         [metadata addObject:uuidDictionary];
     }

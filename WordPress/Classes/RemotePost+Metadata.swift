@@ -5,21 +5,11 @@ extension RemotePost {
     var foreignID: String? {
         let metadataItems = metadata.compactMap { value -> RemotePostMetadataItem? in
             guard let dictionary = value as? [String: Any] else {
+                assertionFailure("Unexpected value: \(value)")
                 return nil
             }
-            let id = dictionary["id"]
-
-            return RemotePostMetadataItem(
-                id: (id as? String) ?? (id as? NSNumber)?.stringValue,
-                key: dictionary["key"] as? String,
-                value: dictionary["value"] as? String
-            )
+            return PostHelper.mapDictionaryToMetadataItems(dictionary)
         }
-        return metadataItems.first { $0.key == BasePost.foreignIDKey }?.value
+        return metadataItems.first { $0.key == PostHelper.foreignIDKey }?.value
     }
-}
-
-@objc
-extension BasePost {
-    static let foreignIDKey = "wp_jp_foreign_id"
 }
