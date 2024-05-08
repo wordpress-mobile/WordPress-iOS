@@ -365,7 +365,7 @@ struct SiteStatsDashboardPreferences {
 
         let key = Self.lastSelectedStatsTabTypeKey(forSiteID: siteID)
 
-        guard let tabRawValue = UserPersistentStoreFactory.instance().value(forKey: key) as? Int else {
+        guard let tabRawValue = UserPersistentStoreFactory.instance().object(forKey: key) as? Int else {
             return nil
         }
 
