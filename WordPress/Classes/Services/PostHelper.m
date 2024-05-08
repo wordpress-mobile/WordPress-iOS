@@ -197,12 +197,12 @@
     return remoteCategory;
 }
 
-+ (NSArray *)remoteMetadataForPost:(Post *)post {
++ (NSArray *)remoteMetadataForPost:(Post *)post
+{
     NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
     
     /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
-    if (!post.hasRemote) {
-        post.foreignID = [[NSUUID UUID] UUIDString];
+    if (!post.hasRemote && post.foreignID) {
         NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         uuidDictionary[@"key"] = [BasePost foreignIDKey];
         uuidDictionary[@"value"] = post.foreignID;

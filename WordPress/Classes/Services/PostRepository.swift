@@ -225,6 +225,7 @@ final class PostRepository {
     @MainActor
     private func _create(_ post: AbstractPost, changes: RemotePostUpdateParameters?) async throws -> RemotePost {
         let service = try getRemoteService(for: post.blog)
+        post.foreignID = UUID().uuidString
         var parameters = RemotePostCreateParameters(post: post)
         if let changes {
             parameters.apply(changes)
