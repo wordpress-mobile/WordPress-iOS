@@ -350,8 +350,8 @@ private extension CommentDetailViewController {
             let commentModerationView = CommentModerationView(
                 viewModel: CommentModerationViewModel(
                     state: .pending,
-                    imageURL: URL(string: comment.authorAvatarURL),
-                    userName: comment.author
+                    comment: comment,
+                    coordinator: CommentModerationCoordinator(presentingViewController: self)
                 )
             )
             let hostingController = UIHostingController(rootView: commentModerationView)

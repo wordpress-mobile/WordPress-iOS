@@ -1,6 +1,7 @@
 final class CommentModerationViewModel: ObservableObject {
     @Published var state: CommentModerationState
     private let comment: Comment
+    private let coordinator: CommentModerationCoordinator
 
     var userName: String {
         comment.author
@@ -15,9 +16,14 @@ final class CommentModerationViewModel: ObservableObject {
     }()
 
     // Temporary init argument
-    init(state: CommentModerationState, comment: Comment) {
+    init(
+        state: CommentModerationState,
+        comment: Comment,
+        coordinator: CommentModerationCoordinator
+    ) {
         self.state = state
         self.comment = comment
+        self.coordinator = coordinator
     }
 
     func didChangeState(to state: CommentModerationState) {
@@ -31,16 +37,16 @@ final class CommentModerationViewModel: ObservableObject {
     func didTapPrimaryCTA() {
         switch state {
         case .pending:
-            state = .approved
 //            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
 //                                                         withProperties: Constants.notificationDetailSource,
 //                                                         withBlogID: notification?.metaSiteID) :
 //                                    CommentAnalytics.trackCommentApproved(comment: comment)
 //
-            commentService.approve(comment, success: { [weak self] in
+            commentService.approve(comment, success: { // [weak self] in
+//                self?.state = .approved
 //                self?.showActionableNotice(title: ModerationMessages.approveSuccess)
 //                self?.refreshData()
-            }, failure: { [weak self] error in
+            }, failure: { /* [weak self] */ error in
 //                self?.displayNotice(title: ModerationMessages.approveFail)
 //                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             })
@@ -52,7 +58,7 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapMore() {
-        // TODO
+        coordinator.didTapMoreOptions()
     }
 
     func didTapLike() {

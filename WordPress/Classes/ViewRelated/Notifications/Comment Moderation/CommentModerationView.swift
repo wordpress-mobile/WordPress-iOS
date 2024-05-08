@@ -192,55 +192,55 @@ private extension CommentModerationState {
     }
 }
 
-#Preview {
-    GeometryReader { proxy in
-        if #available(iOS 17.0, *) {
-            ScrollView(.horizontal) {
-                LazyHStack(spacing: 0) {
-                    CommentModerationView(
-                        viewModel: CommentModerationViewModel(
-                            state: .pending,
-                            imageURL: URL(string: "https://i.pravatar.cc/300"),
-                            userName: "John Smith"
-                        )
-                    )
-                    .frame(
-                        width: proxy.size.width
-                    )
-                    CommentModerationView(
-                        viewModel: CommentModerationViewModel(
-                            state: .approved,
-                            imageURL: URL(string: "https://i.pravatar.cc/300"),
-                            userName: "Jane Smith"
-                        )
-                    )
-                    .frame(
-                        width: proxy.size.width
-                    )
-                    CommentModerationView(
-                        viewModel: CommentModerationViewModel(
-                            state: .liked,
-                            imageURL: URL(string: "https://i.pravatar.cc/300"),
-                            userName: "John Smith"
-                        )
-                    )
-                    .frame(
-                        width: proxy.size.width
-                    )
-                    CommentModerationView(
-                        viewModel: CommentModerationViewModel(
-                            state: .trash,
-                            imageURL: URL(string: "https://i.pravatar.cc/300"),
-                            userName: "Jane Smith"
-                        )
-                    )
-                    .frame(
-                        width: proxy.size.width
-                    )
-                }
-            }
-            .scrollTargetBehavior(.paging)
-            .scrollIndicators(.hidden)
-        }
-    }
-}
+//#Preview {
+//    GeometryReader { proxy in
+//        if #available(iOS 17.0, *) {
+//            ScrollView(.horizontal) {
+//                LazyHStack(spacing: 0) {
+//                    CommentModerationView(
+//                        viewModel: CommentModerationViewModel(
+//                            state: .pending,
+//                            imageURL: URL(string: "https://i.pravatar.cc/300"),
+//                            userName: "John Smith"
+//                        )
+//                    )
+//                    .frame(
+//                        width: proxy.size.width
+//                    )
+//                    CommentModerationView(
+//                        viewModel: CommentModerationViewModel(
+//                            state: .approved,
+//                            imageURL: URL(string: "https://i.pravatar.cc/300"),
+//                            userName: "Jane Smith"
+//                        )
+//                    )
+//                    .frame(
+//                        width: proxy.size.width
+//                    )
+//                    CommentModerationView(
+//                        viewModel: CommentModerationViewModel(
+//                            state: .liked,
+//                            imageURL: URL(string: "https://i.pravatar.cc/300"),
+//                            userName: "John Smith"
+//                        )
+//                    )
+//                    .frame(
+//                        width: proxy.size.width
+//                    )
+//                    CommentModerationView(
+//                        viewModel: CommentModerationViewModel(
+//                            state: .trash,
+//                            imageURL: URL(string: "https://i.pravatar.cc/300"),
+//                            userName: "Jane Smith"
+//                        )
+//                    )
+//                    .frame(
+//                        width: proxy.size.width
+//                    )
+//                }
+//            }
+//            .scrollTargetBehavior(.paging)
+//            .scrollIndicators(.hidden)
+//        }
+//    }
+//}
