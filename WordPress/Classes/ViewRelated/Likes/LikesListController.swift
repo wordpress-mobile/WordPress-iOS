@@ -403,13 +403,22 @@ private extension LikesListController {
     }
 
     func userCell(for indexPath: IndexPath) -> UITableViewCell {
-        guard let user = likingUsers[safe: indexPath.row],
+        guard let parent = parent,
+              let user = likingUsers[safe: indexPath.row],
               let cell = tableView.dequeueReusableCell(withIdentifier: LikeUserTableViewCell.defaultReuseID) as? LikeUserTableViewCell else {
             DDLogError("Failed dequeueing LikeUserTableViewCell")
             return UITableViewCell()
         }
+        cell.configure(
+            avatarURL: URL(string: user.avatarUrl),
+            username: user.displayName,
+            blog: String(format: Constants.usernameFormat, user.username),
+            onUserClicked: { [weak self] in
+                self?.delegate?.didSelectUser(user, at: indexPath)
+            },
+            parent: parent
+        )
 
-        cell.configure(withUser: user, isLastRow: (indexPath.row == likingUsers.endIndex - 1))
         return cell
     }
 
@@ -429,6 +438,7 @@ private extension LikesListController {
         static let headerSectionIndex = 0
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
+        static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username.")
     }
 
     struct Strings {

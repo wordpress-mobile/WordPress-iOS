@@ -1732,6 +1732,8 @@
 		74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BE61FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 74FA4BE31FBFA0660031EAAD /* Extensions.xcdatamodeld */; };
 		74FA4BED1FBFA2350031EAAD /* SharedCoreDataStack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 746D6B241FBF701F003C45BE /* SharedCoreDataStack.swift */; };
+		776D09F32BEC01B500DE07A1 /* NotificationDetailUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776D09F22BEC01B500DE07A1 /* NotificationDetailUserView.swift */; };
+		776D09F42BEC01B500DE07A1 /* NotificationDetailUserView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 776D09F22BEC01B500DE07A1 /* NotificationDetailUserView.swift */; };
 		77A141172B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77A141162B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift */; };
 		77B84EFE2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77B84EFD2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift */; };
 		77DFF0882B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77DFF0872B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift */; };
@@ -7424,6 +7426,7 @@
 		74FA2EE3200E8A6C001DDC13 /* AppExtensionsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppExtensionsService.swift; sourceTree = "<group>"; };
 		74FA4BE41FBFA0660031EAAD /* Extensions.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Extensions.xcdatamodel; sourceTree = "<group>"; };
 		75305C06D345590B757E3890 /* Pods-Apps-WordPress.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Apps-WordPress.debug.xcconfig"; path = "../Pods/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress.debug.xcconfig"; sourceTree = "<group>"; };
+		776D09F22BEC01B500DE07A1 /* NotificationDetailUserView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailUserView.swift; sourceTree = "<group>"; };
 		77A141162B68546100BF75DD /* BooleanUserDefaultsDebugViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugViewModelTests.swift; sourceTree = "<group>"; };
 		77B84EFD2B62D8280035AEFE /* BooleanUserDefaultsDebugView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugView.swift; sourceTree = "<group>"; };
 		77DFF0872B68362200FA561D /* BooleanUserDefaultsDebugViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BooleanUserDefaultsDebugViewModel.swift; sourceTree = "<group>"; };
@@ -16083,6 +16086,7 @@
 				B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */,
 				B52C4C7C199D4CD3009FD823 /* NoteBlockUserTableViewCell.swift */,
 				B5C66B791ACF074600F68370 /* NoteBlockUserTableViewCell.xib */,
+				776D09F22BEC01B500DE07A1 /* NotificationDetailUserView.swift */,
 				FEDDD46E26A03DE900F8942B /* ListTableViewCell+Notifications.swift */,
 			);
 			path = Views;
@@ -23417,6 +23421,7 @@
 				8236EB502024ED8C007C7CF9 /* NotificationsViewController+JetpackPrompt.swift in Sources */,
 				C3234F4E27EB96A9004ADB29 /* IntentCell.swift in Sources */,
 				5D732F971AE84E3C00CD89E7 /* PostListFooterView.m in Sources */,
+				776D09F32BEC01B500DE07A1 /* NotificationDetailUserView.swift in Sources */,
 				1767494E1D3633A000B8D1D1 /* ThemeBrowserSearchHeaderView.swift in Sources */,
 				0857C2781CE5375F0014AE99 /* MenuItemInsertionView.m in Sources */,
 				98ED5963265EBD0000A0B33E /* ReaderDetailLikesListController.swift in Sources */,
@@ -24453,6 +24458,7 @@
 				FE7B9A8B2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */,
 				FABB20E62602FC2C00C8785C /* TitleSubtitleHeader.swift in Sources */,
 				FABB20E82602FC2C00C8785C /* AppAppearance.swift in Sources */,
+				776D09F42BEC01B500DE07A1 /* NotificationDetailUserView.swift in Sources */,
 				FABB20E92602FC2C00C8785C /* ReaderTabViewController.swift in Sources */,
 				FE4DC5A8293A84E6008F322F /* MigrationDeepLinkRouter.swift in Sources */,
 				77DFF0892B68386800FA561D /* BooleanUserDefaultsDebugViewModel.swift in Sources */,
