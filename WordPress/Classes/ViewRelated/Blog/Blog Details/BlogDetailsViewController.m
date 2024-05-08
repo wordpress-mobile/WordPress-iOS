@@ -17,6 +17,8 @@
 #import "NSMutableArray+NullableObjects.h"
 #import <Reachability/Reachability.h>
 #import <WordPressShared/WPTableViewCell.h>
+#import "PostType.h"
+
 
 @import Gridicons;
 
@@ -328,6 +330,17 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     [self startObservingQuickStart];
     
     [self observeGravatarImageUpdate];
+
+    // Sync the available postTypes for blog
+    __weak __typeof__(self) weakSelf = self;
+    BlogService *service = [[BlogService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
+    [service syncPostTypesForBlog:self.blog success:^{
+        // synced post types
+        [weakSelf configureTableViewData];
+        [weakSelf reloadTableViewPreservingSelection];
+    } failure:^(NSError *error) {
+        DDLogError(@"Error syncing post-types for Menus: %@", error);
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -710,6 +723,21 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
     return row;
 }
 
+- (BlogDetailsRow *)customPostTypeForWithType:(PostType *)postType
+{
+    __weak __typeof(self) weakSelf = self;
+    BlogDetailsRow *row = [[BlogDetailsRow alloc] initWithTitle:postType.label accessibilityIdentifier:@"Site Pages Row" image:[UIImage imageNamed:@"site-menu-pages"] callback:^{
+        [weakSelf showPostsWithType:postType];
+    }];
+    row.quickStartIdentifier = QuickStartTourElementPages;
+    return row;
+}
+
+- (void)showPostsWithType:(PostType *)postType {
+ // TODO:
+// showPageListFromSource:BlogDetailsNavigationSourceRow];
+}
+
 - (BlogDetailsRow *)mediaRow
 {
     __weak __typeof(self) weakSelf = self;
@@ -1042,12 +1070,24 @@ NSString * const WPCalypsoDashboardPath = @"https://wordpress.com/home/";
 {
     NSMutableArray *rows = [NSMutableArray array];
 
-    [rows addObject:[self postsRow]];
-    if ([self.blog supports:BlogFeaturePages]) {
-        [rows addObject:[self pagesRow]];
+    NSMutableArray <PostType *> *postTypes = [NSMutableArray arrayWithArray:[self.blog.postTypes allObjects]];
+    if (postTypes.count > 0) {
+        [postTypes sortUsingSelector:@selector(label)];
+        for (PostType *postType in postTypes) {
+            [rows addObject:[self customPostTypeForWithType:postType]];
+        }
+    } else {
+
+        [rows addObject:[self postsRow]];
+        if ([self.blog supports:BlogFeaturePages]) {
+            [rows addObject:[self pagesRow]];
+        }
+
     }
+
     [rows addObject:[self mediaRow]];
     [rows addObject:[self commentsRow]];
+
 
     NSString *title = [BlogDetailsViewControllerStrings contentSectionTitle];
     return [[BlogDetailsSection alloc] initWithTitle:title andRows:rows category:BlogDetailsSectionCategoryContent];
