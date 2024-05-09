@@ -2,7 +2,7 @@ import UIKit
 
 extension PrepublishingViewController {
     static func show(for revision: AbstractPost, action: PostEditorAction, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _show(for: revision, action: action, from: presentingViewController, completion: completion)
         }
         show(post: revision, isStandalone: isStandalone, from: presentingViewController, completion: completion)

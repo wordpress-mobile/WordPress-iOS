@@ -340,12 +340,12 @@ extension NotificationDetailsViewController {
 
         navigationItem.backBarButtonItem = backButton
 
-        let next = UIButton(type: .custom)
-        next.setImage(.gridicon(.arrowUp), for: .normal)
+        let next = UIButton(type: .system)
+        next.setImage(UIImage.DS.icon(named: .arrowUp), for: .normal)
         next.addTarget(self, action: #selector(nextNotificationWasPressed), for: .touchUpInside)
 
-        let previous = UIButton(type: .custom)
-        previous.setImage(.gridicon(.arrowDown), for: .normal)
+        let previous = UIButton(type: .system)
+        previous.setImage(UIImage.DS.icon(named: .arrowDown), for: .normal)
         previous.addTarget(self, action: #selector(previousNotificationWasPressed), for: .touchUpInside)
 
         previousNavigationButton = previous
@@ -394,7 +394,7 @@ extension NotificationDetailsViewController {
     /// since notification kind may change.
     func setupTableDelegates() {
         if note.kind == .like || note.kind == .commentLike,
-           let likesListController = LikesListController(tableView: tableView, notification: note, delegate: self) {
+           let likesListController = LikesListController(tableView: tableView, notification: note, parent: self, delegate: self) {
             tableView.delegate = likesListController
             tableView.dataSource = likesListController
             self.likesListController = likesListController
@@ -621,20 +621,35 @@ private extension NotificationDetailsViewController {
         // -   UITableViewCell's taps don't require a Gestures Recognizer. No big deal, but less code!
         //
 
-        cell.attributedHeaderTitle = nil
-        cell.attributedHeaderDetails = nil
-
         guard let gravatarBlock: NotificationTextContent = blockGroup.blockOfKind(.image),
             let snippetBlock: NotificationTextContent = blockGroup.blockOfKind(.text) else {
                 return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
-
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.downloadAuthorAvatar(with: mediaURL)
+        let content = snippetBlock.text ?? ""
+        let action: () -> Void = { [weak self] in self?.didSelectHeader() }
+
+        if note?.kind == .commentLike || note?.kind == .follow {
+            let avatar = NoteBlockHeaderTableViewCell.Avatar(
+                url: mediaURL,
+                email: nil,
+                size: NoteBlockHeaderTableViewCell.Constants.imageSize
+            )
+            cell.configure(
+                avatar: avatar,
+                comment: content,
+                action: action,
+                parent: self
+            )
+        } else {
+            cell.configure(
+                post: content,
+                action: action,
+                parent: self
+            )
+        }
     }
 
     func setupFooterCell(_ cell: NoteBlockTextTableViewCell, blockGroup: FormattableContentGroup) {

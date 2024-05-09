@@ -10,7 +10,12 @@
 
 - (void)configureSections
 {
-    self.sections = @[@(PostSettingsSectionMeta),@(PostSettingsSectionFeaturedImage)];
+    self.sections = @[
+        @(PostSettingsSectionMeta),
+        @(PostSettingsSectionFeaturedImage),
+        @(PostSettingsSectionMoreOptions),
+        @(PostSettingsSectionPageAttributes)
+    ];
 }
 
 - (Page *)page

@@ -761,15 +761,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogginnlegg";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Bloggens følger";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Bloggens bruker";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Bloggens leser";
-
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Bloggepåminnere";
 
@@ -834,7 +825,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1206,7 +1196,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1407,9 +1396,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Blog Writing Settings: Date Format
    Writing Date Format Settings Title */
 "Date Format" = "Datoformat";
-
-/* Date and Time */
-"Date and Time" = "Dato og tid";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2005,13 +1991,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Fulgte nettsteder";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Følger";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Følgere";
 
 /* User is following the blog. */
@@ -2536,9 +2519,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Link inserted" = "Lenke satt inn";
-
-/* No comment provided by engineer. */
-"Link text" = "Lenketekst";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Lenke til eksisterende innhold";
@@ -3710,8 +3690,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publiser";
 
 /* Label for the publish date button. */
@@ -3733,9 +3712,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Publisert akkurat nå på";
-
-/* Published on [date] */
-"Published on" = "Publisert";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publiserer innlegg...";
@@ -4078,9 +4054,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Planlagt";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Planlagt for";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Planlagt for %@ på";
 
@@ -4374,9 +4347,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registrer deg med epost";
 
-/* Label for time period in list of followers. */
-"Since" = "Siden";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Siden du har et gratisabonnement, vil hendelsene du ser i aktivitetsloggen være begrenset.";
 
@@ -4448,10 +4418,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Label for the slug field. Should be the same as WP core. */
 "Slug" = "Permalenke";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sosialt";
 
 /* Title for a label that appears when the scan failed
@@ -5108,18 +5076,12 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Total Comments' header */
 "Total Comments" = "Antall kommentarer";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Totalt antall e-postfølgere: %@";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Antall liker";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Antall innlegg";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Totalt antall WordPress.com-følgere: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Antall ord";

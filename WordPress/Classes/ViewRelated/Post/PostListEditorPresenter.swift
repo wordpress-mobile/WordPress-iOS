@@ -15,7 +15,7 @@ protocol EditorAnalyticsProperties: AnyObject {
 struct PostListEditorPresenter {
 
     static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return _handle(post: post, in: postListViewController)
         }
 

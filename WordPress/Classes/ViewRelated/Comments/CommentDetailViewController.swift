@@ -189,29 +189,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return appearance
     }()
 
-    // MARK: Nav Bar Buttons
-
-    private(set) lazy var editBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(barButtonSystemItem: .edit,
-                               target: self,
-                               action: #selector(editButtonTapped))
-        button.accessibilityLabel = NSLocalizedString("Edit comment", comment: "Accessibility label for button to edit a comment from a notification")
-        return button
-    }()
-
-    private(set) lazy var shareBarButtonItem: UIBarButtonItem = {
-        let button = UIBarButtonItem(
-            image: comment.allowsModeration()
-            ? UIImage(systemName: Style.Content.ellipsisIconImageName)
-            : UIImage(systemName: Style.Content.shareIconImageName),
-            style: .plain,
-            target: self,
-            action: #selector(shareCommentURL)
-        )
-        button.accessibilityLabel = NSLocalizedString("Share comment", comment: "Accessibility label for button to share a comment from a notification")
-        return button
-    }()
-
     // MARK: Initialization
 
     @objc init(comment: Comment,
@@ -364,16 +341,6 @@ private extension CommentDetailViewController {
     func configureNavigationBar() {
         navigationItem.standardAppearance = blurredBarAppearance
         navigationController?.navigationBar.isTranslucent = true
-        configureNavBarButton()
-    }
-
-    func configureNavBarButton() {
-        var barItems: [UIBarButtonItem] = []
-        barItems.append(shareBarButtonItem)
-        if comment.allowsModeration() {
-            barItems.append(editBarButtonItem)
-        }
-        navigationItem.setRightBarButtonItems(barItems, animated: false)
     }
 
     func configureTable() {
@@ -391,7 +358,7 @@ private extension CommentDetailViewController {
                                                    bottom: tableView.directionalLayoutMargins.bottom,
                                                    trailing: Constants.tableHorizontalInset)
 
-        tableView.register(CommentContentTableViewCell.defaultNib, forCellReuseIdentifier: CommentContentTableViewCell.defaultReuseID)
+        tableView.register(CommentDetailContentTableViewCell.self, forCellReuseIdentifier: CommentDetailContentTableViewCell.defaultReuseID)
     }
 
     func configureContentRows() -> [RowType] {
@@ -415,7 +382,6 @@ private extension CommentDetailViewController {
     /// Performs a complete refresh on the table and the row configuration, since some rows may be hidden due to changes to the Comment object.
     /// Use this method instead of directly calling the `reloadData` on the table view property.
     func refreshData() {
-        configureNavBarButton()
         configureSections()
         tableView.reloadData()
     }
@@ -470,29 +436,32 @@ private extension CommentDetailViewController {
         }
     }
 
-    func configureContentCell(_ cell: CommentContentTableViewCell, comment: Comment) {
-        cell.configure(with: comment) { [weak self] _ in
-            self?.tableView.performBatchUpdates({})
+    func configureContentCell(_ cell: CommentDetailContentTableViewCell, comment: Comment) {
+        let onOptionSelected: (CommentDetailContentTableViewCell.MenuOption) -> Void = { [weak self, weak cell] option in
+            guard let self, let cell else {
+                return
+            }
+            switch option {
+            case .userInfo:
+                presentUserInfoSheet()
+            case .editComment:
+                editButtonTapped()
+            case .share:
+                shareCommentURL(sourceView: cell)
+            case .changeStatus(let status):
+                print("Option \(status) tapped")
+            }
         }
-
-        cell.contentLinkTapAction = { [weak self] url in
+        let contentConfig = CommentDetailContentTableViewCell.ContentConfiguration(comment: comment) { [weak self] _ in
+            UIView.performWithoutAnimation {
+                self?.tableView.performBatchUpdates({})
+            }
+        } onContentLinkTapped: { [weak self] url in
             // open all tapped links in web view.
             // TODO: Explore reusing URL handling logic from ReaderDetailCoordinator.
             self?.openWebView(for: url)
         }
-
-        cell.accessoryButtonType = .info
-        cell.accessoryButtonAction = { [weak self] senderView in
-            self?.presentUserInfoSheet(senderView)
-        }
-
-        cell.likeButtonAction = { [weak self] in
-            self?.toggleCommentLike()
-        }
-
-        cell.replyButtonAction = { [weak self] in
-            self?.showReplyView()
-        }
+        cell.configure(with: contentConfig, onOptionSelected: onOptionSelected, parent: self)
     }
 
     func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
@@ -715,7 +684,7 @@ private extension CommentDetailViewController {
         })
     }
 
-    @objc func shareCommentURL(_ barButtonItem: UIBarButtonItem) {
+    @objc func shareCommentURL(sourceView: UIView) {
         guard let commentURL = comment.commentURL() else {
             return
         }
@@ -724,11 +693,11 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.siteCommentsCommentShared)
 
         let activityViewController = UIActivityViewController(activityItems: [commentURL as Any], applicationActivities: nil)
-        activityViewController.popoverPresentationController?.barButtonItem = barButtonItem
+        activityViewController.popoverPresentationController?.sourceView = sourceView
         present(activityViewController, animated: true, completion: nil)
     }
 
-    func presentUserInfoSheet(_ senderView: UIView) {
+    func presentUserInfoSheet() {
         let viewModel = CommentDetailInfoViewModel(
             url: comment.authorURL(),
             urlToDisplay: comment.authorUrlForDisplay(),
@@ -945,7 +914,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
                 return headerCell
 
             case .content:
-                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentContentTableViewCell.defaultReuseID) as? CommentContentTableViewCell else {
+                guard let cell = tableView.dequeueReusableCell(withIdentifier: CommentDetailContentTableViewCell.defaultReuseID) as? CommentDetailContentTableViewCell else {
                     return .init()
                 }
 

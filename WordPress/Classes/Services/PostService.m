@@ -197,21 +197,6 @@ forceDraftIfCreating:(BOOL)forceDraftIfCreating
            failure:(nullable void (^)(NSError * _Nullable error))failure
 {
     id<PostServiceRemote> remote = [self.postServiceRemoteFactory forBlog:post.blog];
-
-    // It's possible that the post has been updated while the user is making changes to the post in the app.
-    // In that case, this function here will overwrite the latest revision on the server.
-    //
-    // See also: https://github.com/wordpress-mobile/WordPress-iOS/issues/8111
-    //
-    // Here we check (only for WP.com posts for now) and log events for such scenario to get a sense of how
-    // often it occurs.
-    //
-    // The updating post API is made in parallel with this get revision API request–we don't want to delay
-    // saving post. In theory, it's possible that the updating post API finishes before the server handles
-    // the get revision API request, which means we'll receive an incorrect revision. But that should be
-    // extremely rare and we'll ignore it for now.
-    [self checkLatestRevisionForPost:post usingRemote:remote];
-
     [self uploadPost:post forceDraftIfCreating:forceDraftIfCreating usingRemote:remote success:success failure:failure];
 }
 

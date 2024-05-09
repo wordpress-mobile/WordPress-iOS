@@ -203,10 +203,14 @@ extension ReaderTabViewModel {
             return .none
         }()
 
-        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
+        var filters = [FilterProvider]()
 
         if !selectedStream.shouldHideTagFilter {
-            filters.insert(ReaderTagTopic.filterProvider(), at: 0)
+            filters.append(ReaderTagTopic.filterProvider())
+        }
+
+        if !selectedStream.shouldHideBlogFilter {
+            filters.append(ReaderSiteTopic.filterProvider(for: siteType))
         }
 
         streamFilters = filters

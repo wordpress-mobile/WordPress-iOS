@@ -30,6 +30,7 @@ class LikesListController: NSObject {
     private let tableView: UITableView
     private var loadingIndicator = UIActivityIndicatorView()
     private weak var delegate: LikesListControllerDelegate?
+    private weak var parent: UIViewController?
 
     // Used to control pagination.
     private var isFirstLoad = true
@@ -87,7 +88,7 @@ class LikesListController: NSObject {
 
     /// Init with Notification
     ///
-    init?(tableView: UITableView, notification: Notification, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, notification: Notification, parent: UIViewController, delegate: LikesListControllerDelegate? = nil) {
 
         guard let siteID = notification.metaSiteID else {
             return nil
@@ -113,6 +114,7 @@ class LikesListController: NSObject {
             return nil
         }
 
+        self.parent = parent
         self.notification = notification
         self.siteID = siteID
         self.tableView = tableView
@@ -124,7 +126,7 @@ class LikesListController: NSObject {
 
     /// Init with ReaderPost
     ///
-    init?(tableView: UITableView, post: ReaderPost, delegate: LikesListControllerDelegate? = nil) {
+    init?(tableView: UITableView, post: ReaderPost, parent: UIViewController, delegate: LikesListControllerDelegate? = nil) {
 
         guard let postID = post.postID else {
             return nil
@@ -133,6 +135,7 @@ class LikesListController: NSObject {
         content = .post(id: postID)
         readerPost = post
         siteID = post.siteID
+        self.parent = parent
         self.tableView = tableView
         self.delegate = delegate
 
@@ -339,11 +342,6 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        if showingNotificationLikes && indexPath.section == Constants.headerSectionIndex {
-            delegate?.didSelectHeader?()
-            return
-        }
-
         guard !isLoadingContent,
               let user = likingUsers[safe: indexPath.row] else {
             return
@@ -370,20 +368,38 @@ private extension LikesListController {
     }
 
     func setupHeaderCell(cell: NoteBlockHeaderTableViewCell, group: FormattableContentGroup) {
-        cell.attributedHeaderTitle = nil
-        cell.attributedHeaderDetails = nil
-
         guard let gravatarBlock: NotificationTextContent = group.blockOfKind(.image),
             let snippetBlock: NotificationTextContent = group.blockOfKind(.text) else {
                 return
         }
 
-        cell.attributedHeaderTitle = formatter.render(content: gravatarBlock, with: HeaderContentStyles())
-        cell.attributedHeaderDetails = formatter.render(content: snippetBlock, with: HeaderDetailsContentStyles())
-
         // Download the Gravatar
         let mediaURL = gravatarBlock.media.first?.mediaURL
-        cell.downloadAuthorAvatar(with: mediaURL)
+        let content = snippetBlock.text ?? ""
+        let action: () -> Void = { [weak self] in self?.delegate?.didSelectHeader!() }
+
+        guard let parent = parent else {
+            return
+        }
+        if notification?.kind == .commentLike || notification?.kind == .follow {
+            let avatar = NoteBlockHeaderTableViewCell.Avatar(
+                url: mediaURL,
+                email: nil,
+                size: NoteBlockHeaderTableViewCell.Constants.imageSize
+            )
+            cell.configure(
+                avatar: avatar,
+                comment: content,
+                action: action,
+                parent: parent
+            )
+        } else {
+            cell.configure(
+				post: content,
+                action: action,
+                parent: parent
+            )
+        }
     }
 
     func userCell(for indexPath: IndexPath) -> UITableViewCell {

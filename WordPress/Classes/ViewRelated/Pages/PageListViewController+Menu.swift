@@ -11,17 +11,13 @@ extension PageListViewController: InteractivePostViewDelegate {
         viewPost(apost)
     }
 
-    func stats(for apost: AbstractPost) {
-        // Not available for pages
-    }
-
     func duplicate(_ apost: AbstractPost) {
         guard let page = apost as? Page else { return }
         copyPage(page)
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             guard let page = post as? Page else { return }
             return trashPage(page, completion: completion)
         }
@@ -62,13 +58,6 @@ extension PageListViewController: InteractivePostViewDelegate {
     func showSettings(for post: AbstractPost) {
         WPAnalytics.track(.postListSettingsAction, properties: propertiesForAnalytics())
         PostSettingsViewController.showStandaloneEditor(for: post, from: self)
-    }
-
-    func setParent(for apost: AbstractPost) {
-        guard let page = apost as? Page else { return }
-        Task {
-            await setParentPage(for: page)
-        }
     }
 
     func setHomepage(for apost: AbstractPost) {

@@ -69,7 +69,10 @@ private struct LoggedInDataSourceMapper: BlogListDataSourceMapper {
 }
 
 class BlogListDataSource: NSObject {
-    override init() {
+    private let contextManager: ContextManager
+
+    @objc init(contextManager: ContextManager = ContextManager.sharedInstance()) {
+        self.contextManager = contextManager
         super.init()
         // We can't decide if we're using recent sites until the results controller
         // is configured and we have a list of blogs, so we have to update this right
@@ -199,8 +202,8 @@ class BlogListDataSource: NSObject {
 
     // MARK: - Internal properties
 
-    fileprivate let resultsController: NSFetchedResultsController<Blog> = {
-        let context = ContextManager.sharedInstance().mainContext
+    fileprivate lazy var resultsController: NSFetchedResultsController<Blog> = {
+        let context = contextManager.mainContext
         let request = NSFetchRequest<Blog>(entityName: NSStringFromClass(Blog.self))
         request.sortDescriptors = [
             NSSortDescriptor(key: "accountForDefaultBlog.userID", ascending: false),
@@ -293,8 +296,8 @@ private extension BlogListDataSource {
 
 // MARK: - Data
 
-private extension BlogListDataSource {
-    var sections: [[Blog]] {
+extension BlogListDataSource {
+    private var sections: [[Blog]] {
         if let sections = cachedSections {
             return sections
         }

@@ -148,6 +148,28 @@ class RouteMatcherTests: XCTestCase {
         XCTAssertEqual(match.source, DeepLinkSource.widget)
     }
 
+    func testStatsSubscribersRoute() {
+        routes = [ StatsRoute.subscribers ]
+        matcher = RouteMatcher(routes: routes)
+
+        let matches = matcher.routesMatching(URL(string: "https://wordpress.com/stats/subscribers/testsite.com")!)
+
+        let match = matches.first!
+        XCTAssertEqual(match.section, DeepLinkSection.stats)
+        XCTAssertEqual(match.source, DeepLinkSource.link)
+    }
+
+    func testStatsSubscribersDayRoute() {
+        routes = [ StatsRoute.daySubscribers ]
+        matcher = RouteMatcher(routes: routes)
+
+        let matches = matcher.routesMatching(URL(string: "https://wordpress.com/stats/subscribers/day/testsite.com")!)
+
+        let match = matches.first!
+        XCTAssertEqual(match.section, DeepLinkSection.stats)
+        XCTAssertEqual(match.source, DeepLinkSource.link)
+    }
+
     // MARK: - AppBanner
 
     func testAppBannerRouter() throws {

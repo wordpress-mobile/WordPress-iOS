@@ -337,15 +337,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Site";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Seguidor do site";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Utilizador do site";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Visitante do site";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Negrito";
@@ -373,7 +364,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -629,7 +619,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1027,13 +1016,10 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Sites seguidos";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Seguidor";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Seguidores";
 
 /* User is following the blog. */
@@ -1987,8 +1973,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -2001,9 +1986,6 @@
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Publicar agora em";
-
-/* Published on [date] */
-"Published on" = "Publicado em";
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "A publicar...";
@@ -2203,9 +2185,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Agendado para";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Agendado para %@ em";
 
@@ -2301,9 +2280,6 @@
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registar com email";
-
-/* Label for time period in list of followers. */
-"Since" = "Desde";
 
 /* Title for the Language Picker View */
 "Site Language" = "Idioma do site";
@@ -2668,12 +2644,6 @@
 
 /* Label for total followers */
 "Total" = "Total";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total de seguidores por email: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total de seguidores em WordPress.com: %@";
 
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfego";

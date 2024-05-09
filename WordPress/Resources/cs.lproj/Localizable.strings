@@ -841,9 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Opravdu chcete odstranit tento příspěvek?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Opravdu chcete aktualizovat svou domovskou stránku?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Opravdu chcete provést aktualizaci?";
 
@@ -1066,18 +1063,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogový příspěvek";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-mailový fanoušci blogu";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Sledovatel blogu";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog uživatele ";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Prohlížeč blogu";
-
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Připomenutí blogů";
 
@@ -1166,7 +1151,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1737,7 +1721,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2070,9 +2053,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Časové rozmezí";
-
-/* Date and Time */
-"Date and Time" = "Datum a čas";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2500,9 +2480,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Emailová adresa";
-
-/* Blog Email Followers */
-"Email Followers" = "E-maily fanoušků";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -2954,13 +2931,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Stránky které sledujete";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Odběratel";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Odběratelé";
 
 /* User is following the blog. */
@@ -3817,7 +3791,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Odkaz vložen";
 
 /* No comment provided by engineer. */
-"Link text" = "Seznam textů";
+"Link label" = "Popisek odkazu";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Odkaz na existující obsah";
@@ -5325,8 +5299,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publikováno";
 
 /* Label for the publish date button. */
@@ -5351,9 +5324,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Publikované právě teď";
-
-/* Published on [date] */
-"Published on" = "Publikováno";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publikuji stránku...";
@@ -5824,9 +5794,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Načasováno";
 
-/* Scheduled for [date] */
-"Scheduled for" = " Naplánováno na";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Naplánováno na %@ v";
 
@@ -6235,9 +6202,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Zaregistrujte se pomocí e-mailu";
 
-/* Label for time period in list of followers. */
-"Since" = "Od";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Jelikož máte bezplatný plán, uvidíte v protokolu aktivit omezené události.";
 
@@ -6330,10 +6294,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Na webu nejsou žádné ignorované hrozby.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sociální";
 
 /* Title of a Quick Start Tour */
@@ -7233,21 +7195,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Celkový počet komentářů";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Celkový počet e-mailových odběratelů: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Celkem počet fanoušků";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Celkem to se mi líbí";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Celkem příspěvků";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Celkový počet odběratelů WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Celkem slov";
