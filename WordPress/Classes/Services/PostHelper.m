@@ -252,8 +252,6 @@
         AbstractPost *post;
         NSUUID *foreignID = remotePost.foreignID;
         if (foreignID != nil) {
-            // This post can be a revision if fetching remote posts happens in parallel
-            // with creating a post.
             post = [blog lookupPostWithForeignID:foreignID inContext:context];
         } else {
             post = [blog lookupPostWithID:remotePost.postID inContext:context];
@@ -267,11 +265,8 @@
                 post = [blog createPost];
             }
         }
-        // Only update if the post is original; don't update a revision with the remote post.
-        if (post.isOriginal) {
-            [PostHelper updatePost:post withRemotePost:remotePost inContext:context];
-            [posts addObject:post];
-        }
+        [PostHelper updatePost:post withRemotePost:remotePost inContext:context];
+        [posts addObject:post];
     }
 
     if (purge) {
