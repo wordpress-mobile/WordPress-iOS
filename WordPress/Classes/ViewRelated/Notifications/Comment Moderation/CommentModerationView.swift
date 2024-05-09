@@ -40,7 +40,9 @@ private struct Container<T: View, V: View>: View {
 
     private let animationDuration = 0.25
 
-    private let insertionAnimationDelay = 0.8
+    private var insertionAnimationDelay: TimeInterval {
+        return animationDuration * 0.8
+    }
 
     private var insertionAnimation: Animation {
         return removalAnimation.delay(insertionAnimationDelay)
