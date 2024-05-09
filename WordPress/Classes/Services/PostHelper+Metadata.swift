@@ -9,7 +9,7 @@ extension PostHelper {
         return RemotePostMetadataItem(
             id: (id as? String) ?? (id as? NSNumber)?.stringValue,
             key: dictionary["key"] as? String,
-            value: (value as? String) ?? (value as? UUID)?.description
+            value: (value as? String) ?? (value as? UUID)?.uuidString
         )
     }
 }
