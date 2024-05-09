@@ -57,6 +57,7 @@ extension Blog {
         let post = NSEntityDescription.insertNewObject(forEntityName: NSStringFromClass(Post.self), into: context) as! Post
         post.blog = self
         post.remoteStatus = .sync
+        post.foreignID = UUID().uuidString
 
         if let categoryID = settings?.defaultCategoryID,
            categoryID.intValue != PostCategoryUncategorized,
@@ -96,6 +97,7 @@ extension Blog {
         page.blog = self
         page.date_created_gmt = Date()
         page.remoteStatus = .sync
+        page.foreignID = UUID().uuidString
 
         if let userID = userID, let author = getAuthorWith(id: userID) {
             page.authorID = author.userID
