@@ -1,118 +1,52 @@
 import Foundation
-import WordPressShared
-import WordPressUI
-import Gravatar
+import SwiftUI
 
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
-    typealias EventHandler = (() -> Void)
+    private var controller: UIHostingController<NotificationDetailUserView>?
 
-    // MARK: - Public Properties
-    @objc var onFollowClick: EventHandler?
-    @objc var onUnfollowClick: EventHandler?
-
-    @objc var isFollowEnabled: Bool {
-        set {
-            if newValue {
-                innerStackView.addArrangedSubview(btnFollow)
-            } else {
-                btnFollow.removeFromSuperview()
-            }
-        }
-        get {
-            return btnFollow.superview != nil
-        }
-    }
-    @objc var isFollowOn: Bool {
-        set {
-            btnFollow.isSelected = newValue
-            configureAccesibility()
-        }
-        get {
-            return btnFollow.isSelected
-        }
+    func configure(avatarURL: URL?, username: String?, blog: String?, onUserClicked: @escaping () -> Void, parent: UIViewController) {
+        let view = NotificationDetailUserView(avatarURL: avatarURL, username: username, blog: blog, onUserClicked: onUserClicked)
+        host(view, parent: parent)
     }
 
-    @objc var name: String? {
-        set {
-            nameLabel.text  = newValue
-        }
-        get {
-            return nameLabel.text
-        }
-    }
-    @objc var blogTitle: String? {
-        set {
-            blogLabel.text  = newValue
-        }
-        get {
-            return blogLabel.text
-        }
-    }
-
-    // MARK: - Public Methods
-    @objc func downloadGravatarWithURL(_ url: URL?) {
-        if url == gravatarURL {
-            return
-        }
-
-        let gravatar = url.flatMap { AvatarURL(url: $0) }
-        gravatarImageView.downloadGravatar(gravatar, placeholder: .gravatarPlaceholderImage, animate: true)
-
-        gravatarURL = url
+    func configure(
+        avatarURL: URL?,
+        username: String?,
+        blog: String?,
+        isFollowed: Bool,
+        onUserClicked: @escaping () -> Void,
+        onFollowClicked: @escaping (Bool) -> Void,
+        parent: UIViewController
+    ) {
+        let view = NotificationDetailUserView(
+            avatarURL: avatarURL,
+            username: username,
+            blog: blog,
+            isFollowed: isFollowed,
+            onUserClicked: onUserClicked,
+            onFollowClicked: onFollowClicked
+        )
+        host(view, parent: parent)
     }
 
-    // MARK: - View Methods
-    override func awakeFromNib() {
-        super.awakeFromNib()
+    private func host(_ content: NotificationDetailUserView, parent: UIViewController) {
+        if let controller = controller {
+            controller.rootView = content
+            controller.view.layoutIfNeeded()
+        } else {
+            let cellViewController = UIHostingController(rootView: content)
+            controller = cellViewController
 
-        WPStyleGuide.Notifications.configureFollowButton(btnFollow)
-        btnFollow.titleLabel?.font = WPStyleGuide.Notifications.blockRegularFont
+            parent.addChild(cellViewController)
+            contentView.addSubview(cellViewController.view)
+            cellViewController.view.translatesAutoresizingMaskIntoConstraints = false
+            layout(hostingView: cellViewController.view)
 
-        backgroundColor = WPStyleGuide.Notifications.blockBackgroundColor
-
-        nameLabel.font = WPStyleGuide.Notifications.blockBoldFont
-        nameLabel.textColor = WPStyleGuide.Notifications.blockTextColor
-
-        blogLabel.font = WPStyleGuide.Notifications.blockRegularFont
-        blogLabel.textColor = .neutral(.shade50)
-        blogLabel.adjustsFontSizeToFitWidth = false
-
-        configureAccesibility()
-    }
-
-    // MARK: - IBActions
-    @IBAction func followWasPressed(_ sender: AnyObject) {
-        ReachabilityUtils.onAvailableInternetConnectionDo {
-            configureAccesibility()
-
-            if let listener = isFollowOn ? onUnfollowClick : onFollowClick {
-                listener()
-            }
-            isFollowOn = !isFollowOn
+            cellViewController.didMove(toParent: parent)
         }
     }
 
-    // MARK: - Private
-    private func configureAccesibility() {
-        isFollowOn ? configureAsSelected() : configureAsUnSelected()
+    func layout(hostingView view: UIView) {
+        self.contentView.pinSubviewToAllEdges(view)
     }
-
-    private func configureAsUnSelected() {
-        btnFollow.accessibilityLabel = Follow.title
-        btnFollow.accessibilityHint = Follow.hint
-    }
-
-    private func configureAsSelected() {
-        btnFollow.accessibilityLabel = Follow.selectedTitle
-        btnFollow.accessibilityHint = Follow.selectedHint
-    }
-
-    fileprivate var gravatarURL: URL?
-
-    // MARK: - IBOutlets
-    @IBOutlet fileprivate var nameLabel: UILabel!
-    @IBOutlet fileprivate var blogLabel: UILabel!
-    @IBOutlet fileprivate var btnFollow: UIButton!
-    @IBOutlet fileprivate var gravatarImageView: CircularImageView!
-    @IBOutlet fileprivate var innerStackView: UIStackView!
 }
