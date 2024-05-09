@@ -24,7 +24,7 @@ extension ReaderPost {
     }
 
     func summaryForDisplay(isPad: Bool = false) -> String? {
-        if featuredImageURLForDisplay() == nil || isPad {
+        if isPad {
             let content = contentForDisplay()?
                 .stringByDecodingXMLCharacters()
                 .replacingOccurrences(of: "<br>", with: "\n")
@@ -33,7 +33,7 @@ extension ReaderPost {
                 .replacingOccurrences(of: "\n{2,}", with: "\n\n", options: .regularExpression)
                 .trim()
             if let content {
-                let maxContentLength = isPad ? 4000 : 500
+                let maxContentLength = 3000
                 return String(content.prefix(maxContentLength))
             }
         }

@@ -10,6 +10,7 @@ class ReaderTagCell: UICollectionViewCell {
     @IBOutlet private weak var postDateLabel: UILabel!
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var summaryLabel: UILabel!
+    @IBOutlet private weak var featuredImageViewContainer: UIView!
     @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
     @IBOutlet private weak var countsLabel: UILabel!
     @IBOutlet private weak var likeButton: UIButton!
@@ -90,6 +91,7 @@ private extension ReaderTagCell {
 
     func loadFeaturedImage(with post: ReaderPost) {
         guard let url = post.featuredImageURLForDisplay() else {
+            featuredImageViewContainer.isHidden = true
             featuredImageView.isHidden = true
             return
         }
@@ -105,6 +107,7 @@ private extension ReaderTagCell {
         siteLabel.isHidden = false
         titleLabel.isHidden = false
         summaryLabel.isHidden = false
+        featuredImageViewContainer.isHidden = false
         featuredImageView.isHidden = false
         countsLabel.isHidden = false
         likeButton.isHidden = false
