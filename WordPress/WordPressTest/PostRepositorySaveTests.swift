@@ -17,7 +17,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             .build()
         try mainContext.save()
 
-        repository = PostRepository(coreDataStack: contextManager, foreignIdGenerator: { "foreign-id" })
+        repository = PostRepository(coreDataStack: contextManager)
     }
 
     override func tearDown() {
@@ -37,6 +37,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated =  Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = "foreign-id"
         }
 
         // GIVEN a server accepting the new post
@@ -99,6 +100,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.addCategories([category])
 
             $0.isStickyPost = true
+
+            $0.foreignID = "foreign-id"
         }
 
         // GIVEN a server accepting the new post
@@ -157,6 +160,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = "foreign-id"
         }
 
         // GIVEN a server accepting the new post
@@ -204,6 +208,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = "foreign-id"
         }
 
         // GIVEN a server accepting the new post
@@ -253,6 +258,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = "foreign-id"
         }
 
         // GIVEN a server accepting the new post
@@ -1230,6 +1236,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         revision.postTitle = "title-a"
         revision.content = "content-a"
         revision.remoteStatus = .syncNeeded
+        revision.foreignID = "foreign-id"
 
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
@@ -1315,6 +1322,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
         revision1.remoteStatus = .syncNeeded
+        revision1.foreignID = "foreign-id"
 
         // GIVEN a local revision
         let revision2 = revision1._createRevision()
