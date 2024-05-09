@@ -439,7 +439,7 @@
     }
 
     struct SubscribersHeaders {
-        static let chart = NSLocalizedString("stats.subscribers.chart.title", value: "Subscribers", comment: "Stats 'Subscribers' card header, contains chart")
+        static let chart = NSLocalizedString("stats.subscribers.growthChart.title", value: "Subscriber Growth", comment: "Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers")
         static let emailsSummaryStats = NSLocalizedString("stats.subscribers.emailsSummaryCard.title", value: "Emails", comment: "Stats 'Emails' card header")
         static let subscribersList = NSLocalizedString("stats.subscribers.subscribersListCard.title", value: "Subscribers", comment: "Stats 'Subscribers' card header")
     }

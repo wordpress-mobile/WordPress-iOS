@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-23 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-05-03 12:54:13+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: it */
@@ -8844,6 +8844,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Hai apportato modifiche non salvate a questo articolo da un dispositivo diverso. Modificato: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Visualizza modifiche";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Impossibile caricare l'immagine. Scegline una differente o prova più tardi.";
 
@@ -10290,6 +10296,18 @@ Example: Reply to Pamela Nguyen */
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Spostamento dell'articolo nel cestino in corso...";
 
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Annulla modifiche";
+
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Annulla bozza";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Creazione del salvataggio automatico in corso...";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Salvataggio bozza in corso...";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Di %@.";
 
@@ -10298,6 +10316,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a sticky post in the post list. */
 "postList.a11y.sticky" = "In evidenza.";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Elimina in modo permanente";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Desideri eliminare in modo permanente \"%@\"?";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Si è verificato un problema";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Modifiche offline";
@@ -10313,6 +10340,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Visualizza";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Sposta nel cestino";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Desideri spostare \"%@\" nel cestino? Tutte le modifiche non inviate in precedenza al server andranno perse.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Annulla caricamento";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "Nessun caricamento in sospeso";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ di %2$@";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Riprova i caricamenti";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Caricamenti di elementi multimediali";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Bozza pagina caricata";
@@ -10347,6 +10398,9 @@ Example: Reply to Pamela Nguyen */
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Visualizza";
 
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" è stato eliminato in modo permanente e non può più essere aggiornato";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Ignora";
 
@@ -10367,6 +10421,15 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Impossibile aggiornare le impostazioni dell'articolo";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Visibile solo agli amministratori e agli editori del sito";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Protetto da password";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Visibilità";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promuovi con la Blaze";
@@ -10391,6 +10454,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Anteprima";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Pubblicazione";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Riprova";
@@ -10451,6 +10517,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "Chiudi";
+
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "Impossibile caricare %@ articoli";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Pubblicazione";
@@ -10516,11 +10585,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The navigation title for the pre-publishing social accounts screen. */
 "prepublishing.socialAccounts.navigationTitle" = "Social";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ articolo rimanente";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Caricamento del media";
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Visualizza tutte le risposte";
+
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "La data nel tuo fuso orario attuale:";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Rimuovi data di pubblicazione";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Seleziona data di pubblicazione";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Ignora";
@@ -10743,9 +10824,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Vai a Abbonamenti";
-
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Aggiungi un blog";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Non è possibile bloccare il blog";
@@ -10983,6 +11061,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Aggiungi un tag";
 
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Con Mi piace";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Scopri di più sui tag";
 
@@ -11084,6 +11165,24 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Articoli correlati";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Altro dispositivo";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Dispositivo corrente";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "L'articolo è stato modificato su un altro dispositivo. Seleziona la versione dell'articolo da mantenere.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Annulla";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Salva";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Risolvi il conflitto";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Copia link";
@@ -11259,6 +11358,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Sconosciuto";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Tutti i siti";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Siti fissati";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Fatto";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Promemoria";
 
@@ -11397,11 +11505,35 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Il tuo ultimo articolo %1$@ ha ricevuto %2$@ mi piace.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Abbonati totali di WordPress.com: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Totale abbonati e-mail: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Totale abbonati";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Oggi";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Abbonato dal";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Aperture";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Ultime e-mail";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "E-mail";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "La tabella mostra %1$@, %2$@ e %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Barra del grafico che indica i Commenti per il periodo selezionato.";
@@ -11424,8 +11556,26 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Cerca per trovare foto gratuite da aggiungere alla tua Libreria multimediale!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Opzionalmente, puoi includere l'e-mail e il nome utente per aiutarci a comprendere la tua esperienza.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "nessuna e-mail inserita";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "nessun nome utente inserito";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Fatto";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Grazie per il feedback";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Invia";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Invio in corso";
 
 /* Section title for prominent suggestions */
 "suggestions.section.prominent" = "In questa conversazione";
@@ -11591,6 +11741,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "non lette";
+
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "Abbonati e-mail del sito";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Abbonati del sito";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Utenti del sito";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Visitatori del sito";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visita la pagina della documentazione";

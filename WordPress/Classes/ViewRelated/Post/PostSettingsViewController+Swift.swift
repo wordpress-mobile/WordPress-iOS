@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import Combine
 import WordPressKit
+import SwiftUI
 
 extension PostSettingsViewController {
     static func make(for post: AbstractPost) -> PostSettingsViewController {
@@ -178,6 +179,47 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
     }
 }
 
+// MARK: - PostSettingsViewController (Visibility)
+
+extension PostSettingsViewController {
+    @objc func showUpdatedPostVisibilityPicker() {
+        let view = PostVisibilityPicker(selection: .init(post: apost)) { [weak self] selection in
+            guard let self else { return }
+
+            WPAnalytics.track(.editorPostVisibilityChanged, properties: ["via": "settings"])
+
+            switch selection.type {
+            case .public, .protected:
+                if self.apost.original().status == .scheduled {
+                    // Keep it scheduled
+                } else {
+                    self.apost.status = .publish
+                }
+            case .private:
+                if self.apost.original().status == .scheduled {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+                        self.showWarningPostWillBePublishedAlert()
+                    }
+                }
+                self.apost.status = .publishPrivate
+            }
+            self.apost.password = selection.password.isEmpty ? nil : selection.password
+            self.navigationController?.popViewController(animated: true)
+            self.reloadData()
+        }
+        let viewController = UIHostingController(rootView: view)
+        viewController.title = PostVisibilityPicker.title
+        viewController.configureDefaultNavigationBarAppearance()
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+    private func showWarningPostWillBePublishedAlert() {
+        let alert = UIAlertController(title: nil, message: Strings.warningPostWillBePublishedAlertMessage, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("postSettings.ok", value: "OK", comment: "Button OK"), style: .default))
+        present(alert, animated: true)
+    }
+}
+
 // MARK: - PostSettingsViewController (Page Attributes)
 
 extension PostSettingsViewController {
@@ -239,4 +281,6 @@ extension PostSettingsViewController {
 
 private enum Strings {
     static let errorMessage = NSLocalizedString("postSettings.updateFailedMessage", value: "Failed to update the post settings", comment: "Error message on post/page settings screen")
+
+    static let warningPostWillBePublishedAlertMessage = NSLocalizedString("postSettings.warningPostWillBePublishedAlertMessage", value: "By changing the visibility to 'Private', the post will be published immediately", comment: "An alert message explaning that by changing the visibility to private, the post will be published immediately to your site")
 }

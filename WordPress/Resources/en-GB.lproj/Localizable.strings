@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-30 08:19:40+0000 */
+/* Translation-Revision-Date: 2024-05-01 20:22:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -10924,6 +10924,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader Settings";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Add a blog";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Discover Blogs";
 
@@ -10949,7 +10952,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "Go to Subscriptions";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Add a blog";
+"reader.no.tags.title" = "Add a tag";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Unable to block blog";
@@ -11667,6 +11670,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Your latest post %1$@ has received %2$@ like.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Total WordPress.com subscribers: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Total email subscribers: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Total Subscribers";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -11751,9 +11763,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Submit";
 
-/* Notice informing user that their feedback is being submitted anonymously.
-   Notice informing user that their feedback is being submitted. */
+/* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Sending";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Sending anonymously";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -11938,8 +11952,10 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Site's Viewer";
 
-/* Site Email Subscribers
-   Site Subscribers */
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Email Subscribers";
+
+/* Site Subscribers */
 "users.list.title.subscribers" = "Subscribers";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */

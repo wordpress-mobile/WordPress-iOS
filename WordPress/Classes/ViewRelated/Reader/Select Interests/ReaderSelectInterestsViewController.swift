@@ -16,6 +16,7 @@ struct ReaderSelectInterestsConfiguration {
 class ReaderSelectInterestsViewController: UIViewController {
     private struct Constants {
         static let reuseIdentifier = ReaderInterestsCollectionViewCell.classNameWithoutNamespaces()
+        static let defaultCellIdentifier = "DefaultCell"
         static let interestsLabelMargin: CGFloat = 12
 
         static let cellCornerRadius: CGFloat = 5
@@ -168,6 +169,7 @@ class ReaderSelectInterestsViewController: UIViewController {
     private func configureCollectionView() {
         let nib = UINib(nibName: String(describing: ReaderInterestsCollectionViewCell.self), bundle: nil)
         collectionView.register(nib, forCellWithReuseIdentifier: Constants.reuseIdentifier)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: Constants.defaultCellIdentifier)
 
         guard let layout = collectionView.collectionViewLayout as? ReaderInterestsCollectionViewFlowLayout else {
             return
@@ -325,7 +327,7 @@ extension ReaderSelectInterestsViewController: UICollectionViewDataSource {
         guard let interest = dataSource.interest(for: indexPath.row) else {
             CrashLogging.main.logMessage("ReaderSelectInterestsViewController: Requested for data at invalid row",
                                          properties: ["row": indexPath.row], level: .warning)
-            return .init(frame: .zero)
+            return collectionView.dequeueReusableCell(withReuseIdentifier: Constants.defaultCellIdentifier, for: indexPath)
         }
 
         ReaderInterestsStyleGuide.applyCellLabelStyle(label: cell.label,

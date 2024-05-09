@@ -449,6 +449,15 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+
+        if FeatureFlag.syncPublishing.enabled {
+            navigationBarManager.moreButton.menu = makeMoreMenu()
+            navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+        }
+    }
+
+    @objc private func buttonMoreTapped() {
+        displayMoreSheet()
     }
 
     private func reloadBlogIconView() {

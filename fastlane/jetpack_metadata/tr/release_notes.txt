@@ -1,0 +1,1 @@
+Sayfalar menüsünde bazı güncellemeler yaptık. Artık Ayarlar'ı İstatistikler'in altında (bunu da taşıdık) kendi bölümünde bulabilirsiniz. Bu, hem yayımlanmış hem de yayımlanmamış gönderilerde mevcuttur. Havalı.

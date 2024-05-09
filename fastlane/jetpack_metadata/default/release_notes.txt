@@ -1,4 +1,1 @@
-* [*] [internal] Update Reachability. [#23030]
-* [*] Move "Settings" context menu action in "Pages" from the submenu to a separate section to make it easily discoverable and make it available for unpublished posts [#23065]
-* [*] Add "Stats" context menu action to "Pages" [#23065]
-
+We made some updates to the Pages menu. You’ll now find Settings in its own section, right underneath Stats (which we also moved). It’s available for both published and unpublished posts. Groovy.
