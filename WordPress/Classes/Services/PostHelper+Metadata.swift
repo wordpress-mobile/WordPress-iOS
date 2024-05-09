@@ -5,11 +5,10 @@ extension PostHelper {
 
     static func mapDictionaryToMetadataItems(_ dictionary: [String: Any]) -> RemotePostMetadataItem? {
         let id = dictionary["id"]
-        let value = dictionary["value"]
         return RemotePostMetadataItem(
             id: (id as? String) ?? (id as? NSNumber)?.stringValue,
             key: dictionary["key"] as? String,
-            value: (value as? String) ?? (value as? UUID)?.uuidString
+            value: dictionary["value"] as? String
         )
     }
 }

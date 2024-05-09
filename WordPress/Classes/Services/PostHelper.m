@@ -207,7 +207,7 @@
     if (post.foreignID) {
         NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
         uuidDictionary[@"key"] = [self foreignIDKey];
-        uuidDictionary[@"value"] = post.foreignID;
+        uuidDictionary[@"value"] = [post.foreignID UUIDString];
         [metadata addObject:uuidDictionary];
     }
 
