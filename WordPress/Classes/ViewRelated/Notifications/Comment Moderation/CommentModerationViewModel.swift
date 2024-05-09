@@ -1,5 +1,6 @@
 final class CommentModerationViewModel: ObservableObject {
     @Published var state: CommentModerationState
+
     let imageURL: URL?
     let userName: String
 
@@ -21,10 +22,10 @@ final class CommentModerationViewModel: ObservableObject {
     func didTapPrimaryCTA() {
         switch state {
         case .pending:
-            state = .approved
-        case .trash:
+            state = .approved(liked: false)
+        case .trash, .spam:
             () // Delete comment
-        case .approved, .liked:
+        case .approved:
             break
         }
     }
@@ -34,6 +35,11 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapLike() {
-        state = state == .approved ? .liked : .approved
+        switch state {
+        case .approved(let liked):
+            state = .approved(liked: !liked)
+        default:
+            break
+        }
     }
 }
