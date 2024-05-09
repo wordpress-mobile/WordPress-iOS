@@ -27,15 +27,6 @@ struct CommentModerationOptionsView: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    static var estimatedHeight: CGFloat {
-        UIFont.DS.font(.bodyLarge(.emphasized)).lineHeight
-        + .DS.Padding.large // Top margin
-        + .DS.Padding.single // Spacing between title and options
-        + .DS.Padding.medium * 4 // For each option
-        + .DS.Padding.medium * 3 // For spacing between options
-        + .DS.Padding.large // Bottom margin
-    }
-
     private var title: some View {
         Text(Strings.title)
             .font(.DS.Body.Emphasized.large)
