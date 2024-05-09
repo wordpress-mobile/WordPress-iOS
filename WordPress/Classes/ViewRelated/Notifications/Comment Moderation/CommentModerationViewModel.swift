@@ -35,6 +35,7 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapPrimaryCTA() {
+        // TODO
         switch state {
         case .pending:
 //            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
