@@ -141,6 +141,10 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
+    private weak var changeStatusViewController: BottomSheetViewController?
+
+    // MARK: -
+
     private lazy var commentService: CommentService = {
         return .init(coreDataStack: ContextManager.shared)
     }()
@@ -448,8 +452,8 @@ private extension CommentDetailViewController {
                 editButtonTapped()
             case .share:
                 shareCommentURL(sourceView: cell)
-            case .changeStatus(let status):
-                print("Option \(status) tapped")
+            case .changeStatus:
+                presentChangeStatusSheet()
             }
         }
         let contentConfig = CommentDetailContentTableViewCell.ContentConfiguration(comment: comment) { [weak self] _ in
@@ -710,6 +714,20 @@ private extension CommentDetailViewController {
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
     }
+
+    func presentChangeStatusSheet() {
+        self.changeStatusViewController?.dismiss(animated: false)
+        let controller = CommentModerationOptionsViewController { [weak self] status in
+            guard let self else {
+                return
+            }
+            self.updateCommentStatus(status)
+            self.changeStatusViewController?.dismiss(animated: true)
+        }
+        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
+        bottomSheetViewController.show(from: self)
+        self.changeStatusViewController = bottomSheetViewController
+    }
 }
 
 // MARK: - Strings
@@ -750,6 +768,15 @@ private extension CommentStatusType {
 // MARK: - Comment Moderation Actions
 
 private extension CommentDetailViewController {
+    func updateCommentStatus(_ status: CommentModerationOptionsView.Option) {
+        switch status {
+        case .pending: unapproveComment()
+        case .approve: approveComment()
+        case .spam: spamComment()
+        case .trash: trashComment()
+        }
+    }
+
     func unapproveComment() {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
                                                      withProperties: Constants.notificationDetailSource,

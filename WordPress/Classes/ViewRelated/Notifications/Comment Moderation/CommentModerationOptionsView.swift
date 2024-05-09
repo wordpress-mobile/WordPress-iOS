@@ -9,17 +9,22 @@ struct CommentModerationOptionsView: View {
         .spam
     ]
 
-    var optionSelected: ((Option) -> Void)?
+    let onOptionSelected: (Option) -> Void
+
+    init(onOptionSelected: @escaping (Option) -> Void) {
+        self.onOptionSelected = onOptionSelected
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .DS.Padding.medium) {
+        VStack(alignment: .leading, spacing: .DS.Padding.double) {
             title
                 .padding(.top, .DS.Padding.medium)
             optionsVStack
             Spacer()
         }
-        .padding(.horizontal, .DS.Padding.double)
+        .padding(.DS.Padding.double)
         .background(Color.DS.Background.primary)
+        .fixedSize(horizontal: false, vertical: true)
     }
 
     static var estimatedHeight: CGFloat {
@@ -41,12 +46,13 @@ struct CommentModerationOptionsView: View {
         VStack(spacing: .DS.Padding.medium) {
             ForEach(options, id: \.title) { option in
                 Button {
-                    optionSelected?(option)
+                    onOptionSelected(option)
                 } label: {
                     optionHStack(option: option)
                 }
             }
         }
+        .padding(.vertical, .DS.Padding.double)
     }
 
     private func optionHStack(option: Option) -> some View {
@@ -154,6 +160,20 @@ private extension CommentModerationOptionsView.Option {
     }
 }
 
+final class CommentModerationOptionsViewController: BottomSheetContentViewController {
+
+    typealias Option = CommentModerationOptionsView.Option
+
+    init(onOptionSelected: @escaping (Option) -> Void) {
+        let content = CommentModerationOptionsView(onOptionSelected: onOptionSelected)
+        super.init(contentView: content)
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 #Preview {
-    CommentModerationOptionsView()
+    CommentModerationOptionsView(onOptionSelected: { _ in })
 }

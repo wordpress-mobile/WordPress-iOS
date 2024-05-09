@@ -3793,6 +3793,9 @@
 		F46546312AF2F8D30017E3D1 /* DomainsStateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */; };
 		F46546332AF54DCD0017E3D1 /* AllDomainsListItemViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546322AF54DCD0017E3D1 /* AllDomainsListItemViewModelTests.swift */; };
 		F46546352AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46546342AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift */; };
+		F4654FAA2BEBC75B005AB177 /* CommentModerationOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08169B9C2BDA68F600055454 /* CommentModerationOptionsView.swift */; };
+		F4654FAD2BEBE994005AB177 /* BottomSheetContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4654FAC2BEBE994005AB177 /* BottomSheetContentViewController.swift */; };
+		F4654FAE2BEBE994005AB177 /* BottomSheetContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4654FAC2BEBE994005AB177 /* BottomSheetContentViewController.swift */; };
 		F465976E28E4669200D5F49A /* cool-green-icon-app-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */; };
 		F465976F28E4669200D5F49A /* cool-green-icon-app-76.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */; };
 		F465977028E4669200D5F49A /* cool-green-icon-app-60@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */; };
@@ -9232,6 +9235,7 @@
 		F46546302AF2F8D20017E3D1 /* DomainsStateViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DomainsStateViewModel.swift; sourceTree = "<group>"; };
 		F46546322AF54DCD0017E3D1 /* AllDomainsListItemViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllDomainsListItemViewModelTests.swift; sourceTree = "<group>"; };
 		F46546342AF550A20017E3D1 /* AllDomainsListItem+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AllDomainsListItem+Helpers.swift"; sourceTree = "<group>"; };
+		F4654FAC2BEBE994005AB177 /* BottomSheetContentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomSheetContentViewController.swift; sourceTree = "<group>"; };
 		F465976928E4669200D5F49A /* cool-green-icon-app-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76@2x.png"; sourceTree = "<group>"; };
 		F465976A28E4669200D5F49A /* cool-green-icon-app-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-76.png"; sourceTree = "<group>"; };
 		F465976B28E4669200D5F49A /* cool-green-icon-app-60@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "cool-green-icon-app-60@3x.png"; sourceTree = "<group>"; };
@@ -14150,6 +14154,7 @@
 		8584FDB619243AC40019C02E /* System */ = {
 			isa = PBXGroup;
 			children = (
+				F4654FAB2BEBE978005AB177 /* Bottom Sheet */,
 				0CED1FFE2B6809C100E6DD52 /* FilterCompact */,
 				F5E032E22408D537003AF350 /* Action Sheet */,
 				F551E7F323F6EA1400751212 /* Floating Create Button */,
@@ -17881,6 +17886,14 @@
 				9815D0B226B49A0600DF7226 /* Comment+CoreDataProperties.swift */,
 			);
 			path = Comment;
+			sourceTree = "<group>";
+		};
+		F4654FAB2BEBE978005AB177 /* Bottom Sheet */ = {
+			isa = PBXGroup;
+			children = (
+				F4654FAC2BEBE994005AB177 /* BottomSheetContentViewController.swift */,
+			);
+			path = "Bottom Sheet";
 			sourceTree = "<group>";
 		};
 		F465976528E464DE00D5F49A /* Icons */ = {
@@ -22520,6 +22533,7 @@
 				0CEA55522BC55940008D0FE5 /* WPInstrumentation.swift in Sources */,
 				80F8DAC1282B6546007434A0 /* WPAnalytics+QuickStart.swift in Sources */,
 				FAFF7A1C2B693D8B006A7CB2 /* PHPLogsView.swift in Sources */,
+				F4654FAD2BEBE994005AB177 /* BottomSheetContentViewController.swift in Sources */,
 				59E1D46E1CEF77B500126697 /* Page.swift in Sources */,
 				321955BF24BE234C00E3F316 /* ReaderInterestsCoordinator.swift in Sources */,
 				4A5DE7382B0D511900363171 /* PageTree.swift in Sources */,
@@ -24581,6 +24595,7 @@
 				93F72150271831820021A09F /* SiteStatsPinnedItemStore.swift in Sources */,
 				FABB212A2602FC2C00C8785C /* BadgeLabel.swift in Sources */,
 				FABB212B2602FC2C00C8785C /* ReaderTagsTableViewController.swift in Sources */,
+				F4654FAA2BEBC75B005AB177 /* CommentModerationOptionsView.swift in Sources */,
 				FE50965A2A17A69F00DDD071 /* TwitterDeprecationTableFooterView.swift in Sources */,
 				FABB212C2602FC2C00C8785C /* NotificationsViewController+AppRatings.swift in Sources */,
 				FABB212D2602FC2C00C8785C /* BlogService.m in Sources */,
@@ -25445,6 +25460,7 @@
 				83914BD52A2EA03A0017A588 /* PostSettingsViewController+JetpackSocial.swift in Sources */,
 				F46546312AF2F8D30017E3D1 /* DomainsStateViewModel.swift in Sources */,
 				FABB23852602FC2C00C8785C /* WPError.m in Sources */,
+				F4654FAE2BEBE994005AB177 /* BottomSheetContentViewController.swift in Sources */,
 				FABB23862602FC2C00C8785C /* ContentRouter.swift in Sources */,
 				FABB23872602FC2C00C8785C /* BlogToBlog32to33.swift in Sources */,
 				FABB23882602FC2C00C8785C /* WPStyleGuide+ApplicationStyles.swift in Sources */,
