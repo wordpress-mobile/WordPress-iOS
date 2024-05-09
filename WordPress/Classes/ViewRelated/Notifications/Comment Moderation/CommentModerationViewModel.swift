@@ -42,17 +42,17 @@ final class CommentModerationViewModel: ObservableObject {
 //                                                         withBlogID: notification?.metaSiteID) :
 //                                    CommentAnalytics.trackCommentApproved(comment: comment)
 //
-            commentService.approve(comment, success: { // [weak self] in
-//                self?.state = .approved
+            commentService.approve(comment, success: { [weak self] in
+                self?.state = .approved(liked: false)
 //                self?.showActionableNotice(title: ModerationMessages.approveSuccess)
 //                self?.refreshData()
             }, failure: { /* [weak self] */ error in
 //                self?.displayNotice(title: ModerationMessages.approveFail)
 //                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
             })
-        case .trash:
+        case .trash, .spam:
             () // Delete comment
-        case .approved, .liked:
+        case .approved:
             break
         }
     }
@@ -62,6 +62,11 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapLike() {
-        state = state == .approved ? .liked : .approved
+        switch state {
+        case .approved(let liked):
+            state = .approved(liked: !liked)
+        default:
+            break
+        }
     }
 }
