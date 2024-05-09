@@ -2,7 +2,7 @@ import Foundation
 
 @objc
 extension RemotePost {
-    var foreignID: String? {
+    var foreignID: UUID? {
         guard let metadata else {
             return nil
         }
@@ -15,6 +15,9 @@ extension RemotePost {
             }
             return PostHelper.mapDictionaryToMetadataItems(dictionary)
         }
-        return metadataItems.first { $0.key == PostHelper.foreignIDKey }?.value
+        guard let value = metadataItems.first(where: { $0.key == PostHelper.foreignIDKey })?.value else {
+            return nil
+        }
+        return UUID(uuidString: value)
     }
 }

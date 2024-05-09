@@ -8,7 +8,7 @@ data model as well as any custom migrations.
 @momozw 2024-05-07
 
 - `AbstractPost`: 
-    - Added `foreignID` (optional, no default, `String`)
+    - Added `foreignID` (optional, no default, `UUID`)
 
 ## WordPress 153
 

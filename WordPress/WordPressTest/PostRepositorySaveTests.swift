@@ -37,7 +37,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated =  Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
             $0.content = "content-1"
-            $0.foreignID = "foreign-id"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -52,7 +52,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "draft",
@@ -101,7 +101,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
             $0.isStickyPost = true
 
-            $0.foreignID = "foreign-id"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -122,7 +122,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "password" : "1234",
@@ -160,7 +160,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
-            $0.foreignID = "foreign-id"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -175,7 +175,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "publish",
@@ -208,7 +208,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
-            $0.foreignID = "foreign-id"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -223,7 +223,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "future",
@@ -258,7 +258,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
-            $0.foreignID = "foreign-id"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -273,7 +273,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "publish",
@@ -1230,13 +1230,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         let revision = post.createRevision()
         revision.postTitle = "title-a"
         revision.content = "content-a"
         revision.remoteStatus = .syncNeeded
-        revision.foreignID = "foreign-id"
 
         // GIVEN a server accepting the new post
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { request in
@@ -1249,7 +1249,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "draft",
@@ -1315,6 +1315,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a saved revision
@@ -1322,7 +1323,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
         revision1.remoteStatus = .syncNeeded
-        revision1.foreignID = "foreign-id"
 
         // GIVEN a local revision
         let revision2 = revision1._createRevision()
@@ -1339,7 +1339,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
                 {
                   "key" : "wp_jp_foreign_id",
                   "operation" : "update",
-                  "value" : "foreign-id"
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
                 }
               ],
               "status" : "draft",

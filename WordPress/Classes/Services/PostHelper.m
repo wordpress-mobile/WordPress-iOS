@@ -63,6 +63,7 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
+        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentCount = remotePost.commentCount;
@@ -249,7 +250,7 @@
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post;
-        NSString *foreignID = remotePost.foreignID;
+        NSUUID *foreignID = remotePost.foreignID;
         if (foreignID != nil) {
             // This post can be a revision if fetching remote posts happens in parallel
             // with creating a post.
