@@ -2112,6 +2112,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
         isContentFiltered = content.topicType == .tag || content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
+        self.content.resetResultsController()
 
         guard !shouldDisplayNoTopicController else {
             return
