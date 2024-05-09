@@ -36,9 +36,17 @@ private struct Container<T: View, V: View>: View {
     let icon: V
     let content: T
 
+    private var transition: AnyTransition = .opacity
+
     private let animationDuration = 0.25
 
-    private var animation: Animation {
+    private let insertionAnimationDelay = 0.8
+
+    private var insertionAnimation: Animation {
+        return removalAnimation.delay(insertionAnimationDelay)
+    }
+
+    private var removalAnimation: Animation {
         return .smooth(duration: animationDuration)
     }
 
@@ -56,8 +64,8 @@ private struct Container<T: View, V: View>: View {
         .padding(.horizontal, .DS.Padding.double)
         .transition(
             .asymmetric(
-                insertion: .opacity.animation(animation.delay(animationDuration * 0.8)),
-                removal: .opacity.animation(animation)
+                insertion: transition.animation(insertionAnimation),
+                removal: transition.animation(removalAnimation)
             )
         )
     }
