@@ -123,6 +123,7 @@ private extension ReaderTagCardCell {
     func registerCells() {
         let tagCell = UINib(nibName: ReaderTagCell.classNameWithoutNamespaces(), bundle: nil)
         let footerView = UINib(nibName: ReaderTagFooterView.classNameWithoutNamespaces(), bundle: nil)
+        collectionView.register(ReaderTagCardEmptyCell.self, forCellWithReuseIdentifier: ReaderTagCardEmptyCell.defaultReuseID)
         collectionView.register(tagCell, forCellWithReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces())
         collectionView.register(footerView,
                                 forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
