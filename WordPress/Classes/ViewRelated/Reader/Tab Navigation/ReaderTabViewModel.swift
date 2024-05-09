@@ -102,8 +102,10 @@ import Combine
             guard let self else {
                 return
             }
-            self.tabItems = self.tabItemsStore.items
-            self.reloadStreamFilters()
+            if self.tabItems != self.tabItemsStore.items {
+                self.tabItems = self.tabItemsStore.items
+                self.reloadStreamFilters()
+            }
 
             // reset if the selectedIndex is out of bounds to avoid showing a blank screen.
             if self.selectedIndex >= self.tabItems.count {
