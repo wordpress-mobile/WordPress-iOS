@@ -105,8 +105,11 @@ final class SiteIconPickerPresenter: NSObject {
 
 extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        guard let presenter = picker.presentingViewController else {
+            return
+        }
+        presenter.dismiss(animated: true)
         guard let result = results.first else {
-            picker.presentingViewController?.dismiss(animated: true)
             return
         }
         WPAnalytics.track(.siteSettingsSiteIconGalleryPicked)
@@ -114,7 +117,7 @@ extension SiteIconPickerPresenter: PHPickerViewControllerDelegate {
         self.originalMedia = nil
         PHPickerResult.loadImage(for: result) { [weak self] image, error in
             if let image {
-                self?.showImageCropViewController(image, presentingViewController: picker)
+                self?.showImageCropViewController(image, presentingViewController: presenter)
             } else {
                 DDLogError("Failed to load image: \(String(describing: error))")
                 self?.showErrorLoadingImageMessage()
