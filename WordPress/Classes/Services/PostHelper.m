@@ -249,8 +249,9 @@
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
         AbstractPost *post;
-        if (remotePost.foreignID != nil) {
-            post = [blog lookupPostWithForeignID:remotePost.foreignID inContext:context];
+        NSString *foreignID = remotePost.foreignID;
+        if (foreignID != nil) {
+            post = [blog lookupPostWithForeignID:foreignID inContext:context];
         } else {
             post = [blog lookupPostWithID:remotePost.postID inContext:context];
         }
