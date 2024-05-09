@@ -14,7 +14,7 @@ protocol EditorAnalyticsProperties: AnyObject {
 /// Analytics are also tracked.
 struct PostListEditorPresenter {
 
-    static func handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    static func handle(post: AbstractPost, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
         guard FeatureFlag.syncPublishing.enabled else {
             return _handle(post: post, in: postListViewController)
         }
@@ -37,7 +37,7 @@ struct PostListEditorPresenter {
     }
 
     /// - warning: deprecated (kahu-offline-mode)
-    private static func _handle(post: Post, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    private static func _handle(post: AbstractPost, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
         // Return early if a post is still uploading when the editor's requested.
         guard !PostCoordinator.shared.isUploading(post: post) else {
             presentAlertForPostBeingUploaded()
@@ -74,7 +74,7 @@ struct PostListEditorPresenter {
         }
     }
 
-    private static func openEditor(with post: Post, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
+    private static func openEditor(with post: AbstractPost, loadAutosaveRevision: Bool, in postListViewController: EditorPresenterViewController, entryPoint: PostEditorEntryPoint = .unknown) {
         /// This is a workaround for the lack of vie wapperance callbacks send
         /// by `EditPostViewController` due to its weird setup.
         NotificationCenter.default.post(name: .postListEditorPresenterWillShowEditor, object: nil)

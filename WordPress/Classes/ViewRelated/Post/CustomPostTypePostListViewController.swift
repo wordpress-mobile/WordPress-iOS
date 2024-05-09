@@ -230,9 +230,9 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
     }
 
     private func editPost(_ post: AbstractPost) {
-        guard let post = post as? Post else {
-            return
-        }
+//        guard let post = post as? Post else {
+//            return
+//        }
         PostListEditorPresenter.handle(post: post, in: self, entryPoint: .postsList)
     }
 

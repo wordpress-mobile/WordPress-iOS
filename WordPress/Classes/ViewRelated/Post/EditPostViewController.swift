@@ -19,7 +19,7 @@ class EditPostViewController: UIViewController {
     /// - warning: deprecated (kahu-offline-mode)
     private let loadAutosaveRevision: Bool
 
-    @objc fileprivate(set) var post: Post?
+    @objc fileprivate(set) var post: AbstractPost?
     private let prompt: BloggingPrompt?
     fileprivate var hasShownEditor = false
     fileprivate var editingExistingPost = false
@@ -45,7 +45,7 @@ class EditPostViewController: UIViewController {
     /// Initialize as an editor with the provided post
     ///
     /// - Parameter post: post to edit
-    @objc convenience init(post: Post, loadAutosaveRevision: Bool = false) {
+    @objc convenience init(post: AbstractPost, loadAutosaveRevision: Bool = false) {
         self.init(post: post, blog: post.blog, loadAutosaveRevision: loadAutosaveRevision)
     }
 
@@ -70,7 +70,7 @@ class EditPostViewController: UIViewController {
     ///   - post: the post to edit
     ///   - blog: the blog to create a post for, if post is nil
     /// - Note: it's preferable to use one of the convenience initializers
-    fileprivate init(post: Post?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
+    fileprivate init(post: AbstractPost?, blog: Blog, loadAutosaveRevision: Bool = false, prompt: BloggingPrompt? = nil) {
         self.post = post
         self.originalPostID = post?.original().objectID
         self.loadAutosaveRevision = loadAutosaveRevision
@@ -116,7 +116,7 @@ class EditPostViewController: UIViewController {
         WPStyleGuide.preferredStatusBarStyle
     }
 
-    fileprivate func postToEdit() -> Post {
+    fileprivate func postToEdit() -> AbstractPost {
         if let post = post {
             return post
         } else {
