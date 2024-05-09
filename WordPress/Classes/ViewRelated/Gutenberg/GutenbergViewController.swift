@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case close
         case more
         case autoSave
-        case continueFromHomepageEditing
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -316,7 +315,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        if !FeatureFlag.syncPublishing.enabled {
+            PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        }
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -517,7 +518,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func presentNewPageNoticeIfNeeded() {
-        guard !RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard !FeatureFlag.syncPublishing.enabled else {
             return
         }
         // Validate if the post is a newly created page or not.
@@ -583,6 +584,7 @@ extension GutenbergViewController {
 
 // MARK: - GutenbergBridgeDelegate
 
+/// - warning: the app can't make any assumption about the thread on which `GutenbergBridgeDelegate` gets invoked. In some scenarios, it gets called from the main thread, for example, if being invoked directly from [Gutenberg.swift](https://github.com/WordPress/gutenberg/blob/64f9d9d1ced7a5aa7f3874890306554c5b703ce6/packages/react-native-bridge/ios/Gutenberg.swift). And sometimes, it gets called on a dispatch queue created by the React Native runtime for a native module (see [React Native: Threading](https://reactnative.dev/docs/native-modules-ios#threading). It happens when the methods are invoked directly from JavaScript.
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         guard let context = post.managedObjectContext else {
@@ -861,17 +863,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .autoSave:
                 break
-                // Inelegant :(
-            case .continueFromHomepageEditing:
-                continueFromHomepageEditing()
-                break
             }
         }
-    }
-
-    // Not ideal, but seems the least bad of the alternatives
-    @objc func continueFromHomepageEditing() {
-        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {
@@ -1149,14 +1142,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
+        post.managedObjectContext?.performAndWait {
             [
                 post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
                 post.blog.supports(.tenor) ? .tenor : nil,
                 .otherApps,
                 .allFiles,
             ].compactMap { $0 }
-        }
+        } ?? []
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {

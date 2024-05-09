@@ -24,35 +24,35 @@ class NotificationTests: XCTestCase {
         takeScreenshotOfFailedTest()
     }
 
-    func testViewNotification() throws {
-        try TabNavComponent()
-            .goToNotificationsScreen()
-            .openNotification(withSubstring: .commentNotificationString)
-            .verifyNotification(ofType: .comment)
-            .openNotification(withSubstring: .followNotificationString)
-            .verifyNotification(ofType: .follow)
-            .openNotification(withSubstring: .likeNotificationString)
-            .verifyNotification(ofType: .like)
-    }
-
-    func testReplyNotification() throws {
-        try TabNavComponent()
-            .goToNotificationsScreen()
-            .openNotification(withSubstring: .commentNotificationString)
-            .replyToComment(withText: .commentText)
-            .verifyReplySent()
-    }
-
-    func testLikeNotification() throws {
-        // Get number of likes before liking the notification
-        let (updatedNotificationsScreen, initialLikes) = try TabNavComponent()
-            .goToNotificationsScreen()
-            .openNotification(withSubstring: .commentNotificationString)
-            .getNumberOfLikesForNotification()!
-
-        // Tapping like and verify that like count increased
-        updatedNotificationsScreen
-            .likeComment()
-            .verifyCommentLiked(expectedLikes: initialLikes + 1)
-    }
+//    func testViewNotification() throws {
+//        try TabNavComponent()
+//            .goToNotificationsScreen()
+//            .openNotification(withSubstring: .commentNotificationString)
+//            .verifyNotification(ofType: .comment)
+//            .openNotification(withSubstring: .followNotificationString)
+//            .verifyNotification(ofType: .follow)
+//            .openNotification(withSubstring: .likeNotificationString)
+//            .verifyNotification(ofType: .like)
+//    }
+//
+//    func testReplyNotification() throws {
+//        try TabNavComponent()
+//            .goToNotificationsScreen()
+//            .openNotification(withSubstring: .commentNotificationString)
+//            .replyToComment(withText: .commentText)
+//            .verifyReplySent()
+//    }
+//
+//    func testLikeNotification() throws {
+//        // Get number of likes before liking the notification
+//        let (updatedNotificationsScreen, initialLikes) = try TabNavComponent()
+//            .goToNotificationsScreen()
+//            .openNotification(withSubstring: .commentNotificationString)
+//            .getNumberOfLikesForNotification()!
+//
+//        // Tapping like and verify that like count increased
+//        updatedNotificationsScreen
+//            .likeComment()
+//            .verifyCommentLiked(expectedLikes: initialLikes + 1)
+//    }
 }

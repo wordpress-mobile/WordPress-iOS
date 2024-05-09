@@ -81,10 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v24.7-whats-new"
+msgctxt "v24.8-whats-new"
 msgid ""
-"We’ve added reading preferences so you can customize your Reader screen. Pick the color, font, and size you like the most for a reading experience that fits your vibe.\n"
-"We also updated the Insights tab to load and scroll better. No flickering, no breaking, no problem.\n"
+"We made some updates to the Pages menu. You’ll now find Settings in its own section, right underneath Stats (which we also moved). It’s available for both published and unpublished posts. Groovy.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

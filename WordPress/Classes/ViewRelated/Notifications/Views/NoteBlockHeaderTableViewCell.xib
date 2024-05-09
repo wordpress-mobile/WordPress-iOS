@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="ipad12_9" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="ipad12_9" orientation="portrait" layout="fullscreen" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -16,71 +13,13 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" layoutMarginsFollowReadableWidth="YES" tableViewCell="xVO-JJ-7hX" id="VpH-7p-vak">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="69.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
                 <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="ZNg-sw-Tsx">
-                        <rect key="frame" x="16" y="31" width="288" height="28"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="6Fx-cw-9OG" customClass="CircularImageView" customModule="WordPress" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="37" height="28"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" priority="999" constant="37" id="DMw-1c-pNS"/>
-                                    <constraint firstAttribute="height" priority="999" constant="32" id="KBo-qG-huZ"/>
-                                    <constraint firstAttribute="width" constant="37" id="bQA-lh-KOQ"/>
-                                    <constraint firstAttribute="width" constant="32" id="yaH-Wc-jzV"/>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="DMw-1c-pNS"/>
-                                        <exclude reference="bQA-lh-KOQ"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=regular">
-                                    <mask key="constraints">
-                                        <include reference="DMw-1c-pNS"/>
-                                        <exclude reference="KBo-qG-huZ"/>
-                                        <include reference="bQA-lh-KOQ"/>
-                                        <exclude reference="yaH-Wc-jzV"/>
-                                    </mask>
-                                </variation>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="3q1-8d-Ceo">
-                                <rect key="frame" x="45" y="0.0" width="243" height="28"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rnJ-hn-LCK">
-                                        <rect key="frame" x="0.0" y="0.0" width="243" height="14.5"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="15" id="C7k-TB-cex"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Snippet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wLG-3c-VUY">
-                                        <rect key="frame" x="0.0" y="14.5" width="243" height="13.5"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                            </stackView>
-                        </subviews>
-                    </stackView>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="ZNg-sw-Tsx" firstAttribute="top" secondItem="VpH-7p-vak" secondAttribute="topMargin" id="89G-OR-82M"/>
-                    <constraint firstItem="ZNg-sw-Tsx" firstAttribute="leading" secondItem="VpH-7p-vak" secondAttribute="leadingMargin" id="XzS-gX-ECh"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="ZNg-sw-Tsx" secondAttribute="bottom" id="Y9a-Vh-Zka"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="ZNg-sw-Tsx" secondAttribute="trailing" id="p5F-pK-OIk"/>
-                </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="authorAvatarImageView" destination="6Fx-cw-9OG" id="ETS-oU-Wh6"/>
-                <outlet property="headerDetailsLabel" destination="wLG-3c-VUY" id="wmh-bf-7x6"/>
-                <outlet property="headerTitleLabel" destination="rnJ-hn-LCK" id="juG-RC-LBQ"/>
+                <outlet property="contentView" destination="VpH-7p-vak" id="H2X-OE-SE3"/>
             </connections>
-            <point key="canvasLocation" x="34" y="61"/>
+            <point key="canvasLocation" x="19.921875" y="26.793557833089309"/>
         </tableViewCell>
     </objects>
 </document>

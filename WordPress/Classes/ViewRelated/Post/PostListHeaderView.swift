@@ -36,7 +36,7 @@ final class PostListHeaderView: UIView {
     }
 
     func configure(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
 
@@ -67,7 +67,7 @@ final class PostListHeaderView: UIView {
         setupEllipsisButton()
 
         let stackView: UIStackView
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
             innerStackView.spacing = 4
             stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
@@ -84,7 +84,7 @@ final class PostListHeaderView: UIView {
     }
 
     private func setupIcon() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
         NSLayoutConstraint.activate([

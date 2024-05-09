@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Jeni i sigurt se doni të shpihet ky postim te hedhurinat?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Jeni i sigurt se doni të përditësohet faqja juaj hyrëse?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
 
@@ -1114,18 +1111,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Postim blogu";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Ndjekës të Email-it të Blogut";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Ndjekës Blogu";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Përdorues Blogu";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Shikues Blogu";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogim";
 
@@ -1223,7 +1208,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1797,7 +1781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2136,9 +2119,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Interval Datash";
-
-/* Date and Time */
-"Date and Time" = "Data dhe Koha";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2584,9 +2564,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Adresë Email";
-
-/* Blog Email Followers */
-"Email Followers" = "Ndjekës Me Email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3041,13 +3018,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Sajte të Ndjekur";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Ndjekës";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Ndjekës";
 
 /* User is following the blog. */
@@ -3931,7 +3905,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "U fut lidhje";
 
 /* No comment provided by engineer. */
-"Link text" = "Tekst lidhjeje";
+"Link label" = "Etiketë lidhjeje";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Lidhje për te lëndë ekzistuese";
@@ -5466,8 +5440,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Botoje";
 
 /* Label for the publish date button. */
@@ -5492,9 +5465,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "I sapobotuar";
-
-/* Published on [date] */
-"Published on" = "Botuar më";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Po botohet faqe…";
@@ -5974,9 +5944,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Vënë në plan";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Vënë në plan për";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Vënë në plan për %@ më";
 
@@ -6388,9 +6355,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Regjistrohuni me Email";
 
-/* Label for time period in list of followers. */
-"Since" = "Që prej";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Meqë jeni nën një plan falas, te Regjistri juaj i Veprimtarisë do të shihni veprimtari të kufizuara.";
 
@@ -6480,10 +6444,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Deri këtu, s’ka kërcënime të shpërfillura në sajtin tuaj.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Shoqërore";
 
 /* Title of a Quick Start Tour */
@@ -7407,21 +7369,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Komente Gjithsej";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Ndjekës Me Email Gjithsej: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Ndjekës Gjithsej";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Pëlqime Gjithsej";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Postime Gjithsej";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Ndjekës Në WordPress.com Gjithsej: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Fjalë Gjithsej";
@@ -10319,26 +10272,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Plane";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Krijuar %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Po fshihet postim…";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Përpunuar %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Po shpihet postim në hedhurina…";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Botuar %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Planifikuar për më %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Shpënë te Hedhurinat %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Nga %@.";
@@ -10396,9 +10334,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Postimi u përditësua";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Ngarkimi dështoi";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Shiheni";
@@ -10514,9 +10449,6 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Ngarkimi i medias dështoi";
-
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titull";
 
@@ -10598,15 +10530,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ nga %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Riprovo";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Tani";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Datë Botimi";
@@ -11433,18 +11356,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Grafik Me Shtylla që tregon Vizitorë për periudhën e përzgjedhur.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Sipas ditësh";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Sipas muajsh";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Sipas javësh";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Sipas vitesh";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";

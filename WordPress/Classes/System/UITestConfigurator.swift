@@ -22,7 +22,17 @@ struct UITestConfigurator {
 
     private static func logoutAtLaunch() {
         if CommandLine.arguments.contains("-logout-at-launch") {
+            removeSelfHostedSites()
             AccountHelper.logOutDefaultWordPressComAccount()
+        }
+    }
+
+    private static func removeSelfHostedSites() {
+        let context = ContextManager.shared.mainContext
+        let service = BlogService(coreDataStack: ContextManager.shared)
+        let blogs = try? BlogQuery().hostedByWPCom(false).blogs(in: context)
+        for blog in blogs ?? [] {
+            service.remove(blog)
         }
     }
 

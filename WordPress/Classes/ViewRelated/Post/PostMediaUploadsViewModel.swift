@@ -1,9 +1,10 @@
 import Foundation
 import SwiftUI
+import Combine
 
 /// Manages media upload for the given revision of the post.
-final class PostMediaUploadViewModel: ObservableObject {
-    let uploads: [MediaUploadViewModel]
+final class PostMediaUploadsViewModel: ObservableObject {
+    private(set) var uploads: [PostMediaUploadItemViewModel]
 
     @Published private(set) var totalFileSize: Int64 = 0
     @Published private(set) var fractionCompleted = 0.0
@@ -14,6 +15,7 @@ final class PostMediaUploadViewModel: ObservableObject {
     private let post: AbstractPost
     private let coordinator: MediaCoordinator
     private weak var timer: Timer?
+    private var cancellables: [AnyCancellable] = []
 
     deinit {
         timer?.invalidate()
@@ -25,13 +27,26 @@ final class PostMediaUploadViewModel: ObservableObject {
         self.uploads = Array(post.media).filter(\.isUploadNeeded).sorted {
             ($0.creationDate ?? .now) < ($1.creationDate ?? .now)
         }.map {
-            MediaUploadViewModel(media: $0, coordinator: coordinator)
+            PostMediaUploadItemViewModel(media: $0, coordinator: coordinator)
         }
 
         coordinator.uploadMedia(for: post)
 
         timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
             self?.update()
+        }
+
+        post.publisher(for: \.media).sink { [weak self] in
+            self?.didUpdateMedia($0)
+        }.store(in: &cancellables)
+    }
+
+    private func didUpdateMedia(_ media: Set<Media>) {
+        let remainingObjectIDs = Set(media.map(\.objectID))
+        withAnimation {
+            uploads.removeAll { viewModel in
+                !remainingObjectIDs.contains(viewModel.id)
+            }
         }
     }
 
@@ -42,15 +57,21 @@ final class PostMediaUploadViewModel: ObservableObject {
 
         totalFileSize = uploads.map(\.fileSize).reduce(0, +)
         fractionCompleted = uploads.map(\.fractionCompleted).reduce(0, +) / Double(uploads.count)
-        completedUploadsCount = uploads.filter({ $0.state == .uploaded }).count
+        completedUploadsCount = uploads.filter(\.isCompleted).count
+    }
+
+    func buttonRetryTapped() {
+        for upload in uploads {
+            upload.retry()
+        }
     }
 }
 
 /// Manages individual media upload.
-final class MediaUploadViewModel: ObservableObject, Identifiable {
+final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
     @Published private(set) var state: State = .uploading
 
-    private let media: Media
+    let media: Media
     private let coordinator: MediaCoordinator
 
     private var completed: Int64 = 0
@@ -84,9 +105,20 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         MediaImageService.isThubmnailSupported(for: media.mediaType) ? 40 : 24
     }
 
+    var isCompleted: Bool {
+        if case .uploaded = state { return true }
+        return false
+    }
+
+    var error: Error? {
+        if case .failed(let error) = state { return error }
+        return nil
+    }
+
     enum State {
-        case uploaded
         case uploading
+        case failed(Error)
+        case uploaded
     }
 
     deinit {
@@ -107,6 +139,12 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         self.state = media.isUploadNeeded ? .uploading : .uploaded
         self.fileSize = media.filesize?.int64Value ?? 0 // Should never be `0`
 
+        if media.remoteStatus == .failed, let error = media.error, MediaCoordinator.isTerminalError(error) {
+            self.details = error.localizedDescription
+            self.state = .failed(error)
+            return // No retry
+        }
+
         if media.remoteStatus == .failed, retryTimer == nil {
             retryTimer = Timer.scheduledTimer(withTimeInterval: nextRetryDelay, repeats: false) { [weak self] _ in self?.retry() }
         }
@@ -125,7 +163,8 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         }
     }
 
-    private func retry() {
+    fileprivate func retry() {
+        retryTimer?.invalidate()
         retryTimer = nil
         coordinator.retryMedia(media)
     }
@@ -151,6 +190,16 @@ final class MediaUploadViewModel: ObservableObject, Identifiable {
         } catch {
             // Continue showing placeholder
         }
+    }
+
+    // MARK: - Actions
+
+    func buttonRetryTapped() {
+        retry()
+    }
+
+    func buttonCancelTapped() {
+        coordinator.cancelUploadAndDeleteMedia(media)
     }
 }
 

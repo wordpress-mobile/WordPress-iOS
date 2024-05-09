@@ -274,15 +274,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blogg";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Fylgjandi bloggs";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Notandi bloggs";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Lesandi bloggs";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Feitletra";
@@ -310,7 +301,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -915,13 +905,10 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Sem ég fylgi";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Fylgjandi";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Fylgjendur";
 
 /* User is following the blog. */
@@ -1738,8 +1725,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Birta";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1752,9 +1738,6 @@
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Birt rétt í þessu";
-
-/* Published on [date] */
-"Published on" = "Birt þann";
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Birti...";
@@ -1941,9 +1924,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tímaáætlað";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Áætlað fyrir";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Tímasett fyrir %@ þann";
 
@@ -2048,9 +2028,6 @@
 
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Birta opinberlega þegar þú ritar athugasemdir við blogg.";
-
-/* Label for time period in list of followers. */
-"Since" = "Eftir";
 
 /* Title for the Language Picker View */
 "Site Language" = "Tungumál síðu";
@@ -2414,12 +2391,6 @@
 
 /* Label for total followers */
 "Total" = "Samtals";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Heildarfjöldi fylgjenda í tölvupósti: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Heildarfjöldi WordPress.com fylgjenda: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment

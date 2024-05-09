@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -20,17 +20,29 @@
                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="Odo-Xd-cYF">
                         <rect key="frame" x="0.0" y="7" width="323" height="193"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Tyj-5B-MLc" userLabel="Subtitles Stack View">
-                                <rect key="frame" x="0.0" y="0.0" width="323" height="14.5"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Tyj-5B-MLc" userLabel="Subtitles Stack View">
+                                <rect key="frame" x="0.0" y="0.0" width="323" height="19"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vbE-CG-voj">
-                                        <rect key="frame" x="16" y="0.0" width="145.5" height="14.5"/>
+                                        <rect key="frame" x="16" y="0.0" width="147" height="19"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DfF-g0-7Iu">
-                                        <rect key="frame" x="161.5" y="0.0" width="145.5" height="14.5"/>
+                                        <rect key="frame" x="179" y="0.0" width="56" height="19"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="56" id="uf3-ab-Y1J"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5W8-rq-dUf">
+                                        <rect key="frame" x="251" y="0.0" width="56" height="19"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="56" id="Ip9-oZ-Y3M"/>
+                                        </constraints>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -42,7 +54,7 @@
                                 <edgeInsets key="layoutMargins" top="0.0" left="16" bottom="0.0" right="16"/>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="w2N-OJ-hIR">
-                                <rect key="frame" x="0.0" y="21.5" width="323" height="171.5"/>
+                                <rect key="frame" x="0.0" y="26" width="323" height="167"/>
                             </stackView>
                         </subviews>
                         <constraints>
@@ -81,9 +93,11 @@
             <connections>
                 <outlet property="bottomSeparatorLine" destination="9px-XX-eCP" id="jWU-xt-Cru"/>
                 <outlet property="dataSubtitleLabel" destination="DfF-g0-7Iu" id="JdZ-nM-kKj"/>
+                <outlet property="dataSubtitleLabelWidthConstraint" destination="uf3-ab-Y1J" id="g1X-PL-57q"/>
                 <outlet property="itemSubtitleLabel" destination="vbE-CG-voj" id="eZl-wI-KfG"/>
                 <outlet property="outerStackView" destination="Odo-Xd-cYF" id="WQ4-Ed-f0y"/>
                 <outlet property="rowsStackView" destination="w2N-OJ-hIR" id="5DU-xj-fcC"/>
+                <outlet property="secondDataSubtitleLabel" destination="5W8-rq-dUf" id="w8P-Vp-TpD"/>
                 <outlet property="subtitleStackView" destination="Tyj-5B-MLc" id="Ddg-AW-G7w"/>
                 <outlet property="topConstraint" destination="tsc-9l-RqU" id="AVy-aN-qDf"/>
                 <outlet property="topSeparatorLine" destination="cBd-Ut-Uch" id="C1i-Zd-yPU"/>

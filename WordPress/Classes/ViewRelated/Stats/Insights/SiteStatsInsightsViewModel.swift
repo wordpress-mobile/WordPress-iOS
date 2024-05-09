@@ -531,7 +531,6 @@ private extension SiteStatsInsightsViewModel {
         static let total = NSLocalizedString("Total", comment: "Label for total followers")
         static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
         static let email = NSLocalizedString("Email", comment: "Label for email followers")
-        static let social = NSLocalizedString("Social", comment: "Follower Totals label for social media followers")
     }
 
     struct TodaysStats {
@@ -612,36 +611,6 @@ private extension SiteStatsInsightsViewModel {
                                            rightColumnName: MostPopularStats.bestHour,
                                            rightColumnData: timeString)]
 
-    }
-
-    func createTotalFollowersRows() -> [StatsTwoColumnRowData] {
-        let totalDotComFollowers = insightsStore.getDotComFollowers()?.dotComFollowersCount ?? 0
-        let totalEmailFollowers = insightsStore.getEmailFollowers()?.emailFollowersCount ?? 0
-
-        var totalPublicize = 0
-        if let publicize = insightsStore.getPublicize(),
-           !publicize.publicizeServices.isEmpty {
-            totalPublicize = publicize.publicizeServices.compactMap({$0.followers}).reduce(0, +)
-        }
-
-        let totalFollowers = insightsStore.getTotalFollowerCount()
-        guard totalFollowers > 0 else {
-            return []
-        }
-
-        var dataRows = [StatsTwoColumnRowData]()
-
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.total,
-                                                   leftColumnData: totalFollowers.abbreviatedString(),
-                                                   rightColumnName: FollowerTotals.wordPress,
-                                                   rightColumnData: totalDotComFollowers.abbreviatedString()))
-
-        dataRows.append(StatsTwoColumnRowData.init(leftColumnName: FollowerTotals.email,
-                                                   leftColumnData: totalEmailFollowers.abbreviatedString(),
-                                                   rightColumnName: FollowerTotals.social,
-                                                   rightColumnData: totalPublicize.abbreviatedString()))
-
-        return dataRows
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
