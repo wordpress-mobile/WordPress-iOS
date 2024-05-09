@@ -365,6 +365,10 @@ class PostCoordinator: NSObject {
         wpAssert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
 
         if !revision.isSyncNeeded {
+            // Set the foreignID if the revision doesn't have a postID or foreignID assigned yet.
+            if let postID = revision.postID?.intValue, postID <= 0, revision.foreignID == nil {
+                revision.foreignID = UUID().uuidString
+            }
             revision.remoteStatus = .syncNeeded
             revision.confirmedChangesTimestamp = Date()
             ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
