@@ -54,11 +54,7 @@ struct CommentContentHeaderView: View {
         let onOptionSelected: (Option) -> Void
 
         enum Option {
-            case userInfo, share, editComment, changeStatus(Status)
-        }
-
-        enum Status {
-            case approve, pending, spam, trash
+            case userInfo, share, editComment, changeStatus
         }
     }
 }
@@ -94,12 +90,7 @@ private struct CommentContentHeaderMenu: View {
                 button(title: Strings.editComment, icon: .edit) { config.onOptionSelected(.editComment) }
             }
             if config.changeStatus {
-                Menu(Strings.changeStatus) {
-                    button(title: Strings.approve) { config.onOptionSelected(.changeStatus(.approve)) }
-                    button(title: Strings.pending) { config.onOptionSelected(.changeStatus(.pending)) }
-                    button(title: Strings.spam) { config.onOptionSelected(.changeStatus(.spam)) }
-                    button(title: Strings.trash) { config.onOptionSelected(.changeStatus(.trash)) }
-                }
+                button(title: Strings.changeStatus) { config.onOptionSelected(.changeStatus) }
             }
         } label: {
             Image.DS.icon(named: .ellipsisHorizontal)
@@ -146,26 +137,6 @@ private extension CommentContentHeaderMenu {
             "comment.moderation.content.menu.changeStatus.title",
             value: "Change status",
             comment: "Change status option title for the comment moderation content menu."
-        )
-        static let approve = NSLocalizedString(
-            "comment.moderation.content.menu.approve.title",
-            value: "Approve",
-            comment: "Approve option title for the comment moderation content menu."
-        )
-        static let pending = NSLocalizedString(
-            "comment.moderation.content.menu.pending.title",
-            value: "Pending",
-            comment: "Pending option title for the comment moderation content menu."
-        )
-        static let trash = NSLocalizedString(
-            "comment.moderation.content.menu.trash.title",
-            value: "Trash",
-            comment: "Trash option title for the comment moderation content menu."
-        )
-        static let spam = NSLocalizedString(
-            "comment.moderation.content.menu.spam.title",
-            value: "Spam",
-            comment: "Spam option title for the comment moderation content menu."
         )
     }
 }
