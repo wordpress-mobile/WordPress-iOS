@@ -3,6 +3,13 @@
 This file documents changes in the data model. Please explain any changes to the
 data model as well as any custom migrations.
 
+## WordPress 154
+
+@momozw 2024-05-07
+
+- `AbstractPost`: 
+    - Added `foreignID` (optional, no default, `UUID`)
+
 ## WordPress 153
 
 @dvdchr 2023-11-07

@@ -63,6 +63,7 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
+        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentCount = remotePost.commentCount;
@@ -92,6 +93,7 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
+        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -197,8 +199,17 @@
     return remoteCategory;
 }
 
-+ (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
++ (NSArray *)remoteMetadataForPost:(Post *)post
+{
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
+    
+    /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
+    if (post.foreignID) {
+        NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        uuidDictionary[@"key"] = [self foreignIDKey];
+        uuidDictionary[@"value"] = [post.foreignID UUIDString];
+        [metadata addObject:uuidDictionary];
+    }
 
     if (post.publicID) {
         NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -238,7 +249,13 @@
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        AbstractPost *post;
+        NSUUID *foreignID = remotePost.foreignID;
+        if (foreignID != nil) {
+            post = [blog lookupPostWithForeignID:foreignID inContext:context];
+        } else {
+            post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        }
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"

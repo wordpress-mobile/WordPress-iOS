@@ -23,6 +23,7 @@
 @dynamic autosaveTitle;
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
+@dynamic foreignID;
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {
