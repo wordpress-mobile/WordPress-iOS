@@ -140,7 +140,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-    private weak var changeStatusViewController: UIViewController?
+    private weak var changeStatusViewController: BottomSheetViewController?
 
     // MARK: -
 
