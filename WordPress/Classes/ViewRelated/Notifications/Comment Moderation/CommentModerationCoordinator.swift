@@ -10,6 +10,6 @@ final class CommentModerationCoordinator {
     }
 
     func didTapMoreOptions() {
-//        commentDetailViewController.presentChangeStatusSheet()
+        commentDetailViewController.presentChangeStatusSheet()
     }
 }

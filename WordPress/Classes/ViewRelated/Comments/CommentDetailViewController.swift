@@ -282,6 +282,19 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                                      accessoryView: accessoryView)
     }
 
+    func presentChangeStatusSheet() {
+        self.changeStatusViewController?.dismiss(animated: false)
+        let controller = CommentModerationOptionsViewController { [weak self] status in
+            guard let self else {
+                return
+            }
+            self.updateCommentStatus(status)
+            self.changeStatusViewController?.dismiss(animated: true)
+        }
+        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
+        bottomSheetViewController.show(from: self)
+        self.changeStatusViewController = bottomSheetViewController
+    }
 }
 
 // MARK: - Private Helpers
@@ -333,7 +346,7 @@ private extension CommentDetailViewController {
                 viewModel: CommentModerationViewModel(
                     state: moderationState,
                     comment: comment,
-                    coordinator: CommentModerationCoordinator(presentingViewController: self)
+                    coordinator: CommentModerationCoordinator(commentDetailViewController: self)
                 )
             )
             let hostingController = UIHostingController(rootView: commentModerationView)
@@ -713,20 +726,6 @@ private extension CommentDetailViewController {
         viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
-    }
-
-    func presentChangeStatusSheet() {
-        self.changeStatusViewController?.dismiss(animated: false)
-        let controller = CommentModerationOptionsViewController { [weak self] status in
-            guard let self else {
-                return
-            }
-            self.updateCommentStatus(status)
-            self.changeStatusViewController?.dismiss(animated: true)
-        }
-        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
-        bottomSheetViewController.show(from: self)
-        self.changeStatusViewController = bottomSheetViewController
     }
 }
 
