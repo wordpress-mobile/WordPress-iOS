@@ -4,6 +4,11 @@ import SwiftUI
 class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
     private var controller: UIHostingController<NotificationDetailUserView>?
 
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        shouldSetSeparators = false
+    }
+
     func configure(avatarURL: URL?, username: String?, blog: String?, onUserClicked: @escaping () -> Void, parent: UIViewController) {
         let view = NotificationDetailUserView(avatarURL: avatarURL, username: username, blog: blog, onUserClicked: onUserClicked)
         host(view, parent: parent)

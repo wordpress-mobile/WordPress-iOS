@@ -41,6 +41,8 @@ class NoteBlockTableViewCell: WPTableViewCell {
         return view
     }()
 
+    @objc var shouldSetSeparators: Bool = true
+
     // MARK: - Overridden Methods
 
     override func layoutSubviews() {
@@ -50,8 +52,10 @@ class NoteBlockTableViewCell: WPTableViewCell {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        backgroundView = separatorsView
-        backgroundColor = .listForeground
+        if shouldSetSeparators {
+            backgroundView = separatorsView
+            backgroundColor = .listForeground
+        }
     }
 
     // MARK: - Public API
