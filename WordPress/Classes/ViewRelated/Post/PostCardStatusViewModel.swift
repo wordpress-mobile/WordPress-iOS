@@ -5,7 +5,7 @@ import Gridicons
 ///
 class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
-    let post: Post
+    let post: AbstractPost
     private var progressObserverUUID: UUID? = nil
 
     private let autoUploadInteractor = PostAutoUploadInteractor()
@@ -32,7 +32,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         }
     }
 
-    init(post: Post,
+    init(post: AbstractPost,
          isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
@@ -271,7 +271,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     func statusAndBadges(separatedBy separator: String) -> String {
-        let sticky = post.isStickyPost ? Constants.stickyLabel : ""
+        let sticky = ((post as? Post)?.isStickyPost ?? false) ? Constants.stickyLabel : ""
         let pending = (post.status == .pending && isSyncPublishingEnabled) ? Constants.pendingReview : ""
         let visibility: String = {
             let visibility = PostVisibility(post: post)

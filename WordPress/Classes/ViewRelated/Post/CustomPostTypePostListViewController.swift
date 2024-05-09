@@ -110,8 +110,8 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
 
     // MARK: - Data Model Interaction
 
-    private func postAtIndexPath(_ indexPath: IndexPath) -> Post {
-        guard let post = fetchResultsController.object(at: indexPath) as? Post else {
+    private func postAtIndexPath(_ indexPath: IndexPath) -> CustomPost {
+        guard let post = fetchResultsController.object(at: indexPath) as? CustomPost else {
             fatalError("Expected a post object.")
         }
         return post
@@ -120,7 +120,7 @@ final class CustomPostTypePostListViewController: AbstractPostListViewController
     // MARK: - TableViewHandler
 
     override func entityName() -> String {
-        return String(describing: Post.self)
+        return String(describing: CustomPost.self)
     }
 
     override func predicateForFetchRequest() -> NSPredicate {

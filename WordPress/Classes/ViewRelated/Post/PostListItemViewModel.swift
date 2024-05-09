@@ -1,7 +1,7 @@
 import Foundation
 
 final class PostListItemViewModel {
-    let post: Post
+    let post: AbstractPost
     let content: NSAttributedString
     let imageURL: URL?
     let badges: NSAttributedString
@@ -12,7 +12,7 @@ final class PostListItemViewModel {
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
 
-    init(post: Post, shouldHideAuthor: Bool = false) {
+    init(post: AbstractPost, shouldHideAuthor: Bool = false) {
         self.post = post
         self.imageURL = post.featuredImageURL
         self.statusViewModel = PostCardStatusViewModel(post: post)
@@ -22,7 +22,7 @@ final class PostListItemViewModel {
     }
 }
 
-private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardStatusViewModel) -> String? {
+private func makeAccessibilityLabel(for post: AbstractPost, statusViewModel: PostCardStatusViewModel) -> String? {
     let titleAndDateChunk: String = {
         return String(format: Strings.Accessibility.titleAndDateChunkFormat, post.titleForDisplay(), post.dateStringForDisplay())
     }()
@@ -35,7 +35,7 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         return String(format: Strings.Accessibility.authorChunkFormat, author)
     }()
 
-    let stickyChunk = post.isStickyPost ? Strings.Accessibility.sticky : nil
+    let stickyChunk = ((post as? Post)?.isStickyPost ?? false) ? Strings.Accessibility.sticky : nil
 
     let statusChunk: String? = {
         guard let status = statusViewModel.status else {
@@ -46,7 +46,7 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
     }()
 
     let excerptChunk: String? = {
-        let excerpt = post.contentPreviewForDisplay()
+        let excerpt = post.contentPreviewForDisplay() ?? ""
         guard !excerpt.isEmpty else {
             return nil
         }
@@ -58,9 +58,9 @@ private func makeAccessibilityLabel(for post: Post, statusViewModel: PostCardSta
         .joined(separator: " ")
 }
 
-private func makeContentString(for post: Post, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
-    let title = post.titleForDisplay()
-    let snippet = post.contentPreviewForDisplay()
+private func makeContentString(for post: AbstractPost, syncStateViewModel: PostSyncStateViewModel) -> NSAttributedString {
+    let title = post.titleForDisplay() ?? ""
+    let snippet = post.contentPreviewForDisplay() ?? ""
     let foregroundColor = syncStateViewModel.isEditable ? UIColor.text : UIColor.textTertiary
 
     let string = NSMutableAttributedString()
@@ -93,7 +93,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
     return string
 }
 
-private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateViewModel, shouldHideAuthor: Bool) -> NSAttributedString {
+private func makeBadgesString(for post: AbstractPost, syncStateViewModel: PostSyncStateViewModel, shouldHideAuthor: Bool) -> NSAttributedString {
     var badges: [(String, UIColor?)] = []
     if let statusMessage = syncStateViewModel.statusMessage {
         badges.append((statusMessage, nil))
