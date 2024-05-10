@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 15:54:07+0000 */
+/* Translation-Revision-Date: 2024-05-07 16:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -10918,6 +10918,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Настройки Чтива";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Добавить блог";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Искать блоги";
 
@@ -10941,6 +10944,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Перейти в подписки";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Добавить тег";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Не удалось заблокировать блог";
@@ -11748,6 +11754,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Отправка";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Отправить анонимно";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Обратная связь";
 
@@ -11930,6 +11939,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Посетитель сайта";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Подписчики по эл. почте";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Подписчики";

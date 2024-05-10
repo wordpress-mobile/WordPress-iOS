@@ -4083,6 +4083,10 @@
 		FA4F65A72594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */; };
 		FA4F660525946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */; };
 		FA4F661425946B8500EAA9F5 /* JetpackRestoreHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */; };
+		FA4FE0B02BEA7FA800A635D3 /* RemotePost+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */; };
+		FA4FE0B12BEA7FA800A635D3 /* RemotePost+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */; };
+		FA4FE0B32BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4FE0B22BEB6EF700A635D3 /* PostHelper+Metadata.swift */; };
+		FA4FE0B42BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA4FE0B22BEB6EF700A635D3 /* PostHelper+Metadata.swift */; };
 		FA5C740F1C599BA7000B528C /* TableViewHeaderDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */; };
 		FA612DDF274E9F730002B03A /* QuickStartPromptScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA612DDE274E9F730002B03A /* QuickStartPromptScreen.swift */; };
 		FA6402D129C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */; };
@@ -9460,6 +9464,9 @@
 		FA4F65A62594337300EAA9F5 /* JetpackRestoreOptionsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreOptionsViewController.swift; sourceTree = "<group>"; };
 		FA4F660425946B5F00EAA9F5 /* JetpackRestoreHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JetpackRestoreHeaderView.swift; sourceTree = "<group>"; };
 		FA4F661325946B8500EAA9F5 /* JetpackRestoreHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JetpackRestoreHeaderView.xib; sourceTree = "<group>"; };
+		FA4FE0AE2BEA767400A635D3 /* WordPress 154.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 154.xcdatamodel"; sourceTree = "<group>"; };
+		FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RemotePost+Metadata.swift"; sourceTree = "<group>"; };
+		FA4FE0B22BEB6EF700A635D3 /* PostHelper+Metadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostHelper+Metadata.swift"; sourceTree = "<group>"; };
 		FA5C740E1C599BA7000B528C /* TableViewHeaderDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewHeaderDetailView.swift; sourceTree = "<group>"; };
 		FA612DDE274E9F730002B03A /* QuickStartPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartPromptScreen.swift; sourceTree = "<group>"; };
 		FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedToJetpackEventsTracker.swift; sourceTree = "<group>"; };
@@ -10251,6 +10258,7 @@
 				8584FDB4192437160019C02E /* Utility */,
 				F1DB8D272288C12A00906E2F /* Uploads */,
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
+				FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -14628,6 +14636,7 @@
 				4A2C73ED2A9577C000ACE79E /* PostHelper.h */,
 				4A2C73EC2A9577C000ACE79E /* PostHelper.m */,
 				FEFA6AC22A83F4BE004EE5E6 /* PostHelper+JetpackSocial.swift */,
+				FA4FE0B22BEB6EF700A635D3 /* PostHelper+Metadata.swift */,
 				08472A1E1C7273FA0040769D /* PostServiceOptions.h */,
 				08472A1F1C727E020040769D /* PostServiceOptions.m */,
 				57D66B99234BB206005A2D74 /* PostServiceRemoteFactory.swift */,
@@ -22938,6 +22947,7 @@
 				FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */,
 				0C3090222B12A5C90071C551 /* UIButton+Extensions.swift in Sources */,
 				17F11EDB268623BA00D1BBA7 /* BloggingRemindersScheduleFormatter.swift in Sources */,
+				FA4FE0B02BEA7FA800A635D3 /* RemotePost+Metadata.swift in Sources */,
 				98DCF4A5275945E00008630F /* ReaderDetailNoCommentCell.swift in Sources */,
 				176E194725C465F70058F1C5 /* UnifiedPrologueViewController.swift in Sources */,
 				8B92D69627CD51FA001F5371 /* DashboardGhostCardCell.swift in Sources */,
@@ -22974,6 +22984,7 @@
 				46F583D42624D0BC0010A723 /* Blog+BlockEditorSettings.swift in Sources */,
 				E663D1901C65383E0017F109 /* SharingAccountViewController.swift in Sources */,
 				8B3626F925A665E500D7CCE3 /* UIApplication+mainWindow.swift in Sources */,
+				FA4FE0B32BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */,
 				80D9D00329EF4C7F00FE3400 /* DashboardPageCreationCell.swift in Sources */,
 				3FD83CBF246C751800381999 /* CoreDataIterativeMigrator.swift in Sources */,
 				17CE77EF20C6CDAA001DEA5A /* ReaderSiteSearchViewController.swift in Sources */,
@@ -25015,6 +25026,7 @@
 				FABB22882602FC2C00C8785C /* UserSuggestion+CoreDataProperties.swift in Sources */,
 				C743535727BD7144008C2644 /* AnimatedGifAttachmentViewProvider.swift in Sources */,
 				FABB228A2602FC2C00C8785C /* ReaderHeaderAction.swift in Sources */,
+				FA4FE0B12BEA7FA800A635D3 /* RemotePost+Metadata.swift in Sources */,
 				FABB228B2602FC2C00C8785C /* FancyAlerts+VerificationPrompt.swift in Sources */,
 				FABB228C2602FC2C00C8785C /* ReaderSiteStreamHeader.swift in Sources */,
 				FABB228D2602FC2C00C8785C /* VideoUploadProcessor.swift in Sources */,
@@ -26091,6 +26103,7 @@
 				FABB25782602FC2C00C8785C /* WizardDelegate.swift in Sources */,
 				FABB25792602FC2C00C8785C /* Blog+Files.swift in Sources */,
 				FABB257A2602FC2C00C8785C /* RevisionDiffsBrowserViewController.swift in Sources */,
+				FA4FE0B42BEB6EF700A635D3 /* PostHelper+Metadata.swift in Sources */,
 				46F583AE2624CE790010A723 /* BlockEditorSettingElement+CoreDataClass.swift in Sources */,
 				014ACD152A1E5034008A706C /* WebKitViewController+SandboxStore.swift in Sources */,
 				80D9CFF829E5010300FE3400 /* PagesCardViewModel.swift in Sources */,
@@ -31081,6 +31094,7 @@
 		E125443B12BF5A7200D87A0A /* WordPress.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				FA4FE0AE2BEA767400A635D3 /* WordPress 154.xcdatamodel */,
 				FE5F52D82AF9461200371A3A /* WordPress 153.xcdatamodel */,
 				0CFD6C792A73E703003DD0A0 /* WordPress 152.xcdatamodel */,
 				FE1E200F2A45ACE900CE7C90 /* WordPress 151.xcdatamodel */,
@@ -31235,7 +31249,7 @@
 				8350E15911D28B4A00A7B073 /* WordPress.xcdatamodel */,
 				E125443D12BF5A7200D87A0A /* WordPress 2.xcdatamodel */,
 			);
-			currentVersion = FE5F52D82AF9461200371A3A /* WordPress 153.xcdatamodel */;
+			currentVersion = FA4FE0AE2BEA767400A635D3 /* WordPress 154.xcdatamodel */;
 			name = WordPress.xcdatamodeld;
 			path = Classes/WordPress.xcdatamodeld;
 			sourceTree = "<group>";

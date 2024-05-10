@@ -37,6 +37,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated =  Date(timeIntervalSince1970: 1709852440)
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -47,6 +48,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "draft",
               "title" : "Hello",
               "type" : "post"
@@ -92,6 +100,8 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.addCategories([category])
 
             $0.isStickyPost = true
+
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -108,6 +118,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "excerpt" : "excerpt-a",
               "featured_image" : 92,
               "format" : "format-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "password" : "1234",
               "slug" : "slug-a",
               "status" : "draft",
@@ -143,6 +160,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -153,6 +171,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "publish",
               "title" : "Hello",
               "type" : "post"
@@ -183,6 +208,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -193,6 +219,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "future",
               "title" : "Hello",
               "type" : "post"
@@ -225,6 +258,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.dateCreated = creationDate
             $0.postTitle = "Hello"
             $0.content = "content-1"
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a server accepting the new post
@@ -235,6 +269,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
               "author" : 29043,
               "content" : "content-1",
               "date" : "2024-03-07T23:00:40+0000",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "publish",
               "title" : "Hello",
               "type" : "post"
@@ -1189,6 +1230,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         let revision = post.createRevision()
@@ -1203,6 +1245,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
             {
               "author" : 29043,
               "content" : "content-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "draft",
               "title" : "title-a",
               "type" : "post"
@@ -1266,6 +1315,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         let post = makePost {
             $0.status = .draft
             $0.authorID = 29043
+            $0.foreignID = UUID(uuidString: "F99A6E82-0AFD-4F30-9229-929AF39DA4D9")
         }
 
         // GIVEN a saved revision
@@ -1285,6 +1335,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
             {
               "author" : 29043,
               "content" : "content-a",
+              "metadata" : [
+                {
+                  "key" : "wp_jp_foreign_id",
+                  "operation" : "update",
+                  "value" : "F99A6E82-0AFD-4F30-9229-929AF39DA4D9"
+                }
+              ],
               "status" : "draft",
               "title" : "title-a",
               "type" : "post"

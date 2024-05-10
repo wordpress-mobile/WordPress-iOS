@@ -57,6 +57,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, copy, nullable) NSDate *autosaveModifiedDate;
 @property (nonatomic, copy, nullable) NSNumber *autosaveIdentifier;
 
+/// Used to deduplicate new posts
+@property (nonatomic, strong, nullable) NSUUID *foreignID;
+
 /// - warning: deprecated (kahu-offline-mode)
 @property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;

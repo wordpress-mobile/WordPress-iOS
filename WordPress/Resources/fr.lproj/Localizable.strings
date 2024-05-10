@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 09:54:07+0000 */
+/* Translation-Revision-Date: 2024-05-07 17:54:07+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -10861,6 +10861,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Paramètres du Lecteur";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Ajouter un blog";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Découvrir des blogs";
 
@@ -10884,6 +10887,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Accéder aux abonnements";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Ajouter une étiquette";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Impossible de bloquer le blog";
@@ -11670,6 +11676,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Envoi en cours";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Envoi anonyme";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Commentaire";
 
@@ -11852,6 +11861,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Lecteur du site";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Abonnés par e-mail";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Abonnés";

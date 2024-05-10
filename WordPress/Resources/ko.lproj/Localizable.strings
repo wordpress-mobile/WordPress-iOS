@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-06 03:03:50+0000 */
+/* Translation-Revision-Date: 2024-05-08 09:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -10924,6 +10924,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "리더 설정";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "블로그 추가";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "블로그 발견";
 
@@ -11763,6 +11766,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "전송 중…";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "익명으로 보내기";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "피드백";
 
@@ -11945,6 +11951,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "블로그 방문자";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "이메일 구독자";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "구독자";
