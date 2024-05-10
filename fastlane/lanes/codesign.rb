@@ -194,9 +194,8 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
   # NOTE: It might be neccessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
   # If this turns out to be a hard requirement, we should consider updating the method with logic to toggle the two setting based on whether we're fetching or renewing.
   match(
-    storage_mode: 'google_cloud',
-    google_cloud_bucket_name: 'a8c-fastlane-match',
-    google_cloud_keys_file: File.join(SECRETS_DIR, 'google_cloud_keys.json'),
+    storage_mode: 's3',
+    s3_bucket: 'a8c-fastlane-match',
     type: type,
     team_id: team_id,
     readonly: readonly,
