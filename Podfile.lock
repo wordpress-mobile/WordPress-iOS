@@ -71,7 +71,7 @@ PODS:
     - WordPressKit (~> 17.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (17.1.0):
+  - WordPressKit (17.1.1):
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
@@ -132,6 +132,7 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
     - WordPressShared
   trunk:
     - Alamofire
@@ -160,7 +161,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
-    - WordPressKit
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -216,7 +216,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
   WordPressAuthenticator: 898acaac75c5ade9b900c02622a15b9aef8fde1a
-  WordPressKit: 4042625f32513a98fe1bc8552f1aa59ef236bcdc
+  WordPressKit: a4af3d5d071734aaec75ccecefc7850ece6068fc
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd

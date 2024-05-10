@@ -256,7 +256,7 @@ class PostCoordinator: NSObject {
         }
     }
 
-    private func handleError(_ error: Error, for post: AbstractPost) {
+    func handleError(_ error: Error, for post: AbstractPost) {
         guard let topViewController = UIApplication.shared.mainWindow?.topmostPresentedViewController else {
             wpAssertionFailure("Failed to show an error alert")
             return
@@ -330,6 +330,16 @@ class PostCoordinator: NSObject {
     private func _moveToDraft(_ post: AbstractPost) {
         post.status = .draft
         save(post)
+    }
+
+    /// Restores a trashed post by moving it to draft.
+    @MainActor
+    func restore(_ post: AbstractPost) async throws {
+        wpAssert(post.isOriginal())
+
+        var changes = RemotePostUpdateParameters()
+        changes.status = Post.Status.draft.rawValue
+        try await _update(post, changes: changes)
     }
 
     /// Sets the post state to "updating" and performs the given changes.
@@ -442,6 +452,9 @@ class PostCoordinator: NSObject {
             retryDelay = min(32, retryDelay * 1.5)
             return retryDelay
         }
+        func setLongerDelay() {
+            retryDelay = max(retryDelay, 20)
+        }
         var retryDelay: TimeInterval
         weak var retryTimer: Timer?
 
@@ -499,10 +512,11 @@ class PostCoordinator: NSObject {
     }
 
     private func startSync(for post: AbstractPost) {
-        guard let revision = post.getLatestRevisionNeedingSync() else {
-            let worker = getWorker(for: post)
+        if let worker = workers[post.objectID], worker.error != nil {
             worker.error = nil
             postDidUpdateNotification(for: post)
+        }
+        guard let revision = post.getLatestRevisionNeedingSync() else {
             return DDLogInfo("sync: \(post.objectID.shortDescription) is already up to date")
         }
         startSync(for: post, revision: revision)
@@ -600,14 +614,16 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if !PostCoordinator.isTerminalError(error) {
-                let delay = worker.nextRetryDelay
-                worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
-                    guard let self, let worker else { return }
-                    self.didRetryTimerFire(for: worker)
-                }
-                worker.log("scheduled retry with delay: \(delay)s.")
+            if PostCoordinator.isTerminalError(error) {
+                worker.setLongerDelay()
             }
+
+            let delay = worker.nextRetryDelay
+            worker.retryTimer = Timer.scheduledTimer(withTimeInterval: delay, repeats: false) { [weak self, weak worker] _ in
+                guard let self, let worker else { return }
+                self.didRetryTimerFire(for: worker)
+            }
+            worker.log("scheduled retry with delay: \(delay)s.")
 
             if let error = error as? PostRepository.PostSaveError, case .deleted = error {
                 operation.log("post was permanently deleted")

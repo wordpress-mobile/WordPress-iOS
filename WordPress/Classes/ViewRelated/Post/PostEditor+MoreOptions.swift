@@ -157,7 +157,7 @@ extension PostEditor {
         }
     }
 
-    func displayHistory() {
+    func displayRevisionsList() {
         guard FeatureFlag.syncPublishing.enabled else {
             _displayHistory()
             return
@@ -174,7 +174,7 @@ extension PostEditor {
                 self.post.mt_excerpt = revision.postExcerpt
 
                 // It's important to clear the pending uploads associated with the
-                // post. The assumption is that if the revision on the remote,
+                // post. The assumption is that if the revision on the remote,
                 // its associated media has to be also uploaded.
                 MediaCoordinator.shared.cancelUploadOfAllMedia(for: self.post)
                 self.post.media = []

@@ -25,12 +25,12 @@
                     </connections>
                 </button>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="GeQ-Gs-OvG">
-                    <rect key="frame" x="24" y="62" width="288" height="297"/>
+                    <rect key="frame" x="16" y="62" width="296" height="297"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="297" id="uTt-pZ-gUW"/>
                     </constraints>
-                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="16" id="0Qb-19-SWX">
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="16" id="0Qb-19-SWX" customClass="AdaptiveCollectionViewFlowLayout" customModule="WordPress" customModuleProvider="target">
                         <size key="itemSize" width="240" height="297"/>
                         <size key="headerReferenceSize" width="0.0" height="0.0"/>
                         <size key="footerReferenceSize" width="50" height="50"/>
@@ -43,7 +43,7 @@
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="GeQ-Gs-OvG" secondAttribute="bottom" id="2ng-2c-tFF"/>
                 <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="gUR-Rt-jPM" secondAttribute="trailing" id="7rj-F7-Ol7"/>
-                <constraint firstItem="GeQ-Gs-OvG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" constant="8" id="8Dv-Lq-jru"/>
+                <constraint firstItem="GeQ-Gs-OvG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leadingMargin" id="8Dv-Lq-jru"/>
                 <constraint firstItem="GeQ-Gs-OvG" firstAttribute="top" secondItem="gUR-Rt-jPM" secondAttribute="bottom" constant="8" id="VRI-ge-6KZ"/>
                 <constraint firstItem="GeQ-Gs-OvG" firstAttribute="trailing" secondItem="iN0-l3-epB" secondAttribute="trailingMargin" id="ZNj-Nk-9pY"/>
                 <constraint firstItem="gUR-Rt-jPM" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="24" id="gKT-Ns-5xs"/>

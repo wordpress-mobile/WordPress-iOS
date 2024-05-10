@@ -10753,9 +10753,6 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Kaloni te Pajtime";
 
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Shtoni një blog";
-
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "S’arrihet të bllokohet blogu";
 

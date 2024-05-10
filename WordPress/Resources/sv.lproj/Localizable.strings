@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-29 12:22:41+0000 */
+/* Translation-Revision-Date: 2024-05-04 14:07:56+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -8857,6 +8857,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "autosaveAlert.cancel" = "Avbryt";
 
 /* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Du har ej sparade ändringar i det här inlägget som har gjorts med en annan enhet. Redigerade: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Autosparning tillgänglig";
+
+/* An alert suggesting to load autosaved revision for a published post */
 "autosaveAlert.viewChanges" = "Visa ändringar";
 
 /* Alert message when something goes wrong with the selected image. */
@@ -10323,6 +10329,12 @@ Example: Reply to Pamela Nguyen */
 /* Button in an alert confirming saving a new draft */
 "postEditor.closeConfirmationAlert.saveDraft" = "Spara utkast";
 
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Skapar autosparning …";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Versionen har lästs in";
+
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Sparar utkast …";
 
@@ -10338,11 +10350,20 @@ Example: Reply to Pamela Nguyen */
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
 
+/* Badge for post cells */
+"postList.badgePendingReview" = "Inväntar granskning";
+
 /* Cancels an Action */
 "postList.cancel" = "Avbryt";
 
 /* Delete option in the confirmation alert when deleting a page from the trash. */
 "postList.deletePermanently.actionTitle" = "Ta bort permanent";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Är du säker på att du vill ta bort ”%@” permanent?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Appen laddar upp tidigare gjorda ändringar till servern. Försök igen senare.";
 
 /* A generic error message title */
 "postList.genericErrorMessage" = "Något gick fel";
@@ -10365,6 +10386,12 @@ Example: Reply to Pamela Nguyen */
 /* Trash option in the trash post or page confirmation alert. */
 "postList.trash.actionTitle" = "Flytta till papperskorgen";
 
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Är du säker på att du vill lägga %@ i papperskorgen? Ändringar som inte skickats till servern tidigare kommer att gå förlorade.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Avbryt uppladdning";
+
 /* Close button in postMediaUploadStatusView */
 "postMediaUploadStatusView.close" = "Stäng";
 
@@ -10374,6 +10401,9 @@ Example: Reply to Pamela Nguyen */
 /* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
 "postMediaUploadStatusView.progress" = "%1$@ av %2$@";
 
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Försök ladda upp igen";
+
 /* Retry upload button in postMediaUploadStatusView */
 "postMediaUploadStatusView.retryUploads" = "Försök ladda upp igen";
 
@@ -10382,6 +10412,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A generic error message title */
 "postNotice.errorTitle" = "Ett fel uppstod";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Appen laddar upp tidigare gjorda ändringar till servern. Försök igen senare.";
 
 /* Button OK */
 "postNotice.ok" = "OK";
@@ -10419,6 +10452,12 @@ Example: Reply to Pamela Nguyen */
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Visa";
 
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Innehållet ändrades på annan enhet";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "”%@” togs bort permanent och kan inte längre uppdateras";
+
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Utan rubrik";
 
@@ -10434,6 +10473,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Inväntar granskning";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
 
@@ -10443,8 +10485,14 @@ Example: Reply to Pamela Nguyen */
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Det gick inte att uppdatera inläggsinställningarna";
 
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Endast synlig för webbplatsadministratörer och redigerare.";
+
 /* Title for a 'Private' privacy setting */
 "postVisibility.private.title" = "Privat";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Synlig för alla men kräver ett lösenord";
 
 /* Title for a 'Password Protected' privacy setting */
 "postVisibility.protected.title" = "Lösenordsskyddat";
@@ -10560,6 +10608,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ objekt kunde inte laddas upp";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Misslyckades att ladda upp media";
 
@@ -10639,6 +10690,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketter";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ objekt återstår";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ objekt återstår";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Laddar upp media";
 
@@ -10650,6 +10707,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker title for date cell */
 "publishDatePicker.date" = "Publiceringsdatum";
+
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Datumet i din nuvarande tidszon:";
 
 /* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
 "publishDatePicker.immediately" = "Omedelbart";
@@ -10864,6 +10924,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Läsarinställningar";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Lägg till en blogg";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Upptäck bloggar";
 
@@ -10889,7 +10952,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "Gå till prenumerationer";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Lägg till en blogg";
+"reader.no.tags.title" = "Lägg till en etikett";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Kan inte blockera blogg";
@@ -11135,6 +11198,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Lägg till en etikett";
+
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Gilla";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Gillat";
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Upptäck fler etiketter";
@@ -11436,6 +11505,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* All sites section title for site switcher. */
 "site_switcher.all_sites_section.title" = "Alla webbplatser";
 
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Fastnålade webbplatser";
+
 /* Recents section title for site switcher. */
 "site_switcher.recents_section.title" = "Senaste webbplatser";
 
@@ -11598,6 +11670,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Totalt antal WordPress.com-prenumeranter: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Totalt antal e-postprenumeranter: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Totalt antal prenumeranter";
+
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
@@ -11615,6 +11696,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Klick";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Öppnade";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Senaste e-postmeddelanden";
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "E-post";
@@ -11658,8 +11745,14 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Sök efter gratis foton att lägga till i ditt mediabibliotek!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Du kan valfritt inkludera din e-post och ditt användarnamn för att hjälpa oss att förstå din upplevelse.";
+
 /* Label we show on an email input field */
 "submit.feedback.alert.empty.email" = "ingen e-post angiven";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "inget användarnamn angivet";
 
 /* Alert submit option for users to accept sharing their email and name when submitting feedback. */
 "submit.feedback.alert.submit" = "Klar";
@@ -11670,9 +11763,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Skicka";
 
-/* Notice informing user that their feedback is being submitted anonymously.
-   Notice informing user that their feedback is being submitted. */
+/* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Skickar";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Skickar anonymt";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -11845,8 +11940,22 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "ej läst";
 
-/* Site Email Subscribers
-   Site Subscribers */
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "Webbplatsens e-postprenumerant";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Webbplatsens prenumerant";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Webbplatsens användare";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Webbplatsens tittare";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "E-postprenumeranter";
+
+/* Site Subscribers */
 "users.list.title.subscribers" = "Prenumeranter";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */

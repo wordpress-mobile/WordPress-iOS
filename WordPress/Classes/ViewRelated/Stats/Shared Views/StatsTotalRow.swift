@@ -269,6 +269,11 @@ private extension StatsTotalRow {
         Style.configureViewAsSeparator(topExpandedSeparatorLine)
         Style.configureViewAsDataBar(dataBar)
 
+        [itemLabel, itemDetailLabel, dataLabel, secondDataLabel].forEach {
+            $0?.adjustsFontForContentSizeCategory = true
+            $0?.maximumContentSizeCategory = .extraExtraLarge
+        }
+
         [itemLabel, itemDetailLabel].forEach {
             $0?.numberOfLines = rowData.multiline ? 0 : 1
         }

@@ -67,7 +67,6 @@ FeaturedImageViewControllerDelegate>
 @property (nonatomic, strong) UITextField *passwordTextField;
 @property (nonatomic, strong) UIButton *passwordVisibilityButton;
 @property (nonatomic, strong) NSArray *postMetaSectionRows;
-@property (nonatomic, strong) NSArray *visibilityList;
 @property (nonatomic, strong) NSArray *formatsList;
 @property (nonatomic, strong) UIImage *featuredImage;
 @property (nonatomic, strong) NSData *animatedFeaturedImageData;
@@ -130,10 +129,6 @@ FeaturedImageViewControllerDelegate>
 
     [WPStyleGuide configureColorsForView:self.view andTableView:self.tableView];
     [WPStyleGuide configureAutomaticHeightRowsFor:self.tableView];
-
-    self.visibilityList = @[NSLocalizedString(@"Public", @"Privacy setting for posts set to 'Public' (default). Should be the same as in core WP."),
-                           NSLocalizedString(@"Password protected", @"Privacy setting for posts set to 'Password protected'. Should be the same as in core WP."),
-                           NSLocalizedString(@"Private", @"Privacy setting for posts set to 'Private'. Should be the same as in core WP.")];
 
     [self setupFormatsList];
     [self setupPublicizeConnections];
@@ -411,12 +406,12 @@ FeaturedImageViewControllerDelegate>
     NSNumber *stickyPostSection = @(PostSettingsSectionStickyPost);
     NSNumber *disabledTwitterSection = @(PostSettingsSectionDisabledTwitter);
     NSNumber *remainingSharesSection = @(PostSettingsSectionSharesRemaining);
-    NSMutableArray *sections = [@[ @(PostSettingsSectionTaxonomy),
-                                   @(PostSettingsSectionMeta),
-                                   @(PostSettingsSectionFormat),
+    NSNumber *shareSection = @(PostSettingsSectionShare);
+    NSMutableArray *sections = [@[ @(PostSettingsSectionMeta),
                                    @(PostSettingsSectionFeaturedImage),
+                                   @(PostSettingsSectionTaxonomy),
                                    stickyPostSection,
-                                   @(PostSettingsSectionShare),
+                                   shareSection,
                                    disabledTwitterSection,
                                    remainingSharesSection,
                                    @(PostSettingsSectionMoreOptions) ] mutableCopy];
@@ -429,6 +424,10 @@ FeaturedImageViewControllerDelegate>
 
     if (self.unsupportedConnections.count == 0) {
         [sections removeObject:disabledTwitterSection];
+    }
+
+    if ([self numberOfRowsForShareSection] == 0) {
+        [sections removeObject:shareSection];
     }
 
     if (![self showRemainingShares]) {
@@ -453,8 +452,6 @@ FeaturedImageViewControllerDelegate>
         return 2;
     } else if (sec == PostSettingsSectionMeta) {
         return [self.postMetaSectionRows count];
-    } else if (sec == PostSettingsSectionFormat) {
-        return 1;
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return 1;
     } else if (sec == PostSettingsSectionStickyPost) {
@@ -466,7 +463,7 @@ FeaturedImageViewControllerDelegate>
     } else if (sec == PostSettingsSectionSharesRemaining) {
         return 1;
     } else if (sec == PostSettingsSectionMoreOptions) {
-        return 2;
+        return 3;
     } else if (sec == PostSettingsSectionPageAttributes) {
         return 1;
     }
@@ -482,9 +479,6 @@ FeaturedImageViewControllerDelegate>
 
     } else if (sec == PostSettingsSectionMeta) {
         return NSLocalizedString(@"Publish", @"Label for the publish (verb) button. Tapping publishes a draft post.");
-
-    } else if (sec == PostSettingsSectionFormat) {
-        return NSLocalizedString(@"Post Format", @"For setting the format of a post.");
 
     } else if (sec == PostSettingsSectionFeaturedImage) {
         return NSLocalizedString(@"Featured Image", @"Label for the Featured Image area in post settings.");
@@ -577,8 +571,6 @@ FeaturedImageViewControllerDelegate>
         cell = [self configureTaxonomyCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionMeta) {
         cell = [self configureMetaPostMetaCellForIndexPath:indexPath];
-    } else if (sec == PostSettingsSectionFormat) {
-        cell = [self configurePostFormatCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionFeaturedImage) {
         cell = [self configureFeaturedImageCellForIndexPath:indexPath];
     } else if (sec == PostSettingsSectionStickyPost) {
@@ -689,9 +681,6 @@ FeaturedImageViewControllerDelegate>
                 @(PostSettingsRowPublishDate),
                 @(PostSettingsRowVisibility)
             ]];
-            if (self.apost.password) {
-                [metaRows addObject:@(PostSettingsRowPassword)];
-            }
         }
     } else {
         [metaRows addObject:@(PostSettingsRowPublishDate)];
@@ -719,7 +708,7 @@ FeaturedImageViewControllerDelegate>
         cell.tag = PostSettingsRowAuthor;
     } else if (row == PostSettingsRowPublishDate) {
         // Publish date
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
         // Note: it's safe to remove `shouldPublishImmediately` when
         // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
@@ -754,7 +743,7 @@ FeaturedImageViewControllerDelegate>
 
     } else if (row == PostSettingsRowVisibility) {
         // Visibility
-        cell = [self getWPTableViewDisclosureCell];
+        cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
         cell.textLabel.text = NSLocalizedString(@"Visibility", @"The visibility settings of the post. Should be the same as in core WP.");
         cell.detailTextLabel.text = [self.apost titleForVisibility];
         cell.tag = PostSettingsRowVisibility;
@@ -998,6 +987,8 @@ FeaturedImageViewControllerDelegate>
 - (UITableViewCell *)configureMoreOptionsCellForIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0) {
+        return [self configurePostFormatCellForIndexPath:indexPath];
+    } else if (indexPath.row == 1) {
         return [self configureSlugCellForIndexPath:indexPath];
     } else {
         return [self configureExcerptCellForIndexPath:indexPath];
@@ -1024,12 +1015,15 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (WPTableViewCell *)getWPTableViewDisclosureCell
+- (WPTableViewCell *)getWPTableViewDisclosureCell {
+    return [self getWPTableViewDisclosureCellWithIdentifier:@"WPTableViewDisclosureCellIdentifier"];
+}
+
+- (WPTableViewCell *)getWPTableViewDisclosureCellWithIdentifier:(NSString *)identifier
 {
-    static NSString *WPTableViewDisclosureCellIdentifier = @"WPTableViewDisclosureCellIdentifier";
-    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:WPTableViewDisclosureCellIdentifier];
+    WPTableViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:identifier];
     if (!cell) {
-        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:WPTableViewDisclosureCellIdentifier];
+        cell = [[WPTableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:identifier];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [WPStyleGuide configureTableViewCell:cell];
     }
@@ -1119,6 +1113,10 @@ FeaturedImageViewControllerDelegate>
 
 - (void)showPostVisibilitySelector
 {
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
+        [self showUpdatedPostVisibilityPicker];
+        return;
+    }
     PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
     __weak PostVisibilitySelectorViewController *weakVc = vc;
     vc.completion = ^(NSString *__unused visibility) {

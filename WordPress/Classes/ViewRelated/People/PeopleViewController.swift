@@ -74,7 +74,7 @@ class PeopleViewController: UITableViewController {
         // Followers must be sorted out by creationDate!
         //
         switch filter {
-        case .followers, .email:
+        case .followers:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
@@ -150,7 +150,7 @@ class PeopleViewController: UITableViewController {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
+        return .DS.Padding.single
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -161,6 +161,37 @@ class PeopleViewController: UITableViewController {
         }
 
         loadMorePeopleIfNeeded()
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let blog = blog, let blogId = blog.dotComID?.intValue else { return }
+
+        switch filter {
+        case .users, .viewers:
+            guard let viewController = PersonViewController.controllerWithBlog(
+                blog,
+                context: viewContext,
+                person: personAtIndexPath(indexPath),
+                screenMode: filter.screenMode
+            ) else {
+                return
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        case .followers:
+            let url = URL(string: "https://wordpress.com/subscribers/\(blogId)/\(personAtIndexPath(indexPath).ID)")
+            let configuration = WebViewControllerConfiguration(url: url)
+            configuration.authenticateWithDefaultAccount()
+            configuration.secureInteraction = true
+            configuration.onClose = { [weak self] in
+                self?.resetManagedPeople()
+                self?.refreshPeople()
+            }
+            let viewController = WebKitViewController(configuration: configuration)
+            let navWrapper = LightNavigationController(rootViewController: viewController)
+            navigationController?.present(navWrapper, animated: true)
+        }
     }
 
     // MARK: UIViewController
@@ -187,16 +218,6 @@ class PeopleViewController: UITableViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)
         tableView.reloadData()
-    }
-
-    @IBSegueAction func createPersonViewController(_ coder: NSCoder) -> PersonViewController? {
-        guard let selectedIndexPath = tableView.indexPathForSelectedRow, let blog = blog else { return nil }
-
-        return PersonViewController(coder: coder,
-                                    blog: blog,
-                                    context: viewContext,
-                                    person: personAtIndexPath(selectedIndexPath),
-                                    screenMode: filter.screenMode)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -251,11 +272,10 @@ extension PeopleViewController {
 
         case users      = "users"
         case followers  = "followers"
-        case email      = "email"
         case viewers    = "viewers"
 
         static var defaultFilters: [Filter] {
-            return [.users, .followers, .email]
+            return [.users, .followers]
         }
 
         var title: String {
@@ -266,8 +286,6 @@ extension PeopleViewController {
                 return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
-            case .email:
-                return NSLocalizedString("users.list.title.emailSubscribers", value: "Email Subscribers", comment: "Site Email Subscribers")
             }
         }
 
@@ -279,8 +297,6 @@ extension PeopleViewController {
                 return .follower
             case .viewers:
                 return .viewer
-            case .email:
-                return .emailFollower
             }
         }
 
@@ -292,8 +308,6 @@ extension PeopleViewController {
                 return .Follower
             case .viewers:
                 return .Viewer
-            case .email:
-                return .Email
             }
         }
     }
@@ -336,6 +350,8 @@ private extension PeopleViewController {
     // MARK: Sync Helpers
 
     func refreshPeople() {
+        self.isInitialLoad = true
+        self.refreshNoResultsView()
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.isInitialLoad = false
             self?.refreshNoResultsView()
@@ -382,8 +398,6 @@ private extension PeopleViewController {
             loadUsersPage(offset, success: success)
         case .viewers:
             service.loadViewersPage(offset, success: success)
-        case .email:
-            service.loadEmailFollowersPage(offset, success: success)
         }
     }
 
@@ -531,6 +545,8 @@ private extension PeopleViewController {
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .DS.Background.primary
 
         setupFilterBar()
         setupTableView()

@@ -215,6 +215,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)
+        countLabel.maximumContentSizeCategory = .accessibilityLarge
 
         comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
         comparisonLabel.textColor = .textSubtle

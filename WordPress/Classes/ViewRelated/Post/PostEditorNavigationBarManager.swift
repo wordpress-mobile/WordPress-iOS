@@ -117,7 +117,7 @@ class PostEditorNavigationBarManager {
         return button
     }()
 
-    private lazy var moreButton: UIButton = {
+    lazy var moreButton: UIButton = {
         let image = UIImage(named: "editor-more")
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
