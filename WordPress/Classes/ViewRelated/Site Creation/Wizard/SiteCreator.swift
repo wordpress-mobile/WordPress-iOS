@@ -71,7 +71,7 @@ final class SiteCreator {
 
 // MARK: - Helper Extensions
 
-extension String {
+private extension String {
     var subdomain: String {
         return components(separatedBy: ".").first ?? ""
     }

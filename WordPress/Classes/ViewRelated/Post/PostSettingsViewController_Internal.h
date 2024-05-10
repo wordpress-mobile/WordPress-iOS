@@ -3,10 +3,9 @@
 typedef enum {
     PostSettingsSectionTaxonomy = 0,
     PostSettingsSectionMeta,
-    PostSettingsSectionFormat,
     PostSettingsSectionFeaturedImage,
-    PostSettingsSectionStickyPost,
     PostSettingsSectionShare,
+    PostSettingsSectionStickyPost,
     PostSettingsSectionDisabledTwitter, // NOTE: Clean up when Twitter has been removed from Publicize services.
     PostSettingsSectionSharesRemaining,
     PostSettingsSectionGeolocation,

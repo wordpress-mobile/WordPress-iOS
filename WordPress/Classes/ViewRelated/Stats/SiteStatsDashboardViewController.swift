@@ -364,7 +364,12 @@ struct SiteStatsDashboardPreferences {
         guard let siteID = SiteStatsInformation.sharedInstance.siteID?.intValue else { return nil }
 
         let key = Self.lastSelectedStatsTabTypeKey(forSiteID: siteID)
-        return StatsTabType(rawValue: UserPersistentStoreFactory.instance().integer(forKey: key))
+
+        guard let tabRawValue = UserPersistentStoreFactory.instance().object(forKey: key) as? Int else {
+            return nil
+        }
+
+        return StatsTabType(rawValue: tabRawValue)
     }
 
     static func getSelectedPeriodUnit() -> StatsPeriodUnit? {

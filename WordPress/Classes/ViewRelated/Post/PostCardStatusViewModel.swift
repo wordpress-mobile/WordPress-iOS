@@ -97,14 +97,10 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
             return .warning
         }
         switch post.status ?? .draft {
-        case .pending:
-            return .success
-        case .scheduled:
-            return .primary(.shade40)
         case .trash:
             return .error
         default:
-            return .neutral(.shade70)
+            return .secondaryLabel
         }
     }
 
@@ -277,9 +273,18 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     func statusAndBadges(separatedBy separator: String) -> String {
         let sticky = post.isStickyPost ? Constants.stickyLabel : ""
         let pending = (post.status == .pending && isSyncPublishingEnabled) ? Constants.pendingReview : ""
+        let visibility: String = {
+            let visibility = PostVisibility(post: post)
+            switch visibility {
+            case .public:
+                return ""
+            case .private, .protected:
+                return visibility.localizedTitle
+            }
+        }()
         let status = self.status ?? ""
 
-        return [status, pending, sticky].filter { !$0.isEmpty }.joined(separator: separator)
+        return [status, visibility, pending, sticky].filter { !$0.isEmpty }.joined(separator: separator)
     }
 
     /// Determine what the failed status message should be and return it.

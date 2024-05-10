@@ -32,10 +32,12 @@ extension ReaderPost {
                 .replacingOccurrences(of: "^\n+", with: "", options: .regularExpression)
                 .replacingOccurrences(of: "\n{2,}", with: "\n\n", options: .regularExpression)
                 .trim()
-            return content ?? contentPreviewForDisplay()
-        } else {
-            return contentPreviewForDisplay()
+            if let content {
+                let maxContentLength = isPad ? 4000 : 500
+                return String(content.prefix(maxContentLength))
+            }
         }
+        return contentPreviewForDisplay()
     }
 
     func countsForDisplay(isLoggedIn: Bool) -> String? {

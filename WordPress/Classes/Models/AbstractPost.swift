@@ -132,6 +132,15 @@ extension AbstractPost {
         }
     }
 
+    var localizedPostType: String {
+        switch self {
+        case is Page:
+            return NSLocalizedString("postType.page", value: "page", comment: "Localized post type: `Page`")
+        default:
+            return NSLocalizedString("postType.post", value: "post", comment: "Localized post type: `Post`")
+        }
+    }
+
     // MARK: - Misc
 
     /// Represent the supported properties used to sort posts.

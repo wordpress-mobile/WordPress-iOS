@@ -71,8 +71,10 @@ final class StatsSubscribersViewController: SiteStatsBaseTableViewController {
         return [
             SubscriberChartRow.self,
             TopTotalsPeriodStatsRow.self,
-            StatsGhostTopImmutableRow.self,
             TotalInsightStatsRow.self,
+            StatsGhostTopImmutableRow.self,
+            StatsGhostLineChartRow.self,
+            StatsGhostSingleValueRow.self,
             StatsErrorRow.self
         ]
     }
@@ -85,13 +87,14 @@ extension StatsSubscribersViewController: SiteStatsPeriodDelegate {
             guard let blog = RootViewCoordinator.sharedPresenter.mySitesCoordinator.currentBlog,
                   let peopleViewController = PeopleViewController.controllerWithBlog(blog, selectedFilter: .followers) else { return }
             navigationController?.pushViewController(peopleViewController, animated: true)
+            WPAnalytics.track(.statsSubscribersViewMoreTapped)
         case .subscribersEmailsSummary:
             let detailTableViewController = SiteStatsDetailTableViewController.loadFromStoryboard()
             detailTableViewController.configure(statSection: statSection)
             navigationController?.pushViewController(detailTableViewController, animated: true)
+            WPAnalytics.track(.statsEmailsViewMoreTapped)
         default:
-            // TODO
-            DDLogInfo("\(statSection) selected")
+            break
         }
     }
 }

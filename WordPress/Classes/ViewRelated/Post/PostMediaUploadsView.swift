@@ -1,6 +1,19 @@
 import Foundation
 import SwiftUI
 
+final class PostMediaUploadsViewController: UIHostingController<PostMediaUploadsView> {
+    private let viewModel: PostMediaUploadsViewModel
+
+    init(post: AbstractPost) {
+        self.viewModel = PostMediaUploadsViewModel(post: post) // Manange lifecycle
+        super.init(rootView: PostMediaUploadsView(viewModel: viewModel))
+    }
+
+    required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 /// Displays upload progress for the media for the given post.
 struct PostMediaUploadsView: View {
     @ObservedObject var viewModel: PostMediaUploadsViewModel
