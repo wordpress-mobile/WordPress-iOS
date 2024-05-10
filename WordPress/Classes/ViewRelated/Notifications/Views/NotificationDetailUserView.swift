@@ -96,33 +96,12 @@ private struct FollowButton: View {
     }
 
     var body: some View {
-        Button(action: {
+        DSButton(
+            title: isFollowed ? Follow.selectedTitle : Follow.title,
+            style: .init(emphasis: isFollowed ? .secondary : .primary, size: .small)
+        ) {
             isFollowed.toggle()
             onFollowClicked(isFollowed)
-        }) {
-            HStack(spacing: .DS.Padding.half) {
-                if isFollowed {
-                    Image.DS.icon(named: .readerFollowing)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 14, height: 14)
-                        .foregroundColor(Color.DS.Foreground.success)
-                    Text(Follow.selectedTitle)
-                        .style(.bodySmall(.regular))
-                        .accessibilityHint(Follow.selectedHint)
-                        .foregroundStyle(Color.DS.Foreground.success)
-                } else {
-                    Image.DS.icon(named: .readerFollow)
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 14, height: 14)
-                        .foregroundColor(Color.DS.Foreground.secondary)
-                    Text(Follow.title)
-                        .style(.bodySmall(.regular))
-                        .accessibilityHint(Follow.hint)
-                        .foregroundStyle(Color.DS.Foreground.secondary)
-                }
-            }
         }
     }
 }

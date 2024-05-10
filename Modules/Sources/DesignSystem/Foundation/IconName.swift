@@ -24,8 +24,6 @@ public enum IconName: String, CaseIterable {
 	case arrowUp = "arrow.up"
 	case arrowDown = "arrow.down"
     case vector = "vector"
-	case readerFollow = "reader.follow"
-	case readerFollowing = "reader.following"
 }
 
 // MARK: - Load Image
