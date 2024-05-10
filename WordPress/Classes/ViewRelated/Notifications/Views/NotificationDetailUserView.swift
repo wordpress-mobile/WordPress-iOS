@@ -28,20 +28,7 @@ struct NotificationDetailUserView: View {
             Button(action: config.onUserClicked) {
                 HStack(spacing: .DS.Padding.split) {
                     AvatarsView(style: .single(config.avatarURL))
-                    VStack(alignment: .leading) {
-                        if let username = config.username {
-                            Text(username)
-                                .style(.bodySmall(.regular))
-                                .foregroundStyle(Color.DS.Foreground.primary)
-                                .lineLimit(1)
-                        }
-                        if let blog = config.blog {
-                            Text(blog)
-                                .style(.bodySmall(.regular))
-                                .foregroundStyle(Color.DS.Foreground.secondary)
-                                .lineLimit(1)
-                        }
-                    }
+                    userView
                     Spacer()
                 }
             }
@@ -51,6 +38,27 @@ struct NotificationDetailUserView: View {
         }
         .padding(.horizontal, .DS.Padding.double)
         .padding(.top, .DS.Padding.double)
+    }
+
+    private var userView: some View {
+        VStack(alignment: .leading) {
+            if let username = config.username { userNameView(username) }
+            if let blog = config.blog { blogNameView(blog) }
+        }
+    }
+
+    private func userNameView(_ name: String) -> some View {
+        Text(name)
+            .style(.bodySmall(.regular))
+            .foregroundStyle(Color.DS.Foreground.primary)
+            .lineLimit(1)
+    }
+
+    private func blogNameView(_ blog: String) -> some View {
+        Text(blog)
+            .style(.bodySmall(.regular))
+            .foregroundStyle(Color.DS.Foreground.secondary)
+            .lineLimit(1)
     }
 
     struct Configuration {
