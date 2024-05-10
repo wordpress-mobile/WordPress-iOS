@@ -4088,6 +4088,8 @@
 		FA6402D129C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */; };
 		FA6402D229C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */; };
 		FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */; };
+		FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
+		FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
 		FA6FAB3525EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */; };
 		FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */; };
 		FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
@@ -9464,6 +9466,7 @@
 		FA612DDE274E9F730002B03A /* QuickStartPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartPromptScreen.swift; sourceTree = "<group>"; };
 		FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedToJetpackEventsTracker.swift; sourceTree = "<group>"; };
 		FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
+		FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingUpdateView.swift; sourceTree = "<group>"; };
 		FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsSectionHeaderView.swift; sourceTree = "<group>"; };
 		FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsSectionHeaderView.xib; sourceTree = "<group>"; };
 		FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogCardCell.swift; sourceTree = "<group>"; };
@@ -14007,6 +14010,7 @@
 				081E4B4A281BFB520085E89C /* Feature Highlight */,
 				98AA9F1F27EA888C00B3A98C /* Feature Introduction */,
 				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
+				FA6C32962BEE316900BBDDB4 /* In-App Update */,
 				E1F391ED1FF25DEC00DB32A3 /* Jetpack */,
 				AB758D9C25EFDF8400961C0B /* Likes */,
 				31F4F6641A13858F00196A98 /* Me */,
@@ -18499,6 +18503,14 @@
 			path = "Restore Status Failed";
 			sourceTree = "<group>";
 		};
+		FA6C32962BEE316900BBDDB4 /* In-App Update */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */,
+			);
+			path = "In-App Update";
+			sourceTree = "<group>";
+		};
 		FA70024E29DC3B6100E874FD /* Activity Log */ = {
 			isa = PBXGroup;
 			children = (
@@ -22266,6 +22278,7 @@
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
 				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
+				FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */,
 				F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */,
 				982DDF92263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */,
 				9F8E38BE209C6DE200454E3C /* NotificationSiteSubscriptionViewController.swift in Sources */,
@@ -26148,6 +26161,7 @@
 				FABB25972602FC2C00C8785C /* BlogToAccount.m in Sources */,
 				FECA443028350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */,
 				FABB25982602FC2C00C8785C /* JetpackRestoreHeaderView.swift in Sources */,
+				FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */,
 				FABB25992602FC2C00C8785C /* StoryboardLoadable.swift in Sources */,
 				83BF48BC2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */,
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
