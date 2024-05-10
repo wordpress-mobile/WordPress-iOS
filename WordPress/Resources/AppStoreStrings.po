@@ -45,12 +45,9 @@ msgctxt "app_store_keywords"
 msgid "blogger,writing,blogging,web,maker,online,store,business,make,create,write,blogs"
 msgstr ""
 
-msgctxt "v24.7-whats-new"
+msgctxt "v24.8-whats-new"
 msgid ""
-"Release notes loading…\n"
-"Release notes loading…\n"
-"Release notes loading…\n"
-"(Just kidding, no new updates. See you in two weeks!)\n"
+"We made some updates to the Pages menu. You’ll now find Settings in its own section, and it’s available for both published and unpublished posts. Groovy.\n"
 msgstr ""
 
 #. translators: This is a standard chunk of text used to tell a user what's new with a release when nothing major has changed.

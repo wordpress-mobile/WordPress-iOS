@@ -52,13 +52,12 @@ public class EditorPostSettings: ScreenObject {
     }
 
     private let backButtonGetter: (XCUIApplication) -> XCUIElement? = {
-        $0.navigationBars.lastMatch?.buttons.element(boundBy: 0)
+        $0.navigationBars["Publish Date"].buttons.element(boundBy: 0)
     }
 
     var categoriesSection: XCUIElement { categoriesSectionGetter(app) }
     var chooseFromMediaButton: XCUIElement { chooseFromMediaButtonGetter(app) }
     var currentFeaturedImage: XCUIElement { currentFeaturedImageGetter(app) }
-    var dateSelector: XCUIElement { dateSelectorGetter(app) }
     var closeButton: XCUIElement { closeButtonGetter(app) }
     var backButton: XCUIElement? { backButtonGetter(app) }
     var featuredImageButton: XCUIElement { featuredImageButtonGetter(app) }
@@ -148,7 +147,6 @@ public class EditorPostSettings: ScreenObject {
     @discardableResult
     public func updatePublishDateToFutureDate() -> Self {
         publishDateButton.tap()
-        dateSelector.tap()
         let currentMonth = monthLabel.value as! String
 
         // Selects the first day of the next month
@@ -159,25 +157,11 @@ public class EditorPostSettings: ScreenObject {
         if nextMonth != currentMonth {
             firstCalendarDayButton.tapUntil(.selected, failureMessage: "First Day button not selected!")
         }
-
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            // Dismiss popover by tapping outside of it. There is a sheet covering
-            // the screen and a popover and both are "PopoverDismissRegion", so
-            // we need to find the first hittable.
-            app.otherElements.matching(identifier: "PopoverDismissRegion")
-                .allElementsBoundByIndex
-                .first(where: \.isHittable)?
-                .tap()
-            app.navigationBars["Publish"].buttons.element(boundBy: 0).tap()
-        } else {
-            app.navigationBars["Publish Date"].buttons.element(boundBy: 0).tap()
-        }
-
         return self
     }
 
     public func closePublishDateSelector() -> Self {
-        navigateBack()
+        backButton?.tap()
         return self
     }
 }

@@ -26,6 +26,7 @@ import Foundation
     case editorPostPublishTap
     case editorPostPublishDismissed
     case editorPostScheduledChanged
+    case editorPostPendingReviewChanged
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
@@ -40,6 +41,7 @@ import Foundation
     case editorPostSlugChanged
     case editorPostExcerptChanged
     case editorPostSiteChanged
+    case editorPostLegacyMoreMenuShown
 
     // Resolve post version conflict
     case resolveConflictScreenShown
@@ -284,6 +286,9 @@ import Foundation
     case siteSwitcherAddSiteTapped
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
+    case siteSwitcherToggledPinTapped
+    case siteSwitcherPinUpdated
+    case siteSwitcherSiteTapped
 
     // Post List
     case postListItemSelected
@@ -590,6 +595,11 @@ import Foundation
     case readingPreferencesSaved
     case readingPreferencesClosed
 
+    // Stats Subscribers
+    case statsSubscribersViewMoreTapped
+    case statsEmailsViewMoreTapped
+    case statsSubscribersChartTapped
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -627,6 +637,8 @@ import Foundation
             return "editor_post_publish_dismissed"
         case .editorPostScheduledChanged:
             return "editor_post_scheduled_changed"
+        case .editorPostPendingReviewChanged:
+            return "editor_post_pending_review_changed"
         case .editorPostTitleChanged:
             return "editor_post_title_changed"
         case .editorPostVisibilityChanged:
@@ -655,6 +667,8 @@ import Foundation
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .editorPostLegacyMoreMenuShown:
+            return "editor_post_legacy_more_menu_shown"
         case .resolveConflictScreenShown:
             return "resolve_conflict_screen_shown"
         case .resolveConflictSaveTapped:
@@ -1087,6 +1101,12 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+        case .siteSwitcherToggledPinTapped:
+            return "site_switcher_toggled_pin_tapped"
+        case .siteSwitcherPinUpdated:
+            return "site_switcher_pin_updated"
+        case .siteSwitcherSiteTapped:
+            return "site_switcher_site_tapped"
 
         // Post List
         case .postListItemSelected:
@@ -1583,7 +1603,7 @@ import Foundation
         case .assertionFailure:
             return "assertion_failure"
         case .postCoordinatorErrorEncountered:
-            return "post-coordinator-eerror-encountered"
+            return "post_coordinator_error_encountered"
 
         // Site Monitoring
         case .siteMonitoringTabShown:
@@ -1602,6 +1622,14 @@ import Foundation
             return "reader_reading_preferences_saved"
         case .readingPreferencesClosed:
             return "reader_reading_preferences_closed"
+
+        // Stats Subscribers
+        case .statsSubscribersViewMoreTapped:
+            return "stats_subscribers_view_more_tapped"
+        case .statsEmailsViewMoreTapped:
+            return "stats_emails_view_more_tapped"
+        case .statsSubscribersChartTapped:
+            return "stats_subscribers_chart_tapped"
 
         } // END OF SWITCH
     }

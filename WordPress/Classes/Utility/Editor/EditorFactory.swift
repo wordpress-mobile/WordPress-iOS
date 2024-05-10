@@ -33,19 +33,6 @@ class EditorFactory {
         return gutenbergVC
     }
 
-    // TODO: DRY this up
-    func createHomepageGutenbergVC(with post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorBlock) -> EditHomepageViewController {
-        let gutenbergVC = EditHomepageViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
-
-        if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
-            gutenbergSettings.setGutenbergEnabled(true, for: post.blog, source: .onBlockPostOpening)
-            gutenbergSettings.postSettingsToRemote(for: post.blog)
-            gutenbergVC.shouldPresentInformativeDialog = true
-            gutenbergSettings.willShowDialog(for: post.blog)
-        }
-
-        return gutenbergVC
-    }
     func switchToGutenberg(from source: EditorViewController) {
         let replacement = GutenbergViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
         source.replaceEditor(source, replacement)

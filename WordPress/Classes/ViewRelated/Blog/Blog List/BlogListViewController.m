@@ -54,7 +54,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureDataSource
 {
-    self.dataSource = [BlogListDataSource new];
+    self.dataSource = [[BlogListDataSource alloc] initWithContextManager: [ContextManager sharedInstance]];
     self.dataSource.shouldShowDisclosureIndicator = NO;
     self.dataSource.shouldHideSelfHostedSites = self.configuration.shouldHideSelfHostedSites;
     self.dataSource.shouldHideBlogsNotSupportingDomains = self.configuration.shouldHideBlogsNotSupportingDomains;

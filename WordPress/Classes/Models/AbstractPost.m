@@ -81,7 +81,7 @@
 {
     self.date_created_gmt = localDate;
 
-    if ([RemoteFeature enabled:RemoteFeatureFlagSyncPublishing]) {
+    if ([Feature enabled:FeatureFlagSyncPublishing]) {
         return;
     }
 

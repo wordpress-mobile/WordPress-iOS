@@ -176,7 +176,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -561,13 +560,10 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "เว็บที่ติดตาม";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "ผู้ติดตาม";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
 
 /* User is following the blog. */
@@ -1146,8 +1142,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "เผยแพร่";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1157,9 +1152,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "เผยแพร่แล้ว";
-
-/* Published on [date] */
-"Published on" = "เผยแพร่บน";
 
 /* Mobile Push Notifications */
 "Push Notifications" = "ส่งการเตือน";
@@ -1299,9 +1291,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "เข้าตารางเวลาแล้ว";
 
-/* Scheduled for [date] */
-"Scheduled for" = "เข้าตารางเวลาสำหรับ";
-
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
@@ -1355,9 +1344,6 @@
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "แสดงธีม:";
-
-/* Label for time period in list of followers. */
-"Since" = "ตั้งแต่";
 
 /* Title for the Language Picker View */
 "Site Language" = "ภาษาของเว็บ";
@@ -1613,12 +1599,6 @@
 
 /* Label for total followers */
 "Total" = "ทั้งหมด";
-
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "อีเมล์ผู้ติดตามทั้งหมด: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "ผู้ติดตาม WordPress.com ทั้งหมด: %@";
 
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment

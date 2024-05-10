@@ -3,6 +3,7 @@ import WordPressFlux
 import WordPressShared
 import SwiftUI
 import SVProgressHUD
+import DesignSystem
 
 final class SitePickerViewController: UIViewController {
 
@@ -93,6 +94,41 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
     }
 
     func siteSwitcherTapped() {
+        if RemoteFeatureFlag.siteSwitcherRedesign.enabled() {
+            presentNewSiteSwitcher()
+        } else {
+            presentLegacySiteSwitcher()
+        }
+
+    }
+
+    private func presentNewSiteSwitcher() {
+        var dismissAction: (() -> Void)? = nil
+        let hostingController = UIHostingController(
+            rootView: SiteSwitcherView(
+                selectionCallback: { [weak self] siteID in
+                    guard let selectedBlog = BlogListViewModel().allBlogs.first(where: { $0.dotComID == siteID }) else {
+                        return
+                    }
+                    self?.switchToBlog(selectedBlog)
+                    RecentSitesService().touch(blog: selectedBlog)
+                    // Dismiss hosting controller with completion block
+                    dismissAction?()
+                }, addSiteCallback: { [weak self] in
+                    self?.addSiteTapped()
+                }
+            )
+        )
+        dismissAction = {
+            hostingController.dismiss(animated: true) { [weak self] in
+                self?.onBlogListDismiss?()
+            }
+        }
+        present(hostingController, animated: true)
+        WPAnalytics.track(.siteSwitcherAddSiteTapped)
+    }
+
+    private func presentLegacySiteSwitcher() {
         let blogListController = BlogListViewController(configuration: .defaultConfig, meScenePresenter: meScenePresenter)
 
         blogListController.blogSelected = { [weak self] controller, selectedBlog in
@@ -106,7 +142,6 @@ extension SitePickerViewController: BlogDetailHeaderViewDelegate {
         let navigationController = UINavigationController(rootViewController: blogListController)
         navigationController.modalPresentationStyle = .formSheet
         present(navigationController, animated: true)
-
         WPAnalytics.track(.mySiteSiteSwitcherTapped)
     }
 

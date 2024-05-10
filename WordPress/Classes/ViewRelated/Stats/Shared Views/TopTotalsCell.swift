@@ -16,6 +16,8 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
     @IBOutlet weak var rowsStackView: UIStackView!
     @IBOutlet weak var itemSubtitleLabel: UILabel!
     @IBOutlet weak var dataSubtitleLabel: UILabel!
+    @IBOutlet weak var dataSubtitleLabelWidthConstraint: NSLayoutConstraint!
+    @IBOutlet weak var secondDataSubtitleLabel: UILabel!
     @IBOutlet weak var topSeparatorLine: UIView!
     @IBOutlet weak var bottomSeparatorLine: UIView!
     private var topAccessoryView: UIView? = nil {
@@ -46,6 +48,7 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
 
     func configure(itemSubtitle: String? = nil,
                    dataSubtitle: String? = nil,
+                   secondDataSubtitle: String? = nil,
                    dataRows: [StatsTotalRowData],
                    statSection: StatSection? = nil,
                    siteStatsInsightsDelegate: SiteStatsInsightsDelegate? = nil,
@@ -58,6 +61,9 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
                    forDetails: Bool = false) {
         itemSubtitleLabel.text = itemSubtitle
         dataSubtitleLabel.text = dataSubtitle
+        secondDataSubtitleLabel.text = secondDataSubtitle
+        secondDataSubtitleLabel.isHidden = (secondDataSubtitle ?? "").isEmpty
+        dataSubtitleLabelWidthConstraint?.isActive = !secondDataSubtitleLabel.isHidden
         subtitlesProvided = (itemSubtitle != nil && dataSubtitle != nil)
         self.dataRows = dataRows
         self.statSection = statSection
@@ -119,6 +125,7 @@ private extension TopTotalsCell {
         Style.configureCell(self)
         Style.configureLabelAsSubtitle(itemSubtitleLabel)
         Style.configureLabelAsSubtitle(dataSubtitleLabel)
+        Style.configureLabelAsSubtitle(secondDataSubtitleLabel)
         Style.configureViewAsSeparator(topSeparatorLine)
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
@@ -371,8 +378,12 @@ extension TopTotalsCell: Accessible {
 
         let itemTitle = itemSubtitleLabel.text
         let dataTitle = dataSubtitleLabel.text
+        let secondDataTitle = secondDataSubtitleLabel.text
 
-        if let itemTitle = itemTitle, let dataTitle = dataTitle {
+        if let itemTitle = itemTitle, let dataTitle = dataTitle, let secondDataTitle = secondDataTitle {
+            let descriptionFormat = NSLocalizedString("stats.topTotalsCell.voiceOverDescription", value: "Table showing %1$@, %2$@, and %3$@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
+            accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle, secondDataTitle)
+        } else if let itemTitle = itemTitle, let dataTitle = dataTitle {
             let descriptionFormat = NSLocalizedString("Table showing %@ and %@", comment: "Accessibility of stats table. Placeholders will be populated with names of data shown in table.")
             accessibilityLabel = String(format: descriptionFormat, itemTitle, dataTitle)
         } else {

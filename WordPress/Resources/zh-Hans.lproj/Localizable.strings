@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-17 15:42:21+0000 */
+/* Translation-Revision-Date: 2024-05-02 13:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -871,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "是否确定要删除此文章？";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "确定要更新您的主页吗？";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "是否确定要更新？";
 
@@ -1117,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "博文";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "博客的电子邮件粉丝";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "博客粉丝";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "博客用户";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "博客查看者";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "撰写博客";
 
@@ -1226,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1800,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -2142,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "日期范围";
-
-/* Date and Time */
-"Date and Time" = "日期和时间";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2587,9 +2567,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-mail 地址";
-
-/* Blog Email Followers */
-"Email Followers" = "电子邮件粉丝";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3047,13 +3024,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "关注的站点";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "粉丝";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "粉丝";
 
 /* User is following the blog. */
@@ -3937,7 +3911,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "已插入链接";
 
 /* No comment provided by engineer. */
-"Link text" = "链接文字";
+"Link label" = "链接标签";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "链接到现有内容";
@@ -5475,8 +5449,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "发布";
 
 /* Label for the publish date button. */
@@ -5501,9 +5474,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "刚刚发表在";
-
-/* Published on [date] */
-"Published on" = "发布于";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "正在发布页面...";
@@ -5983,9 +5953,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "已定时";
 
-/* Scheduled for [date] */
-"Scheduled for" = "定时发布于";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "预定在 %@ 时发布";
 
@@ -6397,9 +6364,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "使用电子邮件注册";
 
-/* Label for time period in list of followers. */
-"Since" = "自从";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "由于您使用的是免费套餐，因此您的活动日志中显示有限的事件。";
 
@@ -6492,10 +6456,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "到目前为止，您的站点上还没有被忽略的威胁。";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "社交";
 
 /* Title of a Quick Start Tour */
@@ -7419,21 +7381,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "评论总数";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "电子邮件粉丝总数：%@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "粉丝总数";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "总赞数";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "文章总数";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "WordPress.com 粉丝总数：%@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "总字数";
@@ -8897,6 +8850,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "取消";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "您在其他设备上对该文章进行的更改未保存。 已编辑：%@。";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "支持自动保存";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "查看更改";
+
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "无法加载图片。 请选择其他图片或稍后重试。";
 
@@ -9565,6 +9530,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "在您的文章内添加照片或视频。";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10325,26 +10293,32 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "套餐";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "已创建 %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "正在删除文章…";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "已编辑 %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "正在将文章移至回收站...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "已发布 %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "放弃更改";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "已预发布 %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "放弃草稿";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "已移至回收站 %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "继续编辑";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "保存草稿";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "正在创建自动保存……";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "修订内容已加载";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "正在保存草稿……";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作者是 %@。";
@@ -10357,6 +10331,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@，%2$@。";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "待审核";
+
+/* Cancels an Action */
+"postList.cancel" = "取消";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "永久删除";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "是否确定要永久删除此 \"%@？";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "该应用程序正在将此前所做的更改上传至服务器。 请稍后重试。";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "出错了";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "离线更改";
@@ -10372,6 +10364,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "查看";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "移至回收站";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "是否确定要将 \"%@\" 移至回收站？ 此前未发送到服务器的任何更改都将丢失。";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "取消上传";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "关闭";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "无待处理的上传";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "第 %1$@ 个，共 %2$@ 个";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "重试上传";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "重试上传";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "媒体上传";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "出错了";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "该应用程序正在将此前所做的更改上传至服务器。 请稍后重试。";
+
+/* Button OK */
+"postNotice.ok" = "确定";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "页面草稿已上传";
@@ -10403,11 +10431,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "文章已更新";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "上传失败";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "查看";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "在其他设备上修改过此内容。";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" 已被永久删除，无法再更新";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "无标题";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "忽略";
@@ -10421,6 +10455,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "待审核";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
 
@@ -10429,6 +10466,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "更新文章设置失败";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "仅站点管理员和编辑可见";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "私人";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "所有人可见，但需要密码";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "受密码保护";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "所有人可见";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "公开";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "取消";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "可见性";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "密码";
+
+/* Button save */
+"postVisibilityPicker.save" = "保存";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "大力宣传并推广";
@@ -10453,6 +10520,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "预览";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "发布";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "重试";
@@ -10520,6 +10590,9 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ 个项目上传失败";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "标题";
 
@@ -10528,6 +10601,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "发布日期";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "立即";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "正在发布到";
@@ -10593,6 +10669,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "标签";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "剩余 %@ 个项目";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "剩余 %@ 个项目";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "上传媒体";
 
@@ -10602,14 +10684,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "查看所有回复";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "第 %1$@ 步，共 %2$@ 步";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "发布日期";
 
-/* Retry button title */
-"publishButton.retry" = "重试";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "您当前时区的日期：";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "现在";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "立即";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "删除发布日期";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "选择发布日期";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "时区";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "发布日期";
@@ -10836,9 +10927,6 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "前往“订阅”";
 
-/* No Tags View Button Label */
-"reader.no.tags.title" = "添加博客";
-
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "无法阻止博客";
 
@@ -10960,6 +11048,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "夜晚";
 
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
+
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
 
@@ -10992,7 +11083,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "reader.preferences.preview.body.feedback.link" = "发送您的反馈";
 
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.text" = "选择您想要的颜色、字体和尺寸。 在此处预览您的选择，并在完成后阅读以您所选样式呈现的文章。";
+"reader.preferences.preview.body.text" = "选择您想要的颜色、字体和尺寸。 在此处预览您的选择，并阅读在设置完成后以您所选样式呈现的文章。";
 
 /* Title text for a preview */
 "reader.preferences.preview.header" = "阅读偏好";
@@ -11074,6 +11165,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "添加标签";
+
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "点赞";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "已点赞";
 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "发现更多标签";
@@ -11176,6 +11273,27 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "相关文章";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "其他设备";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "当前设备";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "在其他设备上修改过此文章。 请选择要保留的文章版本。";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "取消";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "保存";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "解决冲突";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "复制链接";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "忽略";
@@ -11351,6 +11469,30 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "未知";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "所有站点";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "固定站点";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "最近访问的站点";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "添加站点";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "取消";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "完成";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "编辑";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "选择站点";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "提醒";
 
@@ -11386,6 +11528,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "由于 Twitter 更改了条款和定价，Twitter 自动共享功能已无法使用。";
+
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "订阅者";
 
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "流量";
@@ -11478,16 +11623,58 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "stats.insights.mostPopularCard.title" = "🔥 人气最高的时间";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewsNumber" = "%1$@ 的浏览量";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ 浏览量";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "动态数量不足。 请在您的站点拥有更多访客时回来查看！";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "订阅者";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "您的最新文章 %1$@ 收到了 %2$@ 个赞。";
+
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "WordPress.com 订阅者总数：%@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "电子邮件订阅者总数：%@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "订阅者总数";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "成为订阅者的时间";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "名称";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "订阅者";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "点击次数";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "打开次数";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "最近的电子邮件";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "电子邮件";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "订阅者";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "显示 %1$@、%2$@ 和 %3$@ 的表格";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "描绘所选时间段内评论数的条形图。";
@@ -11501,6 +11688,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "描绘所选时间段内访客数的条形图。";
 
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "日";
+
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "月";
+
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "周";
+
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "年";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "忽略";
 
@@ -11510,8 +11709,26 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "搜索查找要添加到您的媒体库中的免费照片！";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "您可以选填您的电子邮件地址和用户名，以帮助我们了解您的体验。";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "未输入电子邮件地址";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "未输入用户名";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "完成";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "感谢您的反馈";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "提交";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "正在发送";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "反馈";
@@ -11683,6 +11900,21 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未读";
+
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "站点的电子邮件订阅者";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "站点订阅者";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "站点用户";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "站点访客";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "订阅者";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "访问我们的文档页面";

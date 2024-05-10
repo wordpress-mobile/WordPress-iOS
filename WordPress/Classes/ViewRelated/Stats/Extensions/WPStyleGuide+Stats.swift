@@ -70,8 +70,10 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsSubtitle(_ label: UILabel) {
-            label.textColor = secondaryTextColor
-            label.font = subTitleFont
+            label.textColor = .DS.Foreground.secondary
+            label.font = .DS.font(.footnote)
+            label.adjustsFontSizeToFitWidth = true
+            label.maximumContentSizeCategory = .accessibilityLarge
         }
 
         static func configureLabelAsLink(_ label: UILabel) {

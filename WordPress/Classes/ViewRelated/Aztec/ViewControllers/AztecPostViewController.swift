@@ -740,7 +740,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItemsAztec
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
@@ -823,6 +822,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadEditorContents()
         reloadPublishButton()
         refreshTitleViewForMediaUploadIfNeeded()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItemsAztec
     }
 
     func refreshTitleViewForMediaUploadIfNeeded() {
@@ -1197,7 +1197,7 @@ private extension AztecPostViewController {
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
-                self.displayHistory()
+                self.displayRevisionsList()
             }
         }
 
@@ -2179,6 +2179,8 @@ extension AztecPostViewController {
             handleError(error, onAttachment: attachment)
         case .progress(let value):
             handleProgress(value, forMedia: media, onAttachment: attachment)
+        case .cancelled:
+            richTextView.remove(attachmentID: attachment.identifier)
         }
     }
 

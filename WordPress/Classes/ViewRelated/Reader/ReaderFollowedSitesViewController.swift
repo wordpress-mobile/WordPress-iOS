@@ -455,7 +455,7 @@ extension ReaderFollowedSitesViewController: WPTableViewHandlerDelegate {
 
         let count = tableViewHandler.resultsController?.fetchedObjects?.count ?? 0
         if count > 0 {
-            return NSLocalizedString("Followed Sites", comment: "Section title for sites the user has followed.")
+            return NSLocalizedString("reader.followedSites.empty", value: "Subscribed Sites", comment: "Section title for sites the user has subscribed to.")
         }
         return nil
     }
