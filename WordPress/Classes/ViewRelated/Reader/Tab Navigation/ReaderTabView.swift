@@ -69,6 +69,7 @@ class ReaderTabView: UIView {
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(filterUpdated(_:)), name: .ReaderFilterUpdated, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -213,6 +214,16 @@ private extension ReaderTabView {
         // If a P2 is followed but the P2 tab is not in the Reader tab bar,
         // refresh the Reader menu to display it.
         viewModel.fetchReaderMenu()
+    }
+
+    @objc func filterUpdated(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderTagTopic,
+              let filterProvider = viewModel.streamFilters.first(where: { $0.reuseIdentifier == FilterProvider.ReuseIdentifiers.tags }) else {
+            return
+        }
+        viewModel.setFilterContent(topic: topic)
+        viewModel.activeStreamFilter = (filterProvider.id, topic)
     }
 
 }

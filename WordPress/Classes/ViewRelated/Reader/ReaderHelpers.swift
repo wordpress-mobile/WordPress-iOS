@@ -22,6 +22,8 @@ extension NSNotification.Name {
     static let ReaderUserBlockingWillBegin = NSNotification.Name(rawValue: "ReaderUserBlockingWillBegin")
     // Sent when the user blocking request is complete
     static let ReaderUserBlockingDidEnd = NSNotification.Name(rawValue: "ReaderUserBlockingDidEnd")
+    // Sent when the filter from a feed is updated
+    static let ReaderFilterUpdated = NSNotification.Name(rawValue: "ReaderFilterUpdated")
 }
 
 struct ReaderNotificationKeys {
