@@ -8,7 +8,7 @@ enum CommentModerationState: Equatable {
         switch comment.status {
         case "approve":
             self = .approved(liked: false)
-        case "pending":
+        case "hold":
             self = .pending
         case "spam":
             self = .spam
