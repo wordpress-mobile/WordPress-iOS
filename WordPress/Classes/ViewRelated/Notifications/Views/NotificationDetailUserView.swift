@@ -6,23 +6,19 @@ struct NotificationDetailUserView: View {
 
     let config: Configuration
 
-    init(avatarURL: URL?, username: String?, blog: String?, onUserClicked: @escaping () -> Void) {
-        self.config = Configuration(avatarURL: avatarURL, username: username, blog: blog, onUserClicked: onUserClicked)
-    }
-
     init(
         avatarURL: URL?,
         username: String?,
         blog: String?,
-        isFollowed: Bool,
+        isFollowed: Bool? = nil,
         onUserClicked: @escaping () -> Void,
-        onFollowClicked: @escaping (Bool) -> Void
+        onFollowClicked: @escaping (Bool) -> Void = { _ in }
     ) {
         self.config = Configuration(
             avatarURL: avatarURL,
             username: username,
             blog: blog,
-            followActionConfig: FollowConfig(isFollowed: isFollowed, onFollowClicked: onFollowClicked),
+            followActionConfig: isFollowed.map { FollowConfig(isFollowed: $0, onFollowClicked: onFollowClicked) },
             onUserClicked: onUserClicked
         )
     }
