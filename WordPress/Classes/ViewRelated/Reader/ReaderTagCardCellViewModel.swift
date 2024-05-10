@@ -33,25 +33,11 @@ class ReaderTagCardCellViewModel: NSObject {
     }()
 
     private lazy var dataSource: DataSource? = { [weak self] in
-        guard let self,
-              let collectionView else {
-           return nil
+        guard let collectionView = self?.collectionView else {
+            return nil
         }
 
-        let dataSource = DataSource(collectionView: collectionView, cellProvider: self.cardCellProvider)
-        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            guard kind == UICollectionView.elementKindSectionFooter,
-                  let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
-                                                                             withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces(),
-                                                                             for: indexPath) as? ReaderTagFooterView else {
-                return nil
-            }
-            view.configure(with: self.slug) { [weak self] in
-                self?.onTagButtonTapped()
-            }
-            return view
-        }
-        return dataSource
+        return self?.createDataSource(with: collectionView)
     }()
 
     private lazy var resultsController: NSFetchedResultsController<ReaderPost> = {
@@ -129,36 +115,6 @@ class ReaderTagCardCellViewModel: NSObject {
 // MARK: - Private Methods
 
 private extension ReaderTagCardCellViewModel {
-    /// Configures and returns a collection view cell according to the index path and `CardCellItem`.
-    /// This method that satisfies the `UICollectionViewDiffableDataSource.CellProvider` closure signature.
-    func cardCellProvider(_ collectionView: UICollectionView,
-                          _ indexPath: IndexPath,
-                          _ item: CardCellItem) -> UICollectionViewCell? {
-        switch item {
-        case .empty:
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCardEmptyCell.defaultReuseID,
-                                                                for: indexPath) as? ReaderTagCardEmptyCell else {
-                return UICollectionViewCell()
-            }
-
-            cell.configure(tagTitle: slug) { [weak self] in
-                self?.fetchTagPosts(syncRemotely: true)
-            }
-
-            return cell
-
-        case .post(let objectID):
-            guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
-                  let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(),
-                                                                for: indexPath) as? ReaderTagCell else {
-                return UICollectionViewCell()
-            }
-
-            cell.configure(parent: parentViewController, post: post, isLoggedIn: isLoggedIn)
-            return cell
-        }
-    }
-
     /// Translates a diffable snapshot from `NSFetchedResultsController` to a snapshot that fits the collection view.
     ///
     /// Snapshots returned from `NSFetchedResultsController` always have the type `<String, NSManagedObjectID>`, so
@@ -176,6 +132,49 @@ private extension ReaderTagCardCellViewModel {
         snapshot.appendItems(isEmpty ? [.empty] : coreDataSnapshot.itemIdentifiers.map { .post(id: $0) })
 
         return snapshot
+    }
+
+    private func createDataSource(with collectionView: UICollectionView) -> DataSource {
+        let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, item in
+            switch item {
+            case .empty:
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCardEmptyCell.defaultReuseID,
+                                                                    for: indexPath) as? ReaderTagCardEmptyCell else {
+                    return UICollectionViewCell()
+                }
+
+                cell.configure(tagTitle: self?.slug ?? "") { [weak self] in
+                    self?.fetchTagPosts(syncRemotely: true)
+                }
+
+                return cell
+
+            case .post(let objectID):
+                guard let post = try? ContextManager.shared.mainContext.existingObject(with: objectID) as? ReaderPost,
+                      let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ReaderTagCell.classNameWithoutNamespaces(),
+                                                                    for: indexPath) as? ReaderTagCell else {
+                    return UICollectionViewCell()
+                }
+
+                cell.configure(parent: self?.parentViewController,
+                               post: post,
+                               isLoggedIn: self?.isLoggedIn ?? AccountHelper.isLoggedIn)
+                return cell
+            }
+        }
+        dataSource.supplementaryViewProvider = { [weak self] collectionView, kind, indexPath in
+            guard kind == UICollectionView.elementKindSectionFooter,
+                  let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind,
+                                                                             withReuseIdentifier: ReaderTagFooterView.classNameWithoutNamespaces(),
+                                                                             for: indexPath) as? ReaderTagFooterView else {
+                return nil
+            }
+            view.configure(with: self?.slug ?? "") { [weak self] in
+                self?.onTagButtonTapped()
+            }
+            return view
+        }
+        return dataSource
     }
 }
 
