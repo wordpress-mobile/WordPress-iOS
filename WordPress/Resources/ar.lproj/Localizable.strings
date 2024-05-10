@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-05 16:02:21+0000 */
+/* Translation-Revision-Date: 2024-05-07 17:54:07+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -10945,6 +10945,9 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "الانتقال إلى الاشتراكات";
 
+/* No Tags View Button Label */
+"reader.no.tags.title" = "إضافة وسم";
+
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "يتعذر حظر المدونة";
 
@@ -11655,6 +11658,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "حصلت تدوينتك الأخيرة %1$@ على %2$@ من الإعجابات.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "إجمالي المشتركين في ووردبريس.كوم: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "إجمالي المشتركين عبر البريد الإلكتروني: %@";
+
 /* Insights 'Total Subscribers' header */
 "stats.insights.totalSubscribers.title" = "إجمالي المشتركين";
 
@@ -11675,6 +11684,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "نقرات";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "أحدث رسائل البريد الإلكتروني";
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "رسائل البريد الإلكتروني";
@@ -11718,6 +11730,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "ابحث للعثور على صور مجانية لإضافتها إلى مكتبة الوسائط الخاصة بك!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "يمكنك تضمين بريدك الإلكتروني واسم المستخدم الخاص بك اختياريًا لمساعدتنا على فهم تجربتك.";
+
 /* Label we show on an email input field */
 "submit.feedback.alert.empty.email" = "لم يتم إدخال أي بريد إلكتروني";
 
@@ -11735,6 +11750,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "جار الإرسال";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "إرسال من دون اسم";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "ملاحظات";
@@ -11907,8 +11925,14 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "غير مقروء";
 
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "المشترك عبر البريد الإلكتروني في الموقع";
+
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "المشترك بالموقع";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "مشاهد الموقع";
 
 /* Site Email Subscribers */
 "users.list.title.emailSubscribers" = "مشتركي البريد الإلكتروني";

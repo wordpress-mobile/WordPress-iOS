@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 13:54:07+0000 */
+/* Translation-Revision-Date: 2024-05-08 13:52:58+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -10909,6 +10909,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "閱讀器設定";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "新增網誌";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "探索網誌";
 
@@ -10932,6 +10935,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "前往「訂閱」";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "新增標籤";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "無法封鎖網誌";
@@ -11736,6 +11742,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "正在傳送";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "正以匿名方式傳送";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "意見回饋";
 
@@ -11918,6 +11927,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "網站的檢視者";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "電子郵件訂閱者";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "訂閱者";

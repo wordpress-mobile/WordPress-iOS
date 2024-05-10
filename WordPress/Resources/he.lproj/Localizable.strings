@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 15:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-08 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -10915,6 +10915,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "הגדרות קורא";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "להוסיף בלוג";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "להכיר בלוגים";
 
@@ -10938,6 +10941,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "לעבור למינויים";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "להוסיף תגית";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "אין אפשרות לחסום את הבלוג";
@@ -11745,6 +11751,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "שולח";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "שולח באופן אנונימי";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "משוב";
 
@@ -11927,6 +11936,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "צופה של האתר";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "מנויים באימייל";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "מנויים";

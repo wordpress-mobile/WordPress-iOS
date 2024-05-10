@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-08 14:14:19+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -10611,6 +10611,9 @@ Example: Reply to Pamela Nguyen */
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ item gagal diunggah";
 
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Gagal mengunggah media";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Judul";
 
@@ -10921,6 +10924,9 @@ with the filter chip button. */
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Pengaturan Pembaca";
 
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Tambahkan blog";
+
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Temukan Blog";
 
@@ -10944,6 +10950,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Lihat Langganan";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Tambahkan tag";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Tidak dapat memblokir blog";
@@ -11089,6 +11098,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Ukuran";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
 
 /* Text format for the feedback line text, to be displayed in the preview section.
 %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
@@ -11505,6 +11520,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Done button title above the search. */
 "site_switcher_done_button_title" = "Selesai";
 
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Edit";
+
 /* Title for site switcher screen. */
 "site_switcher_title" = "Pilih sebuah situs";
 
@@ -11748,6 +11766,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice informing user that their feedback is being submitted. */
 "submit.feedback.submit.loading" = "Mengirim";
 
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Mengirim secara anonim";
+
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Masukan";
 
@@ -11930,6 +11951,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Pembaca Situs";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Pelanggan Email";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Pengikut";
