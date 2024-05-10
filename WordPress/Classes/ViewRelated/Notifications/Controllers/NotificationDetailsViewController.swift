@@ -669,39 +669,20 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        let hasHomeURL = userBlock.metaLinksHome != nil
-        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
-        let isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
-
-        if isFollowEnabled {
-            cell.configure(
-                avatarURL: userBlock.media.first?.mediaURL,
-                username: userBlock.text,
-                blog: hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host,
-                isFollowed: userBlock.isActionOn(id: FollowAction.actionIdentifier()),
-                onUserClicked: { [weak self] in
-                    self?.displayContent(blockGroup)
-                },
-                onFollowClicked: { [weak self] followClicked in
-                    if followClicked {
-                        self?.followSiteWithBlock(userBlock)
-                    } else {
-                        self?.unfollowSiteWithBlock(userBlock)
-                    }
-                },
-                parent: self
-            )
-        } else {
-            cell.configure(
-                avatarURL: userBlock.media.first?.mediaURL,
-                username: userBlock.text,
-                blog: hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host,
-                onUserClicked: { [weak self] in
-                    self?.displayContent(blockGroup)
-                },
-                parent: self
-            )
-        }
+        cell.configure(
+            userBlock: userBlock,
+            onUserClicked: { [weak self] in
+                self?.displayContent(blockGroup)
+            },
+            onFollowClicked: { [weak self] followClicked in
+                if followClicked {
+                    self?.followSiteWithBlock(userBlock)
+                } else {
+                    self?.unfollowSiteWithBlock(userBlock)
+                }
+            },
+            parent: self
+        )
     }
 
     func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {

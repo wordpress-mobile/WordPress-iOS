@@ -9,18 +9,43 @@ class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
         shouldSetSeparators = false
     }
 
-    func configure(avatarURL: URL?, username: String?, blog: String?, onUserClicked: @escaping () -> Void, parent: UIViewController) {
-        let view = NotificationDetailUserView(avatarURL: avatarURL, username: username, blog: blog, onUserClicked: onUserClicked)
-        host(view, parent: parent)
+    func configure(
+        userBlock: FormattableUserContent,
+        onUserClicked: @escaping () -> Void,
+        onFollowClicked: @escaping (Bool) -> Void,
+        parent: UIViewController
+    ) {
+        let isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
+        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
+
+        if isFollowEnabled {
+            configure(
+                avatarURL: userBlock.media.first?.mediaURL,
+                username: userBlock.text,
+                blog: hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host,
+                isFollowed: userBlock.isActionOn(id: FollowAction.actionIdentifier()),
+                onUserClicked: onUserClicked,
+                onFollowClicked: onFollowClicked,
+                parent: parent
+            )
+        } else {
+            configure(
+                avatarURL: userBlock.media.first?.mediaURL,
+                username: userBlock.text,
+                blog: hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host,
+                onUserClicked: onUserClicked,
+                parent: parent
+            )
+        }
     }
 
     func configure(
         avatarURL: URL?,
         username: String?,
         blog: String?,
-        isFollowed: Bool,
+        isFollowed: Bool? = nil,
         onUserClicked: @escaping () -> Void,
-        onFollowClicked: @escaping (Bool) -> Void,
+        onFollowClicked: @escaping (Bool) -> Void = { _ in },
         parent: UIViewController
     ) {
         let view = NotificationDetailUserView(

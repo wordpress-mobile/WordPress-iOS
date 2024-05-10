@@ -6,18 +6,22 @@ class LikeUserTableViewCell: UITableViewCell, NibReusable {
 
     private var controller: UIHostingController<NotificationDetailUserView>?
 
-    func configure(avatarURL: URL?, username: String?, blog: String?, onUserClicked: @escaping () -> Void, parent: UIViewController) {
-        let view = NotificationDetailUserView(avatarURL: avatarURL, username: username, blog: blog, onUserClicked: onUserClicked)
-        host(view, parent: parent)
+    func configure(user: LikeUser, onUserClicked: @escaping () -> Void, parent: UIViewController) {
+        configure(
+            avatarURL: URL(string: user.avatarUrl),
+            username: user.displayName,
+            blog: String(format: Constants.usernameFormat, user.username),
+            onUserClicked: onUserClicked,
+            parent: parent)
     }
 
     func configure(
         avatarURL: URL?,
         username: String?,
         blog: String?,
-        isFollowed: Bool,
+        isFollowed: Bool? = nil,
         onUserClicked: @escaping () -> Void,
-        onFollowClicked: @escaping (Bool) -> Void,
+        onFollowClicked: @escaping (Bool) -> Void = { _ in },
         parent: UIViewController
     ) {
         let view = NotificationDetailUserView(
@@ -50,5 +54,12 @@ class LikeUserTableViewCell: UITableViewCell, NibReusable {
 
     func layout(hostingView view: UIView) {
         self.contentView.pinSubviewToAllEdges(view)
+    }
+}
+
+private extension LikeUserTableViewCell {
+
+    struct Constants {
+        static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username.")
     }
 }

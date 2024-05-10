@@ -410,9 +410,7 @@ private extension LikesListController {
             return UITableViewCell()
         }
         cell.configure(
-            avatarURL: URL(string: user.avatarUrl),
-            username: user.displayName,
-            blog: String(format: Constants.usernameFormat, user.username),
+            user: user,
             onUserClicked: { [weak self] in
                 self?.delegate?.didSelectUser(user, at: indexPath)
             },
@@ -438,7 +436,6 @@ private extension LikesListController {
         static let headerSectionIndex = 0
         static let headerRowIndex = 0
         static let numberOfHeaderRows = 1
-        static let usernameFormat = NSLocalizedString("@%1$@", comment: "Label displaying the user's username preceeded by an '@' symbol. %1$@ is a placeholder for the username.")
     }
 
     struct Strings {
