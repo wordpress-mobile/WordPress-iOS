@@ -22,8 +22,8 @@ public enum IconName: String, CaseIterable {
     case avatar
     case exclamationCircle = "exclamation.circle"
     case person
-	case arrowUp = "arrow.up"
-	case arrowDown = "arrow.down"
+    case arrowUp = "arrow.up"
+    case arrowDown = "arrow.down"
     case vector = "vector"
 }
 
