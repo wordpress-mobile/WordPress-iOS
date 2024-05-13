@@ -1,5 +1,4 @@
 import Foundation
-import WordPressFlux
 
 enum InAppUpdateType {
     case flexible
@@ -8,33 +7,47 @@ enum InAppUpdateType {
 
 final class InAppUpdateCoordinator {
 
-    private let service: AppStoreSearchService
+    private let currentVersion: String?
+    private let currentOsVersion: String
+    private let service: AppStoreSearchProtocol
+    private let presenter: InAppUpdatePresenterProtocol
     private let remoteConfigStore: RemoteConfigStore
+    private let isJetpack: Bool
+    private let isLoggedIn: Bool
 
     init(
-        service: AppStoreSearchService = AppStoreSearchService(),
-        remoteConfigStore: RemoteConfigStore = RemoteConfigStore()
+        currentVersion: String?,
+        currentOsVersion: String = UIDevice.current.systemVersion,
+        service: AppStoreSearchProtocol = AppStoreSearchService(),
+        presenter: InAppUpdatePresenterProtocol = InAppUpdatePresenter(),
+        remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+        isJetpack: Bool = AppConfiguration.isJetpack,
+        isLoggedIn: Bool = AccountHelper.isLoggedIn
     ) {
+        self.currentVersion = currentVersion
+        self.currentOsVersion = currentOsVersion
         self.service = service
+        self.presenter = presenter
         self.remoteConfigStore = remoteConfigStore
+        self.isJetpack = isJetpack
+        self.isLoggedIn = isLoggedIn
     }
 
     @MainActor
-    func showUpdateIfNeeded() {
-        guard AccountHelper.isLoggedIn else {
+    func checkForAppUpdates() async {
+        guard isLoggedIn else {
             return
         }
 
-        Task {
-            guard let updateType = await inAppUpdateType else {
-                return
-            }
-            switch updateType {
-            case .flexible:
-                showNotice()
-            case .blocking(let appStoreInfo):
-                showBlockingUpdate(using: appStoreInfo)
-            }
+        guard let updateType = await inAppUpdateType else {
+            return
+        }
+
+        switch updateType {
+        case .flexible:
+            presenter.showNotice()
+        case .blocking(let appStoreInfo):
+            presenter.showBlockingUpdate(using: appStoreInfo)
         }
     }
 
@@ -61,20 +74,8 @@ final class InAppUpdateCoordinator {
         }
     }
 
-    private var currentOsVersion: String {
-        UIDevice.current.systemVersion
-    }
-
-    private var currentVersion: String? {
-        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
-            DDLogError("No CFBundleShortVersionString found in Info.plist")
-            return nil
-        }
-        return version
-    }
-
     private var blockingVersion: String? {
-        let parameter: RemoteConfigParameter = AppConfiguration.isJetpack
+        let parameter: RemoteConfigParameter = isJetpack
             ? .jetpackInAppUpdateBlockingVersion
             : .wordPressInAppUpdateBlockingVersion
         return parameter.value(using: remoteConfigStore)
@@ -82,53 +83,12 @@ final class InAppUpdateCoordinator {
 
     private func fetchAppStoreInfo() async -> AppStoreInfo? {
         do {
-            let response = try await service.lookup(appID: AppConstants.itunesAppID)
-            return response.results.first { $0.trackId == Int(AppConstants.itunesAppID) }
+            let response = try await service.lookup()
+            return response.results.first { $0.trackId == Int(service.appID) }
         } catch {
             DDLogError("Error fetching app store info: \(error)")
             return nil
         }
-    }
-
-    private func showNotice() {
-        let notice = Notice(
-            title: Strings.Notice.title,
-            message: Strings.Notice.message,
-            feedbackType: .warning,
-            style: InAppUpdateNoticeStyle(),
-            actionTitle: Strings.Notice.update
-        ) { [weak self] _ in
-            self?.openAppStore()
-        }
-        ActionDispatcher.dispatch(NoticeAction.post(notice))
-        // Todo: if the notice is dismissed, show notice again after a defined interval
-    }
-
-    private func showBlockingUpdate(using appStoreInfo: AppStoreInfo) {
-        guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
-              let topViewController = window.topmostPresentedViewController,
-              !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
-            wpAssertionFailure("Failed to show blocking update view")
-            return
-        }
-        let viewModel = BlockingUpdateViewModel(appStoreInfo: appStoreInfo) { [weak self] in
-            self?.openAppStore()
-        }
-        let controller = BlockingUpdateViewController(viewModel: viewModel)
-        let navigation = UINavigationController(rootViewController: controller)
-        topViewController.present(navigation, animated: true)
-    }
-
-    private func openAppStore() {
-        // Todo
-    }
-}
-
-private enum Strings {
-    enum Notice {
-        static let title = NSLocalizedString("inAppUpdate.notice.title", value: "App Update Available", comment: "Title for notice displayed when there's a newer version of the app available")
-        static let message = NSLocalizedString("inAppUpdate.notice.message", value: "To use this app, download the latest version.", comment: "Message for notice displayed when there's a newer version of the app available")
-        static let update = NSLocalizedString("inAppUpdate.notice.update", value: "Update", comment: "Button title for notice displayed when there's a newer version of the app available")
     }
 }
 

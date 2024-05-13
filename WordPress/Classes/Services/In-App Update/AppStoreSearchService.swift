@@ -13,8 +13,19 @@ struct AppStoreInfo: Decodable {
     let minimumOsVersion: String
 }
 
-final class AppStoreSearchService {
-    func lookup(appID: String) async throws -> AppStoreLookupResponse {
+protocol AppStoreSearchProtocol {
+    var appID: String { get }
+    func lookup() async throws -> AppStoreLookupResponse
+}
+
+final class AppStoreSearchService: AppStoreSearchProtocol {
+    private(set) var appID: String
+
+    init(appID: String = AppConstants.itunesAppID) {
+        self.appID = appID
+    }
+
+    func lookup() async throws -> AppStoreLookupResponse {
         guard let url = URL(string: "https://itunes.apple.com/lookup?id=\(appID)") else {
             throw AppStoreSearchError.invalidURL
         }

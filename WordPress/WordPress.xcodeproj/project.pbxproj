@@ -4045,6 +4045,8 @@
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
+		FA1FE2962BF2832700926494 /* InAppUpdatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1FE2952BF2832700926494 /* InAppUpdatePresenter.swift */; };
+		FA1FE2972BF2832700926494 /* InAppUpdatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1FE2952BF2832700926494 /* InAppUpdatePresenter.swift */; };
 		FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
 		FA20751527A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
 		FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
@@ -4107,6 +4109,8 @@
 		FA6C32BA2BF1FFEF00BBDDB4 /* AppStoreSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */; };
 		FA6C32BC2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BB2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift */; };
 		FA6C32BD2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BB2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift */; };
+		FA6C32C02BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BF2BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift */; };
+		FA6C32C72BF2588C00BBDDB4 /* app-store-lookup-response.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */; };
 		FA6FAB3525EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */; };
 		FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */; };
 		FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
@@ -9451,6 +9455,7 @@
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusFailedView.swift; sourceTree = "<group>"; };
 		FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusFailedView.xib; sourceTree = "<group>"; };
+		FA1FE2952BF2832700926494 /* InAppUpdatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppUpdatePresenter.swift; sourceTree = "<group>"; };
 		FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Helpers.swift"; sourceTree = "<group>"; };
 		FA25F9FD2609AA830005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
@@ -9495,6 +9500,8 @@
 		FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppUpdateCoordinator.swift; sourceTree = "<group>"; };
 		FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSearchService.swift; sourceTree = "<group>"; };
 		FA6C32BB2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingUpdateViewModel.swift; sourceTree = "<group>"; };
+		FA6C32BF2BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppUpdateCoordinatorTests.swift; sourceTree = "<group>"; };
+		FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "app-store-lookup-response.json"; sourceTree = "<group>"; };
 		FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsSectionHeaderView.swift; sourceTree = "<group>"; };
 		FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsSectionHeaderView.xib; sourceTree = "<group>"; };
 		FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogCardCell.swift; sourceTree = "<group>"; };
@@ -16141,6 +16148,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				FA6C32BE2BF255BB00BBDDB4 /* In-App Update */,
 				088134FD2A56C5020027C086 /* EUUSCompliance */,
 				3F28CEAD2A4ACEA400B79686 /* Me */,
 				0141929E2983F5D900CAEDB0 /* Support */,
@@ -17212,6 +17220,7 @@
 				7E442FC820F6783600DEACA5 /* ActivityLog */,
 				0C7D48182A4DB91B0023CF84 /* Blaze */,
 				8BEE845627B1DC5E0001A93C /* Dashboard */,
+				FA6C32C32BF2581700BBDDB4 /* In-App Update */,
 				B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
@@ -18551,9 +18560,26 @@
 			isa = PBXGroup;
 			children = (
 				FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */,
+				FA1FE2952BF2832700926494 /* InAppUpdatePresenter.swift */,
 				FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */,
 			);
 			path = "In-App Update";
+			sourceTree = "<group>";
+		};
+		FA6C32BE2BF255BB00BBDDB4 /* In-App Update */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32BF2BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift */,
+			);
+			path = "In-App Update";
+			sourceTree = "<group>";
+		};
+		FA6C32C32BF2581700BBDDB4 /* In-App Update */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */,
+			);
+			name = "In-App Update";
 			sourceTree = "<group>";
 		};
 		FA70024E29DC3B6100E874FD /* Activity Log */ = {
@@ -20187,6 +20213,7 @@
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
+				FA6C32C72BF2588C00BBDDB4 /* app-store-lookup-response.json in Resources */,
 				C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */,
 				3211055B250C027D0048446F /* valid-jpeg-header.jpg in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
@@ -23126,6 +23153,7 @@
 				F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				0C700B862AE1E1300085C2EE /* PageListCell.swift in Sources */,
 				F1450CF32437DA3E00A28BFE /* MediaRequestAuthenticator.swift in Sources */,
+				FA1FE2962BF2832700926494 /* InAppUpdatePresenter.swift in Sources */,
 				0C391E5E2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift in Sources */,
 				9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
@@ -24235,6 +24263,7 @@
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				321955C124BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift in Sources */,
 				F4EF4BAB291D3D4700147B61 /* SiteIconTests.swift in Sources */,
+				FA6C32C02BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift in Sources */,
 				59B48B621B99E132008EBB84 /* JSONObject.swift in Sources */,
 				3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */,
 				C3E42AB027F4D30E00546706 /* MenuItemsViewControllerTests.swift in Sources */,
@@ -25016,6 +25045,7 @@
 				B084E61F27E3B79F007BF7A8 /* SiteIntentStep.swift in Sources */,
 				FABB22522602FC2C00C8785C /* ActivityTableViewCell.swift in Sources */,
 				F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */,
+				FA1FE2972BF2832700926494 /* InAppUpdatePresenter.swift in Sources */,
 				FABB22532602FC2C00C8785C /* BlogDetailsViewController+FancyAlerts.swift in Sources */,
 				F41D98E52B39CAAA004EC050 /* BlogDashboardDynamicCardCoordinator.swift in Sources */,
 				FABB22542602FC2C00C8785C /* StoriesIntroDataSource.swift in Sources */,
