@@ -595,12 +595,7 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
-        guard let topic = readerTopic else {
-            assertionFailure()
-            return
-        }
-
-        guard let headerView = headerForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
@@ -658,11 +653,7 @@ import AutomatticTracks
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-        if readerTopic != nil {
-            configureStreamHeader()
-        } else {
-            tableView.tableHeaderView = nil
-        }
+        configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()

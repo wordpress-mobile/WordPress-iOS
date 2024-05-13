@@ -19,11 +19,16 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    func headerForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if let topic,
+           let header = headerForStream(topic) {
+            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            return header
+        }
 
-        let header = headerForStream(topic)
-        configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-        return header
+        // The announcement header should have the lowest display priority.
+        // Only return the announcement when there's no other header.
+        return makeAnnouncementHeader()
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
@@ -151,6 +156,20 @@ extension ReaderStreamViewController {
         messageText.replace("[bookmark-outline]", with: icon)
 
         resultsStatusView.configureForLocalData(title: noResultsResponse.title, attributedSubtitle: messageText, image: "wp-illustration-reader-empty")
+    }
+}
+
+// MARK: - Reader Announcement Header
+
+private extension ReaderStreamViewController {
+    /// Returns a header view for Reader-related announcements.
+    /// Note that the announcement can be shown on topicless streams (e.g., Saved, Tags).
+    ///
+    /// - Returns: A configured UIView, or nil if the conditions are not met.
+    func makeAnnouncementHeader() -> UIView? {
+        // TODO: Add conditions
+        // TODO: Create and configure the views
+        return nil
     }
 }
 
