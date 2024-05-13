@@ -1,14 +1,29 @@
 final class CommentModerationViewModel: ObservableObject {
     @Published var state: CommentModerationState
+    private let comment: Comment
+    private let coordinator: CommentModerationCoordinator
 
-    let imageURL: URL?
-    let userName: String
+    var userName: String {
+        comment.author
+    }
+
+    var imageURL: URL? {
+        URL(string: comment.authorAvatarURL)
+    }
+
+    private lazy var commentService: CommentService = {
+        return .init(coreDataStack: ContextManager.shared)
+    }()
 
     // Temporary init argument
-    init(state: CommentModerationState, imageURL: URL?, userName: String) {
+    init(
+        state: CommentModerationState,
+        comment: Comment,
+        coordinator: CommentModerationCoordinator
+    ) {
         self.state = state
-        self.imageURL = imageURL
-        self.userName = userName
+        self.comment = comment
+        self.coordinator = coordinator
     }
 
     func didChangeState(to state: CommentModerationState) {
@@ -20,9 +35,22 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapPrimaryCTA() {
+        // TODO
         switch state {
         case .pending:
-            state = .approved(liked: false)
+//            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
+//                                                         withProperties: Constants.notificationDetailSource,
+//                                                         withBlogID: notification?.metaSiteID) :
+//                                    CommentAnalytics.trackCommentApproved(comment: comment)
+//
+            commentService.approve(comment, success: { [weak self] in
+                self?.state = .approved(liked: false)
+//                self?.showActionableNotice(title: ModerationMessages.approveSuccess)
+//                self?.refreshData()
+            }, failure: { /* [weak self] */ error in
+//                self?.displayNotice(title: ModerationMessages.approveFail)
+//                self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+            })
         case .trash, .spam:
             () // Delete comment
         case .approved:
@@ -31,7 +59,7 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapMore() {
-        // TODO
+        coordinator.didTapMoreOptions()
     }
 
     func didTapLike() {

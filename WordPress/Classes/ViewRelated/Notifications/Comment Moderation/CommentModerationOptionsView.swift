@@ -2,7 +2,6 @@ import SwiftUI
 import DesignSystem
 
 struct CommentModerationOptionsView: View {
-
     private var options: [Option] = [
         .approve,
         .pending,
@@ -19,7 +18,9 @@ struct CommentModerationOptionsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: .DS.Padding.double) {
             title
+                .padding(.top, .DS.Padding.medium)
             optionsVStack
+            Spacer()
         }
         .padding(.DS.Padding.double)
         .background(Color.DS.Background.primary)

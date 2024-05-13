@@ -262,36 +262,3 @@ private struct TrashSpam: View {
         )
     }
 }
-
-// MARK: - Preview
-
-struct CommentModerationView_Previews: PreviewProvider {
-    static let viewModel = CommentModerationViewModel(
-        state: .pending,
-        imageURL: URL(string: "https://i.pravatar.cc/300"),
-        userName: "John Smith"
-    )
-
-    static var previews: some View {
-        ZStack {
-            VStack(spacing: .DS.Padding.double) {
-                Button("Pending") {
-                    viewModel.state = .pending
-                }
-                Button("Approved") {
-                    viewModel.state = .approved(liked: false)
-                }
-                Button("Spam") {
-                    viewModel.state = .spam
-                }
-                Button("Trash") {
-                    viewModel.state = .trash
-                }
-            }
-            VStack {
-                Spacer()
-                CommentModerationView(viewModel: viewModel)
-            }
-        }
-    }
-}

@@ -2,6 +2,7 @@ import UIKit
 import CoreData
 import WordPressUI
 import DesignSystem
+import SwiftUI
 
 // Notification sent when a Comment is permanently deleted so the Notifications list (NotificationsViewController) is immediately updated.
 extension NSNotification.Name {
@@ -281,6 +282,19 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                                      accessoryView: accessoryView)
     }
 
+    func presentChangeStatusSheet() {
+        self.changeStatusViewController?.dismiss(animated: false)
+        let controller = CommentModerationOptionsViewController { [weak self] status in
+            guard let self else {
+                return
+            }
+            self.updateCommentStatus(status)
+            self.changeStatusViewController?.dismiss(animated: true)
+        }
+        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
+        bottomSheetViewController.show(from: self)
+        self.changeStatusViewController = bottomSheetViewController
+    }
 }
 
 // MARK: - Private Helpers
@@ -326,6 +340,18 @@ private extension CommentDetailViewController {
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
         containerStackView.addArrangedSubview(tableView)
+        if comment.allowsModeration(),
+            let moderationState = CommentModerationState(comment: comment) {
+            let commentModerationView = CommentModerationView(
+                viewModel: CommentModerationViewModel(
+                    state: moderationState,
+                    comment: comment,
+                    coordinator: CommentModerationCoordinator(commentDetailViewController: self)
+                )
+            )
+            let hostingController = UIHostingController(rootView: commentModerationView)
+            containerStackView.addArrangedSubview(hostingController.view)
+        }
         view.pinSubviewToAllEdges(containerStackView)
     }
 
@@ -363,24 +389,10 @@ private extension CommentDetailViewController {
         return rows
     }
 
-    func configureModerationRows() -> [RowType] {
-        var rows: [RowType] = []
-        rows.append(.status(status: .approved))
-        rows.append(.status(status: .pending))
-        rows.append(.status(status: .spam))
-
-        rows.append(.deleteComment)
-
-        return rows
-    }
-
     func configureSections() {
         var sections: [SectionType] = []
 
         sections.append(.content(configureContentRows()))
-        if comment.allowsModeration() {
-            sections.append(.moderation(configureModerationRows()))
-        }
         self.sections = sections
     }
 
@@ -714,20 +726,6 @@ private extension CommentDetailViewController {
         viewModel.view = viewController
         let bottomSheet = BottomSheetViewController(childViewController: viewController, customHeaderSpacing: 0)
         bottomSheet.show(from: self)
-    }
-
-    func presentChangeStatusSheet() {
-        self.changeStatusViewController?.dismiss(animated: false)
-        let controller = CommentModerationOptionsViewController { [weak self] status in
-            guard let self else {
-                return
-            }
-            self.updateCommentStatus(status)
-            self.changeStatusViewController?.dismiss(animated: true)
-        }
-        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
-        bottomSheetViewController.show(from: self)
-        self.changeStatusViewController = bottomSheetViewController
     }
 }
 
