@@ -167,7 +167,20 @@ class ReaderAnnouncementCoordinator {
 
     let repository: UserPersistentRepository = UserPersistentStoreFactory.instance()
 
-    lazy var isFeatureEnabled: Bool = {
-        return RemoteFeatureFlag.readerAnnouncementCard.enabled()
+    lazy var canShowAnnouncement: Bool = {
+        return !isDismissed && RemoteFeatureFlag.readerAnnouncementCard.enabled()
     }()
+
+    var isDismissed: Bool {
+        get {
+            repository.bool(forKey: Constants.key)
+        }
+        set {
+            repository.set(newValue, forKey: Constants.key)
+        }
+    }
+
+    private struct Constants {
+        static let key = "readerAnnouncementCardDismissedKey"
+    }
 }

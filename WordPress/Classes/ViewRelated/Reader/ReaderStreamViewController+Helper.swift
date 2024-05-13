@@ -167,15 +167,15 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured UIView, or nil if the conditions are not met.
     func makeAnnouncementHeader() -> UIView? {
-        // TODO: Add more conditions: dismiss flag check
-        guard readerAnnouncementCoordinator.isFeatureEnabled,
+        guard readerAnnouncementCoordinator.canShowAnnouncement,
               tableView.tableHeaderView == nil,
               !contentIsEmpty() else {
             return nil
         }
 
         return ReaderAnnouncementHeaderView(doneButtonTapped: { [weak self] in
-            // TODO: Update the dismiss flag.
+            // Set the card as dismissed.
+            self?.readerAnnouncementCoordinator.isDismissed = true
 
             // Animate the header removal so it feels less jarring.
             UIView.animate(withDuration: 0.3) {
