@@ -167,8 +167,9 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured UIView, or nil if the conditions are not met.
     func makeAnnouncementHeader() -> UIView? {
-        // TODO: Add more conditions: remote feature flag, dismiss flag check
-        guard tableView.tableHeaderView == nil,
+        // TODO: Add more conditions: dismiss flag check
+        guard readerAnnouncementCoordinator.isFeatureEnabled,
+              tableView.tableHeaderView == nil,
               !contentIsEmpty() else {
             return nil
         }
@@ -198,6 +199,7 @@ extension ReaderStreamViewController {
         tableView.tableHeaderView = headerView
         completion?()
     }
+
 }
 
 // MARK: - Undo cell for saved posts

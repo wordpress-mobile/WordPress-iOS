@@ -160,3 +160,14 @@ fileprivate extension ReaderAnnouncementHeader {
         }
     }
 }
+
+// MARK: - Reader Announcement Coordinator
+
+class ReaderAnnouncementCoordinator {
+
+    let repository: UserPersistentRepository = UserPersistentStoreFactory.instance()
+
+    lazy var isFeatureEnabled: Bool = {
+        return RemoteFeatureFlag.readerAnnouncementCard.enabled()
+    }()
+}

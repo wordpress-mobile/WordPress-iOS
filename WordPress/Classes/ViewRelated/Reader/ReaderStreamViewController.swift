@@ -225,6 +225,9 @@ import AutomatticTracks
     // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
     // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
     private var tagStreamSyncTracker = Set<String>()
+
+    let readerAnnouncementCoordinator = ReaderAnnouncementCoordinator()
+
     lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString(
             "reader.select.tags.title",
