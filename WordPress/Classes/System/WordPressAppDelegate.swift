@@ -638,7 +638,9 @@ extension WordPressAppDelegate {
     }
 
     func updateRemoteConfig() {
-        remoteConfigStore.update()
+        remoteConfigStore.update {
+            InAppUpdateCoordinator().showUpdateIfNeeded()
+        }
     }
 }
 
