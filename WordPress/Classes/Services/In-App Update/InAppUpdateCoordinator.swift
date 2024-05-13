@@ -21,11 +21,14 @@ final class InAppUpdateCoordinator {
 
     @MainActor
     func showUpdateIfNeeded() {
+        guard AccountHelper.isLoggedIn else {
+            return
+        }
+
         Task {
             guard let updateType = await inAppUpdateType else {
                 return
             }
-
             switch updateType {
             case .flexible:
                 showNotice()
