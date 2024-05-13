@@ -65,7 +65,7 @@ class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
     /// - Parameter color: The background color
     private func applyBackgroundColor(_ color: UIColor) {
         let backgroundView = UIView(frame: bounds)
-        backgroundView.backgroundColor = .secondarySystemGroupedBackground
+        backgroundView.backgroundColor = color
         self.backgroundView = backgroundView
     }
 }

@@ -169,7 +169,7 @@ private extension ReaderStreamViewController {
     func makeAnnouncementHeader() -> UIView? {
         // TODO: Add conditions
         // TODO: Create and configure the views
-        return nil
+        return ReaderAnnouncementHeaderView()
     }
 }
 
