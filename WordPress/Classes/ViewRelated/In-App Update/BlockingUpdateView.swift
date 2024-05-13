@@ -8,6 +8,7 @@ struct BlockingUpdateViewModel {
     var latestVersion: String = "24.9"
     var fileSizeBytes: String = "5MB"
     var releaseNotes: [String] = ["We fixed a bug!", "We fixed another important bug!"]
+    var onUpdateTapped: () -> Void
 }
 
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
@@ -17,18 +18,6 @@ final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    static func show() {
-        guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
-              let topViewController = window.topmostPresentedViewController,
-              !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
-            wpAssertionFailure("Failed to show blocking update view")
-            return
-        }
-        let controller = BlockingUpdateViewController(viewModel: BlockingUpdateViewModel())
-        let navigation = UINavigationController(rootViewController: controller)
-        topViewController.present(navigation, animated: true)
     }
 }
 
@@ -57,7 +46,7 @@ struct BlockingUpdateView: View {
             buttonsView
         }
         .padding([.leading, .trailing], 20)
-        .interactiveDismissDisabled()
+        .interactiveDismissDisabled(BuildConfiguration.current != .localDeveloper) // Todo: Remove condition later
         .onAppear {
             // Todo: track event
         }
@@ -102,20 +91,12 @@ struct BlockingUpdateView: View {
     private var buttonsView: some View {
         VStack {
             DSButton(title: Strings.Button.update, style: .init(emphasis: .primary, size: .large)) {
-                showAppStore()
+                viewModel.onUpdateTapped()
             }
             DSButton(title: Strings.Button.moreInfo, style: .init(emphasis: .tertiary, size: .large)) {
-                showMoreInfo()
+                // Todo
             }
         }
-    }
-
-    private func showAppStore() {
-        // Todo
-    }
-
-    private func showMoreInfo() {
-        // Todo
     }
 }
 

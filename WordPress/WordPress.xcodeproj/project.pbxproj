@@ -4090,6 +4090,8 @@
 		FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */; };
 		FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
 		FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
+		FA6C32B62BEE782000BBDDB4 /* InAppUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */; };
+		FA6C32B72BEE782000BBDDB4 /* InAppUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */; };
 		FA6FAB3525EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */; };
 		FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */; };
 		FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
@@ -9467,6 +9469,7 @@
 		FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedToJetpackEventsTracker.swift; sourceTree = "<group>"; };
 		FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
 		FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingUpdateView.swift; sourceTree = "<group>"; };
+		FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InAppUpdateCoordinator.swift; sourceTree = "<group>"; };
 		FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsSectionHeaderView.swift; sourceTree = "<group>"; };
 		FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsSectionHeaderView.xib; sourceTree = "<group>"; };
 		FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogCardCell.swift; sourceTree = "<group>"; };
@@ -14547,6 +14550,7 @@
 			children = (
 				FEF207F02AF287860025CB2C /* BloggingPrompts */,
 				F4B0F4812ADED999003ABC61 /* Domains */,
+				FA6C32B42BEE77EA00BBDDB4 /* In-App Update */,
 				F4EDAA4F29A66DA900622D3D /* Reader Post */,
 				5D44EB361986D8BA008B7175 /* ReaderSiteService.h */,
 				F4F09CCB2989BF5B00A5F420 /* ReaderSiteService_Internal.h */,
@@ -18511,6 +18515,14 @@
 			path = "In-App Update";
 			sourceTree = "<group>";
 		};
+		FA6C32B42BEE77EA00BBDDB4 /* In-App Update */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */,
+			);
+			path = "In-App Update";
+			sourceTree = "<group>";
+		};
 		FA70024E29DC3B6100E874FD /* Activity Log */ = {
 			isa = PBXGroup;
 			children = (
@@ -21672,6 +21684,7 @@
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
 				B038BD152BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
+				FA6C32B62BEE782000BBDDB4 /* InAppUpdateCoordinator.swift in Sources */,
 				3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */,
 				0C7E09202A4286A00052324C /* PostMetaButton.m in Sources */,
 				F47E154A29E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift in Sources */,
@@ -24979,6 +24992,7 @@
 				0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
 				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
+				FA6C32B72BEE782000BBDDB4 /* InAppUpdateCoordinator.swift in Sources */,
 				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FE4DC5AA293A84F8008F322F /* WordPressExportRoute.swift in Sources */,
