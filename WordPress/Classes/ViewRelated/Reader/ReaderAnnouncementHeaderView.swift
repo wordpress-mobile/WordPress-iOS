@@ -51,52 +51,17 @@ class ReaderAnnouncementHeaderView: UITableViewHeaderFooterView, ReaderStreamHea
 
 fileprivate struct ReaderAnnouncementHeader: View {
 
+    // Determines what features should be listed (and its order).
+    let entries: [Entry] = [.tagsStream, .readingPreferences]
+
     var body: some View {
         VStack(alignment: .leading, spacing: .DS.Padding.double) {
             Text(Strings.title)
                 .font(.callout)
                 .fontWeight(.semibold)
 
-            // TODO: Display announcement items, Localization
-
-            HStack(spacing: .DS.Padding.double) {
-                Image("reader-menu-tags", bundle: nil)
-                    .renderingMode(.template)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .padding(12)
-                    .foregroundColor(Color(.systemBackground))
-                    .background(.primary)
-                    .clipShape(Circle())
-
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("Tags Stream")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                    Text("Tap the dropdown at the top and select Tags to access streams from your followed tags.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
-            }
-
-            HStack(spacing: .DS.Padding.double) {
-                Image("reader-reading-preferences", bundle: nil)
-                    .renderingMode(.template)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .padding(12)
-                    .foregroundColor(Color(.systemBackground))
-                    .background(.primary)
-                    .clipShape(Circle())
-
-                VStack(alignment: .leading, spacing: 1) {
-                    Text("Reading Preferences")
-                        .font(.callout)
-                        .fontWeight(.semibold)
-                    Text("Choose colors and fonts that suit you. When you’re reading a post tap the AA icon at the top of the screen.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
-                }
+            ForEach(entries, id: \.title) { entry in
+                announcementEntryView(entry)
             }
 
             // DismissButton
@@ -110,9 +75,80 @@ fileprivate struct ReaderAnnouncementHeader: View {
         .background(Color(.listForeground))
     }
 
-    // TODO: Localization
+    // MARK: Constants
+
     private struct Strings {
-        static let title = "New in Reader"
-        static let buttonTitle = "Done"
+        static let title = NSLocalizedString(
+            "reader.announcement.title",
+            value: "New in Reader",
+            comment: "Title text for the announcement card component in the Reader."
+        )
+        static let buttonTitle = NSLocalizedString(
+            "reader.announcement.button",
+            value: "Done",
+            comment: "Text for a button that dismisses the announcement card in the Reader."
+        )
+    }
+}
+
+// MARK: - Announcement Item
+
+fileprivate extension ReaderAnnouncementHeader {
+
+    struct Entry {
+        static let tagsStream = Entry(
+            imageName: "reader-menu-tags",
+            title: NSLocalizedString(
+                "reader.announcement.entry.tagsStream.title",
+                value: "Tags Stream",
+                comment: "The title part of the feature announcement content for Tags Stream."
+            ),
+            description: NSLocalizedString(
+                "reader.announcement.entry.tagsStream.description",
+                value: "Tap the dropdown at the top and select Tags to access streams from your followed tags.",
+                comment: "The description part of the feature announcement content for Tags Stream."
+            )
+        )
+
+        static let readingPreferences = Entry(
+            imageName: "reader-reading-preferences",
+            title: NSLocalizedString(
+                "reader.announcement.entry.tagsStream.title",
+                value: "Tags Stream",
+                comment: "The title part of the feature announcement content for Tags Stream."
+            ),
+            description: NSLocalizedString(
+                "reader.announcement.entry.tagsStream.description",
+                value: "Tap the dropdown at the top and select Tags to access streams from your followed tags.",
+                comment: "The description part of the feature announcement content for Tags Stream."
+            )
+        )
+
+        let imageName: String
+        let title: String
+        let description: String
+    }
+
+    @ViewBuilder
+    func announcementEntryView(_ entry: Entry) -> some View {
+        HStack(spacing: .DS.Padding.double) {
+            Image(entry.imageName, bundle: nil)
+                .renderingMode(.template)
+                .resizable()
+                .frame(width: 24, height: 24)
+                .padding(12)
+                .foregroundColor(Color(.systemBackground))
+                .background(.primary)
+                .clipShape(Circle())
+
+            VStack(alignment: .leading, spacing: 1) {
+                Text(entry.title)
+                    .font(.callout)
+                    .fontWeight(.semibold)
+                Text(entry.description)
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
     }
 }
