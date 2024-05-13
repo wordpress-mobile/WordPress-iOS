@@ -37,15 +37,15 @@ final class InAppUpdateCoordinator {
 
     private var inAppUpdateType: InAppUpdateType? {
         get async {
-            guard let versionNumber else {
+            guard let currentVersion else {
                 return nil
             }
 
             if let appStoreInfo = await fetchAppStoreInfo() {
-                if let blockingVersionNumber, versionNumber < blockingVersionNumber {
+                if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
                     return .blocking(appStoreInfo)
                 }
-                if let appStoreVersionNumber = Double(appStoreInfo.version), versionNumber < appStoreVersionNumber {
+                if currentVersion.isLower(than: appStoreInfo.version) {
                     return .flexible
                 }
             }
@@ -54,18 +54,19 @@ final class InAppUpdateCoordinator {
         }
     }
 
-    private var versionNumber: Double? {
-        guard
-            let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String,
-            let versionNumber = Double(version)
-        else {
+    private var currentOsVersion: String {
+        UIDevice.current.systemVersion
+    }
+
+    private var currentVersion: String? {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
             return nil
         }
-        return versionNumber
+        return version
     }
 
-    private var blockingVersionNumber: Double? {
+    private var blockingVersion: String? {
         let parameter: RemoteConfigParameter = AppConfiguration.isJetpack
             ? .jetpackInAppUpdateBlockingVersion
             : .wordPressInAppUpdateBlockingVersion
@@ -121,5 +122,15 @@ private enum Strings {
         static let title = NSLocalizedString("inAppUpdate.notice.title", value: "App Update Available", comment: "Title for notice displayed when there's a newer version of the app available")
         static let message = NSLocalizedString("inAppUpdate.notice.message", value: "To use this app, download the latest version.", comment: "Message for notice displayed when there's a newer version of the app available")
         static let update = NSLocalizedString("inAppUpdate.notice.update", value: "Update", comment: "Button title for notice displayed when there's a newer version of the app available")
+    }
+}
+
+private extension String {
+    func isLower(than anotherVersionString: String) -> Bool {
+        self.compare(anotherVersionString, options: .numeric) == .orderedAscending
+    }
+
+    func isLowerThanOrEqual(to anotherVersionString: String) -> Bool {
+        [ComparisonResult.orderedSame, .orderedAscending].contains(self.compare(anotherVersionString, options: .numeric))
     }
 }
