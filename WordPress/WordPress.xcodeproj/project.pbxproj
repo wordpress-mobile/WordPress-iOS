@@ -14026,7 +14026,7 @@
 				081E4B4A281BFB520085E89C /* Feature Highlight */,
 				98AA9F1F27EA888C00B3A98C /* Feature Introduction */,
 				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
-				FA6C32962BEE316900BBDDB4 /* In-App Update */,
+				FA6C32962BEE316900BBDDB4 /* InAppUpdate */,
 				E1F391ED1FF25DEC00DB32A3 /* Jetpack */,
 				AB758D9C25EFDF8400961C0B /* Likes */,
 				31F4F6641A13858F00196A98 /* Me */,
@@ -14563,7 +14563,7 @@
 			children = (
 				FEF207F02AF287860025CB2C /* BloggingPrompts */,
 				F4B0F4812ADED999003ABC61 /* Domains */,
-				FA6C32B42BEE77EA00BBDDB4 /* In-App Update */,
+				FA6C32B42BEE77EA00BBDDB4 /* InAppUpdate */,
 				F4EDAA4F29A66DA900622D3D /* Reader Post */,
 				5D44EB361986D8BA008B7175 /* ReaderSiteService.h */,
 				F4F09CCB2989BF5B00A5F420 /* ReaderSiteService_Internal.h */,
@@ -16124,7 +16124,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
-				FA6C32BE2BF255BB00BBDDB4 /* In-App Update */,
+				FA6C32BE2BF255BB00BBDDB4 /* InAppUpdate */,
 				088134FD2A56C5020027C086 /* EUUSCompliance */,
 				3F28CEAD2A4ACEA400B79686 /* Me */,
 				0141929E2983F5D900CAEDB0 /* Support */,
@@ -18522,31 +18522,31 @@
 			path = "Restore Status Failed";
 			sourceTree = "<group>";
 		};
-		FA6C32962BEE316900BBDDB4 /* In-App Update */ = {
+		FA6C32962BEE316900BBDDB4 /* InAppUpdate */ = {
 			isa = PBXGroup;
 			children = (
 				FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */,
 				FA6C32BB2BF21B1C00BBDDB4 /* BlockingUpdateViewModel.swift */,
 			);
-			path = "In-App Update";
+			path = InAppUpdate;
 			sourceTree = "<group>";
 		};
-		FA6C32B42BEE77EA00BBDDB4 /* In-App Update */ = {
+		FA6C32B42BEE77EA00BBDDB4 /* InAppUpdate */ = {
 			isa = PBXGroup;
 			children = (
 				FA6C32B52BEE782000BBDDB4 /* InAppUpdateCoordinator.swift */,
 				FA1FE2952BF2832700926494 /* InAppUpdatePresenter.swift */,
 				FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */,
 			);
-			path = "In-App Update";
+			path = InAppUpdate;
 			sourceTree = "<group>";
 		};
-		FA6C32BE2BF255BB00BBDDB4 /* In-App Update */ = {
+		FA6C32BE2BF255BB00BBDDB4 /* InAppUpdate */ = {
 			isa = PBXGroup;
 			children = (
 				FA6C32BF2BF255FA00BBDDB4 /* InAppUpdateCoordinatorTests.swift */,
 			);
-			path = "In-App Update";
+			path = InAppUpdate;
 			sourceTree = "<group>";
 		};
 		FA6C32C32BF2581700BBDDB4 /* In-App Update */ = {
