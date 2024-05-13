@@ -3,18 +3,19 @@ import WordPressFlux
 
 enum InAppUpdateType {
     case flexible
-    case blocking
-}
-
-struct AppStoreInfo {
-    var versionNumber: Double?
+    case blocking(AppStoreInfo)
 }
 
 final class InAppUpdateCoordinator {
 
+    private let service: AppStoreSearchService
     private let remoteConfigStore: RemoteConfigStore
 
-    init(remoteConfigStore: RemoteConfigStore = RemoteConfigStore()) {
+    init(
+        service: AppStoreSearchService = AppStoreSearchService(),
+        remoteConfigStore: RemoteConfigStore = RemoteConfigStore()
+    ) {
+        self.service = service
         self.remoteConfigStore = remoteConfigStore
     }
 
@@ -28,8 +29,8 @@ final class InAppUpdateCoordinator {
             switch updateType {
             case .flexible:
                 showNotice()
-            case .blocking:
-                showBlockingUpdate()
+            case .blocking(let appStoreInfo):
+                showBlockingUpdate(using: appStoreInfo)
             }
         }
     }
@@ -42,9 +43,9 @@ final class InAppUpdateCoordinator {
 
             if let appStoreInfo = await fetchAppStoreInfo() {
                 if let blockingVersionNumber, versionNumber < blockingVersionNumber {
-                    return .blocking
+                    return .blocking(appStoreInfo)
                 }
-                if let appStoreVersionNubmer = appStoreInfo.versionNumber, versionNumber < appStoreVersionNubmer {
+                if let appStoreVersionNumber = Double(appStoreInfo.version), versionNumber < appStoreVersionNumber {
                     return .flexible
                 }
             }
@@ -72,8 +73,13 @@ final class InAppUpdateCoordinator {
     }
 
     private func fetchAppStoreInfo() async -> AppStoreInfo? {
-        // Todo: fetch info from itunes search api
-        return AppStoreInfo(versionNumber: -1)
+        do {
+            let response = try await service.lookup(appID: AppConstants.itunesAppID)
+            return response.results.first { $0.trackId == Int(AppConstants.itunesAppID) }
+        } catch {
+            DDLogError("Error fetching app store info: \(error)")
+            return nil
+        }
     }
 
     private func showNotice() {
@@ -90,14 +96,14 @@ final class InAppUpdateCoordinator {
         // Todo: if the notice is dismissed, show notice again after a defined interval
     }
 
-    private func showBlockingUpdate() {
+    private func showBlockingUpdate(using appStoreInfo: AppStoreInfo) {
         guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
               let topViewController = window.topmostPresentedViewController,
               !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
             wpAssertionFailure("Failed to show blocking update view")
             return
         }
-        let viewModel = BlockingUpdateViewModel() { [weak self] in
+        let viewModel = BlockingUpdateViewModel(appStoreInfo: appStoreInfo) { [weak self] in
             self?.openAppStore()
         }
         let controller = BlockingUpdateViewController(viewModel: viewModel)
