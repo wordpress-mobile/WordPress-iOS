@@ -43,7 +43,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .readerTagsFeed:
             return false
         case .syncPublishing:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest, .a8cPrereleaseTesting] || FeatureFlagRolloutStore().isRolloutEnabled(for: self)
+            return true
         case .autoSaveDrafts:
             return true
         }
