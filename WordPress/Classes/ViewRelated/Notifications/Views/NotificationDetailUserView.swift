@@ -110,20 +110,6 @@ private struct FollowButton: View {
     }
 }
 
-public struct ImageConfiguration {
-    let url: URL?
-    let placeholder: Image?
-
-    public init(url: URL?, placeholder: Image? = nil) {
-        self.url = url
-        self.placeholder = placeholder
-    }
-
-    public init(url: String?, placeholder: Image? = nil) {
-        self.init(url: URL(string: url ?? ""), placeholder: placeholder)
-    }
-}
-
 #Preview {
     VStack(alignment: .leading) {
         NotificationDetailUserView(
