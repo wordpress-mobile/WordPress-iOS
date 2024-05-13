@@ -167,9 +167,23 @@ private extension ReaderStreamViewController {
     ///
     /// - Returns: A configured UIView, or nil if the conditions are not met.
     func makeAnnouncementHeader() -> UIView? {
-        // TODO: Add conditions
-        // TODO: Create and configure the views
-        return ReaderAnnouncementHeaderView()
+        // TODO: Add more conditions
+        guard !contentIsEmpty() else {
+            return nil
+        }
+
+        return ReaderAnnouncementHeaderView(doneButtonTapped: { [weak self] in
+            // TODO: Update the dismiss flag.
+
+            // Animate the header removal so it feels less jarring.
+            UIView.animate(withDuration: 0.3) {
+                self?.tableView.tableHeaderView?.layer.opacity = 0.0
+            } completion: { _ in
+                self?.tableView.performBatchUpdates({
+                    self?.tableView.tableHeaderView = nil
+                })
+            }
+        })
     }
 }
 

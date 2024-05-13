@@ -5,7 +5,13 @@ class ReaderAnnouncementHeaderView: UITableViewHeaderFooterView, ReaderStreamHea
 
     weak var delegate: ReaderStreamHeaderDelegate?
 
-    init() {
+    private let header: ReaderAnnouncementHeader
+
+    init(doneButtonTapped: (() -> Void)? = nil) {
+        self.header = ReaderAnnouncementHeader { [doneButtonTapped] in
+            doneButtonTapped?()
+        }
+
         super.init(reuseIdentifier: ReaderSiteHeaderView.classNameWithoutNamespaces())
         setupViews()
     }
@@ -15,7 +21,7 @@ class ReaderAnnouncementHeaderView: UITableViewHeaderFooterView, ReaderStreamHea
     }
 
     private func setupViews() {
-        let view = UIView.embedSwiftUIView(ReaderAnnouncementHeader())
+        let view = UIView.embedSwiftUIView(self.header)
         addSubview(view)
         NSLayoutConstraint.activate([
             view.topAnchor.constraint(equalTo: topAnchor),
@@ -54,6 +60,8 @@ fileprivate struct ReaderAnnouncementHeader: View {
     // Determines what features should be listed (and its order).
     let entries: [Entry] = [.tagsStream, .readingPreferences]
 
+    var onButtonTap: (() -> Void)? = nil
+
     var body: some View {
         VStack(alignment: .leading, spacing: .DS.Padding.double) {
             Text(Strings.title)
@@ -67,7 +75,7 @@ fileprivate struct ReaderAnnouncementHeader: View {
             // DismissButton
             DSButton(title: Strings.buttonTitle,
                      style: DSButtonStyle(emphasis: .primary, size: .large)) {
-                // TODO: Dismiss the header
+                onButtonTap?()
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
@@ -113,14 +121,14 @@ fileprivate extension ReaderAnnouncementHeader {
         static let readingPreferences = Entry(
             imageName: "reader-reading-preferences",
             title: NSLocalizedString(
-                "reader.announcement.entry.tagsStream.title",
-                value: "Tags Stream",
-                comment: "The title part of the feature announcement content for Tags Stream."
+                "reader.announcement.entry.readingPreferences.title",
+                value: "Reading Preferences",
+                comment: "The title part of the feature announcement content for Reading Preferences."
             ),
             description: NSLocalizedString(
-                "reader.announcement.entry.tagsStream.description",
-                value: "Tap the dropdown at the top and select Tags to access streams from your followed tags.",
-                comment: "The description part of the feature announcement content for Tags Stream."
+                "reader.announcement.entry.readingPreferences.description",
+                value: "Choose colors and fonts that suit you. When you’re reading a post tap the AA icon at the top of the screen.",
+                comment: "The description part of the feature announcement content for Reading Preferences."
             )
         )
 
