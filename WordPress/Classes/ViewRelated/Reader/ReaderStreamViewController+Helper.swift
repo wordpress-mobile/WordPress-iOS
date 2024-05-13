@@ -169,6 +169,7 @@ extension ReaderStreamViewController {
     func makeAnnouncementHeader() -> UIView? {
         guard readerAnnouncementCoordinator.canShowAnnouncement,
               tableView.tableHeaderView == nil,
+              !isContentFiltered,
               !contentIsEmpty() else {
             return nil
         }
