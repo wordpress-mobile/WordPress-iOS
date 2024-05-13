@@ -1107,6 +1107,14 @@ import AutomatticTracks
                     }
                     strongSelf.updateLastSyncedForTopic(objectID)
                 }
+
+                // Show the announcement card if possible.
+                // Context: `configureStreamHeader()` may be called while the content is still empty.
+                // Calling it here manually ensures that we know whether the content is actually empty or not.
+                self?.showAnnouncementHeaderIfNeeded(completion: {
+                    self?.refreshTableViewHeaderLayout()
+                })
+
                 success?(hasMore)
             }
         }

@@ -161,14 +161,15 @@ extension ReaderStreamViewController {
 
 // MARK: - Reader Announcement Header
 
-private extension ReaderStreamViewController {
+extension ReaderStreamViewController {
     /// Returns a header view for Reader-related announcements.
-    /// Note that the announcement can be shown on topicless streams (e.g., Saved, Tags).
+    /// Note that the announcement can also be shown on topicless streams (e.g., Saved, Tags).
     ///
     /// - Returns: A configured UIView, or nil if the conditions are not met.
     func makeAnnouncementHeader() -> UIView? {
-        // TODO: Add more conditions
-        guard !contentIsEmpty() else {
+        // TODO: Add more conditions: remote feature flag, dismiss flag check
+        guard tableView.tableHeaderView == nil,
+              !contentIsEmpty() else {
             return nil
         }
 
@@ -184,6 +185,18 @@ private extension ReaderStreamViewController {
                 })
             }
         })
+    }
+
+    // The header may be configured when the content is still empty (i.e., Discover stream).
+    // This method is added to provide a way to inject the announcement card outside of
+    // `configureStreamHeader()`. For example, after syncing completes.
+    func showAnnouncementHeaderIfNeeded(completion: (() -> Void)? = nil) {
+        guard let headerView = makeAnnouncementHeader() else {
+            return
+        }
+
+        tableView.tableHeaderView = headerView
+        completion?()
     }
 }
 
