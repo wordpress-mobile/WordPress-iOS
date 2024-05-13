@@ -1,3 +1,7 @@
+25.0
+-----
+
+
 24.9
 -----
 * [*] Add "Parent Page" to "Page Settings" [#23136]

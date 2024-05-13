@@ -1460,7 +1460,6 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2355,9 +2354,6 @@ Example: Reply to Pamela Nguyen */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Customize your followed site settings for New Posts and Comments";
-
 /* Name of the Quick Start list that guides users through a few tasks to customize their new website. */
 "Customize Your Site" = "Customize Your Site";
 
@@ -2697,9 +2693,6 @@ Example: Reply to Pamela Nguyen */
 /* The menu item to select during a guided tour. */
 "Discover" = "Discover";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Discover and follow blogs you love";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Discover and follow sites that inspire you.";
 
@@ -2893,9 +2886,7 @@ Example: Reply to Pamela Nguyen */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -3356,9 +3347,6 @@ Example: Reply to Pamela Nguyen */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Error occurred\nduring loading";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Error occurred\nduring saving";
-
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Error removing %@";
 
@@ -3573,9 +3561,6 @@ Example: Reply to Pamela Nguyen */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Finding blogs and stories you’ll love...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3599,11 +3584,7 @@ Example: Reply to Pamela Nguyen */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Fixing Threats";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
-
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Follow";
 
 /* Button title. Follow the comments on a post. */
@@ -3618,33 +3599,17 @@ Example: Reply to Pamela Nguyen */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Follow topics you're interested in and we'll find some blogs you might like.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favorite sites and discover new blogs.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Followed Sites";
-
 /* User role badge */
 "Follower" = "Follower";
 
 /* Label for number of followers. */
 "Followers" = "Followers";
 
-/* User is following the blog. */
-"Following" = "Following";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Following new topics...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Following this conversation";
-
-/* Filters Follows Notifications */
-"Follows" = "Follows";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Follows the blog.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
@@ -3868,8 +3833,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Dismiss";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Discover blogs to follow";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Discover blogs to subscribe";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Do it again";
@@ -3881,7 +3846,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "You've connected with other blogs";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Connect with other bloggers by following, liking and commenting on their posts.";
+"growAudienceCell.readerDiscover.details" = "Connect with other bloggers by subscribing, liking and commenting on their posts.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Enable post sharing";
@@ -4014,8 +3979,7 @@ Example: Reply to Pamela Nguyen */
 "Hide search heading" = "Hide search heading";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "History";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -4541,7 +4505,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Switch to the Jetpack app to find, follow, and like all your favorite sites and posts with Reader.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Follow any site with the Jetpack app";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Subscribe to any site with the Jetpack app";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.";
@@ -4925,9 +4889,6 @@ Please install the %3$@ to use the app with this site.";
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Loading comment...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Loading history...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Loading menu...";
 
@@ -4972,7 +4933,6 @@ Please install the %3$@ to use the app with this site.";
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Loading...";
 
@@ -5853,11 +5813,7 @@ Please install the %3$@ to use the app with this site.";
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "No fixed threats";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "No followers yet";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "No history yet";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -6052,6 +6008,15 @@ Please install the %3$@ to use the app with this site.";
 /* Description of the blogging prompts feature on the Blogging Reminders Settings screen. */
 "Notification will include a word or short phrase for inspiration" = "Notification will include a word or short phrase for inspiration";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Site subscriptions";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Customize your subscribed site settings for New Posts and Comments";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Subscribed Sites";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "You don't have permission to view this private blog.";
 
@@ -6073,6 +6038,18 @@ Please install the %3$@ to use the app with this site.";
 /* Notifications tab bar item accessibility label, unread notifications state */
 "Notifications Unread" = "Notifications Unread";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Subscribe to the blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Unsubscribe from the blog.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Subscribed";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Subscribe";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Could improve";
 
@@ -6084,6 +6061,24 @@ Please install the %3$@ to use the app with this site.";
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Send feedback";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Subscribe";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Subscribed";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Subscribes to the blog.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Subscribers";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "subscribe";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "No subscribers yet";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithoutPost" = "Check out my post:";
@@ -6412,11 +6407,11 @@ Please install the %3$@ to use the app with this site.";
    Title for selecting parent category of a category */
 "Parent Category" = "Parent Category";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Parent page successfully updated.";
-
 /* Parenting site intent topic */
 "Parenting" = "Parenting";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Parent Page";
 
 /* No comment provided by engineer. */
 "password" = "password";
@@ -6740,8 +6735,7 @@ Please install the %3$@ to use the app with this site.";
 /* Title of notification displayed when a post has failed to upload. */
 "Post failed to upload" = "Post failed to upload";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
@@ -6810,6 +6804,54 @@ Please install the %3$@ to use the app with this site.";
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Creating autosave...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Code Editor";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Blocks: %1$li, Words: %2$li, Characters: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Help";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Help & Support";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Page Settings";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Post Settings";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Preview";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revisions";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Visual Editor";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "View";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Some media items failed to upload";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Post restored as a draft";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Cancel";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "A trashed %1$@ can't be edited. To edit this %1$@, you'll need to restore it by moving it back to a draft.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Restore";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Trashed %@";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Revision loaded";
@@ -6995,9 +7037,6 @@ Please install the %3$@ to use the app with this site.";
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Set as homepage";
 
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Set parent";
-
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Set as posts page";
 
@@ -7040,11 +7079,20 @@ Please install the %3$@ to use the app with this site.";
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Featured Image Options";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Parent page";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "Pending review";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter Auto-Sharing Is No Longer Available";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Page Attributes";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Set Featured Image";
@@ -7060,6 +7108,9 @@ Please install the %3$@ to use the app with this site.";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Failed to update the post settings";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "By changing the visibility to 'Private', the post will be published immediately";
 
 /* A short message explaining that a page was deleted permanently. */
 "postsList.deletePage.message" = "Page deleted permanently";
@@ -7078,6 +7129,12 @@ Please install the %3$@ to use the app with this site.";
 
 /* Menu option for filtering posts by me */
 "postsList.postsByMe" = "Posts by me";
+
+/* Localized post type: `Page` */
+"postType.page" = "page";
+
+/* Localized post type: `Post` */
+"postType.post" = "post";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Only visible to site admins and editors";
@@ -7304,6 +7361,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Menu item label for linking a project page. */
 "Projects" = "Projects";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Subscribe to your favorite sites and discover new blogs.";
+
 /* Title of the notification presented when a prompt is skipped */
 "Prompt skipped" = "Prompt skipped";
 
@@ -7365,9 +7425,6 @@ Tapping on this row allows the user to edit the sharing message. */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Published";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Published just now on";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publishing page...";
 
@@ -7376,6 +7433,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Publishing...";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Done";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promote with Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Share post";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Post published!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Get more traffic:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "View post";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Purchases";
@@ -7542,6 +7617,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Fetching blogs...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Subscribed Sites";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blogs";
@@ -7850,11 +7928,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Following new tags...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Select a few to continue";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Done";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Finding blogs and stories you’ll love...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "No new tags to follow";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Choose your tags";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Discover and follow blogs you love";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Subscribe";
@@ -7898,8 +7988,24 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Following";
 
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "More from %1$@";
+
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Unfollow %@";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Retry";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "We couldn't load posts from this tag right now";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Posts failed to load";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Unsubscribe";
@@ -8141,8 +8247,7 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Removes a post from My Likes. Spoken Hint. */
 "Removes this post from My Likes" = "Removes this post from My Likes";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
 
 /* Explanation of what will happen if the user confirms this alert. */
@@ -8322,6 +8427,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Title of the screen that shows the revisions. */
 "Revision" = "Revision";
 
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "When you make changes in the editor you'll be able to see the revision history here";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "No revisions yet";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Loading…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revisions";
+
 /* Post Rich content */
 "Rich Content" = "Rich Content";
 
@@ -8439,9 +8556,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Scheduled";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Scheduled for %@ on";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Scheduling...";
 
@@ -8552,9 +8666,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* No comment provided by engineer. */
 "Select a color above" = "Select a color above";
-
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Select a few to continue";
 
 /* No comment provided by engineer. */
 "Select a layout" = "Select a layout";
@@ -8679,9 +8790,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Notice confirming that an image has been set as the post's featured image. */
 "Set as featured image" = "Set as featured image";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Set Parent";
-
 /* Title of the set goals button in the Blogging Reminders Settings flow. */
 "Set reminders" = "Set reminders";
 
@@ -8719,7 +8827,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 "Settings update failed" = "Settings update failed";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -8902,9 +9009,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title of the Domains Dashboard. */
 "Site Domains" = "Site Domains";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Site follows";
 
 /* Accessibility label for site icon button */
 "Site Icon" = "Site Icon";
@@ -9456,8 +9560,8 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Name";
 
-/* Stats 'Subscribers' card header, contains chart */
-"stats.subscribers.chart.title" = "Subscribers";
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Subscribers";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Clicks";
@@ -9470,6 +9574,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "Emails";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Subscriber Growth";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Subscribers";
@@ -10721,9 +10828,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Unfollow conversation";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Unfollows the blog.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "Ungroup block";
 
@@ -10932,9 +11036,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Description of a Quick Start Tour */
 "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader." = "Used across the web: in browser tabs, social media previews, and the WordPress.com Reader.";
 
-/* Site's Email Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.emailSubscriber" = "Site's Email Subscriber";
-
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "Site's Subscriber";
 
@@ -10966,9 +11067,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Blog Users */
 "Users" = "Users";
-
-/* Site Email Subscribers */
-"users.list.title.emailSubscribers" = "Email Subscribers";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Subscribers";
@@ -11042,9 +11140,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Menu title to show more prompts. */
 "View more prompts" = "View more prompts";
-
-/* Button label for viewing a post */
-"View Post" = "View Post";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
@@ -11492,9 +11587,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "When you make changes in the editor you'll be able to see the history here";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "When you make changes to your site you'll be able to see your activity history here.";
