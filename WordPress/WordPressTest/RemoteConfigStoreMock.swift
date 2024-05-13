@@ -9,6 +9,7 @@ class RemoteConfigStoreMock: RemoteConfigStore {
     var phaseSelfHostedBlogPostUrl: String?
     var blazeNonDismissibleStep: String?
     var blazeFlowCompletedStep: String?
+    var jetpackInAppUpdateBlockingVersion: String?
 
     override func value(for key: String) -> Any? {
         if key == "phase_three_blog_post" {
@@ -28,6 +29,9 @@ class RemoteConfigStoreMock: RemoteConfigStore {
         }
         if key == "blaze_completed_step_hash" {
             return blazeFlowCompletedStep
+        }
+        if key == "jp_in_app_update_blocking_version_ios" {
+            return jetpackInAppUpdateBlockingVersion
         }
         return super.value(for: key)
     }
