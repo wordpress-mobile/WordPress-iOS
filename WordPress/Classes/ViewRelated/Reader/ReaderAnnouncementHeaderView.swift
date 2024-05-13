@@ -30,7 +30,7 @@ class ReaderAnnouncementHeaderView: UITableViewHeaderFooterView, ReaderStreamHea
             view.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
         ])
 
-        applyBackgroundColor(.secondarySystemGroupedBackground)
+        applyBackgroundColor(Constants.backgroundColor)
         addBottomBorder(withColor: .separator)
     }
 
@@ -48,6 +48,10 @@ class ReaderAnnouncementHeaderView: UITableViewHeaderFooterView, ReaderStreamHea
 
     func configureHeader(_ topic: ReaderAbstractTopic) {
         // no-op; this header doesn't rely on the supplied topic.
+    }
+
+    fileprivate struct Constants {
+        static let backgroundColor = UIColor.systemBackground
     }
 }
 
@@ -72,7 +76,6 @@ fileprivate struct ReaderAnnouncementHeader: View {
                 announcementEntryView(entry)
             }
 
-            // DismissButton
             DSButton(title: Strings.buttonTitle,
                      style: DSButtonStyle(emphasis: .primary, size: .large)) {
                 onButtonTap?()
@@ -80,7 +83,7 @@ fileprivate struct ReaderAnnouncementHeader: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .padding(.vertical, .DS.Padding.medium)
-        .background(Color(.listForeground))
+        .background(Color(ReaderAnnouncementHeaderView.Constants.backgroundColor))
     }
 
     // MARK: Constants
