@@ -3,14 +3,6 @@ import DesignSystem
 import UIKit
 import StoreKit
 
-struct BlockingUpdateViewModel {
-    var appName: String = "Jetpack iOS"
-    var latestVersion: String = "24.9"
-    var fileSizeBytes: String = "5MB"
-    var releaseNotes: [String] = ["We fixed a bug!", "We fixed another important bug!"]
-    var onUpdateTapped: () -> Void
-}
-
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
     init(viewModel: BlockingUpdateViewModel) {
         super.init(rootView: .init(viewModel: viewModel))
@@ -66,7 +58,7 @@ struct BlockingUpdateView: View {
                 Text(viewModel.appName)
                     .font(.system(.callout))
                     .foregroundStyle(.primary)
-                Text("\(viewModel.latestVersion) · \(viewModel.fileSizeBytes)")
+                Text(viewModel.detailsString)
                     .font(.system(.callout))
                     .foregroundStyle(.secondary)
             }
