@@ -186,6 +186,7 @@ import AutomatticTracks
         }
     }
 
+    /// Whether the stream is being filtered by a site or tag.
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
@@ -224,6 +225,11 @@ import AutomatticTracks
     // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
     // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
     private var tagStreamSyncTracker = Set<String>()
+
+    /// Controls whether the Reader announcement card can be displayed.
+    ///
+    let readerAnnouncementCoordinator = ReaderAnnouncementCoordinator()
+
     lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
         let title = NSLocalizedString(
             "reader.select.tags.title",
@@ -594,39 +600,17 @@ import AutomatticTracks
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
-        guard let topic = readerTopic else {
-            assertionFailure()
-            return
-        }
-
-        guard let header = headerForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
 
-        let isNewHeader = !isContentFiltered
-        let isNewSiteHeader = isNewHeader && ReaderHelpers.isTopicSite(topic)
-
-        let headerView = {
-            guard isNewSiteHeader else {
-                return header
-            }
-
-            // The container view is added so that the header respects the safe area boundaries and expands
-            // the header's background color to the screen's edges.
-            let containerView = UIView()
-            containerView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.backgroundColor = header.backgroundColor
-            header.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(header)
-            return containerView
-        }()
-
         if let tableHeaderView = tableView.tableHeaderView {
             headerView.isHidden = tableHeaderView.isHidden
         }
+
         tableView.tableHeaderView = headerView
-        streamHeader = header as? ReaderStreamHeader
+        streamHeader = headerView as? ReaderStreamHeader
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
@@ -635,37 +619,12 @@ import AutomatticTracks
         headerWidthConstraint.priority = UILayoutPriority(999)
         centerConstraint.priority = UILayoutPriority(999)
 
-        var constraints = [
+        NSLayoutConstraint.activate([
             centerConstraint,
             headerWidthConstraint,
             topConstraint
-        ]
+        ])
 
-        if isNewSiteHeader {
-            constraints.append(contentsOf: [
-                header.topAnchor.constraint(equalTo: headerView.topAnchor),
-                header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                header.trailingAnchor.constraint(equalTo: tableView.readableContentGuide.trailingAnchor),
-                header.leadingAnchor.constraint(equalTo: tableView.readableContentGuide.leadingAnchor),
-            ])
-        }
-
-        // manually add a separator for the new header views.
-        if isNewHeader {
-            let borderView = UIView()
-            borderView.backgroundColor = .separator
-            borderView.translatesAutoresizingMaskIntoConstraints = false
-            headerView.addSubview(borderView)
-
-            constraints.append(contentsOf: [
-                borderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                borderView.heightAnchor.constraint(equalToConstant: 0.5),
-                borderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                borderView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-        }
-
-        NSLayoutConstraint.activate(constraints)
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -699,11 +658,7 @@ import AutomatticTracks
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-        if readerTopic != nil {
-            configureStreamHeader()
-        } else {
-            tableView.tableHeaderView = nil
-        }
+        configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
@@ -1157,6 +1112,14 @@ import AutomatticTracks
                     }
                     strongSelf.updateLastSyncedForTopic(objectID)
                 }
+
+                // Show the announcement card if possible.
+                // Context: `configureStreamHeader()` may be called while the content is still empty.
+                // Calling it here manually ensures that we know whether the content is actually empty or not.
+                self?.showAnnouncementHeaderIfNeeded { [weak self] in
+                    self?.refreshTableViewHeaderLayout()
+                }
+
                 success?(hasMore)
             }
         }

@@ -19,11 +19,16 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured instance of UIView.
     ///
-    func headerForStream(_ topic: ReaderAbstractTopic, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+    func headerForStream(_ topic: ReaderAbstractTopic?, isLoggedIn: Bool, container: UITableViewController) -> UIView? {
+        if let topic,
+           let header = headerForStream(topic) {
+            configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
+            return header
+        }
 
-        let header = headerForStream(topic)
-        configure(header, topic: topic, isLoggedIn: isLoggedIn, delegate: self)
-        return header
+        // The announcement header should have the lowest display priority.
+        // Only return the announcement when there's no other header.
+        return makeAnnouncementHeader()
     }
 
     func configure(_ header: ReaderHeader?, topic: ReaderAbstractTopic, isLoggedIn: Bool, delegate: ReaderStreamHeaderDelegate) {
@@ -152,6 +157,50 @@ extension ReaderStreamViewController {
 
         resultsStatusView.configureForLocalData(title: noResultsResponse.title, attributedSubtitle: messageText, image: "wp-illustration-reader-empty")
     }
+}
+
+// MARK: - Reader Announcement Header
+
+extension ReaderStreamViewController {
+    /// Returns a header view for Reader-related announcements.
+    /// Note that the announcement can also be shown on topicless streams (e.g., Saved, Tags).
+    ///
+    /// - Returns: A configured UIView, or nil if the conditions are not met.
+    func makeAnnouncementHeader() -> UIView? {
+        guard readerAnnouncementCoordinator.canShowAnnouncement,
+              tableView.tableHeaderView == nil,
+              !isContentFiltered,
+              !contentIsEmpty() else {
+            return nil
+        }
+
+        return ReaderAnnouncementHeaderView(doneButtonTapped: { [weak self] in
+            // Set the card as dismissed.
+            self?.readerAnnouncementCoordinator.isDismissed = true
+
+            // Animate the header removal so it feels less jarring.
+            UIView.animate(withDuration: 0.3) {
+                self?.tableView.tableHeaderView?.layer.opacity = 0.0
+            } completion: { _ in
+                self?.tableView.performBatchUpdates({
+                    self?.tableView.tableHeaderView = nil
+                })
+            }
+        })
+    }
+
+    // The header may be configured when the content is still empty (i.e., Discover stream).
+    // This method is added to provide a way to inject the announcement card outside of
+    // `configureStreamHeader()`. For example, after syncing completes.
+    func showAnnouncementHeaderIfNeeded(completion: (() -> Void)? = nil) {
+        guard let headerView = makeAnnouncementHeader() else {
+            return
+        }
+
+        tableView.tableHeaderView = headerView
+        completion?()
+    }
+
 }
 
 // MARK: - Undo cell for saved posts

@@ -31,6 +31,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
     case siteSwitcherRedesign
     case readingPreferences
     case readingPreferencesFeedback
+    case readerAnnouncementCard
 
     var defaultValue: Bool {
         switch self {
@@ -92,6 +93,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return true
         case .readingPreferencesFeedback:
             return true
+        case .readerAnnouncementCard:
+            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         }
     }
 
@@ -156,6 +159,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "reading_preferences"
         case .readingPreferencesFeedback:
             return "reading_preferences_feedback"
+        case .readerAnnouncementCard:
+            return "reader_announcement_card"
         }
     }
 
@@ -219,6 +224,8 @@ enum RemoteFeatureFlag: Int, CaseIterable {
             return "Reading Preferences"
         case .readingPreferencesFeedback:
             return "Reading Preferences Feedback"
+        case .readerAnnouncementCard:
+            return "Reader Announcement Card"
         }
     }
 
