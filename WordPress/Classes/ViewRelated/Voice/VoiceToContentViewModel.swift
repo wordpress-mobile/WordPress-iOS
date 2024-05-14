@@ -1,14 +1,17 @@
 import Foundation
 import AVFoundation
+import WordPressKit
 
 final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorderDelegate {
-    @Published var state: State = .welcome
-    @Published var duration: String = "0:00"
-    @Published var errorMessage: String?
+    @Published private(set) var state: State = .welcome
+    @Published private(set) var duration: String = "0:00"
+    private(set) var errorMessage: String?
+    @Published var isShowingError = false
 
     private var audioSession: AVAudioSession?
     private var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
+    private let blog: Blog
 
     enum State {
         case welcome
@@ -16,9 +19,26 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         case processing
     }
 
+    enum VoiceError: Error, LocalizedError {
+        case noPermissions
+
+        var errorDescription: String? {
+            switch self {
+            case .noPermissions:
+                return "Recording permission is missing"
+            }
+        }
+    }
+
     deinit {
         timer?.invalidate()
     }
+
+    init(blog: Blog) {
+        self.blog = blog
+    }
+
+    // MARK: - Recording
 
     func buttonRecordTapped() {
         let recordingSession = AVAudioSession.sharedInstance()
@@ -33,12 +53,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
                     if allowed {
                         self.startRecording()
                     } else {
-                        self.errorMessage = "Recordings permission missing"
+                        self.showError(VoiceError.noPermissions)
                     }
                 }
             }
         } catch {
-            errorMessage = error.localizedDescription
+            showError(error)
         }
     }
 
@@ -64,8 +84,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             state = .recording
             startRecordingTimer()
         } catch {
-            // TODO: handle error
-            fatalError(error.localizedDescription)
+            showError(error)
         }
     }
 
@@ -82,6 +101,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonDoneRecordingTapped() {
+        startProcessing()
+    }
+
+    // MARK: - Processing
+
+    private func startProcessing() {
         guard let fileURL = audioRecorder?.url else {
             wpAssertionFailure("audio-recorder: file missing")
             return
@@ -90,9 +115,27 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         audioRecorder = nil
         audioSession = nil
 
-        NSLog("fileURL: \(fileURL))")
-
         state = .processing
+        Task {
+            await self.process(fileURL: fileURL)
+        }
+    }
+
+    @MainActor
+    private func process(fileURL: URL) async {
+        guard let api = blog.wordPressComRestApi() else {
+            wpAssertionFailure("only available for .com sites")
+            return
+        }
+        let service = JetpackAIServiceRemote(wordPressComRestApi: api, siteID: blog.dotComID ?? 0)
+        do {
+            let token = try await service.getAuthorizationToken()
+            // TODO: this doesn't seem to handle 401 and other "error" status codes correctly
+            let transcription = try await service.transcribeAudio(from: fileURL, token: token)
+            print(transcription)
+        } catch {
+            showError(error)
+        }
     }
 
     func buttonCancelTapped() {
@@ -108,5 +151,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             audioRecorder?.stop()
             self.state = .welcome
         }
+    }
+
+    // MARK: - Misc
+
+    private func showError(_ error: Error) {
+        errorMessage = error.localizedDescription
+        isShowingError = true
     }
 }

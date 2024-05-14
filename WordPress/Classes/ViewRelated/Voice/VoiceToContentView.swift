@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 struct VoiceToContentView: View {
-    @StateObject private var viewModel = VoiceToContentViewModel()
+    @StateObject var viewModel: VoiceToContentViewModel
     @Environment(\.dismiss) var dismiss
 
     var body: some View {
@@ -10,13 +10,15 @@ struct VoiceToContentView: View {
             contents
                 .toolbar {
                     ToolbarItem(placement: .cancellationAction) {
-                        Button("Cancel", role: .cancel) {
-                            dismiss()
-                        }
+                        Button("Cancel", action: buttonCancelTapped)
                     }
                 }
         }
         .tint(Color(uiColor: .brand))
+        // TODO: Add proper error handing
+        .alert(viewModel.errorMessage ?? "", isPresented: $viewModel.isShowingError, actions: {
+            Button("OK", action: buttonCancelTapped)
+        })
     }
 
     @ViewBuilder
@@ -29,6 +31,11 @@ struct VoiceToContentView: View {
         case .processing:
             VoiceToContenProcessingView(viewModel: viewModel)
         }
+    }
+
+    private func buttonCancelTapped() {
+        viewModel.buttonCancelTapped()
+        dismiss()
     }
 }
 

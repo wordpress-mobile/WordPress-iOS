@@ -35,7 +35,8 @@ extension MySiteViewController {
         }
 
         actions.append(PostAction(handler: newPost, source: source))
-        if FeatureFlag.voiceToContent.enabled && (blog?.isHostedAtWPcom ?? false) {
+        // TODO: check if the current site is eligible
+        if FeatureFlag.voiceToContent.enabled {
             actions.append(PostFromAudioAction(handler: { [weak self] in
                 self?.dismiss(animated: true) {
                     self?.startPostFromAudioFlow()
@@ -51,7 +52,12 @@ extension MySiteViewController {
     }
 
     private func startPostFromAudioFlow() {
-        let view = VoiceToContentView()
+        guard let blog else {
+            wpAssertionFailure("blog missing")
+            return
+        }
+        let viewModel = VoiceToContentViewModel(blog: blog)
+        let view = VoiceToContentView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
 
         if UIDevice.isPad() {
