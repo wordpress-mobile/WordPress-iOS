@@ -12,6 +12,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     private var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
     private let blog: Blog
+    private let completion: (String) -> Void
 
     enum State {
         case welcome
@@ -34,8 +35,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         timer?.invalidate()
     }
 
-    init(blog: Blog) {
+    init(blog: Blog, _ completion: @escaping (String) -> Void) {
         self.blog = blog
+        self.completion = completion
     }
 
     // MARK: - Recording
@@ -132,7 +134,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let token = try await service.getAuthorizationToken()
             // TODO: this doesn't seem to handle 401 and other "error" status codes correctly
             let transcription = try await service.transcribeAudio(from: fileURL, token: token)
-            print(transcription)
+
+            self.completion(transcription)
         } catch {
             showError(error)
         }

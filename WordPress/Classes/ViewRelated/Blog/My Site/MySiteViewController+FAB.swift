@@ -56,7 +56,20 @@ extension MySiteViewController {
             wpAssertionFailure("blog missing")
             return
         }
-        let viewModel = VoiceToContentViewModel(blog: blog)
+        let viewModel = VoiceToContentViewModel(blog: blog) { [ weak self] transcription in
+            guard let self else { return }
+            self.dismiss(animated: true) {
+                // TODO: Are we adding all necessary fields?
+                let presenter = RootViewCoordinator.sharedPresenter
+                let post = blog.createDraftPost()
+                post.content = """
+                <!-- wp:paragraph -->
+                <p>\(transcription.escapeHtmlNamedEntities())</p>
+                <!-- /wp:paragraph -->
+                """
+                presenter.showPostTab(animated: true, post: post)
+            }
+        }
         let view = VoiceToContentView(viewModel: viewModel)
         let host = UIHostingController(rootView: view)
 
