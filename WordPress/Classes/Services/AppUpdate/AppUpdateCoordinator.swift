@@ -14,6 +14,7 @@ final class AppUpdateCoordinator {
     private let remoteConfigStore: RemoteConfigStore
     private let isJetpack: Bool
     private let isLoggedIn: Bool
+    private let isInAppUpdatesEnabled: Bool
 
     init(
         currentVersion: String?,
@@ -22,7 +23,8 @@ final class AppUpdateCoordinator {
         presenter: AppUpdatePresenterProtocol = AppUpdatePresenter(),
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
         isJetpack: Bool = AppConfiguration.isJetpack,
-        isLoggedIn: Bool = AccountHelper.isLoggedIn
+        isLoggedIn: Bool = AccountHelper.isLoggedIn,
+        isInAppUpdatesEnabled: Bool = RemoteFeatureFlag.inAppUpdates.enabled()
     ) {
         self.currentVersion = currentVersion
         self.currentOsVersion = currentOsVersion
@@ -31,14 +33,17 @@ final class AppUpdateCoordinator {
         self.remoteConfigStore = remoteConfigStore
         self.isJetpack = isJetpack
         self.isLoggedIn = isLoggedIn
+        self.isInAppUpdatesEnabled = isInAppUpdatesEnabled
     }
 
     @MainActor
     func checkForAppUpdates() async {
+        guard isInAppUpdatesEnabled else {
+            return
+        }
         guard isLoggedIn else {
             return
         }
-
         guard let updateType = await inAppUpdateType else {
             return
         }
