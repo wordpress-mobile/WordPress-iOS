@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-04 14:07:56+0000 */
+/* Translation-Revision-Date: 2024-05-14 05:30:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Avfärda";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Upptäck bloggar att prenumerera";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Gör det igen";
 
@@ -9573,6 +9576,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Byt till Jetpack-appen för att hitta, följa och gilla alla dina favoritwebbplatser och inlägg med läsare.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Följ på vilken webbplats som helst med Jetpack-appen";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack visar statistik, aviseringar med mera för att hjälpa dig bygga dina drömmars WordPress-webbplats och få fler besökare.";
@@ -10087,6 +10093,15 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du har inte behörighet att visa den här privata bloggen.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Prenumerera på bloggen.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Prenumererad";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Prenumerera";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Kan förbättras";
 
@@ -10098,6 +10113,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Skicka feedback";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Prenumerera";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Prenumererad";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Prenumerera på bloggen.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Prenumeranter";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "prenumerera";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Inga prenumeranter ännu";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Kolla in mitt inlägg ”%@”:";
@@ -10164,6 +10197,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Avbryt";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Överordnad sida";
 
 /* No comment provided by engineer. */
 "password" = "lösenord";
@@ -10248,6 +10284,30 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Skapar autosparning …";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Hjälp";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Hjälp och support";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Sidinställningar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Inläggsinställningar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Förhandsgranska";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Versioner";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Avbryt";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Återställ";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Versionen har lästs in";
@@ -10390,17 +10450,29 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Överordnad sida";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "Inväntar granskning";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Sidattribut";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Ange utvald bild";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Det gick inte att uppdatera inläggsinställningarna";
+
+/* Localized post type: `Page` */
+"postType.page" = "sida";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Endast synlig för webbplatsadministratörer och redigerare.";
@@ -10639,6 +10711,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publiceringsdatum";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Klar";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Marknadsför med Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Dela inlägg";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Inlägg publicerat!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Få mer trafik:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Visa inlägg";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Avfärda";
@@ -11080,11 +11170,20 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Följer nya etiketter …";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Välj några för att fortsätta";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Klar";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Inga nya etiketter att följa";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Välj dina etiketter";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Upptäck och följ bloggar du gillar";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Prenumerera";
@@ -11100,6 +11199,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Bloggar att prenumerera på";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Försök igen";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Lägg till en etikett";
@@ -11127,6 +11231,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Följer";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Mer från %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Sluta att följa %@";
@@ -11238,6 +11345,15 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Lös konflikt";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Inga versioner ännu";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Laddar in …";
+
+/* Post revisions list screen title */
+"revisions.title" = "Versioner";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Kopiera länk";
@@ -11604,6 +11720,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Namn";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Prenumeranter";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Klick";
