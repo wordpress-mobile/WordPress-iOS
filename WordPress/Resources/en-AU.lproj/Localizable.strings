@@ -1240,7 +1240,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2077,9 +2076,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Customise the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Customise your followed site settings for New Posts and Comments";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Customise your site settings for Likes, Comments, Follows, and more.";
 
@@ -2256,9 +2252,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Discover";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Discover and follow blogs you love";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Discover and follow sites that inspire you.";
 
@@ -2311,9 +2304,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2747,9 +2738,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Error occurred\nduring loading";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Error occurred\nduring saving";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Error occurred during publishing";
 
@@ -2957,9 +2945,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Find your site address";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Finding blogs and stories you’ll love...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2983,8 +2968,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Fixing Threats";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Follow";
 
 /* Button title. Follow the comments on a post. */
@@ -2999,33 +2983,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Follow topics you're interested in and we'll find some blogs you might like.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Follow your favourite sites and discover new blogs.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Followed Sites";
-
 /* User role badge */
 "Follower" = "Follower";
 
 /* Label for number of followers. */
 "Followers" = "Followers";
 
-/* User is following the blog. */
-"Following" = "Following";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Following new topics...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Following this conversation";
-
-/* Filters Follows Notifications */
-"Follows" = "Follows";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Follows the blog.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Font Size";
@@ -3315,8 +3283,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Hide search heading";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "History";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3942,9 +3909,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Loading comment...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Loading history...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Loading menu...";
 
@@ -3965,7 +3929,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Loading...";
 
@@ -4529,11 +4492,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "No fixed threats";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "No followers yet";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "No history yet";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -4986,9 +4945,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Parent Category";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Parent page successfully updated.";
-
 /* Parenting site intent topic */
 "Parenting" = "Parenting";
 
@@ -5233,8 +5189,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Post Categories";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Post Format";
 
 /* Name of the button to open the post settings
@@ -5451,9 +5406,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Published";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Published just now on";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publishing page...";
 
@@ -5649,8 +5601,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Removing Next Steps will hide all tours on this site. This action cannot be undone.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.";
 
 /* No comment provided by engineer. */
@@ -5932,9 +5883,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Scheduled";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Scheduled for %@ on";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Scheduling...";
 
@@ -6055,9 +6003,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Select a colour above";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Select a few to continue";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Select a layout";
 
@@ -6167,9 +6112,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Service";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Set Parent";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Set as Featured Image";
 
@@ -6213,7 +6155,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Settings update failed";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6396,9 +6337,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site deleted";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Site follows";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site not found";
@@ -7603,9 +7541,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Follow conversation";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Unfollows the blog.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "Ungroup block";
 
@@ -7861,9 +7796,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "View All";
-
-/* Button label for viewing a post */
-"View Post" = "View Post";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "View Site";
@@ -8314,9 +8246,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\".";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "When you make changes in the editor you'll be able to see the history here";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "When you make changes to your site you'll be able to see your activity history here.";
@@ -9330,9 +9259,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "follow";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Get a free domain for the first year, remove ads on your site, and increase your storage.";
 
@@ -9379,9 +9305,6 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.dismiss" = "Dismiss";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Discover blogs to follow";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Do it again";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -9389,9 +9312,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "You've connected with other blogs";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Connect with other bloggers by following, liking and commenting on their posts.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Enable post sharing";
@@ -9578,9 +9498,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Switch to the Jetpack app to find, follow, and like all your favourite sites and posts with Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Follow any site with the Jetpack app";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack provides stats, notifications and more to help you build and grow the WordPress site of your dreams.";
@@ -10262,9 +10179,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Set as homepage";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Set parent";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Set as posts page";

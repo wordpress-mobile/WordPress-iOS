@@ -1249,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2095,9 +2094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Personalizza il messaggio che vuoi condividere.\nSe non aggiungi il tuo testo qui, useremo il titolo dell'articolo come messaggio.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Personalizza le impostazioni del sito che segui per Nuovi articoli e Commenti";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personalizza le impostazioni del tuo sito per i Like, commenti, follower e molto altro.";
 
@@ -2274,9 +2270,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Scopri";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Scopri e segui i blog che ami";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Scopri e segui i siti che ti ispirano.";
 
@@ -2329,9 +2322,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2768,9 +2759,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Si è verificato un errore\ndurante il caricamento";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Si è verificato un errore\ndurante il salvataggio";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Si è verificato un errore durante la pubblicazione";
 
@@ -2978,9 +2966,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Trova l'indirizzo per il tuo sito";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Trova i blog e le storie che ami...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3004,8 +2989,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Risoluzione delle minacce";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Segui";
 
 /* Button title. Follow the comments on a post. */
@@ -3020,33 +3004,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Segui gli argomenti che ti interessano e troveremo alcuni blog che potrebbero piacerti.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Segui i tuoi siti preferiti e scopri nuovi blog.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Siti seguiti";
-
 /* User role badge */
 "Follower" = "Follower";
 
 /* Label for number of followers. */
 "Followers" = "Seguaci";
 
-/* User is following the blog. */
-"Following" = "Seguendo";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Stai seguendo nuovi argomenti...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Seguendo questa conversazione";
-
-/* Filters Follows Notifications */
-"Follows" = "Segue";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Segue il blog.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Dimensione carattere";
@@ -3336,8 +3304,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Nascondi titolo della ricerca";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Storia";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3966,9 +3933,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Caricamento del commento...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Caricamento della cronologia...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Caricamento menu...";
 
@@ -3989,7 +3953,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Caricamento...";
 
@@ -4553,11 +4516,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Nessuna minaccia risolta";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Ancora nessun follower";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Ancora nessuna storia";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5010,9 +4969,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Categoria Genitore";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Pagina superiore aggiornata correttamente.";
-
 /* Parenting site intent topic */
 "Parenting" = "Essere genitori";
 
@@ -5257,8 +5213,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Categorie articoli";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato articolo";
 
 /* Name of the button to open the post settings
@@ -5475,9 +5430,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Pubblicato";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Pubblicato proprio ora su";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Pubblicazione della pagina in corso...";
 
@@ -5673,8 +5625,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Rimuovendo Passi successivi verranno nascosti tutti i tour su questo sito. Questa azione non può essere annullata.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "La rimozione dei follower impedisce loro di ricevere aggiornamenti dal tuo sito. Se lo preferiscono, possono comunque visitare il tuo sito e seguirlo di nuovo.";
 
 /* No comment provided by engineer. */
@@ -5956,9 +5907,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programmato";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Pianificato per %@ su";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Programmo...";
 
@@ -6079,9 +6027,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Seleziona un colore sopra";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Selezionane alcuni per continuare";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Seleziona un layout";
 
@@ -6191,9 +6136,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Servizio";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Imposta genitore";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Imposta come immagine in evidenza ";
 
@@ -6237,7 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Aggiornamento impostazioni fallito";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6420,9 +6361,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Sito eliminato";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Nuovi follow al sito";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Nessun sito trovato";
@@ -7636,9 +7574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Smetti di seguire la conversazione";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Non segue il blog.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "Separa blocco";
 
@@ -7900,9 +7835,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Visualizza tutto";
-
-/* Button label for viewing a post */
-"View Post" = "Visualizza articolo";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Visualizza sito";
@@ -8350,9 +8282,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Quando un commento contiene una di queste parole nel suo contenuto, nel nome, nella URL, nella email o nell'IP, questo verrà contrassegnato come spam. Puoi inserire parole parziali, quindi ad esempio \"press\" troverà una corrispondenza con \"WordPress\".";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Quando apporterai modifiche all'editor, potrai vedere qui la cronologia";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Quando fai modifiche al sito puoi vedere lo storico attività qui.";
@@ -9384,9 +9313,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Diffondi";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "segui";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Ottieni un dominio gratuito per il primo anno, rimuovi gli annunci dal sito e aumenta lo spazio di archiviazione.";
 
@@ -9433,9 +9359,6 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.dismiss" = "Ignora";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Scopri i blog da seguire";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Riprova";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -9443,9 +9366,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Sei connesso ad altri blog";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Connettiti con altri blogger seguendo, mettendo Mi piace e commentando i loro articoli.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Abilita la condivisione dell'articolo";
@@ -9635,9 +9555,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Passa all'app Jetpack per trovare, seguire e mettere mi piace a tutti i tuoi siti e post preferiti con Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Segui qualsiasi sito con l'app Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack fornisce statistiche, notifiche e altro per aiutarti a costruire e far crescere il sito WordPress dei tuoi sogni.";
@@ -10463,9 +10380,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Imposta come homepage";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Imposta principale";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Imposta come pagina degli articoli";
@@ -11741,9 +11655,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "non lette";
-
-/* Site's Email Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.emailSubscriber" = "Abbonati e-mail del sito";
 
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "Abbonati del sito";

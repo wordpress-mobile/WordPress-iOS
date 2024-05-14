@@ -1246,7 +1246,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2089,9 +2088,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Përshtatni mesazhin që doni të ndahet me të tjerët.\nNëse nuk shtoni tekst tuajin këtu, si mesazh do të përdorim titullin e postimit.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Përshtatni rregullimet për sajtin e ndjekur, për Postime dhe Komente të Reja";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Përshtatni rregullime të sajtit tuaj, të tilla si Pëlqime, Komente, Ndjekje, etj.";
 
@@ -2268,9 +2264,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Zbuloni";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Zbuloni dhe ndiqni blogjet që keni për zemër";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Zbuloni dhe ndiqni sajte që ju frymëzojnë.";
 
@@ -2323,9 +2316,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2762,9 +2753,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ndodhi një gabim\ngjatë ngarkimit";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Ndodhi një gabim\ngjatë ruajtjes";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Ndodhi një gabim gjatë botimit";
 
@@ -2972,9 +2960,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Gjeni adresën e sajtit tuaj";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Po gjenden blogje dhe shkrime që do t’i doni…";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2995,8 +2980,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Zgjidhje Kërcënimesh";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Ndiqeni";
 
 /* Button title. Follow the comments on a post. */
@@ -3011,33 +2995,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Ndiqni subjekte që ju interesojnë dhe do të gjejmë ca blogje që mund t’ju pëlqejnë.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Ndiqni sajtet tuaj të parapëlqyer dhe zbuloni blogje të rinj.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Sajte të Ndjekur";
-
 /* User role badge */
 "Follower" = "Ndjekës";
 
 /* Label for number of followers. */
 "Followers" = "Ndjekës";
 
-/* User is following the blog. */
-"Following" = "E ndiqni";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Ndiqni tema të reja…";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Kjo bisedë ndiqet";
-
-/* Filters Follows Notifications */
-"Follows" = "Ndiqet";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Ndjek blogun.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Madhësi Shkronjash";
@@ -3327,8 +3295,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Fshih kryet e kërkimit";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historik";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3957,9 +3924,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Po ngarkohet koment…";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Po ngarkohet historiku…";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Po ngarkohen menu…";
 
@@ -3980,7 +3944,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Po ngarkohet…";
 
@@ -4544,11 +4507,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "S’ka kërcënime të zgjidhur";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Ende pa ndjekës";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Ende pa historik";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5001,9 +4960,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Kategori Mëmë";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Faqja mëmë u përditësua me sukses.";
-
 /* Accessibility label for the password text field in the self-hosted login page.
    Label for entering password in password field
    Label for the password field. Should be the same as WP core.
@@ -5245,8 +5201,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Kategori Postimesh";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format Postimesh";
 
 /* Name of the button to open the post settings
@@ -5463,9 +5418,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "U botua";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "I sapobotuar";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Po botohet faqe…";
 
@@ -5661,8 +5613,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Heqja e Hapave Pasues do të fshehtë krejt turet në këtë sajt. Ky veprim s’mund të zhbëhet.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Heqja e ndjekësve bën që ata të reshtin së marri përditësime nga sajti juaj. Nëse vendosin kështu, prapë mund të vizitojnë sajtin tuaj dhe ta ndjekin sërish.";
 
 /* No comment provided by engineer. */
@@ -5944,9 +5895,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Vënë në plan";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Vënë në plan për %@ më";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Po vihet në plan…";
 
@@ -6067,9 +6015,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Përzgjidhni një ngjyrë më sipër";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Që të vazhdohet, përzgjidhni ndoca";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Përzgjidhni një skemë";
 
@@ -6179,9 +6124,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Shërbim";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Caktojeni Mëmë";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Vëre si Figurë të Zgjedhur";
 
@@ -6225,7 +6167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Përditësimi i rregullimeve dështoi";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6408,9 +6349,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Sajti u fshi";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Ndjekje të sajtit";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Sajti s’u gjet";
@@ -7624,9 +7562,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Mos e ndiq më bisedën";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Ndal ndjekjen e blogut.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "Hiqe bllokun nga grupi";
 
@@ -7888,9 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Shihini Krejt";
-
-/* Button label for viewing a post */
-"View Post" = "Shiheni Postimin";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Shihni Sajtin";
@@ -8344,9 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Kur një koment përmban cilëndo nga këto fjalë në lëndën e vet, emrin, URL-në, email-in, ose IP-në e tij, do t’i vihet shenjë si i padëshiruar. Mund të jepni edhe copa fjalësh, fjala vjen “press” do të ketë efekt edhe për “WordPress”.";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Kur bëni ndryshime te përpunuesi, këtu do të jeni në gjendje të shihni historikun";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Kur bëni ndryshime te sajti juaj, këtu do të jeni në gjendje të shihni historikun e veprimtarisë tuaj.";
@@ -9369,9 +9298,6 @@ Example: Reply to Pamela Nguyen */
 /* Title of screen the displays the details of an advertisement campaign. */
 "feature.blaze.campaignDetails.title" = "Hollësi Fushate";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "ndjekje";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Merrni një përkatësi falas për vitin e parë, hiqni reklama në sajtin tuaj dhe shtoni hapësirë depozitimi.";
 
@@ -9418,9 +9344,6 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.dismiss" = "Hidhe tej";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Zbuloni blogje për ndjekje";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Ribëje";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -9428,9 +9351,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Jeni lidhur me blogje të tjerë";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Lidhuni me blogues të tjerë, përmes ndjekjes, pëlqimit dhe komentimit në postimet e tyre.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Aktivizo ndarje postimesh me të tjerët";
@@ -9617,9 +9537,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Që të gjeni, ndiqni dhe pëlqeni krejt sajtet dhe postimet tuaj të parapëlqyer me Lexuesin, kaloni te aplikacioni Jetpack.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Ndiqni çfarëdo sajti, me aplikacionin Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.";
@@ -10388,9 +10305,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Caktojeni si faqen hyrëse";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Caktoje si mëmë";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Caktojeni si faqe postimesh";

@@ -140,7 +140,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -359,9 +358,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -461,22 +458,14 @@
 /* Label for the file type (.JPG, .PNG, etc) for a media asset (image / video) */
 "File type" = "Filtype";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Følg";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Fulgte websteder";
 
 /* User role badge */
 "Follower" = "Følger";
 
 /* Label for number of followers. */
 "Followers" = "Følgere";
-
-/* User is following the blog. */
-"Following" = "Følgere";
 
 /* Next web page */
 "Forward" = "Viderestil";
@@ -616,7 +605,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Henter...";
 
@@ -921,8 +909,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Indlægskategorier";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Indlægsformat";
 
 /* Title of camera permissions screen */
@@ -1123,7 +1110,6 @@
 "Settings" = "Indstillinger";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -1421,9 +1407,6 @@
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Vis alle";
-
-/* Button label for viewing a post */
-"View Post" = "Se indlæg";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vis websted";

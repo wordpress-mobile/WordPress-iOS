@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-08 13:52:58+0000 */
+/* Translation-Revision-Date: 2024-05-13 23:55:54+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -1249,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2095,9 +2094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "自訂你希望分享的訊息。\n若你不在此新增文字，我們會使用文章標題做為訊息內容。";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "自訂新文章和留言的關注網站設定";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "自訂按讚、留言、關注等功能的網站設定。";
 
@@ -2274,9 +2270,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "探索";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "探索並關注你喜愛的網誌";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "探索並追蹤帶給你啟發的網站。";
 
@@ -2329,9 +2322,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2765,9 +2756,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "更新時\n載入中";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "儲存時\n發生錯誤";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "發表時發生錯誤";
 
@@ -2975,9 +2963,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "尋找你的網站位址";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "尋找你會喜歡的網誌和故事…";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3001,8 +2986,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "正在修正威脅";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "關注";
 
 /* Button title. Follow the comments on a post. */
@@ -3017,33 +3001,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "追蹤自己感興趣的主題，我們會據此推薦你可能會喜歡的網誌。";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "追蹤你喜歡的網站並探索新網誌。";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "關注的網站";
-
 /* User role badge */
 "Follower" = "關注者";
 
 /* Label for number of followers. */
 "Followers" = "追隨者";
 
-/* User is following the blog. */
-"Following" = "關注中";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "追蹤新主題...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "正在追蹤此討論";
-
-/* Filters Follows Notifications */
-"Follows" = "關注";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "關注網誌。";
 
 /* No comment provided by engineer. */
 "Font Size" = "字體大小";
@@ -3333,8 +3301,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "隱藏搜尋標題";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "記錄";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3963,9 +3930,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "載入留言中…";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "正在載入記錄…";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "正在載入選單...";
 
@@ -3986,7 +3950,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "正在載入...";
 
@@ -4550,11 +4513,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "沒有已修正的威脅";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "尚未有關注者";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "尚未有記錄";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5007,9 +4966,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "上層分類";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "上層頁面已成功更新。";
-
 /* Parenting site intent topic */
 "Parenting" = "育兒";
 
@@ -5254,8 +5210,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "文章類別";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "文章格式";
 
 /* Name of the button to open the post settings
@@ -5472,9 +5427,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "已發佈";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "剛剛發表於";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "正在張貼頁面…";
 
@@ -5670,8 +5622,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「移除後續步驟」會隱藏此網站的所有導覽。此動作無法復原。";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "移除追蹤者，使其停止接收網站的更新內容。 如果他們願意，仍可造訪你的網站並再次追蹤。";
 
 /* No comment provided by engineer. */
@@ -5953,9 +5904,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "已排程";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "已將 %@ 排程於";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "正在排程...";
 
@@ -6076,9 +6024,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "選擇上方的顏色";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "選取幾項以繼續操作";
-
 /* No comment provided by engineer. */
 "Select a layout" = "選取版面配置";
 
@@ -6188,9 +6133,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "服務";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "設定上層項目";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "設為特色圖片";
 
@@ -6234,7 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "設定更新失敗";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6417,9 +6358,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "已刪除網站";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "網站關注";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "找不到網站";
@@ -7636,9 +7574,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "取消追蹤討論";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "取消關注此網誌。";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "取消區塊群組";
 
@@ -7900,9 +7835,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "檢視全部";
-
-/* Button label for viewing a post */
-"View Post" = "查看文章";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "造訪網站";
@@ -8353,9 +8285,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "如果留言的內容、名稱、URL、電子郵件或 IP 位址中含有以下文字，該留言將標記為垃圾留言。你也可以輸入部分字詞，例如「press」會與「WordPress」相配。";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "若於編輯器內進行變更，即可在此查看記錄";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "當你變更自己的網站內容時，即可在此查看你的活動記錄。";
@@ -9393,9 +9322,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "追蹤";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "免費使用網域一年、移除網站上的廣告，並增加儲存空間。";
 
@@ -9442,9 +9368,6 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.dismiss" = "關閉";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "探索要追蹤的網誌";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "重來一次";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -9452,9 +9375,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "你已與其他網誌連結";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "在其他部落客的文章追蹤、按讚和留言，與他們交流。";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "啟用文章分享功能";
@@ -9644,9 +9564,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "切換至 Jetpack 應用程式，以便透過閱讀器搜尋、追蹤並按讚所有喜愛的網站及文章。";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "透過 Jetpack 應用程式追蹤任何網站";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack 提供統計資料、通知等其他功能，可協助你建置和發展夢想中的 WordPress 網站。";
@@ -10363,7 +10280,7 @@ Example: Reply to Pamela Nguyen */
 "postList.offlineChanges" = "離線變更";
 
 /* Title for the 'Trash' post list row swipe action */
-"postList.swipeActionDelete" = "垃圾桶";
+"postList.swipeActionDelete" = "移至回收桶";
 
 /* Title for the 'Delete' post list row swipe action */
 "postList.swipeActionDeletePermanently" = "刪除";
@@ -10538,9 +10455,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "設定為首頁";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "設定上層項目";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "設定為文章頁面";
@@ -11667,9 +11581,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "名稱";
 
-/* Stats 'Subscribers' card header, contains chart */
-"stats.subscribers.chart.title" = "訂閱者";
-
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "點擊數";
 
@@ -11916,9 +11827,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未讀";
 
-/* Site's Email Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.emailSubscriber" = "網站的電子郵件訂閱者";
-
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "網站的訂閱者";
 
@@ -11927,9 +11835,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "網站的檢視者";
-
-/* Site Email Subscribers */
-"users.list.title.emailSubscribers" = "電子郵件訂閱者";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "訂閱者";
