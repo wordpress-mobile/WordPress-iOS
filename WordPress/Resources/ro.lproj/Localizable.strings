@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-06 19:05:26+0000 */
+/* Translation-Revision-Date: 2024-05-14 09:18:22+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -1249,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2095,9 +2094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Personalizează mesajul pe care vrei să-l partajezi.\nDacă nu adaugi aici propriul text, vom folosi titlul articolului ca mesaj.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Personalizează setările site-urilor urmărite pentru articole și comentarii noi";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personalizează-ți site-ul pentru Aprecieri, Comentarii, Urmăritori și altele.";
 
@@ -2274,9 +2270,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Descoperă";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Descoperă și urmărește blogurile care îți plac";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Descoperă și urmărește site-urile care te inspiră.";
 
@@ -2329,9 +2322,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2768,9 +2759,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "A apărut o eroare\nîn timpul încărcării";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "A apărut o eroare învtimpul salvării";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "A apărut o eroare în timpul publicării";
 
@@ -2978,9 +2966,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Găsește adresa site-ului";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Găsește bloguri și povestiri care îți vor plăcea...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3004,8 +2989,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Înlătur amenințările...";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Urmărire";
 
 /* Button title. Follow the comments on a post. */
@@ -3020,33 +3004,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Urmărește subiectele care te interesează și vom găsi câteva bloguri care s-ar putea să îți placă.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Urmărește-ți site-urile preferate și descoperi bloguri noi.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Site-uri urmărite";
-
 /* User role badge */
 "Follower" = "Urmăritor";
 
 /* Label for number of followers. */
 "Followers" = "Urmăritori";
 
-/* User is following the blog. */
-"Following" = "Urmăresc";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Urmăresc subiecte noi...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Urmărești această conversație";
-
-/* Filters Follows Notifications */
-"Follows" = "Urmăriri";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Urmărește blogul.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Dimensiune font";
@@ -3336,8 +3304,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Ascunde subtitlul de căutare";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Istoric";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3966,9 +3933,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Încarc comentariul...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Încarc istoricul...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Încărcare meniu...";
 
@@ -3989,7 +3953,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Încarc...";
 
@@ -4553,11 +4516,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Nicio amenințare înlăturată";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Niciun urmăritor până acum";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Încă niciun istoric";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5010,9 +4969,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Categorie părinte";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Pagina părinte a fost actualizată cu succes.";
-
 /* Parenting site intent topic */
 "Parenting" = "Creșterea și educarea copiilor";
 
@@ -5257,8 +5213,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Categorii de articole";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format de articol";
 
 /* Name of the button to open the post settings
@@ -5475,9 +5430,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicat";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publicat chiar acum pe";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Public pagina...";
 
@@ -5673,8 +5625,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Înlăturarea pașilor următori va ascunde toate tururile de pe acest site. Această acțiune nu poate fi anulată.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Dacă înlături urmăritorii, ei nu vor mai primi actualizări de la site-ul tău. Dacă vor, pot să-ți viziteze site-ul și să-l urmărească din nou.";
 
 /* No comment provided by engineer. */
@@ -5956,9 +5907,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programat";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Programat pentru %@ pe";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Programez...";
 
@@ -6079,9 +6027,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Selectează o culoare de mai sus";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Selectează câteva pentru a continua";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Setează un aranjament";
 
@@ -6191,9 +6136,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Serviciu";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Setează părinte";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Setează ca imagine reprezentativă";
 
@@ -6237,7 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Actualizarea setărilor a eșuat";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6420,9 +6361,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Am șters site-ul";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Urmăriri site";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Nu am găsit site-ul";
@@ -7639,9 +7577,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Anulează urmărirea conversației";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Anulează urmărirea blogului.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "Anulează gruparea blocului";
 
@@ -7903,9 +7838,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Vezi tot";
-
-/* Button label for viewing a post */
-"View Post" = "Vezi articolul";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Vezi site-ul";
@@ -8359,9 +8291,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Când un comentariu conține oricare dintre cuvintele astea în conținutul lui, în nume, URL, email sau IP, el va fi marcat ca spam. Poți introduce fragmente de cuvinte, așa încât \"press\" va fi potrivit și pentru \"WordPress\".";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Când faci modificări în editor, vei putea vedea istoricul aici";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Când faci modificări pe site-ul tău, aici vei putea vedea istoricul activităților.";
@@ -9402,9 +9331,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Fă-l cunoscut";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "urmărire";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Ai un domeniu gratuit în primul an, înlături reclamele de pe site și îți crești spațiul de stocare.";
 
@@ -9450,8 +9376,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Închide";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Descoperi bloguri pe care să le urmărești";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Descoperi bloguri la care te abonezi";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Fă-o din nou";
@@ -9463,7 +9389,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "Te-ai conectat la alte bloguri";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Conectează-te cu alți bloggeri urmărind, apreciind și comentând articolele lor.";
+"growAudienceCell.readerDiscover.details" = "Conectează-te cu alți bloggeri abonându-te, apreciind și comentând articolele lor.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Activează partajarea articolelor";
@@ -9655,7 +9581,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Comută la aplicația Jetpack pentru a găsi, urmări și aprecia toate site-urile și articolele tale preferate din Cititor.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Cu aplicația Jetpack, poți să urmărești orice site";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Cu aplicația Jetpack, te abonezi la orice site";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack oferă statistici, notificări și multe altele pentru a te ajuta să construiești și să dezvolți site-ul WordPress la care visezi.";
@@ -10167,8 +10093,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Închide";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Abonamente la site";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Personalizează setările site-urilor la care te-ai abonat pentru articole și comentarii noi";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Site-uri la care te-ai abonat";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Nu ai permisiunea să vezi acest blog privat.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Abonează-te la blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Dezabonează-te la blog.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Te-ai abonat";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Abonează-te";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Poate fi îmbunătățită";
@@ -10181,6 +10128,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Trimite impresii";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Abonează-te";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Te-ai abonat";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Abonați la blog.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Abonați";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "abonează-te";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Nu ai niciun abonat până acum";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Vezi articolul meu „%@”:";
@@ -10247,6 +10212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Anulează";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Pagină părinte";
 
 /* No comment provided by engineer. */
 "password" = "parolă";
@@ -10331,6 +10299,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Creez salvarea automată...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Editor de cod";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Blocuri: %1$li, Cuvinte: %2$li, Caractere: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Ajutor";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Ajutor și suport";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Setări pagină";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Setări articol";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Previzualizează";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revizii";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Editor vizual";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Vezi";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Încărcarea unor elemente media a eșuat";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Am restaurat articolul ca o ciornă";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Anulează";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Un %1$@ aruncat la gunoi nu poate fi editat. Pentru a edita acest %1$@, trebuie să-l restaurezi ducându-l înapoi la starea ciornă.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Restaurează";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ aruncat la gunoi";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Am încărcat revizia";
@@ -10473,17 +10489,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opțiuni imagine reprezentativă";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Pagină părinte";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "Recenzie în așteptare";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Partajarea automată pe Twitter nu mai este disponibilă";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Atribute pagină";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Stabilește imaginea reprezentativă";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Actualizarea setărilor pentru articole a eșuat";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Dacă schimbi vizibilitatea în „Privat”, articolul va fi publicat imediat";
+
+/* Localized post type: `Page` */
+"postType.page" = "pagină";
+
+/* Localized post type: `Post` */
+"postType.post" = "articol";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Vizibil numai pentru administratorii și editorii site-ului";
@@ -10547,9 +10581,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Setează ca prima pagină";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Setează un părinte";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Setează ca pagină articole";
@@ -10702,6 +10733,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Vizibilitate";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Te abonezi la site-urile preferate și descoperi bloguri noi.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Vezi toate răspunsurile";
 
@@ -10725,6 +10759,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Data publicării";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Gata";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promovează cu Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Partajează articolul";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Am publicat articolul!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Obții mai mult trafic:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Vezi articolul";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Închide";
@@ -10858,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Preiau blogurile...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Site-uri la care te-ai abonat";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Bloguri";
@@ -11166,11 +11221,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Urmăresc etichete noi...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Selectează câteva pentru a continua";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Gata";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Găsești bloguri și povestiri care îți vor plăcea...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Nu sunt etichete noi de urmărit";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Alege etichetele";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Descoperi și urmărești blogurile care îți plac";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonează-te";
@@ -11186,6 +11253,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Bloguri la care să te abonezi";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Reîncearcă";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Momentan, nu am putut să încărcăm articole cu această etichetă";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Încărcarea articolelor a eșuat";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Adaugă o etichetă";
@@ -11213,6 +11293,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Urmărești";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Mai multe de la %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Anulează urmărirea %@";
@@ -11324,6 +11407,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Rezolvă conflictul";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Când faci modificări în editor, vei putea să vezi aici istoricul reviziilor";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Nicio revizie până acum";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Încarc...";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revizii";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Copiază legătura";
@@ -11691,8 +11786,8 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Nume";
 
-/* Stats 'Subscribers' card header, contains chart */
-"stats.subscribers.chart.title" = "Abonați";
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Abonați";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Clicuri";
@@ -11705,6 +11800,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "Emailuri";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Creștere număr de abonați";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Abonați";
@@ -11940,9 +12038,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "necitite";
 
-/* Site's Email Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.emailSubscriber" = "Abonat prin email la site";
-
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "Abonat la site";
 
@@ -11951,9 +12046,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "Vizitator pe site";
-
-/* Site Email Subscribers */
-"users.list.title.emailSubscribers" = "Abonați prin email";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "Abonați";

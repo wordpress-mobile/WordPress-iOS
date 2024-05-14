@@ -1249,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -2095,9 +2094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "להתאים אישית את ההודעה שברצונך לשתף.\nאם הטקסט שלך לא יירשם כאן, אנחנו נשתמש בכותרת של הפוסט להודעה.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "התאמה אישית של הגדרות האתרים שבמעקב אחר פוסטים ותגובות חדשים";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "התאמה אישית של הגדרות האתר שלך עבור לייקים, תגובות, עוקבים ועוד.";
 
@@ -2274,9 +2270,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "לגלות";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "לגלות בלוגים שימצאו חן בעינייך ולעקוב אחריהם";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "לגלות אתרים שמספקים לך השראה ולעקוב אחריהם.";
 
@@ -2329,9 +2322,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2768,9 +2759,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "אירעה שגיאה \nבמהלך הטעינה";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "ארע שגיאה\nבמהלך השמירה";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "אירעה שגיאה במהלך הפרסום";
 
@@ -2978,9 +2966,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "למצוא את הכותרת של האתר שלך";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "למצוא בלוגים וסיפורים שימצאו חן בעיניך...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3004,8 +2989,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "מתקן את האיומים";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "עקוב";
 
 /* Button title. Follow the comments on a post. */
@@ -3020,33 +3004,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "אפשר לעקוב אחר נושאים שמעניינים אותך ואנחנו נמצא בלוגים שאולי ימצאו חן בעיניך.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "כדאי לעקוב אחר האתרים המועדפים שלך ולגלות בלוגים חדשים לקריאה.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "אתרים במעקב";
-
 /* User role badge */
 "Follower" = "עוקב";
 
 /* Label for number of followers. */
 "Followers" = "עוקבים";
 
-/* User is following the blog. */
-"Following" = "עוקב";
-
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "מתחיל מעקב אחר נושאים חדשים...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "נרשמת למעקב אחר השיחה הזאת";
-
-/* Filters Follows Notifications */
-"Follows" = "עוקב";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "מעקב אחר הבלוג.";
 
 /* No comment provided by engineer. */
 "Font Size" = "גודל הגופן";
@@ -3336,8 +3304,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "להסתיר את כותרת החיפוש";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "היסטוריה";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3966,9 +3933,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "טוען תגובה...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "טוען היסטוריה...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "טוען תפריט...";
 
@@ -3989,7 +3953,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "טוען...";
 
@@ -4553,11 +4516,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "אין איומים שתוקנו";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "עדיין אין עוקבים";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "אין היסטוריה עדיין";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5010,9 +4969,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "קטגוריית אב";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "העמוד ההורה עודכן בהצלחה.";
-
 /* Parenting site intent topic */
 "Parenting" = "הורות";
 
@@ -5257,8 +5213,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "קטגוריות";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "פורמט";
 
 /* Name of the button to open the post settings
@@ -5475,9 +5430,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "פורסם";
 
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "פורסם כעת ב-";
-
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "מפרסם את העמוד...";
 
@@ -5673,8 +5625,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "ההסרה של השלבים הבאים תסתיר את כל הסיורים באתר זה. לא ניתן לבטל פעולה זו.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "הסרת עוקבים תפסיק את שליחת העדכונים אליהם מהאתר שלך. אם העוקבים יבחרו לעשות זאת, הם עדיין יוכלו לבקר באתר שלך ולעקוב אחריו שוב.";
 
 /* No comment provided by engineer. */
@@ -5956,9 +5907,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "מתוזמן לפרסום";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "מתוזמן ל-%@ ב-";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "מבצע תזמון...";
 
@@ -6079,9 +6027,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "יש לבחור את הצבע למעלה";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "יש לבחור מספר אפשרויות כדי להמשיך";
-
 /* No comment provided by engineer. */
 "Select a layout" = "לבחור פריסה";
 
@@ -6191,9 +6136,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "שירות";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "הגדרת הורה";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "להגדיר כתמונה מרכזית";
 
@@ -6237,7 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "עדכון הגדרות נכשל";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6420,9 +6361,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "האתר נמחק";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "עוקבים אחרי האתר";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "האתר לא נמצא";
@@ -7639,9 +7577,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "לבטל את המעקב אחר השיחה";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "ביטול המעקב אחרי הבלוג.";
-
 /* No comment provided by engineer. */
 "Ungroup block" = "לבטל הקבצה של בלוק";
 
@@ -7903,9 +7838,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "להציג הכול";
-
-/* Button label for viewing a post */
-"View Post" = "הצג פוסט";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "הצג אתר";
@@ -8356,9 +8288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "תגובה שתכיל מילה מהמילים הללו בתוכן שלה, בשם, בכתובת, באימייל או ב-IP תסומן כתגובת זבל. אפשר להשתמש גם בחלקי מילים, כך ש-\"press\" תתאים למילה \"WordPress\".";
-
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "לאחר ביצוע שינויים בעורך שלך אפשר לראות את ההיסטוריה כאן";
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "בעת ביצוע שינויים באתר שלך, אפשר לראות את היסטוריית הפעילות כאן.";
@@ -9396,9 +9325,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "לעקוב";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "באפשרותך לקבל דומיין בחינם לשנה הראשונה, להסיר הצגת פרסומות באתר שלך ולהגדיל את שטח האחסון.";
 
@@ -9445,9 +9371,6 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.dismiss" = "ביטול";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "לגלות בלוגים למעקב";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "לחזור על הפעולה";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -9455,9 +9378,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "התחברת עם בלוגים אחרים";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "כדאי להתחבר עם בלוגרים אחרים באמצעות מעקב אחר הפוסטים שלהם, סימון לייקים והוספת תגובות בפוסטים.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "הפעלת השיתוף של הפוסטים";
@@ -9647,9 +9567,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "כדאי לעבור לאפליקציה של Jetpack כדי למצוא, לעקוב ולסמן לייק בכל האתרים והפוסטים האהובים עליך עם Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "אפשר לעקוב אחרי כל אתר דרך האפליקציה של Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "השירות של Jetpack מאפשר גישה לנתונים סטטיסטיים, להודעות ולפרטים נוספים כדי לעזור לך לבנות ולפתח את האתר של WordPress שתמיד רצית.";
@@ -10541,9 +10458,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Set as homepage";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "הגדרת הורה";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "להגדיר כעמוד פוסטים";
@@ -11676,9 +11590,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "שם";
 
-/* Stats 'Subscribers' card header, contains chart */
-"stats.subscribers.chart.title" = "מנויים";
-
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "קליקים";
 
@@ -11925,9 +11836,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "לא נקרא";
 
-/* Site's Email Subscriber Profile. Displayed when the name is empty! */
-"user.details.title.emailSubscriber" = "מנוי של האתר באימייל";
-
 /* Site's Subscriber Profile. Displayed when the name is empty! */
 "user.details.title.subscriber" = "מנוי של האתר";
 
@@ -11936,9 +11844,6 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Site's Viewers Profile. Displayed when the name is empty! */
 "user.details.title.viewer" = "צופה של האתר";
-
-/* Site Email Subscribers */
-"users.list.title.emailSubscribers" = "מנויים באימייל";
 
 /* Site Subscribers */
 "users.list.title.subscribers" = "מנויים";

@@ -79,7 +79,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -192,9 +191,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -264,15 +261,11 @@
 /* No comment provided by engineer. */
 "Featured Image did not load" = "A kiemelt képet nem lehet betölteni";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Követés";
 
 /* Label for number of followers. */
 "Followers" = "Követők";
-
-/* User is following the blog. */
-"Following" = "Követve";
 
 /* Alerts the user that wpcom account information is being retrieved. */
 "Getting account information" = "Fiók információk beszerzése";
@@ -345,7 +338,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Betöltés...";
 
@@ -539,8 +531,7 @@
 /* No comment provided by engineer. */
 "Please try entering your login details again." = "Adjuk meg újra a bejelentkezési adatainkat.";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Bejegyzés formátum";
 
 /* All Time Stats 'Posts' label
@@ -681,7 +672,6 @@
 "Settings" = "Beállítások";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label

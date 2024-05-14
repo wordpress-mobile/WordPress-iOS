@@ -1,1 +1,0 @@
-We hebben enkele aanpassingen aangebracht in het menu Pagina's. Je vindt de Instellingen nu in zijn eigen gedeelte, recht onder Statistieken (die we ook verplaatst hebben). Dit is beschikbaar voor zowel gepubliceerde als niet-gepubliceerde berichten. Groovy.

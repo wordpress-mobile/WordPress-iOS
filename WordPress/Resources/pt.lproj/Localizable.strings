@@ -402,7 +402,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -834,9 +833,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -940,9 +937,6 @@
 /* Title of error dialog when disconnecting jetpack fails. */
 "Error disconnecting Jetpack" = "Erro ao desligar Jetpack";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Ocorreu um erro\nao guardar";
-
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Erro ao remover %@";
 
@@ -1008,28 +1002,14 @@
    User's First Name */
 "First Name" = "Nome";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Seguir";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Sites seguidos";
 
 /* User role badge */
 "Follower" = "Seguidor";
 
 /* Label for number of followers. */
 "Followers" = "Seguidores";
-
-/* User is following the blog. */
-"Following" = "A seguir";
-
-/* Filters Follows Notifications */
-"Follows" = "Segue";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Segue o blogue.";
 
 /* Next web page */
 "Forward" = "Reencaminhar";
@@ -1125,8 +1105,7 @@
 "Hide keyboard" = "Esconder teclado";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Histórico";
 
 /* Moderation Keys Title
@@ -1363,7 +1342,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "A carregar...";
 
@@ -1891,8 +1869,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Categorias de conteúdo";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato do artigo";
 
 /* Name of the button to open the post settings
@@ -1983,9 +1960,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publicar agora em";
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "A publicar...";
@@ -2185,9 +2159,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Agendado para %@ em";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "A agendar...";
 
@@ -2236,7 +2207,6 @@
 "Settings update failed" = "Falhou ao actualizar opções";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -2301,9 +2271,6 @@
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site eliminado";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Seguidores do site";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site não encontrado";
@@ -2872,9 +2839,6 @@
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Ver tudo";
-
-/* Button label for viewing a post */
-"View Post" = "Ver artigo";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Ver site";

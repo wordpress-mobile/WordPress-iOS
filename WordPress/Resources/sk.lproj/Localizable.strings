@@ -564,7 +564,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -942,9 +941,6 @@
 /* Title for the edition of the share message. */
 "Customize the message" = "Upraviť správu";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Prispôsobte svoje nastavenia sledovanej webovej stránky pre nové príspevky a komentáre";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Prispôsobte nastavenia vašej webovej stránky pre označenia Páči sa mi to, Komentáre, Sledujúci a iné.";
 
@@ -1100,9 +1096,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -1261,9 +1255,6 @@
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Počas aktualizácie\nsa vyskytla chyba";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Vyskytla sa chyba\npočas ukladania";
-
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Poča publikovania sa vyskytla chyba";
 
@@ -1368,28 +1359,14 @@
    User's First Name */
 "First Name" = "Krstné meno";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Odoberať";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Stránky, ktoré sledujete";
 
 /* User role badge */
 "Follower" = "Odberateľ";
 
 /* Label for number of followers. */
 "Followers" = "Odberatelia";
-
-/* User is following the blog. */
-"Following" = "Nasledujúce";
-
-/* Filters Follows Notifications */
-"Follows" = "Odbery";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Sledovať blog.";
 
 /* Next web page */
 "Forward" = "Poslať ďalej";
@@ -1513,8 +1490,7 @@
 "Hide keyboard" = "Skryť klávesnicu";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "História";
 
 /* Moderation Keys Title
@@ -1836,7 +1812,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Nahráva sa...";
 
@@ -2149,9 +2124,6 @@
 
 /* Message to show when Keyring connection synchronization succeeded but no matching connections were found. %@ is a service name like Facebook or Twitter */
 "No connections found for %@" = "Nenašlo sa spojenie pre %@";
-
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Zatiaľ žiadny nasledovatelia ";
 
 /* Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications */
 "No likes yet" = "Zatiaľ žiadne lajky";
@@ -2532,8 +2504,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Kategórie článku";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Pridať formát";
 
 /* Name of the button to open the post settings
@@ -2663,9 +2634,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Zverejnené";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publikované práve teraz";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Zverejňovanie článku...";
@@ -2946,9 +2914,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Naplánované";
 
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Naplánované na %@";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Plánovanie...";
 
@@ -3036,9 +3001,6 @@
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Nastaviť Nadradený";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Nastaviť ako ilustračný obrázok";
 
@@ -3064,7 +3026,6 @@
 "Settings update failed" = "Aktualizácia nastavení zlyhala";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -3165,9 +3126,6 @@
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Webová stránka bola zmazaná!";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Odbery webovej stránky";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Stránka nebola nájdená";
@@ -3838,9 +3796,6 @@
    Undo action */
 "Undo" = "Zrušiť";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Prestať sledovať tento blog.";
-
 /* Unhides a site from the site picker list */
 "Unhide" = "Odkryť";
 
@@ -4009,9 +3964,6 @@
 
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Zobraziť všetko";
-
-/* Button label for viewing a post */
-"View Post" = "Zobraziť príspevok";
 
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobraziť webovú stránku";

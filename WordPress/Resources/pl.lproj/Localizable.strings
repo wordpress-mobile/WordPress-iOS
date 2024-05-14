@@ -427,7 +427,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -854,9 +853,6 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Odkryj";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Odkryj i śledź blogi, które kochasz";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Dyskusja";
@@ -885,9 +881,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -1114,9 +1108,6 @@
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Znajdź adres swojej witryny";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Znajdowanie blogów i stron, które pokochasz...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -1125,22 +1116,14 @@
 /* Fitness & Exercise site intent topic */
 "Fitness & Exercise" = "Fitness i ćwiczenia";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Obserwuj";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Obserwuj konwersację";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Obserwowane witryny";
-
 /* Label for number of followers. */
 "Followers" = "Obserwujący";
-
-/* User is following the blog. */
-"Following" = "Obserwujesz";
 
 /* No comment provided by engineer. */
 "Font Size" = "Wielkość liter";
@@ -1291,8 +1274,7 @@
 "Hide keyboard" = "Schowaj klawiature";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historia";
 
 /* Title for setting which shows the current page assigned as a site's homepage
@@ -1540,7 +1522,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Wczytywanie…";
 
@@ -2048,8 +2029,7 @@
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Wpis";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format treści";
 
 /* Register Domain - Address information field Postal Code */
@@ -2374,9 +2354,6 @@
 /* No comment provided by engineer. */
 "Select a color" = "Wybierz kolor";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Wybierz kilka, aby kontynuować";
-
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Wybierz domenę";
 
@@ -2409,7 +2386,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings" = "Ustawienia";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -3000,9 +2976,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
 
-/* Button label for viewing a post */
-"View Post" = "Zobacz wpis";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobacz witrynę";
 
@@ -3308,9 +3281,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "growAudienceCell.dismiss" = "Odrzuć";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Odkryj blogi do obserwowania";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Zrób to ponownie";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -3318,9 +3288,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Połączono z innymi blogami";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Połącz się z innymi blogerami, obserwując, polubiając i komentując ich wpisy.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Włącz udostępnianie wpisów";
@@ -3408,9 +3375,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Przełącz się na aplikację Jetpack, aby używać Czytnika do znajdowania, obserwowania i polubienia wszystkich swoich ulubionych stron internetowych i postów.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Śledź dowolną witrynę za pomocą aplikacji Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack zapewnia statystyki, powiadomienia i więcej, aby pomóc zbudować i rozwijać wymarzoną witrynę opartą o WordPressa.";

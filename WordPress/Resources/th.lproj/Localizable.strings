@@ -214,7 +214,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -448,9 +447,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -518,9 +515,6 @@
 /* Text displayed when load post fails. */
 "Error Loading Post" = "ผิดพลาดในการโหลดเรื่อง";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "ความผิดพลาดเกิดขึ้น\nในขณะกำลังบันทึก";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
 
@@ -552,25 +546,14 @@
    User's First Name */
 "First Name" = "ชื่อ";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "ติดตาม";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "เว็บที่ติดตาม";
 
 /* User role badge */
 "Follower" = "ผู้ติดตาม";
 
 /* Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
-
-/* User is following the blog. */
-"Following" = "กำลังติดตาม";
-
-/* Filters Follows Notifications */
-"Follows" = "ติดตาม";
 
 /* Next web page */
 "Forward" = "ฟอร์เวิร์ด";
@@ -747,7 +730,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "กำลังโหลด...";
 
@@ -1093,8 +1075,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "หมวดหมู่เรื่อง";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "รูปแบบเรื่อง";
 
 /* All Time Stats 'Posts' label
@@ -1330,7 +1311,6 @@
 "Settings update failed" = "อัปเดตการตั้งค่าล้มเหลว";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -1362,9 +1342,6 @@
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "ที่อยู่เว็บไซต์ต้องมีอย่างน้อย 4 ตัวอักษร";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "ติดตามเว็บ";
 
 /* Image size option title. */
 "Size" = "ขนาด";
