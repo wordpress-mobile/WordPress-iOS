@@ -8,7 +8,6 @@ struct AppStoreInfo: Decodable {
     let trackName: String
     let trackId: Int
     let version: String
-    let fileSizeBytes: String
     let releaseNotes: String
     let minimumOsVersion: String
 }

@@ -58,7 +58,7 @@ struct BlockingUpdateView: View {
                 Text(viewModel.appName)
                     .font(.system(.callout))
                     .foregroundStyle(.primary)
-                Text(viewModel.detailsString)
+                Text(viewModel.version)
                     .font(.system(.callout))
                     .foregroundStyle(.secondary)
             }
