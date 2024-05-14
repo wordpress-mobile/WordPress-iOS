@@ -54,6 +54,16 @@ struct WPCrashLoggingDataProvider: CrashLoggingDataProvider {
     var shouldEnableAutomaticSessionTracking: Bool {
         return !UserSettings.userHasOptedOutOfCrashLogging
     }
+    
+    let performanceTracking: PerformanceTracking = {
+        let config = PerformanceTracking.Configuration(
+            sampler: { 0.005 },
+            profilingRate: 0.01,
+            trackCoreData: true,
+            trackNetwork: false
+        )
+        return .enabled(config)
+    }()
 
     var currentUser: TracksUser? {
         return contextManager.performQuery { context -> TracksUser? in
