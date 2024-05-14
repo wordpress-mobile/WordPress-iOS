@@ -1,7 +1,7 @@
 import Foundation
 
 enum InAppUpdateType {
-    case flexible
+    case flexible(AppStoreInfo)
     case blocking(AppStoreInfo)
 }
 
@@ -44,8 +44,8 @@ final class InAppUpdateCoordinator {
         }
 
         switch updateType {
-        case .flexible:
-            presenter.showNotice()
+        case .flexible(let appStoreInfo):
+            presenter.showNotice(using: appStoreInfo)
         case .blocking(let appStoreInfo):
             presenter.showBlockingUpdate(using: appStoreInfo)
         }
@@ -66,7 +66,7 @@ final class InAppUpdateCoordinator {
                     return .blocking(appStoreInfo)
                 }
                 if currentVersion.isLower(than: appStoreInfo.version) {
-                    return .flexible
+                    return .flexible(appStoreInfo)
                 }
             }
 
