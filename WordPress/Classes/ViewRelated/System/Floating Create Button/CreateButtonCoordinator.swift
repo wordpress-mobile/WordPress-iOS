@@ -24,8 +24,7 @@ import WordPressUI
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
     private func notice(for blog: Blog) -> Notice {
-        let showsStories = blog.supports(.stories)
-        let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
+        let title = NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
         let notice = Notice(title: title,
                             message: "",
                             style: ToolTipNoticeStyle()) { [weak self] _ in
@@ -199,8 +198,7 @@ import WordPressUI
     }
 
     @objc func showCreateButton(for blog: Blog) {
-        let showsStories = blog.supports(.stories)
-        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
+        button.accessibilityHint = NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
         showCreateButton(notice: notice(for: blog))
     }
 

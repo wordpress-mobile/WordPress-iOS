@@ -18,6 +18,10 @@ extension MySiteViewController {
             })
         }
 
+        let newPostFromAudio = { [weak self] in
+            // TODO:
+        }
+
         let newStory = {
             let presenter = RootViewCoordinator.sharedPresenter
             let blog = presenter.currentOrLastBlog()
@@ -33,6 +37,9 @@ extension MySiteViewController {
         }
 
         actions.append(PostAction(handler: newPost, source: source))
+        if FeatureFlag.voiceToContent.enabled && (blog?.isHostedAtWPcom ?? false) {
+            actions.append(PostFromAudioAction(handler: newPostFromAudio, source: source))
+        }
         if blog?.supports(.pages) ?? false {
             actions.append(PageAction(handler: newPage, source: source))
         }
