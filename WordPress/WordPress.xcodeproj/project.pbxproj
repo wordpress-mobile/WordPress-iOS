@@ -5705,6 +5705,7 @@
 		FE50965C2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
 		FE50965D2A20D0F300DDD071 /* CommentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE50965B2A20D0F300DDD071 /* CommentTableHeaderView.swift */; };
 		FE59025F2BF2558300115D08 /* ReaderAnnouncementHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59025E2BF2558300115D08 /* ReaderAnnouncementHeaderView.swift */; };
+		FE5902602BF3795600115D08 /* ReaderAnnouncementHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE59025E2BF2558300115D08 /* ReaderAnnouncementHeaderView.swift */; };
 		FE6AFE432B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
 		FE6AFE442B18EDF200F76520 /* BloganuaryTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE422B18EDF200F76520 /* BloganuaryTracker.swift */; };
 		FE6AFE472B1A351F00F76520 /* SOTWCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE6AFE462B1A351F00F76520 /* SOTWCardView.swift */; };
@@ -22678,6 +22679,7 @@
 				80EF928D280E83110064A971 /* QuickStartToursCollection.swift in Sources */,
 				7E58879A20FE8D9300DB6F80 /* AppEnvironment.swift in Sources */,
 				591232691CCEAA5100B86207 /* AbstractPostListViewController.swift in Sources */,
+				FE5902602BF3795600115D08 /* ReaderAnnouncementHeaderView.swift in Sources */,
 				E14200781C117A2E00B3B115 /* ManagedAccountSettings.swift in Sources */,
 				0C23F3362AC4AD3400EE6117 /* SiteMediaSelectionTitleView.swift in Sources */,
 				401AC82722DD2387006D78D4 /* Blog+Plans.swift in Sources */,
