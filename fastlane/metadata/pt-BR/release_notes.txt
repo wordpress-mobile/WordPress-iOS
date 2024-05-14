@@ -1,1 +1,0 @@
-Fizemos algumas atualizações no menu Páginas. Você verá que as configurações têm uma seção própria, que está disponível para posts publicados ou não. Legal, não é?
