@@ -36,7 +36,7 @@ private struct VoiceToContentWelcomeView: View {
     @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 34) {
             VStack(spacing: 16) {
                 Text("Post from Audio")
                     .font(.title.weight(.medium))
@@ -65,6 +65,8 @@ private struct VoiceToContentWelcomeView: View {
 
             Text("Tap the button to begin recording")
                     .foregroundStyle(.secondary)
+
+            Spacer()
         }
     }
 }
@@ -75,7 +77,7 @@ private struct VoiceToContentRecordingView: View {
     @State private var isRecording = true
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 34) {
             VStack(spacing: 16) {
                 Text("Recording...")
                     .font(.title.weight(.medium))
@@ -101,6 +103,8 @@ private struct VoiceToContentRecordingView: View {
                 Text("Done")
             }
             .buttonStyle(.borderedProminent)
+
+            Spacer()
         }
     }
 }
@@ -111,13 +115,15 @@ private struct VoiceToContenProcessingView: View {
     @State private var isRecording = true
 
     var body: some View {
-        VStack(spacing: 40) {
+        VStack(spacing: 34) {
             VStack(spacing: 16) {
                 Text("Processing...")
                     .font(.title.weight(.medium))
             }
 
             ProgressView()
+
+            Spacer()
         }
     }
 }
