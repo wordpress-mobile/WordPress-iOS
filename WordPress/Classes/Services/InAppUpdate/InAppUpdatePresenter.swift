@@ -29,7 +29,7 @@ final class InAppUpdatePresenter: InAppUpdatePresenterProtocol {
             wpAssertionFailure("Failed to show blocking update view")
             return
         }
-        let viewModel = BlockingUpdateViewModel(appStoreInfo: appStoreInfo) { [weak self] in
+        let viewModel = AppStoreInfoViewModel(appStoreInfo) { [weak self] in
             self?.openAppStore()
         }
         let controller = BlockingUpdateViewController(viewModel: viewModel)

@@ -4,7 +4,7 @@ import UIKit
 import StoreKit
 
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
-    init(viewModel: BlockingUpdateViewModel) {
+    init(viewModel: AppStoreInfoViewModel) {
         super.init(rootView: .init(viewModel: viewModel))
     }
 
@@ -14,7 +14,7 @@ final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView
 }
 
 struct BlockingUpdateView: View {
-    let viewModel: BlockingUpdateViewModel
+    let viewModel: AppStoreInfoViewModel
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {

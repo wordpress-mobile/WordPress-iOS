@@ -1,12 +1,12 @@
 import Foundation
 
-struct BlockingUpdateViewModel {
+struct AppStoreInfoViewModel {
     let appName: String
     let version: String
     let releaseNotes: [String.SubSequence]
     let onUpdateTapped: () -> Void
 
-    init(appStoreInfo: AppStoreInfo, onUpdateTapped: @escaping () -> Void) {
+    init(_ appStoreInfo: AppStoreInfo, onUpdateTapped: @escaping () -> Void) {
         self.appName = appStoreInfo.trackName
         self.version = String(format: Strings.versionFormat, appStoreInfo.version)
         self.releaseNotes = appStoreInfo.releaseNotes.split(whereSeparator: \.isNewline)
