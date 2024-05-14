@@ -151,6 +151,7 @@ fileprivate extension ReaderAnnouncementHeader {
                 .foregroundColor(Color(.systemBackground))
                 .background(.primary)
                 .clipShape(Circle())
+                .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 1) {
                 Text(entry.title)
