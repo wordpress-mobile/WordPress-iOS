@@ -8,6 +8,27 @@ final class AppUpdateCoordinatorTests: XCTestCase {
     private let presenter = MockAppUpdatePresenter()
     private let remoteConfigStore = RemoteConfigStoreMock()
 
+    func testInAppUpdatesDisabled() async {
+        // Given
+        let coordinator = AppUpdateCoordinator(
+            currentVersion: "24.6",
+            currentOsVersion: "17.0",
+            service: service,
+            presenter: presenter,
+            remoteConfigStore: remoteConfigStore,
+            isLoggedIn: true,
+            isInAppUpdatesEnabled: false
+        )
+
+        // When
+        await coordinator.checkForAppUpdates()
+
+        // Then
+        XCTAssertFalse(service.didLookup)
+        XCTAssertFalse(presenter.didShowNotice)
+        XCTAssertFalse(presenter.didShowBlockingUpdate)
+    }
+
     func testNotLoggedIn() async {
         // Given
         let coordinator = AppUpdateCoordinator(
@@ -16,7 +37,8 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
-            isLoggedIn: false
+            isLoggedIn: false,
+            isInAppUpdatesEnabled: true
         )
 
         // When
@@ -37,7 +59,8 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
             isJetpack: true,
-            isLoggedIn: true
+            isLoggedIn: true,
+            isInAppUpdatesEnabled: true
         )
 
         // When
@@ -58,7 +81,8 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
             isJetpack: true,
-            isLoggedIn: true
+            isLoggedIn: true,
+            isInAppUpdatesEnabled: true
         )
         remoteConfigStore.jetpackInAppUpdateBlockingVersion = "24.7"
 
@@ -80,7 +104,8 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
             isJetpack: true,
-            isLoggedIn: true
+            isLoggedIn: true,
+            isInAppUpdatesEnabled: true
         )
 
         // When
@@ -101,7 +126,8 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
             isJetpack: true,
-            isLoggedIn: true
+            isLoggedIn: true,
+            isInAppUpdatesEnabled: true
         )
         remoteConfigStore.jetpackInAppUpdateBlockingVersion = "24.7"
 
