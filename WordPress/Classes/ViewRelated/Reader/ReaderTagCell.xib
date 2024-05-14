@@ -44,22 +44,28 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6wc-NQ-auo">
                                     <rect key="frame" x="0.0" y="0.0" width="352" height="118"/>
                                     <subviews>
+                                        <view contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="pBB-XH-eiv" userLabel="Spacer">
+                                            <rect key="frame" x="0.0" y="0.0" width="352" height="38.5"/>
+                                        </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsY-TC-klp" userLabel="Title">
-                                            <rect key="frame" x="0.0" y="0.0" width="352" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="38.5" width="352" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KT-0Z-POw" userLabel="Summary">
-                                            <rect key="frame" x="0.0" y="20.5" width="352" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="59" width="352" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="l2P-MZ-TCd" userLabel="Spacer">
-                                            <rect key="frame" x="0.0" y="41" width="352" height="77"/>
+                                            <rect key="frame" x="0.0" y="79.5" width="352" height="38.5"/>
                                         </view>
                                     </subviews>
+                                    <constraints>
+                                        <constraint firstItem="l2P-MZ-TCd" firstAttribute="height" secondItem="pBB-XH-eiv" secondAttribute="height" id="cGL-Qq-cVT"/>
+                                    </constraints>
                                 </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4xC-jQ-qSx">
                                     <rect key="frame" x="352" y="0.0" width="128" height="118"/>
