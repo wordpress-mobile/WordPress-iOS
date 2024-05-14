@@ -134,8 +134,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let token = try await service.getAuthorizationToken()
             // TODO: this doesn't seem to handle 401 and other "error" status codes correctly
             let transcription = try await service.transcribeAudio(from: fileURL, token: token)
+            let content = try await service.makePostContent(fromPlainText: transcription, token: token)
 
-            self.completion(transcription)
+            self.completion(content)
         } catch {
             showError(error)
         }

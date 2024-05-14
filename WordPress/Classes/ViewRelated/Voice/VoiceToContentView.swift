@@ -128,8 +128,8 @@ private struct VoiceToContenProcessingView: View {
                     .font(.title.weight(.medium))
             }
 
+            Spacer()
             ProgressView()
-
             Spacer()
         }
     }
