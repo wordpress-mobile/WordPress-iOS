@@ -136,7 +136,7 @@ private final class MockInAppUpdatePresenter: InAppUpdatePresenterProtocol {
     var didShowBlockingUpdate = false
     var didOpenAppStore = false
 
-    func showNotice() {
+    func showNotice(using appStoreInfo: AppStoreInfo) {
         didShowNotice = true
     }
 
