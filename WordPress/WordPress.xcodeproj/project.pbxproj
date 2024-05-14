@@ -878,6 +878,13 @@
 		1D19C56629C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D19C56529C9DB0A00FB0087 /* GutenbergVideoPressUploadProcessorTests.swift */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1D91080729F847A2003F9A5E /* MediaServiceUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */; };
+		1DE9F2B02BA30C930044AA53 /* GutenbergProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */; };
+		1DE9F2B12BA30C930044AA53 /* GutenbergProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */; };
+		1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */; };
+		1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */; };
+		1DF7A0CF2BA099760003CBA3 /* GutenbergContentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */; };
+		1DF7A0D02BA099760003CBA3 /* GutenbergContentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */; };
+		1DF7A0D32BA0B1810003CBA3 /* GutenbergContentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7A0D22BA0B1810003CBA3 /* GutenbergContentParser.swift */; };
 		1E0462162566938300EB98EF /* GutenbergFileUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */; };
 		1E0FF01E242BC572008DA898 /* GutenbergWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */; };
 		1E485A90249B61440000A253 /* GutenbergRequestAuthenticator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */; };
@@ -6626,6 +6633,9 @@
 		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaServiceUpdateTests.m; sourceTree = "<group>"; };
+		1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergProcessor.swift; sourceTree = "<group>"; };
+		1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergContentParser.swift; sourceTree = "<group>"; };
+		1DF7A0D22BA0B1810003CBA3 /* GutenbergContentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergContentParser.swift; sourceTree = "<group>"; };
 		1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFileUploadProcessor.swift; sourceTree = "<group>"; };
 		1E0FF01D242BC572008DA898 /* GutenbergWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergWebViewController.swift; sourceTree = "<group>"; };
 		1E485A8F249B61440000A253 /* GutenbergRequestAuthenticator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergRequestAuthenticator.swift; sourceTree = "<group>"; };
@@ -9809,6 +9819,7 @@
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
 				A1C54EBE8C34FFD5015F8FC9 /* Pods_Apps_WordPress.framework in Frameworks */,
@@ -9933,6 +9944,7 @@
 				0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
+				1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
 				3F44DD58289C379C006334CD /* Lottie in Frameworks */,
 				FABB262F2602FC2C00C8785C /* CoreMedia.framework in Frameworks */,
@@ -18954,6 +18966,8 @@
 				4629E4202440C5B20002E15C /* GutenbergCoverUploadProcessor.swift */,
 				1D19C56229C9D9A700FB0087 /* GutenbergVideoPressUploadProcessor.swift */,
 				46638DF5244904A3006E8439 /* GutenbergBlockProcessor.swift */,
+				1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */,
+				1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */,
 			);
 			path = Processors;
 			sourceTree = "<group>";
@@ -18995,6 +19009,7 @@
 				4629E4222440C8160002E15C /* GutenbergCoverUploadProcessorTests.swift */,
 				AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */,
 				FE9438B12A050251006C40EC /* BlockEditorSettings_GutenbergEditorSettingsTests.swift */,
+				1DF7A0D22BA0B1810003CBA3 /* GutenbergContentParser.swift */,
 			);
 			name = Gutenberg;
 			sourceTree = "<group>";
@@ -19090,6 +19105,7 @@
 				0CD9FB882AFA71C2009D9C7A /* DGCharts */,
 				3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCE2B28E53400747E21 /* DesignSystem */,
+				1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -19350,6 +19366,7 @@
 				0CD9FB862AFA71B9009D9C7A /* DGCharts */,
 				3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCC2B28E52B00747E21 /* DesignSystem */,
+				1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -19569,6 +19586,7 @@
 				3F411B6D28987E3F002513AE /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
+				1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -23220,6 +23238,7 @@
 				0C04532B2AC77245003079C8 /* SiteMediaDocumentInfoView.swift in Sources */,
 				9A341E5721997A340036662E /* Blog+BlogAuthors.swift in Sources */,
 				F4D829702931097900038726 /* DashboardMigrationSuccessCell+WordPress.swift in Sources */,
+				1DF7A0CF2BA099760003CBA3 /* GutenbergContentParser.swift in Sources */,
 				7E3AB3DB20F52654001F33B6 /* ActivityContentStyles.swift in Sources */,
 				469CE06D24BCED75003BDC8B /* CategorySectionTableViewCell.swift in Sources */,
 				809101982908DE8500FCB4EA /* JetpackFullscreenOverlayViewModel.swift in Sources */,
@@ -23248,6 +23267,7 @@
 				08216FC91CDBF96000304BA7 /* MenuItemCategoriesViewController.m in Sources */,
 				43C9908E21067E22009EFFEB /* QuickStartChecklistViewController.swift in Sources */,
 				80EF929028105CFA0064A971 /* QuickStartFactory.swift in Sources */,
+				1DE9F2B02BA30C930044AA53 /* GutenbergProcessor.swift in Sources */,
 				082635BB1CEA69280088030C /* MenuItemsViewController.m in Sources */,
 				822876F11E929CFD00696BF7 /* ReachabilityUtils+OnlineActions.swift in Sources */,
 				FE7B9A8A2A6BD20200488791 /* PrepublishingSocialAccountsTableFooterView.swift in Sources */,
@@ -24329,6 +24349,7 @@
 				93D86B981C691E71003D8E3E /* LocalCoreDataServiceTests.m in Sources */,
 				3F50945B2454ECA000C4470B /* ReaderTabItemsStoreTests.swift in Sources */,
 				0CD6299B2B9AAA9A00325EA4 /* Foundation+Extensions.swift in Sources */,
+				1DF7A0D32BA0B1810003CBA3 /* GutenbergContentParser.swift in Sources */,
 				8384C64428AAC85F00EABE26 /* KeychainUtilsTests.swift in Sources */,
 				73178C2921BEE09300E37C9A /* SiteSegmentsStepTests.swift in Sources */,
 				FEAA6F79298CE4A600ADB44C /* PluginJetpackProxyServiceTests.swift in Sources */,
@@ -24677,6 +24698,7 @@
 				0C896DE42A3A7BDC00D7D4E7 /* SettingsCell.swift in Sources */,
 				FABB21832602FC2C00C8785C /* WordPress-61-62.xcmappingmodel in Sources */,
 				FABB21842602FC2C00C8785C /* WhatIsNewView.swift in Sources */,
+				1DF7A0D02BA099760003CBA3 /* GutenbergContentParser.swift in Sources */,
 				FABB21852602FC2C00C8785C /* GravatarService.swift in Sources */,
 				FABB21862602FC2C00C8785C /* CountriesCell.swift in Sources */,
 				FABB21882602FC2C00C8785C /* ReaderTopicsCardCell.swift in Sources */,
@@ -25572,6 +25594,7 @@
 				FABB24042602FC2C00C8785C /* SafariActivity.m in Sources */,
 				FABB24052602FC2C00C8785C /* WordPress-37-38.xcmappingmodel in Sources */,
 				0CE58A2E2B35C91900E87D1E /* SiteMediaPreviewViewController.swift in Sources */,
+				1DE9F2B12BA30C930044AA53 /* GutenbergProcessor.swift in Sources */,
 				0C01A6EB2AB37F0F009F7145 /* SiteMediaCollectionCellSelectionOverlayView.swift in Sources */,
 				FABB24062602FC2C00C8785C /* UploadOperation.swift in Sources */,
 				FABB24072602FC2C00C8785C /* LayoutPickerAnalyticsEvent.swift in Sources */,
@@ -30929,6 +30952,14 @@
 				minimumVersion = 1.1.2;
 			};
 		};
+		1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup.git";
+			requirement = {
+				kind = exactVersion;
+				version = 2.7.1;
+			};
+		};
 		3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Quick/Nimble";
@@ -31007,6 +31038,15 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 17A8858B2757B97F0071FCA3 /* XCRemoteSwiftPackageReference "AutomatticAbout-swift" */;
 			productName = AutomatticAbout;
+		};
+		1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
+		1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftSoup;
 		};
 		24CE2EB0258D687A0000C297 /* WordPressFlux */ = {
 			isa = XCSwiftPackageProductDependency;
