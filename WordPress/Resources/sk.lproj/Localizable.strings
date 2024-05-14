@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2024-03-17 10:29:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n >= 2 && n <= 4) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: sk */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -490,15 +490,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Blog";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Odberateľ blogu";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Používateľ blogu";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Návštevník blogu";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Tučné";
@@ -535,7 +526,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -729,7 +719,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -834,7 +823,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1388,13 +1376,10 @@
    Section title for sites the user has followed. */
 "Followed Sites" = "Stránky, ktoré sledujete";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Odberateľ";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Odberatelia";
 
 /* User is following the blog. */
@@ -1770,7 +1755,6 @@
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Likes";
@@ -2663,8 +2647,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Zverejniť";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -2683,9 +2666,6 @@
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Publikované práve teraz";
-
-/* Published on [date] */
-"Published on" = "Publikované dňa";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Zverejňovanie článku...";
@@ -2966,9 +2946,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Naplánované";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Naplánované na";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Naplánované na %@";
 
@@ -3161,9 +3138,6 @@
 
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Prihláste sa cez E-mail";
-
-/* Label for time period in list of followers. */
-"Since" = "Od";
 
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Keďže máte bezplatný plán, v logu aktivít uvidíte obmedzené udalosti.";
@@ -3733,12 +3707,6 @@
 /* Label for total followers */
 "Total" = "Celkom";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Celkový počet sledujúcich cez e-mail: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Celkový počet sledujúcich WordPress.com: %@";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Prenos";
 
@@ -4054,10 +4022,8 @@
 /* Displays Less Rows */
 "View less…" = "Zobraziť menej...";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Zobraziť viac";
@@ -4075,7 +4041,6 @@
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */

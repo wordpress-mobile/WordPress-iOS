@@ -69,7 +69,7 @@ import Foundation
         refreshControl = UIRefreshControl()
         refreshControl!.addTarget(self, action: #selector(refreshCategoriesWithInteraction), for: .valueChanged)
 
-        let rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "icon-post-add"), style: .plain, target: self, action: #selector(showAddNewCategory))
+        let rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"), style: .plain, target: self, action: #selector(showAddNewCategory))
 
         switch selectionMode {
         case .post:

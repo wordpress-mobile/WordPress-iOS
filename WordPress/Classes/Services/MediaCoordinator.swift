@@ -87,7 +87,7 @@ class MediaCoordinator: NSObject {
         }
 
         // Use the original post so we don't create new coordinators for post revisions
-        let original = post.original ?? post
+        let original = post.original()
 
         let coordinator = MediaProgressCoordinator()
         coordinator.delegate = self
@@ -103,7 +103,7 @@ class MediaCoordinator: NSObject {
     ///            if one does not exist.
     private func cachedCoordinator(for post: AbstractPost) -> MediaProgressCoordinator? {
         // Use the original post so we don't create new coordinators for post revisions
-        let original = post.original ?? post
+        let original = post.original()
 
         return progressCoordinatorQueue.sync {
             return postMediaProgressCoordinators[original]
@@ -282,6 +282,9 @@ class MediaCoordinator: NSObject {
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
         delete(media: [media])
+        if FeatureFlag.syncPublishing.enabled {
+            notifyObserversForMedia(media, ofStateChange: .cancelled)
+        }
     }
 
     /// Cancels any ongoing upload for the media object
@@ -558,7 +561,7 @@ class MediaCoordinator: NSObject {
     func addObserver(_ onUpdate: @escaping ObserverBlock, forMediaFor post: AbstractPost) -> UUID {
         let uuid = UUID()
 
-        let original = post.original ?? post
+        let original = post.original()
         let observer = MediaObserver(subject: .post(id: original.objectID), onUpdate: onUpdate)
 
         queue.async {
@@ -588,6 +591,8 @@ class MediaCoordinator: NSObject {
         case ended
         case failed(error: NSError)
         case progress(value: Double)
+        /// The upload was cancelled by the user.
+        case cancelled
 
         var debugDescription: String {
             switch self {
@@ -603,6 +608,8 @@ class MediaCoordinator: NSObject {
                 return "Failed: \(error)"
             case .progress(let value):
                 return "Progress: \(value)"
+            case .cancelled:
+                return "Cancelled"
             }
         }
     }
@@ -689,7 +696,7 @@ class MediaCoordinator: NSObject {
                 guard let post = object as? AbstractPost else {
                     return nil
                 }
-                return (post.original ?? post).objectID
+                return post.original().objectID
             } ?? []
         }
 
@@ -797,6 +804,26 @@ extension MediaCoordinator {
             WordPressAppDelegate.crashLogging?.logMessage("Deleting a media object that's failed to upload because of a missing local file. \(mediaError)")
 
         }, for: nil)
+    }
+
+    /// Returns `true` if the error can't be resolved by simply retrying and
+    /// requires user interventions, for example, making more room in the
+    /// Media library.
+    static func isTerminalError(_ error: Error) -> Bool {
+        let nsError = error as NSError
+        switch nsError.domain {
+        case MediaServiceErrorDomain:
+            switch nsError.code {
+            case MediaServiceError.fileDoesNotExist.rawValue,
+                MediaServiceError.fileLargerThanMaxFileSize.rawValue,
+                MediaServiceError.fileLargerThanDiskQuotaAvailable.rawValue:
+                return true
+            default:
+                return false
+            }
+        default:
+            return false
+        }
     }
 }
 

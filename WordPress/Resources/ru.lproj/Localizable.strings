@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-21 17:02:00+0000 */
+/* Translation-Revision-Date: 2024-05-07 16:54:07+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: ru */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "Подключение %@ восстановлено.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d записей.";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Вы уверены, что хотите удалить эту запись?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Уверены, что хотите обновить главную страницу?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Вы точно хотите обновить?";
 
@@ -1120,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Запись блога";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Общее количество подписчиков по электронной почте";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Читатель блога";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Пользователь блога";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Обозреватель блога";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Ведение блога";
 
@@ -1229,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1529,6 +1510,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button. */
 "Clear search history" = "Очистить историю поиска";
 
+/* No comment provided by engineer. */
+"Clear selected color" = "Очистить выбранный цвет";
+
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Идет очистка...";
 
@@ -1636,7 +1620,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1801,7 +1784,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1977,8 +1959,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Создать страницу";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Создать запись";
 
 /* Button to progress to the next step
@@ -2144,9 +2125,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Период";
-
-/* Date and Time */
-"Date and Time" = "Дата и время";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2592,9 +2570,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Адрес электронной почты";
-
-/* Blog Email Followers */
-"Email Followers" = "Подписчики по электронной почте";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3052,13 +3027,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Веб-сайты, на которые вы подписаны";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Читатель";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Читатели";
 
 /* User is following the blog. */
@@ -3187,9 +3159,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Обратиться в поддержку";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Поехали! Увеличьте число просмотров вашей записи поделившись ей.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Ознакомьтесь с приложением Jetpack";
@@ -3346,9 +3315,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Значок справки";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Тут информация о том как поживает ваша запись.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Скрыто";
@@ -3677,9 +3643,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Похоже, вы ввели неправильный пароль. Хотите попытаться ещё раз?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Прошло %1$@ с тех пор как опубликована запись %2$@.";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Самое время написать в блог на %@!";
 
@@ -3900,7 +3863,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Любимое";
@@ -3952,7 +3914,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Ссылка вставлена";
 
 /* No comment provided by engineer. */
-"Link text" = "Текст ссылки";
+"Link label" = "Ярлык ссылки";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Ссылка на имеющееся содержимое";
@@ -5490,8 +5452,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Опубликовать";
 
 /* Label for the publish date button. */
@@ -5516,9 +5477,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "Опубликовано только что на";
-
-/* Published on [date] */
-"Published on" = "Опубликовано";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Публикация страницы...";
@@ -5998,9 +5956,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Запланировано";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Планируемая публикация: ";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Назначено на %@ на";
 
@@ -6293,9 +6248,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Поделитесь Jetpack с друзьями";
 
-/* Label for action to share post. */
-"Share Post" = "Поделиться записью";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Поделитесь WordPress с друзьями";
 
@@ -6415,9 +6367,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Зарегистрироваться с адресом Email";
 
-/* Label for time period in list of followers. */
-"Since" = "С";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Для бесплатного тарифа доступно ограниченное количество записей журнала активности.";
 
@@ -6510,10 +6459,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Пока что у вашего сайта нет проигнорированных угроз.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Соцсети";
 
 /* Title of a Quick Start Tour */
@@ -7437,21 +7384,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Всего комментариев";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Общее количество подписчиков по электронной почте: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Общее количество подписчиков";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Всего отметок \"нравится\"";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Записей всего";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Общее количество подписчиков WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Всего слов";
@@ -7981,10 +7919,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Меньше…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Больше информации";
@@ -8005,7 +7941,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8707,9 +8642,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Вы еще не опубликовали ни одной записи.";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Вы еще не опубликовали ни одной записи. Как только вы начнете делать это, основные данные по вашей последней записи будут здесь.";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Вы достигли важной вехи 🚀";
 
@@ -8920,6 +8852,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "аудио файл";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Отмена";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Вы внесли изменения в эту запись с другого устройства, но не сохранили их. Изменено: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Доступно автоматическое сохранение";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Просмотреть изменения";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Не удалось загрузить изображение. Выберите другое или повторите попытку.";
@@ -9596,8 +9540,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Для размещения фотографий и видео в ваших записях.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -10367,26 +10311,32 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Тарифы";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Создана %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Удаление записи...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Изменено %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Удаление записи в корзину...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Опубликовано %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Отменить изменения";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Запланировано %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Удалить черновик";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "В корзине %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Продолжить редактирование";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Сохранить черновик";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Автосохранение...";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Редакция загружена";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Сохранение черновика...";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Автор: %@.";
@@ -10399,6 +10349,21 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "На рассмотрении";
+
+/* Cancels an Action */
+"postList.cancel" = "Отмена";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Удалить навсегда";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Приложение загружает на сервер внесённые ранее изменения Повторите попытку позже.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Что-то пошло не так";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Изменения внесены офлайн";
@@ -10414,6 +10379,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Просмотр";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Отправить в корзину";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Вы действительно хотите отправить \"%@\" в корзину? Изменения, не загруженные на сервер, будут утрачены.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Отменить загрузку";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Закрыть";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "Нет загрузок в очереди";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ из %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Повторить загрузку";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Повторить загрузки";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Загруженные медиафайлы";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Произошла ошибка";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Приложение загружает на сервер внесённые ранее изменения. Повторите попытку позже.";
+
+/* Button OK */
+"postNotice.ok" = "ОК";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Черновик страницы загружен";
@@ -10445,11 +10446,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Запись обновлена";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Загрузка не удалась";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Просмотр";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Запись была изменена на другом устройстве";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" безвозвратно удалён и не может быть восстановлен.";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Без названия";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Закрыть";
@@ -10463,6 +10470,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Настройки изображения записи";
 
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "На рассмотрении";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Автоматическая публикация в Twitter больше не доступна";
 
@@ -10471,6 +10481,36 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Не удалось обновить настройки записи";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Видна только администраторам и редакторам";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Закрытая";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Общедоступная, но требует ввода пароля";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Защищено паролем";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Видна всем";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Публичная";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Отмена";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Видимость";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Пароль";
+
+/* Button save */
+"postVisibilityPicker.save" = "Сохранить";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Продвигайте содержимое с помощью Blaze";
@@ -10495,6 +10535,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Предварительный просмотр";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Опубликовать";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Повторить попытку";
@@ -10562,8 +10605,8 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Не удалось загрузить медиафайлы";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "Не удалось загрузить элементы (%@)";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Заголовок";
@@ -10573,6 +10616,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Дата публикации";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Немедленно";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Публикация на";
@@ -10638,6 +10684,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Теги";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "Осталось элементов: %@";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "Осталось элементов: %@";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Загрузка медиафайлов";
 
@@ -10647,14 +10699,23 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Посмотреть все ответы";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ из %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Дата публикации";
 
-/* Retry button title */
-"publishButton.retry" = "Повторить";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Дата в вашем часовом поясе:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Сейчас";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Немедленно";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Удалить дату публикации";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Выбрать дату публикации";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Часовой пояс";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Дата публикации";
@@ -10750,8 +10811,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Вы уже подписаны на этот блог.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Редактировать";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Управление";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Фильтровать по блогу";
@@ -10781,10 +10842,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Нет тегов";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Подписка на новые теги…";
+"reader.filterSheet.select.tags.following" = "Подписка на новые метки...";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Рекомендуемые теги";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Подписка на метку.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Получение блогов…";
@@ -10845,11 +10909,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Подписки";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Ваши теги";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Поиск";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Настройки Чтива";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Добавить блог";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Искать блоги";
@@ -10875,12 +10945,8 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Перейти в подписки";
 
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Вы можете подписаться на записи в определенном блоге, оформив подписку на него.";
-
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Добавьте блог";
+"reader.no.tags.title" = "Добавить тег";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Не удалось заблокировать блог";
@@ -10994,6 +11060,82 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Отменить подписку на блог";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Карамель";
+
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "По умолчанию";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Вечер";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Сепия";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Мягкий";
+
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Цвета";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Готово";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Шрифты";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Размер";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Эта новая функция ещё на стадии разработки. Помогите нам её улучшить: %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "отправить отзыв";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.text" = "Выберите цвета, шрифты и размеры. Вы можете предварительно просмотреть результаты здесь, а затем, когда сделаете выбор, читать записи в блоге в избранном оформлении.";
+
+/* Title text for a preview */
+"reader.preferences.preview.header" = "Читательские предпочтения";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "цвета";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "шрифты";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "чтение";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Примеры тегов";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Очень крупный";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Очень мелкий";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Крупный";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Обычный";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Мелкий";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Управление блогами";
 
@@ -11006,20 +11148,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Блоги";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Подписка на новые теги…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Подписаться на теги";
+"reader.select.interests.follow.title" = "Подписаться на метки";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Подписка на новые метки...";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Нет новых тегов для подписки";
+"reader.select.tags.no.results.follow.title" = "Нет новых меток для подписки";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Выберите теги";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Подписка на тег.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Подписаться";
@@ -11048,11 +11187,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Добавьте тег";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Оценка «Нравится»";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Понравилось";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Другие теги";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Подписаться";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Подписки";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Отменить подписку на %@";
+"reader.tags.unfollow.accessibility.label" = "Отписаться от %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Отменить подписку";
@@ -11062,6 +11213,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Закрыть";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Читательские предпочтения";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Понятно";
@@ -11140,6 +11294,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Похожие записи";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Другое устройство";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Текущее устройство";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "Запись была изменена на другом устройстве. Выберите, какую версию записи вы хотите сохранить.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Отмена";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Сохранить";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Устранить конфликт";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Копировать ссылку";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Закрыть";
@@ -11315,6 +11490,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Неизвестно";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Все сайты";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Закреплённые сайты";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Последние сайты";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Добавить сайт";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Отмена";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Готово";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Редактировать";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Выберите сайт";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Напоминания";
 
@@ -11351,6 +11550,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Автоматическая публикация в Twitter больше не доступна из-за изменения условий использования и цен Twitter.";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Подписчики";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Посещаемость";
 
@@ -11361,10 +11563,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Предыдущие 7 дней";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* по сравнению с предыдущим 7-дневным периодом";
+"stats.insights.label.totalLikes.higherNumber" = "На *%1$@%2$@ (%3$@)* больше по сравнению с предыдущими 7 днями";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* по сравнению с предыдущими 7 днями";
+"stats.insights.label.totalLikes.lowerNumber" = "На *%1$@%2$@ (%3$@)* меньше по сравнению с предыдущими 7 днями";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Как в предыдущие 7 дней";
@@ -11442,10 +11644,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 Самое популярное время";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% просмотров";
+"stats.insights.mostPopularCard.viewsNumber" = "Просмотров: %1$@";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Недостаточно активности. Вернитесь позже, когда на сайте будет больше посетителей!";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Подписчики";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ваша последняя запись %1$@ получила %2$@ отметок \"нравится\".";
@@ -11453,8 +11658,47 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ваша последняя запись %1$@ получила %2$@ отметку \"нравится\".";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Всего подписчиков WordPress.com: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Всего подписчиков в рассылке: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Всего подписчиков";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Сегодня";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Подписчик с";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Имя";
+
+/* Stats 'Subscribers' card header, contains chart */
+"stats.subscribers.chart.title" = "Подписчики";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Переходы";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Посещения";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Недавние рассылки";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "Рассылки";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Подписчики";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Таблица, где показаны %1$@, %2$@ и %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Столбчатая диаграмма, представляющая комментарии за выбранный период.";
@@ -11468,41 +11712,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Столбчатая диаграмма, представляющая посетителей за выбранный период.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "По дню";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Дни";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Месяцы";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Недели";
 
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "На %@ больше, чем в прошлом месяце\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "На %@ меньше, чем в прошлом месяце\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "На %@ больше, чем за предыдущие 7 дней\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "На %@ меньше, чем за предыдущие 7 дней\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "На %@ больше, чем в прошлом году\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "На %@ меньше, чем в прошлом году\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "По месяцу";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "По неделе";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "По году";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Годы";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Закрыть";
@@ -11513,8 +11733,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Найдите бесплатные фотографии и добавьте их в вашу Библиотеку файлов!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "По желанию вы можете указать свой адрес электронной почты и имя пользователя, чтобы помочь нам понять ситуацию.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "адрес эл. почты не указан";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "имя пользователя не указано";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Готово";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Спасибо за ваш отзыв!";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Отправить";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Отправка";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Отправить анонимно";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Обратная связь";
@@ -11687,6 +11928,24 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "непрочитано";
 
+/* Site's Email Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.emailSubscriber" = "Подписчик на рассылку сайта по эл. почте";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Подписчик сайта";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Пользователь сайта";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Посетитель сайта";
+
+/* Site Email Subscribers */
+"users.list.title.emailSubscribers" = "Подписчики по эл. почте";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "Подписчики";
+
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "посетите нашу страницу документации";
 
@@ -11815,6 +12074,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "в будущем будет недоступен.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Запускаете новый сайт?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, помощь, поддержка, faq, вопросы, отладка, журналы, центр справки, контакт";

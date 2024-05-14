@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 07:27:10+0000 */
+/* Translation-Revision-Date: 2024-04-02 09:28:41+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ u rilidh.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d postime.";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Jeni i sigurt se doni të shpihet ky postim te hedhurinat?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Jeni i sigurt se doni të përditësohet faqja juaj hyrëse?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
 
@@ -1117,18 +1111,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Postim blogu";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Ndjekës të Email-it të Blogut";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Ndjekës Blogu";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Përdorues Blogu";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Shikues Blogu";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blogim";
 
@@ -1226,7 +1208,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1526,6 +1507,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button. */
 "Clear search history" = "Spastro historikun e kërkimeve";
 
+/* No comment provided by engineer. */
+"Clear selected color" = "Hiqe ngjyrën e përzgjedhur";
+
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Po spastrohen…";
 
@@ -1633,7 +1617,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1798,7 +1781,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1974,8 +1956,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Krijoni Faqe";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Krijoje Postimin";
 
 /* Button to progress to the next step
@@ -2138,9 +2119,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Interval Datash";
-
-/* Date and Time */
-"Date and Time" = "Data dhe Koha";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2586,9 +2564,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Adresë Email";
-
-/* Blog Email Followers */
-"Email Followers" = "Ndjekës Me Email";
 
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
@@ -3043,13 +3018,10 @@ translators: %s: Block name e.g. \"Image block\" */
    Section title for sites the user has followed. */
 "Followed Sites" = "Sajte të Ndjekur";
 
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Ndjekës";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Ndjekës";
 
 /* User is following the blog. */
@@ -3178,9 +3150,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Merrni asistencë";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Futjuni punës dhe shtoni parjet e postimit tuaj përmes ndarjes së tij me të tjerët.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Njihuni me aplikacionin Jetpack";
@@ -3337,9 +3306,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Help icon" = "Ikonë ndihme";
-
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Ja se si ka ecur postimi deri tani.";
 
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Të fshehura";
@@ -3668,9 +3634,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Duket se keni dhënë një fjalëkalim të pasaktë. Doni ta provoni edhe një herë?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "U bënë %1$@ qëkur qe botuar %2$@. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Është koha të blogoni te %@!";
 
@@ -3891,7 +3854,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Pëlqime";
@@ -3943,7 +3905,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "U fut lidhje";
 
 /* No comment provided by engineer. */
-"Link text" = "Tekst lidhjeje";
+"Link label" = "Etiketë lidhjeje";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Lidhje për te lëndë ekzistuese";
@@ -5478,8 +5440,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Botoje";
 
 /* Label for the publish date button. */
@@ -5504,9 +5465,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Precedes the name of the blog just posted on */
 "Published just now on" = "I sapobotuar";
-
-/* Published on [date] */
-"Published on" = "Botuar më";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Po botohet faqe…";
@@ -5986,9 +5944,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Vënë në plan";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Vënë në plan për";
-
 /* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
 "Scheduled for %@ on" = "Vënë në plan për %@ më";
 
@@ -6281,9 +6236,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jepjani WordPress-in një shoku";
 
-/* Label for action to share post. */
-"Share Post" = "Ndajeni Postimin Me të Tjerët";
-
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Jepjani WordPress-in një shoku";
 
@@ -6403,9 +6355,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Regjistrohuni me Email";
 
-/* Label for time period in list of followers. */
-"Since" = "Që prej";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Meqë jeni nën një plan falas, te Regjistri juaj i Veprimtarisë do të shihni veprimtari të kufizuara.";
 
@@ -6495,10 +6444,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Deri këtu, s’ka kërcënime të shpërfillura në sajtin tuaj.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Shoqërore";
 
 /* Title of a Quick Start Tour */
@@ -7422,21 +7369,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Komente Gjithsej";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Ndjekës Me Email Gjithsej: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Ndjekës Gjithsej";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Pëlqime Gjithsej";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Postime Gjithsej";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Ndjekës Në WordPress.com Gjithsej: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Fjalë Gjithsej";
@@ -7966,10 +7904,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Shihni më pak…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Shihni më tepër";
@@ -7990,7 +7926,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8691,9 +8626,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "S’keni botuar ende ndonjë postim";
-
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "S’keni botuar ende ndonjë postim. Sapo të filloni të botoni, këtu do të shfaqet përmbledhja e postimit tuaj më të ri.";
 
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Mbërritët në një piketë 🚀";
@@ -9575,9 +9507,6 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Që të shtohen foto ose video te postimet tuaja.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
-
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
 
@@ -10343,26 +10272,11 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Plane";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Krijuar %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Po fshihet postim…";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Përpunuar %@";
-
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Po shpihet postim në hedhurina…";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Botuar %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Planifikuar për më %@";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Shpënë te Hedhurinat %@";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Nga %@.";
@@ -10420,9 +10334,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Postimi u përditësua";
-
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Ngarkimi dështoi";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Shiheni";
@@ -10538,9 +10449,6 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Ngarkimi i medias dështoi";
-
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titull";
 
@@ -10622,15 +10530,6 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
-
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ nga %2$@";
-
-/* Retry button title */
-"publishButton.retry" = "Riprovo";
-
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Tani";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Datë Botimi";
@@ -10726,8 +10625,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Jeni tashmë i pajtuar te ky blog.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Përpunojeni";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Administroni";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtroji sipas blogjesh";
@@ -10757,10 +10656,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Pa etiketa";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Po bëhet pajtimi te etiketa të reja…";
+"reader.filterSheet.select.tags.following" = "Po ndiqen tema të reja…";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Etiketa të sugjeruara";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Ndjek etiketën.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Po sillen blogje…";
@@ -10850,13 +10752,6 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Kaloni te Pajtime";
-
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Te postime në një blog të dhënë mund të pajtoheni duke u pajtuar në të.";
-
-/* No Tags View Button Label */
-"reader.no.tags.title" = "Shtoni një blog";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "S’arrihet të bllokohet blogu";
@@ -10970,6 +10865,27 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Shpajtohuni nga blogu";
 
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Parazgjedhje";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Mbrëmje";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sepia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Të buta";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "U bë";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Madhësi";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Administroni Blogje";
 
@@ -10982,20 +10898,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Blogje";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Po bëhet pajtimi te etiketa të reja…";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Pajtohuni te etiketa";
+"reader.select.interests.follow.title" = "Ndiqni etiketa";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Po ndiqen etiketa të reja…";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "S’ka etiketa të reja ku të pajtoheni";
+"reader.select.tags.no.results.follow.title" = "S’ka etiketa të reja për t’u ndjekur";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Zgjidhni etiketat tuaja";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Ju pajto te etiketa.";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Pajtohuni";
@@ -11027,8 +10940,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Zbuloni më tepër etiketa";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Ndiqeni";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Ndiqeni";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Shpajtomë prej %@";
+"reader.tags.unfollow.accessibility.label" = "Hiqe ndjekjen e %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Shpajtomë";
@@ -11336,12 +11255,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 ditët e shkuara";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* më sipër se 7 ditët e shkuara";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* më poshtë se 7 ditët e shkuara";
-
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Njësoj si 7 ditët e shkuara";
 
@@ -11417,9 +11330,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "Koha Më Popullore";
 
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% e parjeve";
-
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Pa veprimtari të mjaftueshme. Kontrolloni më vonë, kur sajti juaj të ketë më tepër vizitorë!";
 
@@ -11443,42 +11353,6 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Grafik Me Shtylla që tregon Vizitorë për periudhën e përzgjedhur.";
-
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Sipas ditësh";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
-
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
-
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ më sipër se muaji i kaluar\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ më ulët se muaji i kaluar\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ më sipër se 7 ditët e kaluara\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ më ulët se 7 ditët e kaluara\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ më sipër se viti i kaluar\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ më ulët se viti i kaluar\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Sipas muajsh";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Sipas javësh";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Sipas vitesh";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";
@@ -11791,6 +11665,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "s’do të jetë më i passhëm në të ardhmen.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Po filloni një sajt të ri?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, ndihmë, asistencë, PBR, pyetje, diagnostikim, regjistra, qendër ndihme, kontakt";

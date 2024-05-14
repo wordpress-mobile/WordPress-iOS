@@ -24,7 +24,7 @@ public class MySitesScreen: ScreenObject {
     var addSelfHostedSiteButton: XCUIElement { addSelfHostedSiteButtonGetter(app) }
     var cancelButton: XCUIElement { cancelButtonGetter(app) }
     var mySitesLabel: XCUIElement { mySitesLabelGetter(app) }
-    var plusButton: XCUIElement { plusButtonGetter(app) }
+    var addASiteButton: XCUIElement { plusButtonGetter(app) }
 
     init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -38,14 +38,14 @@ public class MySitesScreen: ScreenObject {
     }
 
     public func addSelfHostedSite() throws -> LoginSiteAddressScreen {
-        plusButton.tap()
+        addASiteButton.tap()
         addSelfHostedSiteButton.tap()
         return try LoginSiteAddressScreen()
     }
 
     @discardableResult
     public func tapPlusButton() throws -> SiteIntentScreen {
-        plusButton.tap()
+        addASiteButton.tap()
         return try SiteIntentScreen()
     }
 

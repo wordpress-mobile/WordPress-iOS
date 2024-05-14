@@ -81,14 +81,25 @@ fileprivate extension NotificationsTableViewCellContent {
                 if info.shouldShowIndicator {
                     indicator
                         .padding(.horizontal, .DS.Padding.single)
-                    AvatarsView(style: info.avatarStyle)
-                        .offset(x: -info.avatarStyle.leadingOffset)
+                    AvatarsView(
+                        style: info.avatarStyle,
+                        placeholderImage: placeholderImage
+                    )
+                    .offset(x: -info.avatarStyle.leadingOffset)
                 } else {
-                    AvatarsView(style: info.avatarStyle)
-                        .offset(x: -info.avatarStyle.leadingOffset)
-                        .padding(.leading, .DS.Padding.medium)
+                    AvatarsView(
+                        style: info.avatarStyle,
+                        placeholderImage: placeholderImage
+                    )
+                    .offset(x: -info.avatarStyle.leadingOffset)
+                    .padding(.leading, .DS.Padding.medium)
                 }
             }
+        }
+
+        private var placeholderImage: Image {
+            Image("gravatar")
+                .resizable()
         }
 
         private var indicator: some View {

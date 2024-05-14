@@ -15,10 +15,7 @@ import SwiftUI
 /// Plus, we provide a simple mechanism to render the details for a specific Notification,
 /// given its remote identifier.
 ///
-class NotificationsViewController: UIViewController, UIViewControllerRestoration, UITableViewDataSource, UITableViewDelegate {
-
-    @objc static let selectedNotificationRestorationIdentifier = "NotificationsSelectedNotificationKey"
-    @objc static let selectedSegmentIndexRestorationIdentifier   = "NotificationsSelectedSegmentIndexKey"
+class NotificationsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     typealias TableViewCell = NotificationTableViewCell
 
@@ -128,8 +125,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-
-        restorationClass = NotificationsViewController.self
 
         startListeningToAccountNotifications()
         startListeningToTimeChangeNotifications()
@@ -268,69 +263,6 @@ class NotificationsViewController: UIViewController, UIViewControllerRestoration
         }
 
         tableView.tableHeaderView = tableHeaderView
-    }
-
-    // MARK: - State Restoration
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        return RootViewCoordinator.sharedPresenter.notificationsViewController
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let uriRepresentation = selectedNotification?.objectID.uriRepresentation() {
-            coder.encode(uriRepresentation, forKey: type(of: self).selectedNotificationRestorationIdentifier)
-        }
-
-        // If the filter's 'Unread', we won't save it because the notification
-        // that's selected won't be unread any more once we come back to it.
-        let index: Filter = (filter != .unread) ? filter : .none
-        coder.encode(index.rawValue, forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    override func decodeRestorableState(with coder: NSCoder) {
-        decodeSelectedSegmentIndex(with: coder)
-        decodeSelectedNotification(with: coder)
-
-        reloadResultsController()
-
-        super.decodeRestorableState(with: coder)
-    }
-
-    fileprivate func decodeSelectedNotification(with coder: NSCoder) {
-        if let uriRepresentation = coder.decodeObject(forKey: type(of: self).selectedNotificationRestorationIdentifier) as? URL {
-            let context = ContextManager.sharedInstance().mainContext
-            if let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: uriRepresentation),
-                let object = try? context.existingObject(with: objectID),
-                let notification = object as? Notification {
-                selectedNotification = notification
-            }
-        }
-    }
-
-    fileprivate func decodeSelectedSegmentIndex(with coder: NSCoder) {
-        restorableSelectedSegmentIndex = coder.decodeInteger(forKey: type(of: self).selectedSegmentIndexRestorationIdentifier)
-
-        if let filterTabBar = filterTabBar, filterTabBar.selectedIndex != restorableSelectedSegmentIndex {
-            filterTabBar.setSelectedIndex(restorableSelectedSegmentIndex, animated: false)
-        }
-    }
-
-    override func applicationFinishedRestoringState() {
-        super.applicationFinishedRestoringState()
-
-        guard let navigationControllers = navigationController?.children else {
-            return
-        }
-
-        // TODO: add check for CommentDetailViewController
-        for case let detailVC as NotificationDetailsViewController in navigationControllers {
-            if detailVC.onDeletionRequestCallback == nil, let note = detailVC.note {
-                configureDetailsViewController(detailVC, withNote: note)
-            }
-        }
     }
 
     // MARK: - UITableViewDataSource Methods
@@ -1903,7 +1835,7 @@ private extension NotificationsViewController {
             case .none:     return NSLocalizedString("All", comment: "Displays all of the Notifications, unfiltered")
             case .unread:   return NSLocalizedString("Unread", comment: "Filters Unread Notifications")
             case .comment:  return NSLocalizedString("Comments", comment: "Filters Comments Notifications")
-            case .follow:   return NSLocalizedString("Follows", comment: "Filters Follows Notifications")
+            case .follow:   return NSLocalizedString("notifications.filter.subscribers.title", value: "Subscribers", comment: "Filters Subscribers Notifications")
             case .like:     return NSLocalizedString("Likes", comment: "Filters Likes Notifications")
             }
         }
@@ -1923,7 +1855,7 @@ private extension NotificationsViewController {
             case .none:     return ""
             case .unread:   return NSLocalizedString("unread", comment: "Displayed in the confirmation alert when marking unread notifications as read.")
             case .comment:  return NSLocalizedString("comment", comment: "Displayed in the confirmation alert when marking comment notifications as read.")
-            case .follow:   return NSLocalizedString("follow", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
+            case .follow:   return NSLocalizedString("notifications.filter.subscriptions.confirmationMessageTitle", value: "subscribe", comment: "Displayed in the confirmation alert when marking follow notifications as read.")
             case .like:     return NSLocalizedString("like", comment: "Displayed in the confirmation alert when marking like notifications as read.")
             }
         }
@@ -1936,8 +1868,8 @@ private extension NotificationsViewController {
                                                      comment: "Displayed in the Notifications Tab as a title, when the Unread Filter shows no unread notifications as a title")
             case .comment:  return NSLocalizedString("No comments yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Comments Filter shows no notifications")
-            case .follow:   return NSLocalizedString("No followers yet",
-                                                     comment: "Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications")
+            case .follow:   return NSLocalizedString("notifications.noresults.subscribers", value: "No subscribers yet",
+                                                     comment: "Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications")
             case .like:     return NSLocalizedString("No likes yet",
                                                      comment: "Displayed in the Notifications Tab as a title, when the Likes Filter shows no notifications")
             }

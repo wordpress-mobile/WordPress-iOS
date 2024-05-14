@@ -1,0 +1,1 @@
+Kami membuat beberapa pembaruan pada menu Halaman. Kini, Pengaturan berada di bagian tersendiri, tepat di bawah Statistik (yang juga kami pindahkan). Tersedia untuk pos yang sudah maupun yang belum dipublikasikan. Keren.

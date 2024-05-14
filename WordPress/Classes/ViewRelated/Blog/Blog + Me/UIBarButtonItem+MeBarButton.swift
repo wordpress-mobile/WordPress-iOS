@@ -68,7 +68,7 @@ fileprivate extension UIBarButtonItem {
         gravatarImageView.contentMode = .scaleAspectFill
 
         if let email = email {
-            gravatarImageView.downloadGravatarWithEmail(email, placeholderImage: GravatarConfiguration.fallBackImage)
+            gravatarImageView.downloadGravatar(for: email, placeholderImage: GravatarConfiguration.fallBackImage)
         } else {
             gravatarImageView.image = GravatarConfiguration.fallBackImage
         }

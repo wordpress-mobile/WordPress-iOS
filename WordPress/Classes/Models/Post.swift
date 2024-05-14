@@ -2,30 +2,6 @@ import Foundation
 import CoreData
 import CocoaLumberjack
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 @objc(Post)
 class Post: AbstractPost {
     @objc static let typeDefaultIdentifier = "post"
@@ -55,9 +31,7 @@ class Post: AbstractPost {
         }
     }
 
-    // MARK: - Properties
-
-    fileprivate var storedContentPreviewForDisplay = ""
+    private var cachedContentPreviewForDisplay: String?
 
     // MARK: - NSManagedObject
 
@@ -65,28 +39,11 @@ class Post: AbstractPost {
         return "Post"
     }
 
-    override func awakeFromFetch() {
-        super.awakeFromFetch()
-        buildContentPreview()
-    }
+    override func didChangeValue(forKey key: String) {
+        super.didChangeValue(forKey: key)
 
-    override func willSave() {
-        super.willSave()
-
-        if isDeleted {
-            return
-        }
-
-        storedContentPreviewForDisplay = ""
-    }
-
-    // MARK: - Content Preview
-
-    fileprivate func buildContentPreview() {
-        if let excerpt = mt_excerpt, excerpt.count > 0 {
-            storedContentPreviewForDisplay = excerpt.makePlainText()
-        } else if let content = content {
-            storedContentPreviewForDisplay = content.summarized()
+        if key == "mt_excerpt" || key == "content" {
+            cachedContentPreviewForDisplay = nil
         }
     }
 
@@ -287,25 +244,29 @@ class Post: AbstractPost {
     }
 
     override func hasCategories() -> Bool {
-        return (categories?.count > 0)
+        categories?.isEmpty == false
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().count > 0)
+        tags?.trim().isEmpty == false
     }
 
     override func authorForDisplay() -> String? {
-        return author ?? blog.account?.displayName
+        author ?? blog.account?.displayName
     }
 
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
-        if storedContentPreviewForDisplay.count == 0 {
-            buildContentPreview()
+        if let cachedContentPreviewForDisplay {
+            return cachedContentPreviewForDisplay
         }
-
-        return storedContentPreviewForDisplay
+        if let excerpt = mt_excerpt, excerpt.count > 0 {
+            cachedContentPreviewForDisplay = excerpt.makePlainText()
+        } else if let content = content {
+            cachedContentPreviewForDisplay = content.summarized()
+        }
+        return cachedContentPreviewForDisplay ?? ""
     }
 
     override func hasLocalChanges() -> Bool {

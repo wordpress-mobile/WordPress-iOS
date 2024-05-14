@@ -16,9 +16,6 @@ class WPSplitViewController: UISplitViewController {
 
     private let quickStartNavigationSettings = QuickStartNavigationSettings()
 
-    fileprivate static let navigationControllerRestorationIdentifier = "WPSplitViewDetailNavigationControllerRestorationID"
-    fileprivate static let preferredDisplayModeModifiedRestorationKey = "WPSplitViewPreferredDisplayModeRestorationKey"
-
     /// Determines how the split view handles the detail pane when collapsing itself.
     /// If 'Automatic', then the detail pane will be pushed onto the primary navigation stack
     /// if the user has manually changed the selection in the primary pane. Otherwise,
@@ -76,23 +73,6 @@ class WPSplitViewController: UISplitViewController {
             // maximumPrimaryColumnWidth = size.width
             // preferredPrimaryColumnWidthFraction = 1.0
         }
-    }
-
-    // MARK: State restoration
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        coder.encode(preferredDisplayMode.rawValue, forKey: type(of: self).preferredDisplayModeModifiedRestorationKey)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    override func decodeRestorableState(with coder: NSCoder) {
-        if let displayModeRawValue = coder.decodeObject(forKey: type(of: self).preferredDisplayModeModifiedRestorationKey) as? Int,
-            let displayMode = UISplitViewController.DisplayMode(rawValue: displayModeRawValue) {
-            preferredDisplayMode = displayMode
-        }
-
-        super.decodeRestorableState(with: coder)
     }
 
     // MARK: View lifecycle
@@ -357,8 +337,6 @@ class WPSplitViewController: UISplitViewController {
         } else {
             navigationController = UINavigationController(rootViewController: viewController)
         }
-
-        navigationController.restorationIdentifier = type(of: self).navigationControllerRestorationIdentifier
         navigationController.delegate = self
         navigationController.extendedLayoutIncludesOpaqueBars = true
         WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
@@ -474,7 +452,6 @@ extension WPSplitViewController: UISplitViewControllerDelegate {
         } else {
             let navigationController = UINavigationController()
             navigationController.delegate = self
-            navigationController.restorationIdentifier = type(of: self).navigationControllerRestorationIdentifier
             navigationController.viewControllers = viewControllers
             WPStyleGuide.configureColors(view: navigationController.view, tableView: nil)
 

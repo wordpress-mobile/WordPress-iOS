@@ -5,6 +5,7 @@ import DGCharts
 
 protocol StatsBarChartViewDelegate: AnyObject {
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int)
+    func statsBarChartTabSelected(_ tabIndex: Int)
 }
 
 // MARK: - StatsBarChartView

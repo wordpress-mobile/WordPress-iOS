@@ -25,8 +25,9 @@ PODS:
   - Down (0.6.6)
   - FSInteractiveMap (0.1.0)
   - Gifu (3.3.1)
+  - Gravatar (1.0.1)
   - Gridicons (1.2.0)
-  - Gutenberg (1.115.0)
+  - Gutenberg (1.118.0)
   - JTAppleCalendar (8.0.5)
   - Kanvas (1.4.9):
     - CropViewController
@@ -48,7 +49,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (9.1.0)
   - OHHTTPStubs/Swift (9.1.0):
     - OHHTTPStubs/Default
-  - Reachability (3.2)
+  - Reachability (3.7.6)
   - Sentry (8.21.0):
     - Sentry/Core (= 8.21.0)
     - SentryPrivate (= 8.21.0)
@@ -63,20 +64,20 @@ PODS:
   - WordPress-Aztec-iOS (1.19.11)
   - WordPress-Editor-iOS (1.19.11):
     - WordPress-Aztec-iOS (= 1.19.11)
-  - WordPressAuthenticator (9.0.3):
+  - WordPressAuthenticator (9.0.8):
     - Gridicons (~> 1.0)
     - "NSURL+IDN (= 0.4)"
     - SVProgressHUD (~> 2.2.5)
-    - WordPressKit (~> 14.0)
+    - WordPressKit (~> 17.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (14.1.0):
+  - WordPressKit (17.1.1):
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
     - wpxmlrpc (~> 0.10)
-  - WordPressShared (2.3.1)
-  - WordPressUI (1.15.1)
+  - WordPressShared (2.4.0)
+  - WordPressUI (1.16.0)
   - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.4)
   - ZendeskCoreSDK (2.5.1)
@@ -91,7 +92,7 @@ PODS:
   - ZendeskSupportSDK (5.3.0):
     - ZendeskMessagingSDK (~> 3.8.2)
     - ZendeskSupportProvidersSDK (~> 5.3.0)
-  - ZIPFoundation (0.9.18)
+  - ZIPFoundation (0.9.16)
 
 DEPENDENCIES:
   - AlamofireImage (~> 4.0)
@@ -104,8 +105,9 @@ DEPENDENCIES:
   - Down (~> 0.6.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gifu (= 3.3.1)
+  - Gravatar (= 1.0.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0-alpha3.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.118.0.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -113,23 +115,25 @@ DEPENDENCIES:
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
   - OHHTTPStubs/Swift (~> 9.1.0)
-  - Reachability (= 3.2)
+  - Reachability (~> 3.7)
   - Starscream (~> 4.0)
   - SVProgressHUD (= 2.2.5)
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
-  - WordPressAuthenticator (>= 9.0.2, ~> 9.0)
-  - WordPressKit (~> 14.1)
+  - WordPressAuthenticator (>= 9.0.8, ~> 9.0)
+  - WordPressKit (~> 17.1.0)
   - WordPressShared (>= 2.3.1, ~> 2.3)
-  - WordPressUI (~> 1.15)
+  - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
-  - ZIPFoundation (~> 0.9.8)
+  - ZIPFoundation (= 0.9.16)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
+    - WordPressKit
+    - WordPressShared
   trunk:
     - Alamofire
     - AlamofireImage
@@ -140,6 +144,7 @@ SPEC REPOS:
     - CropViewController
     - Down
     - Gifu
+    - Gravatar
     - Gridicons
     - JTAppleCalendar
     - Kanvas
@@ -156,8 +161,6 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
-    - WordPressKit
-    - WordPressShared
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -174,7 +177,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.116.0-alpha3.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.118.0.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -192,8 +195,9 @@ SPEC CHECKSUMS:
   Down: 71bf4af3c04fa093e65dffa25c4b64fa61287373
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
+  Gravatar: 51437de6811c1d8d6f60c52985f2ca00a85cfc8e
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: ee5554d1bd1b6990ed67d1b0ac824e827f493426
+  Gutenberg: 3117b6fe578fb7f0bb75377ba96f436ee05c30fe
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
@@ -201,7 +205,7 @@ SPEC CHECKSUMS:
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
   OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
-  Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
+  Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
   Sodium: 23d11554ecd556196d313cf6130d406dfe7ac6da
@@ -211,10 +215,10 @@ SPEC CHECKSUMS:
   UIDeviceIdentifier: 442b65b4ff1832d4ca9c2a157815cb29ad981b17
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
-  WordPressAuthenticator: 20c962dc116473337be1a3825bd16c321ee865cb
-  WordPressKit: 324ee6100ad74b72c0c37b81fab8937c437f0773
-  WordPressShared: 04c6d51441bb8fa29651075b3a5536c90ae89c76
-  WordPressUI: 700e3ec5a9f77b6920c8104c338c85788036ab3c
+  WordPressAuthenticator: 898acaac75c5ade9b900c02622a15b9aef8fde1a
+  WordPressKit: a4af3d5d071734aaec75ccecefc7850ece6068fc
+  WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
+  WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: ba160fe413b491af9e7bfcb9808afcd494dc83a5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
@@ -223,8 +227,8 @@ SPEC CHECKSUMS:
   ZendeskSDKConfigurationsSDK: ebced171fd1f4eb57760e8537d8cfa6a450122be
   ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
-  ZIPFoundation: fa9ae5af13b7cf168245f24d1c672a4fb972e37f
+  ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: fe40f3befb57201c814b956688187e9595f34f20
+PODFILE CHECKSUM: fe8df3e873baa4219a3e9b59632c5d2c7e3d774e
 
 COCOAPODS: 1.15.2

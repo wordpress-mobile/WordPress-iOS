@@ -7,6 +7,7 @@ import WordPressFlux
 import UIKit
 import Combine
 import WordPressUI
+import AutomatticTracks
 
 /// Displays a list of posts for a particular reader topic.
 /// - note:
@@ -18,10 +19,7 @@ import WordPressUI
 ///   - Row heights are auto-calculated via UITableViewAutomaticDimension and estimated heights
 ///         are cached via willDisplayCell.
 ///
-@objc class ReaderStreamViewController: UIViewController, UIViewControllerRestoration, ReaderSiteBlockingControllerDelegate {
-    @objc static let restorationClassIdentifier = "ReaderStreamViewControllerRestorationIdentifier"
-    @objc static let restorableTopicPathKey: String = "RestorableTopicPathKey"
-
+@objc class ReaderStreamViewController: UIViewController, ReaderSiteBlockingControllerDelegate {
     // MARK: - Micro Controllers
 
     /// Object responsible for encapsulating and facililating the site blocking logic.
@@ -188,6 +186,7 @@ import WordPressUI
         }
     }
 
+    /// Whether the stream is being filtered by a site or tag.
     var isContentFiltered: Bool = false
 
     var contentType: ReaderContentType = .topic {
@@ -195,6 +194,9 @@ import WordPressUI
             if oldValue != .saved, contentType == .saved {
                 updateContent(synchronize: false)
                 trackSavedListAccessed()
+            } else if oldValue != .tags, contentType == .tags {
+                updateContent(synchronize: false)
+                // TODO: Analytics
             }
             postCellActions?.visibleConfirmation = contentType != .saved
             showConfirmation = contentType != .saved
@@ -217,6 +219,56 @@ import WordPressUI
 
     private var removedPosts = Set<ReaderPost>()
     private var showConfirmation = true
+
+    // NOTE: This is currently a workaround for the 'Your Tags' stream use case.
+    //
+    // The set object flags each tag in the stream so that we know whether or not we've fetched the remote data for the tag.
+    // We need to ensure that we only fetch the remote data once per tag to avoid the resultsController from refreshing the table view indefinitely.
+    private var tagStreamSyncTracker = Set<String>()
+
+    /// Controls whether the Reader announcement card can be displayed.
+    ///
+    let readerAnnouncementCoordinator = ReaderAnnouncementCoordinator()
+
+    lazy var selectInterestsViewController: ReaderSelectInterestsViewController = {
+        let title = NSLocalizedString(
+            "reader.select.tags.title",
+            value: "Discover and follow blogs you love",
+            comment: "Reader select interests title label text"
+        )
+        let subtitle = NSLocalizedString(
+            "reader.select.tags.subtitle",
+            value: "Choose your tags",
+            comment: "Reader select interests subtitle label text"
+        )
+        let buttonTitleEnabled = NSLocalizedString(
+            "reader.select.tags.done",
+            value: "Done",
+            comment: "Reader select interests next button enabled title text"
+        )
+        let buttonTitleDisabled = NSLocalizedString(
+            "reader.select.tags.continue",
+            value: "Select a few to continue",
+            comment: "Reader select interests next button disabled title text"
+        )
+        let loading = NSLocalizedString(
+            "reader.select.tags.loading",
+            value: "Finding blogs and stories you’ll love...",
+            comment: "Label displayed to the user while loading their selected interests"
+        )
+
+        let configuration = ReaderSelectInterestsConfiguration(
+            title: title,
+            subtitle: subtitle,
+            buttonTitle: (enabled: buttonTitleEnabled, disabled: buttonTitleDisabled),
+            loading: loading
+        )
+
+        return ReaderSelectInterestsViewController(configuration: configuration)
+    }()
+    /// Tracks whether or not we should force sync
+    /// This is set to true after the Reader Manage view is dismissed
+    var shouldForceRefresh = false
 
     // MARK: - Factory Methods
 
@@ -279,31 +331,6 @@ import WordPressUI
         return controller
     }
 
-    // MARK: - State Restoration
-
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObject(forKey: restorableTopicPathKey) as? String else {
-            return nil
-        }
-
-        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) else {
-            return nil
-        }
-
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderStreamViewController") as! ReaderStreamViewController
-        controller.readerTopic = topic
-        return controller
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = readerTopic {
-            coder.encode(topic.path, forKey: type(of: self).restorableTopicPathKey)
-        }
-        super.encodeRestorableState(with: coder)
-    }
-
     // MARK: - LifeCycle Methods
 
     deinit {
@@ -316,9 +343,6 @@ import WordPressUI
     }
 
     override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationIdentifier = type(of: self).restorationClassIdentifier
-        restorationClass = type(of: self)
-
         return super.awakeAfter(using: aDecoder)
     }
 
@@ -358,7 +382,7 @@ import WordPressUI
             return
         }
 
-        if readerTopic != nil || contentType == .saved {
+        if readerTopic != nil || contentType == .saved || contentType == .tags {
             // Do not perform a sync since a sync will be executed in viewWillAppear anyway. This
             // prevents a possible internet connection error being shown twice.
             updateContent(synchronize: false)
@@ -576,39 +600,17 @@ import WordPressUI
     // MARK: - Configuration / Topic Presentation
 
     @objc private func configureStreamHeader() {
-        guard let topic = readerTopic else {
-            assertionFailure()
-            return
-        }
-
-        guard let header = headerForStream(topic, isLoggedIn: isLoggedIn, container: tableViewController) else {
+        guard let headerView = headerForStream(readerTopic, isLoggedIn: isLoggedIn, container: tableViewController) else {
             tableView.tableHeaderView = nil
             return
         }
 
-        let isNewHeader = !isContentFiltered
-        let isNewSiteHeader = isNewHeader && ReaderHelpers.isTopicSite(topic)
-
-        let headerView = {
-            guard isNewSiteHeader else {
-                return header
-            }
-
-            // The container view is added so that the header respects the safe area boundaries and expands
-            // the header's background color to the screen's edges.
-            let containerView = UIView()
-            containerView.translatesAutoresizingMaskIntoConstraints = false
-            containerView.backgroundColor = header.backgroundColor
-            header.translatesAutoresizingMaskIntoConstraints = false
-            containerView.addSubview(header)
-            return containerView
-        }()
-
         if let tableHeaderView = tableView.tableHeaderView {
             headerView.isHidden = tableHeaderView.isHidden
         }
+
         tableView.tableHeaderView = headerView
-        streamHeader = header as? ReaderStreamHeader
+        streamHeader = headerView as? ReaderStreamHeader
 
         // This feels somewhat hacky, but it is the only way I found to insert a stack view into the header without breaking the autolayout constraints.
         let centerConstraint = headerView.centerXAnchor.constraint(equalTo: tableView.centerXAnchor)
@@ -617,37 +619,12 @@ import WordPressUI
         headerWidthConstraint.priority = UILayoutPriority(999)
         centerConstraint.priority = UILayoutPriority(999)
 
-        var constraints = [
+        NSLayoutConstraint.activate([
             centerConstraint,
             headerWidthConstraint,
             topConstraint
-        ]
+        ])
 
-        if isNewSiteHeader {
-            constraints.append(contentsOf: [
-                header.topAnchor.constraint(equalTo: headerView.topAnchor),
-                header.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                header.trailingAnchor.constraint(equalTo: tableView.readableContentGuide.trailingAnchor),
-                header.leadingAnchor.constraint(equalTo: tableView.readableContentGuide.leadingAnchor),
-            ])
-        }
-
-        // manually add a separator for the new header views.
-        if isNewHeader {
-            let borderView = UIView()
-            borderView.backgroundColor = .separator
-            borderView.translatesAutoresizingMaskIntoConstraints = false
-            headerView.addSubview(borderView)
-
-            constraints.append(contentsOf: [
-                borderView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
-                borderView.heightAnchor.constraint(equalToConstant: 0.5),
-                borderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                borderView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-        }
-
-        NSLayoutConstraint.activate(constraints)
         tableView.tableHeaderView?.layoutIfNeeded()
         tableView.tableHeaderView = tableView.tableHeaderView
     }
@@ -681,11 +658,7 @@ import WordPressUI
         hideResultsStatus()
         recentlyBlockedSitePostObjectIDs.removeAllObjects()
         updateAndPerformFetchRequest()
-        if readerTopic != nil {
-            configureStreamHeader()
-        } else {
-            tableView.tableHeaderView = nil
-        }
+        configureStreamHeader()
         tableView.setContentOffset(CGPoint.zero, animated: false)
         content.refresh()
         refreshTableViewHeaderLayout()
@@ -701,6 +674,8 @@ import WordPressUI
             displayNoResultsView()
         } else if contentType == .saved, content.isEmpty {
             displayNoResultsView()
+        } else if contentType == .tags, content.isEmpty {
+            showSelectInterestsView()
         }
     }
 
@@ -928,6 +903,12 @@ import WordPressUI
     /// Handles the user initiated pull to refresh action.
     ///
     @objc func handleRefresh(_ sender: UIRefreshControl) {
+        if contentType == .tags {
+            // NOTE: This is a workaround.
+            // Allow all tags to re-fetch posts.
+            tagStreamSyncTracker.removeAll()
+        }
+
         if !canSync() {
             cleanupAfterSync()
 
@@ -1131,6 +1112,14 @@ import WordPressUI
                     }
                     strongSelf.updateLastSyncedForTopic(objectID)
                 }
+
+                // Show the announcement card if possible.
+                // Context: `configureStreamHeader()` may be called while the content is still empty.
+                // Calling it here manually ensures that we know whether the content is actually empty or not.
+                self?.showAnnouncementHeaderIfNeeded { [weak self] in
+                    self?.refreshTableViewHeaderLayout()
+                }
+
                 success?(hasMore)
             }
         }
@@ -1329,6 +1318,10 @@ import WordPressUI
             NSPredicate(format: "isSavedForLater == YES") :
             NSPredicate(format: "topic = NULL AND SELF in %@", [String]())
 
+        if contentType == .tags {
+            return NSPredicate(format: "following = true")
+        }
+
         guard let topic = readerTopic else {
             return predicateForNilTopic
         }
@@ -1346,7 +1339,9 @@ import WordPressUI
     }
 
     func sortDescriptorsForFetchRequest(ascending: Bool = false) -> [NSSortDescriptor] {
-        let sortDescriptor = NSSortDescriptor(key: "sortRank", ascending: ascending)
+        let sortDescriptor = contentType == .tags ?
+        NSSortDescriptor(key: "title", ascending: true) :
+        NSSortDescriptor(key: "sortRank", ascending: ascending)
         return [sortDescriptor]
     }
 
@@ -1523,7 +1518,8 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func fetchRequest() -> NSFetchRequest<NSFetchRequestResult>? {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderPost.classNameWithoutNamespaces())
+        let entityName = contentType == .tags ? ReaderTagTopic.classNameWithoutNamespaces() : ReaderPost.classNameWithoutNamespaces()
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entityName)
         fetchRequest.predicate = predicateForFetchRequest()
         fetchRequest.sortDescriptors = sortDescriptorsForFetchRequest()
         return fetchRequest
@@ -1585,13 +1581,23 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let posts = content.content as? [ReaderPost] else {
-            return UITableViewCell()
+        if let posts = content.content as? [ReaderPost] {
+            if let post = posts[safe: indexPath.row] {
+                return cell(for: post, at: indexPath)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+                return .init()
+            }
+        } else if let tags = content.content as? [ReaderTagTopic] {
+            if let tag = tags[safe: indexPath.row] {
+                return cell(for: tag)
+            } else {
+                logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: tags.count))
+                return .init()
+            }
         }
-
-        let post = posts[indexPath.row]
-
-        return cell(for: post, at: indexPath)
+        assertionFailure("Unexpected content type.")
+        return UITableViewCell()
     }
 
     func cell(for post: ReaderPost, at indexPath: IndexPath, showsSeparator: Bool = true) -> UITableViewCell {
@@ -1632,6 +1638,20 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
         return cell
     }
 
+    func cell(for tag: ReaderTagTopic) -> UITableViewCell {
+        let cell = tableConfiguration.tagCell(tableView)
+
+        // check whether we should sync the tag's posts.
+        let shouldSync = !tagStreamSyncTracker.contains(tag.slug)
+        if shouldSync {
+            tagStreamSyncTracker.insert(tag.slug)
+        }
+
+        cell.configure(parent: self, tag: tag, isLoggedIn: isLoggedIn, shouldSyncRemotely: shouldSync)
+        cell.selectionStyle = .none
+        return cell
+    }
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         // Cache the cell's layout height as the currently known height, for estimation.
         // See estimatedHeightForRowAtIndexPath
@@ -1652,7 +1672,11 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
             return
         }
 
-        let post = posts[indexPath.row]
+        guard let post = posts[safe: indexPath.row] else {
+            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+            return
+        }
+
         bumpRenderTracker(post)
     }
 
@@ -1698,11 +1722,17 @@ extension ReaderStreamViewController: WPTableViewHandlerDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let posts = content.content as? [ReaderPost] else {
-            DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            if !(content.content is [ReaderTagTopic]) {
+                DDLogError("[ReaderStreamViewController tableView:didSelectRowAtIndexPath:] fetchedObjects was nil.")
+            }
             return
         }
 
-        let apost = posts[indexPath.row]
+        guard let apost = posts[safe: indexPath.row] else {
+            logReaderError(.invalidIndexPath(row: indexPath.row, totalRows: posts.count))
+            return
+        }
+
         didSelectPost(apost, at: indexPath)
     }
 
@@ -1810,6 +1840,8 @@ extension ReaderStreamViewController {
                 displayNoResultsForSavedPosts()
             } else if contentType == .topic && siteID == ReaderHelpers.discoverSiteID {
                 displayNoResultsViewForDiscover()
+            } else if contentType == .tags {
+                showSelectInterestsView()
             }
             return
         }
@@ -1892,7 +1924,53 @@ extension ReaderStreamViewController {
         hideGhost()
     }
 
+    func showSelectInterestsView() {
+        guard selectInterestsViewController.parent == nil else {
+            return
+        }
+
+        selectInterestsViewController.view.frame = self.view.bounds
+        self.add(selectInterestsViewController)
+
+        selectInterestsViewController.didSaveInterests = { [weak self] _ in
+            guard let self else {
+                return
+            }
+            self.hideSelectInterestsView()
+        }
+    }
+
+    func hideSelectInterestsView(showLoadingStream: Bool = true) {
+        let isTagsFeed = contentType == .tags
+        guard selectInterestsViewController.parent != nil else {
+            if shouldForceRefresh {
+                scrollViewToTop()
+                if !isTagsFeed {
+                    displayLoadingStream()
+                }
+                syncIfAppropriate(forceSync: true)
+                shouldForceRefresh = false
+            }
+
+            return
+        }
+
+        scrollViewToTop()
+        if !isTagsFeed {
+            displayLoadingStream()
+        }
+        syncIfAppropriate(forceSync: true)
+
+        UIView.animate(withDuration: 0.2, animations: {
+            self.selectInterestsViewController.view.alpha = 0
+        }) { _ in
+            self.selectInterestsViewController.remove()
+            self.selectInterestsViewController.view.alpha = 1
+        }
+    }
+
     func hideResultsStatus() {
+        hideSelectInterestsView()
         resultsStatusView.removeFromView()
         footerView.isHidden = false
         tableView.tableHeaderView?.isHidden = false
@@ -1997,6 +2075,7 @@ extension ReaderStreamViewController: ReaderContentViewController {
         isContentFiltered = content.topicType == .tag || content.topicType == .site
         readerTopic = content.topicType == .discover ? nil : content.topic
         contentType = content.type
+        self.content.resetResultsController()
 
         guard !shouldDisplayNoTopicController else {
             return
@@ -2131,4 +2210,25 @@ extension ReaderStreamViewController: UITableViewDelegate, JPScrollViewDelegate 
         let velocity = tableView.panGestureRecognizer.velocity(in: tableView)
         navigationMenuDelegate?.scrollViewDidScroll(scrollView, velocity: velocity)
     }
+}
+
+// MARK: - Custom Errors
+
+extension ReaderStreamViewController {
+
+    enum ReaderStreamError: LocalizedError {
+        case invalidIndexPath(row: Int, totalRows: Int)
+
+        var errorDescription: String? {
+            switch self {
+            case .invalidIndexPath(let row, let totalRows):
+                return "Reader Stream: tried to request index \(row) from \(totalRows) objects"
+            }
+        }
+    }
+
+    func logReaderError(_ error: ReaderStreamError) {
+        CrashLogging.main.logError(error, tags: ["source": "reader_stream"])
+    }
+
 }

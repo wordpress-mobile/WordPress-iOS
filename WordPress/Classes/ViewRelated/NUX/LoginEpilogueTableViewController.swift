@@ -1,6 +1,7 @@
 import UIKit
 import WordPressShared
 import WordPressAuthenticator
+import Gravatar
 
 // MARK: - LoginEpilogueTableViewController
 //

@@ -1,6 +1,6 @@
 import SwiftUI
 
-class ReaderSiteHeaderView: UIView, ReaderStreamHeader {
+class ReaderSiteHeaderView: UITableViewHeaderFooterView, ReaderStreamHeader {
 
     weak var delegate: ReaderStreamHeaderDelegate?
 
@@ -14,8 +14,8 @@ class ReaderSiteHeaderView: UIView, ReaderStreamHeader {
     }()
 
     init() {
-        super.init(frame: .zero)
-        backgroundColor = .secondarySystemGroupedBackground
+        super.init(reuseIdentifier: ReaderSiteHeaderView.classNameWithoutNamespaces())
+        applyBackgroundColor(.secondarySystemGroupedBackground)
         setupHeader()
     }
 
@@ -46,9 +46,28 @@ class ReaderSiteHeaderView: UIView, ReaderStreamHeader {
         let header = ReaderSiteHeader(viewModel: weakSelf?.headerViewModel ?? ReaderSiteHeaderViewModel())
         let view = UIView.embedSwiftUIView(header)
         addSubview(view)
-        pinSubviewToAllEdges(view)
+        NSLayoutConstraint.activate([
+            view.topAnchor.constraint(equalTo: topAnchor),
+            view.bottomAnchor.constraint(equalTo: bottomAnchor),
+            view.leadingAnchor.constraint(equalTo: readableContentGuide.leadingAnchor),
+            view.trailingAnchor.constraint(equalTo: readableContentGuide.trailingAnchor)
+        ])
+
+        addBottomBorder(withColor: .separator)
     }
 
+    /// Sets the background color of the container view.
+    ///
+    /// For `UITableViewHeaderFooterView`, we'll need to assign a `UIView` with the desired
+    /// background color to the `backgroundView` property. Setting the `backgroundColor`
+    /// directly will pop a warning in the console.
+    ///
+    /// - Parameter color: The background color
+    private func applyBackgroundColor(_ color: UIColor) {
+        let backgroundView = UIView(frame: bounds)
+        backgroundView.backgroundColor = color
+        self.backgroundView = backgroundView
+    }
 }
 
 // MARK: - ReaderSiteHeader

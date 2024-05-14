@@ -1,12 +1,5 @@
-# Nodes with values to reuse in the pipeline.
-common_params:
-  # Common plugin settings to use with the `plugins` key.
-  - &common_plugins
-    - automattic/a8c-ci-toolkit#3.1.0
-  # Common environment values to use with the `env` key.
-  - &common_env
-    # Be sure to also update the `.xcode-version` file when updating the Xcode image/version here
-    IMAGE_ID: xcode-15.1
+env:
+  IMAGE_ID: $IMAGE_ID
 
 # This is the default pipeline – it will build and test the app
 steps:
@@ -18,8 +11,7 @@ steps:
     steps:
       - label: "🛠 WordPress Prototype Build"
         command: ".buildkite/commands/prototype-build-wordpress.sh"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
@@ -27,8 +19,7 @@ steps:
 
       - label: "🛠 Jetpack Prototype Build"
         command: ".buildkite/commands/prototype-build-jetpack.sh"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         if: "build.pull_request.id != null || build.pull_request.draft"
         notify:
           - github_commit_status:
@@ -42,8 +33,7 @@ steps:
       - label: "🛠 :wordpress: Build for Testing"
         key: "build_wordpress"
         command: ".buildkite/commands/build-for-testing.sh wordpress"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "WordPress Build for Testing"
@@ -51,8 +41,7 @@ steps:
       - label: "🛠 :jetpack: Build for Testing"
         key: "build_jetpack"
         command: ".buildkite/commands/build-for-testing.sh jetpack"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         notify:
           - github_commit_status:
               context: "Jetpack Build for Testing"
@@ -63,8 +52,7 @@ steps:
   - label: "🔬 :wordpress: Unit Tests"
     command: ".buildkite/commands/run-unit-tests.sh"
     depends_on: "build_wordpress"
-    env: *common_env
-    plugins: *common_plugins
+    plugins: [$CI_TOOLKIT_PLUGIN]
     artifact_paths:
       - "build/results/*"
     notify:
@@ -79,8 +67,7 @@ steps:
       - label: "🔬 :jetpack: UI Tests (iPhone)"
         command: .buildkite/commands/run-ui-tests.sh 'iPhone 15'
         depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -91,8 +78,7 @@ steps:
       - label: "🔬 :jetpack: UI Tests (iPad)"
         command: .buildkite/commands/run-ui-tests.sh 'iPad Pro (12.9-inch) (6th generation)'
         depends_on: "build_jetpack"
-        env: *common_env
-        plugins: *common_plugins
+        plugins: [$CI_TOOLKIT_PLUGIN]
         artifact_paths:
           - "build/results/*"
           - "build/results/crashes/*"
@@ -105,14 +91,23 @@ steps:
   #################
   - group: "Linters"
     steps:
+      - label: "☢️ Danger - PR Check"
+        command: danger
+        key: danger
+        if: "build.pull_request.id != null"
+        retry:
+          manual:
+            permit_on_passed: true
+        agents:
+          queue: "linter"
+
       - label: ":swift: SwiftLint"
-        command: run_swiftlint --strict
-        plugins: *common_plugins
+        command: swiftlint
         notify:
           - github_commit_status:
               context: "SwiftLint"
         agents:
-          queue: "default"
+          queue: "linter"
 
       - label: "🧹 Lint Translations"
         command: "gplint /workdir/WordPress/Resources/AppStoreStrings.po"
@@ -127,5 +122,4 @@ steps:
 
       - label: ":sleuth_or_spy: Lint Localized Strings Format"
         command: .buildkite/commands/lint-localized-strings-format.sh
-        plugins: *common_plugins
-        env: *common_env
+        plugins: [$CI_TOOLKIT_PLUGIN]

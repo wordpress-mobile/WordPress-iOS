@@ -1,7 +1,7 @@
 import UIKit
 import WordPressShared
 
-struct StatsTotalInsightsData {
+struct StatsTotalInsightsData: Equatable {
     var count: Int
     var difference: Int? = nil
     var percentage: Int? = nil
@@ -215,6 +215,7 @@ class StatsTotalInsightsCell: StatsBaseCell {
         countLabel.adjustsFontSizeToFitWidth = true
         countLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         countLabel.setContentHuggingPriority(.required, for: .vertical)
+        countLabel.maximumContentSizeCategory = .accessibilityLarge
 
         comparisonLabel.font = .preferredFont(forTextStyle: .subheadline)
         comparisonLabel.textColor = .textSubtle
@@ -304,9 +305,9 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
         let differenceText: String = {
             if difference > 0 {
-                return String(format: TextContent.differenceHigher, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+                return String(format: TextContent.differenceHigher, differencePrefix, difference.abbreviatedString(), percentage.percentageString())
             } else if difference < 0 {
-                return String(format: TextContent.differenceLower, differencePrefix, difference.abbreviatedString(), percentage.abbreviatedString())
+                return String(format: TextContent.differenceLower, differencePrefix, difference.abbreviatedString(), percentage.percentageString())
             } else {
                 return TextContent.differenceSame
             }
@@ -397,11 +398,11 @@ class StatsTotalInsightsCell: StatsBaseCell {
 
     private enum TextContent {
         static let differenceDelimiter = Character("*")
-        static let differenceHigher = NSLocalizedString("stats.insights.label.totalLikes.higher",
-                                                        value: "*%@%@ (%@%%)* higher than the previous 7-days",
+        static let differenceHigher = NSLocalizedString("stats.insights.label.totalLikes.higherNumber",
+                                                        value: "*%1$@%2$@ (%3$@)* higher than the previous 7-days",
                                                         comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
-        static let differenceLower = NSLocalizedString("stats.insights.label.totalLikes.lower",
-                                                       value: "*%@%@ (%@%%)* lower than the previous 7-days",
+        static let differenceLower = NSLocalizedString("stats.insights.label.totalLikes.lowerNumber",
+                                                       value: "*%1$@%2$@ (%3$@)* lower than the previous 7-days",
                                                        comment: "Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text.")
         static let differenceSame = NSLocalizedString("stats.insights.label.totalLikes.same",
                                                       value: "The same as the previous 7-days",

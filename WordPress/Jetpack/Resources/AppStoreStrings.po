@@ -81,10 +81,9 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v24.5-whats-new"
+msgctxt "v24.8-whats-new"
 msgid ""
-"We’ve introduced a fix that prevents certain bugs within the editor and individual block types. This fix logs any bugs that sneak through so we can squash those, too.\n"
-"We also improved your previewing and publishing experience by removing the edit button from the “Post Published” success screen and the publish button from the “Preview” screen. All in a day’s work.\n"
+"We made some updates to the Pages menu. You’ll now find Settings in its own section, right underneath Stats (which we also moved). It’s available for both published and unpublished posts. Groovy.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

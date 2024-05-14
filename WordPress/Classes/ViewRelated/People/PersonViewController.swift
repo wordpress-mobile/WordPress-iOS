@@ -3,6 +3,7 @@ import UIKit
 import CocoaLumberjack
 import WordPressShared
 import WordPressUI
+import Gravatar
 
 /// Displays a Blog's User Details
 ///
@@ -22,18 +23,15 @@ final class PersonViewController: UITableViewController {
         case User      = "user"
         case Follower  = "follower"
         case Viewer    = "viewer"
-        case Email     = "email"
 
         var title: String {
             switch self {
             case .User:
-                return NSLocalizedString("Blog's User", comment: "Blog's User Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.user", value: "Site's User", comment: "Sites's User Profile. Displayed when the name is empty!")
             case .Follower:
-                return NSLocalizedString("Blog's Follower", comment: "Blog's Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.subscriber", value: "Site's Subscriber", comment: "Site's Subscriber Profile. Displayed when the name is empty!")
             case .Viewer:
-                return NSLocalizedString("Blog's Viewer", comment: "Blog's Viewer Profile. Displayed when the name is empty!")
-            case .Email:
-                return NSLocalizedString("Blog's Email Follower", comment: "Blog's Email Follower Profile. Displayed when the name is empty!")
+                return NSLocalizedString("user.details.title.viewer", value: "Site's Viewer", comment: "Site's Viewers Profile. Displayed when the name is empty!")
             }
         }
     }
@@ -70,6 +68,13 @@ final class PersonViewController: UITableViewController {
         self.service = PeopleService(blog: blog, coreDataStack: ContextManager.shared)
 
         super.init(coder: coder)
+    }
+
+    class func controllerWithBlog(_ blog: Blog, context: NSManagedObjectContext, person: Person, screenMode: ScreenMode) -> PersonViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        return storyboard.instantiateViewController(identifier: "PersonViewController") { coder in
+            PersonViewController(coder: coder, blog: blog, context: context, person: person, screenMode: screenMode)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -229,8 +234,6 @@ private extension PersonViewController {
             case .Viewer:
                 strongSelf.deleteViewer()
                 return
-            case .Email:
-                strongSelf.deleteEmailFollower()
             }
         }
 
@@ -250,9 +253,6 @@ private extension PersonViewController {
         case .Viewer:
             messageFirstLine = NSLocalizedString("If you remove this viewer, he or she will not be able to visit this site.",
                                                  comment: "First line of remove viewer warning in confirmation dialog.")
-        case .Email:
-            messageFirstLine = NSLocalizedString("Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again.",
-                                                 comment: "First line of remove email follower warning in confirmation dialog.")
         }
 
         let messageSecondLineText = NSLocalizedString("Would you still like to remove this person?",
@@ -288,23 +288,6 @@ private extension PersonViewController {
         }
 
         service?.deleteFollower(follower, failure: {[weak self] (error: Error?) -> () in
-            guard let strongSelf = self, let error = error as NSError? else {
-                return
-            }
-
-            strongSelf.handleRemoveViewerOrFollowerError(error)
-        })
-        _ = navigationController?.popViewController(animated: true)
-    }
-
-    func deleteEmailFollower() {
-        guard let emailFollower = emailFollower, isEmailFollower else {
-            DDLogError("Error: Only email followers can be deleted here")
-            assertionFailure()
-            return
-        }
-
-        service?.deleteEmailFollower(emailFollower, failure: { [weak self] error in
             guard let strongSelf = self, let error = error as NSError? else {
                 return
             }
@@ -507,7 +490,7 @@ private extension PersonViewController {
     }
 
     func refreshGravatarImage(in imageView: UIImageView) {
-        let gravatar = person.avatarURL.flatMap { Gravatar($0) }
+        let gravatar = person.avatarURL.flatMap { AvatarURL(url: $0) }
         let placeholder = UIImage(named: "gravatar")!
         imageView.downloadGravatar(gravatar, placeholder: placeholder, animate: false)
     }
@@ -541,8 +524,6 @@ private extension PersonViewController {
             return isFollower == true
         case .Viewer:
             return isViewer == true
-        case .Email:
-            return isEmailFollower
         }
     }
 
@@ -586,8 +567,6 @@ private extension PersonViewController {
             return .viewer
         case .User:
             return try? Role.lookup(withBlogID: blog.objectID, slug: person.role, in: context)?.toUnmanaged()
-        case .Email:
-            return .follower
         }
     }
 }

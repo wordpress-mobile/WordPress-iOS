@@ -3,7 +3,7 @@ import Combine
 
 /// Displays search results from a reader site search.
 ///
-class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRestoration {
+class ReaderSiteSearchViewController: UITableViewController {
 
     // MARK: - Properties
     // MARK: Table / Sync Handlers
@@ -37,28 +37,6 @@ class ReaderSiteSearchViewController: UITableViewController, UIViewControllerRes
     private let statusViewController = NoResultsViewController.controller()
     fileprivate let headerView = ReaderSiteSearchHeaderView()
     fileprivate let footerView = ReaderSiteSearchFooterView()
-
-    // MARK: - State restoration
-
-    private static let restorationClassIdentifier = "ReaderSiteSearchRestorationIdentifier"
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        return ReaderSiteSearchViewController()
-    }
-
-    // MARK: - View lifecycle
-
-    init() {
-        super.init(style: .plain)
-
-        restorationIdentifier = ReaderSiteSearchViewController.restorationClassIdentifier
-        restorationClass = ReaderSiteSearchViewController.self
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
