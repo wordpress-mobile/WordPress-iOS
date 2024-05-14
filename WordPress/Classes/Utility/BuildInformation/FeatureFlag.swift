@@ -119,11 +119,6 @@ extension FeatureFlag: RolloutConfigurableFlag {
     /// If a percentage rollout isn't applicable for the flag, return nil.
     ///
     var rolloutPercentage: Double? {
-        switch self {
-        case .syncPublishing:
-            return 0.01  // 1%
-        default:
-            return nil
-        }
+        return nil
     }
 }
