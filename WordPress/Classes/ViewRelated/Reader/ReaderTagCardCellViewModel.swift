@@ -204,7 +204,8 @@ extension ReaderTagCardCellViewModel: UICollectionViewDelegate {
         let post = resultsController.object(at: indexPath)
         let controller = ReaderDetailViewController.controllerWithPost(post)
 
-        WPAnalytics.trackReader(.readerPostCardTapped, properties: ["source": "tags_feed"])
+        WPAnalytics.trackReader(.readerPostCardTapped,
+                                properties: ["source": ReaderStreamViewController.StatSource.tagsFeed.rawValue])
         parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
 

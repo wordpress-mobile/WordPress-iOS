@@ -102,6 +102,19 @@ extern NSString * const ReaderPostServiceToggleSiteFollowingState;
                    failure:(void (^)(NSError *error))failure;
 
 /**
+ Toggle the liked status of the specified post.
+
+ @param post The reader post to like/unlike.
+ @param source A string that hints the source of where action was performed. Optional.
+ @param success block called on a successful fetch.
+ @param failure block called if there is any error. `error` can be any underlying network error.
+ */
+- (void)toggleLikedForPost:(ReaderPost *)post
+                    source:(nullable NSString *)source
+                   success:(void (^)(void))success
+                   failure:(void (^)(NSError *error))failure;
+
+/**
  Toggle the following status of the specified post's blog.
 
  @param post The ReaderPost whose blog should be followed.

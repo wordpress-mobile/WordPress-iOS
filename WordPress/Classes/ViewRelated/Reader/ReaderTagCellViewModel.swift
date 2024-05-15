@@ -20,7 +20,7 @@ struct ReaderTagCellViewModel {
     }
 
     func onLikeButtonTapped() {
-        ReaderLikeAction().execute(with: post)
+        ReaderLikeAction().execute(with: post, source: ReaderStreamViewController.StatSource.tagsFeed.rawValue)
     }
 
     mutating func onMenuButtonTapped(with anchor: UIView) {

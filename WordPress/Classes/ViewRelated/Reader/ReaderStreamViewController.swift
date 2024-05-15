@@ -208,6 +208,7 @@ import AutomatticTracks
     enum StatSource: String {
         case reader
         case notif_like_list_user_profile
+        case tagsFeed = "tags_feed"
     }
     var statSource: StatSource = .reader
 
