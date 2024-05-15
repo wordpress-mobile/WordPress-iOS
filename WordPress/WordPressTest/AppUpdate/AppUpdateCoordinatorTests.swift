@@ -170,7 +170,7 @@ private final class MockAppUpdatePresenter: AppUpdatePresenterProtocol {
         didShowBlockingUpdate = true
     }
 
-    func openAppStore() {
+    func openAppStore(appStoreUrl: String) {
         didOpenAppStore = true
     }
 }
