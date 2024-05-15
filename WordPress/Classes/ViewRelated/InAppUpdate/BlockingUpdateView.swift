@@ -38,7 +38,7 @@ struct BlockingUpdateView: View {
             buttonsView
         }
         .padding([.leading, .trailing], 20)
-        .interactiveDismissDisabled(BuildConfiguration.current != .localDeveloper) // Todo: Remove condition later
+        .interactiveDismissDisabled()
         .onAppear {
             // Todo: track event
         }
