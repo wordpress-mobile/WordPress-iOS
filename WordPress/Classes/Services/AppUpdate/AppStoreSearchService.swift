@@ -7,6 +7,7 @@ struct AppStoreLookupResponse: Decodable {
 struct AppStoreInfo: Decodable {
     let trackName: String
     let trackId: Int
+    let trackViewUrl: String
     let version: String
     let releaseNotes: String
     let minimumOsVersion: String
