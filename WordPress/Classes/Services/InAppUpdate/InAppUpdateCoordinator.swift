@@ -56,20 +56,19 @@ final class InAppUpdateCoordinator {
             guard let currentVersion else {
                 return nil
             }
-
-            if let appStoreInfo = await fetchAppStoreInfo() {
-                guard !currentOsVersion.isLower(than: appStoreInfo.minimumOsVersion) else {
-                    // Can't update if the device OS version is lower than the minimum OS version
-                    return nil
-                }
-                if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
-                    return .blocking(appStoreInfo)
-                }
-                if currentVersion.isLower(than: appStoreInfo.version) {
-                    return .flexible(appStoreInfo)
-                }
+            guard let appStoreInfo = await fetchAppStoreInfo() else {
+                return nil
             }
-
+            guard !currentOsVersion.isLower(than: appStoreInfo.minimumOsVersion) else {
+                // Can't update if the device OS version is lower than the minimum OS version
+                return nil
+            }
+            if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
+                return .blocking(appStoreInfo)
+            }
+            if currentVersion.isLower(than: appStoreInfo.version) {
+                return .flexible(appStoreInfo)
+            }
             return nil
         }
     }
