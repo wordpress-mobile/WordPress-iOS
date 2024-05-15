@@ -4,8 +4,8 @@ import UIKit
 import StoreKit
 
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
-    init(viewModel: AppStoreInfoViewModel) {
-        super.init(rootView: .init(viewModel: viewModel))
+    init(viewModel: AppStoreInfoViewModel, onUpdateTapped: @escaping () -> Void) {
+        super.init(rootView: .init(viewModel: viewModel, onUpdateTapped: onUpdateTapped))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -15,6 +15,7 @@ final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView
 
 struct BlockingUpdateView: View {
     let viewModel: AppStoreInfoViewModel
+    let onUpdateTapped: (() -> Void)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -40,7 +41,7 @@ struct BlockingUpdateView: View {
         .padding([.leading, .trailing], 20)
         .interactiveDismissDisabled()
         .onAppear {
-            // Todo: track event
+            WPAnalytics.track(.inAppUpdateShown, properties: ["type": "blocking"])
         }
     }
 
@@ -83,7 +84,7 @@ struct BlockingUpdateView: View {
     private var buttonsView: some View {
         VStack {
             DSButton(title: viewModel.updateButtonTitle, style: .init(emphasis: .primary, size: .large)) {
-                viewModel.onUpdateTapped()
+                onUpdateTapped()
             }
             DSButton(title: viewModel.moreInfoButtonTitle, style: .init(emphasis: .tertiary, size: .large)) {
                 // Todo
