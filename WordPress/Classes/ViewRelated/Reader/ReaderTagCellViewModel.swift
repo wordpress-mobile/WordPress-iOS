@@ -16,7 +16,7 @@ struct ReaderTagCellViewModel {
         guard let parentViewController else {
             return
         }
-        ReaderHeaderAction().execute(post: post, origin: parentViewController)
+        ReaderHeaderAction().execute(post: post, origin: parentViewController, source: .tagsFeed)
     }
 
     func onLikeButtonTapped() {
