@@ -346,7 +346,41 @@ private extension CommentDetailViewController {
                 viewModel: CommentModerationViewModel(
                     state: moderationState,
                     comment: comment,
-                    coordinator: CommentModerationCoordinator(commentDetailViewController: self)
+                    coordinator: CommentModerationCoordinator(commentDetailViewController: self),
+                    notification: notification,
+                    stateChanged: { [weak self] result in
+                        switch result {
+                        case .success(let moderationState):
+                            let message: String
+                            switch moderationState {
+                            case .approved:
+                                message = ModerationMessages.approveSuccess
+                            case .pending:
+                                message = ModerationMessages.pendingSuccess
+                            case .spam:
+                                message = ModerationMessages.spamSuccess
+                            case .trash:
+                                message = ModerationMessages.trashSuccess
+                            }
+                            self?.showActionableNotice(title: message)
+                            self?.refreshData()
+
+                        case .failure(let error):
+                            let message: String
+                            switch moderationState {
+                            case .approved:
+                                message = ModerationMessages.approveFail
+                            case .pending:
+                                message = ModerationMessages.pendingFail
+                            case .spam:
+                                message = ModerationMessages.spamFail
+                            case .trash:
+                                message = ModerationMessages.trashFail
+                            }
+                            self?.displayNotice(title: message)
+                            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+                        }
+                    }
                 )
             )
             let hostingController = UIHostingController(rootView: commentModerationView)
