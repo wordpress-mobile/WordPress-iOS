@@ -1,16 +1,16 @@
 import Foundation
 
-enum InAppUpdateType {
+enum AppUpdateType {
     case flexible(AppStoreInfo)
     case blocking(AppStoreInfo)
 }
 
-final class InAppUpdateCoordinator {
+final class AppUpdateCoordinator {
 
     private let currentVersion: String?
     private let currentOsVersion: String
     private let service: AppStoreSearchProtocol
-    private let presenter: InAppUpdatePresenterProtocol
+    private let presenter: AppUpdatePresenterProtocol
     private let remoteConfigStore: RemoteConfigStore
     private let isJetpack: Bool
     private let isLoggedIn: Bool
@@ -19,7 +19,7 @@ final class InAppUpdateCoordinator {
         currentVersion: String?,
         currentOsVersion: String = UIDevice.current.systemVersion,
         service: AppStoreSearchProtocol = AppStoreSearchService(),
-        presenter: InAppUpdatePresenterProtocol = InAppUpdatePresenter(),
+        presenter: AppUpdatePresenterProtocol = AppUpdatePresenter(),
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
         isJetpack: Bool = AppConfiguration.isJetpack,
         isLoggedIn: Bool = AccountHelper.isLoggedIn
@@ -51,7 +51,7 @@ final class InAppUpdateCoordinator {
         }
     }
 
-    private var inAppUpdateType: InAppUpdateType? {
+    private var inAppUpdateType: AppUpdateType? {
         get async {
             guard let currentVersion else {
                 return nil

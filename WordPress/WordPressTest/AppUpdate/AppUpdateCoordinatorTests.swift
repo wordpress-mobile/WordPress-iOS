@@ -2,15 +2,15 @@ import XCTest
 
 @testable import WordPress
 
-final class InAppUpdateCoordinatorTests: XCTestCase {
+final class AppUpdateCoordinatorTests: XCTestCase {
 
     private let service = MockAppStoreSearchService()
-    private let presenter = MockInAppUpdatePresenter()
+    private let presenter = MockAppUpdatePresenter()
     private let remoteConfigStore = RemoteConfigStoreMock()
 
     func testNotLoggedIn() async {
         // Given
-        let coordinator = InAppUpdateCoordinator(
+        let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
             currentOsVersion: "17.0",
             service: service,
@@ -30,7 +30,7 @@ final class InAppUpdateCoordinatorTests: XCTestCase {
 
     func testFlexibleUpdateAvailableButOsVersionTooLow() async {
         // Given
-        let coordinator = InAppUpdateCoordinator(
+        let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
             currentOsVersion: "14.0",
             service: service,
@@ -51,7 +51,7 @@ final class InAppUpdateCoordinatorTests: XCTestCase {
 
     func testBlockingUpdateAvailableButOsVersionTooLow() async {
         // Given
-        let coordinator = InAppUpdateCoordinator(
+        let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
             currentOsVersion: "14.0",
             service: service,
@@ -73,7 +73,7 @@ final class InAppUpdateCoordinatorTests: XCTestCase {
 
     func testFlexibleUpdateAvailable() async {
         // Given
-        let coordinator = InAppUpdateCoordinator(
+        let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
             currentOsVersion: "17.0",
             service: service,
@@ -94,7 +94,7 @@ final class InAppUpdateCoordinatorTests: XCTestCase {
 
     func testBlockingUpdateAvailable() async {
         // Given
-        let coordinator = InAppUpdateCoordinator(
+        let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
             currentOsVersion: "17.0",
             service: service,
@@ -131,7 +131,7 @@ private final class MockAppStoreSearchService: AppStoreSearchProtocol {
     }
 }
 
-private final class MockInAppUpdatePresenter: InAppUpdatePresenterProtocol {
+private final class MockAppUpdatePresenter: AppUpdatePresenterProtocol {
     var didShowNotice = false
     var didShowBlockingUpdate = false
     var didOpenAppStore = false

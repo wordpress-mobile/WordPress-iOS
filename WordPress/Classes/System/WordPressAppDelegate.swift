@@ -648,7 +648,7 @@ extension WordPressAppDelegate {
             DDLogError("No CFBundleShortVersionString found in Info.plist")
             return
         }
-        let coordinator = InAppUpdateCoordinator(currentVersion: version)
+        let coordinator = AppUpdateCoordinator(currentVersion: version)
         Task {
             await coordinator.checkForAppUpdates()
         }
