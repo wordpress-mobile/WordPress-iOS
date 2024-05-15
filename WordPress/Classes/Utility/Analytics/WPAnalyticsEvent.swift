@@ -605,6 +605,11 @@ import Foundation
     case statsEmailsViewMoreTapped
     case statsSubscribersChartTapped
 
+    // In-App Updates
+    case inAppUpdateShown
+    case inAppUpdateDismissed
+    case inAppUpdateAccepted
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -1642,6 +1647,14 @@ import Foundation
             return "stats_emails_view_more_tapped"
         case .statsSubscribersChartTapped:
             return "stats_subscribers_chart_tapped"
+
+        // In-App Updates
+        case .inAppUpdateShown:
+            return "in_app_update_shown"
+        case .inAppUpdateDismissed:
+            return "in_app_update_dismissed"
+        case .inAppUpdateAccepted:
+            return "in_app_update_accepted"
 
         } // END OF SWITCH
     }
