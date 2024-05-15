@@ -159,6 +159,16 @@ extension ReaderStreamViewController {
     }
 }
 
+// MARK: - Tags Feed
+
+extension ReaderStreamViewController {
+
+    var isTagsFeed: Bool {
+        contentType == .tags && readerTopic == nil
+    }
+
+}
+
 // MARK: - Reader Announcement Header
 
 extension ReaderStreamViewController {

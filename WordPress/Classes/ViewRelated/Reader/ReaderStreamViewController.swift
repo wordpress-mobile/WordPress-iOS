@@ -962,9 +962,18 @@ import AutomatticTracks
             return
         }
 
+        guard isViewLoaded, view.window != nil else {
+            return
+        }
+
+        if isTagsFeed {
+            didBumpStats = true
+            WPAnalytics.trackReader(.readerTagsFeedShown)
+            return
+        }
+
         guard let topic = readerTopic,
-              let properties = topicPropertyForStats(),
-              isViewLoaded && view.window != nil else {
+              let properties = topicPropertyForStats() else {
             return
         }
 
