@@ -40,7 +40,7 @@ struct ReaderTagCellViewModel {
             followCommentsService: followCommentsService,
             showAdditionalItems: true
         )
-        // TODO: Analytics
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
 }
