@@ -324,6 +324,11 @@ import Foundation
     case readerDropdownOpened
     case readerDropdownItemTapped
 
+    // Reader: Tags Feed
+    case readerTagsFeedShown
+    case readerTagsFeedMoreFromTagTapped
+    case readerTagsFeedHeaderTapped
+
     // App Settings
     case settingsDidChange
 
@@ -1163,6 +1168,13 @@ import Foundation
             return "reader_dropdown_menu_opened"
         case .readerDropdownItemTapped:
             return "reader_dropdown_menu_item_tapped"
+
+        case .readerTagsFeedShown:
+            return "reader_tags_feed_shown"
+        case .readerTagsFeedMoreFromTagTapped:
+            return "reader_tags_feed_more_from_tag_tapped"
+        case .readerTagsFeedHeaderTapped:
+            return "reader_tags_feed_header_tapped"
 
         // App Settings
         case .settingsDidChange:
