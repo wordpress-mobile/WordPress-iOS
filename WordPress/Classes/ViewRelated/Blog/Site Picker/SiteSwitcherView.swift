@@ -39,12 +39,20 @@ struct SiteSwitcherView: View {
             NavigationView {
                 VStack(spacing: 0) {
                     blogListView
+                        .offset(y: isSearching ? -.DS.Padding.medium : 0)
                     if !isSearching {
                         addSiteButtonVStack
                     }
                 }
+                .navigationBarTitleDisplayMode(.inline)
+                .searchable(
+                    text: $searchText,
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+                .onChange(of: searchText) { newValue in
+                    isSearching = !newValue.isEmpty
+                }
             }
-            .searchable(text: $searchText)
         }
     }
 
