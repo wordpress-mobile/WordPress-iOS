@@ -1,13 +1,13 @@
 import Foundation
 import WordPressFlux
 
-protocol InAppUpdatePresenterProtocol {
+protocol AppUpdatePresenterProtocol {
     func showNotice(using appStoreInfo: AppStoreInfo)
     func showBlockingUpdate(using appStoreInfo: AppStoreInfo)
     func openAppStore()
 }
 
-final class InAppUpdatePresenter: InAppUpdatePresenterProtocol {
+final class AppUpdatePresenter: AppUpdatePresenterProtocol {
     func showNotice(using appStoreInfo: AppStoreInfo) {
         let viewModel = AppStoreInfoViewModel(appStoreInfo) {
             self.openAppStore()
