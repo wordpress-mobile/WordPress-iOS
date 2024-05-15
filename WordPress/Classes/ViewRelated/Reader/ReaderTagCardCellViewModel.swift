@@ -6,6 +6,20 @@ protocol ReaderTagCardCellViewModelDelegate: NSObjectProtocol {
 
 class ReaderTagCardCellViewModel: NSObject {
 
+    enum TagButtonSource {
+        case header
+        case footer
+
+        var event: WPAnalyticsEvent {
+            switch self {
+            case .header:
+                return .readerTagsFeedHeaderTapped
+            case .footer:
+                return .readerTagsFeedMoreFromTagTapped
+            }
+        }
+    }
+
     enum Section: Int {
         case emptyState = 101
         case posts
@@ -100,8 +114,11 @@ class ReaderTagCardCellViewModel: NSObject {
         }
     }
 
-    func onTagButtonTapped() {
+    func onTagButtonTapped(source: TagButtonSource) {
         let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
+        controller.statSource = .tagsFeed
+
+        WPAnalytics.track(source.event)
         parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -170,7 +187,7 @@ private extension ReaderTagCardCellViewModel {
                 return nil
             }
             view.configure(with: self?.slug ?? "") { [weak self] in
-                self?.onTagButtonTapped()
+                self?.onTagButtonTapped(source: .footer)
             }
             return view
         }
