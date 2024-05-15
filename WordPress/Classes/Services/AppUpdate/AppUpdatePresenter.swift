@@ -4,7 +4,7 @@ import WordPressFlux
 protocol AppUpdatePresenterProtocol {
     func showNotice(using appStoreInfo: AppStoreInfo)
     func showBlockingUpdate(using appStoreInfo: AppStoreInfo)
-    func openAppStore()
+    func openAppStore(appStoreUrl: String)
 }
 
 final class AppUpdatePresenter: AppUpdatePresenterProtocol {
@@ -20,7 +20,7 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
         ) { accepted in
             if accepted {
                 WPAnalytics.track(.inAppUpdateAccepted, properties: ["type": "flexible"])
-                self.openAppStore()
+                self.openAppStore(appStoreUrl: appStoreInfo.trackViewUrl)
             } else {
                 WPAnalytics.track(.inAppUpdateDismissed)
             }
@@ -40,13 +40,16 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
         let viewModel = AppStoreInfoViewModel(appStoreInfo)
         let controller = BlockingUpdateViewController(viewModel: viewModel) {
             WPAnalytics.track(.inAppUpdateAccepted, properties: ["type": "blocking"])
-            self.openAppStore()
+            self.openAppStore(appStoreUrl: appStoreInfo.trackViewUrl)
         }
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
     }
 
-    func openAppStore() {
-        // TODO
+    func openAppStore(appStoreUrl: String) {
+        guard let url = URL(string: appStoreUrl) else {
+            return
+        }
+        UIApplication.shared.open(url)
     }
 }
