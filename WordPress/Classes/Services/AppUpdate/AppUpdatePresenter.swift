@@ -9,9 +9,7 @@ protocol AppUpdatePresenterProtocol {
 
 final class AppUpdatePresenter: AppUpdatePresenterProtocol {
     func showNotice(using appStoreInfo: AppStoreInfo) {
-        let viewModel = AppStoreInfoViewModel(appStoreInfo) {
-            self.openAppStore()
-        }
+        let viewModel = AppStoreInfoViewModel(appStoreInfo)
         let notice = Notice(
             title: viewModel.title,
             message: viewModel.message,
@@ -19,12 +17,16 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
             style: InAppUpdateNoticeStyle(),
             actionTitle: viewModel.updateButtonTitle,
             cancelTitle: viewModel.cancelButtonTitle
-        ) { onAccepted in
-            if onAccepted {
-                viewModel.onUpdateTapped()
+        ) { accepted in
+            if accepted {
+                WPAnalytics.track(.inAppUpdateAccepted, properties: ["type": "flexible"])
+                self.openAppStore()
+            } else {
+                WPAnalytics.track(.inAppUpdateDismissed)
             }
         }
         ActionDispatcher.dispatch(NoticeAction.post(notice))
+        WPAnalytics.track(.inAppUpdateShown, properties: ["type": "flexible"])
         // Todo: if the notice is dismissed, show notice again after a defined interval
     }
 
@@ -35,10 +37,11 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
             wpAssertionFailure("Failed to show blocking update view")
             return
         }
-        let viewModel = AppStoreInfoViewModel(appStoreInfo) {
+        let viewModel = AppStoreInfoViewModel(appStoreInfo)
+        let controller = BlockingUpdateViewController(viewModel: viewModel) {
+            WPAnalytics.track(.inAppUpdateAccepted, properties: ["type": "blocking"])
             self.openAppStore()
         }
-        let controller = BlockingUpdateViewController(viewModel: viewModel)
         let navigation = UINavigationController(rootViewController: controller)
         topViewController.present(navigation, animated: true)
     }

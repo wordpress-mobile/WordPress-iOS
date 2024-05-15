@@ -4,7 +4,6 @@ struct AppStoreInfoViewModel {
     let appName: String
     let version: String
     let releaseNotes: [String.SubSequence]
-    let onUpdateTapped: () -> Void
 
     let title = Strings.title
     let message = Strings.message
@@ -13,11 +12,10 @@ struct AppStoreInfoViewModel {
     let cancelButtonTitle = Strings.Actions.cancel
     let moreInfoButtonTitle = Strings.Actions.moreInfo
 
-    init(_ appStoreInfo: AppStoreInfo, onUpdateTapped: @escaping () -> Void) {
+    init(_ appStoreInfo: AppStoreInfo) {
         self.appName = appStoreInfo.trackName
         self.version = String(format: Strings.versionFormat, appStoreInfo.version)
         self.releaseNotes = appStoreInfo.releaseNotes.split(whereSeparator: \.isNewline)
-        self.onUpdateTapped = onUpdateTapped
     }
 }
 
