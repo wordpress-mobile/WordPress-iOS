@@ -373,7 +373,6 @@ extension NotificationDetailsViewController {
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self,
             NoteBlockButtonTableViewCell.self
         ]
 
@@ -386,7 +385,8 @@ extension NotificationDetailsViewController {
 
         tableView.register(LikeUserTableViewCell.self,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-
+        tableView.register(NoteBlockUserTableViewCell.self,
+                           forCellReuseIdentifier: NoteBlockUserTableViewCell.defaultReuseID)
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
@@ -571,7 +571,7 @@ private extension NotificationDetailsViewController {
         case .image:
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
-            return NoteBlockUserTableViewCell.reuseIdentifier()
+            return NoteBlockUserTableViewCell.defaultReuseID
         case .button:
             return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:

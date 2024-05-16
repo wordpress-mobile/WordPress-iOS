@@ -1,13 +1,8 @@
 import Foundation
 import SwiftUI
 
-class NoteBlockUserTableViewCell: NoteBlockTableViewCell {
+class NoteBlockUserTableViewCell: NoteBlockTableViewCell, Reusable {
     private var controller: UIHostingController<NotificationDetailUserView>?
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        shouldSetSeparators = false
-    }
 
     func configure(
         userBlock: FormattableUserContent,
