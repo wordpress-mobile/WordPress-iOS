@@ -7,6 +7,12 @@ final class AppUpdateCoordinatorTests: XCTestCase {
     private let service = MockAppStoreSearchService()
     private let presenter = MockAppUpdatePresenter()
     private let remoteConfigStore = RemoteConfigStoreMock()
+    private var store = UserDefaults(suiteName: "app-update-coordinator-tests")!
+
+    override func tearDown() {
+        super.tearDown()
+        store.removePersistentDomain(forName: "app-update-coordinator-tests")
+    }
 
     func testInAppUpdatesDisabled() async {
         // Given
@@ -58,6 +64,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isLoggedIn: false,
             isInAppUpdatesEnabled: true,
             delayInDays: Int.max
@@ -80,6 +87,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
@@ -102,6 +110,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
@@ -117,7 +126,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
-    func testFlexibleUpdateAvailable() async {
+    func testFlexibleUpdateAvailableShownOnceWithinInterval() async {
         // Given
         let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
@@ -125,10 +134,12 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
         )
+        remoteConfigStore.inAppUpdateFlexibleIntervalInDays = 5
 
         // When
         await coordinator.checkForAppUpdates()
@@ -136,6 +147,15 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         // Then
         XCTAssertTrue(service.didLookup)
         XCTAssertTrue(presenter.didShowNotice)
+        XCTAssertFalse(presenter.didShowBlockingUpdate)
+
+        // When we check for updates again within the flexible interval
+        presenter.didShowNotice = false // Reset
+        await coordinator.checkForAppUpdates()
+
+        // Then the flexible notice isn't shown again
+        XCTAssertTrue(service.didLookup)
+        XCTAssertFalse(presenter.didShowNotice)
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 

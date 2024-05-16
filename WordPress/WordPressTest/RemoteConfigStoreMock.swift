@@ -10,6 +10,7 @@ class RemoteConfigStoreMock: RemoteConfigStore {
     var blazeNonDismissibleStep: String?
     var blazeFlowCompletedStep: String?
     var jetpackInAppUpdateBlockingVersion: String?
+    var inAppUpdateFlexibleIntervalInDays: Int?
 
     override func value(for key: String) -> Any? {
         if key == "phase_three_blog_post" {
@@ -32,6 +33,9 @@ class RemoteConfigStoreMock: RemoteConfigStore {
         }
         if key == "jp_in_app_update_blocking_version_ios" {
             return jetpackInAppUpdateBlockingVersion
+        }
+        if key == "in_app_update_flexible_interval_in_days_ios" {
+            return inAppUpdateFlexibleIntervalInDays
         }
         return super.value(for: key)
     }
