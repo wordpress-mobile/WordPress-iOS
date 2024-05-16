@@ -384,7 +384,7 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        tableView.register(LikeUserTableViewCell.defaultNib,
+        tableView.register(LikeUserTableViewCell.self,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
 
     }

@@ -2693,8 +2693,6 @@
 		98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */; };
 		98B88452261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */; };
 		98B88453261E4E09007ED7F8 /* LikeUserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */; };
-		98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
-		98B88467261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */; };
 		98BAA7C126F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */; };
 		98BAA7C226F925F70073A2F9 /* InlineEditableSingleLineCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */; };
 		98BAA7C326F925F70073A2F9 /* InlineEditableSingleLineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */; };
@@ -8107,7 +8105,6 @@
 		98B3FA8521C05BF000148DD4 /* ViewMoreRow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewMoreRow.xib; sourceTree = "<group>"; };
 		98B52AE021F7AF4A006FF6B4 /* StatsDataHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsDataHelper.swift; sourceTree = "<group>"; };
 		98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LikeUserTableViewCell.swift; sourceTree = "<group>"; };
-		98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LikeUserTableViewCell.xib; sourceTree = "<group>"; };
 		98BAA7BF26F925F60073A2F9 /* InlineEditableSingleLineCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InlineEditableSingleLineCell.xib; sourceTree = "<group>"; };
 		98BAA7C026F925F70073A2F9 /* InlineEditableSingleLineCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InlineEditableSingleLineCell.swift; sourceTree = "<group>"; };
 		98BBB642258047DD0084FF72 /* WordPress 107.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 107.xcdatamodel"; sourceTree = "<group>"; };
@@ -16096,7 +16093,6 @@
 			isa = PBXGroup;
 			children = (
 				98B88451261E4E09007ED7F8 /* LikeUserTableViewCell.swift */,
-				98B88465261E4E4E007ED7F8 /* LikeUserTableViewCell.xib */,
 				2FA37B19215724E900C80377 /* LongPressGestureLabel.swift */,
 				B57AF5F91ACDC73D0075A7D2 /* NoteBlockActionsTableViewCell.swift */,
 				B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */,
@@ -19746,7 +19742,6 @@
 				C7234A442832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */,
 				17222D99261DDDF90047B163 /* black-icon-app-60x60@2x.png in Resources */,
 				9856A389261FC206008D6354 /* UserProfileUserInfoCell.xib in Resources */,
-				98B88466261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
 				98467A43221CD75200DF51AE /* SiteStatsDetailTableViewController.storyboard in Resources */,
 				FE43DAB126DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				43D74ACE20F906DD004AD934 /* InlineEditableNameValueCell.xib in Resources */,
@@ -20323,7 +20318,6 @@
 				FAE4CA6B2732C094003BFDFE /* QuickStartPromptViewController.xib in Resources */,
 				FABB200B2602FC2C00C8785C /* LoginEpilogue.storyboard in Resources */,
 				F41E4E9828F20802001880C6 /* white-on-pink-icon-app-60@3x.png in Resources */,
-				98B88467261E4E4E007ED7F8 /* LikeUserTableViewCell.xib in Resources */,
 				FABB200F2602FC2C00C8785C /* TopTotalsCell.xib in Resources */,
 				FABB20112602FC2C00C8785C /* SpaceMono-Bold.ttf in Resources */,
 				F46597E828E6698D00D5F49A /* spectrum-on-black-icon-app-60@2x.png in Resources */,

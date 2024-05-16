@@ -1,7 +1,7 @@
 import Foundation
 import SwiftUI
 
-class LikeUserTableViewCell: UITableViewCell, NibReusable {
+class LikeUserTableViewCell: UITableViewCell, Reusable {
     static let estimatedRowHeight: CGFloat = 80
 
     private var controller: UIHostingController<NotificationDetailUserView>?
