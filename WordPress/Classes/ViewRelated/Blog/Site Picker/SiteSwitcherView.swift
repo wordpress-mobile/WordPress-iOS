@@ -22,13 +22,7 @@ struct SiteSwitcherView: View {
     var body: some View {
         if #available(iOS 17.0, *) {
             NavigationStack {
-                VStack(spacing: 0) {
-                    blogListView
-                        .offset(y: isSearching ? -.DS.Padding.medium : 0)
-                    if !isSearching {
-                        addSiteButtonVStack
-                    }
-                }
+                blogListVStack
             }
             .searchable(
                 text: $searchText,
@@ -37,14 +31,25 @@ struct SiteSwitcherView: View {
             )
         } else {
             NavigationView {
-                VStack(spacing: 0) {
-                    blogListView
-                    if !isSearching {
-                        addSiteButtonVStack
+                blogListVStack
+                    .navigationBarTitleDisplayMode(.inline)
+                    .searchable(
+                        text: $searchText,
+                        placement: .navigationBarDrawer(displayMode: .always)
+                    )
+                    .onChange(of: searchText) { newValue in
+                        isSearching = !newValue.isEmpty
                     }
-                }
             }
-            .searchable(text: $searchText)
+        }
+    }
+
+    private var blogListVStack: some View {
+        VStack(spacing: 0) {
+            blogListView
+            if !isSearching {
+                addSiteButtonVStack
+            }
         }
     }
 
