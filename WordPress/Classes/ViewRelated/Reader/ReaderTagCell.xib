@@ -92,6 +92,12 @@
                                     </constraints>
                                 </view>
                             </subviews>
+                            <constraints>
+                                <constraint firstItem="DsY-TC-klp" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Yfj-e7-Vti" secondAttribute="bottom" id="4E1-8Q-Umk"/>
+                                <constraint firstItem="5KT-0Z-POw" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Yfj-e7-Vti" secondAttribute="bottom" id="5Us-VT-zN0"/>
+                                <constraint firstItem="5KT-0Z-POw" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Yfj-e7-Vti" secondAttribute="top" id="CNx-el-qmz"/>
+                                <constraint firstItem="DsY-TC-klp" firstAttribute="top" relation="greaterThanOrEqual" secondItem="Yfj-e7-Vti" secondAttribute="top" id="XP1-dF-ShA"/>
+                            </constraints>
                         </stackView>
                     </subviews>
                 </stackView>

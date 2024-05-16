@@ -82,7 +82,6 @@ private extension ReaderTagCell {
         postDateLabel.textColor = .secondaryLabel
         titleLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         summaryLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        summaryLabel.numberOfLines = UIDevice.isPad() ? 5 : 3
         likeButton.tintColor = .secondaryLabel
         likeButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
         menuButton.tintColor = .secondaryLabel
