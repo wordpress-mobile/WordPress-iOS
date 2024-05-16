@@ -80,7 +80,7 @@ class ReaderTagCardCell: UITableViewCell {
     }
 
     @IBAction private func onTagButtonTapped(_ sender: Any) {
-        viewModel?.onTagButtonTapped()
+        viewModel?.onTagButtonTapped(source: .header)
     }
 
     struct Constants {
