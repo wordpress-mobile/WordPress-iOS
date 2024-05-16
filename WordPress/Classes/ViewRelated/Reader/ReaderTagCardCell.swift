@@ -84,10 +84,10 @@ class ReaderTagCardCell: UITableViewCell {
     }
 
     struct Constants {
-        static let phoneDefaultCellSize = CGSize(width: 240, height: 297)
-        static let phoneLargeCellSize = CGSize(width: 240, height: 500)
-        static let padDefaultCellSize = CGSize(width: 480, height: 600)
-        static let padLargeCellSize = CGSize(width: 480, height: 900)
+        static let phoneDefaultCellSize = CGSize(width: 300, height: 150)
+        static let phoneLargeCellSize = CGSize(width: 300, height: 300)
+        static let padDefaultCellSize = CGSize(width: 480, height: 206)
+        static let padLargeCellSize = CGSize(width: 480, height: 400)
     }
 
 }

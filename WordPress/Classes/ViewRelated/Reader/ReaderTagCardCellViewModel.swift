@@ -36,6 +36,7 @@ class ReaderTagCardCellViewModel: NSObject {
     let slug: String
     weak var viewDelegate: ReaderTagCardCellViewModelDelegate? = nil
 
+    private let tag: ReaderAbstractTopic
     private let coreDataStack: CoreDataStackSwift
     private weak var parentViewController: UIViewController?
     private weak var collectionView: UICollectionView?
@@ -78,6 +79,7 @@ class ReaderTagCardCellViewModel: NSObject {
          cellSize: @escaping @autoclosure () -> CGSize?) {
         self.parentViewController = parent
         self.slug = tag.slug
+        self.tag = tag
         self.collectionView = collectionView
         self.isLoggedIn = isLoggedIn
         self.viewDelegate = viewDelegate
@@ -115,11 +117,18 @@ class ReaderTagCardCellViewModel: NSObject {
     }
 
     func onTagButtonTapped(source: TagButtonSource) {
-        let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
-        controller.statSource = .tagsFeed
+        switch source {
+        case .footer:
+            let controller = ReaderStreamViewController.controllerWithTagSlug(slug)
+            controller.statSource = .tagsFeed
+            parentViewController?.navigationController?.pushViewController(controller, animated: true)
+        case .header:
+            NotificationCenter.default.post(name: .ReaderFilterUpdated,
+                                            object: nil,
+                                            userInfo: [ReaderNotificationKeys.topic: tag])
+        }
 
         WPAnalytics.track(source.event)
-        parentViewController?.navigationController?.pushViewController(controller, animated: true)
     }
 
     struct Constants {

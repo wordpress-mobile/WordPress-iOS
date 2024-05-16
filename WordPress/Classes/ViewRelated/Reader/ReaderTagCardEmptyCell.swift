@@ -55,7 +55,7 @@ private struct ReaderTagCardEmptyCellView: View {
     private var iconLength = 32.0
 
     var body: some View {
-        VStack(spacing: .DS.Padding.double) {
+        VStack(spacing: .DS.Padding.single) {
             Image(systemName: "wifi.slash")
                 .resizable()
                 .frame(width: iconLength, height: iconLength)
@@ -64,7 +64,7 @@ private struct ReaderTagCardEmptyCellView: View {
             // added to double the padding between the Image and the VStack.
             Spacer().frame(height: .hairlineBorderWidth)
 
-            VStack(spacing: .DS.Padding.single) {
+            VStack(spacing: .DS.Padding.half) {
                 Text(Strings.title)
                     .font(.callout)
                     .fontWeight(.semibold)
@@ -73,6 +73,7 @@ private struct ReaderTagCardEmptyCellView: View {
                     .font(.callout)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Button {
