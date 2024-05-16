@@ -7,7 +7,7 @@ import DesignSystem
 
 // MARK: - NoteBlockHeaderTableViewCell
 //
-class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell, Reusable {
     typealias Constants = ContentPreview.Constants
     typealias Avatar = ContentPreview.ImageConfiguration.Avatar
 

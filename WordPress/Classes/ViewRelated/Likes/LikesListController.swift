@@ -357,7 +357,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 private extension LikesListController {
 
     func headerCell() -> NoteBlockHeaderTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.reuseIdentifier()) as? NoteBlockHeaderTableViewCell,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.defaultReuseID) as? NoteBlockHeaderTableViewCell,
               let group = notification?.headerAndBodyContentGroups[Constants.headerRowIndex] else {
             DDLogError("Error: couldn't get a header cell or FormattableContentGroup.")
             return NoteBlockHeaderTableViewCell()
@@ -403,13 +403,20 @@ private extension LikesListController {
     }
 
     func userCell(for indexPath: IndexPath) -> UITableViewCell {
-        guard let user = likingUsers[safe: indexPath.row],
+        guard let parent = parent,
+              let user = likingUsers[safe: indexPath.row],
               let cell = tableView.dequeueReusableCell(withIdentifier: LikeUserTableViewCell.defaultReuseID) as? LikeUserTableViewCell else {
             DDLogError("Failed dequeueing LikeUserTableViewCell")
             return UITableViewCell()
         }
+        cell.configure(
+            user: user,
+            onUserClicked: { [weak self] in
+                self?.delegate?.didSelectUser(user, at: indexPath)
+            },
+            parent: parent
+        )
 
-        cell.configure(withUser: user, isLastRow: (indexPath.row == likingUsers.endIndex - 1))
         return cell
     }
 

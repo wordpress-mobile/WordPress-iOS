@@ -355,7 +355,7 @@ extension NotificationDetailsViewController {
     }
 
     func setupMainView() {
-        view.backgroundColor = note.isBadge ? .ungroupedListBackground : .listBackground
+        view.backgroundColor = .ungroupedListBackground
     }
 
     func setupTableView() {
@@ -363,17 +363,15 @@ extension NotificationDetailsViewController {
         tableView.keyboardDismissMode       = .interactive
         tableView.accessibilityIdentifier   = .notificationDetailsTableAccessibilityId
         tableView.accessibilityLabel        = NSLocalizedString("Notification Details Table", comment: "Notifications Details Accessibility Identifier")
-        tableView.backgroundColor           = note.isBadge ? .ungroupedListBackground : .listBackground
+        tableView.backgroundColor           = .ungroupedListBackground
     }
 
     func setupTableViewCells() {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
-            NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
             NoteBlockImageTableViewCell.self,
-            NoteBlockUserTableViewCell.self,
             NoteBlockButtonTableViewCell.self
         ]
 
@@ -384,9 +382,12 @@ extension NotificationDetailsViewController {
             tableView.register(nib, forCellReuseIdentifier: cellClass.reuseIdentifier())
         }
 
-        tableView.register(LikeUserTableViewCell.defaultNib,
+        tableView.register(LikeUserTableViewCell.self,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
-
+        tableView.register(NoteBlockHeaderTableViewCell.self,
+                           forCellReuseIdentifier: NoteBlockHeaderTableViewCell.defaultReuseID)
+        tableView.register(NoteBlockUserTableViewCell.self,
+                           forCellReuseIdentifier: NoteBlockUserTableViewCell.defaultReuseID)
     }
 
     /// Configure the delegate and data source for the table view based on notification type.
@@ -557,7 +558,7 @@ private extension NotificationDetailsViewController {
     func reuseIdentifierForGroup(_ blockGroup: FormattableContentGroup) -> String {
         switch blockGroup.kind {
         case .header:
-            return NoteBlockHeaderTableViewCell.reuseIdentifier()
+            return NoteBlockHeaderTableViewCell.defaultReuseID
         case .footer:
             return NoteBlockTextTableViewCell.reuseIdentifier()
         case .subject:
@@ -571,7 +572,7 @@ private extension NotificationDetailsViewController {
         case .image:
             return NoteBlockImageTableViewCell.reuseIdentifier()
         case .user:
-            return NoteBlockUserTableViewCell.reuseIdentifier()
+            return NoteBlockUserTableViewCell.defaultReuseID
         case .button:
             return NoteBlockButtonTableViewCell.reuseIdentifier()
         default:
@@ -669,26 +670,20 @@ private extension NotificationDetailsViewController {
             return
         }
 
-        let hasHomeURL = userBlock.metaLinksHome != nil
-        let hasHomeTitle = userBlock.metaTitlesHome?.isEmpty == false
-
-        cell.accessoryType = hasHomeURL ? .disclosureIndicator : .none
-        cell.name = userBlock.text
-        cell.blogTitle = hasHomeTitle ? userBlock.metaTitlesHome : userBlock.metaLinksHome?.host
-        cell.isFollowEnabled = userBlock.isActionEnabled(id: FollowAction.actionIdentifier())
-        cell.isFollowOn = userBlock.isActionOn(id: FollowAction.actionIdentifier())
-
-        cell.onFollowClick = { [weak self] in
-            self?.followSiteWithBlock(userBlock)
-        }
-
-        cell.onUnfollowClick = { [weak self] in
-            self?.unfollowSiteWithBlock(userBlock)
-        }
-
-        // Download the Gravatar
-        let mediaURL = userBlock.media.first?.mediaURL
-        cell.downloadGravatarWithURL(mediaURL)
+        cell.configure(
+            userBlock: userBlock,
+            onUserClicked: { [weak self] in
+                self?.displayContent(blockGroup)
+            },
+            onFollowClicked: { [weak self] followClicked in
+                if followClicked {
+                    self?.followSiteWithBlock(userBlock)
+                } else {
+                    self?.unfollowSiteWithBlock(userBlock)
+                }
+            },
+            parent: self
+        )
     }
 
     func setupCommentCell(_ cell: NoteBlockCommentTableViewCell, blockGroup: FormattableContentGroup, at indexPath: IndexPath) {

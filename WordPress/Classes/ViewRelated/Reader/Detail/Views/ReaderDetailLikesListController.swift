@@ -38,7 +38,7 @@ private extension ReaderDetailLikesListController {
     }
 
     func configureTable() {
-        tableView.register(LikeUserTableViewCell.defaultNib,
+        tableView.register(LikeUserTableViewCell.self,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
 
         likesListController = LikesListController(tableView: tableView, post: post, parent: self, delegate: self)
