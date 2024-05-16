@@ -1,6 +1,6 @@
 import UIKit
 
-struct StatsSegmentedControlData {
+struct StatsSegmentedControlData: Equatable {
     var segmentTitle: String
     var segmentData: Int
     var segmentPrevData: Int
@@ -69,15 +69,15 @@ struct StatsSegmentedControlData {
 
         if differencePercent != 0 {
             let stringFormat = NSLocalizedString(
-                "insights.visitorsLineChartCell.differenceLabelWithPercentage",
-                value: "%1$@%2$@ (%3$@%%)",
-                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign."
+                "insights.visitorsLineChartCell.differenceLabelWithNumber",
+                value: "%1$@%2$@ (%3$@)",
+                comment: "Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
             )
             return String.localizedStringWithFormat(
                 stringFormat,
                 plusSign,
                 difference.abbreviatedString(),
-                differencePercent.abbreviatedString()
+                differencePercent.percentageString()
             )
         } else {
             let stringFormat = NSLocalizedString(
@@ -267,15 +267,15 @@ private extension ViewsVisitorsLineChartCell {
             return
         }
 
-        let configuration = StatsLineChartConfiguration(data: chartData[selectedSegmentIndex],
-                                                       styling: chartStyling[selectedSegmentIndex],
-                                                       analyticsGranularity: period?.analyticsGranularityLine,
-                                                       indexToHighlight: 0,
-                                                       xAxisDates: xAxisDates)
+        let filter: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
+        let configuration = StatsLineChartConfiguration(type: .viewsAndVisitors(filter),
+                                                        data: chartData[selectedSegmentIndex],
+                                                        styling: chartStyling[selectedSegmentIndex],
+                                                        analyticsGranularity: period?.analyticsGranularityLine,
+                                                        indexToHighlight: 0,
+                                                        xAxisDates: xAxisDates)
 
-        let statsInsightsFilterDimension: StatsInsightsFilterDimension = selectedSegmentIndex == 0 ? .views : .visitors
-
-        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate, statsInsightsFilterDimension: statsInsightsFilterDimension)
+        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)

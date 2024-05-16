@@ -111,6 +111,7 @@
 - (void)clearCachedRowHeights;
 - (void)refreshCachedRowHeightsForWidth:(CGFloat)width;
 - (void)invalidateCachedRowHeightAtIndexPath:(nonnull NSIndexPath *)indexPath;
+- (void)resetResultsController;
 
 /**
  A convenience method for clearing cached row heights and reloading the table view.

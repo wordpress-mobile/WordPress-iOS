@@ -137,7 +137,7 @@ def build_code_current
   # calculator can be used to calculate the next four-part version
   version = VERSION_FORMATTER.parse(PUBLIC_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
   # Return the formatted build code
-  BUILD_CODE_FORMATTER.build_code(version:)
+  BUILD_CODE_FORMATTER.build_code(version: version)
 end
 
 # Returns the current internal build code of the app
@@ -148,7 +148,7 @@ def build_code_current_internal
   # calculator can be used to calculate the next four-part version
   version = VERSION_FORMATTER.parse(INTERNAL_VERSION_FILE.read_build_code(attribute_name: 'VERSION_LONG'))
   # Return the formatted build code
-  BUILD_CODE_FORMATTER.build_code(version:)
+  BUILD_CODE_FORMATTER.build_code(version: version)
 end
 
 # Returns the build code of the app for the code freeze. It is the release version name plus sets the build number to 0
@@ -184,7 +184,7 @@ end
 def build_code_hotfix(release_version:)
   version = VERSION_FORMATTER.parse(release_version)
   # Return the formatted build code
-  BUILD_CODE_FORMATTER.build_code(version:)
+  BUILD_CODE_FORMATTER.build_code(version: version)
 end
 
 # Returns the next build code of the app
@@ -277,7 +277,6 @@ before_all do |lane|
   setup_ci
 
   # Check that the env files exist
-  # rubocop:disable Style/IfUnlessModifier
   unless is_ci || File.file?(USER_ENV_FILE_PATH)
     example_path = 'fastlane/env/user.env-example '
     UI.user_error! "#{ENV_FILE_NAME} not found: Please copy #{example_path} to #{USER_ENV_FILE_PATH} and fill in the values."
@@ -286,7 +285,6 @@ before_all do |lane|
   unless File.file?(PROJECT_ENV_FILE_PATH)
     UI.user_error!("project.env not found at #{PROJECT_ENV_FILE_PATH}: Make sure your configuration is up to date with `rake dependencies`")
   end
-  # rubocop:enable Style/IfUnlessModifier
 end
 
 def compute_release_branch_name(options:, version: release_version_current)
@@ -294,7 +292,7 @@ def compute_release_branch_name(options:, version: release_version_current)
   branch_name = options[branch_option]
 
   if branch_name.nil?
-    branch_name = release_branch_name(version:)
+    branch_name = release_branch_name(version: version)
     UI.message("No branch given via option '#{branch_option}'. Defaulting to #{branch_name}.")
   end
 

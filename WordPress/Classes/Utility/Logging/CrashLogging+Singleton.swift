@@ -1,8 +1,11 @@
 import Foundation
 import AutomatticTracks
 
-extension CrashLogging {
+extension WPLoggingStack {
+    static let shared = WPLoggingStack()
+}
 
+extension CrashLogging {
     static let main: CrashLogging = {
         if let crashLogging = WordPressAppDelegate.crashLogging {
             return crashLogging

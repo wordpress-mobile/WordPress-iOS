@@ -1,5 +1,6 @@
 import UIKit
 
+/// - warning: deprecated (kahu-offline-mode)
 @objc class PostVisibilitySelectorViewController: SettingsSelectionViewController {
     /// The post to change the visibility
     private var post: AbstractPost!

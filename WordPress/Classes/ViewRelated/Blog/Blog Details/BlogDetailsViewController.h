@@ -163,9 +163,7 @@ typedef NS_ENUM(NSUInteger, BlogDetailsNavigationSource) {
 - (void)presentBlogDetailsViewController:(UIViewController * __nonnull)viewController;
 @end
 
-@interface BlogDetailsViewController : UIViewController <UIViewControllerRestoration, UIViewControllerTransitioningDelegate> {
-    
-}
+@interface BlogDetailsViewController : UIViewController <UIViewControllerTransitioningDelegate>
 
 @property (nonatomic, strong, nonnull) Blog * blog;
 @property (nonatomic, strong, readonly) CreateButtonCoordinator * _Nullable createButtonCoordinator;

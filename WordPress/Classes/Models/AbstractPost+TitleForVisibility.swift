@@ -7,6 +7,14 @@ extension AbstractPost {
 
     /// A title describing the status. Ie.: "Public" or "Private" or "Password protected"
     @objc var titleForVisibility: String {
+        guard FeatureFlag.syncPublishing.enabled else {
+            return _titleForVisibility
+        }
+        return PostVisibility(post: self).localizedTitle
+    }
+
+    /// - warning: deprecated (kahu-offline-mode) (use ``PostVisibility``)
+    @objc private var _titleForVisibility: String {
         if password != nil {
             return AbstractPost.passwordProtectedLabel
         } else if status == .publishPrivate {

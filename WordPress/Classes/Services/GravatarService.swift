@@ -1,14 +1,28 @@
 import Foundation
 import CocoaLumberjack
 import WordPressKit
+import Gravatar
 
 @objc public enum GravatarServiceError: Int, Error {
     case invalidAccountInfo
 }
 
+public protocol GravatarImageUploader {
+    @discardableResult
+    func upload(_ image: UIImage, email: Email, accessToken: String) async throws -> URLResponse
+}
+
+extension AvatarService: GravatarImageUploader { }
+
 /// This Service exposes all of the valid operations we can execute, to interact with the Gravatar Service.
 ///
-open class GravatarService {
+public class GravatarService {
+
+    let imageUploader: GravatarImageUploader
+
+    init(imageUploader: GravatarImageUploader? = nil) {
+        self.imageUploader = imageUploader ?? AvatarService()
+    }
 
     /// This method fetches the Gravatar profile for the specified email address.
     ///
@@ -17,7 +31,7 @@ open class GravatarService {
     ///     - completion: A completion block.
     ///
     open func fetchProfile(email: String, onCompletion: @escaping ((_ profile: GravatarProfile?) -> Void)) {
-        let remote = gravatarServiceRemote()
+        let remote = GravatarServiceRemote()
         remote.fetchProfile(email, success: { remoteProfile in
             var profile = GravatarProfile()
             profile.profileID = remoteProfile.profileID
@@ -43,31 +57,25 @@ open class GravatarService {
     ///     - account: The WPAccount instance for which to upload a new image.
     ///     - completion: An optional closure to be executed on completion.
     ///
-    open func uploadImage(_ image: UIImage, forAccount account: WPAccount, completion: ((_ error: NSError?) -> ())? = nil) {
+    open func uploadImage(_ image: UIImage, forAccount account: WPAccount, completion: ((_ error: Error?) -> ())? = nil) {
         guard
             let accountToken = account.authToken, !accountToken.isEmpty,
             let accountEmail = account.email, !accountEmail.isEmpty else {
-                completion?(GravatarServiceError.invalidAccountInfo as NSError)
+                completion?(GravatarServiceError.invalidAccountInfo)
                 return
         }
 
         let email = accountEmail.trimmingCharacters(in: CharacterSet.whitespaces).lowercased()
 
-        let remote = gravatarServiceRemote()
-        remote.uploadImage(image, accountEmail: email, accountToken: accountToken) { (error) in
-            if let theError = error {
-                DDLogError("GravatarService.uploadImage Error: \(theError)")
-            } else {
+        Task {
+            do {
+                try await imageUploader.upload(image, email: Email(email), accessToken: accountToken)
                 DDLogInfo("GravatarService.uploadImage Success!")
+                completion?(nil)
+            } catch {
+                DDLogError("GravatarService.uploadImage Error: \(error)")
+                completion?(error)
             }
-
-            completion?(error)
         }
-    }
-
-    /// Overridden by tests for mocking.
-    ///
-    func gravatarServiceRemote() -> GravatarServiceRemote {
-        return GravatarServiceRemote()
     }
 }

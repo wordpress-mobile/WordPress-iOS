@@ -11,7 +11,6 @@ final class PostListItemViewModel {
     var status: String { statusViewModel.statusAndBadges(separatedBy: " · ")}
     var statusColor: UIColor { statusViewModel.statusColor }
     var accessibilityLabel: String? { makeAccessibilityLabel(for: post, statusViewModel: statusViewModel) }
-    var isEnabled: Bool { syncStateViewModel.isEditable }
 
     init(post: Post, shouldHideAuthor: Bool = false) {
         self.post = post
@@ -68,7 +67,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
+            .foregroundColor: FeatureFlag.syncPublishing.enabled ? foregroundColor : UIColor.text
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
@@ -81,7 +80,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: RemoteFeatureFlag.syncPublishing.enabled() ? foregroundColor : UIColor.text
+            .foregroundColor: FeatureFlag.syncPublishing.enabled ? foregroundColor : UIColor.text
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
@@ -104,6 +103,9 @@ private func makeBadgesString(for post: Post, syncStateViewModel: PostSyncStateV
     }
     if !shouldHideAuthor, let author = post.authorForDisplay() {
         badges.append((author, nil))
+    }
+    if !syncStateViewModel.isEditable {
+        badges = badges.map { ($0.0, UIColor.textTertiary) }
     }
     return AbstractPostHelper.makeBadgesString(with: badges)
 }

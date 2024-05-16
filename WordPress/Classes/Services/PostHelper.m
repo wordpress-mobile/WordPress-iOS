@@ -8,6 +8,14 @@
 @implementation PostHelper
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext {
+    [self updatePost:post withRemotePost:remotePost inContext:managedObjectContext overwrite:NO];
+}
+
++ (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
+    if ([Feature enabled:FeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+        return;
+    }
+
     NSNumber *previousPostID = post.postID;
     post.postID = remotePost.postID;
     // Used to populate author information for self-hosted sites.
@@ -55,6 +63,7 @@
     if ([post isKindOfClass:[Page class]]) {
         Page *pagePost = (Page *)post;
         pagePost.parentID = remotePost.parentID;
+        pagePost.foreignID = remotePost.foreignID;
     } else if ([post isKindOfClass:[Post class]]) {
         Post *postPost = (Post *)post;
         postPost.commentCount = remotePost.commentCount;
@@ -84,6 +93,7 @@
             publicizeMessage = [publicizeMessageDictionary stringForKey:@"value"];
             publicizeMessageID = [publicizeMessageDictionary stringForKey:@"id"];
         }
+        postPost.foreignID = remotePost.foreignID;
         postPost.publicID = publicID;
         postPost.publicizeMessage = publicizeMessage;
         postPost.publicizeMessageID = publicizeMessageID;
@@ -189,8 +199,17 @@
     return remoteCategory;
 }
 
-+ (NSArray *)remoteMetadataForPost:(Post *)post {
-    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:4];
++ (NSArray *)remoteMetadataForPost:(Post *)post
+{
+    NSMutableArray *metadata = [NSMutableArray arrayWithCapacity:5];
+    
+    /// Send UUID as a foreign ID in metadata so we have a way to deduplicate new posts
+    if (post.foreignID) {
+        NSMutableDictionary *uuidDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
+        uuidDictionary[@"key"] = [self foreignIDKey];
+        uuidDictionary[@"value"] = [post.foreignID UUIDString];
+        [metadata addObject:uuidDictionary];
+    }
 
     if (post.publicID) {
         NSMutableDictionary *publicDictionary = [NSMutableDictionary dictionaryWithCapacity:1];
@@ -230,7 +249,13 @@
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        AbstractPost *post;
+        NSUUID *foreignID = remotePost.foreignID;
+        if (foreignID != nil) {
+            post = [blog lookupPostWithForeignID:foreignID inContext:context];
+        } else {
+            post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        }
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {
                 // Create a Page entity for posts with a remote type of "page"
@@ -246,7 +271,12 @@
 
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        NSPredicate *predicate = nil;
+        if ([Feature enabled:FeatureFlagSyncPublishing]) {
+            predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
+        } else {
+            predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
+        }
         if ([statuses count] > 0) {
             NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];

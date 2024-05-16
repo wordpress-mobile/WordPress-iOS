@@ -4,7 +4,7 @@ import XCTest
 public class EditorPublishEpilogueScreen: ScreenObject {
 
     private let doneButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.navigationBars.buttons["doneButton"]
+        $0.buttons["doneButton"]
     }
 
     private let viewButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -20,7 +20,7 @@ public class EditorPublishEpilogueScreen: ScreenObject {
     }
 
     private let siteUrlGetter: (XCUIApplication) -> XCUIElement = {
-        $0.staticTexts["siteUrl"]
+        $0.buttons["siteUrl"]
     }
 
     var doneButton: XCUIElement { doneButtonGetter(app) }
@@ -43,7 +43,7 @@ public class EditorPublishEpilogueScreen: ScreenObject {
 
     public func verifyEpilogueDisplays(postTitle expectedPostTitle: String, siteAddress expectedSiteAddress: String) -> EditorPublishEpilogueScreen {
         let actualPostTitle = app.staticTexts["postTitle"].label
-        let actualSiteUrl = app.staticTexts["siteUrl"].label
+        let actualSiteUrl = app.buttons["siteUrl"].label
 
         XCTAssertEqual(expectedPostTitle, actualPostTitle, "Post title doesn't match expected title")
         XCTAssertEqual(expectedSiteAddress, actualSiteUrl, "Site URL doesn't match expected URL")

@@ -13,6 +13,7 @@ import WordPressShared
 
         applyStyles()
         adjustInsetsForTextDirection()
+        addBottomBorder(withColor: .separator)
     }
 
     @objc func applyStyles() {

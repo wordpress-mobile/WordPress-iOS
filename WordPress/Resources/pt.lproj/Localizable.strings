@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:58:48+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: pt */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -337,15 +337,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Site";
 
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Seguidor do site";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Utilizador do site";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Visitante do site";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Negrito";
@@ -373,7 +364,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -412,7 +402,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -535,7 +524,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -630,7 +618,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -686,8 +673,7 @@
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Criar página";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Criar artigo";
 
 /* Button to progress to the next step
@@ -847,9 +833,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -953,9 +937,6 @@
 /* Title of error dialog when disconnecting jetpack fails. */
 "Error disconnecting Jetpack" = "Erro ao desligar Jetpack";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Ocorreu um erro\nao guardar";
-
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Erro ao remover %@";
 
@@ -1021,31 +1002,14 @@
    User's First Name */
 "First Name" = "Nome";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Seguir";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Sites seguidos";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Seguidor";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Seguidores";
-
-/* User is following the blog. */
-"Following" = "A seguir";
-
-/* Filters Follows Notifications */
-"Follows" = "Segue";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Segue o blogue.";
 
 /* Next web page */
 "Forward" = "Reencaminhar";
@@ -1141,8 +1105,7 @@
 "Hide keyboard" = "Esconder teclado";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Histórico";
 
 /* Moderation Keys Title
@@ -1316,7 +1279,6 @@
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Gostos";
@@ -1380,7 +1342,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "A carregar...";
 
@@ -1908,8 +1869,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Categorias de conteúdo";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato do artigo";
 
 /* Name of the button to open the post settings
@@ -1990,8 +1950,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -2001,12 +1960,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicado";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publicar agora em";
-
-/* Published on [date] */
-"Published on" = "Publicado em";
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "A publicar...";
@@ -2206,12 +2159,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Agendado para";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Agendado para %@ em";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "A agendar...";
 
@@ -2260,16 +2207,12 @@
 "Settings update failed" = "Falhou ao actualizar opções";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
    Title for a button that allows the user to share their answer to the prompt.
    Verb. Title of a button. Pressing lets the user share a post to others. */
 "Share" = "Partilhar";
-
-/* Label for action to share post. */
-"Share Post" = "Partilhar artigo";
 
 /* Aztec's Text Placeholder
    Share Extension Content Body Text Placeholder */
@@ -2308,9 +2251,6 @@
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registar com email";
 
-/* Label for time period in list of followers. */
-"Since" = "Desde";
-
 /* Title for the Language Picker View */
 "Site Language" = "Idioma do site";
 
@@ -2331,9 +2271,6 @@
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site eliminado";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Seguidores do site";
 
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site não encontrado";
@@ -2675,12 +2612,6 @@
 /* Label for total followers */
 "Total" = "Total";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Total de seguidores por email: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Total de seguidores em WordPress.com: %@";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Tráfego";
 
@@ -2909,9 +2840,6 @@
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Ver tudo";
 
-/* Button label for viewing a post */
-"View Post" = "Ver artigo";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Ver site";
 
@@ -2921,10 +2849,8 @@
 /* Displays Less Rows */
 "View less…" = "Ver menos...";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Ver mais";
@@ -2942,7 +2868,6 @@
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */

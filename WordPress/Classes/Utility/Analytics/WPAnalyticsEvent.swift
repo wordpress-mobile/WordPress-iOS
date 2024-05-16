@@ -26,6 +26,7 @@ import Foundation
     case editorPostPublishTap
     case editorPostPublishDismissed
     case editorPostScheduledChanged
+    case editorPostPendingReviewChanged
     case editorPostTitleChanged
     case editorPostVisibilityChanged
     case editorPostTagsChanged
@@ -40,6 +41,12 @@ import Foundation
     case editorPostSlugChanged
     case editorPostExcerptChanged
     case editorPostSiteChanged
+    case editorPostLegacyMoreMenuShown
+
+    // Resolve post version conflict
+    case resolveConflictScreenShown
+    case resolveConflictSaveTapped
+    case resolveConflictCancelTapped
 
     // App Settings
     case appSettingsAppearanceChanged
@@ -279,6 +286,9 @@ import Foundation
     case siteSwitcherAddSiteTapped
     case siteSwitcherSearchPerformed
     case siteSwitcherToggleBlogVisible
+    case siteSwitcherToggledPinTapped
+    case siteSwitcherPinUpdated
+    case siteSwitcherSiteTapped
 
     // Post List
     case postListItemSelected
@@ -294,6 +304,12 @@ import Foundation
     case pageListEditHomepageTapped
     case pageListEditHomepageInfoTapped
 
+    // Posts (Techincal)
+    case postRepositoryPostCreated
+    case postRepositoryPostUpdated
+    case postRepositoryPatchStarted
+    case postRepositoryConflictEncountered
+
     // Reader: Filter Sheet
     case readerFilterSheetDisplayed
     case readerFilterSheetDismissed
@@ -307,6 +323,11 @@ import Foundation
     // Reader: Navigation menu dropdown
     case readerDropdownOpened
     case readerDropdownItemTapped
+
+    // Reader: Tags Feed
+    case readerTagsFeedShown
+    case readerTagsFeedMoreFromTagTapped
+    case readerTagsFeedHeaderTapped
 
     // App Settings
     case settingsDidChange
@@ -564,9 +585,25 @@ import Foundation
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
+    // Assertions & Errors
+    case assertionFailure
+    case postCoordinatorErrorEncountered
+
     // Site monitoring
     case siteMonitoringTabShown
     case siteMonitoringEntryDetailsShown
+
+    // Reading preferences
+    case readingPreferencesOpened
+    case readingPreferencesFeedbackTapped
+    case readingPreferencesItemTapped
+    case readingPreferencesSaved
+    case readingPreferencesClosed
+
+    // Stats Subscribers
+    case statsSubscribersViewMoreTapped
+    case statsEmailsViewMoreTapped
+    case statsSubscribersChartTapped
 
     /// A String that represents the event
     var value: String {
@@ -605,6 +642,8 @@ import Foundation
             return "editor_post_publish_dismissed"
         case .editorPostScheduledChanged:
             return "editor_post_scheduled_changed"
+        case .editorPostPendingReviewChanged:
+            return "editor_post_pending_review_changed"
         case .editorPostTitleChanged:
             return "editor_post_title_changed"
         case .editorPostVisibilityChanged:
@@ -633,6 +672,14 @@ import Foundation
             return "editor_post_excerpt_changed"
         case .editorPostSiteChanged:
             return "editor_post_site_changed"
+        case .editorPostLegacyMoreMenuShown:
+            return "editor_post_legacy_more_menu_shown"
+        case .resolveConflictScreenShown:
+            return "resolve_conflict_screen_shown"
+        case .resolveConflictSaveTapped:
+            return "resolve_conflict_save_tapped"
+        case .resolveConflictCancelTapped:
+            return "resolve_conflict_cancel_tapped"
         case .appSettingsAppearanceChanged:
             return "app_settings_appearance_changed"
         case .gutenbergUnsupportedBlockWebViewShown:
@@ -1059,6 +1106,12 @@ import Foundation
             return "site_switcher_search_performed"
         case .siteSwitcherToggleBlogVisible:
             return "site_switcher_toggle_blog_visible"
+        case .siteSwitcherToggledPinTapped:
+            return "site_switcher_toggled_pin_tapped"
+        case .siteSwitcherPinUpdated:
+            return "site_switcher_pin_updated"
+        case .siteSwitcherSiteTapped:
+            return "site_switcher_site_tapped"
 
         // Post List
         case .postListItemSelected:
@@ -1084,6 +1137,16 @@ import Foundation
         case .pageListEditHomepageInfoTapped:
             return "page_list_edit_homepage_info_pressed"
 
+        // Posts (Technical)
+        case .postRepositoryPostCreated:
+            return "post_repository_post_created"
+        case .postRepositoryPostUpdated:
+            return "post_repository_post_updated"
+        case .postRepositoryPatchStarted:
+            return "post_repository_patch_started"
+        case .postRepositoryConflictEncountered:
+            return "post_repository_conflict_encountered"
+
         // Reader: Filter Sheet
         case .readerFilterSheetDisplayed:
             return "reader_filter_sheet_displayed"
@@ -1105,6 +1168,13 @@ import Foundation
             return "reader_dropdown_menu_opened"
         case .readerDropdownItemTapped:
             return "reader_dropdown_menu_item_tapped"
+
+        case .readerTagsFeedShown:
+            return "reader_tags_feed_shown"
+        case .readerTagsFeedMoreFromTagTapped:
+            return "reader_tags_feed_more_from_tag_tapped"
+        case .readerTagsFeedHeaderTapped:
+            return "reader_tags_feed_header_tapped"
 
         // App Settings
         case .settingsDidChange:
@@ -1541,11 +1611,37 @@ import Foundation
         case .widgetsLoadedOnApplicationOpened:
             return "widgets_loaded_on_application_opened"
 
+        // Assertions & Errors
+        case .assertionFailure:
+            return "assertion_failure"
+        case .postCoordinatorErrorEncountered:
+            return "post_coordinator_error_encountered"
+
         // Site Monitoring
         case .siteMonitoringTabShown:
             return "site_monitoring_tab_shown"
         case .siteMonitoringEntryDetailsShown:
             return "site_monitoring_entry_details_shown"
+
+        // Reading Preferences
+        case .readingPreferencesOpened:
+            return "reader_reading_preferences_opened"
+        case .readingPreferencesFeedbackTapped:
+            return "reader_reading_preferences_feedback_tapped"
+        case .readingPreferencesItemTapped:
+            return "reader_reading_preferences_item_tapped"
+        case .readingPreferencesSaved:
+            return "reader_reading_preferences_saved"
+        case .readingPreferencesClosed:
+            return "reader_reading_preferences_closed"
+
+        // Stats Subscribers
+        case .statsSubscribersViewMoreTapped:
+            return "stats_subscribers_view_more_tapped"
+        case .statsEmailsViewMoreTapped:
+            return "stats_emails_view_more_tapped"
+        case .statsSubscribersChartTapped:
+            return "stats_subscribers_chart_tapped"
 
         } // END OF SWITCH
     }

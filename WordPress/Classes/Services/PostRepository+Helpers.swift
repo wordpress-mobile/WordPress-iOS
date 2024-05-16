@@ -4,10 +4,15 @@ import WordPressKit
 extension RemotePostCreateParameters {
     /// Initializes the parameters required to create the given post.
     init(post: AbstractPost) {
-        self.init(status: (post.status ?? .draft).rawValue)
-
+        self.init(
+            type: post is Post ? "post" : "page",
+            status: (post.status ?? .draft).rawValue
+        )
         date = post.dateCreated
-        authorID = post.authorID?.intValue
+        // - warning: the currnet Core Data model defaults to `0`
+        if let authorID = post.authorID?.intValue, authorID > 0 {
+            self.authorID = authorID
+        }
         title = post.postTitle
         content = post.content
         password = post.password
@@ -24,6 +29,15 @@ extension RemotePostCreateParameters {
             categoryIDs = (post.categories ?? []).compactMap {
                 $0.categoryID?.intValue
             }
+            metadata = Set(PostHelper.remoteMetadata(for: post).compactMap { value -> RemotePostMetadataItem? in
+                guard let dictionary = value as? [String: Any] else {
+                    wpAssertionFailure("Unexpected value", userInfo: [
+                        "value": value
+                    ])
+                    return nil
+                }
+                return PostHelper.mapDictionaryToMetadataItems(dictionary)
+            })
         default:
             break
         }
@@ -39,9 +53,16 @@ private func makeTags(from tags: String) -> [String] {
 }
 
 extension RemotePostUpdateParameters {
+    var isEmpty: Bool {
+        self == RemotePostUpdateParameters()
+    }
+
     /// Returns a diff between the original and the latest revision with the
     /// changes applied on top.
-    static func changes(from original: AbstractPost, to latest: AbstractPost, with changes: RemotePostUpdateParameters?) -> RemotePostUpdateParameters {
+    static func changes(from original: AbstractPost, to latest: AbstractPost, with changes: RemotePostUpdateParameters? = nil) -> RemotePostUpdateParameters {
+        guard original !== latest else {
+            return changes ?? RemotePostUpdateParameters()
+        }
         let parametersOriginal = RemotePostCreateParameters(post: original)
         var parametersLatest = RemotePostCreateParameters(post: latest)
         if let changes {

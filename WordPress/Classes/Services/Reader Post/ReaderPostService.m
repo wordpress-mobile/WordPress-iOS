@@ -192,7 +192,14 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
 
 #pragma mark - Update Methods
 
-- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)post success:(void (^)(void))success failure:(void (^)(NSError *))failure {
+    [self toggleLikedForPost:post source:nil success:success failure:failure];
+}
+
+- (void)toggleLikedForPost:(ReaderPost *)post
+                    source:(nullable NSString *)source
+                   success:(void (^)(void))success
+                   failure:(void (^)(NSError *error))failure
 {
     [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
         // Get a the post in our own context
@@ -207,11 +214,15 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
             return;
         }
 
-        [self toggleLikedForPost:readerPost inContext:context success:success failure:failure];
+        [self toggleLikedForPost:readerPost source:source inContext:context success:success failure:failure];
     }];
 }
 
-- (void)toggleLikedForPost:(ReaderPost *)readerPost inContext:(NSManagedObjectContext *)context success:(void (^)(void))success failure:(void (^)(NSError *error))failure
+- (void)toggleLikedForPost:(ReaderPost *)readerPost
+                    source:(nullable NSString *)source
+                 inContext:(NSManagedObjectContext *)context
+                   success:(void (^)(void))success
+                   failure:(void (^)(NSError *error))failure
 {
     NSParameterAssert(readerPost.managedObjectContext == context);
 
@@ -234,10 +245,13 @@ static NSString * const ReaderPostGlobalIDKey = @"globalID";
     NSNumber *siteID = readerPost.siteID;
     void (^successBlock)(void) = ^void() {
         if (postID && siteID) {
-            NSDictionary *properties = @{
-                                          WPAppAnalyticsKeyPostID: postID,
-                                          WPAppAnalyticsKeyBlogID: siteID
-                                          };
+            NSMutableDictionary *properties = @{WPAppAnalyticsKeyPostID: postID,
+                                                WPAppAnalyticsKeyBlogID: siteID}.mutableCopy;
+
+            if (source && source.length > 0) {
+                properties[@"source"] = source;
+            }
+
             if (like) {
                 [WPAnalytics trackReaderStat:WPAnalyticsStatReaderArticleLiked properties:properties];
                 if (railcar) {

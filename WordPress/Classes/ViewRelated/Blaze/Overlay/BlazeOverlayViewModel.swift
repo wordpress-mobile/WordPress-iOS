@@ -16,9 +16,7 @@ struct BlazeOverlayViewModel {
 
     var buttonTitle: NSAttributedString {
         switch source {
-        case .dashboardCard:
-            fallthrough
-        case .campaignList:
+        case .dashboardCard, .campaignList, .publishSuccessView:
             fallthrough
         case .menuItem:
             return buttonTitleWithIcon(title: Strings.blazeButtonTitle)

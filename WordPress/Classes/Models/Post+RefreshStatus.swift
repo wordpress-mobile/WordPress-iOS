@@ -6,6 +6,8 @@ extension Post {
     /// - Parameters:
     ///   - onCompletion: block to invoke when status update is finished.
     ///   - onError: block to invoke if any error occurs while the update is being made.
+    ///
+    /// - warning: deprecated (kahu-offline-mode)
     static func refreshStatus(with coreDataStack: CoreDataStack) {
         coreDataStack.performAndSave { context in
             let fetch = NSFetchRequest<Post>(entityName: Post.classNameWithoutNamespaces())

@@ -32,30 +32,26 @@ final class PostListHeaderView: UIView {
             configureEllipsisButton(with: viewModel.post, delegate: delegate)
         }
         textLabel.attributedText = viewModel.badges
-
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            let syncStateViewModel = viewModel.syncStateViewModel
-            configureIcon(with: syncStateViewModel)
-
-            ellipsisButton.isHidden = !syncStateViewModel.isShowingEllipsis
-            icon.isHidden = syncStateViewModel.iconInfo == nil
-            indicator.isHidden = !syncStateViewModel.isShowingIndicator
-
-            if syncStateViewModel.isShowingIndicator {
-                indicator.startAnimating()
-            }
-        }
+        configure(with: viewModel.syncStateViewModel)
     }
 
-    private func configureIcon(with viewModel: PostSyncStateViewModel) {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+    func configure(with viewModel: PostSyncStateViewModel) {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
-        guard let iconInfo = viewModel.iconInfo else {
-            return
+
+        if let iconInfo = viewModel.iconInfo {
+            icon.image = iconInfo.image
+            icon.tintColor = iconInfo.color
         }
-        icon.image = iconInfo.image
-        icon.tintColor = iconInfo.color
+
+        ellipsisButton.isHidden = !viewModel.isShowingEllipsis
+        icon.isHidden = viewModel.iconInfo == nil
+        indicator.isHidden = !viewModel.isShowingIndicator
+
+        if viewModel.isShowingIndicator {
+            indicator.startAnimating()
+        }
     }
 
     private func configureEllipsisButton(with post: Post, delegate: InteractivePostViewDelegate) {
@@ -71,13 +67,15 @@ final class PostListHeaderView: UIView {
         setupEllipsisButton()
 
         let stackView: UIStackView
-        if RemoteFeatureFlag.syncPublishing.enabled() {
+        if FeatureFlag.syncPublishing.enabled {
             let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
             innerStackView.spacing = 4
             stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
         } else {
             stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
         }
+
+        indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
         stackView.spacing = 12
         addSubview(stackView)
@@ -86,13 +84,14 @@ final class PostListHeaderView: UIView {
     }
 
     private func setupIcon() {
-        guard RemoteFeatureFlag.syncPublishing.enabled() else {
+        guard FeatureFlag.syncPublishing.enabled else {
             return
         }
         NSLayoutConstraint.activate([
-            icon.widthAnchor.constraint(equalToConstant: 24),
-            icon.heightAnchor.constraint(equalToConstant: 24)
+            icon.widthAnchor.constraint(equalToConstant: 22),
+            icon.heightAnchor.constraint(equalToConstant: 22)
         ])
+        icon.contentMode = .scaleAspectFit
     }
 
     private func setupEllipsisButton() {

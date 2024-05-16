@@ -16,20 +16,7 @@
 @import Gridicons;
 @import WordPressShared;
 
-static NSString * const WPTabBarRestorationID = @"WPTabBarID";
-
-static NSString * const WPReaderSplitViewRestorationID = @"WPReaderSplitViewRestorationID";
-static NSString * const WPNotificationsSplitViewRestorationID = @"WPNotificationsSplitViewRestorationID";
-static NSString * const WPMeSplitViewRestorationID = @"WPMeSplitViewRestorationID";
-
-static NSString * const WPReaderNavigationRestorationID = @"WPReaderNavigationID";
-static NSString * const WPMeNavigationRestorationID = @"WPMeNavigationID";
-static NSString * const WPNotificationsNavigationRestorationID  = @"WPNotificationsNavigationID";
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
-
-// used to restore the last selected tab bar item
-static NSString * const WPTabBarSelectedIndexKey = @"WPTabBarSelectedIndexKey";
-
 static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";
 
 NSString * const WPNewPostURLParamTitleKey = @"title";
@@ -47,7 +34,7 @@ static NSString * const WPTabBarFrameKeyPath = @"frame";
 static NSInteger const WPTabBarIconOffsetiPad = 7;
 static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
-@interface WPTabBarController () <UITabBarControllerDelegate, UIViewControllerRestoration>
+@interface WPTabBarController () <UITabBarControllerDelegate>
 
 @property (nonatomic, strong) NotificationsViewController *notificationsViewController;
 
@@ -75,13 +62,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 
 @implementation WPTabBarController
 
-#pragma mark - Class methods
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    return [[self class] sharedInstance];
-}
-
 #pragma mark - Instance methods
 
 - (instancetype)initWithStaticScreens:(BOOL)shouldUseStaticScreens
@@ -90,8 +70,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     if (self) {
         _shouldUseStaticScreens = shouldUseStaticScreens;
         [self setDelegate:self];
-        [self setRestorationIdentifier:WPTabBarRestorationID];
-        [self setRestorationClass:[WPTabBarController class]];
         [[self tabBar] setAccessibilityIdentifier:@"Main Navigation"];
         [[self tabBar] setAccessibilityLabel:NSLocalizedString(@"Main Navigation", nil)];
         [self setupColors];
@@ -150,20 +128,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
     [[UIApplication sharedApplication] removeObserver:self forKeyPath:WPApplicationIconBadgeNumberKeyPath];
 }
 
-#pragma mark - UIViewControllerRestoration methods
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeInteger:self.selectedIndex forKey:WPTabBarSelectedIndexKey];
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    self.selectedIndex = [coder decodeIntegerForKey:WPTabBarSelectedIndexKey];
-    [super decodeRestorableStateWithCoder:coder];
-}
-
 #pragma mark - Tab Bar Items
 
 - (UINavigationController *)readerNavigationController
@@ -187,7 +151,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
             _readerNavigationController.tabBarItem.image = readerTabBarImage;
             _readerNavigationController.tabBarItem.selectedImage = readerTabBarImage;
         }
-        _readerNavigationController.restorationIdentifier = WPReaderNavigationRestorationID;
         _readerNavigationController.tabBarItem.accessibilityIdentifier = @"readerTabButton";
         _readerNavigationController.tabBarItem.title = NSLocalizedString(@"Reader", @"The accessibility value of the Reader tab.");
     }
@@ -223,7 +186,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         _notificationsNavigationController.tabBarItem.image = self.notificationsTabBarImage;
         _notificationsNavigationController.tabBarItem.selectedImage = self.notificationsTabBarImage;
     }
-    _notificationsNavigationController.restorationIdentifier = WPNotificationsNavigationRestorationID;
     _notificationsNavigationController.tabBarItem.accessibilityIdentifier = @"notificationsTabButton";
     _notificationsNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
     _notificationsNavigationController.tabBarItem.title = NSLocalizedString(@"Notifications", @"Notifications tab bar item accessibility label");
@@ -241,7 +203,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
         } else {
             [self configureMeTabImageWithPlaceholderImage:[UIImage imageNamed:@"icon-tab-me"]];
         }
-        _meNavigationController.restorationIdentifier = WPMeNavigationRestorationID;
         _meNavigationController.tabBarItem.accessibilityLabel = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
         _meNavigationController.tabBarItem.accessibilityIdentifier = @"meTabButton";
         _meNavigationController.tabBarItem.title = NSLocalizedString(@"Me", @"The accessibility value of the me tab.");
@@ -284,7 +245,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_notificationsSplitViewController) {
         _notificationsSplitViewController = [WPSplitViewController new];
-        _notificationsSplitViewController.restorationIdentifier = WPNotificationsSplitViewRestorationID;
          [_notificationsSplitViewController setInitialPrimaryViewController:self.notificationsNavigationController];
         _notificationsSplitViewController.fullscreenDisplayEnabled = NO;
         _notificationsSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
@@ -299,7 +259,6 @@ static NSInteger const WPTabBarIconOffsetiPhone = 5;
 {
     if (!_meSplitViewController) {
         _meSplitViewController = [WPSplitViewController new];
-        _meSplitViewController.restorationIdentifier = WPMeSplitViewRestorationID;
         [_meSplitViewController setInitialPrimaryViewController:self.meNavigationController];
         _meSplitViewController.fullscreenDisplayEnabled = NO;
         _meSplitViewController.wpPrimaryColumnWidth = WPSplitViewControllerPrimaryColumnWidthDefault;
