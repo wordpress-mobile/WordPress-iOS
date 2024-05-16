@@ -34,7 +34,7 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
         guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
               let topViewController = window.topmostPresentedViewController,
               !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {
-            wpAssertionFailure("Failed to show blocking update view")
+            // Don't show if the view is already being displayed
             return
         }
         let viewModel = AppStoreInfoViewModel(appStoreInfo)
