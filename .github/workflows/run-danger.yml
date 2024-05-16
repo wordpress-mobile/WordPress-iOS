@@ -1,13 +1,17 @@
-name: ☢️ Danger
+name: ☢️ Trigger Danger On Buildkite
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, synchronize, edited, labeled, unlabeled, milestoned, demilestoned]
+    types: [labeled, unlabeled, milestoned, demilestoned]
 
 jobs:
   dangermattic:
-    # runs on draft PRs only for opened / synchronize events
-    if: ${{ (github.event.pull_request.draft == false) || (github.event.pull_request.draft == true && contains(fromJSON('["opened", "synchronize"]'), github.event.action)) }}
-    uses: Automattic/dangermattic/.github/workflows/reusable-run-danger.yml@v1.0.0
+    if: ${{ (github.event.pull_request.draft == false) }}
+    uses: Automattic/dangermattic/.github/workflows/reusable-retry-buildkite-step-on-events.yml@v1.1.0
+    with:
+      org-slug: "automattic"
+      pipeline-slug: "wordpress-ios"
+      retry-step-key: "danger"
+      build-commit-sha: "${{ github.event.pull_request.head.sha }}"
     secrets:
-      github-token: ${{ secrets.DANGERMATTIC_GITHUB_TOKEN }}
+      buildkite-api-token: ${{ secrets.TRIGGER_BK_BUILD_TOKEN }}

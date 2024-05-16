@@ -307,6 +307,8 @@ private extension SiteStatsTableHeaderView {
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {}
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
             return

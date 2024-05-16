@@ -9,8 +9,7 @@ static NSInteger HideAllSitesThreshold = 6;
 static NSTimeInterval HideAllSitesInterval = 2.0;
 static NSInteger HideSearchMinSites = 3;
 
-@interface BlogListViewController () <UIViewControllerRestoration,
-                                        UIDataSourceModelAssociation,
+@interface BlogListViewController () <UIDataSourceModelAssociation,
                                         UITableViewDelegate,
                                         UISearchBarDelegate,
                                         NoResultsViewControllerDelegate,
@@ -36,19 +35,12 @@ static NSInteger HideSearchMinSites = 3;
 
 @implementation BlogListViewController
 
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    return nil;
-}
-
 - (instancetype)initWithConfiguration:(BlogListConfiguration *)configuration
            meScenePresenter:(id<ScenePresenter>)meScenePresenter
 {
     self = [super init];
     
     if (self) {
-        self.restorationIdentifier = NSStringFromClass([self class]);
-        self.restorationClass = [self class];
         _meScenePresenter = meScenePresenter;
         _configuration = configuration;
         
@@ -62,7 +54,7 @@ static NSInteger HideSearchMinSites = 3;
 
 - (void)configureDataSource
 {
-    self.dataSource = [BlogListDataSource new];
+    self.dataSource = [[BlogListDataSource alloc] initWithContextManager: [ContextManager sharedInstance]];
     self.dataSource.shouldShowDisclosureIndicator = NO;
     self.dataSource.shouldHideSelfHostedSites = self.configuration.shouldHideSelfHostedSites;
     self.dataSource.shouldHideBlogsNotSupportingDomains = self.configuration.shouldHideBlogsNotSupportingDomains;

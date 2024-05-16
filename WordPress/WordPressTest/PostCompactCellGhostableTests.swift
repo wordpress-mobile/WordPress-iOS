@@ -37,14 +37,6 @@ class PostCompactCellGhostableTests: CoreDataTestCase {
         XCTAssertTrue(postCell.isUserInteractionEnabled)
     }
 
-    func testShowBadgesLabelAfterConfigure() {
-        let post = PostBuilder(mainContext).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertFalse(postCell.badgesLabel.isHidden)
-    }
-
     func testHideGhostAfterConfigure() {
         let post = PostBuilder(mainContext).build()
 
@@ -52,22 +44,6 @@ class PostCompactCellGhostableTests: CoreDataTestCase {
 
         XCTAssertTrue(postCell.ghostView.isHidden)
         XCTAssertFalse(postCell.contentStackView.isHidden)
-    }
-
-    func testMenuButtonOpacityAfterConfigure() {
-        let post = PostBuilder(mainContext).with(remoteStatus: .sync).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.menuButton.layer.opacity, 1)
-    }
-
-    func testMenuButtonOpacityAfterConfigureWithPushingStatus() {
-        let post = PostBuilder(mainContext).with(remoteStatus: .pushing).build()
-
-        postCell.configure(with: post)
-
-        XCTAssertEqual(postCell.menuButton.layer.opacity, 0.3)
     }
 
     private func postCellFromNib() -> PostCompactCell {

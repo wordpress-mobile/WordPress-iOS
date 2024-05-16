@@ -239,14 +239,14 @@ class GrowAudienceCell: UITableViewCell, NibLoadable {
         enum ReaderDiscover {
             static let detailsTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.details",
-                value: "Connect with other bloggers by following, liking and commenting on their posts.",
+                value: "Connect with other bloggers by subscribing, liking and commenting on their posts.",
                 comment: "A detailed message to users about growing the audience for their site through reader discover."
             )
 
             static let actionButtonTitle = NSLocalizedString(
                 "growAudienceCell.readerDiscover.actionButton",
-                value: "Discover blogs to follow",
-                comment: "Title for button that will open up the follow topics screen."
+                value: "Discover blogs to subscribe",
+                comment: "Title for button that will open up the subscribe topics screen."
             )
 
             static let completedTipTitle = NSLocalizedString(

@@ -35,6 +35,7 @@ struct ReaderNotificationKeys {
 enum ReaderPostMenuSource {
     case card
     case details
+    case tagCard
 
     var description: String {
         switch self {
@@ -42,6 +43,8 @@ enum ReaderPostMenuSource {
             return "post_card"
         case .details:
             return "post_details"
+        case .tagCard:
+            return "post_tag_card"
         }
     }
 }
@@ -629,7 +632,7 @@ extension ReaderHelpers {
 
     static let defaultSavedItemPosition = 2
 
-    /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
+    /// Sorts the default tabs according to the order [Discover, Subscriptions, Saved, Liked, Your Tags]
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
 
         guard !items.isEmpty else {
@@ -642,7 +645,6 @@ extension ReaderHelpers {
                 return true
             }
 
-            // first item: Discover
             if topicIsDiscover(leftTopic) {
                 return true
             }
@@ -650,7 +652,6 @@ extension ReaderHelpers {
                 return false
             }
 
-            // second item: Following/subscriptions
             if topicIsFollowing(leftTopic) {
                 return true
             }
@@ -658,7 +659,6 @@ extension ReaderHelpers {
                 return false
             }
 
-            // third item: Likes
             if topicIsLiked(leftTopic) {
                 return true
             }
@@ -674,9 +674,12 @@ extension ReaderHelpers {
             return true
         }
 
-        // fourth item: Saved. It's manually inserted after the sorting
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
+
+        if FeatureFlag.readerTagsFeed.enabled {
+            mutableItems.append(ReaderTabItem(ReaderContent(topic: nil, contentType: .tags)))
+        }
 
         // in case of log in with a self hosted site, prepend a 'dummy' Following tab
         if !isLoggedIn() {

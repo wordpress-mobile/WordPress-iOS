@@ -1,19 +1,33 @@
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Regular'), url('NotoSerif-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Bold'), url('NotoSerif-Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-Italic'), url('NotoSerif-Italic.ttf') format('truetype');
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Noto Serif';
+    src: local('NotoSerif-BoldItalic'), url('NotoSerif-BoldItalic.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+}
+
 :root {
     /* informs WebKit that this template supports both appearance modes. */
     color-scheme: light dark;
 
     /* custom variables. */
-    --primary-color: rgba(6, 117, 196, 1);
-    --mention-background-color: rgba(2, 103, 255, .1);
     --monospace-font: ui-monospace, monospace;
-}
-
-/* overrides for dark color scheme. */
-@media(prefers-color-scheme: dark) {
-    :root {
-        --primary-color: rgba(57, 156, 227, 1);
-        --mention-background-color: rgba(2, 103, 255, .2);
-    }
 }
 
 /* disable WebKit text inflation algorithm to prevent text size increase on orientation change. */
@@ -21,11 +35,12 @@ html {
     -webkit-text-size-adjust: none;
 }
 
-/* use Apple's standard style to match the native look. */
+/* use Apple's standard style to match the native look, while allowing it to be overridden. */
 body {
     font: -apple-system-body;
-    color: -apple-system-label;
-    background-color: -apple-system-background;
+    font-family: var(--text-font);
+    color: var(--text-color);
+    background-color: transparent;
 }
 
 /* get rid of the container default margins and paddings. */
@@ -68,7 +83,9 @@ figure {
 /** LINKS **/
 
 a {
-    color: var(--primary-color);
+    color: var(--link-color);
+    font-weight: var(--link-font-weight);
+    text-decoration: var(--link-text-decoration);
 }
 
 a.mention {
@@ -97,7 +114,8 @@ p > img:not(.emoji),
 
 figcaption {
     font: -apple-system-caption1;
-    color: -apple-system-secondary-label;
+    font-family: var(--text-font);
+    color: var(--text-secondary-color);
     text-align: center;
 }
 
@@ -133,7 +151,7 @@ blockquote {
     font-size: 1rem;
     margin: 15pt 0;
     padding: 10pt;
-    background-color: -apple-system-secondary-background;
+    background-color: var(--background-secondary-color);
     -webkit-border-radius: 3pt;
 }
 
@@ -145,6 +163,7 @@ blockquote > p:first-child {
 blockquote cite {
     display: block;
     font: -apple-system-footnote;
+    font-family: var(--text-font);
     text-align: right;
 }
 
@@ -159,7 +178,7 @@ pre {
     font-family: var(--monospace-font);
     font-size: 0.85rem;
     -webkit-border-radius: 3pt;
-    background-color: -apple-system-secondary-background;
+    background-color: var(--background-secondary-color);
 }
 
 code {
@@ -186,7 +205,7 @@ table {
 }
 
 table, tr, td {
-    border: 1px solid -apple-system-separator;
+    border: 1px solid var(--border-color);
 }
 
 td {
@@ -205,7 +224,7 @@ video {
 
 /* override hardcoded background color to system default. */
 .has-background {
-    background-color: -apple-system-background !important;
+    background-color: transparent !important;
 }
 
 /* forcefully remove gaps from custom vertical spacers. */
@@ -218,5 +237,5 @@ video {
  some contents apply inline text color styling which may lead to low contrast.
  */
 p, em, strong, b {
-    color: -apple-system-label !important;
+    color: var(--text-color) !important;
 }

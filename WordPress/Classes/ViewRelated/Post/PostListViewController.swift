@@ -4,9 +4,7 @@ import WordPressShared
 import Gridicons
 import UIKit
 
-final class PostListViewController: AbstractPostListViewController, UIViewControllerRestoration, InteractivePostViewDelegate {
-    static private let postsViewControllerRestorationKey = "PostsViewControllerRestorationKey"
-
+final class PostListViewController: AbstractPostListViewController, InteractivePostViewDelegate {
     /// If set, when the post list appear it will show the tab for this status
     private var initialFilterWithPostStatus: BasePost.Status?
 
@@ -15,7 +13,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
     @objc class func controllerWithBlog(_ blog: Blog) -> PostListViewController {
         let vc = PostListViewController()
         vc.blog = blog
-        vc.restorationClass = self
         return vc
     }
 
@@ -26,33 +23,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.blogDetailNavigation)
-    }
-
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String], coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: postsViewControllerRestorationKey) as? String,
-              let objectURL = URL(string: blogID),
-              let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-              let restoredBlog = (try? context.existingObject(with: objectID)) as? Blog else {
-
-            return nil
-        }
-
-        return self.controllerWithBlog(restoredBlog)
-    }
-
-    // MARK: - UIStateRestoring
-
-    override func encodeRestorableState(with coder: NSCoder) {
-
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-
-        coder.encode(objectString, forKey: type(of: self).postsViewControllerRestorationKey)
-
-        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController
@@ -70,8 +40,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         refreshNoResultsViewController = { [weak self] in
             self?.handleRefreshNoResultsViewController($0)
         }
-
-        NotificationCenter.default.addObserver(self, selector: #selector(postCoordinatorDidUpdate), name: .postCoordinatorDidUpdate, object: nil)
     }
 
     private lazy var createButtonCoordinator: CreateButtonCoordinator = {
@@ -103,23 +71,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
             createButtonCoordinator.showCreateButton(for: blog)
         } else {
             createButtonCoordinator.hideCreateButton()
-        }
-    }
-
-    // MARK: - Notifications
-
-    @objc private func postCoordinatorDidUpdate(_ notification: Foundation.Notification) {
-        guard let updatedObjects = (notification.userInfo?[NSUpdatedObjectsKey] as? Set<NSManagedObject>) else {
-            return
-        }
-        let updatedIndexPaths = (tableView.indexPathsForVisibleRows ?? []).filter {
-            let post = fetchResultsController.object(at: $0)
-            return updatedObjects.contains(post)
-        }
-        if !updatedIndexPaths.isEmpty {
-            tableView.beginUpdates()
-            tableView.reloadRows(at: updatedIndexPaths, with: .automatic)
-            tableView.endUpdates()
         }
     }
 
@@ -210,11 +161,10 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
 
         let post = postAtIndexPath(indexPath)
 
-        guard post.status != .trash else {
+        if post.status == .trash && !FeatureFlag.syncPublishing.enabled {
             // No editing posts that are trashed.
             return
         }
-
         WPAnalytics.track(.postListItemSelected, properties: propertiesForAnalytics())
         editPost(post)
     }
@@ -262,33 +212,6 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         PostListEditorPresenter.handleCopy(post: post, in: self)
     }
 
-    fileprivate func viewStatsForPost(_ post: AbstractPost) {
-        // Check the blog
-        let blog = post.blog
-
-        guard blog.supports(.stats) else {
-            // Needs Jetpack.
-            return
-        }
-
-        WPAnalytics.track(.postListStatsAction, withProperties: propertiesForAnalytics())
-
-        // Push the Post Stats ViewController
-        guard let postID = post.postID as? Int else {
-            return
-        }
-
-        SiteStatsInformation.sharedInstance.siteTimeZone = blog.timeZone
-        SiteStatsInformation.sharedInstance.oauth2Token = blog.authToken
-        SiteStatsInformation.sharedInstance.siteID = blog.dotComID
-
-        let postURL = URL(string: post.permaLink! as String)
-        let postStatsTableViewController = PostStatsTableViewController.withJPBannerForBlog(postID: postID,
-                                                                                            postTitle: post.titleForDisplay(),
-                                                                                            postURL: postURL)
-        navigationController?.pushViewController(postStatsTableViewController, animated: true)
-    }
-
     // MARK: - InteractivePostViewDelegate
 
     func edit(_ post: AbstractPost) {
@@ -299,15 +222,18 @@ final class PostListViewController: AbstractPostListViewController, UIViewContro
         viewPost(post)
     }
 
-    func stats(for post: AbstractPost) {
-        viewStatsForPost(post)
-    }
-
     func duplicate(_ post: AbstractPost) {
         editDuplicatePost(post)
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        guard FeatureFlag.syncPublishing.enabled else {
+            return trashPost(post, completion: completion)
+        }
+        return super._trash(post, completion: completion)
+    }
+
+    private func trashPost(_ post: AbstractPost, completion: @escaping () -> Void) {
         if post.status == .draft ||
             post.status == .scheduled {
             deletePost(post)

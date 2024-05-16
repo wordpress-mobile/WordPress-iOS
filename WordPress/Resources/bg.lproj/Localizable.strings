@@ -1,6 +1,6 @@
 /* Translation-Revision-Date: 2022-05-03 21:52:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: bg */
 
 /* Title of a list of buttons used for sharing content to other services. These buttons appear when the user taps a `More` button. */
@@ -299,9 +299,6 @@
 /* Title of a button that displays the WordPress.com blog */
 "Blog" = "Блог";
 
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Потребител на блога";
-
 /* Accessibility label for bold button on formatting toolbar.
    Discoverability title for bold formatting keyboard shortcut. */
 "Bold" = "Удебеляване";
@@ -329,7 +326,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -368,7 +364,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -479,7 +474,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -571,7 +565,6 @@
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -772,9 +765,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -866,9 +857,6 @@
 /* Title of error dialog when disconnecting jetpack fails. */
 "Error disconnecting Jetpack" = "Грешка при прекратяване на връзката на Jetpack";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Възникна проблем\nпри запазването";
-
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Грешка при премахване на %@";
 
@@ -931,28 +919,14 @@
    User's First Name */
 "First Name" = "Собствено име";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Следване";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Последвани сайтове";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Последовател";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Последователи";
-
-/* User is following the blog. */
-"Following" = "Следван";
-
-/* Filters Follows Notifications */
-"Follows" = "Следени";
 
 /* Next web page */
 "Forward" = "Напред";
@@ -1213,7 +1187,6 @@
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Харесвания";
@@ -1268,7 +1241,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Зареждане...";
 
@@ -1749,8 +1721,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "Категории";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Формат";
 
 /* Insights 'Posting Activity' header
@@ -1812,8 +1783,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Публикуване";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1823,9 +1793,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Публикувано";
-
-/* Published on [date] */
-"Published on" = "Публикувана на";
 
 /* Text displayed in HUD while a post is being published. */
 "Publishing..." = "Публикуване...";
@@ -2018,9 +1985,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Насрочена";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Насрочена за";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Насрочване...";
 
@@ -2081,7 +2045,6 @@
 "Settings update failed" = "Проблем при обновяване на настройките";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -2117,9 +2080,6 @@
 /* Help text when editing web address */
 "Shown publicly when you comment on blogs." = "Показва се публично когато коментирате на някой блог.";
 
-/* Label for time period in list of followers. */
-"Since" = "от";
-
 /* Title for the Language Picker View */
 "Site Language" = "Език на сайта";
 
@@ -2140,9 +2100,6 @@
 
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Сайтът бе изтрит";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Абонирания за сайта";
 
 /* Image size option title. */
 "Size" = "Размер";
@@ -2484,12 +2441,6 @@
 /* Label for total followers */
 "Total" = "Общо";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Общо имейл абонати: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Общо абонати в WordPress.com: %@";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -2678,7 +2629,6 @@
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */

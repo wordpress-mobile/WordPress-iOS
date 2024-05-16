@@ -6,14 +6,17 @@ import WordPressShared
 /// None of the associated values should be (nor can be) accessed directly by the UI, only through the `PostEditorStateContext` instance.
 ///
 public enum PostEditorAction {
+    /// - note: Deprecated (kahu-offline-mode)
     case save
+    /// - note: Deprecated (kahu-offline-mode)
     case saveAsDraft
+    /// - note: Deprecated (kahu-offline-mode)
     case schedule
     case publish
     case update
     case submitForReview
-    case continueFromHomepageEditing
 
+    /// - note: Deprecated (kahu-offline-mode)
     var dismissesEditor: Bool {
         switch self {
         case .publish, .schedule, .submitForReview:
@@ -23,6 +26,7 @@ public enum PostEditorAction {
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     var isAsync: Bool {
         switch self {
         case .publish, .schedule, .submitForReview:
@@ -46,8 +50,6 @@ public enum PostEditorAction {
             return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
         case .update:
             return NSLocalizedString("Update", comment: "Update button label (saving content, ex: Post, Page, Comment).")
-        case .continueFromHomepageEditing:
-            return NSLocalizedString("Continue", comment: "Continue button (used to finish editing the home page during site creation).")
         }
     }
 
@@ -65,12 +67,10 @@ public enum PostEditorAction {
             return NSLocalizedString("Are you sure you want to submit for review?", comment: "Title of message shown when user taps submit for review.")
         case .update:
             return NSLocalizedString("Are you sure you want to update?", comment: "Title of message shown when user taps update.")
-            // Note: when continue is pressed with no changes, it will close without prompt
-        case .continueFromHomepageEditing:
-            return NSLocalizedString("Are you sure you want to update your homepage?", comment: "Title of message shown when user taps continue during homepage editing in site creation.")
         }
     }
 
+    /// - note: Deprecated (kahu-offline-mode)
     var publishingActionLabel: String {
         switch self {
         case .publish:
@@ -81,9 +81,7 @@ public enum PostEditorAction {
             return NSLocalizedString("Scheduling...", comment: "Text displayed in HUD while a post is being scheduled to be published.")
         case .submitForReview:
             return NSLocalizedString("Submitting for Review...", comment: "Text displayed in HUD while a post is being submitted for review.")
-            // not sure if we want to use "Updating..." or "Publishing..." for home page changes?
-            // Note: when continue is pressed with no changes, it will close without prompt
-        case .update, .continueFromHomepageEditing:
+        case .update:
             return NSLocalizedString("Updating...", comment: "Text displayed in HUD while a draft or scheduled post is being updated.")
         }
     }
@@ -95,7 +93,7 @@ public enum PostEditorAction {
         case .schedule:
             return NSLocalizedString("Error occurred during scheduling", comment: "Text displayed in notice while a post is being scheduled to be published.")
             // Note: when continue is pressed with no changes, it will close without prompt
-        case .save, .saveAsDraft, .submitForReview, .update, .continueFromHomepageEditing:
+        case .save, .saveAsDraft, .submitForReview, .update:
             return NSLocalizedString("Error occurred during saving", comment: "Text displayed in notice after attempting to save a draft post and an error occurred.")
         }
     }
@@ -105,11 +103,12 @@ public enum PostEditorAction {
         case .save, .saveAsDraft, .update:
             return .save
             // TODO: make a new analytics event(s) for site creation homepage changes
-        case .publish, .schedule, .submitForReview, .continueFromHomepageEditing:
+        case .publish, .schedule, .submitForReview:
             return .publish
         }
     }
 
+    /// - note: deprecated (kahu-offline-mode)
     fileprivate var secondaryPublishAction: PostEditorAction? {
         switch self {
         case .publish:
@@ -131,8 +130,7 @@ public enum PostEditorAction {
             return .editorScheduledPost
         case .publish:
             return .editorPublishedPost
-            // TODO: make a new analytics event(s)
-        case .update, .continueFromHomepageEditing:
+        case .update:
             return .editorUpdatedPost
         case .submitForReview:
             // TODO: When support is added for submit for review, add a new stat to support it
@@ -200,7 +198,8 @@ public class PostEditorStateContext {
                      action: PostEditorAction? = nil) {
         var originalPostStatus: BasePost.Status? = nil
 
-        if let originalPost = post.original, let postStatus = originalPost.status, originalPost.hasRemote() {
+        let originalPost = post.original()
+        if let postStatus = originalPost.status, originalPost.hasRemote() {
             originalPostStatus = postStatus
         }
 
@@ -246,8 +245,37 @@ public class PostEditorStateContext {
     private static func action(
         for originalPostStatus: BasePost.Status?,
         newPostStatus: BasePost.Status,
-        userCanPublish: Bool) -> PostEditorAction {
+        userCanPublish: Bool
+    ) -> PostEditorAction {
+        if FeatureFlag.syncPublishing.enabled {
+            return action(status: originalPostStatus ?? .draft, userCanPublish: userCanPublish)
+        } else {
+            return _action(for: originalPostStatus, newPostStatus: newPostStatus, userCanPublish: userCanPublish)
+        }
+    }
 
+    static func action(
+        status: BasePost.Status,
+        userCanPublish: Bool
+    ) -> PostEditorAction {
+        switch status {
+        case .draft:
+            return userCanPublish ? .publish : .submitForReview
+        case .pending:
+            return userCanPublish ? .publish : .update
+        case .publishPrivate, .publish, .scheduled:
+            return .update
+        case .trash, .deleted:
+            return .update // Should never happen (trashed posts are not be editable)
+        }
+    }
+
+    /// - note: deprecated (kahu-offline-mode)
+    private static func _action(
+        for originalPostStatus: BasePost.Status?,
+        newPostStatus: BasePost.Status,
+        userCanPublish: Bool
+    ) -> PostEditorAction {
         let isNewOrDraft = { (status: BasePost.Status?) -> Bool in
             return status == nil || status == .draft
         }
@@ -354,9 +382,12 @@ public class PostEditorStateContext {
         return action.publishActionAnalyticsStat
     }
 
-    /// Returns whether the secondary publish button should be displayed, or not
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var isSecondaryPublishButtonShown: Bool {
+        guard !FeatureFlag.syncPublishing.enabled else {
+            return false
+        }
+
         guard hasContent else {
             return false
         }
@@ -375,8 +406,7 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction != nil
     }
 
-    /// Returns the secondary publish action
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishButtonAction: PostEditorAction? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -385,8 +415,7 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction
     }
 
-    /// Returns the secondary publish button text
-    ///
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishButtonText: String? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -395,7 +424,7 @@ public class PostEditorStateContext {
         return action.secondaryPublishAction?.publishActionLabel
     }
 
-    /// Returns the WPAnalyticsStat enum to be tracked when this post is published with the secondary action
+    /// - note: deprecated (kahu-offline-mode)
     var secondaryPublishActionAnalyticsStat: WPAnalyticsStat? {
         guard isSecondaryPublishButtonShown else {
             return nil
@@ -407,7 +436,19 @@ public class PostEditorStateContext {
     /// Indicates whether the Publish Action should be allowed, or not
     ///
     private func updatePublishActionAllowed() {
-        publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        if FeatureFlag.syncPublishing.enabled {
+            switch action {
+            case .schedule, .publish, .submitForReview:
+                publishActionAllowed = hasContent
+            case .update:
+                publishActionAllowed = hasContent && hasChanges && !isBeingPublished
+            case .save, .saveAsDraft:
+                assertionFailure("No longer used")
+                break
+            }
+        } else {
+            publishActionAllowed = hasContent && hasChanges && !isBeingPublished && (action.isAsync || !isUploadingMedia)
+        }
     }
 }
 

@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case close
         case more
         case autoSave
-        case continueFromHomepageEditing
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -316,7 +315,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        if !FeatureFlag.syncPublishing.enabled {
+            PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
+        }
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -353,6 +354,8 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        onViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -435,7 +438,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
 
         // Add bottom border line
         let screenScale = UIScreen.main.scale
@@ -447,6 +449,15 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+
+        if FeatureFlag.syncPublishing.enabled {
+            navigationBarManager.moreButton.menu = makeMoreMenu()
+            navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+        }
+    }
+
+    @objc private func buttonMoreTapped() {
+        displayMoreSheet()
     }
 
     private func reloadBlogIconView() {
@@ -478,6 +489,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
 
     func toggleEditingMode() {
@@ -515,6 +527,9 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     }
 
     private func presentNewPageNoticeIfNeeded() {
+        guard !FeatureFlag.syncPublishing.enabled else {
+            return
+        }
         // Validate if the post is a newly created page or not.
         guard post is Page,
             post.isDraft(),
@@ -578,6 +593,7 @@ extension GutenbergViewController {
 
 // MARK: - GutenbergBridgeDelegate
 
+/// - warning: the app can't make any assumption about the thread on which `GutenbergBridgeDelegate` gets invoked. In some scenarios, it gets called from the main thread, for example, if being invoked directly from [Gutenberg.swift](https://github.com/WordPress/gutenberg/blob/64f9d9d1ced7a5aa7f3874890306554c5b703ce6/packages/react-native-bridge/ios/Gutenberg.swift). And sometimes, it gets called on a dispatch queue created by the React Native runtime for a native module (see [React Native: Threading](https://reactnative.dev/docs/native-modules-ios#threading). It happens when the methods are invoked directly from JavaScript.
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         guard let context = post.managedObjectContext else {
@@ -845,7 +861,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch reason {
             case .publish:
                 if editorHasContent(title: title, content: html) {
-                    handlePublishButtonTap()
+                    handlePrimaryActionButtonTap()
                 } else {
                     showAlertForEmptyPostPublish()
                 }
@@ -856,17 +872,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .autoSave:
                 break
-                // Inelegant :(
-            case .continueFromHomepageEditing:
-                continueFromHomepageEditing()
-                break
             }
         }
-    }
-
-    // Not ideal, but seems the least bad of the alternatives
-    @objc func continueFromHomepageEditing() {
-        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {
@@ -1144,14 +1151,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
+        post.managedObjectContext?.performAndWait {
             [
                 post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
                 post.blog.supports(.tenor) ? .tenor : nil,
                 .otherApps,
                 .allFiles,
             ].compactMap { $0 }
-        }
+        } ?? []
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {

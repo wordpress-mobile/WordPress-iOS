@@ -7,17 +7,10 @@ class EditPageViewController: UIViewController {
     fileprivate var postTitle: String?
     fileprivate var content: String?
     fileprivate var hasShownEditor = false
-    fileprivate var isHomePageEditor = false
-    private var homepageEditorCompletion: (() -> Void)?
+    var onClose: (() -> Void)?
 
     convenience init(page: Page) {
         self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
-    }
-
-    convenience init(homepage: Page, completion: @escaping () -> Void) {
-        self.init(page: homepage)
-        isHomePageEditor = true
-        homepageEditorCompletion = completion
     }
 
     convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
@@ -33,8 +26,6 @@ class EditPageViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .overFullScreen
         modalTransitionStyle = .coverVertical
-        restorationIdentifier = RestorationKey.viewController.rawValue
-        restorationClass = EditPageViewController.self
     }
 
     required init?(coder: NSCoder) {
@@ -43,12 +34,9 @@ class EditPageViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
         if  !hasShownEditor {
-            if isHomePageEditor {
-                showHomepageEditor()
-            } else {
-                showEditor()
-            }
+            showEditor()
             hasShownEditor = true
         }
     }
@@ -67,15 +55,6 @@ class EditPageViewController: UIViewController {
             self.page = newPage
             return newPage
         }
-    }
-
-    fileprivate func showHomepageEditor() {
-        let editorFactory = EditorFactory()
-        let gutenbergVC = editorFactory.createHomepageGutenbergVC(with: self.pageToEdit(), loadAutosaveRevision: false, replaceEditor: { [weak self] (editor, replacement) in
-            self?.replaceEditor(editor: editor, replacement: replacement)
-        })
-
-        show(gutenbergVC)
     }
 
     fileprivate func showEditor() {
@@ -98,7 +77,7 @@ class EditPageViewController: UIViewController {
                 // Dismiss self
                 self?.dismiss(animated: false) {
                     // Invoke completion
-                    self?.homepageEditorCompletion?()
+                    self?.onClose?()
                 }
             }
         }
@@ -120,37 +99,4 @@ class EditPageViewController: UIViewController {
         }
     }
 
-}
-
-extension EditPageViewController: UIViewControllerRestoration {
-    enum RestorationKey: String {
-        case viewController = "EditPageViewControllerRestorationID"
-        case page = "EditPageViewControllerPageRestorationID"
-    }
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last, identifier == RestorationKey.viewController.rawValue else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let pageURL = coder.decodeObject(forKey: RestorationKey.page.rawValue) as? URL,
-            let pageID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: pageURL),
-            let page = try? context.existingObject(with: pageID),
-            let reloadedPage = page as? Page
-            else {
-                return nil
-        }
-
-        return EditPageViewController(page: reloadedPage)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-        if let page = self.page {
-            coder.encode(page.objectID.uriRepresentation(), forKey: RestorationKey.page.rawValue)
-        }
-    }
 }

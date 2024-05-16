@@ -1,9 +1,9 @@
 struct ReaderTabItem: FilterTabBarItem, Hashable {
 
-    let id = UUID()
     let shouldHideStreamFilters: Bool
     let shouldHideSettingsButton: Bool
     let shouldHideTagFilter: Bool
+    let shouldHideBlogFilter: Bool
 
     let content: ReaderContent
 
@@ -15,18 +15,14 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
     init(_ content: ReaderContent) {
         self.content = content
         let filterableTopicTypes = [ReaderTopicType.following, .organization]
-        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType) && content.type != .selfHostedFollowing
+        shouldHideStreamFilters = !filterableTopicTypes.contains(content.topicType)
+        && content.type != .selfHostedFollowing
+        && content.type != .tags
         shouldHideSettingsButton = content.type == .selfHostedFollowing
-        shouldHideTagFilter = content.topicType == .organization
+        shouldHideTagFilter = content.topicType == .organization || (content.type != .tags && FeatureFlag.readerTagsFeed.enabled)
+        shouldHideBlogFilter = content.type == .tags
     }
 
-    static func == (lhs: ReaderTabItem, rhs: ReaderTabItem) -> Bool {
-        return lhs.id == rhs.id
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
 }
 
 // MARK: - Localized titles
@@ -47,6 +43,8 @@ extension ReaderTabItem {
             return Titles.followingTitle
         case .saved:
             return Titles.savedTitle
+        case .tags:
+            return Titles.tagsTitle
         default:
             return Titles.emptyTitle
         }
@@ -68,6 +66,11 @@ extension ReaderTabItem {
             value: "Saved",
             comment: "Reader navigation menu item for the Saved filter"
         )
+        static let tagsTitle = NSLocalizedString(
+            "reader.navigation.menu.tags",
+            value: "Your Tags",
+            comment: "Reader navigation menu item for the Tags filter"
+        )
         static let emptyTitle = ""
     }
 }
@@ -77,10 +80,11 @@ enum ReaderContentType {
     case selfHostedFollowing
     case contentError
     case saved
+    case tags
     case topic
 }
 
-struct ReaderContent {
+struct ReaderContent: Hashable {
 
     private(set) var topic: ReaderAbstractTopic?
     let type: ReaderContentType

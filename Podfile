@@ -24,7 +24,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
   pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
+  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -41,15 +41,21 @@ def aztec
 end
 
 def wordpress_ui
-  pod 'WordPressUI', '~> 1.15'
+  pod 'WordPressUI', '~> 1.16'
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', tag: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', branch: ''
   # pod 'WordPressUI', git: 'https://github.com/wordpress-mobile/WordPressUI-iOS', commit: ''
   # pod 'WordPressUI', path: '../WordPressUI-iOS'
 end
 
+def gravatar
+  # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
+  pod 'Gravatar', '1.0.1'
+end
+
 def wordpress_kit
-  pod 'WordPressKit', '~> 14.1'
+  pod 'WordPressKit', '~> 17.1.0'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
@@ -70,7 +76,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'Reachability', '3.2'
+  pod 'Reachability', '~> 3.7'
 
   wordpress_kit
 end
@@ -83,7 +89,11 @@ end
 
 def shared_with_extension_pods
   shared_style_pods
-  pod 'ZIPFoundation', '~> 0.9.8'
+  # The PrivacyInfo in this library is incorrectly copied to the app bundle's root directory.
+  # That conflicts with the our own app's PrivacyInfo. We can update this library once the
+  # issue is resolved.
+  # See https://github.com/weichsel/ZIPFoundation/pull/314
+  pod 'ZIPFoundation', '0.9.16'
   pod 'Down', '~> 0.6.6'
 end
 
@@ -128,6 +138,7 @@ abstract_target 'Apps' do
   wordpress_kit
   wordpress_shared
   kanvas
+  gravatar
 
   # Production
 
@@ -139,7 +150,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.2'
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.8'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -324,7 +335,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer:)
+  gutenberg_post_install(installer: installer)
 
   project_root = File.dirname(__FILE__)
 

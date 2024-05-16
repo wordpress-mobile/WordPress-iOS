@@ -16,10 +16,11 @@ class PostStatsViewModel: Observable {
     private var postURL: URL?
     private weak var postStatsDelegate: PostStatsDelegate?
 
-    private let store = StatsPeriodStore()
+    private let store: StatsPeriodStore
     private var receipt: Receipt?
     private var changeReceipt: Receipt?
     private var postStats: StatsPostDetails?
+    var currentTabIndex: Int = 0
 
     private lazy var calendar: Calendar = {
         var cal = Calendar(identifier: .iso8601)
@@ -49,12 +50,14 @@ class PostStatsViewModel: Observable {
          selectedDate: Date,
          postTitle: String?,
          postURL: URL?,
-         postStatsDelegate: PostStatsDelegate) {
+         postStatsDelegate: PostStatsDelegate,
+         store: StatsPeriodStore) {
         self.selectedDate = selectedDate
         self.postID = postID
         self.postTitle = postTitle
         self.postURL = postURL
         self.postStatsDelegate = postStatsDelegate
+        self.store = store
 
         self.postStats = store.getPostStats(for: postID)
 
@@ -67,15 +70,15 @@ class PostStatsViewModel: Observable {
 
     // MARK: - Table View
 
-    func tableViewModel() -> ImmuTable {
+    func tableViewSnapshot() -> ImmuTableDiffableDataSourceSnapshot {
         if let postId = postID, store.fetchingFailed(for: .postStats(postID: postId)) {
-            return ImmuTable.Empty
+            return ImmuTableDiffableDataSourceSnapshot()
         }
 
         postStats = store.getPostStats(for: postID)
 
         return blocks(for: store.postStatsFetchingStatuses(for: postID)) {
-            var tableRows = [ImmuTableRow]()
+            var tableRows = [any HashableImmutableRow]()
             tableRows.append(titleTableRow())
             tableRows.append(contentsOf: overviewTableRows())
             tableRows.append(contentsOf: yearsTableRows())
@@ -111,15 +114,15 @@ private extension PostStatsViewModel {
 
     // MARK: - Create Table Rows
 
-    func titleTableRow() -> ImmuTableRow {
+    func titleTableRow() -> any HashableImmutableRow {
         return PostStatsTitleRow(postTitle: postTitle ?? StatSection.noPostTitle,
                                  postURL: postURL,
                                  postStatsDelegate: postStatsDelegate)
     }
 
-    func overviewTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
-        tableRows.append(PostStatsEmptyCellHeaderRow())
+    func overviewTableRows() -> [any HashableImmutableRow] {
+        var tableRows = [any HashableImmutableRow]()
+        tableRows.append(PostStatsEmptyCellHeaderRow(statSection: .postStatsGraph))
 
         let lastTwoWeeks = postStats?.lastTwoWeeks ?? []
         let dayData = dayDataFrom(lastTwoWeeks)
@@ -139,14 +142,14 @@ private extension PostStatsViewModel {
             $0.date == selectedDateComponents
         })
 
-        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight)
+        let row = OverviewRow(tabsData: [overviewData], chartData: [chart], chartStyling: [chart.barChartStyling], period: nil, statsBarChartViewDelegate: statsBarChartViewDelegate, chartHighlightIndex: indexToHighlight, tabIndex: currentTabIndex)
         tableRows.append(row)
 
         return tableRows
     }
 
-    func yearsTableRows(forAverages: Bool = false) -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func yearsTableRows(forAverages: Bool = false) -> [any HashableImmutableRow] {
+        var tableRows = [any HashableImmutableRow]()
 
         let statSection = forAverages ? StatSection.postStatsAverageViews :
                                         StatSection.postStatsMonthsYears
@@ -160,7 +163,8 @@ private extension PostStatsViewModel {
                                                dataSubtitle: dataSubtitle,
                                                dataRows: yearsDataRows(forAverages: forAverages),
                                                limitRowsDisplayed: true,
-                                               postStatsDelegate: postStatsDelegate))
+                                               postStatsDelegate: postStatsDelegate,
+                                               statSection: statSection))
 
         return tableRows
     }
@@ -199,15 +203,17 @@ private extension PostStatsViewModel {
         return yearRows
     }
 
-    func recentWeeksTableRows() -> [ImmuTableRow] {
-        var tableRows = [ImmuTableRow]()
+    func recentWeeksTableRows() -> [any HashableImmutableRow] {
+        var tableRows = [any HashableImmutableRow]()
 
-        tableRows.append(CellHeaderRow(statSection: StatSection.postStatsRecentWeeks))
+        let statSection = StatSection.postStatsRecentWeeks
+        tableRows.append(CellHeaderRow(statSection: statSection))
         tableRows.append(TopTotalsPostStatsRow(itemSubtitle: StatSection.postStatsRecentWeeks.itemSubtitle,
                                                dataSubtitle: StatSection.postStatsRecentWeeks.dataSubtitle,
                                                dataRows: recentWeeksDataRows(),
                                                limitRowsDisplayed: false,
-                                               postStatsDelegate: postStatsDelegate))
+                                               postStatsDelegate: postStatsDelegate,
+                                               statSection: statSection))
 
         return tableRows
     }
@@ -289,15 +295,12 @@ private extension PostStatsViewModel {
         return (currentCount, difference, roundedPercentage)
     }
 
-    func blocks(for state: StoreFetchingStatus, block: () -> [ImmuTableRow]) -> ImmuTable {
+    func blocks(for state: StoreFetchingStatus, block: () -> [any HashableImmutableRow]) -> ImmuTableDiffableDataSourceSnapshot {
         if postStats != nil {
-            return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: block())
-            ])
+            return .singleSectionSnapshot(block())
         }
 
-        var rows = [ImmuTableRow]()
+        var rows = [any HashableImmutableRow]()
         let sections: [StatSection] = [.postStatsMonthsYears,
                                        .postStatsAverageViews,
                                        .postStatsRecentWeeks]
@@ -311,15 +314,12 @@ private extension PostStatsViewModel {
             rows.append(StatsGhostChartImmutableRow())
             sections.forEach {
                 rows.append(CellHeaderRow(statSection: $0))
-                rows.append(StatsGhostTopImmutableRow())
+                rows.append(StatsGhostTopImmutableRow(statSection: $0))
             }
         case .error:
-            return ImmuTable.Empty
+            return ImmuTableDiffableDataSourceSnapshot()
         }
 
-        return ImmuTable(sections: [
-            ImmuTableSection(
-                rows: rows)
-            ])
+        return .singleSectionSnapshot(rows)
     }
 }

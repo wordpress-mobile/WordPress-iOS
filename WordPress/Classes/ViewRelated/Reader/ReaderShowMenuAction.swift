@@ -14,7 +14,8 @@ final class ReaderShowMenuAction {
                  anchor: PopoverAnchor,
                  vc: UIViewController,
                  source: ReaderPostMenuSource,
-                 followCommentsService: FollowCommentsService
+                 followCommentsService: FollowCommentsService,
+                 showAdditionalItems: Bool = false
     ) {
 
         // Create the action sheet
@@ -22,7 +23,7 @@ final class ReaderShowMenuAction {
         alertController.addCancelActionWithTitle(ReaderPostMenuButtonTitles.cancel, handler: nil)
 
         // Block site button
-        if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) {
+        if shouldShowBlockSiteMenuItem(readerTopic: readerTopic, post: post) || showAdditionalItems {
             let handler: (UIAlertAction) -> Void = { action in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
                     return
@@ -43,7 +44,7 @@ final class ReaderShowMenuAction {
         }
 
         // Block user button
-        if shouldShowBlockUserMenuItem(topic: readerTopic, post: post) {
+        if shouldShowBlockUserMenuItem(topic: readerTopic, post: post) || showAdditionalItems {
             let handler: (UIAlertAction) -> Void = { _ in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
                     return
@@ -68,7 +69,7 @@ final class ReaderShowMenuAction {
         }
 
         // Report post button
-        if shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post) {
+        if shouldShowReportPostMenuItem(readerTopic: readerTopic, post: post) || showAdditionalItems {
             alertController.addActionWithTitle(ReaderPostMenuButtonTitles.reportPost,
                                                style: .destructive,
                                                handler: { (action: UIAlertAction) in
@@ -79,7 +80,7 @@ final class ReaderShowMenuAction {
         }
 
         // Report user button
-        if shouldShowReportUserMenuItem(readerTopic: readerTopic, post: post) {
+        if shouldShowReportUserMenuItem(readerTopic: readerTopic, post: post) || showAdditionalItems {
             let handler: (UIAlertAction) -> Void = { _ in
                 guard let post: ReaderPost = ReaderActionHelpers.existingObject(for: post.objectID, in: context) else {
                     return

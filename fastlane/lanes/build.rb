@@ -88,7 +88,7 @@ platform :ios do
 
     UI.user_error!("Unable to find .xctestrun file at #{build_products_path}.") if xctestrun_path.nil? || !File.exist?(xctestrun_path)
 
-    inject_buildkite_analytics_environment(xctestrun_path:) if buildkite_ci?
+    inject_buildkite_analytics_environment(xctestrun_path: xctestrun_path) if buildkite_ci?
     # Our current configuration allows for either running the Jetpack UI tests or the WordPress unit tests.
     #
     # Their scheme and xctestrun name pairing are:
@@ -105,7 +105,7 @@ platform :ios do
 
     run_tests(
       workspace: WORKSPACE_PATH,
-      scheme:,
+      scheme: scheme,
       device: options[:device],
       deployment_target_version: options[:ios_version],
       ensure_devices_found: true,
@@ -187,7 +187,7 @@ platform :ios do
     version = options[:beta_release] ? build_code : release_version
     release_url = create_release(
       repository: GITHUB_REPO,
-      version:,
+      version: version,
       release_notes_file_path: WORDPRESS_RELEASE_NOTES_PATH,
       release_assets: archive_zip_path.to_s,
       prerelease: options[:beta_release]
@@ -239,7 +239,7 @@ platform :ios do
 
     upload_gutenberg_sourcemaps(
       sentry_project_slug: SENTRY_PROJECT_SLUG_JETPACK,
-      release_version:,
+      release_version: release_version,
       build_version: build_code,
       app_identifier: JETPACK_BUNDLE_IDENTIFIER
     )
@@ -248,62 +248,6 @@ platform :ios do
       message: <<~MSG
         :jetpack: :applelogo: Jetpack iOS `#{release_version} (#{build_code})` is available for testing.
       MSG
-    )
-  end
-
-  # Builds the "WordPress Internal" app and uploads it to App Center
-  #
-  # @option [Boolean] skip_confirm (default: false) If true, avoids any interactive prompt
-  # @option [Boolean] skip_prechecks (default: false) If true, don't run the ios_build_prechecks and ios_build_preflight
-  #
-  # @called_by CI
-  #
-  desc 'Builds and uploads for distribution to App Center'
-  lane :build_and_upload_app_center do |options|
-    unless options[:skip_prechecks]
-      ensure_git_status_clean unless is_ci
-      ios_build_preflight
-    end
-
-    UI.important("Building internal version #{release_version_current_internal} (#{build_code_current_internal}) and uploading to App Center")
-    UI.user_error!('Aborted by user request') unless options[:skip_confirm] || UI.confirm('Do you want to continue?')
-
-    sentry_check_cli_installed
-
-    internal_code_signing
-
-    gym(
-      scheme: 'WordPress Internal',
-      workspace: WORKSPACE_PATH,
-      clean: true,
-      output_directory: BUILD_PRODUCTS_PATH,
-      output_name: 'WordPress Internal',
-      derived_data_path: DERIVED_DATA_PATH,
-      export_team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-      export_method: 'enterprise',
-      export_options: { **COMMON_EXPORT_OPTIONS, method: 'enterprise' }
-    )
-
-    upload_build_to_app_center(
-      name: 'WP-Internal',
-      file: lane_context[SharedValues::IPA_OUTPUT_PATH],
-      dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes: File.read(WORDPRESS_RELEASE_NOTES_PATH),
-      distribute_to_everyone: true
-    )
-
-    sentry_upload_dsym(
-      auth_token: get_required_env('SENTRY_AUTH_TOKEN'),
-      org_slug: SENTRY_ORG_SLUG,
-      project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH]
-    )
-
-    upload_gutenberg_sourcemaps(
-      sentry_project_slug: SENTRY_PROJECT_SLUG_WORDPRESS,
-      release_version: release_version_current_internal,
-      build_version: build_code_current_internal,
-      app_identifier: 'org.wordpress.internal'
     )
   end
 
@@ -390,9 +334,9 @@ platform :ios do
 
     # Build
     gym(
-      scheme:,
+      scheme: scheme,
       workspace: WORKSPACE_PATH,
-      configuration:,
+      configuration: configuration,
       clean: true,
       output_directory: BUILD_PRODUCTS_PATH,
       output_name: output_app_name,
@@ -415,7 +359,7 @@ platform :ios do
       name: appcenter_app_name,
       file: lane_context[SharedValues::IPA_OUTPUT_PATH],
       dsym: lane_context[SharedValues::DSYM_OUTPUT_PATH],
-      release_notes:,
+      release_notes: release_notes,
       distribute_to_everyone: false
     )
 
@@ -428,16 +372,16 @@ platform :ios do
     )
 
     upload_gutenberg_sourcemaps(
-      sentry_project_slug:,
+      sentry_project_slug: sentry_project_slug,
       release_version: release_version_current,
       build_version: build_number,
-      app_identifier:
+      app_identifier: app_identifier
     )
 
     # Post PR Comment
     comment_body = prototype_build_details_comment(
       app_display_name: output_app_name,
-      app_icon:,
+      app_icon: app_icon,
       app_center_org_name: APPCENTER_OWNER_NAME,
       metadata: { Configuration: configuration },
       fold: true
@@ -490,8 +434,12 @@ platform :ios do
       changelog: File.read(whats_new_path),
       distribute_external: true,
       groups: distribution_groups,
-      # If there is a build waiting for beta review, we want to reject that so the new build can be submitted instead
-      reject_build_waiting_for_review: true
+      # If there is a build waiting for beta review, we ~~want~~ would like to to reject that so the new build can be submitted instead.
+      # Unfortunately, this is not (no longer?) possible via the ASC API.
+      # See https://github.com/fastlane/fastlane/issues/18408
+      #
+      # As a quick workaround to avoid CI failures, let's explicitly disable rejecting builds waiting for review.
+      reject_build_waiting_for_review: false
     )
   end
 
@@ -505,8 +453,8 @@ platform :ios do
       username: 'WordPress Release Bot',
       icon_url: 'https://s.w.org/style/images/about/WordPress-logotype-wmark.png',
       slack_url: get_required_env('SLACK_WEBHOOK'),
-      channel:,
-      message:,
+      channel: channel,
+      message: message,
       default_payloads: []
     )
   end
@@ -523,9 +471,9 @@ platform :ios do
       owner_name: APPCENTER_OWNER_NAME,
       owner_type: APPCENTER_OWNER_TYPE,
       app_name: name,
-      file:,
-      dsym:,
-      release_notes:,
+      file: file,
+      dsym: dsym,
+      release_notes: release_notes,
       destinations: distribute_to_everyone ? '*' : 'Collaborators',
       notify_testers: false
     )
@@ -550,7 +498,7 @@ platform :ios do
       version: release_version,
       dist: build_version,
       build: build_version,
-      app_identifier:,
+      app_identifier: app_identifier,
       # When the React native bundle is generated, the source map file references
       # include the local machine path, with the `rewrite` and `strip_common_prefix`
       # options Sentry automatically strips this part.

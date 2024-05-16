@@ -11,10 +11,9 @@ static CGFloat const CommentsActivityFooterHeight               = 50.0;
 static NSInteger const CommentsRefreshRowPadding                = 4;
 static NSInteger const CommentsFetchBatchSize                   = 10;
 
-static NSString *RestorableBlogIdKey = @"restorableBlogIdKey";
 static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 
-@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, UIViewControllerRestoration, NoResultsViewControllerDelegate, CommentDetailsDelegate>
+@interface CommentsViewController () <WPTableViewHandlerDelegate, WPContentSyncHelperDelegate, NoResultsViewControllerDelegate, CommentDetailsDelegate>
 @property (nonatomic, strong) WPTableViewHandler        *tableViewHandler;
 @property (nonatomic, strong) WPContentSyncHelper       *syncHelper;
 @property (nonatomic, strong) NoResultsViewController   *noResultsViewController;
@@ -49,7 +48,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"CommentsList" bundle:nil];
     CommentsViewController *controller = [storyboard instantiateInitialViewController];
     controller.blog = blog;
-    controller.restorationClass = [controller class];
     return controller;
 }
 
@@ -749,43 +747,6 @@ static NSString *RestorableFilterIndexKey = @"restorableFilterIndexKey";
 - (void)nextCommentSelected
 {
     [self showNextComment];
-}
-
-#pragma mark - State Restoration
-
-+ (UIViewController *)viewControllerWithRestorationIdentifierPath:(NSArray *)identifierComponents coder:(NSCoder *)coder
-{
-    NSString *blogID = [coder decodeObjectForKey:RestorableBlogIdKey];
-    if (!blogID) {
-        return nil;
-    }
-    
-    NSManagedObjectContext *context = [[ContextManager sharedInstance] mainContext];
-    NSManagedObjectID *objectID = [context.persistentStoreCoordinator managedObjectIDForURIRepresentation:[NSURL URLWithString:blogID]];
-    if (!objectID) {
-        return nil;
-    }
-    
-    NSError *error = nil;
-    Blog *blog = (Blog *)[context existingObjectWithID:objectID error:&error];
-    if (error || !blog) {
-        return nil;
-    }
-
-    return [CommentsViewController controllerWithBlog:blog];
-}
-
-- (void)encodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [coder encodeObject:[[self.blog.objectID URIRepresentation] absoluteString] forKey:RestorableBlogIdKey];
-    [coder encodeInteger:[self getSelectedIndex:self.filterTabBar] forKey:RestorableFilterIndexKey];
-    [super encodeRestorableStateWithCoder:coder];
-}
-
-- (void)decodeRestorableStateWithCoder:(NSCoder *)coder
-{
-    [self setSeletedIndex:[coder decodeIntegerForKey:RestorableFilterIndexKey] filterTabBar:self.filterTabBar];
-    [super decodeRestorableStateWithCoder:coder];
 }
 
 #pragma mark - User Defaults

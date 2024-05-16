@@ -54,11 +54,20 @@ extension UINavigationController {
 
 extension UIViewController {
     func configureDefaultNavigationBarAppearance() {
+        var textAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: UIColor.appBarText]
+        let largeTitleTextAttributes: [NSAttributedString.Key: Any] = [.font: WPStyleGuide.navigationBarLargeFont]
+
+        textAttributes[.font] = WPStyleGuide.navigationBarStandardFont
+
         let standardAppearance = UINavigationBarAppearance()
         standardAppearance.configureWithDefaultBackground()
+        standardAppearance.titleTextAttributes = textAttributes
+        standardAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
         let scrollEdgeAppearance = UINavigationBarAppearance()
         scrollEdgeAppearance.configureWithTransparentBackground()
+        scrollEdgeAppearance.titleTextAttributes = textAttributes
+        scrollEdgeAppearance.largeTitleTextAttributes = largeTitleTextAttributes
 
         navigationItem.standardAppearance = standardAppearance
         navigationItem.compactAppearance = standardAppearance

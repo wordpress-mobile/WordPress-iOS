@@ -22,7 +22,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version: release_version),
+      branch: compute_release_branch_name(options: options, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'complete-code-freeze.yml'),
       message: "Complete Code Freeze for #{release_version}",
       environment: { RELEASE_VERSION: release_version }
@@ -38,7 +38,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version: release_version),
+      branch: compute_release_branch_name(options: options, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'new-beta-release.yml'),
       message: "New Beta Release for #{release_version}",
       environment: { RELEASE_VERSION: release_version }
@@ -69,7 +69,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version: release_version),
+      branch: compute_release_branch_name(options: options, version: release_version),
       pipeline_file: File.join(PIPELINES_ROOT, 'finalize-release.yml'),
       message: "Finalize Release #{release_version}",
       environment: { RELEASE_VERSION: release_version }
@@ -82,7 +82,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version:),
+      branch: compute_release_branch_name(options: options, version: version),
       pipeline_file: File.join(PIPELINES_ROOT, 'new-hotfix.yml'),
       message: "Set up new hotfix version #{version}",
       environment: { VERSION: version }
@@ -95,7 +95,7 @@ platform :ios do
     buildkite_trigger_build(
       buildkite_organization: BUILDKITE_ORGANIZATION,
       buildkite_pipeline: BUILDKITE_PIPELINE,
-      branch: compute_release_branch_name(options:, version:),
+      branch: compute_release_branch_name(options: options, version: version),
       pipeline_file: File.join(PIPELINES_ROOT, 'finalize-hotfix.yml'),
       message: "Finalize hotfix version #{version}",
       environment: { VERSION: version }

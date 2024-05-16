@@ -22,6 +22,7 @@ enum AbstractPostButton: Equatable {
     case duplicate
     case moveToDraft
     case trash
+    case delete
     case cancelAutoUpload
     case share
     case blaze
@@ -30,7 +31,6 @@ enum AbstractPostButton: Equatable {
 
     /// Specific to pages
     case pageAttributes
-    case setParent
     case setHomepage
     case setPostsPage
     case setRegularPage

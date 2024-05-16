@@ -114,8 +114,12 @@ final class MediaImageService {
 
     // MARK: - Media (Thumbnails)
 
+    static func isThubmnailSupported(for mediaType: MediaType) -> Bool {
+        mediaType == .image || mediaType == .video
+    }
+
     private func thumbnail(for media: SafeMedia, size: ImageSize) async throws -> UIImage {
-        guard media.mediaType == .image || media.mediaType == .video else {
+        guard MediaImageService.isThubmnailSupported(for: media.mediaType) else {
             assertionFailure("Unsupported thubmnail media type: \(media.mediaType)")
             throw Error.unsupportedMediaType(media.mediaType)
         }
@@ -436,33 +440,45 @@ private final class SafeMedia {
             guard let remoteURL = remoteURL.flatMap(URL.init) else {
                 return nil
             }
-            // Download a non-retina version for GIFs: makes a massive difference
-            // in terms of size. Example: 2.4 MB -> 350 KB.
-            let scale = UIScreen.main.scale
-            var targetSize = targetSize
-            if remoteURL.isGif {
-                targetSize = targetSize
-                    .scaled(by: 1.0 / scale)
-                    .scaled(by: min(2, scale))
-            }
-            if !blog.isEligibleForPhoton {
-                return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: remoteURL)
-            } else {
-                let targetSize = targetSize.scaled(by: 1.0 / UIScreen.main.scale)
-                return PhotonImageURLHelper.photonURL(with: targetSize, forImageURL: remoteURL)
-            }
+            return MediaImageService.getResizedImageURL(for: remoteURL, blog: blog, size: targetSize)
         default:
             return remoteThumbnailURL.flatMap(URL.init)
         }
     }
 }
 
-private extension Blog {
-    var isEligibleForPhoton: Bool {
-        !(isPrivateAtWPCom() || (!isHostedAtWPcom && isBasicAuthCredentialStored()))
+extension MediaImageService {
+    /// Returns the thumbnail remote URL with a given target size. It uses
+    /// Image CDN (formerly Photon) if available.
+    ///
+    /// - parameters:
+    ///   - blog: The blog that hosts the image.
+    ///   - size: Target size in pixels.
+    static func getResizedImageURL(for imageURL: URL, blog: Blog, size: CGSize) -> URL {
+        let scale = UIScreen.main.scale
+        var targetSize = size
+        // Download a non-retina version for GIFs: makes a massive difference
+        // in terms of size. Example: 2.4 MB -> 350 KB.
+        if imageURL.isGif {
+            targetSize = targetSize
+                .scaled(by: 1.0 / scale)
+                .scaled(by: min(2, scale))
+        }
+        if !blog.isEligibleForPhoton {
+            return WPImageURLHelper.imageURLWithSize(targetSize, forImageURL: imageURL)
+        } else {
+            let targetSize = targetSize.scaled(by: 1.0 / UIScreen.main.scale)
+            return PhotonImageURLHelper.photonURL(with: targetSize, forImageURL: imageURL)
+        }
     }
 }
 
 private func makeCacheKey(for mediaID: TaggedManagedObjectID<Media>, size: MediaImageService.ImageSize) -> String {
     "\(mediaID.objectID)-\(size.rawValue)"
+}
+
+private extension Blog {
+    var isEligibleForPhoton: Bool {
+        !(isPrivateAtWPCom() || (!isHostedAtWPcom && isBasicAuthCredentialStored()))
+    }
 }

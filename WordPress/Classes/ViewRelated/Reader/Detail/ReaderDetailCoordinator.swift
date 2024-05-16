@@ -665,6 +665,15 @@ class ReaderDetailCoordinator {
             }
         }
 
+        // Additional properties for Reading Preferences
+        if ReaderDisplaySetting.customizationEnabled {
+            let setting = ReaderDisplaySettingStore().setting
+            properties[DetailAnalyticsConstants.ReadingPreferences.isDefaultKey] = setting.isDefaultSetting
+            properties[DetailAnalyticsConstants.ReadingPreferences.colorSchemeKey] = setting.color.valueForTracks
+            properties[DetailAnalyticsConstants.ReadingPreferences.fontTypeKey] = setting.font.valueForTracks
+            properties[DetailAnalyticsConstants.ReadingPreferences.fontSizeKey] = setting.size.valueForTracks
+        }
+
         // Track open
         WPAppAnalytics.track(.readerArticleOpened, withProperties: properties)
 
@@ -692,6 +701,13 @@ class ReaderDetailCoordinator {
         static let TypePreviewSite = "preview_site"
         static let OfflineKey = "offline_view"
         static let PixelStatReferrer = "https://wordpress.com/"
+
+        struct ReadingPreferences {
+            static let isDefaultKey = "reading_preferences_is_default"
+            static let colorSchemeKey = "reading_preferences_color_scheme"
+            static let fontTypeKey = "reading_preferences_font"
+            static let fontSizeKey = "reading_preferences_font_size"
+        }
     }
 }
 
@@ -759,35 +775,6 @@ extension ReaderDetailCoordinator: ReaderDetailToolbarDelegate {
         }
 
         self.view?.updateSelfLike(with: isLiked ? userAvatarURL : nil)
-    }
-}
-
-// MARK: - State Restoration
-
-extension ReaderDetailCoordinator {
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObject(forKey: restorablePostObjectURLKey) as? String else {
-            return nil
-        }
-
-        let context = ContextManager.sharedInstance().mainContext
-        guard let url = URL(string: path),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: url) else {
-            return nil
-        }
-
-        guard let post = (try? context.existingObject(with: objectID)) as? ReaderPost else {
-            return nil
-        }
-
-        return ReaderDetailViewController.controllerWithPost(post)
-    }
-
-    func encodeRestorableState(with coder: NSCoder) {
-        if let post = post {
-            coder.encode(post.objectID.uriRepresentation().absoluteString, forKey: type(of: self).restorablePostObjectURLKey)
-        }
     }
 }
 

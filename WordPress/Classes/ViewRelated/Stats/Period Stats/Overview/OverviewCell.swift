@@ -56,11 +56,16 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
     }
 
     var differenceLabel: String {
-        let stringFormat = NSLocalizedString("%@%@ (%@%%)", comment: "Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%)")
+        let stringFormat = NSLocalizedString(
+            "stats.overview.differenceLabelWithNumber",
+            value: "%1$@%2$@ (%3$@)",
+            comment: "Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value."
+        )
+
         return String.localizedStringWithFormat(stringFormat,
                                                 difference < 0 ? "" : "+",
                                                 difference.abbreviatedString(),
-                                                differencePercent.abbreviatedString())
+                                                differencePercent.percentageString())
     }
 
     var differenceTextColor: UIColor {
@@ -87,6 +92,15 @@ struct OverviewTabData: FilterTabBarItem, Hashable {
 
     var accessibilityValue: String? {
         return tabDataStub != nil ? "" : "\(tabData)"
+    }
+
+    // MARK: - Equatable
+
+    static func == (lhs: OverviewTabData, rhs: OverviewTabData) -> Bool {
+        return lhs.tabTitle == rhs.tabTitle &&
+            lhs.tabData == rhs.tabData &&
+            lhs.difference == rhs.difference &&
+            lhs.differencePercent == rhs.differencePercent
     }
 }
 
@@ -126,7 +140,8 @@ class OverviewCell: UITableViewCell, NibLoadable {
                    barChartStyling: [BarChartStyling] = [],
                    period: StatsPeriodUnit? = nil,
                    statsBarChartViewDelegate: StatsBarChartViewDelegate? = nil,
-                   barChartHighlightIndex: Int? = nil) {
+                   barChartHighlightIndex: Int? = nil,
+                   tabIndex: Int) {
         self.tabsData = tabsData
         self.chartData = barChartData
         self.chartStyling = barChartStyling
@@ -134,9 +149,9 @@ class OverviewCell: UITableViewCell, NibLoadable {
         self.chartHighlightIndex = barChartHighlightIndex
         self.period = period
 
+        setupFilterBar(selectedIndex: tabIndex)
         configureLabelsStackView()
         configureChartView()
-        setupFilterBar()
         updateLabels()
     }
 
@@ -154,7 +169,7 @@ private extension OverviewCell {
         Style.configureViewAsSeparator(bottomSeparatorLine)
     }
 
-    func setupFilterBar() {
+    func setupFilterBar(selectedIndex: Int) {
 
         // If there is only one tab data, this is being displayed on the
         // Post Stats view, which does not have a filterTabBar.
@@ -175,6 +190,7 @@ private extension OverviewCell {
         filterTabBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
         filterTabBar.dividerColor = .clear
+        filterTabBar.setSelectedIndex(selectedIndex, animated: false)
     }
 
     @objc func selectedFilterDidChange(_ filterBar: FilterTabBar) {
@@ -184,6 +200,7 @@ private extension OverviewCell {
 
         configureChartView()
         updateLabels()
+        statsBarChartViewDelegate?.statsBarChartTabSelected(filterTabBar.selectedIndex)
     }
 
     func updateLabels() {

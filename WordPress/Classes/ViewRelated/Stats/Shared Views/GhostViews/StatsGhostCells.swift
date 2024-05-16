@@ -6,6 +6,20 @@ class StatsGhostBaseCell: StatsBaseCell {
     override func awakeFromNib() {
         super.awakeFromNib()
 
+        commonInit()
+    }
+
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        commonInit()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+    }
+
+    private func commonInit() {
         headingLabel.isGhostableDisabled = true
         Style.configureCell(self)
     }
@@ -24,7 +38,6 @@ class StatsGhostBaseCell: StatsBaseCell {
 
 class StatsGhostGrowAudienceCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTwoColumnCell: StatsGhostBaseCell, NibLoadable { }
-class StatsGhostTopCell: StatsGhostBaseCell, NibLoadable { }
 class StatsGhostTopHeaderCell: StatsGhostBaseCell, NibLoadable {
     override func awakeFromNib() {
         super.awakeFromNib()

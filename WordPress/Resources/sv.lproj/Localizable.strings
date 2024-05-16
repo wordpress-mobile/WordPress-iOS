@@ -1,6 +1,6 @@
-/* Translation-Revision-Date: 2024-03-20 11:54:09+0000 */
+/* Translation-Revision-Date: 2024-05-14 05:30:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
-/* Generator: GlotPress/4.0.0 */
+/* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
 
 /* Message to ask the user to send us an email to clear their content. */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ anslöts igen.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@ %%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d inlägg.";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Är du säker på att du vill slänga detta inlägg?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Är du säker på att du vill uppdatera startsidan?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Är du säker på att du vill uppdatera?";
 
@@ -1120,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogginlägg";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-postföljare för bloggen";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Bloggens följare";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Bloggens användare";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Bloggens tittare";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloggande";
 
@@ -1229,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1268,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1529,6 +1509,9 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title of a button. */
 "Clear search history" = "Rensa sökhistorik";
 
+/* No comment provided by engineer. */
+"Clear selected color" = "Rensa vald färg";
+
 /* Label for size of media while it's being cleared. */
 "Clearing..." = "Rensar …";
 
@@ -1636,7 +1619,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1801,7 +1783,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1977,8 +1958,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Skapa sida";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Skapa inlägg";
 
 /* Button to progress to the next step
@@ -2114,9 +2094,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Anpassa meddelandet du vill dela.\nOm du inte lägger in egen text här kommer inläggets rubrik att användas som meddelandetext.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Anpassa inställningarna för nya inlägg och kommentarer på de webbplatser du följer";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Anpassa din webbplats inställningar för Gillar, Kommentarer, Följare och mer";
 
@@ -2144,9 +2121,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Datumintervall";
-
-/* Date and Time */
-"Date and Time" = "Datum och tid";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2296,9 +2270,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Upptäck";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Upptäck och följ bloggar du gillar";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Hitta och följ webbplatser som inspirerar dig.";
 
@@ -2351,9 +2322,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2593,9 +2562,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-postadress";
 
-/* Blog Email Followers */
-"Email Followers" = "E-postföljare";
-
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2792,9 +2758,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Ett fel uppstod\nvid laddning";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Fel inträffade\nnär inlägg skulle sparas";
 
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Fel inträffade när inlägget skulle publiceras";
@@ -3003,9 +2966,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Hitta adressen till din webbplats";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Letar efter bloggar och historier du kommer att gilla …";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3029,8 +2989,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Åtgärdar hot";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Följ";
 
 /* Button title. Follow the comments on a post. */
@@ -3045,36 +3004,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Följ ämnen som intresserar dig, så hittar vi olika bloggar du kanske gillar.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Följ dina favoritwebbplatser och hitta nya bloggar att läsa.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Webbplatser som du följer";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Följare";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Följare";
-
-/* User is following the blog. */
-"Following" = "Följer";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Följer nya ämnen …";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Du följer denna konversation";
-
-/* Filters Follows Notifications */
-"Follows" = "Följer";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Följer bloggen.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Typsnittsstorlek";
@@ -3187,9 +3127,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Skaffa support";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Sätt bollen i rullning och få fler läsare av ditt inlägg genom att dela ditt inlägg.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Lär känna Jetpack-appen";
@@ -3347,9 +3284,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Hjälpikon";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Så här har ditt inlägg lyckats hittills.";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Dold";
 
@@ -3370,8 +3304,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Dölj sökrubrik";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historik";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3677,9 +3610,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Du verkar ha skrivit fel lösenord. Vill du försöka en gång till?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Det är %1$@ sedan %2$@ publicerades.";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Det är dags att blogga på %@!";
 
@@ -3900,7 +3830,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Gillamarkeringar";
@@ -3952,7 +3881,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Länken har lagts in";
 
 /* No comment provided by engineer. */
-"Link text" = "Länktext";
+"Link label" = "Länketikett";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Länk till befintligt innehåll";
@@ -4004,9 +3933,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Laddar in kommentarer …";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Laddar in historik …";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Laddar in meny …";
 
@@ -4027,7 +3953,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Laddar in …";
 
@@ -4591,11 +4516,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Inga åtgärdade hot";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Inga följare än";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Ingen historik än";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5048,9 +4969,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Överordnad kategori";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Överordnad sida uppdaterades.";
-
 /* Parenting site intent topic */
 "Parenting" = "Föräldraskap";
 
@@ -5295,8 +5213,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Inläggskategorier";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Inläggsformat";
 
 /* Name of the button to open the post settings
@@ -5490,8 +5407,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publicera";
 
 /* Label for the publish date button. */
@@ -5513,12 +5429,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicerat";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Har just publicerat på";
-
-/* Published on [date] */
-"Published on" = "Publicerad den";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publicerar sida …";
@@ -5715,8 +5625,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "När du tar bort återstående steg döljer detta alla rundvisningar på denna webbplats Åtgärden kan inte ångras.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Borttagning av följare gör att de slutar ta emot uppdateringar från din webbplats. Om de vill, kan de fortfarande besöka din webbplats och följa den igen.";
 
 /* No comment provided by engineer. */
@@ -5998,12 +5907,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Schemalagd";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Schemalägg till";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Schemalagt för %@ den";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Schemalägger …";
 
@@ -6124,9 +6027,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Välj en färg ovan";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Välj några för att fortsätta";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Välj en layout";
 
@@ -6236,9 +6136,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Tjänst";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Ange överordnad";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Ställ in som utvald bild";
 
@@ -6282,7 +6179,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Kunde inte uppdatera inställningarna";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6292,9 +6188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Dela Jetpack med en vän";
-
-/* Label for action to share post. */
-"Share Post" = "Dela inlägg";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Dela WordPress med en vän";
@@ -6415,9 +6308,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registrera dig med hjälp av e-postadress";
 
-/* Label for time period in list of followers. */
-"Since" = "Sedan";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Eftersom du använder ett gratispaket kommer du endast att se begränsade händelser i din aktivitetslogg.";
 
@@ -6472,9 +6362,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Webbplats borttagen";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Webbplatsföljare";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Webbplatsen hittades inte";
 
@@ -6510,10 +6397,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Hittills finns det inga ignorerade hot på din webbplats.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sociala nät";
 
 /* Title of a Quick Start Tour */
@@ -7437,21 +7322,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Kommentarer totalt";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Antal e-postföljare: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Totalt antal följare";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Gillamarkeringar totalt";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Totalt antal inlägg";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Antal följare på WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Ord totalt";
@@ -7700,9 +7576,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Sluta följ konversation";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Sluta följ bloggen.";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "Avgruppera block";
@@ -7966,9 +7839,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Visa alla";
 
-/* Button label for viewing a post */
-"View Post" = "Se inlägget";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Visa webbplats";
 
@@ -7981,10 +7851,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Visa färre …";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Visa mer";
@@ -8005,7 +7873,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8425,9 +8292,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "När en kommentar innehåller något av dessa ord i innehåll, namn, URL, e-postadress eller IP markeras den som skräp. Du kan ange delar av ord, så \"press\" kommer att matcha \"Wordpress\".";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "När du ändrar något i redigeraren kommer du att kunna se historiken här";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "När du ändrar saker på din webbplats kommer du att kunna se din åtgärdshistorik här.";
 
@@ -8707,9 +8571,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Du har inte publicerat några inlägg än";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Du har inte publicerat några inlägg än. När du väl börjar publicera kommer dina senaste inlägg att visas här.";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Ett nytt steg på vägen 🚀";
 
@@ -8920,6 +8781,18 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ljudfil";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Avbryt";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Du har ej sparade ändringar i det här inlägget som har gjorts med en annan enhet. Redigerade: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Autosparning tillgänglig";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Visa ändringar";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Bilden kunde inte laddas. Välj en annan bild eller försök senare.";
@@ -9458,9 +9331,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "följ";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Få en gratis domän det första året, ta bort annonser från din webbplats och utöka ditt lagringsutrymme.";
 
@@ -9506,8 +9376,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Avfärda";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Hitta bloggar du vill följa";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Upptäck bloggar att prenumerera";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Gör det igen";
@@ -9517,9 +9387,6 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Du följer även andra bloggar";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Skapa förbindelser med andra bloggare genom att följa bloggar och gilla och kommentera deras inlägg.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Aktivera delning av inlägg";
@@ -9596,8 +9463,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "För att lägga till bilder eller videoklipp i dina inlägg.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -9711,7 +9578,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Byt till Jetpack-appen för att hitta, följa och gilla alla dina favoritwebbplatser och inlägg med läsare.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Följ vilken webbplats som helst med Jetpack-appen";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Följ på vilken webbplats som helst med Jetpack-appen";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack visar statistik, aviseringar med mera för att hjälpa dig bygga dina drömmars WordPress-webbplats och få fler besökare.";
@@ -10226,6 +10093,15 @@ Example: Reply to Pamela Nguyen */
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du har inte behörighet att visa den här privata bloggen.";
 
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Prenumerera på bloggen.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Prenumererad";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Prenumerera";
+
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Kan förbättras";
 
@@ -10237,6 +10113,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Skicka feedback";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Prenumerera";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Prenumererad";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Prenumerera på bloggen.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Prenumeranter";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "prenumerera";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Inga prenumeranter ännu";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Kolla in mitt inlägg ”%@”:";
@@ -10304,6 +10198,9 @@ Example: Reply to Pamela Nguyen */
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Avbryt";
 
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Överordnad sida";
+
 /* No comment provided by engineer. */
 "password" = "lösenord";
 
@@ -10367,26 +10264,56 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Skapades %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Tar bort inlägg …";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Redigerades %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Flyttar inlägget till papperskorgen …";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Publicerades %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Kasta ändringar";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Schemalagd %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Kasta utkast";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Borttaget %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Fortsätt redigera";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Spara utkast";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Skapar autosparning …";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Hjälp";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Hjälp och support";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Sidinställningar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Inläggsinställningar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Förhandsgranska";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Versioner";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Avbryt";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Återställ";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Versionen har lästs in";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Sparar utkast …";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Av %@.";
@@ -10399,6 +10326,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "Inväntar granskning";
+
+/* Cancels an Action */
+"postList.cancel" = "Avbryt";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Ta bort permanent";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Är du säker på att du vill ta bort ”%@” permanent?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Appen laddar upp tidigare gjorda ändringar till servern. Försök igen senare.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Något gick fel";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Offlineändringar";
@@ -10414,6 +10359,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Visa";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Flytta till papperskorgen";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Är du säker på att du vill lägga %@ i papperskorgen? Ändringar som inte skickats till servern tidigare kommer att gå förlorade.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Avbryt uppladdning";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Stäng";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "Inga väntande uppladdningar";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ av %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Försök ladda upp igen";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Försök ladda upp igen";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Mediauppladdningar";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Ett fel uppstod";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Appen laddar upp tidigare gjorda ändringar till servern. Försök igen senare.";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Utkast för sidan har laddats upp";
@@ -10445,11 +10426,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Inlägg uppdaterat";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Uppladdningen misslyckades";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Visa";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Innehållet ändrades på annan enhet";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "”%@” togs bort permanent och kan inte längre uppdateras";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Utan rubrik";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Avfärda";
@@ -10463,14 +10450,59 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Alternativ för utvald bild";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Överordnad sida";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Inväntar granskning";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Automatisk delning på Twitter är inte längre tillgängligt";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Sidattribut";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Ange utvald bild";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Det gick inte att uppdatera inläggsinställningarna";
+
+/* Localized post type: `Page` */
+"postType.page" = "sida";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Endast synlig för webbplatsadministratörer och redigerare.";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Privat";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Synlig för alla men kräver ett lösenord";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Lösenordsskyddat";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Synligt för alla";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Offentlig";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Avbryt";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Synlighet";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Lösenord";
+
+/* Button save */
+"postVisibilityPicker.save" = "Spara";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Marknadsför med Blaze";
@@ -10496,14 +10528,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Förhandsgranska";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publicera";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Försök igen";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Ställ in som startsida";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Ställ in överordnad";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Ställ in som inläggssida";
@@ -10562,8 +10594,11 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Misslyckades att ladda upp media";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ objekt kunde inte laddas upp";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Misslyckades att ladda upp media";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Rubrik";
@@ -10573,6 +10608,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Publiceringsdatum";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Omedelbart";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicerar till";
@@ -10638,6 +10676,12 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketter";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ objekt återstår";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ objekt återstår";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Laddar upp media";
 
@@ -10647,17 +10691,44 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Visa alla svar";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ av %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Publiceringsdatum";
 
-/* Retry button title */
-"publishButton.retry" = "Försök igen";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Datumet i din nuvarande tidszon:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Nu";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Omedelbart";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Ta bort publiceringsdatum";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Välj publiceringsdatum";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Tidszon";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Publiceringsdatum";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Klar";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Marknadsför med Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Dela inlägg";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Inlägg publicerat!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Få mer trafik:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Visa inlägg";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Avfärda";
@@ -10750,8 +10821,8 @@ but tapping on this button will remove their like from the post. */
 /* Error message informing the user that they are already following a blog in their reader. */
 "reader.error.already.subscribed.message" = "Du prenumererar redan på den här bloggen.";
 
-/* Title for a button that allows user to edit their subscribed list from the filter sheet */
-"reader.filterSheet.button.edit" = "Redigera";
+/* Title for a button that allows user to manage their subscribed list from the filter sheet */
+"reader.filterSheet.button.manage" = "Hantera";
 
 /* Title for a filter sheet on the Reader to filter the stream by blog */
 "reader.filterSheet.byBlog.title" = "Filtrera efter blogg";
@@ -10781,10 +10852,13 @@ but tapping on this button will remove their like from the post. */
 "reader.filterSheet.empty.tags.title" = "Inga etiketter";
 
 /* Label displayed to the user while loading their selected interests */
-"reader.filterSheet.select.tags.loading" = "Prenumererar på nya etiketter...";
+"reader.filterSheet.select.tags.following" = "Följer nya etiketter …";
 
 /* Screen title. Reader select interests title label text. */
 "reader.filterSheet.select.tags.title" = "Föreslagna etiketter";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
+"reader.follow.button.accessibility.hint" = "Följer etiketten.";
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Hämtar bloggar …";
@@ -10845,11 +10919,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Prenumerationer";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Dina etiketter";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Sök";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Läsarinställningar";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Lägg till en blogg";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Upptäck bloggar";
@@ -10875,12 +10955,8 @@ with the filter chip button. */
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Gå till prenumerationer";
 
-/* No Sites View Label
-   No Topics View Label */
-"reader.no.tags.action" = "Du kan prenumerera på inlägg från en specifik blogg genom att prenumerera på den.";
-
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Lägg till en blogg";
+"reader.no.tags.title" = "Lägg till en etikett";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Kan inte blockera blogg";
@@ -10994,6 +11070,88 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Avsluta bloggprenumeration";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Godis";
+
+/* Name for the Default color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.default" = "Standard";
+
+/* Name for the Evening color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.evening" = "Kväll";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
+
+/* Name for the OLED color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.oled" = "OLED";
+
+/* Name for the Sepia color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.sepia" = "Sepia";
+
+/* Name for the Soft color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.soft" = "Mjuk";
+
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Färger";
+
+/* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
+"reader.preferences.control.doneButton" = "Klar";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Typsnitt";
+
+/* Describes that the slider is used to customize the text size in the Reader. */
+"reader.preferences.control.sizeSlider.description" = "Storlek";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Detta är en ny funktion som fortfarande är under utveckling. För att hjälpa oss att förbättra det %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "skicka din feedback";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.text" = "Välj dina färger, typsnitt och storlekar. Förhandsgranska ditt val här och läs inlägg med dina stilar när du är klar.";
+
+/* Title text for a preview */
+"reader.preferences.preview.header" = "Läspreferenser";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "färger";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "typsnitt";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "läsning";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Exempeletiketter";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Extra stor";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Extra liten";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Stor";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normal";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Liten";
+
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Hantera bloggar";
 
@@ -11006,20 +11164,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a Reader tab showing Sites matching a user's search query */
 "reader.search.tab.blogs" = "Bloggar";
 
-/* Label displayed to the user while loading their selected interests */
-"reader.select.interests.loading" = "Prenumererar på nya etiketter...";
-
 /* Screen title. Reader select interests title label text. */
-"reader.select.interests.title" = "Prenumerera på etiketter";
+"reader.select.interests.follow.title" = "Följ etiketter";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.interests.following" = "Följer nya etiketter …";
+
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Välj några för att fortsätta";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Klar";
 
 /* Message shown when there are no new topics to follow. */
-"reader.select.tags.no.results.title" = "Inga nya etiketter att prenumerera på";
+"reader.select.tags.no.results.follow.title" = "Inga nya etiketter att följa";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Välj dina etiketter";
 
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a tag. */
-"reader.subscribe.button.accessibility.hint" = "Prenumererar på etiketten.";
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Upptäck och följ bloggar du gillar";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Prenumerera";
@@ -11031,10 +11195,15 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "reader.subscribed.blogs.search.placeholder" = "Ange URL:en till en blogg att prenumerera på";
 
 /* Verb. Button title. The user is subscribed to a blog. */
-"reader.subscribed.button.title" = "Prenumenerad";
+"reader.subscribed.button.title" = "Prenumererad";
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Bloggar att prenumerera på";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Försök igen";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Lägg till en etikett";
@@ -11048,11 +11217,26 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Lägg till en etikett";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Gilla";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Gillat";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Upptäck fler etiketter";
 
+/* Verb. Button title. Follows a new tag. */
+"reader.tags.follow.button.title" = "Följ";
+
+/* Verb. Button title. The user is following a tag. */
+"reader.tags.following.button.title" = "Följer";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Mer från %1$@";
+
 /* Accessibility label for unsubscribing from a tag */
-"reader.tags.unsubscribe.accessibility.label" = "Avsluta prenumeration från %@";
+"reader.tags.unfollow.accessibility.label" = "Sluta att följa %@";
 
 /* Label of the table view cell's delete button, when unsubscribing from a blog. */
 "reader.unsubscribe.button" = "Avsluta prenumeration";
@@ -11062,6 +11246,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Avfärda";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Läspreferenser";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Jag förstår";
@@ -11140,6 +11327,36 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Relaterade inlägg";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "En annan enhet";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Nuvarande enhet";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "Inlägget har ändrats på en annan enhet. Välj vilken version av inlägget du vill behålla.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Avbryt";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Spara";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Lös konflikt";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Inga versioner ännu";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Laddar in …";
+
+/* Post revisions list screen title */
+"revisions.title" = "Versioner";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Kopiera länk";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Avfärda";
@@ -11315,6 +11532,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Okänt";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Alla webbplatser";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Fastnålade webbplatser";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Senaste webbplatser";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Lägg till en webbplats";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Avbryt";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Klar";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Redigera";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Välj en webbplats";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Påminnelser";
 
@@ -11351,6 +11592,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Automatisk delning på Twitter är inte längre tillgängligt på grund av Twitters ändringar i villkor och pris.";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Prenumeranter";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Trafik";
 
@@ -11361,10 +11605,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "De föregående 7 dagarna";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* högre än under de föregående 7 dagarna";
+"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* högre än de föregående 7 dagarna";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* lägre än under de föregående 7 dagarna";
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* lägre än de föregående 7 dagarna";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Samma som under de föregående 7 dagarna";
@@ -11442,10 +11686,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 Populäraste tidpunkten";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% av visningarna";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ av visningarna";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Inte tillräckligt med aktivitet. Kom tillbaka när din webbplats har haft fler besökare.";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Prenumeranter";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkeringar.";
@@ -11453,8 +11700,47 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Ditt senaste inlägg %1$@ har fått %2$@ gillamarkering.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Totalt antal WordPress.com-prenumeranter: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Totalt antal e-postprenumeranter: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Totalt antal prenumeranter";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Idag";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Prenumerant sedan";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Namn";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Prenumeranter";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Klick";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Öppnade";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Senaste e-postmeddelanden";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "E-post";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Prenumeranter";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Tabell visar %1$@, %2$@ och %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Stapeldiagram som visar antalet kommentarer för vald period.";
@@ -11468,41 +11754,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Stapeldiagram som visar antalet besökare för vald period.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Efter dag";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Dagar";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Månader";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Veckor";
 
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ högre än föregående månad\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ lägre än föregående månad\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ högre än de föregående 7 dagarna\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ lägre än de föregående 7 dagarna\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ högre än föregående år\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ lägre än föregående år\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Efter månad";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Efter vecka";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Efter år";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "År";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Avfärda";
@@ -11513,8 +11775,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Sök efter gratis foton att lägga till i ditt mediabibliotek!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Du kan valfritt inkludera din e-post och ditt användarnamn för att hjälpa oss att förstå din upplevelse.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "ingen e-post angiven";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "inget användarnamn angivet";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Klar";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Tack för din feedback";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Skicka";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Skickar";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Skickar anonymt";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Feedback";
@@ -11687,6 +11970,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "ej läst";
 
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Webbplatsens prenumerant";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Webbplatsens användare";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Webbplatsens tittare";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "Prenumeranter";
+
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "besök vår dokumentationssida";
 
@@ -11815,6 +12110,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Second part of delete screen title stating [the site] will be unavailable in the future. */
 "will be unavailable in the future." = "kommer inte att kunna nås i fortsättningen.";
+
+/* Title for the link for site creation guide. */
+"wordPressAuthenticatorDisplayStrings.default.siteCreationGuideButtonTitle" = "Ska du starta en ny webbplats?";
 
 /* This is a comma separated list of keywords used for spotlight indexing of the 'Help & Support' screen within the 'Me' tab */
 "wordpress, help, support, faq, questions, debug, logs, help center, contact" = "wordpress, hjälp, support, faq, vanliga frågor, felsökning, loggar, kontakt";

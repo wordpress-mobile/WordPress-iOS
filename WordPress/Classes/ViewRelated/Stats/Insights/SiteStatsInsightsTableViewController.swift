@@ -51,8 +51,8 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: analyticsTracker)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: analyticsTracker)
     }()
 
     // MARK: - View
@@ -178,7 +178,7 @@ private extension SiteStatsInsightsTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
 
         if viewModel.fetchingFailed() {
             displayFailureViewIfNecessary()
@@ -200,8 +200,11 @@ private extension SiteStatsInsightsTableViewController {
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
     func clearExpandedRows() {
@@ -424,21 +427,23 @@ extension SiteStatsInsightsTableViewController: SiteStatsInsightsDelegate {
         if statSection == .insightsAnnualSiteStats,
             let year = viewModel?.annualInsightsYear() {
             var dateComponents = Calendar.current.dateComponents([.year, .month, .day], from: StatsDataHelper.currentDateForSite())
-            dateComponents.year = year
+            dateComponents.year = Int(year)
             selectedDate = Calendar.current.date(from: dateComponents)
         }
 
         switch statSection {
         case .insightsViewsVisitors, .insightsFollowerTotals, .insightsLikesTotals, .insightsCommentsTotals:
-            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate)
+            selectedDate = viewModel?.lastRequestedDate
+            let selectedPeriod = viewModel?.lastRequestedPeriod
+            segueToInsightsDetails(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         default:
             segueToDetails(statSection: statSection, selectedDate: selectedDate)
         }
     }
 
-    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?) {
+    func segueToInsightsDetails(statSection: StatSection, selectedDate: Date?, selectedPeriod: StatsPeriodUnit?) {
         let detailTableViewController = SiteStatsInsightsDetailsTableViewController()
-        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate)
+        detailTableViewController.configure(statSection: statSection, selectedDate: selectedDate, selectedPeriod: selectedPeriod)
         navigationController?.pushViewController(detailTableViewController, animated: true)
     }
 

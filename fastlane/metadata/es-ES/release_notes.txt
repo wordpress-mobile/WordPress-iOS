@@ -1,2 +1,0 @@
-Hemos introducido una corrección que evita ciertos errores en el editor y en los tipos de bloque individuales. Esta corrección registra cualquier error que se cuele para que también podamos eliminarlo.
-También hemos mejorado tu experiencia de previsualización y publicación eliminando el botón de edición de la pantalla de éxito «Entrada publicada» y el botón de publicación de la pantalla «Previsualizar». Todo en un día de trabajo.
