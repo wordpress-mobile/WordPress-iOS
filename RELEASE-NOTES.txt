@@ -1,6 +1,6 @@
 25.0
 -----
-
+* [*] Fix button overlap in the "Post Published" sheet on small devices [#23210]
 
 24.9
 -----
