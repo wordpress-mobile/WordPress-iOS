@@ -50,6 +50,28 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
+    func testNotEnoughDaysHaveElapsedSinceCurrentVersionHasBeenReleased() async {
+        // Given
+        let coordinator = AppUpdateCoordinator(
+            currentVersion: "24.6",
+            currentOsVersion: "17.0",
+            service: service,
+            presenter: presenter,
+            remoteConfigStore: remoteConfigStore,
+            isLoggedIn: false,
+            isInAppUpdatesEnabled: true,
+            delayInDays: Int.max
+        )
+
+        // When
+        await coordinator.checkForAppUpdates()
+
+        // Then
+        XCTAssertFalse(service.didLookup)
+        XCTAssertFalse(presenter.didShowNotice)
+        XCTAssertFalse(presenter.didShowBlockingUpdate)
+    }
+
     func testFlexibleUpdateAvailableButOsVersionTooLow() async {
         // Given
         let coordinator = AppUpdateCoordinator(
@@ -153,7 +175,9 @@ private final class MockAppStoreSearchService: AppStoreSearchProtocol {
 
     private func getMockLookupResponse() throws -> AppStoreLookupResponse {
         let data = try Bundle.test.json(named: "app-store-lookup-response")
-        return try JSONDecoder().decode(AppStoreLookupResponse.self, from: data)
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .iso8601
+        return try decoder.decode(AppStoreLookupResponse.self, from: data)
     }
 }
 
