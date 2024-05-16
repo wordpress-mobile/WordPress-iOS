@@ -17,6 +17,7 @@ class ReaderTagCell: UICollectionViewCell {
     @IBOutlet weak var spacerView: UIView!
     @IBOutlet weak var titleSpacerView: UIView!
     @IBOutlet weak var countsLabelSpacerView: UIView!
+    @IBOutlet private var contentBoundsConstraints: [NSLayoutConstraint]!
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
     private var viewModel: ReaderTagCellViewModel?
@@ -31,12 +32,15 @@ class ReaderTagCell: UICollectionViewCell {
         spacerView.isGhostableDisabled = true
         titleSpacerView.isGhostableDisabled = true
         countsLabelSpacerView.isGhostableDisabled = true
+
+        updateContentConstraints()
     }
 
     override func prepareForReuse() {
         super.prepareForReuse()
         imageLoader.prepareForReuse()
         resetHiddenViews()
+        updateContentConstraints()
     }
 
     func configure(parent: UIViewController?, post: ReaderPost, isLoggedIn: Bool) {
@@ -142,6 +146,11 @@ private extension ReaderTagCell {
         headerStackView.accessibilityTraits = .button
         menuButton.accessibilityLabel = AccessibilityConstants.menuButtonLabel
         menuButton.accessibilityHint = AccessibilityConstants.menuButtonHint
+    }
+
+    func updateContentConstraints() {
+        let isExtraLargeCategory = traitCollection.preferredContentSizeCategory >= .extraLarge
+        contentBoundsConstraints.forEach { $0.isActive = !isExtraLargeCategory }
     }
 
 }

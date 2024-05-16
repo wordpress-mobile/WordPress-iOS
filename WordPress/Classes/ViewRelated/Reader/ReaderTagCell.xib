@@ -161,6 +161,10 @@
                 <outlet property="summaryLabel" destination="5KT-0Z-POw" id="v2C-Gu-Vcs"/>
                 <outlet property="titleLabel" destination="DsY-TC-klp" id="Qc5-Ye-hs2"/>
                 <outlet property="titleSpacerView" destination="pBB-XH-eiv" id="b5m-pu-5kl"/>
+                <outletCollection property="contentBoundsConstraints" destination="4E1-8Q-Umk" collectionClass="NSMutableArray" id="w51-J3-YwH"/>
+                <outletCollection property="contentBoundsConstraints" destination="XP1-dF-ShA" collectionClass="NSMutableArray" id="SeC-ny-f9t"/>
+                <outletCollection property="contentBoundsConstraints" destination="5Us-VT-zN0" collectionClass="NSMutableArray" id="V6S-Lu-3RC"/>
+                <outletCollection property="contentBoundsConstraints" destination="CNx-el-qmz" collectionClass="NSMutableArray" id="2xj-id-88q"/>
             </connections>
             <point key="canvasLocation" x="-131.29770992366412" y="-168.3098591549296"/>
         </view>
