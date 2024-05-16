@@ -24,20 +24,8 @@ extension ReaderPost {
     }
 
     func summaryForDisplay(isPad: Bool = false) -> String? {
-        if isPad {
-            let content = contentForDisplay()?
-                .stringByDecodingXMLCharacters()
-                .replacingOccurrences(of: "<br>", with: "\n")
-                .strippingHTML()
-                .replacingOccurrences(of: "^\n+", with: "", options: .regularExpression)
-                .replacingOccurrences(of: "\n{2,}", with: "\n\n", options: .regularExpression)
-                .trim()
-            if let content {
-                let maxContentLength = 3000
-                return String(content.prefix(maxContentLength))
-            }
-        }
-        return contentPreviewForDisplay()
+        return contentPreviewForDisplay()?
+            .replacingOccurrences(of: "\n{2,}", with: "\n\n", options: .regularExpression)
     }
 
 }
