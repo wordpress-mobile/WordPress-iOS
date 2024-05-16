@@ -39,28 +39,28 @@
                             </constraints>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kbG-di-VIy">
-                            <rect key="frame" x="0.0" y="24.5" width="480" height="118"/>
+                            <rect key="frame" x="0.0" y="24.5" width="480" height="142.5"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="6wc-NQ-auo">
-                                    <rect key="frame" x="0.0" y="0.0" width="352" height="118"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="352" height="142.5"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="pBB-XH-eiv" userLabel="Spacer">
-                                            <rect key="frame" x="0.0" y="0.0" width="352" height="38.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="352" height="51"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DsY-TC-klp" userLabel="Title">
-                                            <rect key="frame" x="0.0" y="38.5" width="352" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="51" width="352" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="TopLeft" horizontalHuggingPriority="251" verticalHuggingPriority="249" text="Summary" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5KT-0Z-POw" userLabel="Summary">
-                                            <rect key="frame" x="0.0" y="59" width="352" height="20.5"/>
+                                            <rect key="frame" x="0.0" y="71.5" width="352" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" verticalHuggingPriority="248" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="l2P-MZ-TCd" userLabel="Spacer">
-                                            <rect key="frame" x="0.0" y="79.5" width="352" height="38.5"/>
+                                            <rect key="frame" x="0.0" y="92" width="352" height="50.5"/>
                                         </view>
                                     </subviews>
                                     <constraints>
@@ -68,10 +68,10 @@
                                     </constraints>
                                 </stackView>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4xC-jQ-qSx">
-                                    <rect key="frame" x="352" y="0.0" width="128" height="118"/>
+                                    <rect key="frame" x="352" y="0.0" width="128" height="142.5"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="247" verticalCompressionResistancePriority="753" translatesAutoresizingMaskIntoConstraints="NO" id="Yfj-e7-Vti" customClass="CachedAnimatedImageView" customModule="WordPress" customModuleProvider="target">
-                                            <rect key="frame" x="16" y="11" width="96" height="96"/>
+                                            <rect key="frame" x="16" y="23.5" width="96" height="96"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="64" id="XBK-3t-dbs">
                                                     <variation key="heightClass=regular-widthClass=regular" constant="96"/>
@@ -93,12 +93,6 @@
                                 </view>
                             </subviews>
                         </stackView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="752" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TWL-MA-3CF" userLabel="Counts">
-                            <rect key="frame" x="0.0" y="146.5" width="480" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                     </subviews>
                 </stackView>
                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1nC-hH-hbw">
@@ -149,7 +143,6 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="contentStackView" destination="v9V-wn-SvM" id="Dh0-eP-ubs"/>
-                <outlet property="countsLabel" destination="TWL-MA-3CF" id="SLO-VX-N94"/>
                 <outlet property="countsLabelSpacerView" destination="l2P-MZ-TCd" id="8QA-n2-RoI"/>
                 <outlet property="featuredImageView" destination="Yfj-e7-Vti" id="BCL-Ej-cp3"/>
                 <outlet property="featuredImageViewContainer" destination="4xC-jQ-qSx" id="rAQ-lq-Xsz"/>
@@ -161,6 +154,7 @@
                 <outlet property="spacerView" destination="0q4-yh-1OL" id="Ssw-MQ-d7t"/>
                 <outlet property="summaryLabel" destination="5KT-0Z-POw" id="v2C-Gu-Vcs"/>
                 <outlet property="titleLabel" destination="DsY-TC-klp" id="Qc5-Ye-hs2"/>
+                <outlet property="titleSpacerView" destination="pBB-XH-eiv" id="b5m-pu-5kl"/>
             </connections>
             <point key="canvasLocation" x="-131.29770992366412" y="-168.3098591549296"/>
         </view>

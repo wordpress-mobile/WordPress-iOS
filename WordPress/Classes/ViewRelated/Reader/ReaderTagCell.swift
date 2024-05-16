@@ -12,10 +12,10 @@ class ReaderTagCell: UICollectionViewCell {
     @IBOutlet private weak var summaryLabel: UILabel!
     @IBOutlet private weak var featuredImageViewContainer: UIView!
     @IBOutlet private weak var featuredImageView: CachedAnimatedImageView!
-    @IBOutlet private weak var countsLabel: UILabel!
     @IBOutlet private weak var likeButton: UIButton!
     @IBOutlet private weak var menuButton: UIButton!
     @IBOutlet weak var spacerView: UIView!
+    @IBOutlet weak var titleSpacerView: UIView!
     @IBOutlet weak var countsLabelSpacerView: UIView!
 
     private lazy var imageLoader = ImageLoader(imageView: featuredImageView)
@@ -29,6 +29,7 @@ class ReaderTagCell: UICollectionViewCell {
         headerStackView.addGestureRecognizer(tapGesture)
 
         spacerView.isGhostableDisabled = true
+        titleSpacerView.isGhostableDisabled = true
         countsLabelSpacerView.isGhostableDisabled = true
     }
 
@@ -82,8 +83,6 @@ private extension ReaderTagCell {
         titleLabel.font = WPStyleGuide.fontForTextStyle(.headline, fontWeight: .semibold)
         summaryLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
         summaryLabel.numberOfLines = UIDevice.isPad() ? 5 : 3
-        countsLabel.font = WPStyleGuide.fontForTextStyle(.footnote)
-        countsLabel.textColor = .secondaryLabel
         likeButton.tintColor = .secondaryLabel
         likeButton.titleLabel?.font = WPStyleGuide.fontForTextStyle(.footnote)
         menuButton.tintColor = .secondaryLabel
@@ -110,7 +109,6 @@ private extension ReaderTagCell {
         summaryLabel.isHidden = false
         featuredImageViewContainer.isHidden = false
         featuredImageView.isHidden = false
-        countsLabel.isHidden = false
         likeButton.isHidden = false
     }
 
@@ -128,25 +126,21 @@ private extension ReaderTagCell {
         let postDate = post.shortDateForDisplay()
         let postTitle = post.titleForDisplay()
         let postSummary = post.summaryForDisplay(isPad: traitCollection.userInterfaceIdiom == .pad)
-        let postCounts = post.countsForDisplay(isLoggedIn: isLoggedIn)
 
         siteLabel.text = blogName
         postDateLabel.text = postDate
         titleLabel.text = postTitle
         summaryLabel.text = postSummary
-        countsLabel.text = postCounts
 
         siteLabel.isHidden = blogName == nil
         postDateLabel.isHidden = postDate == nil
         titleLabel.isHidden = postTitle == nil
         summaryLabel.isHidden = postSummary == nil
-        countsLabel.isHidden = postCounts == nil
 
         headerStackView.isAccessibilityElement = true
         headerStackView.accessibilityLabel = [blogName, postDate].compactMap { $0 }.joined(separator: ", ")
         headerStackView.accessibilityHint = AccessibilityConstants.siteStackViewHint
         headerStackView.accessibilityTraits = .button
-        countsLabel.accessibilityLabel = postCounts?.replacingOccurrences(of: " • ", with: ", ")
         menuButton.accessibilityLabel = AccessibilityConstants.menuButtonLabel
         menuButton.accessibilityHint = AccessibilityConstants.menuButtonHint
     }

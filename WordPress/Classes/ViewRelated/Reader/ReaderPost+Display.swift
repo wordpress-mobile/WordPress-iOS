@@ -40,26 +40,4 @@ extension ReaderPost {
         return contentPreviewForDisplay()
     }
 
-    func countsForDisplay(isLoggedIn: Bool) -> String? {
-        let likes: String? = {
-            guard isLikesEnabled(isLoggedIn: isLoggedIn),
-                  let count = likeCount()?.intValue,
-                  count > 0 else {
-                return nil
-            }
-            return WPStyleGuide.likeCountForDisplay(count)
-        }()
-        let comments: String? = {
-            guard isCommentsEnabled,
-                  let count = commentCount()?.intValue,
-                  count > 0 else {
-                return nil
-            }
-            return WPStyleGuide.commentCountForDisplay(count)
-        }()
-
-        let countStrings = [likes, comments].compactMap { $0 }
-        return countStrings.count > 0 ? countStrings.joined(separator: " • ") : nil
-    }
-
 }
