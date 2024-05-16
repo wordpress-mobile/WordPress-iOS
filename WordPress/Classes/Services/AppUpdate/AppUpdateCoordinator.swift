@@ -6,12 +6,12 @@ struct AppUpdateType {
 }
 
 final class AppUpdateCoordinator {
-
     private let currentVersion: String?
     private let currentOsVersion: String
     private let service: AppStoreSearchProtocol
     private let presenter: AppUpdatePresenterProtocol
     private let remoteConfigStore: RemoteConfigStore
+    private let store: UserPersistentRepository
     private let isJetpack: Bool
     private let isLoggedIn: Bool
     private let isInAppUpdatesEnabled: Bool
@@ -23,6 +23,7 @@ final class AppUpdateCoordinator {
         service: AppStoreSearchProtocol = AppStoreSearchService(),
         presenter: AppUpdatePresenterProtocol = AppUpdatePresenter(),
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
+        store: UserPersistentRepository = UserDefaults.standard,
         isJetpack: Bool = AppConfiguration.isJetpack,
         isLoggedIn: Bool = AccountHelper.isLoggedIn,
         isInAppUpdatesEnabled: Bool = RemoteFeatureFlag.inAppUpdates.enabled(),
@@ -33,6 +34,7 @@ final class AppUpdateCoordinator {
         self.service = service
         self.presenter = presenter
         self.remoteConfigStore = remoteConfigStore
+        self.store = store
         self.isJetpack = isJetpack
         self.isLoggedIn = isLoggedIn
         self.isInAppUpdatesEnabled = isInAppUpdatesEnabled
@@ -51,10 +53,12 @@ final class AppUpdateCoordinator {
             return
         }
 
+        let appStoreInfo = updateType.appStoreInfo
         if updateType.isRequired {
-            presenter.showBlockingUpdate(using: updateType.appStoreInfo)
+            presenter.showBlockingUpdate(using: appStoreInfo)
         } else {
-            presenter.showNotice(using: updateType.appStoreInfo)
+            presenter.showNotice(using: appStoreInfo)
+            setLastSeenFlexibleUpdateDate(Date.now, for: appStoreInfo.version)
         }
     }
 
@@ -76,7 +80,7 @@ final class AppUpdateCoordinator {
             if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: true)
             }
-            if currentVersion.isLower(than: appStoreInfo.version) {
+            if currentVersion.isLower(than: appStoreInfo.version), shouldShowFlexibleUpdate(for: appStoreInfo.version) {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: false)
             }
             return nil
@@ -99,6 +103,42 @@ final class AppUpdateCoordinator {
             return nil
         }
     }
+}
+
+// MARK: - Flexible Interval
+
+extension AppUpdateCoordinator {
+    private var flexibleIntervalInDays: Int? {
+        RemoteConfigParameter.inAppUpdateFlexibleIntervalInDays.value(using: remoteConfigStore)
+    }
+
+    private func lastSeenFlexibleUpdateKey(for version: String) -> String {
+        return "\(version)-\(Constants.lastSeenFlexibleUpdateDateKey)"
+    }
+
+    private func getLastSeenFlexibleUpdateDate(for version: String) -> Date? {
+        store.object(forKey: lastSeenFlexibleUpdateKey(for: version)) as? Date
+    }
+
+    private func setLastSeenFlexibleUpdateDate(_ date: Date, for version: String) {
+        store.set(date, forKey: lastSeenFlexibleUpdateKey(for: version))
+    }
+
+    private func shouldShowFlexibleUpdate(for version: String) -> Bool {
+        guard let flexibleIntervalInDays else {
+            return false
+        }
+        guard let lastSeenFlexibleUpdateDate = getLastSeenFlexibleUpdateDate(for: version) else {
+            return true
+        }
+        let secondsInDay: TimeInterval = 86_400
+        let secondsSinceLastSeen = -lastSeenFlexibleUpdateDate.timeIntervalSinceNow
+        return secondsSinceLastSeen > Double(flexibleIntervalInDays) * secondsInDay
+    }
+}
+
+private enum Constants {
+    static let lastSeenFlexibleUpdateDateKey = "last-seen-flexible-update-date-key"
 }
 
 private extension String {
