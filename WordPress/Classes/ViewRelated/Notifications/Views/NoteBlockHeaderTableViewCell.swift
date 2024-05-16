@@ -7,21 +7,11 @@ import DesignSystem
 
 // MARK: - NoteBlockHeaderTableViewCell
 //
-class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell {
+class NoteBlockHeaderTableViewCell: NoteBlockTableViewCell, Reusable {
     typealias Constants = ContentPreview.Constants
     typealias Avatar = ContentPreview.ImageConfiguration.Avatar
 
     private var controller: UIHostingController<HeaderView>?
-
-    init() {
-        super.init(style: .default, reuseIdentifier: NoteBlockHeaderTableViewCell.classNameWithoutNamespaces())
-        shouldSetSeparators = false
-    }
-
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        shouldSetSeparators = false
-    }
 
     func configure(post: String, action: @escaping () -> Void, parent: UIViewController) {
         let content = ContentPreview(text: post, action: action)

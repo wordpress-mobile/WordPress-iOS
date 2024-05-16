@@ -2957,7 +2957,6 @@
 		B5BEA5601C7CE6D700C8035B /* SFHFKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 292CECFF1027259000BD407D /* SFHFKeychainUtils.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		B5C0CF3D204DA41000DB0362 /* NotificationReplyStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0CF3C204DA41000DB0362 /* NotificationReplyStore.swift */; };
 		B5C0CF3F204DB92F00DB0362 /* NotificationReplyStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0CF3E204DB92F00DB0362 /* NotificationReplyStoreTests.swift */; };
-		B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */; };
 		B5C66B721ACF071100F68370 /* NoteBlockTextTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */; };
 		B5C66B741ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */; };
 		B5C66B761ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */; };
@@ -4184,7 +4183,6 @@
 		FABB1FB32602FC2C00C8785C /* NoteBlockActionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */; };
 		FABB1FB42602FC2C00C8785C /* Pacifico-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F5A34D0B25DF2F7700C9654B /* Pacifico-Regular.ttf */; };
 		FABB1FB92602FC2C00C8785C /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
-		FABB1FBA2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */; };
 		FABB1FBB2602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 469CE07024BCFB04003BDC8B /* CollapsableHeaderCollectionViewCell.xib */; };
 		FABB1FBF2602FC2C00C8785C /* WPTableViewActivityCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5D6C4AF51B603CA3005E3C43 /* WPTableViewActivityCell.xib */; };
 		FABB1FC12602FC2C00C8785C /* defaultPostTemplate.html in Resources */ = {isa = PBXBuildFile; fileRef = A01C55470E25E0D000D411F2 /* defaultPostTemplate.html */; };
@@ -8377,7 +8375,6 @@
 		B5B68BD31C19AAED00EB59E0 /* InteractiveNotificationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InteractiveNotificationsManager.swift; sourceTree = "<group>"; };
 		B5C0CF3C204DA41000DB0362 /* NotificationReplyStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReplyStore.swift; sourceTree = "<group>"; };
 		B5C0CF3E204DB92F00DB0362 /* NotificationReplyStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationReplyStoreTests.swift; sourceTree = "<group>"; };
-		B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockHeaderTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B711ACF071000F68370 /* NoteBlockTextTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockTextTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B731ACF071F00F68370 /* NoteBlockActionsTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockActionsTableViewCell.xib; sourceTree = "<group>"; };
 		B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoteBlockCommentTableViewCell.xib; sourceTree = "<group>"; };
@@ -16098,7 +16095,6 @@
 				B532D4E5199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift */,
 				B5C66B751ACF072C00F68370 /* NoteBlockCommentTableViewCell.xib */,
 				B532D4E6199D4357006E4DF6 /* NoteBlockHeaderTableViewCell.swift */,
-				B5C66B6F1ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib */,
 				B532D4ED199D4418006E4DF6 /* NoteBlockImageTableViewCell.swift */,
 				B5C66B771ACF073900F68370 /* NoteBlockImageTableViewCell.xib */,
 				B532D4E7199D4357006E4DF6 /* NoteBlockTableViewCell.swift */,
@@ -19688,7 +19684,6 @@
 				F5A34D1125DF2F7F00C9654B /* Pacifico-Regular.ttf in Resources */,
 				FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */,
 				1761F17B26209AEE000815EF /* open-source-icon-app-60x60@2x.png in Resources */,
-				B5C66B701ACF06CA00F68370 /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				1761F18126209AEE000815EF /* jetpack-green-icon-app-60x60@2x.png in Resources */,
 				801D9513291AB3CF0051993E /* JetpackStatsLogoAnimation_rtl.json in Resources */,
 				17222DA2261DDDF90047B163 /* pink-classic-icon-app-60x60@3x.png in Resources */,
@@ -20228,7 +20223,6 @@
 				FABB286C2603086900C8785C /* AppImages.xcassets in Resources */,
 				F46597C828E668B900D5F49A /* neumorphic-light-icon-app-60@3x.png in Resources */,
 				FABB1FB92602FC2C00C8785C /* RestoreStatusFailedView.xib in Resources */,
-				FABB1FBA2602FC2C00C8785C /* NoteBlockHeaderTableViewCell.xib in Resources */,
 				FABB1FBB2602FC2C00C8785C /* CollapsableHeaderCollectionViewCell.xib in Resources */,
 				FE43DAB226DFAD1C00CFF595 /* CommentContentTableViewCell.xib in Resources */,
 				C7234A452832C2BA0045C63F /* QRLoginScanningViewController.xib in Resources */,

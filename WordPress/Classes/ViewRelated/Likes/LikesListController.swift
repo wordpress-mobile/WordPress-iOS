@@ -357,7 +357,7 @@ extension LikesListController: UITableViewDataSource, UITableViewDelegate {
 private extension LikesListController {
 
     func headerCell() -> NoteBlockHeaderTableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.reuseIdentifier()) as? NoteBlockHeaderTableViewCell,
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: NoteBlockHeaderTableViewCell.defaultReuseID) as? NoteBlockHeaderTableViewCell,
               let group = notification?.headerAndBodyContentGroups[Constants.headerRowIndex] else {
             DDLogError("Error: couldn't get a header cell or FormattableContentGroup.")
             return NoteBlockHeaderTableViewCell()

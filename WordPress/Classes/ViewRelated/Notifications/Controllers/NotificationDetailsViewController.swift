@@ -368,7 +368,6 @@ extension NotificationDetailsViewController {
 
     func setupTableViewCells() {
         let cellClassNames: [NoteBlockTableViewCell.Type] = [
-            NoteBlockHeaderTableViewCell.self,
             NoteBlockTextTableViewCell.self,
             NoteBlockActionsTableViewCell.self,
             NoteBlockCommentTableViewCell.self,
@@ -385,6 +384,8 @@ extension NotificationDetailsViewController {
 
         tableView.register(LikeUserTableViewCell.self,
                            forCellReuseIdentifier: LikeUserTableViewCell.defaultReuseID)
+        tableView.register(NoteBlockHeaderTableViewCell.self,
+                           forCellReuseIdentifier: NoteBlockHeaderTableViewCell.defaultReuseID)
         tableView.register(NoteBlockUserTableViewCell.self,
                            forCellReuseIdentifier: NoteBlockUserTableViewCell.defaultReuseID)
     }
@@ -557,7 +558,7 @@ private extension NotificationDetailsViewController {
     func reuseIdentifierForGroup(_ blockGroup: FormattableContentGroup) -> String {
         switch blockGroup.kind {
         case .header:
-            return NoteBlockHeaderTableViewCell.reuseIdentifier()
+            return NoteBlockHeaderTableViewCell.defaultReuseID
         case .footer:
             return NoteBlockTextTableViewCell.reuseIdentifier()
         case .subject:
