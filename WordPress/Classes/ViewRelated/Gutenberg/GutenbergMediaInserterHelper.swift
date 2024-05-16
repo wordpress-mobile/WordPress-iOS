@@ -174,13 +174,8 @@ class GutenbergMediaInserterHelper: NSObject {
         switch state {
         case .processing:
             gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0, url: nil, serverID: nil)
-        case .thumbnailReady(let url) where ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .failed, progress: 0, url: url, serverID: nil)
-        case .thumbnailReady(let url) where !ReachabilityUtils.isInternetReachable() && media.remoteStatus == .failed:
-            // The progress value passed is ignored by the editor, allowing the UI to retain the last known progress before pausing
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .paused, progress: 0, url: url, serverID: nil)
         case .thumbnailReady(let url):
-            gutenberg.mediaUploadUpdate(id: mediaUploadID, state: .uploading, progress: 0.20, url: url, serverID: nil)
+            gutenberg.mediaUploadUpdate(id: mediaUploadID, url: url)
             break
         case .uploading:
             break
