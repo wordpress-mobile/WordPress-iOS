@@ -4045,6 +4045,8 @@
 		FA1ACAA21BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */; };
 		FA1CEAC225CA9C2A005E7038 /* RestoreStatusFailedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */; };
 		FA1CEAD425CA9C40005E7038 /* RestoreStatusFailedView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */; };
+		FA1FE2962BF2832700926494 /* AppUpdatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1FE2952BF2832700926494 /* AppUpdatePresenter.swift */; };
+		FA1FE2972BF2832700926494 /* AppUpdatePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA1FE2952BF2832700926494 /* AppUpdatePresenter.swift */; };
 		FA20751427A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
 		FA20751527A86B73001A644D /* UIScrollView+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */; };
 		FA25FA212609AA9C0005E08F /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA25F9FD2609AA830005E08F /* AppConfiguration.swift */; };
@@ -4099,6 +4101,16 @@
 		FA6402D129C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */; };
 		FA6402D229C325C1007A235C /* MovedToJetpackEventsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */; };
 		FA681F8A25CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */; };
+		FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
+		FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */; };
+		FA6C32B62BEE782000BBDDB4 /* AppUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B52BEE782000BBDDB4 /* AppUpdateCoordinator.swift */; };
+		FA6C32B72BEE782000BBDDB4 /* AppUpdateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B52BEE782000BBDDB4 /* AppUpdateCoordinator.swift */; };
+		FA6C32B92BF1FFEF00BBDDB4 /* AppStoreSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */; };
+		FA6C32BA2BF1FFEF00BBDDB4 /* AppStoreSearchService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */; };
+		FA6C32BC2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BB2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift */; };
+		FA6C32BD2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BB2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift */; };
+		FA6C32C02BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */; };
+		FA6C32C72BF2588C00BBDDB4 /* app-store-lookup-response.json in Resources */ = {isa = PBXBuildFile; fileRef = FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */; };
 		FA6FAB3525EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */; };
 		FA6FAB4725EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */; };
 		FA70024C29DC3B5500E874FD /* DashboardActivityLogCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */; };
@@ -9443,6 +9455,7 @@
 		FA1ACAA11BC6E45D00DDDCE2 /* WPStyleGuide+Themes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Themes.swift"; sourceTree = "<group>"; };
 		FA1CEAC125CA9C2A005E7038 /* RestoreStatusFailedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreStatusFailedView.swift; sourceTree = "<group>"; };
 		FA1CEAD325CA9C40005E7038 /* RestoreStatusFailedView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = RestoreStatusFailedView.xib; sourceTree = "<group>"; };
+		FA1FE2952BF2832700926494 /* AppUpdatePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdatePresenter.swift; sourceTree = "<group>"; };
 		FA20751327A86B73001A644D /* UIScrollView+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+Helpers.swift"; sourceTree = "<group>"; };
 		FA25F9FD2609AA830005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		FA25FA332609AAAA0005E08F /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
@@ -9483,6 +9496,12 @@
 		FA612DDE274E9F730002B03A /* QuickStartPromptScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickStartPromptScreen.swift; sourceTree = "<group>"; };
 		FA6402D029C325C1007A235C /* MovedToJetpackEventsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovedToJetpackEventsTracker.swift; sourceTree = "<group>"; };
 		FA681F8825CA946B00DAA544 /* BaseRestoreStatusFailedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseRestoreStatusFailedViewController.swift; sourceTree = "<group>"; };
+		FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockingUpdateView.swift; sourceTree = "<group>"; };
+		FA6C32B52BEE782000BBDDB4 /* AppUpdateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateCoordinator.swift; sourceTree = "<group>"; };
+		FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreSearchService.swift; sourceTree = "<group>"; };
+		FA6C32BB2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreInfoViewModel.swift; sourceTree = "<group>"; };
+		FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUpdateCoordinatorTests.swift; sourceTree = "<group>"; };
+		FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "app-store-lookup-response.json"; sourceTree = "<group>"; };
 		FA6FAB3425EF7C5700666CED /* ReaderRelatedPostsSectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderRelatedPostsSectionHeaderView.swift; sourceTree = "<group>"; };
 		FA6FAB4625EF7C6A00666CED /* ReaderRelatedPostsSectionHeaderView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ReaderRelatedPostsSectionHeaderView.xib; sourceTree = "<group>"; };
 		FA70024B29DC3B5500E874FD /* DashboardActivityLogCardCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardActivityLogCardCell.swift; sourceTree = "<group>"; };
@@ -14030,6 +14049,7 @@
 				081E4B4A281BFB520085E89C /* Feature Highlight */,
 				98AA9F1F27EA888C00B3A98C /* Feature Introduction */,
 				7E3E9B6E2177C9C300FD5797 /* Gutenberg */,
+				FA6C32962BEE316900BBDDB4 /* AppUpdate */,
 				E1F391ED1FF25DEC00DB32A3 /* Jetpack */,
 				AB758D9C25EFDF8400961C0B /* Likes */,
 				31F4F6641A13858F00196A98 /* Me */,
@@ -14566,6 +14586,7 @@
 			children = (
 				FEF207F02AF287860025CB2C /* BloggingPrompts */,
 				F4B0F4812ADED999003ABC61 /* Domains */,
+				FA6C32B42BEE77EA00BBDDB4 /* AppUpdate */,
 				F4EDAA4F29A66DA900622D3D /* Reader Post */,
 				5D44EB361986D8BA008B7175 /* ReaderSiteService.h */,
 				F4F09CCB2989BF5B00A5F420 /* ReaderSiteService_Internal.h */,
@@ -16127,6 +16148,7 @@
 		BE20F5E11B2F738E0020694C /* ViewRelated */ = {
 			isa = PBXGroup;
 			children = (
+				FA6C32BE2BF255BB00BBDDB4 /* AppUpdate */,
 				088134FD2A56C5020027C086 /* EUUSCompliance */,
 				3F28CEAD2A4ACEA400B79686 /* Me */,
 				0141929E2983F5D900CAEDB0 /* Support */,
@@ -17198,6 +17220,7 @@
 				7E442FC820F6783600DEACA5 /* ActivityLog */,
 				0C7D48182A4DB91B0023CF84 /* Blaze */,
 				8BEE845627B1DC5E0001A93C /* Dashboard */,
+				FA6C32C32BF2581700BBDDB4 /* In-App Update */,
 				B5DA8A5E20ADAA1C00D5BDE1 /* plugin-directory-jetpack.json */,
 				855408851A6F105700DDBD79 /* app-review-prompt-all-enabled.json */,
 				855408891A6F107D00DDBD79 /* app-review-prompt-global-disable.json */,
@@ -18522,6 +18545,41 @@
 				FAD95D2625B91BCF00F011B5 /* JetpackRestoreStatusFailedViewController.swift */,
 			);
 			path = "Restore Status Failed";
+			sourceTree = "<group>";
+		};
+		FA6C32962BEE316900BBDDB4 /* AppUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32972BEE31A000BBDDB4 /* BlockingUpdateView.swift */,
+				FA6C32BB2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift */,
+			);
+			path = AppUpdate;
+			sourceTree = "<group>";
+		};
+		FA6C32B42BEE77EA00BBDDB4 /* AppUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32B52BEE782000BBDDB4 /* AppUpdateCoordinator.swift */,
+				FA1FE2952BF2832700926494 /* AppUpdatePresenter.swift */,
+				FA6C32B82BF1FFEF00BBDDB4 /* AppStoreSearchService.swift */,
+			);
+			path = AppUpdate;
+			sourceTree = "<group>";
+		};
+		FA6C32BE2BF255BB00BBDDB4 /* AppUpdate */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32BF2BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift */,
+			);
+			path = AppUpdate;
+			sourceTree = "<group>";
+		};
+		FA6C32C32BF2581700BBDDB4 /* In-App Update */ = {
+			isa = PBXGroup;
+			children = (
+				FA6C32C62BF2588C00BBDDB4 /* app-store-lookup-response.json */,
+			);
+			name = "In-App Update";
 			sourceTree = "<group>";
 		};
 		FA70024E29DC3B6100E874FD /* Activity Log */ = {
@@ -20155,6 +20213,7 @@
 				E131CB5816CACFB4004B0314 /* get-user-blogs_doesnt-have-blog.json in Resources */,
 				08DF9C441E8475530058678C /* test-image-portrait.jpg in Resources */,
 				B5AEEC7C1ACACFDA008BF2A4 /* notifications-new-follower.json in Resources */,
+				FA6C32C72BF2588C00BBDDB4 /* app-store-lookup-response.json in Resources */,
 				C8567494243F388F001A995E /* tenor-invalid-search-reponse.json in Resources */,
 				3211055B250C027D0048446F /* valid-jpeg-header.jpg in Resources */,
 				B5AEEC791ACACFDA008BF2A4 /* notifications-badge.json in Resources */,
@@ -21635,6 +21694,7 @@
 				F12FA5D92428FA8F0054DA21 /* AuthenticationService.swift in Sources */,
 				E16A76F11FC4758300A661E3 /* JetpackSiteRef.swift in Sources */,
 				B5B56D3219AFB68800B4E29B /* WPStyleGuide+Reply.swift in Sources */,
+				FA6C32B92BF1FFEF00BBDDB4 /* AppStoreSearchService.swift in Sources */,
 				4A358DE629B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */,
 				C7234A422832C2BA0045C63F /* QRLoginScanningViewController.swift in Sources */,
 				801D94EF2919E7D70051993E /* JetpackFullscreenOverlayGeneralViewModel.swift in Sources */,
@@ -21691,6 +21751,7 @@
 				74FA4BE51FBFA0660031EAAD /* Extensions.xcdatamodeld in Sources */,
 				986CC4D220E1B2F6004F300E /* CustomLogFormatter.swift in Sources */,
 				B038BD152BE1A37D009FD7E9 /* SubscribersChartMarker.swift in Sources */,
+				FA6C32B62BEE782000BBDDB4 /* AppUpdateCoordinator.swift in Sources */,
 				3236F77524ABB7770088E8F3 /* ReaderInterestsCollectionViewCell.swift in Sources */,
 				0C7E09202A4286A00052324C /* PostMetaButton.m in Sources */,
 				F47E154A29E84A9300B6E426 /* SiteCreationPurchasingWebFlowController.swift in Sources */,
@@ -22297,6 +22358,7 @@
 				FA73D7E927987BA500DF24B3 /* SitePickerViewController+SiteIcon.swift in Sources */,
 				E125445612BF5B3900D87A0A /* PostCategory.m in Sources */,
 				E6C892D61C601D55007AD612 /* SharingButtonsViewController.swift in Sources */,
+				FA6C32982BEE31A000BBDDB4 /* BlockingUpdateView.swift in Sources */,
 				F115308121B17E66002F1D65 /* EditorFactory.swift in Sources */,
 				982DDF92263238A6002B3904 /* LikeUser+CoreDataProperties.swift in Sources */,
 				9F8E38BE209C6DE200454E3C /* NotificationSiteSubscriptionViewController.swift in Sources */,
@@ -22733,6 +22795,7 @@
 				821738091FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				5D6C4B081B603E03005E3C43 /* WPContentSyncHelper.swift in Sources */,
 				73C8F06021BEED9100DDDF7E /* SiteAssemblyStep.swift in Sources */,
+				FA6C32BC2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift in Sources */,
 				17870A702816F2A000D1C627 /* StatsLatestPostSummaryInsightsCell.swift in Sources */,
 				82C420761FE44BD900CFB15B /* SiteSettingsViewController+Swift.swift in Sources */,
 				803BB983295957F600B3F6D6 /* MySitesCoordinator+RootViewPresenter.swift in Sources */,
@@ -23090,6 +23153,7 @@
 				F17A2A1E23BFBD72001E96AC /* UIView+ExistingConstraints.swift in Sources */,
 				0C700B862AE1E1300085C2EE /* PageListCell.swift in Sources */,
 				F1450CF32437DA3E00A28BFE /* MediaRequestAuthenticator.swift in Sources */,
+				FA1FE2962BF2832700926494 /* AppUpdatePresenter.swift in Sources */,
 				0C391E5E2A2FE5350040EA91 /* DashboardBlazeCampaignView.swift in Sources */,
 				9881296E219CF1310075FF33 /* StatsCellHeader.swift in Sources */,
 				E1823E6C1E42231C00C19F53 /* UIEdgeInsets.swift in Sources */,
@@ -24199,6 +24263,7 @@
 				B5416CFE1C1756B900006DD8 /* PushNotificationsManagerTests.m in Sources */,
 				321955C124BE4EBF00E3F316 /* ReaderSelectInterestsCoordinatorTests.swift in Sources */,
 				F4EF4BAB291D3D4700147B61 /* SiteIconTests.swift in Sources */,
+				FA6C32C02BF255FA00BBDDB4 /* AppUpdateCoordinatorTests.swift in Sources */,
 				59B48B621B99E132008EBB84 /* JSONObject.swift in Sources */,
 				3F82310F24564A870086E9B8 /* ReaderTabViewTests.swift in Sources */,
 				C3E42AB027F4D30E00546706 /* MenuItemsViewControllerTests.swift in Sources */,
@@ -24767,6 +24832,7 @@
 				FABB21B22602FC2C00C8785C /* NotificationActionParser.swift in Sources */,
 				FABB21B32602FC2C00C8785C /* SiteTagsViewController.swift in Sources */,
 				FABB21B42602FC2C00C8785C /* GutenbergImageLoader.swift in Sources */,
+				FA6C32BA2BF1FFEF00BBDDB4 /* AppStoreSearchService.swift in Sources */,
 				806E53E227E01C7F0064315E /* DashboardStatsViewModel.swift in Sources */,
 				FABB21B52602FC2C00C8785C /* ReaderCrossPostMeta.swift in Sources */,
 				FABB21B62602FC2C00C8785C /* SnippetsContentStyles.swift in Sources */,
@@ -24979,6 +25045,7 @@
 				B084E61F27E3B79F007BF7A8 /* SiteIntentStep.swift in Sources */,
 				FABB22522602FC2C00C8785C /* ActivityTableViewCell.swift in Sources */,
 				F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */,
+				FA1FE2972BF2832700926494 /* AppUpdatePresenter.swift in Sources */,
 				FABB22532602FC2C00C8785C /* BlogDetailsViewController+FancyAlerts.swift in Sources */,
 				F41D98E52B39CAAA004EC050 /* BlogDashboardDynamicCardCoordinator.swift in Sources */,
 				FABB22542602FC2C00C8785C /* StoriesIntroDataSource.swift in Sources */,
@@ -25004,6 +25071,7 @@
 				0CA1C8C22A940EE300F691EE /* AvatarMenuController.swift in Sources */,
 				FABB22622602FC2C00C8785C /* ErrorStateViewConfiguration.swift in Sources */,
 				46B1A16C26A774E500F058AE /* CollapsableHeaderView.swift in Sources */,
+				FA6C32B72BEE782000BBDDB4 /* AppUpdateCoordinator.swift in Sources */,
 				FABB22632602FC2C00C8785C /* UIFont+Weight.swift in Sources */,
 				FABB22642602FC2C00C8785C /* PostChart.swift in Sources */,
 				FE4DC5AA293A84F8008F322F /* WordPressExportRoute.swift in Sources */,
@@ -25448,6 +25516,7 @@
 				FABB23922602FC2C00C8785C /* UIImage+Assets.swift in Sources */,
 				FABB23942602FC2C00C8785C /* LoginEpilogueUserInfo.swift in Sources */,
 				086F2483284F52DF00032F39 /* Tooltip.swift in Sources */,
+				FA6C32BD2BF21B1C00BBDDB4 /* AppStoreInfoViewModel.swift in Sources */,
 				8313B9FB2995A03C000AF26E /* JetpackRemoteInstallCardView.swift in Sources */,
 				FABEC3512BDAABA8009F513C /* FeatureFlagRolloutStore.swift in Sources */,
 				FABB23962602FC2C00C8785C /* StatsTableFooter.swift in Sources */,
@@ -26190,6 +26259,7 @@
 				FABB25972602FC2C00C8785C /* BlogToAccount.m in Sources */,
 				FECA443028350B7800D01F15 /* PromptRemindersScheduler.swift in Sources */,
 				FABB25982602FC2C00C8785C /* JetpackRestoreHeaderView.swift in Sources */,
+				FA6C32B32BEE65EF00BBDDB4 /* BlockingUpdateView.swift in Sources */,
 				FABB25992602FC2C00C8785C /* StoryboardLoadable.swift in Sources */,
 				83BF48BC2BD6F03000C0E1A1 /* ReaderTagCardCellViewModel.swift in Sources */,
 				FABB259A2602FC2C00C8785C /* ReaderBlockSiteAction.swift in Sources */,
