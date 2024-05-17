@@ -4,11 +4,11 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     @Published var state: CommentModerationState
+    @Published var isLoading: Bool = false
     private let comment: Comment
     private let coordinator: CommentModerationCoordinator
     private let notification: Notification?
     private let stateChanged: ((Result<CommentModerationState, CommentModerationError>) -> Void)?
-
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -116,6 +116,7 @@ private extension CommentModerationViewModel {
             CommentAnalytics.trackCommentApproved(comment: comment)
         }
 
+        isLoading = true
         coordinator.didSelectOption()
         commentService.approve(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .approved(liked: false))
@@ -129,6 +130,7 @@ private extension CommentModerationViewModel {
             CommentAnalytics.trackCommentUnApproved(comment: comment)
         }
 
+        isLoading = true
         coordinator.didSelectOption()
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .pending)
@@ -141,6 +143,8 @@ private extension CommentModerationViewModel {
         track(withEvent: .notificationsCommentFlaggedAsSpam) { comment in
             CommentAnalytics.trackCommentSpammed(comment: comment)
         }
+
+        isLoading = true
         coordinator.didSelectOption()
         commentService.spamComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .spam)
@@ -153,6 +157,7 @@ private extension CommentModerationViewModel {
         track(withEvent: .notificationsCommentTrashed) { comment in
             CommentAnalytics.trackCommentTrashed(comment: comment)
         }
+        isLoading = true
         coordinator.didSelectOption()
         commentService.trashComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .trash)
@@ -164,6 +169,7 @@ private extension CommentModerationViewModel {
     func deleteComment(completion: ((Bool) -> Void)? = nil) {
         CommentAnalytics.trackCommentTrashed(comment: comment)
 
+        isLoading = true
         commentService.delete(comment, success: { [weak self] in
             guard let self else {
                 return
@@ -194,10 +200,12 @@ private extension CommentModerationViewModel {
 
     func handleStatusChangeSuccess(state: CommentModerationState) {
         self.state = state
+        isLoading = false
         stateChanged?(.success(state))
     }
 
     func handleStatusChangeFailure(error: CommentModerationError) {
+        isLoading = false
         stateChanged?(.failure(error))
     }
 }

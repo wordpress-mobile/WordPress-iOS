@@ -58,7 +58,7 @@ public struct DSButton: View {
             buttonBackground
             if isLoading {
                 ProgressView()
-                    .tint(Color.white)
+                    .tint(Color.DS.Background.primary)
             } else {
                 if style.emphasis != .tertiary {
                     buttonLabel

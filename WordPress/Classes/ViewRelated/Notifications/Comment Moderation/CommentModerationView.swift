@@ -86,8 +86,7 @@ private struct Container<T: View, V: View>: View {
 }
 
 private struct Pending: View {
-
-    let viewModel: CommentModerationViewModel
+    @ObservedObject var viewModel: CommentModerationViewModel
 
     var body: some View {
         Container(title: Strings.title, icon: { icon }) {
@@ -98,7 +97,9 @@ private struct Pending: View {
                     style: DSButtonStyle(
                         emphasis: .primary,
                         size: .large
-                    )) {
+                    ),
+                    isLoading: $viewModel.isLoading
+                ) {
                         viewModel.didTapPrimaryCTA()
                     }
                 DSButton(
@@ -141,7 +142,7 @@ private struct Pending: View {
 
 private struct Approved: View {
 
-    let viewModel: CommentModerationViewModel
+    @ObservedObject var viewModel: CommentModerationViewModel
     let liked: Bool
 
     private var likeButtonTitle: String {
@@ -211,7 +212,6 @@ private struct Approved: View {
 }
 
 private struct TrashSpam: View {
-
     @ObservedObject var viewModel: CommentModerationViewModel
 
     @State var title: String
@@ -229,7 +229,8 @@ private struct TrashSpam: View {
                 style: .init(
                     emphasis: .primary,
                     size: .large
-                )
+                ),
+                isLoading: $viewModel.isLoading
             ) {
                 self.viewModel.didTapPrimaryCTA()
             }
