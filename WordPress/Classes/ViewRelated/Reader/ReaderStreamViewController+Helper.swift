@@ -177,6 +177,12 @@ extension ReaderStreamViewController {
     ///
     /// - Returns: A configured UIView, or nil if the conditions are not met.
     func makeAnnouncementHeader() -> UIView? {
+        // don't show the announcement while searching.
+        if let readerTopic,
+           ReaderHelpers.isTopicSearchTopic(readerTopic) {
+            return nil
+        }
+
         guard readerAnnouncementCoordinator.canShowAnnouncement,
               tableView.tableHeaderView == nil,
               !isContentFiltered,
