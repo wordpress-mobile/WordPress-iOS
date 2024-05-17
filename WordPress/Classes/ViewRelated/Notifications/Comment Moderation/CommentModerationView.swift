@@ -231,6 +231,7 @@ private struct TrashSpam: View {
                     size: .large
                 )
             ) {
+                self.viewModel.didTapPrimaryCTA()
             }
         }.onChange(of: viewModel.state) { state in
             if let title = Self.title(for: state) {

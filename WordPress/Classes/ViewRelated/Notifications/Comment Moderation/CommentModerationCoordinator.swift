@@ -16,4 +16,8 @@ final class CommentModerationCoordinator {
     func didSelectOption() {
         commentDetailViewController.changeStatusViewController?.dismiss(animated: true)
     }
+
+    func didDeleteComment() {
+        commentDetailViewController.navigationController?.popViewController(animated: true)
+    }
 }

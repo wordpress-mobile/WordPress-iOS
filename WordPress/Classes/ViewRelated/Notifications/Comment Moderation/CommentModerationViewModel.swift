@@ -66,7 +66,7 @@ final class CommentModerationViewModel: ObservableObject {
         switch state {
         case .pending:
             approveComment()
-        case .trash:
+        case .trash, .spam:
             deleteComment()
         default:
             () // Do nothing
@@ -169,6 +169,7 @@ private extension CommentModerationViewModel {
                 return
             }
             self.handleStatusChangeSuccess(state: .deleted)
+            self.coordinator.didDeleteComment()
             NotificationCenter.default.post(
                 name: .NotificationCommentDeletedNotification,
                 object: nil,
@@ -178,7 +179,6 @@ private extension CommentModerationViewModel {
             self?.handleStatusChangeFailure(error: .deleted)
         })
     }
-
 
     func track(withEvent event: WPAnalyticsStat, commentAnalyticsClosure: (Comment) -> Void) {
         if isNotificationComment {
