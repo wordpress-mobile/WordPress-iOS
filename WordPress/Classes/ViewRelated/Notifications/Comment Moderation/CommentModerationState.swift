@@ -3,6 +3,7 @@ enum CommentModerationState: Equatable {
     case approved(liked: Bool)
     case spam
     case trash
+    case deleted
 
     init(comment: Comment) {
         switch comment.status {

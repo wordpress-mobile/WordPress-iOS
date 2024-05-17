@@ -7,8 +7,8 @@ final class CommentModerationViewModel: ObservableObject {
     private let comment: Comment
     private let coordinator: CommentModerationCoordinator
     private let notification: Notification?
-    private let stateChanged: ((Result<CommentModerationState, Error>) -> Void)?
-    
+    private let stateChanged: ((Result<CommentModerationState, CommentModerationError>) -> Void)?
+
 
     private var isNotificationComment: Bool {
         notification != nil
@@ -34,7 +34,7 @@ final class CommentModerationViewModel: ObservableObject {
         comment: Comment,
         coordinator: CommentModerationCoordinator,
         notification: Notification?,
-        stateChanged: ((Result<CommentModerationState, Error>) -> Void)?
+        stateChanged: ((Result<CommentModerationState, CommentModerationError>) -> Void)?
     ) {
         self.state = CommentModerationState(comment: comment)
         self.comment = comment
@@ -53,6 +53,8 @@ final class CommentModerationViewModel: ObservableObject {
             trashComment()
         case .spam:
             spamComment()
+        case .deleted:
+            deleteComment()
         }
     }
 
@@ -65,7 +67,7 @@ final class CommentModerationViewModel: ObservableObject {
         case .pending:
             approveComment()
         case .trash:
-            trashComment()
+            deleteComment()
         default:
             () // Do nothing
         }
@@ -117,8 +119,8 @@ private extension CommentModerationViewModel {
         coordinator.didSelectOption()
         commentService.approve(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .approved(liked: false))
-        }, failure: { [weak self] error in
-            self?.handleStatusChangeFailure(error: error)
+        }, failure: { [weak self] _ in
+            self?.handleStatusChangeFailure(error: .approved)
         })
     }
 
@@ -130,8 +132,8 @@ private extension CommentModerationViewModel {
         coordinator.didSelectOption()
         commentService.unapproveComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .pending)
-        }, failure: { [weak self] error in
-            self?.handleStatusChangeFailure(error: error)
+        }, failure: { [weak self] _ in
+            self?.handleStatusChangeFailure(error: .pending)
         })
     }
 
@@ -142,8 +144,8 @@ private extension CommentModerationViewModel {
         coordinator.didSelectOption()
         commentService.spamComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .spam)
-        }, failure: { [weak self] error in
-            self?.handleStatusChangeFailure(error: error)
+        }, failure: { [weak self] _ in
+            self?.handleStatusChangeFailure(error: .spam)
         })
     }
 
@@ -154,10 +156,29 @@ private extension CommentModerationViewModel {
         coordinator.didSelectOption()
         commentService.trashComment(comment, success: { [weak self] in
             self?.handleStatusChangeSuccess(state: .trash)
-        }, failure: { [weak self] error in
-            self?.handleStatusChangeFailure(error: error)
+        }, failure: { [weak self] _ in
+            self?.handleStatusChangeFailure(error: .trash)
         })
     }
+
+    func deleteComment(completion: ((Bool) -> Void)? = nil) {
+        CommentAnalytics.trackCommentTrashed(comment: comment)
+
+        commentService.delete(comment, success: { [weak self] in
+            guard let self else {
+                return
+            }
+            self.handleStatusChangeSuccess(state: .deleted)
+            NotificationCenter.default.post(
+                name: .NotificationCommentDeletedNotification,
+                object: nil,
+                userInfo: [userInfoCommentIdKey: self.comment.commentID]
+            )
+        }, failure: { [weak self] _ in
+            self?.handleStatusChangeFailure(error: .deleted)
+        })
+    }
+
 
     func track(withEvent event: WPAnalyticsStat, commentAnalyticsClosure: (Comment) -> Void) {
         if isNotificationComment {
@@ -176,7 +197,49 @@ private extension CommentModerationViewModel {
         stateChanged?(.success(state))
     }
 
-    func handleStatusChangeFailure(error: Error?) {
-        stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
+    func handleStatusChangeFailure(error: CommentModerationError) {
+        stateChanged?(.failure(error))
+    }
+}
+
+// MARK: - CommentModerationError
+
+extension CommentModerationViewModel {
+    enum CommentModerationError: Error {
+        case pending
+        case approved
+        case spam
+        case trash
+        case deleted
+
+        var failureMessage: String {
+            switch self {
+            case .approved:
+                return NSLocalizedString(
+                    "Error approving comment.",
+                    comment: "Message displayed when approving a comment fails."
+                )
+            case .pending:
+                return NSLocalizedString(
+                    "Error setting comment to pending.",
+                    comment: "Message displayed when pending a comment fails."
+                )
+            case .spam:
+                return NSLocalizedString(
+                    "Error marking comment as spam.",
+                    comment: "Message displayed when spamming a comment fails."
+                )
+            case .trash:
+                return NSLocalizedString(
+                    "Error moving comment to trash.",
+                    comment: "Message displayed when trashing a comment fails."
+                )
+            case .deleted:
+                return NSLocalizedString(
+                    "Error deleting comment.",
+                    comment: "Message displayed when deleting a comment fails."
+                )
+            }
+        }
     }
 }

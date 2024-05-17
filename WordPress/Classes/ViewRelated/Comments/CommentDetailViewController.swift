@@ -297,7 +297,6 @@ private extension CommentDetailViewController {
         case content
         case replyIndicator
         case status(status: CommentStatusType)
-        case deleteComment
     }
 
     struct Constants {
@@ -336,9 +335,7 @@ private extension CommentDetailViewController {
     }
 
     func createCommentModerationViewModel() -> CommentModerationViewModel {
-        let moderationState = CommentModerationState(comment: comment)
-
-        return CommentModerationViewModel(
+        CommentModerationViewModel(
             comment: comment,
             coordinator: CommentModerationCoordinator(commentDetailViewController: self),
             notification: notification,
@@ -349,7 +346,7 @@ private extension CommentDetailViewController {
                     self?.refreshData()
 
                 case .failure(let error):
-                    self?.displayNotice(title: moderationState.failureMessage)
+                    self?.displayNotice(title: error.failureMessage)
                     self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
                 }
             }
@@ -675,33 +672,6 @@ private extension CommentDetailViewController {
                                      })
     }
 
-    func toggleCommentLike() {
-        guard let siteID = siteID else {
-            refreshData() // revert the like button state.
-            return
-        }
-
-        if comment.isLiked {
-            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnliked, withBlogID: notification?.metaSiteID) :
-                                    CommentAnalytics.trackCommentUnLiked(comment: comment)
-        } else {
-            isNotificationComment ? WPAppAnalytics.track(.notificationsCommentLiked, withBlogID: notification?.metaSiteID) :
-                                    CommentAnalytics.trackCommentLiked(comment: comment)
-        }
-
-        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: { [weak self] in
-            guard let self, let notification = self.notification else {
-                return
-            }
-            let mediator = NotificationSyncMediator()
-            mediator?.invalidateCacheForNotification(notification.notificationId, completion: {
-                mediator?.syncNote(with: notification.notificationId)
-            })
-        }, failure: { _ in
-            self.refreshData() // revert the like button state.
-        })
-    }
-
     @objc func shareCommentURL(sourceView: UIView) {
         guard let commentURL = comment.commentURL() else {
             return
@@ -853,13 +823,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
             case .replyIndicator:
                 return replyIndicatorCell
-
-            case .deleteComment: // TODO: REMOVE
-                if comment.deleteWillBePermanent() {
-                    return deleteButtonCell
-                } else {
-                    return trashButtonCell
-                }
 
             case .status(let statusType):
                 return configuredStatusCell(for: statusType)
@@ -1099,21 +1062,6 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 
 }
 
-// MARK: - BorderedButtonTableViewCellDelegate
-
-extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
-
-    func buttonTapped() {
-        // TODO: Move Logic to VM
-        if comment.deleteWillBePermanent() {
-            deleteButtonTapped()
-        } else {
-            commentStatus = .unapproved
-        }
-    }
-
-}
-
 // MARK: String
 
 private extension CommentDetailViewController {
@@ -1125,42 +1073,33 @@ private extension CommentDetailViewController {
 // MARK: CommentModerationState
 
 private extension CommentModerationState {
-    private enum ModerationMessages {
-        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
-        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
-        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
-        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
-        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
-    }
-
     var successMessage: String {
         switch self {
         case .approved:
-            return ModerationMessages.approveSuccess
+            return NSLocalizedString(
+                "Comment approved.",
+                comment: "Message displayed when approving a comment succeeds."
+            )
         case .pending:
-            return ModerationMessages.pendingSuccess
+            return NSLocalizedString(
+                "Comment set to pending.",
+                comment: "Message displayed when pending a comment succeeds."
+            )
         case .spam:
-            return ModerationMessages.spamSuccess
+            return NSLocalizedString(
+                "Comment marked as spam.",
+                comment: "Message displayed when spamming a comment succeeds."
+            )
         case .trash:
-            return ModerationMessages.trashSuccess
-        }
-    }
-
-    var failureMessage: String {
-        switch self {
-        case .approved:
-            return ModerationMessages.approveFail
-        case .pending:
-            return ModerationMessages.pendingFail
-        case .spam:
-            return ModerationMessages.spamFail
-        case .trash:
-            return ModerationMessages.trashFail
+            return NSLocalizedString(
+                "Comment moved to trash.",
+                comment: "Message displayed when trashing a comment succeeds."
+            )
+        case .deleted:
+            return NSLocalizedString(
+                "Comment deleted.",
+                comment: "Message displayed when deleting a comment succeeds."
+            )
         }
     }
 }
