@@ -4,10 +4,10 @@ enum CommentModerationState: Equatable {
     case spam
     case trash
 
-    init?(comment: Comment) {
+    init(comment: Comment) {
         switch comment.status {
         case "approve":
-            self = .approved(liked: false)
+            self = .approved(liked: comment.isLiked)
         case "hold":
             self = .pending
         case "spam":
@@ -15,7 +15,9 @@ enum CommentModerationState: Equatable {
         case "trash":
             self = .trash
         default:
-            return nil
+            // Defaulting to `pending` if for some reason
+            // the status isn't one of the defined cases.
+            self = .pending
         }
     }
 }

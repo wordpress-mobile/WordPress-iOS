@@ -201,9 +201,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
-        if let moderationState = CommentModerationState(comment: comment) {
-            self.commentModerationViewModel = createCommentModerationViewModel(moderationState: moderationState)
-        }
+        self.commentModerationViewModel = createCommentModerationViewModel()
     }
 
     required init?(coder: NSCoder) {
@@ -337,9 +335,10 @@ private extension CommentDetailViewController {
         view.pinSubviewToAllEdges(containerStackView)
     }
 
-    func createCommentModerationViewModel(moderationState: CommentModerationState) -> CommentModerationViewModel {
-        CommentModerationViewModel(
-            state: moderationState,
+    func createCommentModerationViewModel() -> CommentModerationViewModel {
+        let moderationState = CommentModerationState(comment: comment)
+
+        return CommentModerationViewModel(
             comment: comment,
             coordinator: CommentModerationCoordinator(commentDetailViewController: self),
             notification: notification,

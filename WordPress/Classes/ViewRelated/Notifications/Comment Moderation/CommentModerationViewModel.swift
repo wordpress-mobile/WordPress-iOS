@@ -8,9 +8,14 @@ final class CommentModerationViewModel: ObservableObject {
     private let coordinator: CommentModerationCoordinator
     private let notification: Notification?
     private let stateChanged: ((Result<CommentModerationState, Error>) -> Void)?
+    
 
     private var isNotificationComment: Bool {
         notification != nil
+    }
+
+    private var siteID: NSNumber? {
+        return comment.blog?.dotComID ?? notification?.metaSiteID
     }
 
     var userName: String {
@@ -25,15 +30,13 @@ final class CommentModerationViewModel: ObservableObject {
         return .init(coreDataStack: ContextManager.shared)
     }()
 
-    // Temporary init argument
     init(
-        state: CommentModerationState,
         comment: Comment,
         coordinator: CommentModerationCoordinator,
         notification: Notification?,
         stateChanged: ((Result<CommentModerationState, Error>) -> Void)?
     ) {
-        self.state = state
+        self.state = CommentModerationState(comment: comment)
         self.comment = comment
         self.coordinator = coordinator
         self.notification = notification
@@ -44,7 +47,7 @@ final class CommentModerationViewModel: ObservableObject {
         switch state {
         case .pending:
             unapproveComment()
-        case .approved(let liked):
+        case .approved:
             approveComment()
         case .trash:
             trashComment()
@@ -73,12 +76,35 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapLike() {
-        switch state {
-        case .approved(let liked):
-            state = .approved(liked: !liked)
-        default:
-            break
+        let initialIsLiked = comment.isLiked
+
+        guard let siteID = siteID else {
+            self.state = .approved(liked: initialIsLiked)
+            return
         }
+
+        if initialIsLiked {
+            track(withEvent: .notificationsCommentLiked) { comment in
+                CommentAnalytics.trackCommentUnLiked(comment: comment)
+            }
+        } else {
+            track(withEvent: .notificationsCommentLiked) { comment in
+                CommentAnalytics.trackCommentLiked(comment: comment)
+            }
+        }
+
+        self.state = .approved(liked: !initialIsLiked)
+        commentService.toggleLikeStatus(for: comment, siteID: siteID, success: { [weak self] in
+            guard let self, let notification = self.notification else {
+                return
+            }
+            let mediator = NotificationSyncMediator()
+            mediator?.invalidateCacheForNotification(notification.notificationId, completion: {
+                mediator?.syncNote(with: notification.notificationId)
+            })
+        }, failure: { _ in
+            self.state = .approved(liked: initialIsLiked)
+        })
     }
 }
 
