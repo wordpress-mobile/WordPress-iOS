@@ -35,22 +35,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var managedObjectContext: NSManagedObjectContext
     private var sections = [SectionType] ()
     private var rows = [RowType]()
-    private var commentStatus: CommentStatusType? {
-        didSet {
-            switch commentStatus {
-            case .pending:
-                unapproveComment()
-            case .approved:
-                approveComment()
-            case .spam:
-                spamComment()
-            case .unapproved:
-                trashComment()
-            default:
-                break
-            }
-        }
-    }
+    private var commentStatus: CommentStatusType?
     private var notification: Notification?
 
     private var isNotificationComment: Bool {
@@ -141,7 +126,8 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-    private weak var changeStatusViewController: BottomSheetViewController?
+    weak var changeStatusViewController: BottomSheetViewController?
+    private var commentModerationViewModel: CommentModerationViewModel?
 
     // MARK: -
 
@@ -215,6 +201,9 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
+        if let moderationState = CommentModerationState(comment: comment) {
+            self.commentModerationViewModel = createCommentModerationViewModel(moderationState: moderationState)
+        }
     }
 
     required init?(coder: NSCoder) {
@@ -284,16 +273,13 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     func presentChangeStatusSheet() {
         self.changeStatusViewController?.dismiss(animated: false)
-        let controller = CommentModerationOptionsViewController { [weak self] status in
-            guard let self else {
-                return
-            }
-            self.updateCommentStatus(status)
-            self.changeStatusViewController?.dismiss(animated: true)
+        if let commentModerationViewModel {
+            let controller = CommentModerationOptionsViewController(viewModel: commentModerationViewModel)
+
+            let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
+            bottomSheetViewController.show(from: self)
+            self.changeStatusViewController = bottomSheetViewController
         }
-        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
-        bottomSheetViewController.show(from: self)
-        self.changeStatusViewController = bottomSheetViewController
     }
 }
 
@@ -341,52 +327,34 @@ private extension CommentDetailViewController {
         containerStackView.axis = .vertical
         containerStackView.addArrangedSubview(tableView)
         if comment.allowsModeration(),
-            let moderationState = CommentModerationState(comment: comment) {
+            let commentModerationViewModel {
             let commentModerationView = CommentModerationView(
-                viewModel: CommentModerationViewModel(
-                    state: moderationState,
-                    comment: comment,
-                    coordinator: CommentModerationCoordinator(commentDetailViewController: self),
-                    notification: notification,
-                    stateChanged: { [weak self] result in
-                        switch result {
-                        case .success(let moderationState):
-                            let message: String
-                            switch moderationState {
-                            case .approved:
-                                message = ModerationMessages.approveSuccess
-                            case .pending:
-                                message = ModerationMessages.pendingSuccess
-                            case .spam:
-                                message = ModerationMessages.spamSuccess
-                            case .trash:
-                                message = ModerationMessages.trashSuccess
-                            }
-                            self?.showActionableNotice(title: message)
-                            self?.refreshData()
-
-                        case .failure(let error):
-                            let message: String
-                            switch moderationState {
-                            case .approved:
-                                message = ModerationMessages.approveFail
-                            case .pending:
-                                message = ModerationMessages.pendingFail
-                            case .spam:
-                                message = ModerationMessages.spamFail
-                            case .trash:
-                                message = ModerationMessages.trashFail
-                            }
-                            self?.displayNotice(title: message)
-                            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-                        }
-                    }
-                )
+                viewModel: commentModerationViewModel
             )
             let hostingController = UIHostingController(rootView: commentModerationView)
             containerStackView.addArrangedSubview(hostingController.view)
         }
         view.pinSubviewToAllEdges(containerStackView)
+    }
+
+    func createCommentModerationViewModel(moderationState: CommentModerationState) -> CommentModerationViewModel {
+        CommentModerationViewModel(
+            state: moderationState,
+            comment: comment,
+            coordinator: CommentModerationCoordinator(commentDetailViewController: self),
+            notification: notification,
+            stateChanged: { [weak self] result in
+                switch result {
+                case .success(let moderationState):
+                    self?.showActionableNotice(title: moderationState.successMessage)
+                    self?.refreshData()
+
+                case .failure(let error):
+                    self?.displayNotice(title: moderationState.failureMessage)
+                    self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
+                }
+            }
+        )
     }
 
     func configureNavigationBar() {
@@ -682,14 +650,14 @@ private extension CommentDetailViewController {
     }
 
     func deleteButtonTapped() {
-        let commentID = comment.commentID
-        deleteComment() { [weak self] success in
-            if success {
-                self?.postNotificationCommentDeleted(commentID)
-                // Dismiss the view since the Comment no longer exists.
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
+//        let commentID = comment.commentID
+//        deleteComment() { [weak self] success in
+//            if success {
+//                self?.postNotificationCommentDeleted(commentID)
+//                // Dismiss the view since the Comment no longer exists.
+//                self?.navigationController?.popViewController(animated: true)
+//            }
+//        }
     }
 
     func updateComment() {
@@ -801,88 +769,6 @@ private extension CommentStatusType {
 // MARK: - Comment Moderation Actions
 
 private extension CommentDetailViewController {
-    func updateCommentStatus(_ status: CommentModerationOptionsView.Option) {
-        switch status {
-        case .pending: unapproveComment()
-        case .approve: approveComment()
-        case .spam: spamComment()
-        case .trash: trashComment()
-        }
-    }
-
-    func unapproveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentUnapproved,
-                                                     withProperties: Constants.notificationDetailSource,
-                                                     withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentUnApproved(comment: comment)
-
-        commentService.unapproveComment(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.pendingSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] error in
-            self?.displayNotice(title: ModerationMessages.pendingFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
-    }
-
-    func approveComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentApproved,
-                                                     withProperties: Constants.notificationDetailSource,
-                                                     withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentApproved(comment: comment)
-
-        commentService.approve(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.approveSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] error in
-            self?.displayNotice(title: ModerationMessages.approveFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
-    }
-
-    func spamComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentFlaggedAsSpam, withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentSpammed(comment: comment)
-
-        commentService.spamComment(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.spamSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] error in
-            self?.displayNotice(title: ModerationMessages.spamFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
-    }
-
-    func trashComment() {
-        isNotificationComment ? WPAppAnalytics.track(.notificationsCommentTrashed, withBlogID: notification?.metaSiteID) :
-                                CommentAnalytics.trackCommentTrashed(comment: comment)
-        trashButtonCell.isLoading = true
-
-        commentService.trashComment(comment, success: { [weak self] in
-            self?.trashButtonCell.isLoading = false
-            self?.showActionableNotice(title: ModerationMessages.trashSuccess)
-            self?.refreshData()
-        }, failure: { [weak self] error in
-            self?.trashButtonCell.isLoading = false
-            self?.displayNotice(title: ModerationMessages.trashFail)
-            self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
-        })
-    }
-
-    func deleteComment(completion: ((Bool) -> Void)? = nil) {
-        CommentAnalytics.trackCommentTrashed(comment: comment)
-        deleteButtonCell.isLoading = true
-
-        commentService.delete(comment, success: { [weak self] in
-            self?.showActionableNotice(title: ModerationMessages.deleteSuccess)
-            completion?(true)
-        }, failure: { [weak self] error in
-            self?.deleteButtonCell.isLoading = false
-            self?.displayNotice(title: ModerationMessages.deleteFail)
-            completion?(false)
-        })
-    }
-
     func notifyDelegateCommentModerated() {
         notificationDelegate?.commentWasModerated(for: notification)
     }
@@ -908,7 +794,7 @@ private extension CommentDetailViewController {
 
         displayActionableNotice(title: title,
                                 style: NormalNoticeStyle(showNextArrow: true),
-                                actionTitle: ModerationMessages.next,
+                                actionTitle: Strings.next,
                                 actionHandler: { [weak self] _ in
             self?.showNextComment()
         })
@@ -922,21 +808,6 @@ private extension CommentDetailViewController {
         WPAnalytics.track(.commentSnackbarNext)
         commentDelegate?.nextCommentSelected()
     }
-
-    struct ModerationMessages {
-        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
-        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
-        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
-        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
-        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
-        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
-        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
-        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
-        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
-        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
-        static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
-    }
-
 }
 
 // MARK: - UITableView Methods
@@ -984,7 +855,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
             case .replyIndicator:
                 return replyIndicatorCell
 
-            case .deleteComment:
+            case .deleteComment: // TODO: REMOVE
                 if comment.deleteWillBePermanent() {
                     return deleteButtonCell
                 } else {
@@ -1234,6 +1105,7 @@ extension CommentDetailViewController: SuggestionsTableViewDelegate {
 extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
 
     func buttonTapped() {
+        // TODO: Move Logic to VM
         if comment.deleteWillBePermanent() {
             deleteButtonTapped()
         } else {
@@ -1241,4 +1113,55 @@ extension CommentDetailViewController: BorderedButtonTableViewCellDelegate {
         }
     }
 
+}
+
+// MARK: String
+
+private extension CommentDetailViewController {
+    enum Strings {
+        static let next = NSLocalizedString("Next", comment: "Next action on comment moderation snackbar.")
+    }
+}
+
+// MARK: CommentModerationState
+
+private extension CommentModerationState {
+    private enum ModerationMessages {
+        static let pendingSuccess = NSLocalizedString("Comment set to pending.", comment: "Message displayed when pending a comment succeeds.")
+        static let pendingFail = NSLocalizedString("Error setting comment to pending.", comment: "Message displayed when pending a comment fails.")
+        static let approveSuccess = NSLocalizedString("Comment approved.", comment: "Message displayed when approving a comment succeeds.")
+        static let approveFail = NSLocalizedString("Error approving comment.", comment: "Message displayed when approving a comment fails.")
+        static let spamSuccess = NSLocalizedString("Comment marked as spam.", comment: "Message displayed when spamming a comment succeeds.")
+        static let spamFail = NSLocalizedString("Error marking comment as spam.", comment: "Message displayed when spamming a comment fails.")
+        static let trashSuccess = NSLocalizedString("Comment moved to trash.", comment: "Message displayed when trashing a comment succeeds.")
+        static let trashFail = NSLocalizedString("Error moving comment to trash.", comment: "Message displayed when trashing a comment fails.")
+        static let deleteSuccess = NSLocalizedString("Comment deleted.", comment: "Message displayed when deleting a comment succeeds.")
+        static let deleteFail = NSLocalizedString("Error deleting comment.", comment: "Message displayed when deleting a comment fails.")
+    }
+
+    var successMessage: String {
+        switch self {
+        case .approved:
+            return ModerationMessages.approveSuccess
+        case .pending:
+            return ModerationMessages.pendingSuccess
+        case .spam:
+            return ModerationMessages.spamSuccess
+        case .trash:
+            return ModerationMessages.trashSuccess
+        }
+    }
+
+    var failureMessage: String {
+        switch self {
+        case .approved:
+            return ModerationMessages.approveFail
+        case .pending:
+            return ModerationMessages.pendingFail
+        case .spam:
+            return ModerationMessages.spamFail
+        case .trash:
+            return ModerationMessages.trashFail
+        }
+    }
 }

@@ -88,11 +88,11 @@ private extension CommentModerationViewModel {
             CommentAnalytics.trackCommentApproved(comment: comment)
         }
 
+        coordinator.didSelectOption()
         commentService.approve(comment, success: { [weak self] in
-            self?.state = .approved(liked: false)
-            self?.stateChanged?(.success(.approved(liked: false)))
+            self?.handleStatusChangeSuccess(state: .approved(liked: false))
         }, failure: { [weak self] error in
-            self?.stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
+            self?.handleStatusChangeFailure(error: error)
         })
     }
 
@@ -101,11 +101,11 @@ private extension CommentModerationViewModel {
             CommentAnalytics.trackCommentUnApproved(comment: comment)
         }
 
+        coordinator.didSelectOption()
         commentService.unapproveComment(comment, success: { [weak self] in
-            self?.state = .pending
-            self?.stateChanged?(.success(.pending))
+            self?.handleStatusChangeSuccess(state: .pending)
         }, failure: { [weak self] error in
-            self?.stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
+            self?.handleStatusChangeFailure(error: error)
         })
     }
 
@@ -113,11 +113,11 @@ private extension CommentModerationViewModel {
         track(withEvent: .notificationsCommentFlaggedAsSpam) { comment in
             CommentAnalytics.trackCommentSpammed(comment: comment)
         }
+        coordinator.didSelectOption()
         commentService.spamComment(comment, success: { [weak self] in
-            self?.state = .spam
-            self?.stateChanged?(.success(.spam))
+            self?.handleStatusChangeSuccess(state: .spam)
         }, failure: { [weak self] error in
-            self?.stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
+            self?.handleStatusChangeFailure(error: error)
         })
     }
 
@@ -125,11 +125,11 @@ private extension CommentModerationViewModel {
         track(withEvent: .notificationsCommentTrashed) { comment in
             CommentAnalytics.trackCommentTrashed(comment: comment)
         }
+        coordinator.didSelectOption()
         commentService.trashComment(comment, success: { [weak self] in
-            self?.state = .trash
-            self?.stateChanged?(.success(.trash))
+            self?.handleStatusChangeSuccess(state: .trash)
         }, failure: { [weak self] error in
-            self?.stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
+            self?.handleStatusChangeFailure(error: error)
         })
     }
 
@@ -143,5 +143,14 @@ private extension CommentModerationViewModel {
         } else {
             commentAnalyticsClosure(comment)
         }
+    }
+
+    func handleStatusChangeSuccess(state: CommentModerationState) {
+        self.state = state
+        stateChanged?(.success(state))
+    }
+
+    func handleStatusChangeFailure(error: Error?) {
+        stateChanged?(.failure(error!)) // FIXME: Remove force unwrap
     }
 }
