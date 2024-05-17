@@ -1,8 +1,8 @@
 import Foundation
 
-enum AppUpdateType {
-    case flexible(AppStoreLookupResponse.AppStoreInfo)
-    case blocking(AppStoreLookupResponse.AppStoreInfo)
+struct AppUpdateType {
+    let appStoreInfo: AppStoreLookupResponse.AppStoreInfo
+    let isRequired: Bool
 }
 
 final class AppUpdateCoordinator {
@@ -48,11 +48,10 @@ final class AppUpdateCoordinator {
             return
         }
 
-        switch updateType {
-        case .flexible(let appStoreInfo):
-            presenter.showNotice(using: appStoreInfo)
-        case .blocking(let appStoreInfo):
-            presenter.showBlockingUpdate(using: appStoreInfo)
+        if updateType.isRequired {
+            presenter.showBlockingUpdate(using: updateType.appStoreInfo)
+        } else {
+            presenter.showNotice(using: updateType.appStoreInfo)
         }
     }
 
@@ -69,10 +68,10 @@ final class AppUpdateCoordinator {
                 return nil
             }
             if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
-                return .blocking(appStoreInfo)
+                return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: true)
             }
             if currentVersion.isLower(than: appStoreInfo.version) {
-                return .flexible(appStoreInfo)
+                return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: false)
             }
             return nil
         }
