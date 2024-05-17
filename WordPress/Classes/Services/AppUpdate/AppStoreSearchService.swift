@@ -11,7 +11,7 @@ struct AppStoreLookupResponse: Decodable {
         let releaseNotes: String
         let minimumOsVersion: String
         let currentVersionReleaseDate: Date
-        
+
         func currentVersionHasBeenReleased(for days: Int) -> Bool {
             let secondsInDay: TimeInterval = 86_400
             let secondsSinceRelease = -currentVersionReleaseDate.timeIntervalSinceNow
