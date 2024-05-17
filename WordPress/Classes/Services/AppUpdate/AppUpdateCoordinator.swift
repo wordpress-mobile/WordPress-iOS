@@ -1,8 +1,8 @@
 import Foundation
 
 enum AppUpdateType {
-    case flexible(AppStoreInfo)
-    case blocking(AppStoreInfo)
+    case flexible(AppStoreLookupResponse.AppStoreInfo)
+    case blocking(AppStoreLookupResponse.AppStoreInfo)
 }
 
 final class AppUpdateCoordinator {
@@ -85,7 +85,7 @@ final class AppUpdateCoordinator {
         return parameter.value(using: remoteConfigStore)
     }
 
-    private func fetchAppStoreInfo() async -> AppStoreInfo? {
+    private func fetchAppStoreInfo() async -> AppStoreLookupResponse.AppStoreInfo? {
         do {
             let response = try await service.lookup()
             return response.results.first { $0.trackId == Int(service.appID) }

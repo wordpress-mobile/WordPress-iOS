@@ -2,13 +2,13 @@ import Foundation
 import WordPressFlux
 
 protocol AppUpdatePresenterProtocol {
-    func showNotice(using appStoreInfo: AppStoreInfo)
-    func showBlockingUpdate(using appStoreInfo: AppStoreInfo)
+    func showNotice(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo)
+    func showBlockingUpdate(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo)
     func openAppStore(appStoreUrl: String)
 }
 
 final class AppUpdatePresenter: AppUpdatePresenterProtocol {
-    func showNotice(using appStoreInfo: AppStoreInfo) {
+    func showNotice(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         let viewModel = AppStoreInfoViewModel(appStoreInfo)
         let notice = Notice(
             title: viewModel.title,
@@ -30,7 +30,7 @@ final class AppUpdatePresenter: AppUpdatePresenterProtocol {
         // Todo: if the notice is dismissed, show notice again after a defined interval
     }
 
-    func showBlockingUpdate(using appStoreInfo: AppStoreInfo) {
+    func showBlockingUpdate(using appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         guard let window = UIApplication.sharedIfAvailable()?.mainWindow,
               let topViewController = window.topmostPresentedViewController,
               !((topViewController as? UINavigationController)?.viewControllers.first is BlockingUpdateViewController) else {

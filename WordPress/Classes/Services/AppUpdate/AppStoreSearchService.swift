@@ -2,15 +2,15 @@ import Foundation
 
 struct AppStoreLookupResponse: Decodable {
     let results: [AppStoreInfo]
-}
 
-struct AppStoreInfo: Decodable {
-    let trackName: String
-    let trackId: Int
-    let trackViewUrl: String
-    let version: String
-    let releaseNotes: String
-    let minimumOsVersion: String
+    struct AppStoreInfo: Decodable {
+        let trackName: String
+        let trackId: Int
+        let trackViewUrl: String
+        let version: String
+        let releaseNotes: String
+        let minimumOsVersion: String
+    }
 }
 
 protocol AppStoreSearchProtocol {

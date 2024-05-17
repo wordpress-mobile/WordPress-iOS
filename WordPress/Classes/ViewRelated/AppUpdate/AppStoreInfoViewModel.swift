@@ -12,7 +12,7 @@ struct AppStoreInfoViewModel {
     let cancelButtonTitle = Strings.Actions.cancel
     let moreInfoButtonTitle = Strings.Actions.moreInfo
 
-    init(_ appStoreInfo: AppStoreInfo) {
+    init(_ appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         self.appName = appStoreInfo.trackName
         self.version = String(format: Strings.versionFormat, appStoreInfo.version)
         self.releaseNotes = appStoreInfo.releaseNotes.split(whereSeparator: \.isNewline)
