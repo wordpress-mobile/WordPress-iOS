@@ -20,6 +20,9 @@ struct CommentModerationView: View {
                     Approved(viewModel: viewModel, liked: liked)
                 case .trash, .spam:
                     TrashSpam(viewModel: viewModel)
+                case .deleted:
+                    // This case cannot ocur as there's no deleted state received as response
+                    EmptyView()
                 }
             }
             .padding(.horizontal, .DS.Padding.double)

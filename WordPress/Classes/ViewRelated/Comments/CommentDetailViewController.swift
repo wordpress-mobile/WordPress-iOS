@@ -100,32 +100,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         return cell
     }()
 
-    private lazy var deleteButtonCell: BorderedButtonTableViewCell = {
-        let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: .deleteButtonText,
-                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                       normalColor: Constants.deleteButtonNormalColor,
-                       highlightedColor: Constants.deleteButtonHighlightColor,
-                       buttonInsets: Constants.deleteButtonInsets)
-        cell.accessibilityIdentifier = .deleteButtonAccessibilityId
-        cell.delegate = self
-        return cell
-    }()
-
-    private lazy var trashButtonCell: BorderedButtonTableViewCell = {
-        let cell = BorderedButtonTableViewCell()
-        cell.configure(buttonTitle: .trashButtonText,
-                       titleFont: WPStyleGuide.fontForTextStyle(.body, fontWeight: .regular),
-                       normalColor: Constants.deleteButtonNormalColor,
-                       highlightedColor: Constants.trashButtonHighlightColor,
-                       borderColor: .clear,
-                       buttonInsets: Constants.deleteButtonInsets,
-                       backgroundColor: Constants.trashButtonBackgroundColor)
-        cell.accessibilityIdentifier = .trashButtonAccessibilityId
-        cell.delegate = self
-        return cell
-    }()
-
     weak var changeStatusViewController: BottomSheetViewController?
     private var commentModerationViewModel: CommentModerationViewModel?
 
@@ -289,7 +263,6 @@ private extension CommentDetailViewController {
 
     enum SectionType: Equatable {
         case content([RowType])
-        case moderation([RowType])
     }
 
     enum RowType: Equatable {
@@ -406,12 +379,6 @@ private extension CommentDetailViewController {
         switch sections[indexPath.section] {
         case .content:
             return false
-        case .moderation(let rows):
-            guard let deleteCellIndex = rows.firstIndex(of: .deleteComment) else {
-                return false
-            }
-
-            return indexPath.row == deleteCellIndex - 1
         }
     }
 
@@ -791,8 +758,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         switch sections[section] {
         case .content(let rows):
             return rows.count
-        case .moderation(let rows):
-            return rows.count
         }
     }
 
@@ -804,7 +769,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         let cell: UITableViewCell = {
             let rows: [RowType]
             switch sections[indexPath.section] {
-            case .content(let sectionRows), .moderation(let sectionRows):
+            case .content(let sectionRows):
                 rows = sectionRows
             }
 
@@ -832,15 +797,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         return cell
     }
 
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        switch sections[section] {
-        case .content:
-            return nil
-        case .moderation:
-            return NSLocalizedString("STATUS", comment: "Section title for the moderation section of the comment details screen.")
-        }
-    }
-
     func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Style.tertiaryTextFont
@@ -863,27 +819,7 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
             default:
                 break
             }
-
-        case .moderation(let rows):
-            switch rows[indexPath.row] {
-            case .status(let statusType):
-                if commentStatus == statusType {
-                    break
-                }
-                commentStatus = statusType
-                notifyDelegateCommentModerated()
-
-                guard let cell = tableView.cellForRow(at: indexPath) else {
-                    return
-                }
-                let activityIndicator = UIActivityIndicatorView(style: .medium)
-                cell.accessoryView = activityIndicator
-                activityIndicator.startAnimating()
-            default:
-                break
-            }
         }
-
     }
 }
 
