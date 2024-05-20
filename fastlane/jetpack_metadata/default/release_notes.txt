@@ -1,26 +1,27 @@
-* [*] Add "Parent Page" to "Page Settings" [#23136]
-* [*] Add "Slug" and "Excerpt" fields to "Page Settings" [#23135]
-* [*] Make it easier to "Share" and "Blaze" a published post with an updated success view [##23128]
-* [*] Add support for viewing trashed posts and pages and restoring them from the editor [#23142]
-* [***] Reorganized Stats to include updated Traffic and Insights tabs, along with a newly added Subscribers tab to improve subscriber metrics analysis [#23159]
-* [*] Impove the "Post Settings" screen groups/ordering to better align with Gutenberg [#23164]
-* [*] Update the "More" menu in the Editor to use modern iOS design and update copy to match Gutenberg [#23145]
-* [*] Update the "Revisions" list design and fix an issue with the footer displaying incorrect "Date Created" for drafts [#23145]
-* [***] Fix multiple post sync issues: [#21895], [#22037], [#8111], [#10168], [#17343], [#14221], [#12800], [#12073], [#14572], [#9319], [#21941], [#3070], [#3978], [#9449], [#13023], [#21472]
-* [**] Fix [#4870], [#14798], an issue where the app sometimes overwrites the changes made on the remote. The app will now show a new "Conflict Resolution" screen if there is a conflict. It will also no longer try to auto-upload changes to an existing published post or publish a draft, eliminating multiple possible failure points.
-* [**] Fix [#12121], [#13724], [#14251], [#18517], [#17086], [#15767], [#16514], [#13654] and other untracked issues with the "Publish Date" field in Post Settings. The app now has a new date picker that makes it easier to pick and remove the selected date. It also makes it clear if the blog is in a different time zones from your local timezone. The "Publish Date" field was also removed from the Post Settings screen for draft posts – the date needs to be selected right before publishing.
-* [**] Add a new "Media Uploads" screen to the "Publishing Sheet" where you can see the status of the pending uploads. It also shows error messages for each individual upload (if any) and allows you to cancel the failing uploads.
-* [*] Fix [#21940], [#13432], [#11435], issues where "Discard Changes" would sometimes delete the entire draft or appear when no changes were made
-* [*] Fix [#12099] by removing the "Status" field from Post Settings that was leading to multiple unexpected and confusing scenarios. The app now manages the transitions between state the same way as Gutenberg, so it should feel more familiar to the users.
-* [*] Fix [#10663], an issue with unclear error messages. The messages for "synchronous" operations will not appear as alerts with detailed information about the error. The error for drafts will also appear more clearly.
-* [*] Update the "Autosave Available" dialog to work the same way as in Gutenberg and to better represent what this feature is – it can no longer be confused with a "Data Conflict" dialog (fixes [#13093])
-* [*] Fix [#22107], [#19540], [#13632] by removing the "Draft Uploaded" snackbar
-* [*] Fix editor state restoration in the Jetpack app
-* [*] Update the support for pending posts to have clearer flows for both admins and contributors
-* [*] Fix [#19886], an issue with a missing error message when selecting a page author that's not eligible to be a page author
-* [*] Fix [#22969] an issue where Post List content occasionally stops updating
-* [*] Fix [#3862] by adding a "Password Protected" badge in [#23154]
-* [*] Fix [#21093], a rare crash in "View Stats for Posts" – [#23155]
-* [*] Fix [#22247], a rare crash in Post List
-* [*] Update the app to use `wp.createPost` and `wp.editPost` instead of the respective deprecated `metaWeblog.*` methods (closes [#1385])
+We’ve been busier than Batman after yet another Arkham breakout. (We’d like to know what local billionaire Bruce Wayne is doing about that.) Buckle up, this update is a big one.
 
+We reorganized your Stats screen to show new information about traffic and insights. We also added a Subscribers tab so you can better analyze information about your site subscribers. Please like and subscribe.
+
+We fixed multiple issues with post syncing, like posts not loading when the app opens and not showing up in the right status tab. A place for every post, and every post in its place.
+
+When you’re editing a page, you can now set the parent page within the page’s settings. We added slug and excerpt fields to the settings area, and we removed the status field. We also improved the way different settings are ordered and grouped.
+
+We also resolved issues with the Publish Date field in your post settings. The new date picker makes it easy to choose your publication date, even if you’re in a different time zone from the blog. You’ll only see the Publish Date field when you’re ready to hit publish.
+
+We added a new Media Uploads screen to your publishing workflow so you can see uploads in progress. You’ll see any error messages for failed uploads here, along with the option to cancel them. Oh, and speaking of errors, we improved notifications for errors with uploading and publishing.
+
+We updated the “more” menu in the editor with a new look and feel, and we changed the design for your revisions list. We also added a badge to indicate when a post is password protected. (We don’t recommend using the password 1-2-3-4-5. Amazingly, that’s the same combination we have on our luggage.)
+
+Pending posts now have clearer workflows for admins and contributors. We also updated the success view for published posts. It’s now easier to Share and Blaze a post.
+
+Changed your mind about trashing a post? You can now view and restore trashed posts and pages from the editor.
+
+We removed the “draft uploaded” bar that appeared on the bottom of your screen when you were saving or updating a draft post. This did not spark joy, so we thanked it and said goodbye.
+
+Finally, we squashed a long list of bugs and fixed a handful of rare crashes caused by code issues.
+
+- If a draft on your device is different from the draft saved to the web, the app will now show a conflict resolution screen instead of making changes on its own.
+- Discarding changes to a draft will no longer delete the entire draft.
+- The footer will show the correct date when a draft was created.
+- You’ll now see an error message when you assign a page author who isn’t eligible to be an author.
+- Switching between tabs in Posts will show all your draft posts and published content, no matter how much of it you have. Yes, even you, the user with 1,239 saved drafts. We’re impressed and slightly concerned, but we respect your writing process.
