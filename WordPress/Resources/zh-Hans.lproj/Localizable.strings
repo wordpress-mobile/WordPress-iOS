@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-10 07:15:02+0000 */
+/* Translation-Revision-Date: 2024-05-16 11:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -9367,6 +9367,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "忽略";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "发现要订阅的博客";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "再次尝试";
 
@@ -9375,6 +9378,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "您已与其他博客建立连接";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "通过订阅、点赞和评论其他博主的文章，与他们建立联系。";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "启用文章共享";
@@ -9564,6 +9570,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "切换到 Jetpack 应用，使用阅读器来查找、关注和点赞所有您喜欢的站点和文章。";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "通过 Jetpack 应用程序订阅任何站点";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack 可提供统计数据、通知等，帮助您创建和扩展理想中的 WordPress 站点。";
@@ -10075,8 +10084,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "忽略";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "站点订阅";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "自定义您已订阅站点的设置以获取新的文章和评论";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "已订阅的站点";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "您无权查看此私人博客。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "订阅此博客。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "退订此博客。";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "已订阅";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "订阅";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "还可改进";
@@ -10089,6 +10119,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "发送反馈";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "订阅";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "已订阅";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "订阅此博客。";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "订阅者";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "订阅";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "尚无订阅者";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "查看我的文章 \"%@\"：";
@@ -10146,6 +10194,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "取消";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "父页面";
 
 /* No comment provided by engineer. */
 "password" = "密码";
@@ -10230,6 +10281,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "正在创建自动保存……";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "代码编辑器";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "区块：%1$li，字词：%2$li，字符：%3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "帮助";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "帮助与支持";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "页面设置";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "文章设置";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "预览";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "修订版本";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "可视化编辑器";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "查看";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "部分媒体项目上传失败";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "文章已恢复为草稿";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "取消";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "无法编辑已移至回收站的 %1$@。 要编辑此 %1$@，您需要将其恢复为草稿。";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "恢复";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "已移至回收站的 %@";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "修订内容已加载";
@@ -10372,17 +10471,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "特色图片选项";
 
+/* Button OK */
+"postSettings.ok" = "确定";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "父页面";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "待审核";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 自动共享功能已无法使用";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "页面属性";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "设置特色图片";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "更新文章设置失败";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "将可见性更改为“私人”即会立即发布此文章";
+
+/* Localized post type: `Page` */
+"postType.page" = "页面";
+
+/* Localized post type: `Post` */
+"postType.post" = "文章";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "仅站点管理员和编辑可见";
@@ -10595,6 +10712,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可见性";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "订阅您喜爱的网站，发现新博客。";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "查看所有回复";
 
@@ -10618,6 +10738,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "发布日期";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "完成";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "通过 Blaze 推广";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "分享文章";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "文章已发布！";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "获得更多流量：";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "查看文章";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "忽略";
@@ -10751,6 +10889,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "正在获取博客…";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "已订阅的站点";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "博客";
@@ -11053,11 +11194,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "正在关注新标签…";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "选择一些以继续";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "完成";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "正在寻找您喜欢的博客和故事……";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "没有要关注的新标签";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "选择您的标签";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "发现并关注您喜欢的博客";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "订阅";
@@ -11073,6 +11226,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "要订阅的博客";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "重试";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "我们现在无法加载此标签下的文章";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "文章加载失败";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "添加标签";
@@ -11100,6 +11266,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "已关注";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "更多来自 %1$@ 的文章";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "取消关注 %@";
@@ -11211,6 +11380,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "解决冲突";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "在编辑器中进行更改时，您可在此处查看历史记录";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "尚无修订版本";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "正在加载...";
+
+/* Post revisions list screen title */
+"revisions.title" = "修订版本";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "复制链接";
@@ -11586,6 +11767,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "电子邮件";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "订阅者增长情况";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "订阅者";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-14 07:52:07+0000 */
+/* Translation-Revision-Date: 2024-05-16 14:54:10+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -10093,6 +10093,9 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Negeren";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Site-abonnementen";
+
 /* Notification Settings for your subscribed sites */
 "notification.settings.footer.subscribedSites" = "Pas je geabonneerd site-instellingen aan voor nieuwe berichten en reacties";
 
@@ -10760,6 +10763,21 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Post publish success view: button 'Done' */
 "publishSuccessView.done" = "Klaar";
 
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promoten met Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Bericht delen";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Bericht gepubliceerd!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Zorg voor hogere bezoekersaantallen:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Bericht weergeven";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Negeren";
 
@@ -10892,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs ophalen ...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Geabonneerde sites";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blogs";
@@ -11200,11 +11221,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Volgen van nieuwe tags...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Selecteer er een aantal om verder te gaan";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Gereed";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Blogs en verhalen vinden die je geweldig zult vinden...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Geen nieuwe tags om te volgen";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Kies je tags";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Ontdek en volg blogs waar je van houdt";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonneren";
@@ -11220,6 +11253,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogs om je op te abonneren";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Opnieuw proberen";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "We kunnen berichten met deze tag op dit moment niet laden";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Berichten laden mislukt";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Voeg een tag toe";
@@ -11247,6 +11293,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Volgend";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Meer van %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Ontvolg %@";
@@ -11358,6 +11407,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Conflict oplossen";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Wanneer je wijzigingen maakt in de editor, kan je hier de revisiegeschiedenis bekijken";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Nog geen revisies";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Laden …";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revisies";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Kopieer link";
@@ -11739,6 +11800,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "E-mails";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Groei van volgersaantallen";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Abonnees";

@@ -249,12 +249,12 @@
 {
     NSMutableArray *posts = [NSMutableArray arrayWithCapacity:remotePosts.count];
     for (RemotePost *remotePost in remotePosts) {
-        AbstractPost *post;
-        NSUUID *foreignID = remotePost.foreignID;
-        if (foreignID != nil) {
-            post = [blog lookupPostWithForeignID:foreignID inContext:context];
-        } else {
-            post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        AbstractPost *post = [blog lookupPostWithID:remotePost.postID inContext:context];
+        if (post == nil) {
+            NSUUID *foreignID = remotePost.foreignID;
+            if (foreignID != nil) {
+                post = [blog lookupPostWithForeignID:foreignID inContext:context];
+            }
         }
         if (!post) {
             if ([remotePost.type isEqualToString:PostServiceTypePage]) {

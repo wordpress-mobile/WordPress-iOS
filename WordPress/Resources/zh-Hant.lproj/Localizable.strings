@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-13 23:55:54+0000 */
+/* Translation-Revision-Date: 2024-05-19 15:27:21+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_TW */
@@ -9367,6 +9367,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "關閉";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "探索網誌以訂閱";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "重來一次";
 
@@ -9375,6 +9378,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "你已與其他網誌連結";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "在其他部落客的文章訂閱、按讚和留言，與他們交流。";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "啟用文章分享功能";
@@ -9564,6 +9570,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "切換至 Jetpack 應用程式，以便透過閱讀器搜尋、追蹤並按讚所有喜愛的網站及文章。";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "透過 Jetpack 應用程式訂閱任何網站";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack 提供統計資料、通知等其他功能，可協助你建置和發展夢想中的 WordPress 網站。";
@@ -10075,8 +10084,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "關閉";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "網站訂閱";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "自訂新文章和留言的網站訂閱設定";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "已訂閱的網站";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "你沒有檢視此私人網誌的權限。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "訂閱網誌。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "將網誌取消訂閱。";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "已訂閱";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "訂閱";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "有待改善";
@@ -10089,6 +10119,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "傳送意見回饋";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "訂閱";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "已訂閱";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "訂閱此網誌。";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "訂閱者";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "訂閱";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "目前沒有訂閱者";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "查看我的貼文「%@」：";
@@ -10155,6 +10203,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "取消";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "上層頁面";
 
 /* No comment provided by engineer. */
 "password" = "密碼";
@@ -10239,6 +10290,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "正在建立自動儲存...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "HTML 程式碼編輯器";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "區塊：%1$li、文字：%2$li、字元：%3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "說明";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "說明與支援";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "頁面設定";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "文章設定";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "預覽";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "文章版本";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "視覺化編輯器";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "檢視";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "無法上傳部分媒體項目";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "文章已還原為草稿";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "取消";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "由於「%1$@」已移至垃圾桶，故無法編輯。 若要編輯「%1$@」，請將其移回草稿加以還原。";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "還原";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "已將「%@」移至垃圾桶";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "修訂版本已經載入";
@@ -10381,17 +10480,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "精選圖片選項";
 
+/* Button OK */
+"postSettings.ok" = "確定";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "上層頁面";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "待審中";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 自動分享功能已無法使用";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "頁面屬性";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "設定精選圖片";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "無法更新文章設定";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "在你將可見度變更為「私密」後，系統就會立刻發表文章";
+
+/* Localized post type: `Page` */
+"postType.page" = "頁面";
+
+/* Localized post type: `Post` */
+"postType.post" = "文章";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "僅網站管理員及編輯者可檢視";
@@ -10510,6 +10627,9 @@ Example: Reply to Pamela Nguyen */
 /* Voiceover accessibility label informing the user that this button dismiss the current view */
 "prepublishing.close" = "關閉";
 
+/* Label for a cell in the pre-publishing sheet */
+"prepublishing.jetpackSocial" = "Jetpack Social";
+
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "無法上傳 %@ 個項目";
 
@@ -10601,6 +10721,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可見度";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "訂閱你喜歡的網站並探索新網誌。";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "檢視所有回應";
 
@@ -10624,6 +10747,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "發表日期";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "完成";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "使用 Blaze 進行宣傳";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "分享文章";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "文章已發表！";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "讓流量快速成長：";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "檢視文章";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "關閉";
@@ -10757,6 +10898,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "正在擷取網誌...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "已訂閱的網站";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "網誌";
@@ -11056,11 +11200,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "正在追蹤新標籤...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "選取幾項以繼續操作";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "完成";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "尋找你會喜歡的網誌和故事…";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "沒有要追蹤的新標籤";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "選擇標籤";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "探索並關注你喜愛的網誌";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "訂閱";
@@ -11076,6 +11232,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "可訂閱的網誌";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "重試";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "我們目前無法從此標籤載入文章";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "無法載入文章";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "新增標籤";
@@ -11103,6 +11272,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "正在追蹤";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "若要閱讀更多內容，請瀏覽 %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "停止追蹤 %@";
@@ -11214,6 +11386,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "解決衝突";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "若你在編輯器內進行變更，將可在此處查看文章版本記錄";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "目前沒有其他文章版本";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "載入中…";
+
+/* Post revisions list screen title */
+"revisions.title" = "文章版本";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "複製連結";
@@ -11592,6 +11776,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "電子郵件";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "訂閱者的成長狀況";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "訂閱者";

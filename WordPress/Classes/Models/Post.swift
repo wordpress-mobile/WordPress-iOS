@@ -31,20 +31,10 @@ class Post: AbstractPost {
         }
     }
 
-    private var cachedContentPreviewForDisplay: String?
-
     // MARK: - NSManagedObject
 
     override class func entityName() -> String {
         return "Post"
-    }
-
-    override func didChangeValue(forKey key: String) {
-        super.didChangeValue(forKey: key)
-
-        if key == "mt_excerpt" || key == "content" {
-            cachedContentPreviewForDisplay = nil
-        }
     }
 
     // MARK: - Format
@@ -258,15 +248,12 @@ class Post: AbstractPost {
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
-        if let cachedContentPreviewForDisplay {
-            return cachedContentPreviewForDisplay
-        }
         if let excerpt = mt_excerpt, excerpt.count > 0 {
-            cachedContentPreviewForDisplay = excerpt.makePlainText()
+            return excerpt.makePlainText()
         } else if let content = content {
-            cachedContentPreviewForDisplay = content.summarized()
+            return content.summarized()
         }
-        return cachedContentPreviewForDisplay ?? ""
+        return ""
     }
 
     override func hasLocalChanges() -> Bool {

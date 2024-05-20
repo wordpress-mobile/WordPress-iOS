@@ -44,21 +44,16 @@ struct BlogListView: View {
 
     var body: some View {
         if #available(iOS 16.0, *) {
-            contentVStack
+            contentList
                 .scrollContentBackground(.hidden)
-                .onAppear {
-                    viewModel.viewAppeared()
-                }
         } else {
-            contentVStack
-                .onAppear {
-                    viewModel.viewAppeared()
-                }
+            contentList
         }
     }
 
-    private var contentVStack: some View {
-        List {
+    @ViewBuilder
+    private var contentList: some View {
+        let list = List {
             if isSearching {
                 ForEach(viewModel.searchSites, id: \.id) { site in
                     siteButton(site: site)
@@ -71,8 +66,15 @@ struct BlogListView: View {
                 recentsSection
                 allRemainingSitesSection
             }
+        }.onAppear {
+            viewModel.viewAppeared()
         }
-        .listStyle(.grouped)
+
+        if isSearching {
+            list.listStyle(.plain)
+        } else {
+            list.listStyle(.grouped)
+        }
     }
 
     private func sectionHeader(title: String) -> some View {

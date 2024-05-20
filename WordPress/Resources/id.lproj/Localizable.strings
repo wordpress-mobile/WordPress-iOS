@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-08 14:14:19+0000 */
+/* Translation-Revision-Date: 2024-05-16 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Tutup";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Temukan blog langganan";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Lakukan lagi";
 
@@ -9384,6 +9387,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Anda telah terhubung dengan blog lain";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Terhubung dengan blogger lainnya dengan berlangganan, memberikan suka, dan berkomentar ke pos mereka.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Aktifkan berbagi pos";
@@ -9573,6 +9579,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Ganti ke aplikasi Jetpack untuk menemukan, mengikuti, dan memberi suka ke situs dan pos favorit lewat Pembaca.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Berlangganan ke situs apa pun dengan aplikasi Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack menghadirkan fitur statistik, pemberitahuan, dan berbagai fitur lainnya untuk membantu membangun sekaligus mengembangkan situs WordPress impian Anda.";
@@ -10084,8 +10093,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Tutup";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Langganan situs";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Sesuaikan pengaturan situs langganan Anda untuk Pos Baru dan Komentar";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Situs langganan";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Anda tidak memiliki izin untuk melihat blog pribadi ini.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Berlangganan ke blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Berhenti berlangganan dari blog.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Telah berlangganan";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Berlangganan";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Dapat disempurnakan";
@@ -10098,6 +10128,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Beri masukan";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Berlangganan";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Telah berlangganan";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Berlangganan ke blog.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Pelanggan";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "berlangganan";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Belum ada pelanggan";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Lihat pos saya \"%@\":";
@@ -10164,6 +10212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Batal";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Halaman Induk";
 
 /* No comment provided by engineer. */
 "password" = "Kata sandi";
@@ -10248,6 +10299,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Membuat draf tersimpan otomatis...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Editor Kode";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Blok: %1$li, Kata: %2$li, Karakter: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Bantuan";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Bantuan & Dukungan";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Pengaturan Halaman";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Pengaturan Pos";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Pratinjau";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revisi";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Editor Visual";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Lihat";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Beberapa item media gagal diunggah";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Pos dikembalikan sebagai draf";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Batal";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "%1$@ yang dibuang tidak dapat diedit. Untuk mengedit %1$@, Anda harus mengembalikannya dengan memindahkannya ke draf.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Kembalikan";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ dibuang";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Revisi dimuat";
@@ -10390,17 +10489,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Pilihan Gambar Andalan";
 
+/* Button OK */
+"postSettings.ok" = "OKE";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Halaman induk";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "Menunggu peninjauan";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Fitur Berbagi Otomatis ke Twitter Tidak Lagi Tersedia";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Atribut Halaman";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Atur sebagai Gambar Andalan";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Gagal memperbarui pengaturan pos";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Dengan mengubah visibilitas ke \"Pribadi\", pos Anda akan segera diterbitkan.";
+
+/* Localized post type: `Page` */
+"postType.page" = "halaman";
+
+/* Localized post type: `Post` */
+"postType.post" = "pos";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Hanya dapat dilihat oleh admin dan editor situs.";
@@ -10616,6 +10733,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Visibilitas";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Berlangganan ke situs favorit Anda dan temukan blog-blog baru.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Lihat semua tanggapan";
 
@@ -10639,6 +10759,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Tanggal Terbit";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Selesai";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promosikan dengan Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Bagikan pos";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Pos diterbitkan!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Dapatkan lebih banyak pengunjung:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Lihat pos";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Tutup";
@@ -10772,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Mengambil blog...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Situs Langganan";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blog";
@@ -11080,11 +11221,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Mengikuti tag baru...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Pilih beberapa untuk melanjutkan";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Selesai";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Menemukan blog dan cerita yang Anda sukai...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Tidak ada tag baru untuk diikuti";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Pilih tag Anda";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Temukan dan ikuti blog yang Anda sukai";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Berlangganan";
@@ -11100,6 +11253,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blog untuk dijadikan langganan";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Coba lagi";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Kami belum dapat memuat pos dari tag ini";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Gagal memuat pos";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Tambahkan Tag";
@@ -11127,6 +11293,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Mengikuti";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Lainnya dari %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Batal Mengikuti %@";
@@ -11238,6 +11407,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Selesaikan Konflik";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Saat Anda membuat perubahan di editor, Anda dapat melihat riwayatnya di sini";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Belum ada revisi";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Memuat...";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revisi";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Salin Tautan";
@@ -11605,6 +11786,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Nama";
 
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Pelanggan";
+
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Klik";
 
@@ -11616,6 +11800,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "Email";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Perkembangan Pelanggan";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Pengikut";
