@@ -189,7 +189,7 @@ class PostCoordinatorSyncTests: CoreDataTestCase {
         try await coordinator.waitForSync(post, to: revision1)
 
         // THEN image block was updated
-        XCTAssertEqual(post.content, "<!-- wp:image {\"id\":1236,\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg\" class=\"wp-image-1236\"/></figure>\n<!-- /wp:image -->")
+        XCTAssertEqual(post.content, "<!-- wp:image {\"id\":1236,\"sizeSlug\":\"large\"} -->\n<figure class=\"wp-block-image size-large\"><img src=\"https://example.files.wordpress.com/2024/03/img_0005-1-1.jpg\" class=\"wp-image-1236\" /></figure>\n<!-- /wp:image -->")
 
         // THEN revisions were uploaded
         XCTAssertFalse(post.hasRevision())
