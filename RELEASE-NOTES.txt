@@ -4,6 +4,7 @@
 * [*] [internal] Incorporate a parser to handle Gutenberg blocks more efficiently for improved performance [#22886]
 * [**] Improve performance of Image and Gallery block processors to avoid long delay when saving a post [#22896]
 * [*] Improve performance of File block processor [#22897]
+* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211] 
 
 24.9
 -----
