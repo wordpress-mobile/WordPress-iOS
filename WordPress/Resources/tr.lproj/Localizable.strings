@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-07 13:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-16 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Kapat";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Abone olunacak bloglar keşfedin";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Yeniden yap";
 
@@ -9384,6 +9387,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Diğer bloglarla bağlantı kurdunuz";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Gönderilerine abone olarak, yorum yaparak ve bunları beğenerek diğer blog yazarlarıyla bağlantı kurun.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Yazı paylaşımını etkinleştirin";
@@ -9573,6 +9579,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Okuyucu ile tüm beğendiğiniz siteleri ve yazıları bulmak, takip etmek ve beğenmek için Jetpack uygulamasına geçin.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack uygulamasıyla istediğiniz siteye abone olun";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack, hayalinizdeki WordPress sitesini oluşturmanıza ve büyütmenize yardımcı olacak istatistikleri, bildirimleri ve diğer özellikleri sağlar.";
@@ -10084,8 +10093,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Site abonelikleri";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Yeni gönderiler ve yorumlar için abone olduğunuz site ayarlarınızı özelleştirin";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Abone Olunan Siteler";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Blogu takip edin.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Blogu takip etmeyi bırakın.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Abone olundu";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Abone ol";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "İyileştirilebilir";
@@ -10098,6 +10128,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri bildirim gönderin";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Abone ol";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Abone olundu";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Bloga abone olur.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Aboneler";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "abone ol";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Henüz abone yok";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "\"%@\" yazıma bakın:";
@@ -10164,6 +10212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "İptal";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Üst Sayfa";
 
 /* No comment provided by engineer. */
 "password" = "parola";
@@ -10248,6 +10299,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Otomatik kayıt oluşturuluyor...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Kod Düzenleyici";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Bloklar: %1$li, Kelimeler: %2$li, Karakterler: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Yardım";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Yardım ve Destek";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Sayfa Ayarları";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Gönderi Ayarları";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Önizleme";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revizyonlar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Görsel Düzenleyici";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Görüntüle";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Bazı ortam öğeleri karşıya yüklenemedi";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Gönderi, taslak olarak geri yüklendi";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "İptal Et";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Çöpe atılan bir %1$@ düzenlenemez. Bu %1$@ gönderisini düzenlemek için bunu bir taslağa geri taşıyarak geri yüklemeniz gerekir.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Geri Yükle";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ çöpe atıldı";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Revizyon yüklendi";
@@ -10390,17 +10489,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Öne çıkarılmış görsel seçenekleri";
 
+/* Button OK */
+"postSettings.ok" = "Tamam";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Üst sayfa";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "İnceleme bekliyor";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "X otomatik paylaşım özelliği artık kullanılamıyor";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Sayfa Nitelikleri";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Öne çıkarılmış görseli ayarla";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Yazı ayarları güncellenemedi";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
+
+/* Localized post type: `Page` */
+"postType.page" = "sayfa";
+
+/* Localized post type: `Post` */
+"postType.post" = "gönderi";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Yalnızca site yöneticileri ve düzenleyicileri tarafından görülebilir";
@@ -10613,6 +10730,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Görünürlük";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Favori sitelerinize abone olun ve yeni bloglar keşfedin.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Tüm yanıtları görüntüle";
 
@@ -10636,6 +10756,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Yayınlanma tarihi";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Tamam";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Blaze ile Tanıt";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Gönderiyi paylaş";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Gönderi yayımlandı!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Daha çok trafik alın:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Gönderiyi görüntüle";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Kapat";
@@ -10769,6 +10907,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Bloglar alınıyor...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Abone Olunan Siteler";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Bloglar";
@@ -11071,11 +11212,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Yeni etiketler takip ediliyor...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Devam etmek için birkaç tane seçin";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Tamam";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Seveceğiniz bloglar ve öyküler bulunuyor...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Takip edilecek yeni etiket yok";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Etiketlerinizi seçin";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Sevdiğiniz blogları keşfedin ve takip edin";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abone ol";
@@ -11091,6 +11244,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Abone olunacak bloglar";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Tekrar dene";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Şu anda bu etiketten gönderiler yüklenemiyor";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Gönderiler yüklenemedi";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Etiket ekle";
@@ -11118,6 +11284,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Takip ediliyor";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "%1$@ kaynağından daha fazla";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ takibini bırak";
@@ -11229,6 +11398,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Çakışmayı Çözün";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Düzenleyici içinde değişiklik yaptığınızda revizyon geçmişini burada görebilirsiniz";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Henüz revizyon yok";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Yükleniyor…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revizyonlar";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Bağlantıyı Kopyala";
@@ -11607,6 +11788,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "E-postalar";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Abone Büyümesi";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Aboneler";

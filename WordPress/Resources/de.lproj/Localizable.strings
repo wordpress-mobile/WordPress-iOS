@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-02 17:48:29+0000 */
+/* Translation-Revision-Date: 2024-05-15 14:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Schließen";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Blogs zum Abonnieren entdecken";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Wiederholen";
 
@@ -9384,6 +9387,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Du bist mit anderen Blogs verknüpft";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Trete mit anderen Bloggern in Kontakt, indem du ihre Beiträge abonnierst, mit einem „Like“ markierst oder sie kommentierst.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Teilen von Beiträgen aktivieren";
@@ -10084,8 +10090,17 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Schließen";
 
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Passe deine Einstellungen für abonnierte Websites für neue Beiträge und Kommentare an";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du hast keine Berechtigung, diesen privaten Blog anzuzeigen.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Wird verwendet, um das Blog zu abonnieren.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Wird verwendet, um das Blog abzubestellen.";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Verbesserungsfähig";
@@ -10098,6 +10113,9 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Feedback senden";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Wird verwendet, um ein Blog zu abonnieren.";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Schau dir meinen Beitrag „%@“ an:";
@@ -10248,6 +10266,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Automatische Speicherung wird erstellt …";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Blöcke: %1$li, Wörter: %2$li, Zeichen: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Hilfe & Support";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Seiteneinstellungen";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Beitragseinstellungen";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Einige Medienelemente konnten nicht hochgeladen werden";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Ein in den Papierkorb verschobener %1$@ kann nicht bearbeitet werden. Um diesen %1$@ zu bearbeiten, musst du ihn wiederherstellen. Verschiebe ihn dazu zurück in den Entwurfsstatus.";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Revision geladen";
@@ -10401,6 +10437,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Aktualisierung der Beitragseinstellungen fehlgeschlagen";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Wenn du die Sichtbarkeit in „Privat“ änderst, wird der Beitrag sofort veröffentlicht";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Nur für Website-Administratoren und Redakteure sichtbar";
@@ -11101,6 +11140,14 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Interessante Blogs, die du abonnieren kannst";
 
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Es können derzeit keine Beiträge unter diesem Schlagwort geladen werden";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Beiträge konnten nicht geladen werden";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Schlagwort hinzufügen";
 
@@ -11238,6 +11285,12 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Konflikt auflösen";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Wenn du Änderungen im Editor vornimmst, kannst du hier den Revisionsverlauf sehen";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Wird geladen …";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Link kopieren";
@@ -11616,6 +11669,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "E-Mails";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Abonnentenwachstum";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Abonnenten";

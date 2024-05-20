@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-14 05:30:33+0000 */
+/* Translation-Revision-Date: 2024-05-16 13:54:09+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -9388,6 +9388,9 @@ Example: Reply to Pamela Nguyen */
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Du följer även andra bloggar";
 
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Skapa förbindelser med andra bloggare genom att prenumerera på, gilla och kommentera deras inlägg.";
+
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Aktivera delning av inlägg";
 
@@ -10090,11 +10093,23 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Avfärda";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Webbplatsprenumerationer";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Anpassa inställningarna för nya inlägg och kommentarer på de webbplatser du prenumererar på";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Webbplatsprenumerationer";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du har inte behörighet att visa den här privata bloggen.";
 
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.action.subscribe.hint" = "Prenumerera på bloggen.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Avsluta bloggprenumerationen.";
 
 /* User is subscribed to the blog. */
 "notifications.action.subscribe.selectedTitle" = "Prenumererad";
@@ -10286,6 +10301,12 @@ Example: Reply to Pamela Nguyen */
 "postEditor.creatingAutosaveForPreview" = "Skapar autosparning …";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Kodredigerare";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Block: %1$li, Ord: %2$li, Tecken: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.help" = "Hjälp";
 
 /* Post Editor / Button in the 'More' menu */
@@ -10303,11 +10324,29 @@ Example: Reply to Pamela Nguyen */
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.revisions" = "Versioner";
 
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Visuell redigerare";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Visa";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Vissa mediaobjekt kunde inte laddas upp";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Inlägg återställt som ett utkast";
+
 /* Editor, alert for recovering a trashed post */
 "postEditor.recoverTrashedPostAlert.cancel" = "Avbryt";
 
 /* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Ett borttaget %1$@ kan inte redigeras. För att redigera detta %1$@ måste du återställa det genom att göra det till ett utkast igen.";
+
+/* Editor, alert for recovering a trashed post */
 "postEditor.recoverTrashedPostAlert.restore" = "Återställ";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Borttaget %@";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Versionen har lästs in";
@@ -10471,8 +10510,14 @@ Example: Reply to Pamela Nguyen */
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Det gick inte att uppdatera inläggsinställningarna";
 
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Om synligheten ändras till \"Privat\" kommer inlägget att publiceras omedelbart";
+
 /* Localized post type: `Page` */
 "postType.page" = "sida";
+
+/* Localized post type: `Post` */
+"postType.post" = "inlägg";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Endast synlig för webbplatsadministratörer och redigerare.";
@@ -10688,6 +10733,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Synlighet";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Prenumerera på dina favoritwebbplatser och upptäck nya bloggar.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Visa alla svar";
 
@@ -10862,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Hämtar bloggar …";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Webbplatsprenumerationer";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Bloggar";
@@ -11176,6 +11227,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Reader select interests next button enabled title text */
 "reader.select.tags.done" = "Klar";
 
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Hittar bloggar och berättelser som du kommer att älska...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Inga nya etiketter att följa";
 
@@ -11204,6 +11258,14 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 This empty state component is displayed only when the app fails to load posts under this tag.
 When tapped, the app will try to reload posts under this tag. */
 "reader.tagStream.cards.emptyView.button" = "Försök igen";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Vi kunde för tillfället inte läsa in inläggen från den här etiketten";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Det gick inte att läsa in inläggen";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Lägg till en etikett";
@@ -11345,6 +11407,9 @@ When tapped, the app will try to reload posts under this tag. */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Lös konflikt";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "När du ändrar något i redigeraren kommer du att kunna se revisionshistoriken här";
 
 /* Displayed when a call is made to load the revisions but there's no result or an error. */
 "revisions.emptyStateTitle" = "Inga versioner ännu";
@@ -11735,6 +11800,9 @@ When tapped, the app will try to reload posts under this tag. */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "E-post";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Prenumeranttillväxt";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Prenumeranter";

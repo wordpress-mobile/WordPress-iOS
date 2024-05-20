@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-07 16:54:07+0000 */
+/* Translation-Revision-Date: 2024-05-16 09:54:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Закрыть";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Находите новые блоги и подписывайтесь на них";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Сделайте это снова";
 
@@ -9573,6 +9576,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Перейдите в приложение Jetpack, чтобы найти, подписаться и поставить отметки «Нравится» любимым сайтам и записям в Чтиве.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Подписывайтесь на любые сайты в приложении Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "В Jetpack есть статистика, уведомления и множество других функций, которые помогут создать сайт мечты.";
@@ -10084,8 +10090,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Закрыть";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Подписки сайта";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Измените настройки подписки на сайты, чтобы получать новые записи и комментарии";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Сайты, на которые вы подписаны";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "У вас нет разрешения на доступ к этому закрытому блогу.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Подписаться на блог.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Отменить подписку на блог.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Подписка оформлена";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Подписаться";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Можно улучшить";
@@ -10098,6 +10125,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Отправить отзыв";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Подписаться";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Подписка оформлена";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Подписан на блог.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Подписчики";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "подписаться";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Подписчиков ещё нет";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Проверить мою запись \"%@\":";
@@ -10164,6 +10209,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Отмена";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Родительская страница";
 
 /* No comment provided by engineer. */
 "password" = "пароль";
@@ -10248,6 +10296,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Автосохранение...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Редактор кода";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Блоки: %1$li, слова: %2$li, символы: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Справка";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Помощь и техническая поддержка";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Настройки страницы";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Настройки записи";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Предварительный просмотр";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Редакции";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Визуальный редактор";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Просмотр";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Не удалось загрузить некоторые медиафайлы";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Запись восстановлена как черновик";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Отмена";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "%1$@ в корзине нельзя редактировать. Чтобы отредактировать %1$@, необходимо переместить это из корзины обратно в черновик.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Восстановить";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ отправлено в корзину";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Редакция загружена";
@@ -10387,17 +10483,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Настройки изображения записи";
 
+/* Button OK */
+"postSettings.ok" = "ОК";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Родительская страница";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "На рассмотрении";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Автоматическая публикация в Twitter больше не доступна";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Атрибуты страницы";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Установить изображение записи";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Не удалось обновить настройки записи";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Если статус будет изменен на «Закрытый», запись будет сразу же опубликована";
+
+/* Localized post type: `Page` */
+"postType.page" = "страница";
+
+/* Localized post type: `Post` */
+"postType.post" = "запись";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Видна только администраторам и редакторам";
@@ -10610,6 +10724,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Видимость";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Подписывайтесь на ваши любимые сайты и находите новые блоги.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Посмотреть все ответы";
 
@@ -10633,6 +10750,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Дата публикации";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Готово";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Продвигайте с помощью Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Поделиться записью";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Запись опубликована!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Привлекайте больше посетителей:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Просмотреть запись";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Закрыть";
@@ -10766,6 +10901,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Получение блогов…";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Сайты, на которые вы подписаны";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Блоги";
@@ -11068,11 +11206,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Подписка на новые метки...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Выберите несколько для продолжения";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Готово";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Поиск блогов и историй, которые вам понравятся...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Нет новых меток для подписки";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Выберите теги";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Найдите блоги, которые вам понравятся, и подпишитесь на них";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Подписаться";
@@ -11088,6 +11238,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Блоги, на которые можно подписаться";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Повторить";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Не удалось загрузить записи с этим тегом";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Не удалось загрузить записи";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Добавьте тег";
@@ -11115,6 +11278,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Подписки";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Ещё больше с %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Отписаться от %@";
@@ -11226,6 +11392,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "Устранить конфликт";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Внося изменения в редакторе, вы сможете увидеть здесь историю изменений";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Редакций ещё нет";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Загрузка…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Редакции";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Копировать ссылку";
@@ -11604,6 +11782,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "Рассылки";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Рост числа подписчиков";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "Подписчики";

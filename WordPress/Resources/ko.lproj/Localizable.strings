@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-13 07:41:59+0000 */
+/* Translation-Revision-Date: 2024-05-18 13:51:45+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -9376,6 +9376,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "해제";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "구독할 블로그 발견하기";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "다시 해보기";
 
@@ -9384,6 +9387,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "다른 블로그와 연결되었습니다.";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "다른 블로거의 글을 구독하고, 좋아요를 표시하고, 댓글을 작성하여 해당 블로거와 연결하세요.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "글 공유 활성화";
@@ -9573,6 +9579,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "젯팩 앱으로 전환하여 리더를 통해 좋아하는 모든 사이트와 글을 찾고, 팔로우하고, 좋아요를 표시하세요.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "젯팩 앱으로 사이트 구독";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "젯팩에서는 꿈꾸는 워드프레스 사이트 제작 및 성장에 도움이 되는 통계, 알림 등이 제공됩니다.";
@@ -10084,8 +10093,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "해제";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "사이트 구독";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "새 글 및 댓글에 대해 구독한 사이트 설정 사용자 정의";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "구독한 사이트";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "이 비공개 블로그를 볼 권한이 없습니다.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "블로그를 구독합니다.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "블로그 구독을 해지합니다.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "구독됨";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "구독";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "개선 가능";
@@ -10098,6 +10128,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "피드백 보내기";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "구독";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "구독됨";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "블로그를 구독합니다.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "구독자";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "구독";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "아직 구독자 없음";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "내 글 \"%@\" 확인:";
@@ -10164,6 +10212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "취소";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "상위 페이지";
 
 /* No comment provided by engineer. */
 "password" = "비밀번호";
@@ -10248,6 +10299,54 @@ Example: Reply to Pamela Nguyen */
 
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "자동 저장 만들기...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "코드 편집기";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "블록 수: %1$li, 단어 수: %2$li, 글자 수: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "도움말";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "도움말 및 지원";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "페이지 설정";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "글 설정";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "미리보기";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "리비전";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "비주얼 편집기";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "보기";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "일부 미디어 항목을 업로드할 수 없습니다.";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "글이 임시글로 복원됨";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "취소";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "삭제된 %1$@은(는) 편집할 수 없습니다. 이 %1$@을(를) 편집하려면 임시글로 다시 전환하여 복원해야 합니다.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "복원";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ 삭제됨";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "로드된 리비전";
@@ -10390,17 +10489,35 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "특성 이미지 옵션";
 
+/* Button OK */
+"postSettings.ok" = "확인";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "상위 페이지";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "대기중인 리뷰";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter 자동 공유를 더는 이용할 수 없음";
 
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "페이지 속성";
+
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "특성 이미지 설정";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "글 설정 업데이트 실패";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "공개 범위를 '비공개'로 변경하면 글이 즉시 발행됩니다.";
+
+/* Localized post type: `Page` */
+"postType.page" = "페이지";
+
+/* Localized post type: `Post` */
+"postType.post" = "글";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "사이트 관리자와 편집자에게만 표시";
@@ -10616,6 +10733,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "표시 여부";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "좋아하는 사이트를 구독하고 새 블로그를 검색하세요.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "모든 응답 보기";
 
@@ -10639,6 +10759,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "발행일";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "완료";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Blaze로 홍보";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "글 공유";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "글이 발행되었습니다.";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "더 많은 트래픽 얻기:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "글 보기";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "해제";
@@ -10772,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "블로그 가져오는 중...";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "구독한 사이트";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "블로그";
@@ -11080,11 +11221,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "새 태그를 팔로우하는 중...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "계속할 항목 선택";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "완료";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "좋아할 블로그와 이야기를 찾는 중...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "팔로우할 새 태그가 없음";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "태그 선택";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "좋아하는 블로그를 발견하고 팔로우하기";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "구독";
@@ -11100,6 +11253,19 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "구독할 블로그";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "다시 시도";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "현재 이 태그에서 글을 로드할 수 없습니다.";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "글 로드 실패";
 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "태그 추가";
@@ -11127,6 +11293,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "팔로우 중";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "%1$@에서 더 보기";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ 팔로우 취소";
@@ -11238,6 +11407,18 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Title for the Resolve Conflict screen. */
 "resolveConflict.navigation.title" = "충돌 해결";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "편집기에서 수정한 사항은 여기에 있는 리비전 기록에서 볼 수 있습니다.";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "아직 리비전 없음";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "로드 중...";
+
+/* Post revisions list screen title */
+"revisions.title" = "리비전";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "링크 복사";
@@ -11605,6 +11786,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "이름";
 
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "구독자";
+
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "클릭";
 
@@ -11616,6 +11800,9 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* Stats 'Emails' card header */
 "stats.subscribers.emailsSummaryCard.title" = "이메일";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "구독자 성장세";
 
 /* Stats 'Subscribers' card header */
 "stats.subscribers.subscribersListCard.title" = "구독자";

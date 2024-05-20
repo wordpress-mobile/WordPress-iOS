@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-19 11:21:42+0000 */
+/* Translation-Revision-Date: 2024-05-16 09:28:59+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -3280,6 +3280,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Odrzuć";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Odkryj blogi do zasubskrybowania";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Zrób to ponownie";
 
@@ -3288,6 +3291,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Połączono z innymi blogami";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Nawiązuj kontakty z innymi blogerami poprzez subskrybowanie, polubienie i komentowanie ich wpisów.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Włącz udostępnianie wpisów";
@@ -3375,6 +3381,9 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Przełącz się na aplikację Jetpack, aby używać Czytnika do znajdowania, obserwowania i polubienia wszystkich swoich ulubionych stron internetowych i postów.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Subskrybuj dowolną witrynę za pomocą aplikacji Jetpacka";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack zapewnia statystyki, powiadomienia i więcej, aby pomóc zbudować i rozwijać wymarzoną witrynę opartą o WordPressa.";
