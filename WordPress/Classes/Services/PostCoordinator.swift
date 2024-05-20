@@ -449,11 +449,11 @@ class PostCoordinator: NSObject {
         var error: Error? // The previous sync error
 
         var nextRetryDelay: TimeInterval {
-            retryDelay = min(32, retryDelay * 1.5)
+            retryDelay = min(60, retryDelay * 2)
             return retryDelay
         }
         func setLongerDelay() {
-            retryDelay = max(retryDelay, 20)
+            retryDelay = max(retryDelay, 30)
         }
         var retryDelay: TimeInterval
         weak var retryTimer: Timer?
