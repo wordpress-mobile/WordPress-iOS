@@ -49,7 +49,7 @@ final class AppUpdateCoordinator {
         guard isLoggedIn else {
             return
         }
-        guard let updateType = await inAppUpdateType else {
+        guard let updateType = await appUpdateType else {
             return
         }
 
@@ -62,7 +62,7 @@ final class AppUpdateCoordinator {
         }
     }
 
-    private var inAppUpdateType: AppUpdateType? {
+    private var appUpdateType: AppUpdateType? {
         get async {
             guard let currentVersion else {
                 return nil
