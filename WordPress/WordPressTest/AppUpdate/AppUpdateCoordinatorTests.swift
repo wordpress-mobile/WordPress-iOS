@@ -7,11 +7,15 @@ final class AppUpdateCoordinatorTests: XCTestCase {
     private let service = MockAppStoreSearchService()
     private let presenter = MockAppUpdatePresenter()
     private let remoteConfigStore = RemoteConfigStoreMock()
-    private var store = UserDefaults(suiteName: "app-update-coordinator-tests")!
+    private var store: InMemoryUserDefaults!
 
-    override func tearDown() {
-        super.tearDown()
-        store.removePersistentDomain(forName: "app-update-coordinator-tests")
+    override func setUp() {
+        store = InMemoryUserDefaults()
+        service.didLookup = false
+        presenter.didShowNotice = false
+        presenter.didShowBlockingUpdate = false
+        presenter.didOpenAppStore = false
+        super.setUp()
     }
 
     func testInAppUpdatesDisabled() async {
@@ -126,7 +130,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
 
-    func testFlexibleUpdateAvailableShownOnceWithinInterval() async {
+    func testFlexibleUpdateAvailableShownOnce() async {
         // Given
         let coordinator = AppUpdateCoordinator(
             currentVersion: "24.6",
@@ -149,12 +153,16 @@ final class AppUpdateCoordinatorTests: XCTestCase {
         XCTAssertTrue(presenter.didShowNotice)
         XCTAssertFalse(presenter.didShowBlockingUpdate)
 
-        // When we check for updates again within the flexible interval
-        presenter.didShowNotice = false // Reset
+        // Reset service and presenter
+        service.didLookup = false
+        presenter.didShowNotice = false
+
+        // When we check for updates again
         await coordinator.checkForAppUpdates()
 
-        // Then the flexible notice isn't shown again
-        XCTAssertTrue(service.didLookup)
+        // Then the service doesn't fetch the app store info, and the
+        // presenter doesn't show the flexible notice
+        XCTAssertFalse(service.didLookup)
         XCTAssertFalse(presenter.didShowNotice)
         XCTAssertFalse(presenter.didShowBlockingUpdate)
     }
@@ -167,6 +175,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             service: service,
             presenter: presenter,
             remoteConfigStore: remoteConfigStore,
+            store: store,
             isJetpack: true,
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
