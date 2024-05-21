@@ -139,7 +139,7 @@ final class AppUpdateCoordinatorTests: XCTestCase {
             isLoggedIn: true,
             isInAppUpdatesEnabled: true
         )
-        remoteConfigStore.inAppUpdateFlexibleIntervalInDays = 5
+        remoteConfigStore.inAppUpdateFlexibleIntervalInDays = 90
 
         // When
         await coordinator.checkForAppUpdates()

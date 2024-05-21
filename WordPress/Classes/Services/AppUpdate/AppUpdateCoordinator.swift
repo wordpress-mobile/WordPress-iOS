@@ -58,7 +58,7 @@ final class AppUpdateCoordinator {
             presenter.showBlockingUpdate(using: appStoreInfo)
         } else {
             presenter.showNotice(using: appStoreInfo)
-            setLastSeenFlexibleUpdateDate(Date.now, for: appStoreInfo.version)
+            lastSeenFlexibleUpdateDate = Date.now
         }
     }
 
@@ -80,7 +80,7 @@ final class AppUpdateCoordinator {
             if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: true)
             }
-            if currentVersion.isLower(than: appStoreInfo.version), shouldShowFlexibleUpdate(for: appStoreInfo.version) {
+            if currentVersion.isLower(than: appStoreInfo.version), shouldShowFlexibleUpdate {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: false)
             }
             return nil
@@ -112,28 +112,26 @@ extension AppUpdateCoordinator {
         RemoteConfigParameter.inAppUpdateFlexibleIntervalInDays.value(using: remoteConfigStore)
     }
 
-    private func lastSeenFlexibleUpdateKey(for version: String) -> String {
-        return "\(version)-\(Constants.lastSeenFlexibleUpdateDateKey)"
+    private var lastSeenFlexibleUpdateDate: Date? {
+        get {
+            store.object(forKey: Constants.lastSeenFlexibleUpdateDateKey) as? Date
+        }
+        set {
+            store.set(newValue, forKey: Constants.lastSeenFlexibleUpdateDateKey)
+        }
     }
 
-    private func getLastSeenFlexibleUpdateDate(for version: String) -> Date? {
-        store.object(forKey: lastSeenFlexibleUpdateKey(for: version)) as? Date
-    }
-
-    private func setLastSeenFlexibleUpdateDate(_ date: Date, for version: String) {
-        store.set(date, forKey: lastSeenFlexibleUpdateKey(for: version))
-    }
-
-    private func shouldShowFlexibleUpdate(for version: String) -> Bool {
+    private var shouldShowFlexibleUpdate: Bool {
         guard let flexibleIntervalInDays else {
             return false
         }
-        guard let lastSeenFlexibleUpdateDate = getLastSeenFlexibleUpdateDate(for: version) else {
+        guard let lastSeenFlexibleUpdateDate else {
             return true
         }
-        let secondsInDay: TimeInterval = 86_400
-        let secondsSinceLastSeen = -lastSeenFlexibleUpdateDate.timeIntervalSinceNow
-        return secondsSinceLastSeen > Double(flexibleIntervalInDays) * secondsInDay
+        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastSeenFlexibleUpdateDate, to: Date.now).day else {
+            return false
+        }
+        return daysElapsed > flexibleIntervalInDays
     }
 }
 
