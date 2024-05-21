@@ -56,7 +56,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
 
             _ = try? imgTag.attr("src", self.remoteURLString)
             _ = try? imgTag.attr("class", newImgClassAttributes)
-            _ = try? imgTag.attr(ImageKeys.dataID, "\(self.serverMediaID)")
+            _ = try? imgTag.attr(ImageKeys.dataID, String(self.serverMediaID))
             _ = try? imgTag.attr(ImageKeys.dataFullURL, self.remoteURLString)
 
             if let _ = try? imgTag.attr(ImageKeys.dataLink) {
