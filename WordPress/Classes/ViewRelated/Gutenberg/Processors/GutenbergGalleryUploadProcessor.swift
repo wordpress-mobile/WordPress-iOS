@@ -29,8 +29,10 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
     }
 
     func processImgPostMediaUpload(_ element: Element) {
-        let imgTags = try? element.select(ImageKeys.name)
-        imgTags?.forEach {imgTag in
+        guard let imgTags = try? element.select(ImageKeys.name) else {
+            return
+        }
+        imgTags.forEach {imgTag in
             guard let imgClass = try? imgTag.attr(ImageKeys.classAttributes) else {
                 return
             }
@@ -57,8 +59,7 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
             _ = try? imgTag.attr(ImageKeys.dataID, "\(self.serverMediaID)")
             _ = try? imgTag.attr(ImageKeys.dataFullURL, self.remoteURLString)
 
-            let dataLinkAttribute = try? imgTag.attr(ImageKeys.dataLink)
-            if dataLinkAttribute != nil {
+            if let _ = try? imgTag.attr(ImageKeys.dataLink) {
                 _ = try? imgTag.attr(ImageKeys.dataLink, self.mediaLink)
             }
         }
@@ -69,8 +70,10 @@ class GutenbergGalleryUploadProcessor: GutenbergProcessor {
     }
 
     func processLinkPostMediaUpload(_ block: GutenbergParsedBlock) {
-        let aTags = try? block.elements.select(LinkKeys.name)
-        aTags?.forEach { aTag in
+        guard let aTags = try? block.elements.select(LinkKeys.name) else {
+            return
+        }
+        aTags.forEach { aTag in
             guard let linkOriginalContent = try? aTag.html() else {
                 return
             }
