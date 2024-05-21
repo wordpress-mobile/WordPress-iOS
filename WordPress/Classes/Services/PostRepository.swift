@@ -326,12 +326,18 @@ final class PostRepository {
     func _delete(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
+        let context = coreDataStack.mainContext
         guard let postID = post.postID, postID.intValue > 0 else {
+            // The new sync system makes this situation impossible, but there
+            // might exist posts from the previous versions of the app in this state.
+            post.deleteAllRevisions()
+            context.deleteObject(post)
+            ContextManager.shared.saveContextAndWait(context)
+
             return wpAssertionFailure("Trying to patch a non-existent post")
         }
         try await getRemoteService(for: post.blog).deletePost(withID: postID.intValue)
 
-        let context = coreDataStack.mainContext
         context.deleteObject(post)
         ContextManager.shared.saveContextAndWait(context)
     }
