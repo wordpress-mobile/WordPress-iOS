@@ -64,7 +64,7 @@ final class AppUpdateCoordinator {
 
     private var appUpdateType: AppUpdateType? {
         get async {
-            guard let currentVersion else {
+            guard let currentVersion, shouldFetchAppStoreInfo else {
                 return nil
             }
             guard let appStoreInfo = await fetchAppStoreInfo() else {
@@ -97,6 +97,7 @@ final class AppUpdateCoordinator {
     private func fetchAppStoreInfo() async -> AppStoreLookupResponse.AppStoreInfo? {
         do {
             let response = try await service.lookup()
+            lastFetchedAppStoreInfoDate = Date.now
             return response.results.first { $0.trackId == Int(service.appID) }
         } catch {
             DDLogError("Error fetching app store info: \(error)")
@@ -105,9 +106,28 @@ final class AppUpdateCoordinator {
     }
 }
 
-// MARK: - Flexible Interval
+// MARK: - Store
 
 extension AppUpdateCoordinator {
+    private var lastFetchedAppStoreInfoDate: Date? {
+        get {
+            store.object(forKey: Constants.lastFetchedAppStoreInfoDateKey) as? Date
+        }
+        set {
+            store.set(newValue, forKey: Constants.lastFetchedAppStoreInfoDateKey)
+        }
+    }
+
+    private var shouldFetchAppStoreInfo: Bool {
+        guard let lastFetchedAppStoreInfoDate else {
+            return true
+        }
+        guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastFetchedAppStoreInfoDate, to: Date.now).day else {
+            return false
+        }
+        return daysElapsed > Constants.lastFetchedAppStoreInfoThresholdInDays
+    }
+
     private var flexibleIntervalInDays: Int? {
         RemoteConfigParameter.inAppUpdateFlexibleIntervalInDays.value(using: remoteConfigStore)
     }
@@ -137,6 +157,8 @@ extension AppUpdateCoordinator {
 
 private enum Constants {
     static let lastSeenFlexibleUpdateDateKey = "last-seen-flexible-update-date-key"
+    static let lastFetchedAppStoreInfoDateKey = "last-fetched-app-store-info-date-key"
+    static let lastFetchedAppStoreInfoThresholdInDays = 1
 }
 
 private extension String {
