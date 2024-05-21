@@ -12,7 +12,7 @@ struct ReaderNavigationButton: View {
                         menuButton(for: item)
                     }
                     if group == menuItemGroups.last && viewModel.listItems.count > 0 {
-                        if !FeatureFlag.readerTagsFeed.enabled {
+                        if !RemoteFeatureFlag.readerTagsFeed.enabled() {
                             Divider()
                         }
                         listMenuItem

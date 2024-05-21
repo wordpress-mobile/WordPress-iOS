@@ -679,7 +679,7 @@ extension ReaderHelpers {
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
 
-        if FeatureFlag.readerTagsFeed.enabled {
+        if RemoteFeatureFlag.readerTagsFeed.enabled() {
             mutableItems.append(ReaderTabItem(ReaderContent(topic: nil, contentType: .tags)))
         }
 
