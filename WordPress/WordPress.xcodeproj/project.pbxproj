@@ -880,6 +880,7 @@
 		1D91080729F847A2003F9A5E /* MediaServiceUpdateTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */; };
 		1DE9F2B02BA30C930044AA53 /* GutenbergProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */; };
 		1DE9F2B12BA30C930044AA53 /* GutenbergProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */; };
+		1DE9F2B32BA30E820044AA53 /* GutenbergFileUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DE9F2B22BA30E820044AA53 /* GutenbergFileUploadProcessorTests.swift */; };
 		1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */; };
 		1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */; };
 		1DF7A0CF2BA099760003CBA3 /* GutenbergContentParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */; };
@@ -6646,6 +6647,7 @@
 		1D6058910D05DD3D006BFB54 /* WordPress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WordPress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1D91080629F847A2003F9A5E /* MediaServiceUpdateTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MediaServiceUpdateTests.m; sourceTree = "<group>"; };
 		1DE9F2AF2BA30C930044AA53 /* GutenbergProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergProcessor.swift; sourceTree = "<group>"; };
+		1DE9F2B22BA30E820044AA53 /* GutenbergFileUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFileUploadProcessorTests.swift; sourceTree = "<group>"; };
 		1DF7A0CE2BA099760003CBA3 /* GutenbergContentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergContentParser.swift; sourceTree = "<group>"; };
 		1DF7A0D22BA0B1810003CBA3 /* GutenbergContentParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergContentParser.swift; sourceTree = "<group>"; };
 		1E0462152566938300EB98EF /* GutenbergFileUploadProcessor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergFileUploadProcessor.swift; sourceTree = "<group>"; };
@@ -19068,6 +19070,7 @@
 				AEE082892681C23C00DCF54B /* GutenbergRefactoredGalleryUploadProcessorTests.swift */,
 				FE9438B12A050251006C40EC /* BlockEditorSettings_GutenbergEditorSettingsTests.swift */,
 				1DF7A0D22BA0B1810003CBA3 /* GutenbergContentParser.swift */,
+				1DE9F2B22BA30E820044AA53 /* GutenbergFileUploadProcessorTests.swift */,
 			);
 			name = Gutenberg;
 			sourceTree = "<group>";
@@ -24119,6 +24122,7 @@
 				F41D98E12B39C5CE004EC050 /* BlogDashboardDynamicCardCoordinatorTests.swift in Sources */,
 				FE2E3729281C839C00A1E82A /* BloggingPromptsServiceTests.swift in Sources */,
 				D848CC0720FF2BE200A9038F /* NotificationContentRangeFactoryTests.swift in Sources */,
+				1DE9F2B32BA30E820044AA53 /* GutenbergFileUploadProcessorTests.swift in Sources */,
 				732A473F21878EB10015DA74 /* WPRichContentViewTests.swift in Sources */,
 				8BDA5A6D247C2F8400AB124C /* ReaderDetailViewControllerTests.swift in Sources */,
 				82301B8F1E787420009C9C4E /* AppRatingUtilityTests.swift in Sources */,

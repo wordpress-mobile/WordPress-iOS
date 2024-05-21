@@ -35,7 +35,7 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
             <figure>
-                <a href="https://files.wordpress.com/708.jpg" >
+                <a href="https://files.wordpress.com/708.jpg">
                     <img src="https://files.wordpress.com/708.jpg" data-id="708" class="wp-image-708" data-full-url="https://files.wordpress.com/708.jpg" data-link="https://files.wordpress.com/?p=708" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">
@@ -59,14 +59,14 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
     func imageBlockResultContent(remoteMediaId: Int, remoteImageUrl: String) -> String {
         return """
     <!-- wp:image {"id":\(remoteMediaId)} -->
-    <figure class="wp-block-image"><img src="\(remoteImageUrl)" alt="" class="wp-image-\(remoteMediaId)"/></figure>
+    <figure class="wp-block-image"><img src="\(remoteImageUrl)" alt="" class="wp-image-\(remoteMediaId)" /></figure>
     <!-- /wp:image -->
     """
     }
 
     func galleryBlock(innerBlocks: String, imageCount: Int) -> String {
         return """
-    <!-- wp:gallery {"linkTo":"none","imageCount":\(imageCount)} -->
+    <!-- wp:gallery {"imageCount":\(imageCount),"linkTo":"none"} -->
     <figure class="wp-block-gallery blocks-gallery-grid has-nested-images columns-\(imageCount) is-cropped">
     \(innerBlocks)</figure>
     <!-- /wp:gallery -->
@@ -80,12 +80,14 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
 
         let image = imageBlockContent(localMediaId: job.localId, localImageUrl: job.localUrl)
         let refactoredGalleryContent = galleryBlock(innerBlocks: image, imageCount: 1)
-        let resultContent = gutenbergImgPostUploadProcessor.process(refactoredGalleryContent)
-        let imageResult = imageBlockResultContent(remoteMediaId: job.remoteId, remoteImageUrl: job.remoteURL)
 
+        let imageResult = imageBlockResultContent(remoteMediaId: job.remoteId, remoteImageUrl: job.remoteURL)
         let refactoredGalleryResultContent = galleryBlock(innerBlocks: imageResult, imageCount: 1)
 
-        XCTAssertEqual(resultContent, refactoredGalleryResultContent, "Post content should be updated correctly")
+        let parser = GutenbergContentParser(for: refactoredGalleryContent)
+        gutenbergImgPostUploadProcessor.process(parser.blocks)
+
+        XCTAssertEqual(parser.html(), refactoredGalleryResultContent, "Post content should be updated correctly")
     }
 
     func testRefactoredGalleryBlockProcessor() {
@@ -104,16 +106,17 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
         let galleryBlockContent = galleryBlock(innerBlocks: galleryInnerBlocks, imageCount: mediaJobs.count)
         let galleryResultBlockContent = galleryBlock(innerBlocks: galleryResultInnerBlocks, imageCount: mediaJobs.count)
 
-        var resultContent = galleryBlockContent
+        let parser = GutenbergContentParser(for: galleryBlockContent)
+        let blocks = parser.blocks
 
-        resultContent = mediaJobs.reduce(into: resultContent) { (content, mediaJob) in
+        mediaJobs.forEach { mediaJob in
             let gallerydProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: mediaJob.localId, serverMediaID: mediaJob.remoteId, remoteURLString: mediaJob.remoteURL, mediaLink: mediaJob.mediaLink)
             let imageProcessor = GutenbergImgUploadProcessor(mediaUploadID: mediaJob.localId, serverMediaID: mediaJob.remoteId, remoteURLString: mediaJob.remoteURL)
-            content = gallerydProcessor.process(content)
-            content = imageProcessor.process(content)
+            gallerydProcessor.process(blocks)
+            imageProcessor.process(blocks)
         }
 
-        XCTAssertEqual(resultContent, galleryResultBlockContent, "Post content should be updated correctly")
+        XCTAssertEqual(parser.html(), galleryResultBlockContent, "Post content should be updated correctly")
     }
 
     func testMixedOldRefactoredGalleryBlockProcessor() {
@@ -127,15 +130,17 @@ class GutenbergRefactoredGalleryUploadProcessorTests: XCTestCase {
         let galleryBlockContent = galleryBlock(innerBlocks: galleryInnerBlocks, imageCount: mediaJobs.count)
         let galleryResultBlockContent = galleryBlock(innerBlocks: galleryResultInnerBlocks, imageCount: mediaJobs.count)
         let postResultContent = oldPostResultContent + "\n" + galleryResultBlockContent
-        var resultContent = oldPostContent + "\n" + galleryBlockContent
 
-        resultContent = mediaJobs.reduce(into: resultContent) { (content, mediaJob) in
+        let parser = GutenbergContentParser(for: oldPostContent + "\n" + galleryBlockContent)
+        let blocks = parser.blocks
+
+        mediaJobs.forEach { mediaJob in
             let gallerydProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: mediaJob.localId, serverMediaID: mediaJob.remoteId, remoteURLString: mediaJob.remoteURL, mediaLink: mediaJob.mediaLink)
             let imageProcessor = GutenbergImgUploadProcessor(mediaUploadID: mediaJob.localId, serverMediaID: mediaJob.remoteId, remoteURLString: mediaJob.remoteURL)
-            content = gallerydProcessor.process(content)
-            content = imageProcessor.process(content)
+            gallerydProcessor.process(blocks)
+            imageProcessor.process(blocks)
         }
 
-        XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+        XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
     }
 }

@@ -2,6 +2,8 @@
 -----
 * [*] Fix button overlap in the "Post Published" sheet on small devices [#23210]
 * [*] [internal] Incorporate a parser to handle Gutenberg blocks more efficiently for improved performance [#22886]
+* [**] Improve performance of Image and Gallery block processors to avoid long delay when saving a post [#22896]
+* [*] Improve performance of File block processor [#22897]
 
 24.9
 -----
