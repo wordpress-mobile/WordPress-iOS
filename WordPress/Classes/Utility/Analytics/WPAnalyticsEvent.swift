@@ -82,6 +82,7 @@ import Foundation
     case readerPostCardTapped
     case readerPullToRefresh
     case readerDiscoverTopicTapped
+    case readerAnnouncementDismissed
     case postCardMoreTapped
     case followedBlogNotificationsReaderMenuOff
     case followedBlogNotificationsReaderMenuOn
@@ -741,6 +742,8 @@ import Foundation
             return "reader_pull_to_refresh"
         case .readerDiscoverTopicTapped:
             return "reader_discover_topic_tapped"
+        case .readerAnnouncementDismissed:
+            return "reader_announcement_card_dismissed"
         case .postCardMoreTapped:
             return "post_card_more_tapped"
         case .followedBlogNotificationsReaderMenuOff:

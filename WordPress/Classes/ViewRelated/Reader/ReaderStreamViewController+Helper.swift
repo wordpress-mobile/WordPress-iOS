@@ -193,6 +193,7 @@ extension ReaderStreamViewController {
         return ReaderAnnouncementHeaderView(doneButtonTapped: { [weak self] in
             // Set the card as dismissed.
             self?.readerAnnouncementCoordinator.isDismissed = true
+            WPAnalytics.track(.readerAnnouncementDismissed)
 
             // Animate the header removal so it feels less jarring.
             UIView.animate(withDuration: 0.3) {
