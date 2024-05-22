@@ -109,7 +109,6 @@ msgid ""
 "- Discarding changes to a draft will no longer delete the entire draft.\n"
 "- The footer will show the correct date when a draft was created.\n"
 "- You’ll now see an error message when you assign a page author who isn’t eligible to be an author.\n"
-"- Switching between tabs in Posts will show all your draft posts and published content, no matter how much of it you have. Yes, even you, the user with 1,239 saved drafts. We’re impressed and slightly concerned, but we respect your writing process.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.
