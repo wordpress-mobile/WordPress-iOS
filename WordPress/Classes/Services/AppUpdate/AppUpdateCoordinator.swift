@@ -15,6 +15,7 @@ final class AppUpdateCoordinator {
     private let isJetpack: Bool
     private let isLoggedIn: Bool
     private let isInAppUpdatesEnabled: Bool
+    private let delayInDays: Int
 
     init(
         currentVersion: String?,
@@ -24,7 +25,8 @@ final class AppUpdateCoordinator {
         remoteConfigStore: RemoteConfigStore = RemoteConfigStore(),
         isJetpack: Bool = AppConfiguration.isJetpack,
         isLoggedIn: Bool = AccountHelper.isLoggedIn,
-        isInAppUpdatesEnabled: Bool = RemoteFeatureFlag.inAppUpdates.enabled()
+        isInAppUpdatesEnabled: Bool = RemoteFeatureFlag.inAppUpdates.enabled(),
+        delayInDays: Int = 7
     ) {
         self.currentVersion = currentVersion
         self.currentOsVersion = currentOsVersion
@@ -34,6 +36,7 @@ final class AppUpdateCoordinator {
         self.isJetpack = isJetpack
         self.isLoggedIn = isLoggedIn
         self.isInAppUpdatesEnabled = isInAppUpdatesEnabled
+        self.delayInDays = delayInDays
     }
 
     @MainActor
@@ -65,6 +68,9 @@ final class AppUpdateCoordinator {
             }
             guard !currentOsVersion.isLower(than: appStoreInfo.minimumOsVersion) else {
                 // Can't update if the device OS version is lower than the minimum OS version
+                return nil
+            }
+            guard appStoreInfo.currentVersionHasBeenReleased(for: delayInDays) else {
                 return nil
             }
             if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
