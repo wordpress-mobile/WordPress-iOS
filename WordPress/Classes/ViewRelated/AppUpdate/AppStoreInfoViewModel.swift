@@ -9,8 +9,8 @@ struct AppStoreInfoViewModel {
     let message = Strings.message
     let whatsNewTitle = Strings.whatsNew
     let updateButtonTitle = Strings.Actions.update
+    let latestVersionButtonTitle = Strings.Actions.latestVersion
     let cancelButtonTitle = Strings.Actions.cancel
-    let moreInfoButtonTitle = Strings.Actions.moreInfo
 
     init(_ appStoreInfo: AppStoreLookupResponse.AppStoreInfo) {
         self.appName = appStoreInfo.trackName
@@ -27,7 +27,7 @@ private enum Strings {
 
     enum Actions {
         static let update = NSLocalizedString("appUpdate.action.update", value: "Update", comment: "Update button title")
+        static let latestVersion = NSLocalizedString("appUpdate.action.latestVersion", value: "Get the latest version", comment: "Get the latest version button title")
         static let cancel = NSLocalizedString("appUpdate.action.cancel", value: "Cancel", comment: "Cancel button title")
-        static let moreInfo = NSLocalizedString("appUpdate.action.moreInfo", value: "More info", comment: "More info button title")
     }
 }

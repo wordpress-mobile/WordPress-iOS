@@ -4,8 +4,8 @@ import UIKit
 import StoreKit
 
 final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView> {
-    init(viewModel: AppStoreInfoViewModel, onUpdateTapped: @escaping () -> Void) {
-        super.init(rootView: .init(viewModel: viewModel, onUpdateTapped: onUpdateTapped))
+    init(viewModel: AppStoreInfoViewModel, onButtonTapped: @escaping () -> Void) {
+        super.init(rootView: .init(viewModel: viewModel, onButtonTapped: onButtonTapped))
     }
 
     @MainActor required dynamic init?(coder aDecoder: NSCoder) {
@@ -15,7 +15,7 @@ final class BlockingUpdateViewController: UIHostingController<BlockingUpdateView
 
 struct BlockingUpdateView: View {
     let viewModel: AppStoreInfoViewModel
-    let onUpdateTapped: (() -> Void)
+    let onButtonTapped: (() -> Void)
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -36,7 +36,10 @@ struct BlockingUpdateView: View {
 
             Spacer()
 
-            buttonsView
+            DSButton(title: viewModel.latestVersionButtonTitle, style: .init(emphasis: .primary, size: .large)) {
+                onButtonTapped()
+            }
+            .padding(.bottom, 20)
         }
         .padding([.leading, .trailing], 20)
         .interactiveDismissDisabled()
@@ -77,17 +80,6 @@ struct BlockingUpdateView: View {
                 Text(note)
                     .font(.system(.callout))
                     .foregroundStyle(.secondary)
-            }
-        }
-    }
-
-    private var buttonsView: some View {
-        VStack {
-            DSButton(title: viewModel.updateButtonTitle, style: .init(emphasis: .primary, size: .large)) {
-                onUpdateTapped()
-            }
-            DSButton(title: viewModel.moreInfoButtonTitle, style: .init(emphasis: .tertiary, size: .large)) {
-                // Todo
             }
         }
     }
