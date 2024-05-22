@@ -37,7 +37,7 @@ struct CommentModerationOptionsView: View {
         VStack(spacing: .DS.Padding.medium) {
             ForEach(options, id: \.title) { option in
                 Button {
-                    viewModel.didChangeState(to: .init(option: option, isLiked: viewModel.isLiked))
+                    viewModel.didSelectState(.init(option: option, isLiked: viewModel.isLiked))
                 } label: {
                     optionHStack(option: option)
                 }

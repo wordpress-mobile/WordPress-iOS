@@ -47,7 +47,7 @@ final class CommentModerationViewModel: ObservableObject {
         self.stateChanged = stateChanged
     }
 
-    func didChangeState(to state: CommentModerationState) {
+    func didSelectState(_ state: CommentModerationState) {
         switch state {
         case .pending:
             unapproveComment()
