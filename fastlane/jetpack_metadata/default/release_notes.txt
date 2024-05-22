@@ -24,4 +24,3 @@ Finally, we squashed a long list of bugs and fixed a handful of rare crashes cau
 - Discarding changes to a draft will no longer delete the entire draft.
 - The footer will show the correct date when a draft was created.
 - You’ll now see an error message when you assign a page author who isn’t eligible to be an author.
-- Switching between tabs in Posts will show all your draft posts and published content, no matter how much of it you have. Yes, even you, the user with 1,239 saved drafts. We’re impressed and slightly concerned, but we respect your writing process.
