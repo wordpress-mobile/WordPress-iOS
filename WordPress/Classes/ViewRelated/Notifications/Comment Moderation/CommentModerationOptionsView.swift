@@ -9,10 +9,10 @@ struct CommentModerationOptionsView: View {
         .spam
     ]
 
-    @StateObject private var viewModel: CommentModerationViewModel
+    private var viewModel: CommentModerationViewModel
 
     init(viewModel: CommentModerationViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
 
     var body: some View {
