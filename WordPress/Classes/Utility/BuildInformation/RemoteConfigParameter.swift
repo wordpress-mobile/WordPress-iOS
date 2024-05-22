@@ -36,6 +36,7 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
     case phaseFourOverlayFrequency
     case wordPressInAppUpdateBlockingVersion
     case jetpackInAppUpdateBlockingVersion
+    case inAppUpdateFlexibleIntervalInDays
 
     var key: String {
         switch self {
@@ -63,6 +64,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "wp_in_app_update_blocking_version_ios"
         case .jetpackInAppUpdateBlockingVersion:
             return "jp_in_app_update_blocking_version_ios"
+        case .inAppUpdateFlexibleIntervalInDays:
+            return "in_app_update_flexible_interval_in_days_ios"
         }
     }
 
@@ -91,6 +94,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
         case .wordPressInAppUpdateBlockingVersion:
             return nil
         case .jetpackInAppUpdateBlockingVersion:
+            return nil
+        case .inAppUpdateFlexibleIntervalInDays:
             return nil
         }
     }
@@ -121,6 +126,8 @@ enum RemoteConfigParameter: CaseIterable, RemoteParameter {
             return "WP In-App Update Blocking Version"
         case .jetpackInAppUpdateBlockingVersion:
             return "JP In-App Update Blocking Version"
+        case .inAppUpdateFlexibleIntervalInDays:
+            return "In-App Update Flexible Interval (Days)"
         }
     }
 }

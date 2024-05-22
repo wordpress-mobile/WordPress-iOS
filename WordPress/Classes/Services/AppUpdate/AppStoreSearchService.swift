@@ -13,9 +13,10 @@ struct AppStoreLookupResponse: Decodable {
         let currentVersionReleaseDate: Date
 
         func currentVersionHasBeenReleased(for days: Int) -> Bool {
-            let secondsInDay: TimeInterval = 86_400
-            let secondsSinceRelease = -currentVersionReleaseDate.timeIntervalSinceNow
-            return secondsSinceRelease > Double(days) * secondsInDay
+            guard let daysElapsed = Calendar.current.dateComponents([.day], from: currentVersionReleaseDate, to: Date.now).day else {
+                return false
+            }
+            return daysElapsed > days
         }
     }
 }
