@@ -4,7 +4,7 @@ We reorganized your Stats screen to show new information about traffic and insig
 
 We fixed multiple issues with post syncing, like posts not loading when the app opens and not showing up in the right status tab. A place for every post, and every post in its place.
 
-When you’re editing a page, you can now set the parent page within the page’s settings. We added slug and excerpt fields to the settings area, and we removed the status field. We also improved the way different settings are ordered and grouped.
+- Wanneer je bezig bent met het bewerken van een pagina kan je nu een bovenliggende pagina instellen binnen de instellingen van de onderliggende pagina. We added slug and excerpt fields to the settings area, and we removed the status field. We also improved the way different settings are ordered and grouped.
 
 We also resolved issues with the Publish Date field in your post settings. The new date picker makes it easy to choose your publication date, even if you’re in a different time zone from the blog. You’ll only see the Publish Date field when you’re ready to hit publish.
 
@@ -24,3 +24,4 @@ Finally, we squashed a long list of bugs and fixed a handful of rare crashes cau
 - Discarding changes to a draft will no longer delete the entire draft.
 - The footer will show the correct date when a draft was created.
 - You’ll now see an error message when you assign a page author who isn’t eligible to be an author.
+- Switching between tabs in Posts will show all your draft posts and published content, no matter how much of it you have. Yes, even you, the user with 1,239 saved drafts. We’re impressed and slightly concerned, but we respect your writing process.

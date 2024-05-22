@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-15 14:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-22 02:42:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -9580,6 +9580,9 @@ Example: Reply to Pamela Nguyen */
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Wechsle zur Jetpack-App, um mit dem Reader all deine Lieblings-Websites und -Beiträge zu finden, ihnen zu folgen und Likes dafür zu vergeben.";
 
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Mit der Jetpack-App beliebige Websites abonnieren";
+
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack bietet Statistiken, Benachrichtigungen und mehr, mit deren Hilfe du deine perfekte WordPress-Website gestalten und erweitern kannst.";
 
@@ -10090,8 +10093,14 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Schließen";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Website-Abonnements";
+
 /* Notification Settings for your subscribed sites */
 "notification.settings.footer.subscribedSites" = "Passe deine Einstellungen für abonnierte Websites für neue Beiträge und Kommentare an";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Abonnierte Websites";
 
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Du hast keine Berechtigung, diesen privaten Blog anzuzeigen.";
@@ -10101,6 +10110,12 @@ Example: Reply to Pamela Nguyen */
 
 /* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
 "notifications.action.subscribe.selectedHint" = "Wird verwendet, um das Blog abzubestellen.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Abonniert";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Abonnieren";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Verbesserungsfähig";
@@ -10114,8 +10129,23 @@ Example: Reply to Pamela Nguyen */
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Feedback senden";
 
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Abonnieren";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Abonniert";
+
 /* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
 "notifications.button.subscribedHint" = "Wird verwendet, um ein Blog zu abonnieren.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Abonnenten";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "abonnieren";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Noch keine Abonnenten";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Schau dir meinen Beitrag „%@“ an:";
@@ -10182,6 +10212,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Abbrechen";
+
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Übergeordnete Seite";
 
 /* No comment provided by engineer. */
 "password" = "Passwort";
@@ -10267,8 +10300,14 @@ Example: Reply to Pamela Nguyen */
 /* Creating autosave to generate a preview (status message */
 "postEditor.creatingAutosaveForPreview" = "Automatische Speicherung wird erstellt …";
 
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Code-Editor";
+
 /* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
 "postEditor.moreMenu.contentStructure" = "Blöcke: %1$li, Wörter: %2$li, Zeichen: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Hilfe";
 
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.helpAndSupport" = "Hilfe & Support";
@@ -10279,11 +10318,35 @@ Example: Reply to Pamela Nguyen */
 /* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.postSettings" = "Beitragseinstellungen";
 
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Vorschau";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revisionen";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Visueller Editor";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Anzeigen";
+
 /* A message for a snackbar informing the user that some media files requires their attention */
 "postEditor.postHasFailingMediaUploadsSnackbar.message" = "Einige Medienelemente konnten nicht hochgeladen werden";
 
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Beitrag als Entwurf wiederhergestellt";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Abbrechen";
+
 /* Editor, alert for recovering a trashed post */
 "postEditor.recoverTrashedPostAlert.message" = "Ein in den Papierkorb verschobener %1$@ kann nicht bearbeitet werden. Um diesen %1$@ zu bearbeiten, musst du ihn wiederherstellen. Verschiebe ihn dazu zurück in den Entwurfsstatus.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Wiederherstellen";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ ist im Papierkorb";
 
 /* Title for a snackbar */
 "postEditor.revisionLoaded" = "Revision geladen";
@@ -10426,11 +10489,20 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Optionen für Beitragsbilder";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Übergeordnete Seite";
+
 /* The 'Pending Review' setting of the post */
 "postSettings.pendingReview" = "Ausstehende Überprüfung";
 
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Automatisches Teilen auf Twitter nicht mehr verfügbar";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Seitenattribute";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Beitragsbild festlegen";
@@ -10440,6 +10512,12 @@ Example: Reply to Pamela Nguyen */
 
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Wenn du die Sichtbarkeit in „Privat“ änderst, wird der Beitrag sofort veröffentlicht";
+
+/* Localized post type: `Page` */
+"postType.page" = "Seite";
+
+/* Localized post type: `Post` */
+"postType.post" = "Beitrag";
 
 /* Details for a 'Private' privacy setting */
 "postVisibility.private.details" = "Nur für Website-Administratoren und Redakteure sichtbar";
@@ -10655,6 +10733,9 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Sichtbarkeit";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Abonniere deine Lieblingswebsites und entdecke neue Blogs.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Alle Antworten anzeigen";
 
@@ -10678,6 +10759,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Veröffentlichungsdatum";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Fertig";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Mit Blaze bewerben";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Beitrag teilen";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Beitrag veröffentlicht!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Erhalte mehr Traffic:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Beitrag anzeigen";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Schließen";
@@ -10811,6 +10910,9 @@ but tapping on this button will remove their like from the post. */
 
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Blogs werden abgerufen …";
+
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Abonnierte Websites";
 
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blogs";
@@ -11119,11 +11221,23 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Neue Schlagwörter werden abonniert ...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Wähle ein paar aus, um fortzufahren";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Fertig";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Es werden Blogs und Geschichten gesucht, die dir gefallen …";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Keine neuen Schlagwörter zum Folgen vorhanden";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Wähle deine Schlagwörter";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Entdecke Blogs, die dir gefallen, und folge ihnen";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abonnieren";
@@ -11139,6 +11253,11 @@ Refer to: `reader.preferences.preview.body.feedback.format` */
 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Interessante Blogs, die du abonnieren kannst";
+
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Erneut versuchen";
 
 /* The body text of an empty state component for one of the tags in the tag stream.
 This empty state component is displayed only when the app fails to load posts under this tag. */
@@ -11174,6 +11293,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Abonniert";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Mehr von %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ nicht mehr folgen";
@@ -11289,8 +11411,14 @@ This empty state component is displayed only when the app fails to load posts un
 /* Displayed when a call is made to load the history but there's no result or an error. */
 "revisions.emptyStateSubtitle" = "Wenn du Änderungen im Editor vornimmst, kannst du hier den Revisionsverlauf sehen";
 
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Noch keine Revisionen";
+
 /* Post revisions list screen / loading view title */
 "revisions.loadingTitle" = "Wird geladen …";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revisionen";
 
 /* Title for the \"Copy Link\" action in Share Sheet. */
 "share.sheet.copy.link.title" = "Link kopieren";
@@ -11657,6 +11785,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Name";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Abonnenten";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Klicks";

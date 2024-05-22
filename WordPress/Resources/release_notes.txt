@@ -21,4 +21,3 @@ Finally, we squashed a long list of bugs and fixed a handful of rare crashes cau
 - If a draft on your device is different from the draft saved to the web, the app will now show a conflict resolution screen instead of making changes on its own.
 - Discarding changes to a draft will no longer delete the entire draft. You also won’t see the option to discard changes when you haven’t made any.
 - You’ll now see an error message when you assign a page author who isn’t eligible to be an author.
-- Switching between tabs in Posts will show all your draft posts and published content, no matter how much of it you have. Yes, even you, the user with 1,239 saved drafts. We’re impressed and slightly concerned, but we respect your writing process.
