@@ -1,6 +1,7 @@
 import SwiftUI
 import AVFoundation
 
+// TODO: Add localization
 struct VoiceToContentView: View {
     @StateObject var viewModel: VoiceToContentViewModel
     @Environment(\.dismiss) var dismiss
@@ -56,6 +57,7 @@ private struct VoiceToContentWelcomeView: View {
                     Text(error)
                         .foregroundStyle(.red)
                 } else {
+                    // TODO: Display these dynamically
                     Text("File size limit: 25 MB")
                     Text("Recording time limit: 5 minutes")
                 }

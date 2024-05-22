@@ -56,7 +56,7 @@ extension MySiteViewController {
             wpAssertionFailure("blog missing")
             return
         }
-        let viewModel = VoiceToContentViewModel(blog: blog) { [ weak self] transcription in
+        let viewModel = VoiceToContentViewModel(blog: blog) { [weak self] transcription in
             guard let self else { return }
             self.dismiss(animated: true) {
                 // TODO: Are we adding all necessary fields?
