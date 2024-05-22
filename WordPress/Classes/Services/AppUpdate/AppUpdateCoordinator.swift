@@ -143,6 +143,7 @@ extension AppUpdateCoordinator {
 
     private var shouldShowFlexibleUpdate: Bool {
         guard let flexibleIntervalInDays else {
+            wpAssertionFailure("Remote config value missing or invalid")
             return false
         }
         guard let lastSeenFlexibleUpdateDate else {
