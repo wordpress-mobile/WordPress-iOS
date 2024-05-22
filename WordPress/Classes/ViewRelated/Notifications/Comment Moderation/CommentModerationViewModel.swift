@@ -26,6 +26,10 @@ final class CommentModerationViewModel: ObservableObject {
         URL(string: comment.authorAvatarURL)
     }
 
+    var isLiked: Bool {
+        comment.isLiked
+    }
+
     private lazy var commentService: CommentService = {
         return .init(coreDataStack: ContextManager.shared)
     }()

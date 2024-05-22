@@ -37,7 +37,7 @@ struct CommentModerationOptionsView: View {
         VStack(spacing: .DS.Padding.medium) {
             ForEach(options, id: \.title) { option in
                 Button {
-                    viewModel.didChangeState(to: .init(option: option))
+                    viewModel.didChangeState(to: .init(option: option, isLiked: viewModel.isLiked))
                 } label: {
                     optionHStack(option: option)
                 }
@@ -152,10 +152,10 @@ private extension CommentModerationOptionsView.Option {
 }
 
 private extension CommentModerationState {
-    init(option: CommentModerationOptionsView.Option) {
+    init(option: CommentModerationOptionsView.Option, isLiked: Bool) {
         switch option {
         case .approve:
-            self = .approved(liked: false)
+            self = .approved(liked: isLiked)
         case .pending:
             self = .pending
         case .trash:
