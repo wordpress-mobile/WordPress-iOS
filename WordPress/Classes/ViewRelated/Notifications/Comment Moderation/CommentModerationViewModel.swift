@@ -90,7 +90,7 @@ final class CommentModerationViewModel: ObservableObject {
         }
 
         if initialIsLiked {
-            track(withEvent: .notificationsCommentLiked) { comment in
+            track(withEvent: .notificationsCommentUnliked) { comment in
                 CommentAnalytics.trackCommentUnLiked(comment: comment)
             }
         } else {
@@ -123,7 +123,7 @@ private extension CommentModerationViewModel {
         isLoading = true
         coordinator.didSelectOption()
         commentService.approve(comment, success: { [weak self] in
-            self?.handleStatusChangeSuccess(state: .approved(liked: false))
+            self?.handleStatusChangeSuccess(state: .approved(liked: self?.isLiked == true))
         }, failure: { [weak self] _ in
             self?.handleStatusChangeFailure(error: .approved)
         })
