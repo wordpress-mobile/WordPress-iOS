@@ -64,34 +64,44 @@ final class AppUpdateCoordinator {
 
     private var appUpdateType: AppUpdateType? {
         get async {
-            guard let currentVersion, shouldFetchAppStoreInfo else {
+            guard let currentAppVersion = Version(from: currentVersion ?? ""), shouldFetchAppStoreInfo else {
                 return nil
             }
-            guard let appStoreInfo = await fetchAppStoreInfo() else {
+            guard
+                let appStoreInfo = await fetchAppStoreInfo(),
+                let appStoreVersion = Version(from: appStoreInfo.version)
+            else {
                 return nil
             }
-            guard !currentOsVersion.isLower(than: appStoreInfo.minimumOsVersion) else {
+            guard
+                let currentOsVersion = Version(from: currentOsVersion),
+                let appStoreMinimumVersion = Version(from: appStoreInfo.minimumOsVersion),
+                currentOsVersion >= appStoreMinimumVersion
+            else {
                 // Can't update if the device OS version is lower than the minimum OS version
                 return nil
             }
             guard appStoreInfo.currentVersionHasBeenReleased(for: delayInDays) else {
                 return nil
             }
-            if let blockingVersion, currentVersion.isLower(than: blockingVersion), blockingVersion.isLowerThanOrEqual(to: appStoreInfo.version) {
+            if let blockingVersion, currentAppVersion < blockingVersion, blockingVersion <= appStoreVersion {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: true)
             }
-            if currentVersion.isLower(than: appStoreInfo.version), shouldShowFlexibleUpdate {
+            if currentAppVersion < appStoreVersion, shouldShowFlexibleUpdate {
                 return AppUpdateType(appStoreInfo: appStoreInfo, isRequired: false)
             }
             return nil
         }
     }
 
-    private var blockingVersion: String? {
+    private var blockingVersion: Version? {
         let parameter: RemoteConfigParameter = isJetpack
             ? .jetpackInAppUpdateBlockingVersion
             : .wordPressInAppUpdateBlockingVersion
-        return parameter.value(using: remoteConfigStore)
+        guard let blockingVersionString: String = parameter.value(using: remoteConfigStore) else {
+            return nil
+        }
+        return Version(from: blockingVersionString)
     }
 
     private func fetchAppStoreInfo() async -> AppStoreLookupResponse.AppStoreInfo? {
@@ -125,7 +135,7 @@ extension AppUpdateCoordinator {
         guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastFetchedAppStoreInfoDate, to: Date.now).day else {
             return false
         }
-        return daysElapsed > Constants.lastFetchedAppStoreInfoThresholdInDays
+        return daysElapsed >= Constants.lastFetchedAppStoreInfoThresholdInDays
     }
 
     private var flexibleIntervalInDays: Int? {
@@ -152,7 +162,7 @@ extension AppUpdateCoordinator {
         guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastSeenFlexibleUpdateDate, to: Date.now).day else {
             return false
         }
-        return daysElapsed > flexibleIntervalInDays
+        return daysElapsed >= flexibleIntervalInDays
     }
 }
 
@@ -160,14 +170,4 @@ private enum Constants {
     static let lastSeenFlexibleUpdateDateKey = "last-seen-flexible-update-date-key"
     static let lastFetchedAppStoreInfoDateKey = "last-fetched-app-store-info-date-key"
     static let lastFetchedAppStoreInfoThresholdInDays = 1
-}
-
-private extension String {
-    func isLower(than anotherVersionString: String) -> Bool {
-        self.compare(anotherVersionString, options: .numeric) == .orderedAscending
-    }
-
-    func isLowerThanOrEqual(to anotherVersionString: String) -> Bool {
-        [ComparisonResult.orderedSame, .orderedAscending].contains(self.compare(anotherVersionString, options: .numeric))
-    }
 }
