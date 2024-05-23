@@ -171,24 +171,3 @@ private enum Constants {
     static let lastFetchedAppStoreInfoDateKey = "last-fetched-app-store-info-date-key"
     static let lastFetchedAppStoreInfoThresholdInDays = 1
 }
-
- extension Version {
-    init?(from versionString: String) {
-        let components = versionString.components(separatedBy: ".")
-        guard (2...4).contains(components.count) else {
-            return nil
-        }
-        guard
-            let major = Int(components[0]),
-            let minor = Int(components[1]),
-            let patch = Int(components[safe: 2] ?? "0")
-        else {
-            return nil
-        }
-        if components.count == 4 {
-            self.init(major, minor, patch, prereleaseIdentifiers: [components[3]])
-        } else {
-            self.init(major, minor, patch)
-        }
-    }
-}
