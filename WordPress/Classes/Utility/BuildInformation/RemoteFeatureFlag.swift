@@ -103,7 +103,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .voiceToContent:
             return AppConfiguration.isJetpack && BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
         case .readerTagsFeed:
-            return false
+            return true
         }
     }
 
