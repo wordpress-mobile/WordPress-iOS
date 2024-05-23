@@ -19,7 +19,7 @@ struct ReaderTabItem: FilterTabBarItem, Hashable {
         && content.type != .selfHostedFollowing
         && content.type != .tags
         shouldHideSettingsButton = content.type == .selfHostedFollowing
-        shouldHideTagFilter = content.topicType == .organization || (content.type != .tags && FeatureFlag.readerTagsFeed.enabled)
+        shouldHideTagFilter = content.topicType == .organization || (content.type != .tags && RemoteFeatureFlag.readerTagsFeed.enabled())
         shouldHideBlogFilter = content.type == .tags
     }
 
