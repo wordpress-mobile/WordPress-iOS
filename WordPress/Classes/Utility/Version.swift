@@ -36,14 +36,14 @@ public struct Version: Sendable {
         prereleaseIdentifiers: [String] = [],
         buildMetadataIdentifiers: [String] = []
     ) {
-        precondition(major >= 0 && minor >= 0 && patch >= 0, "Negative versioning is invalid.")
-        precondition(
+        wpAssert(major >= 0 && minor >= 0 && patch >= 0, "Negative versioning is invalid.")
+        wpAssert(
             prereleaseIdentifiers.allSatisfy {
                 $0.allSatisfy { $0.isASCII && ($0.isLetter || $0.isNumber || $0 == "-") }
             },
             #"Pre-release identifiers can contain only ASCII alpha-numeric characters and "-"."#
         )
-        precondition(
+        wpAssert(
             buildMetadataIdentifiers.allSatisfy {
                 $0.allSatisfy { $0.isASCII && ($0.isLetter || $0.isNumber || $0 == "-") }
             },
@@ -55,7 +55,7 @@ public struct Version: Sendable {
         self.prereleaseIdentifiers = prereleaseIdentifiers
         self.buildMetadataIdentifiers = buildMetadataIdentifiers
     }
-    
+
     /// Initializes a version struct from a string representation of a semantic version.
     ///
     public init?(from versionString: String) {
