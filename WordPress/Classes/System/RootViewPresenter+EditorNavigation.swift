@@ -32,7 +32,9 @@ extension RootViewPresenter {
         }
     }
 
+    // TODO: rename
     func showPostTab(animated: Bool,
+                     post: Post? = nil,
                      blog: Blog? = nil,
                      completion afterDismiss: (() -> Void)? = nil) {
         if rootViewController.presentedViewController != nil {
@@ -43,7 +45,12 @@ extension RootViewPresenter {
             return
         }
 
-        let editor = EditPostViewController(blog: blog)
+        let editor: EditPostViewController
+        if let post {
+            editor = EditPostViewController(post: post)
+        } else {
+            editor = EditPostViewController(blog: blog)
+        }
         editor.modalPresentationStyle = .fullScreen
         editor.showImmediately = !animated
         editor.afterDismiss = afterDismiss

@@ -121,7 +121,7 @@ DEPENDENCIES:
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
   - WordPressAuthenticator (>= 9.0.8, ~> 9.0)
-  - WordPressKit (~> 17.1.0)
+  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `ade807838898e93e4d3bd7fdee71d6d81d8938ac`)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
@@ -132,7 +132,6 @@ SPEC REPOS:
     - WordPress-Aztec-iOS
     - WordPress-Editor-iOS
     - WordPressAuthenticator
-    - WordPressKit
     - WordPressShared
   trunk:
     - Alamofire
@@ -178,11 +177,17 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.119.0-alpha1.podspec
+  WordPressKit:
+    :commit: ade807838898e93e4d3bd7fdee71d6d81d8938ac
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
+  WordPressKit:
+    :commit: ade807838898e93e4d3bd7fdee71d6d81d8938ac
+    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -216,7 +221,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
   WordPressAuthenticator: 898acaac75c5ade9b900c02622a15b9aef8fde1a
-  WordPressKit: a4af3d5d071734aaec75ccecefc7850ece6068fc
+  WordPressKit: 14c980fc86256e3c0ae0e5654889fae98379600e
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -229,6 +234,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: fe8df3e873baa4219a3e9b59632c5d2c7e3d774e
+PODFILE CHECKSUM: 7610e40ef85f2b7f4cfd6b704b1ab80c2a3eef4d
 
 COCOAPODS: 1.15.2

@@ -19,6 +19,25 @@ struct PostAction: ActionSheetItem {
     }
 }
 
+struct PostFromAudioAction: ActionSheetItem {
+    let handler: () -> Void
+    let source: String
+
+    private let action = "create_new_post_from_audio"
+
+    func makeButton() -> ActionSheetButton {
+        let highlight: Bool = QuickStartTourGuide.shared.shouldSpotlight(.newpost)
+        return ActionSheetButton(title: NSLocalizedString("createFAB.postFromAudio", value: "Post from Audio", comment: "Create new Blog Post from Audio button title"),
+                                 image: .gridicon(.microphone),
+                                 identifier: "blogPostFromAudioButton",
+                                 highlight: highlight,
+                                 action: {
+                                    WPAnalytics.track(.createSheetActionTapped, properties: ["source": source, "action": action])
+                                    handler()
+                                 })
+    }
+}
+
 struct PageAction: ActionSheetItem {
     let handler: () -> Void
     let source: String
