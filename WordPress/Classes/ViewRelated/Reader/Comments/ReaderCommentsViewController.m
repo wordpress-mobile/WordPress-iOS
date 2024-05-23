@@ -105,6 +105,8 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self configureKeyboardGestureRecognizer];
     [self configureViewConstraints];
     [self configureKeyboardManager];
+
+    [self listenForClipboardChanges];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -555,6 +557,21 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     }
 
     return NO;
+}
+
+- (void)listenForClipboardChanges
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(clipboardChanged:)
+                                                 name:UIPasteboardChangedNotification
+                                               object:nil];
+}
+
+- (void)clipboardChanged:(NSNotification *)notification
+{
+    if (notification.userInfo == nil) {
+        [WPAnalytics trackEvent:WPAnalyticsEventReaderCommentTextCopied];
+    }
 }
 
 #pragma mark - Accessor methods
@@ -1294,6 +1311,13 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     UIViewController *webViewController = [WebViewControllerFactory controllerWithConfiguration:configuration source:@"reader_comments"];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:webViewController];
     [self presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)textViewDidChangeSelection:(UITextView *)textView
+{
+    if (!textView.selectedTextRange.isEmpty) {
+        [WPAnalytics trackEvent:WPAnalyticsEventReaderCommentTextHighlighted];
+    }
 }
 
 #pragma mark - ReaderCommentsFollowPresenterDelegate Methods
