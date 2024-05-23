@@ -101,7 +101,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     }()
 
     weak var changeStatusViewController: BottomSheetViewController?
-    private var commentModerationViewModel: CommentModerationViewModel?
+    private lazy var commentModerationViewModel = createCommentModerationViewModel()
 
     // MARK: -
 
@@ -245,13 +245,11 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     func presentChangeStatusSheet() {
         self.changeStatusViewController?.dismiss(animated: false)
-        if let commentModerationViewModel {
-            let controller = CommentModerationOptionsViewController(viewModel: commentModerationViewModel)
+        let controller = CommentModerationOptionsViewController(viewModel: commentModerationViewModel)
 
-            let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
-            bottomSheetViewController.show(from: self)
-            self.changeStatusViewController = bottomSheetViewController
-        }
+        let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
+        bottomSheetViewController.show(from: self)
+        self.changeStatusViewController = bottomSheetViewController
     }
 }
 
@@ -296,8 +294,7 @@ private extension CommentDetailViewController {
         view.addSubview(containerStackView)
         containerStackView.axis = .vertical
         containerStackView.addArrangedSubview(tableView)
-        if comment.allowsModeration(),
-            let commentModerationViewModel {
+        if comment.allowsModeration() {
             let commentModerationView = CommentModerationView(
                 viewModel: commentModerationViewModel
             )
