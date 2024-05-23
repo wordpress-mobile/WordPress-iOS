@@ -135,7 +135,7 @@ extension AppUpdateCoordinator {
         guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastFetchedAppStoreInfoDate, to: Date.now).day else {
             return false
         }
-        return daysElapsed > Constants.lastFetchedAppStoreInfoThresholdInDays
+        return daysElapsed >= Constants.lastFetchedAppStoreInfoThresholdInDays
     }
 
     private var flexibleIntervalInDays: Int? {
@@ -162,7 +162,7 @@ extension AppUpdateCoordinator {
         guard let daysElapsed = Calendar.current.dateComponents([.day], from: lastSeenFlexibleUpdateDate, to: Date.now).day else {
             return false
         }
-        return daysElapsed > flexibleIntervalInDays
+        return daysElapsed >= flexibleIntervalInDays
     }
 }
 
