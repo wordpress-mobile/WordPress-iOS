@@ -10,8 +10,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 
     @Published private(set) var step: Step = .welcome
     @Published private(set) var loadingState: LoadingState?
-    private(set) var errorMessage: String?
-    @Published var isShowingError = false
+
+    private(set) var errorAlertMessage: String?
+    @Published var isShowingErrorAlert = false
 
     var isButtonRecordEnabled: Bool {
         if case .loading = loadingState {
@@ -252,8 +253,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - Misc
 
     private func showError(_ error: Error) {
-        errorMessage = error.localizedDescription
-        isShowingError = true
+        errorAlertMessage = error.localizedDescription
+        isShowingErrorAlert = true
     }
 }
 

@@ -10,9 +10,8 @@ struct VoiceToContentView: View {
         contents
             .onAppear(perform: viewModel.onViewAppeared)
             .tint(Color(uiColor: .brand))
-        // TODO: Add proper error handing
-            .alert(viewModel.errorMessage ?? "", isPresented: $viewModel.isShowingError, actions: {
-                Button("OK", action: buttonCancelTapped)
+            .alert(viewModel.errorAlertMessage ?? "", isPresented: $viewModel.isShowingErrorAlert, actions: {
+                Button(Strings.ok, action: buttonCancelTapped)
             })
     }
 
@@ -62,7 +61,7 @@ struct VoiceToContentView: View {
                 }
             }
             Spacer()
-            Button(action: viewModel.buttonCancelTapped) {
+            Button(action: buttonCancelTapped) {
                 Image(systemName: "xmark.circle.fill")
                     .font(.title2)
                     .foregroundStyle(.secondary, Color(uiColor: .secondarySystemFill))
@@ -169,4 +168,5 @@ private enum Strings {
     static let retry = NSLocalizedString("postFromAudio.retry", value: "Retry", comment: "Button title")
     static let notEnoughRequests = NSLocalizedString("postFromAudio.notEnoughRequestsMessage", value: "You don't have enough requests available to create a post from audio.", comment: "Message for 'not eligible' state view")
     static let upgrade = NSLocalizedString("postFromAudio.buttonUpgrade", value: "Upgrade for more requests", comment: "Button title")
+    static let ok = NSLocalizedString("postFromAudio.ok", value: "OK", comment: "Button title")
 }
