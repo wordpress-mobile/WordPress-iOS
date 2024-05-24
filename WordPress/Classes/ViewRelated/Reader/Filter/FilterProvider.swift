@@ -265,8 +265,8 @@ extension ReaderSiteTopic {
 
     private struct Strings {
         static let unnumberedFilterTitle = NSLocalizedString(
-            "reader.navigation.filter.blog.unnumbered",
-            value: "Tags",
+            "reader.navigation.filter.blog.unspecified",
+            value: "Blogs",
             comment: """
                 Button title to filter the Reader stream by blog.
                 This is displayed when we don't know the number of blogs yet.
