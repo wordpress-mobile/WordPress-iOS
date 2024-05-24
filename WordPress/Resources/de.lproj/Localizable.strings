@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-22 02:42:33+0000 */
+/* Translation-Revision-Date: 2024-05-23 12:32:32+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -9848,7 +9848,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.toolbarSelectItemsMany" = "%d Elemente ausgewählt";
 
 /* Bottom toolbar title in the selection mode */
-"mediaLibrary.toolbarSelectItemsOne" = "1 Element ausgewählt";
+"mediaLibrary.toolbarSelectItemsOne" = "Ein Element ausgewählt";
 
 /* Bottom toolbar title in the selection mode */
 "mediaLibrary.toolbarSelectItemsPrompt" = "Elemente auswählen";

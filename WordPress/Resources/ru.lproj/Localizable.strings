@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-05-23 18:05:36+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -9388,6 +9388,9 @@ Example: Reply to Pamela Nguyen */
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Вы в поиске других блогов";
 
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Общайтесь с другими блогерами, подписываясь на их записи, отмечая их как понравившиеся и оставляя комментарии.";
+
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Включить возможность делиться записями";
 
@@ -10372,6 +10375,9 @@ Example: Reply to Pamela Nguyen */
 /* Delete option in the confirmation alert when deleting a page from the trash. */
 "postList.deletePermanently.actionTitle" = "Удалить навсегда";
 
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Вы хотите навсегда удалить \"%@\"?";
+
 /* An error message */
 "postList.errorUnsyncedChangesMessage" = "Приложение загружает на сервер внесённые ранее изменения Повторите попытку позже.";
 
@@ -10466,7 +10472,7 @@ Example: Reply to Pamela Nguyen */
 "postSaveErrorMessage.conflict" = "Запись была изменена на другом устройстве";
 
 /* Error message: item permanently deleted */
-"postSaveErrorMessage.deleted" = "\"%@\" безвозвратно удалён и не может быть восстановлен.";
+"postSaveErrorMessage.deleted" = "\"%@\" безвозвратно удалён и не может быть восстановлен";
 
 /* A default value for an post without a title */
 "postSaveErrorMessage.postUntitled" = "Без названия";
@@ -10635,6 +10641,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "Не удалось загрузить элементы (%@)";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Не удалось загрузить медиафайл";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Заголовок";
@@ -11144,6 +11153,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Размер";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Эксперимент>";
 
 /* Text format for the feedback line text, to be displayed in the preview section.
 %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
@@ -11770,6 +11785,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Имя";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Подписчики";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Переходы";
