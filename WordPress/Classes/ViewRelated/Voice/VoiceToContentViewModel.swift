@@ -103,16 +103,16 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 
     private func didFetchFeatureDetails(_ info: JetpackAssistantFeatureDetails) {
         self.loadingState = nil
-        if info.hasFeature, !info.isOverLimit {
+        if info.isSiteUpdateRequired == true {
+            self.subtitle = Strings.subtitleRequestsAvailable + " 0"
+            self.isEligible = false
+        } else {
             let requestLimit = info.currentTier?.limit ?? info.requestsLimit
             let requestsCount = (info.usagePeriod?.requestsCount ?? 0)
             let remainingRequestCount = max(0, requestLimit - requestsCount)
             let value = info.currentTier?.readableLimit ?? remainingRequestCount.description
             self.subtitle = Strings.subtitleRequestsAvailable + " \(value)"
             self.isEligible = true
-        } else {
-            self.subtitle = Strings.subtitleRequestsAvailable + " 0"
-            self.isEligible = false
         }
     }
 
