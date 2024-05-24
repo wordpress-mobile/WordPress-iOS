@@ -48,7 +48,7 @@ struct VoiceToContentView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text(viewModel.title)
                     .font(.title3.weight(.bold))
-                HStack {
+                HStack(spacing: 5) {
                     Text(viewModel.subtitle)
                         .font(.subheadline.monospacedDigit())
                         .foregroundStyle(.secondary)
