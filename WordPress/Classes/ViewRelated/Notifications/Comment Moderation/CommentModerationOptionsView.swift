@@ -9,10 +9,10 @@ struct CommentModerationOptionsView: View {
         .spam
     ]
 
-    let onOptionSelected: (Option) -> Void
+    private var viewModel: CommentModerationViewModel
 
-    init(onOptionSelected: @escaping (Option) -> Void) {
-        self.onOptionSelected = onOptionSelected
+    init(viewModel: CommentModerationViewModel) {
+        self.viewModel = viewModel
     }
 
     var body: some View {
@@ -37,7 +37,7 @@ struct CommentModerationOptionsView: View {
         VStack(spacing: .DS.Padding.medium) {
             ForEach(options, id: \.title) { option in
                 Button {
-                    onOptionSelected(option)
+                    viewModel.didSelectState(.init(option: option, isLiked: viewModel.isLiked))
                 } label: {
                     optionHStack(option: option)
                 }
@@ -151,12 +151,24 @@ private extension CommentModerationOptionsView.Option {
     }
 }
 
+private extension CommentModerationState {
+    init(option: CommentModerationOptionsView.Option, isLiked: Bool) {
+        switch option {
+        case .approve:
+            self = .approved(liked: isLiked)
+        case .pending:
+            self = .pending
+        case .trash:
+            self = .trash
+        case .spam:
+            self = .spam
+        }
+    }
+}
+
 final class CommentModerationOptionsViewController: BottomSheetContentViewController {
-
-    typealias Option = CommentModerationOptionsView.Option
-
-    init(onOptionSelected: @escaping (Option) -> Void) {
-        let content = CommentModerationOptionsView(onOptionSelected: onOptionSelected)
+    init(viewModel: CommentModerationViewModel) {
+        let content = CommentModerationOptionsView(viewModel: viewModel)
         super.init(contentView: content)
     }
 
@@ -165,6 +177,6 @@ final class CommentModerationOptionsViewController: BottomSheetContentViewContro
     }
 }
 
-#Preview {
-    CommentModerationOptionsView(onOptionSelected: { _ in })
-}
+//#Preview {
+//    CommentModerationOptionsView(onOptionSelected: { _ in })
+//}

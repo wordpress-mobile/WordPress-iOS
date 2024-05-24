@@ -12,4 +12,12 @@ final class CommentModerationCoordinator {
     func didTapMoreOptions() {
         commentDetailViewController.presentChangeStatusSheet()
     }
+
+    func didSelectOption() {
+        commentDetailViewController.changeStatusViewController?.dismiss(animated: true)
+    }
+
+    func didDeleteComment() {
+        commentDetailViewController.navigationController?.popViewController(animated: true)
+    }
 }
