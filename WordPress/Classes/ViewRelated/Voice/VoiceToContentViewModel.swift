@@ -3,10 +3,26 @@ import AVFoundation
 import WordPressKit
 
 final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorderDelegate {
-    @Published private(set) var state: State = .welcome
-    @Published private(set) var duration: String = "0:00"
-    private(set) var errorMessage: String?
-    @Published var isShowingError = false
+    @Published private(set) var title: String = ""
+    @Published private(set) var subtitle: String = ""
+
+    @Published private(set) var isEligible: Bool?
+
+    @Published private(set) var step: Step = .welcome
+    @Published private(set) var loadingState: LoadingState?
+
+    private(set) var errorAlertMessage: String?
+    @Published var isShowingErrorAlert = false
+
+    var isButtonRecordEnabled: Bool {
+        if case .loading = loadingState {
+            return false
+        }
+        guard let isEligible else {
+            return false
+        }
+        return isEligible
+    }
 
     private var audioSession: AVAudioSession?
     private var audioRecorder: AVAudioRecorder?
@@ -14,10 +30,17 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     private let blog: Blog
     private let completion: (String) -> Void
 
-    enum State {
+    enum Step {
+        /// The state in which the flow checks your eligibility and, if you are,
+        /// presents a "Begin recording" button.
         case welcome
         case recording
         case processing
+    }
+
+    enum LoadingState {
+        case loading
+        case failed(message: String, onRetry: () -> Void)
     }
 
     enum VoiceError: Error, LocalizedError {
@@ -38,6 +61,68 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     init(blog: Blog, _ completion: @escaping (String) -> Void) {
         self.blog = blog
         self.completion = completion
+        self.title = Strings.title
+    }
+
+    func onViewAppeared() {
+        checkFeatureAvailability()
+    }
+
+    // MARK: - Welcome (Eligibility)
+
+    private func checkFeatureAvailability() {
+        Task {
+            await self._checkFeatureAvailability()
+        }
+    }
+
+    @MainActor
+    private func _checkFeatureAvailability() async {
+        self.loadingState = .loading
+        self.subtitle = Strings.subtitleRequestsAvailable // Showing spinner instead of a number
+
+        guard let api = blog.wordPressComRestApi() else {
+            wpAssertionFailure("API not available")
+            return
+        }
+        let service = JetpackAIServiceRemote(wordPressComRestApi: api, siteID: blog.dotComID ?? 0)
+        do {
+            if #available(iOS 16, *) {
+                try await Task.sleep(for: .seconds(2))
+            }
+
+            let info = try await service.getAssistantFeatureDetails()
+            didFetchFeatureDetails(info)
+        } catch {
+            self.subtitle = Strings.subtitleError
+            self.loadingState = .failed(message: error.localizedDescription) { [weak self] in
+                self?.checkFeatureAvailability()
+            }
+        }
+    }
+
+    private func didFetchFeatureDetails(_ info: JetpackAssistantFeatureDetails) {
+        self.loadingState = nil
+        if info.hasFeature, !info.isOverLimit {
+            let requestLimit = info.currentTier?.limit ?? info.requestsLimit
+            let requestsCount = (info.usagePeriod?.requestsCount ?? 0)
+            let remainingRequestCount = max(0, requestLimit - requestsCount)
+            let value = info.currentTier?.readableLimit ?? remainingRequestCount.description
+            self.subtitle = Strings.subtitleRequestsAvailable + " \(value)"
+            self.isEligible = true
+        } else {
+            self.subtitle = Strings.subtitleRequestsAvailable + " 0"
+            self.isEligible = false
+        }
+    }
+
+    func buttonUpgradeTapped() {
+        // TODO: this does not work
+        guard let siteURL = blog.url.flatMap(URL.init) else {
+            return wpAssertionFailure("invalid blog URL")
+        }
+        let upgradeURL = siteURL.appendingPathComponent("/wp-admin/admin.php?page=my-jetpack#/add-jetpack-ai")
+        UIApplication.shared.open(upgradeURL)
     }
 
     // MARK: - Recording
@@ -45,6 +130,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     func buttonRecordTapped() {
         let recordingSession = AVAudioSession.sharedInstance()
         self.audioSession = recordingSession
+
+        self.title = Strings.titleRecoding
+        self.subtitle = "00:00"
 
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
@@ -83,7 +171,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             audioRecorder.delegate = self
             audioRecorder.record()
 
-            state = .recording
+            step = .recording
             startRecordingTimer()
         } catch {
             showError(error)
@@ -94,7 +182,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         timer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true) { [weak self] _ in
             guard let self else { return }
             if #available(iOS 16.0, *) {
-                self.duration = Duration.seconds(self.audioRecorder?.currentTime ?? 0)
+                self.subtitle = Duration.seconds(self.audioRecorder?.currentTime ?? 0)
                     .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2, fractionalSecondsLength: 2)))
             } else {
                 // TODO: Make this feature available on iOS 16+?
@@ -116,8 +204,11 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         audioRecorder?.stop()
         audioRecorder = nil
         audioSession = nil
+        timer?.invalidate()
 
-        state = .processing
+        title = Strings.titleProcessing
+        subtitle = ""
+        step = .processing
         Task {
             await self.process(fileURL: fileURL)
         }
@@ -153,14 +244,22 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         // TODO: Handle error when iOS finished recording due to an interruption
         if !flag {
             audioRecorder?.stop()
-            self.state = .welcome
+            self.step = .welcome
         }
     }
 
     // MARK: - Misc
 
     private func showError(_ error: Error) {
-        errorMessage = error.localizedDescription
-        isShowingError = true
+        errorAlertMessage = error.localizedDescription
+        isShowingErrorAlert = true
     }
+}
+
+private enum Strings {
+    static let title = NSLocalizedString("postFromAudio.title", value: "Post from Audio", comment: "The screen title")
+    static let subtitleError = NSLocalizedString("postFromAudio.subtitleError", value: "Something went wrong", comment: "The screen subtitle in the error state")
+    static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
+    static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
+    static let titleProcessing = NSLocalizedString("postFromAudio.titleProcessing", value: "Processing…", comment: "The screen title when recording")
 }
