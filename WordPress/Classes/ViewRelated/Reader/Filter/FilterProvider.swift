@@ -4,6 +4,10 @@ class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
 
     let id: UUID = UUID()
 
+    enum FilterProviderError: Error {
+        case notAuthorized
+    }
+
     enum State {
         case loading
         case ready([TableDataItem])
@@ -187,6 +191,12 @@ extension ReaderSiteTopic {
                 }
             }
             completion(itemResult)
+        }
+
+        // User needs to be logged in to follow sites.
+        guard ReaderHelpers.isLoggedIn() else {
+            completionBlock(.failure(FilterProvider.FilterProviderError.notAuthorized))
+            return
         }
 
         fetchStoredFollowedSites(completion: completionBlock)
