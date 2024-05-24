@@ -4,6 +4,10 @@ class FilterProvider: NSObject, Identifiable, Observable, FilterTabBarItem {
 
     let id: UUID = UUID()
 
+    enum FilterProviderError: Error {
+        case notAuthorized
+    }
+
     enum State {
         case loading
         case ready([TableDataItem])
@@ -189,6 +193,12 @@ extension ReaderSiteTopic {
             completion(itemResult)
         }
 
+        // User needs to be logged in to follow sites.
+        guard ReaderHelpers.isLoggedIn() else {
+            completionBlock(.failure(FilterProvider.FilterProviderError.notAuthorized))
+            return
+        }
+
         fetchStoredFollowedSites(completion: completionBlock)
 
         if !localOnly {
@@ -265,8 +275,8 @@ extension ReaderSiteTopic {
 
     private struct Strings {
         static let unnumberedFilterTitle = NSLocalizedString(
-            "reader.navigation.filter.blog.unnumbered",
-            value: "Tags",
+            "reader.navigation.filter.blog.unspecified",
+            value: "Blogs",
             comment: """
                 Button title to filter the Reader stream by blog.
                 This is displayed when we don't know the number of blogs yet.
