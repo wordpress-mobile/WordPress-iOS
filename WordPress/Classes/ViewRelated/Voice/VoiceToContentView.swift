@@ -39,8 +39,9 @@ struct VoiceToContentView: View {
                 }
             }
         }
-        .padding(22)
-        .padding(.vertical, 4)
+        .padding(.horizontal, 20)
+        .padding(.top, 24)
+        .padding(.bottom, 30)
     }
 
     private var headerView: some View {
@@ -91,7 +92,7 @@ private struct VoiceToContentWelcomeView: View {
     }
 
     private var notEnoughRequestsView: some View {
-        VStack(spacing: 6) {
+        VStack(spacing: 4) {
             Text(Strings.notEnoughRequests)
                 .multilineTextAlignment(.center)
             Button(action: viewModel.buttonUpgradeTapped) {
@@ -107,17 +108,19 @@ private struct VoiceToContentWelcomeView: View {
         VStack(spacing: 16) {
             Button(action: viewModel.buttonRecordTapped) {
                 Image(systemName: "mic")
-                    .font(Font.system(size: 26, weight: .medium))
-                    .tint(Color(uiColor: .white))
-                    .frame(width: 80, height: 80)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
+                    .padding(24)
                     .background(viewModel.isButtonRecordEnabled ? Color(uiColor: .brand) : Color.secondary.opacity(0.5))
+                    .foregroundColor(.white)
                     .clipShape(Circle())
             }
 
-            Text("Tap the button to begin recording")
-                .foregroundStyle(.secondary)
+            Text(Strings.beginRecording)
+                .foregroundStyle(.primary)
         }
-        .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.3)
+        .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
         .disabled(!viewModel.isButtonRecordEnabled)
     }
 }
@@ -128,26 +131,44 @@ private struct VoiceToContentRecordingView: View {
     @State private var isRecording = true
 
     var body: some View {
-        VStack(spacing: 34) {
-
+        VStack {
             Spacer()
-
             VStack(spacing: 8) {
-                // Fallback on earlier versions
                 if #available(iOS 17.0, *) {
                     Image(systemName: "waveform")
-                        .font(.system(size: 80, weight: .medium))
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80)
                         .foregroundStyle(Color(uiColor: .brand))
                         .symbolEffect(.variableColor, isActive: true)
+                } else {
+                    Image("audio-waveform")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 320)
+                        .foregroundStyle(Color(uiColor: .brand))
                 }
             }
-
-            Button(action: viewModel.buttonDoneRecordingTapped) {
-                Text("Done")
-            }
-            .buttonStyle(.borderedProminent)
-
             Spacer()
+            buttonDone
+        }
+    }
+
+    private var buttonDone: some View {
+        VStack(spacing: 16) {
+            Button(action: viewModel.buttonDoneRecordingTapped) {
+                Image(systemName: "stop.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 28)
+                    .padding(28)
+                    .background(.black)
+                    .foregroundColor(.white)
+                    .clipShape(Circle())
+            }
+
+            Text(Strings.done)
+                .foregroundStyle(.primary)
         }
     }
 }
@@ -165,6 +186,8 @@ private struct VoiceToContenProcessingView: View {
 }
 
 private enum Strings {
+    static let beginRecording = NSLocalizedString("postFromAudio.beginRecording", value: "Begin recording", comment: "Button title")
+    static let done = NSLocalizedString("postFromAudio.done", value: "Done", comment: "Button title")
     static let retry = NSLocalizedString("postFromAudio.retry", value: "Retry", comment: "Button title")
     static let notEnoughRequests = NSLocalizedString("postFromAudio.notEnoughRequestsMessage", value: "You don't have enough requests available to create a post from audio.", comment: "Message for 'not eligible' state view")
     static let upgrade = NSLocalizedString("postFromAudio.buttonUpgrade", value: "Upgrade for more requests", comment: "Button title")
