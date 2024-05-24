@@ -56,7 +56,6 @@ struct VoiceToContentView: View {
                         ProgressView()
                             .tint(.secondary)
                             .controlSize(.small)
-                            .padding(.leading, 2)
                     }
                 }
             }
