@@ -26,6 +26,8 @@ class ReaderWebView: WKWebView {
         if #available(iOS 16.4, *) {
             isInspectable = true
         }
+
+        configuration.userContentController.add(self, name: "eventHandler")
     }
 
     /// Loads a HTML content into the webview and apply styles
@@ -89,6 +91,25 @@ class ReaderWebView: WKWebView {
                     });
                 }
             })
+            function debounce(fn, timeout) {
+                let timer;
+                return () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(fn, timeout);
+                }
+            }
+            const postEvent = (event) => window.webkit.messageHandlers.eventHandler.postMessage(event);
+            const textHighlighted = debounce(
+                () => postEvent("articleTextHighlighted"),
+                1000
+            );
+            document.addEventListener('selectionchange', function(event) {
+                const selection = document.getSelection().toString();
+                if (selection.length > 0) {
+                    textHighlighted();
+                }
+            });
+            document.addEventListener('copy', event => postEvent("articleTextCopied"));
         </script>
         </html>
         """
@@ -286,6 +307,40 @@ class ReaderWebView: WKWebView {
         let color = displaySetting.color == .system ? UIColor.muriel(name: .blue, .shade30) : displaySetting.color.secondaryForeground
         return color.color(for: trait)
     }
+}
+
+extension ReaderWebView: WKScriptMessageHandler {
+
+    enum EventMessage: String {
+        case articleTextHighlighted
+        case articleTextCopied
+
+        // Comment events are located in `richCommentTemplate.html`
+        case commentTextHighlighted
+        case commentTextCopied
+
+        var analyticEvent: WPAnalyticsEvent {
+            switch self {
+            case .articleTextHighlighted:
+                return .readerArticleTextHighlighted
+            case .articleTextCopied:
+                return .readerArticleTextCopied
+            case .commentTextHighlighted:
+                return .readerCommentTextHighlighted
+            case .commentTextCopied:
+                return .readerCommentTextCopied
+            }
+        }
+    }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let body = message.body as? String,
+              let event = EventMessage(rawValue: body)?.analyticEvent else {
+            return
+        }
+        WPAnalytics.track(event)
+    }
+
 }
 
 private extension UIColor {

@@ -110,6 +110,10 @@ import Foundation
     case readerArticleImageTapped
     case readerFollowConversationTooltipTapped
     case readerFollowConversationAnchorTapped
+    case readerArticleTextHighlighted
+    case readerArticleTextCopied
+    case readerCommentTextHighlighted
+    case readerCommentTextCopied
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -798,6 +802,14 @@ import Foundation
             return "reader_follow_conversation_tooltip_tapped"
         case .readerFollowConversationAnchorTapped:
             return "reader_follow_conversation_anchor_tapped"
+        case .readerArticleTextHighlighted:
+            return "reader_article_text_highlighted"
+        case .readerArticleTextCopied:
+            return "reader_article_text_copied"
+        case .readerCommentTextHighlighted:
+            return "reader_comment_text_highlighted"
+        case .readerCommentTextCopied:
+            return "reader_comment_text_copied"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
