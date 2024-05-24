@@ -259,6 +259,7 @@ private enum Strings {
     static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
     static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
     static let titleProcessing = NSLocalizedString("postFromAudio.titleProcessing", value: "Processing…", comment: "The screen title when recording")
+    static let unlimited = NSLocalizedString("postFromAudio.unlimited", value: "Unlimited", comment: "The value for the `requests available:` field for an unlimited plan")
 }
 
 extension JetpackAssistantFeatureDetails {
@@ -269,7 +270,7 @@ extension JetpackAssistantFeatureDetails {
         }
         // The backend uses `1` as an indicator of unlimited requests.
         if currentTier?.value == 1 {
-            return "∞"
+            return Strings.unlimited
         }
         // The `usage-period.requests-count` is only valid for paid plans with
         // a limited number of requests.
