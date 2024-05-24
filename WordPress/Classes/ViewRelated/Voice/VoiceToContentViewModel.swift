@@ -61,9 +61,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     init(blog: Blog, _ completion: @escaping (String) -> Void) {
         self.blog = blog
         self.completion = completion
-
         self.title = Strings.title
-        super.init()
     }
 
     func onViewAppeared() {
