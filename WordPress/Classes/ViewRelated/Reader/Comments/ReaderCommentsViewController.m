@@ -855,9 +855,6 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
             [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
             self.highlightedIndexPath = indexPath;
         }
-
-        // Reset the commentID so we don't do this again.
-        self.navigateToCommentID = nil;
     }
 }
 
