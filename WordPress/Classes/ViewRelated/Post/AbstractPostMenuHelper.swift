@@ -122,11 +122,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
     func title(for post: AbstractPost) -> String {
         switch self {
         case .view: return post.status == .publish ? Strings.view : Strings.preview
-        case .publish:
-            guard FeatureFlag.syncPublishing.enabled else {
-                return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
-            }
-            return Strings.publish
+        case .publish: return Strings.publish
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
         case .moveToDraft: return Strings.draft
