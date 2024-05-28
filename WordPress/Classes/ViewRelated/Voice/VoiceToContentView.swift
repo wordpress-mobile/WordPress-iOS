@@ -135,23 +135,23 @@ private struct VoiceToContentRecordingView: View {
             Spacer()
             VStack(spacing: 8) {
                 if #available(iOS 17.0, *) {
-                    Image(systemName: "waveform")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 80)
-                        .foregroundStyle(Color(uiColor: .brand))
-                        .symbolEffect(.variableColor, isActive: true)
+                    waveformIcon
+                        .symbolEffect(.variableColor)
                 } else {
-                    Image("audio-waveform")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 320)
-                        .foregroundStyle(Color(uiColor: .brand))
+                    waveformIcon
                 }
             }
             Spacer()
             buttonDone
         }
+    }
+
+    private var waveformIcon: some View {
+        Image(systemName: "waveform")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 80)
+            .foregroundStyle(Color(uiColor: .brand))
     }
 
     private var buttonDone: some View {
