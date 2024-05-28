@@ -67,7 +67,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
     if !title.isEmpty {
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.callout, fontWeight: .semibold),
-            .foregroundColor: FeatureFlag.syncPublishing.enabled ? foregroundColor : UIColor.text
+            .foregroundColor: foregroundColor
         ]
         let titleAttributedString = NSAttributedString(string: title, attributes: attributes)
         string.append(titleAttributedString)
@@ -80,7 +80,7 @@ private func makeContentString(for post: Post, syncStateViewModel: PostSyncState
         }
         let attributes: [NSAttributedString.Key: Any] = [
             .font: WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .regular),
-            .foregroundColor: FeatureFlag.syncPublishing.enabled ? foregroundColor : UIColor.text
+            .foregroundColor: foregroundColor
         ]
         let snippetAttributedString = NSAttributedString(string: adjustedSnippet, attributes: attributes)
         string.append(snippetAttributedString)
