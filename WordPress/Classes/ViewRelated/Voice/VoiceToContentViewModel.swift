@@ -103,16 +103,13 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 
     private func didFetchFeatureDetails(_ info: JetpackAssistantFeatureDetails) {
         self.loadingState = nil
-        if info.hasFeature, !info.isOverLimit {
-            let requestLimit = info.currentTier?.limit ?? info.requestsLimit
-            let requestsCount = (info.usagePeriod?.requestsCount ?? 0)
-            let remainingRequestCount = max(0, requestLimit - requestsCount)
-            let value = info.currentTier?.readableLimit ?? remainingRequestCount.description
-            self.subtitle = Strings.subtitleRequestsAvailable + " \(value)"
-            self.isEligible = true
-        } else {
+        if info.isSiteUpdateRequired == true {
             self.subtitle = Strings.subtitleRequestsAvailable + " 0"
             self.isEligible = false
+        } else {
+            let limit = info.getLocalizedRequestLimit()
+            self.subtitle = Strings.subtitleRequestsAvailable + " \(limit)"
+            self.isEligible = true
         }
     }
 
@@ -262,4 +259,25 @@ private enum Strings {
     static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
     static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
     static let titleProcessing = NSLocalizedString("postFromAudio.titleProcessing", value: "Processing…", comment: "The screen title when recording")
+    static let unlimited = NSLocalizedString("postFromAudio.unlimited", value: "Unlimited", comment: "The value for the `requests available:` field for an unlimited plan")
+}
+
+extension JetpackAssistantFeatureDetails {
+    func getLocalizedRequestLimit() -> String {
+        // For a free plan, the root `requests-count` has to be used.
+        if currentTier?.slug == "jetpack_ai_free" {
+            return max(0, requestsLimit - requestsCount).description
+        }
+        // The backend uses `1` as an indicator of unlimited requests.
+        if currentTier?.value == 1 {
+            return Strings.unlimited
+        }
+        // The `usage-period.requests-count` is only valid for paid plans with
+        // a limited number of requests.
+        wpAssert(usagePeriod != nil, "missing usage-period")
+        wpAssert(currentTier != nil, "missing current-tier")
+        let requestsLimit = currentTier?.limit ?? requestsLimit
+        let requestsCount = usagePeriod?.requestsCount ?? requestsCount
+        return max(0, requestsLimit - requestsCount).description
+    }
 }
