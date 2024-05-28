@@ -12,22 +12,12 @@ final class PostSyncStateViewModel {
     }
 
     private let post: AbstractPost
-    private let isInternetReachable: Bool
-    private let isSyncPublishingEnabled: Bool
 
-    init(post: AbstractPost,
-         isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
-         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
+    init(post: AbstractPost) {
         self.post = post
-        self.isInternetReachable = isInternetReachable
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     var state: State {
-        guard isSyncPublishingEnabled else {
-            return _state
-        }
-
         if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
             return .uploading
         }
@@ -42,17 +32,6 @@ final class PostSyncStateViewModel {
         }
         if PostCoordinator.shared.isSyncNeeded(for: post) {
             return .syncing
-        }
-        return .idle
-    }
-
-    /// - note: Deprecated (kahu-offline-mode)
-    private var _state: State {
-        if post.remoteStatus == .pushing || PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
-            return .uploading
-        }
-        if post.isFailed {
-            return isInternetReachable ? .failed : .offlineChanges
         }
         return .idle
     }
@@ -81,9 +60,6 @@ final class PostSyncStateViewModel {
     }
 
     var statusMessage: String? {
-        guard isSyncPublishingEnabled else {
-            return nil
-        }
         switch state {
         case .offlineChanges:
             return Strings.offlineChanges

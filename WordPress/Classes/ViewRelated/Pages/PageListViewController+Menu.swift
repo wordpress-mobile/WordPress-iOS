@@ -28,15 +28,6 @@ extension PageListViewController: InteractivePostViewDelegate {
         moveToDraft(apost)
     }
 
-    func retry(_ apost: AbstractPost) {
-        guard let page = apost as? Page else { return }
-        PostCoordinator.shared.save(page)
-    }
-
-    func cancelAutoUpload(_ apost: AbstractPost) {
-        // Not available for pages
-    }
-
     func share(_ apost: AbstractPost, fromView view: UIView) {
         guard let page = apost as? Page else { return }
 

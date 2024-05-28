@@ -14,12 +14,6 @@ extension WPStyleGuide {
         label.textColor = .text
     }
 
-    class func applyPostProgressViewStyle(_ progressView: UIProgressView) {
-        progressView.trackTintColor = .divider
-        progressView.progressTintColor = .primary
-        progressView.tintColor = .primary
-    }
-
     class func applyBorderStyle(_ view: UIView) {
         view.updateConstraint(for: .height, withRelation: .equal, setConstant: .hairlineBorderWidth, setActive: true)
         view.backgroundColor = .divider

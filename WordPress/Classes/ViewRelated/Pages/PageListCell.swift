@@ -83,10 +83,6 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-
         contentView.isUserInteractionEnabled = viewModel.isEditable
 
         titleLabel.alpha = viewModel.isEditable ? 1 : 0.5

@@ -274,14 +274,6 @@ final class PostListViewController: AbstractPostListViewController, InteractiveP
         moveToDraft(post)
     }
 
-    func retry(_ post: AbstractPost) {
-        PostCoordinator.shared.save(post)
-    }
-
-    func cancelAutoUpload(_ post: AbstractPost) {
-        PostCoordinator.shared.cancelAutoUploadOf(post)
-    }
-
     func share(_ post: AbstractPost, fromView view: UIView) {
         guard let post = post as? Post else {
             return

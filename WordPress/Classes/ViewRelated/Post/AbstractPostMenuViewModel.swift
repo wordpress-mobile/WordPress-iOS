@@ -15,7 +15,6 @@ struct AbstractPostButtonSection {
 }
 
 enum AbstractPostButton: Equatable {
-    case retry
     case view
     case publish
     case stats
@@ -23,7 +22,6 @@ enum AbstractPostButton: Equatable {
     case moveToDraft
     case trash
     case delete
-    case cancelAutoUpload
     case share
     case blaze
     case comments
