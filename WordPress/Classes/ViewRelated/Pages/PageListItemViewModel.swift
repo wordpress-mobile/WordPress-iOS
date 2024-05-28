@@ -59,10 +59,6 @@ private func makeBadgesString(for page: Page) -> NSAttributedString {
     if page.hasPendingReviewState {
         badges.append(Strings.badgePendingReview)
     }
-    if page.hasLocalChanges() {
-        badges.append(Strings.badgeLocalChanges)
-    }
-
     return AbstractPostHelper.makeBadgesString(with: badges.enumerated().map { index, badge in
         (badge, colors[index])
     })
