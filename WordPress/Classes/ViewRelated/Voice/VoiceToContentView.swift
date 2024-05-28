@@ -179,12 +179,10 @@ private struct VoiceToContenProcessingView: View {
     var body: some View {
         VStack {
             Spacer()
-            if #available(iOS 17.0, *) {
-                ProgressView()
-                    .controlSize(.extraLarge)
-            } else {
-                ProgressView()
-            }
+
+            ProgressView()
+                .controlSize(.large)
+
             Spacer()
         }
     }
