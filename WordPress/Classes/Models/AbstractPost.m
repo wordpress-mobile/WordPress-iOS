@@ -618,11 +618,6 @@
     }
 }
 
-- (BOOL)wasAutoUploadCancelled {
-    return [self.confirmedChangesHash isEqualToString:@""]
-    && [self.confirmedChangesTimestamp isEqualToDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
-}
-
 - (void)updatePathForDisplayImageBasedOnContent
 {
     // First lets check the post content for a suitable image

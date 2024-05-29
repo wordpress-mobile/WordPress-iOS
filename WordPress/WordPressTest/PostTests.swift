@@ -465,20 +465,6 @@ class PostTests: CoreDataTestCase {
         XCTAssertEqual(post.shouldAttemptAutoUpload, true)
     }
 
-    func testAutoUploadCancellationProperty() {
-        let post = newTestPost()
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, false)
-
-        post.shouldAttemptAutoUpload = true
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, false)
-
-        post.shouldAttemptAutoUpload = false
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, true)
-    }
-
     /// Confidence check for the string setter of `Post.statusAfterSync`
     func testStatusAfterSyncStringTranslatesToEnumValues() {
         // Arrange
