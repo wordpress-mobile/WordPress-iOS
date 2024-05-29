@@ -224,6 +224,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let transcription = try await service.transcribeAudio(from: fileURL, token: token)
             let content = try await service.makePostContent(fromPlainText: transcription, token: token)
 
+            // "the __JETPACK_AI_ERROR__ is a special marker we ask GPT to add to
+            // the request when it can’t understand the request for any reason"
+            guard content != "__JETPACK_AI_ERROR__" else {
+                showError(VoiceToContentError.cantUnderstandRequest)
+                return
+            }
             self.completion(content)
         } catch {
             showError(error)
@@ -253,9 +259,20 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 }
 
+private enum VoiceToContentError: Error, LocalizedError {
+    case cantUnderstandRequest
+
+    var errorDescription: String? {
+        switch self {
+        case .cantUnderstandRequest: return Strings.errorMessageCantUnderstandRequest
+        }
+    }
+}
+
 private enum Strings {
     static let title = NSLocalizedString("postFromAudio.title", value: "Post from Audio", comment: "The screen title")
     static let subtitleError = NSLocalizedString("postFromAudio.subtitleError", value: "Something went wrong", comment: "The screen subtitle in the error state")
+    static let errorMessageCantUnderstandRequest = NSLocalizedString("postFromAudio.errorMessage.cantUnderstandRequest", value: "There were some issues processing the request. Please, try again later.", comment: "The AI failed to understand the request for any reasons")
     static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
     static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
     static let titleProcessing = NSLocalizedString("postFromAudio.titleProcessing", value: "Processing…", comment: "The screen title when recording")
