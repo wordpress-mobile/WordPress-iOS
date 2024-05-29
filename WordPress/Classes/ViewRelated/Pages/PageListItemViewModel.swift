@@ -9,14 +9,14 @@ final class PageListItemViewModel {
     let accessibilityIdentifier: String?
     let syncStateViewModel: PostSyncStateViewModel
 
-    init(page: Page, isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
+    init(page: Page) {
         self.page = page
         self.title = makeContentAttributedString(for: page)
         self.badgeIcon = makeBadgeIcon(for: page)
-        self.badges = makeBadgesString(for: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
+        self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
-        self.syncStateViewModel = PostSyncStateViewModel(post: page, isSyncPublishingEnabled: isSyncPublishingEnabled)
+        self.syncStateViewModel = PostSyncStateViewModel(post: page)
     }
 }
 
@@ -39,7 +39,7 @@ private func makeBadgeIcon(for page: Page) -> UIImage? {
     return nil
 }
 
-private func makeBadgesString(for page: Page, isSyncPublishingEnabled: Bool) -> NSAttributedString {
+private func makeBadgesString(for page: Page) -> NSAttributedString {
     var badges: [String] = []
     var colors: [Int: UIColor] = [:]
     if page.isSiteHomepage {
@@ -59,10 +59,6 @@ private func makeBadgesString(for page: Page, isSyncPublishingEnabled: Bool) -> 
     if page.hasPendingReviewState {
         badges.append(Strings.badgePendingReview)
     }
-    if !isSyncPublishingEnabled && page.hasLocalChanges() {
-        badges.append(Strings.badgeLocalChanges)
-    }
-
     return AbstractPostHelper.makeBadgesString(with: badges.enumerated().map { index, badge in
         (badge, colors[index])
     })

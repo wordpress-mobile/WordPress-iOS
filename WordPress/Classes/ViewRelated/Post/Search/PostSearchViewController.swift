@@ -164,10 +164,6 @@ final class PostSearchViewController: UIViewController, UITableViewDelegate, UIS
 
             switch viewModel.posts[indexPath.row].latest() {
             case let post as Post:
-                if post.status == .trash && !FeatureFlag.syncPublishing.enabled {
-                    // No editing posts that are trashed.
-                    return
-                }
                 delegate?.edit(post)
             case let page as Page:
                 guard page.status != .trash else { return }

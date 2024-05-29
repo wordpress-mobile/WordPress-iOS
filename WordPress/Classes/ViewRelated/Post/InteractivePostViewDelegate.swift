@@ -9,8 +9,6 @@ protocol InteractivePostViewDelegate: AnyObject {
     func trash(_ post: AbstractPost, completion: @escaping () -> Void)
     func delete(_ post: AbstractPost, completion: @escaping () -> Void)
     func draft(_ post: AbstractPost)
-    func retry(_ post: AbstractPost)
-    func cancelAutoUpload(_ post: AbstractPost)
     func share(_ post: AbstractPost, fromView view: UIView)
     func blaze(_ post: AbstractPost)
     func comments(_ post: AbstractPost)

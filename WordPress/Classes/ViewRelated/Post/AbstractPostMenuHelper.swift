@@ -14,7 +14,7 @@ struct AbstractPostMenuHelper {
     ///   - presentingView: The view presenting the menu
     ///   - delegate: The delegate that performs post actions
     func makeMenu(presentingView: UIView, delegate: InteractivePostViewDelegate) -> UIMenu? {
-        if FeatureFlag.syncPublishing.enabled, !PostSyncStateViewModel(post: post).isEditable {
+        if !PostSyncStateViewModel(post: post).isEditable {
             return nil
         }
         return UIMenu(title: "", options: .displayInline, children: [
@@ -92,7 +92,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     var icon: UIImage? {
         switch self {
-        case .retry: return UIImage(systemName: "arrow.clockwise")
         case .view: return UIImage(systemName: "safari")
         case .publish: return UIImage(systemName: "tray.and.arrow.up")
         case .stats: return UIImage(systemName: "chart.line.uptrend.xyaxis")
@@ -100,7 +99,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
         case .delete: return UIImage(systemName: "trash")
-        case .cancelAutoUpload: return UIImage(systemName: "xmark.icloud")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble.right")
@@ -123,19 +121,13 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     func title(for post: AbstractPost) -> String {
         switch self {
-        case .retry: return Strings.retry
         case .view: return post.status == .publish ? Strings.view : Strings.preview
-        case .publish:
-            guard FeatureFlag.syncPublishing.enabled else {
-                return AbstractPostHelper.editorPublishAction(for: post).publishActionLabel
-            }
-            return Strings.publish
+        case .publish: return Strings.publish
         case .stats: return Strings.stats
         case .duplicate: return Strings.duplicate
         case .moveToDraft: return Strings.draft
         case .trash: return Strings.trash
         case .delete: return Strings.delete
-        case .cancelAutoUpload: return Strings.cancelAutoUpload
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
@@ -149,8 +141,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
 
     func performAction(for post: AbstractPost, view: UIView, delegate: InteractivePostViewDelegate) {
         switch self {
-        case .retry:
-            delegate.retry(post)
         case .view:
             delegate.view(post)
         case .publish:
@@ -165,8 +155,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.trash(post)
         case .delete:
             delegate.delete(post)
-        case .cancelAutoUpload:
-            delegate.cancelAutoUpload(post)
         case .share:
             delegate.share(post, fromView: view)
         case .blaze:
@@ -187,7 +175,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
     }
 
     private enum Strings {
-        static let cancelAutoUpload = NSLocalizedString("posts.cancelUpload.actionTitle", value: "Cancel upload", comment: "Label for the Post List option that cancels automatic uploading of a post.")
         static let stats = NSLocalizedString("posts.stats.actionTitle", value: "Stats", comment: "Label for post stats option. Tapping displays statistics for a post.")
         static let comments = NSLocalizedString("posts.comments.actionTitle", value: "Comments", comment: "Label for post comments option. Tapping displays comments for a post.")
         static let settings = NSLocalizedString("posts.settings.actionTitle", value: "Settings", comment: "Label for post settings option. Tapping displays settings for a post.")
@@ -198,7 +185,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish", comment: "Label for the publish post button.")
-        static let retry = NSLocalizedString("posts.retry.actionTitle", value: "Retry", comment: "Retry uploading the post.")
         static let share = NSLocalizedString("posts.share.actionTitle", value: "Share", comment: "Share the post.")
         static let blaze = NSLocalizedString("posts.blaze.actionTitle", value: "Promote with Blaze", comment: "Promote the post with Blaze.")
         static let setHomepage = NSLocalizedString("posts.setHomepage.actionTitle", value: "Set as homepage", comment: "Set the selected page as the homepage.")

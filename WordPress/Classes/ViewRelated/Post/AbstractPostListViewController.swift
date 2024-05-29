@@ -687,7 +687,7 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    func _trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let post = post.original()
 
         func performAction() {
@@ -725,13 +725,6 @@ class AbstractPostListViewController: UIViewController,
             }
         }
         alert.presentFromRootViewController()
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    func deletePost(_ post: AbstractPost) {
-        Task {
-            await PostCoordinator.shared.delete(post)
-        }
     }
 
     func stats(for post: AbstractPost) {
