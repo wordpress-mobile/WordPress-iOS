@@ -635,6 +635,8 @@
 		0CF22F602BC9605D0005B070 /* PrepublishingViewController+JetpackSocial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF22F5E2BC9605D0005B070 /* PrepublishingViewController+JetpackSocial.swift */; };
 		0CF22F622BC963690005B070 /* PrepublishingViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF22F612BC963690005B070 /* PrepublishingViewController+Helpers.swift */; };
 		0CF22F632BC963690005B070 /* PrepublishingViewController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF22F612BC963690005B070 /* PrepublishingViewController+Helpers.swift */; };
+		0CF2BD1A2C07AED00041707D /* PrepublishingSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2BD192C07AED00041707D /* PrepublishingSheetScreen.swift */; };
+		0CF2BD1C2C07BFB80041707D /* PostSettingsPublishDateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2BD1B2C07BFB80041707D /* PostSettingsPublishDateScreen.swift */; };
 		0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */; };
 		0CF7EACF2B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
 		0CF7EAD02B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
@@ -6416,6 +6418,8 @@
 		0CF22F5B2BC960430005B070 /* PrepublishingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingViewController.swift; sourceTree = "<group>"; };
 		0CF22F5E2BC9605D0005B070 /* PrepublishingViewController+JetpackSocial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrepublishingViewController+JetpackSocial.swift"; sourceTree = "<group>"; };
 		0CF22F612BC963690005B070 /* PrepublishingViewController+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PrepublishingViewController+Helpers.swift"; sourceTree = "<group>"; };
+		0CF2BD192C07AED00041707D /* PrepublishingSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSheetScreen.swift; sourceTree = "<group>"; };
+		0CF2BD1B2C07BFB80041707D /* PostSettingsPublishDateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsPublishDateScreen.swift; sourceTree = "<group>"; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
 		0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostServiceRemote+Concurrency.swift"; sourceTree = "<group>"; };
 		0CFD6C792A73E703003DD0A0 /* WordPress 152.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 152.xcdatamodel"; sourceTree = "<group>"; };
@@ -11775,6 +11779,8 @@
 				CC94FC67221452A4002E5825 /* EditorNoticeComponent.swift */,
 				CC19BE05223FECAC00CAB3E1 /* EditorPostSettings.swift */,
 				BED4D83A1FF13B8A00A11345 /* EditorPublishEpilogueScreen.swift */,
+				0CF2BD192C07AED00041707D /* PrepublishingSheetScreen.swift */,
+				0CF2BD1B2C07BFB80041707D /* PostSettingsPublishDateScreen.swift */,
 				CC8498CF2241473400DB490A /* EditorSettingsComponents */,
 				FFD47BDE2474228C00F00660 /* FeaturedImageScreen.swift */,
 				FA9276B02889550E00C323BB /* ChooseLayoutScreen.swift */,
@@ -23499,6 +23505,7 @@
 				3F2F855F26FAF235000FCDA5 /* MeTabScreen.swift in Sources */,
 				3FE39A4226F838A0006E2B3A /* ActionSheetComponent.swift in Sources */,
 				FA612DDF274E9F730002B03A /* QuickStartPromptScreen.swift in Sources */,
+				0CF2BD1A2C07AED00041707D /* PrepublishingSheetScreen.swift in Sources */,
 				3F2F854526FAEB86000FCDA5 /* MediaPickerAlbumScreen.swift in Sources */,
 				3F2F855526FAF227000FCDA5 /* TagsComponent.swift in Sources */,
 				3F2F855426FAF227000FCDA5 /* AztecEditorScreen.swift in Sources */,
@@ -23524,6 +23531,7 @@
 				3F2F856026FAF235000FCDA5 /* NotificationsScreen.swift in Sources */,
 				011F52D82A1BECA200B04114 /* PlanSelectionScreen.swift in Sources */,
 				3F2F854026FAE9DC000FCDA5 /* BlockEditorScreen.swift in Sources */,
+				0CF2BD1C2C07BFB80041707D /* PostSettingsPublishDateScreen.swift in Sources */,
 				3FB5C2B327059AC8007D0ECE /* XCUIElement+Scroll.swift in Sources */,
 				D8599FEA2A2930CE00065193 /* PagesScreen.swift in Sources */,
 				80FDF4182AAADDF2000287B1 /* MySiteMoreMenuScreen.swift in Sources */,
