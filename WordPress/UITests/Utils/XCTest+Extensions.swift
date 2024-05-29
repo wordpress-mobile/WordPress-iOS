@@ -29,9 +29,6 @@ extension XCTestCase {
             app.launchArguments.append(contentsOf: ["-ui-test-select-wpcom-site", selectWPComSite])
         }
 
-        /// - warning: Work-in-progress (kahu-offline-mode)
-        app.launchArguments.append(contentsOf: ["-ff-override-Synchronous Publishing", "false"])
-
         if removeBeforeLaunching {
             removeApp(app)
         }
