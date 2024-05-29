@@ -3698,8 +3698,6 @@
 		F1D8C6EB26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */; };
 		F1D8C6EC26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */; };
 		F1D8C6F026C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1D8C6EF26C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift */; };
-		F1DB8D292288C14400906E2F /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D282288C14400906E2F /* Uploader.swift */; };
-		F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D2A2288C24500906E2F /* UploadsManager.swift */; };
 		F1E3536B25B9F74C00992E3A /* WindowManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E3536A25B9F74C00992E3A /* WindowManager.swift */; };
 		F1E72EBA267790110066FF91 /* UIViewController+Dismissal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E72EB9267790100066FF91 /* UIViewController+Dismissal.swift */; };
 		F1E72EBB267790110066FF91 /* UIViewController+Dismissal.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1E72EB9267790100066FF91 /* UIViewController+Dismissal.swift */; };
@@ -5086,7 +5084,6 @@
 		FABB241F2602FC2C00C8785C /* LikePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = D858F30020E20106007E8A1C /* LikePost.swift */; };
 		FABB24202602FC2C00C8785C /* Routes+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1703D04B20ECD93800D292E9 /* Routes+Post.swift */; };
 		FABB24212602FC2C00C8785C /* Blog+Jetpack.swift in Sources */ = {isa = PBXBuildFile; fileRef = E11C4B6F2010930B00A6619C /* Blog+Jetpack.swift */; };
-		FABB24222602FC2C00C8785C /* Uploader.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D282288C14400906E2F /* Uploader.swift */; };
 		FABB24232602FC2C00C8785C /* JetpackRestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAB8AB8A25AFFE7500F9F8A0 /* JetpackRestoreService.swift */; };
 		FABB24242602FC2C00C8785C /* DateAndTimeFormatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 821738081FE04A9E00BEC94C /* DateAndTimeFormatSettingsViewController.swift */; };
 		FABB24252602FC2C00C8785C /* WPContentSyncHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D6C4B051B603E03005E3C43 /* WPContentSyncHelper.swift */; };
@@ -5469,7 +5466,6 @@
 		FABB25D12602FC2C00C8785C /* ReaderSitesCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3234B8E6252FA0930068DA40 /* ReaderSitesCardCell.swift */; };
 		FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D865722C2186F96B0023A99C /* SiteSegmentsWizardContent.swift */; };
 		FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */ = {isa = PBXBuildFile; fileRef = E66969DF1B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift */; };
-		FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1DB8D2A2288C24500906E2F /* UploadsManager.swift */; };
 		FABB25D62602FC2C00C8785C /* ActivityListSectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82A062DD2017BCBA0084CE7C /* ActivityListSectionHeaderView.swift */; };
 		FABB25D72602FC2C00C8785C /* WPAccount+RestApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73FEC870220B358500CEF791 /* WPAccount+RestApi.swift */; };
 		FABB25D82602FC2C00C8785C /* ImageCropOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5FF3BE61CAD881100C1D597 /* ImageCropOverlayView.swift */; };
@@ -9159,8 +9155,6 @@
 		F1D8C6E826BA94DF002E3323 /* WordPressBackgroundTaskEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WordPressBackgroundTaskEventHandler.swift; sourceTree = "<group>"; };
 		F1D8C6EA26BABE3E002E3323 /* WeeklyRoundupDebugScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRoundupDebugScreen.swift; sourceTree = "<group>"; };
 		F1D8C6EF26C17A6C002E3323 /* WeeklyRoundupBackgroundTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyRoundupBackgroundTask.swift; sourceTree = "<group>"; };
-		F1DB8D282288C14400906E2F /* Uploader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Uploader.swift; sourceTree = "<group>"; };
-		F1DB8D2A2288C24500906E2F /* UploadsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadsManager.swift; sourceTree = "<group>"; };
 		F1E3536A25B9F74C00992E3A /* WindowManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WindowManager.swift; sourceTree = "<group>"; };
 		F1E72EB9267790100066FF91 /* UIViewController+Dismissal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Dismissal.swift"; sourceTree = "<group>"; };
 		F1F083F5241FFE930056D3B1 /* AtomicAuthenticationServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AtomicAuthenticationServiceTests.swift; sourceTree = "<group>"; };
@@ -10295,7 +10289,6 @@
 				E1CA0A6A1FA73039004C4BBE /* Stores */,
 				8584FDB719243E550019C02E /* System */,
 				8584FDB4192437160019C02E /* Utility */,
-				F1DB8D272288C12A00906E2F /* Uploads */,
 				8584FDB31923EF4F0019C02E /* ViewRelated */,
 				FA4FE0AF2BEA7FA800A635D3 /* RemotePost+Metadata.swift */,
 			);
@@ -17677,15 +17670,6 @@
 			path = BuildInformation;
 			sourceTree = "<group>";
 		};
-		F1DB8D272288C12A00906E2F /* Uploads */ = {
-			isa = PBXGroup;
-			children = (
-				F1DB8D282288C14400906E2F /* Uploader.swift */,
-				F1DB8D2A2288C24500906E2F /* UploadsManager.swift */,
-			);
-			path = Uploads;
-			sourceTree = "<group>";
-		};
 		F1F163BF25658B4D003DC13B /* JetpackIntents */ = {
 			isa = PBXGroup;
 			children = (
@@ -22804,7 +22788,6 @@
 				E11C4B702010930B00A6619C /* Blog+Jetpack.swift in Sources */,
 				082A645B291C2DD700668D2C /* Routes+Jetpack.swift in Sources */,
 				DC3B9B2C27739760003F7249 /* TimeZoneSelectorViewModel.swift in Sources */,
-				F1DB8D292288C14400906E2F /* Uploader.swift in Sources */,
 				FA3A281B2A39C8FF00206D74 /* BlazeCampaignSingleStatView.swift in Sources */,
 				3FB1929026C6109F000F5AA3 /* TimeSelectionView.swift in Sources */,
 				4A535E142AF3368B008B87B9 /* MenusViewController.swift in Sources */,
@@ -23432,7 +23415,6 @@
 				08CBC77929AE6CC4000026E7 /* SiteCreationEmptySiteTemplate.swift in Sources */,
 				D865722E2186F96D0023A99C /* SiteSegmentsWizardContent.swift in Sources */,
 				E66969E01B9E648100EC9C00 /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
-				F1DB8D2B2288C24500906E2F /* UploadsManager.swift in Sources */,
 				9856A3E4261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				801D951A291AC0B00051993E /* OverlayFrequencyTracker.swift in Sources */,
 				FEF4DC5528439357003806BE /* ReminderScheduleCoordinator.swift in Sources */,
@@ -25723,7 +25705,6 @@
 				FABB241F2602FC2C00C8785C /* LikePost.swift in Sources */,
 				FABB24202602FC2C00C8785C /* Routes+Post.swift in Sources */,
 				FABB24212602FC2C00C8785C /* Blog+Jetpack.swift in Sources */,
-				FABB24222602FC2C00C8785C /* Uploader.swift in Sources */,
 				FABB24232602FC2C00C8785C /* JetpackRestoreService.swift in Sources */,
 				FABB24242602FC2C00C8785C /* DateAndTimeFormatSettingsViewController.swift in Sources */,
 				F45EB5082B87E167004E9053 /* NewPostNotification.swift in Sources */,
@@ -26362,7 +26343,6 @@
 				FABB25D22602FC2C00C8785C /* SiteSegmentsWizardContent.swift in Sources */,
 				FABB25D32602FC2C00C8785C /* ReaderTopicToReaderDefaultTopic37to38.swift in Sources */,
 				FEC26034283FC902003D886A /* RootViewCoordinator+BloggingPrompt.swift in Sources */,
-				FABB25D42602FC2C00C8785C /* UploadsManager.swift in Sources */,
 				9856A3E5261FD27A008D6354 /* UserProfileSectionHeader.swift in Sources */,
 				FABB25D62602FC2C00C8785C /* ActivityListSectionHeaderView.swift in Sources */,
 				FE34ACDB2B17AA9300108B3C /* BloganuaryOverlayViewController.swift in Sources */,

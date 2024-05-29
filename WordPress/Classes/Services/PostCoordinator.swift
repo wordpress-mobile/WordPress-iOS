@@ -1207,25 +1207,6 @@ extension Foundation.Notification.Name {
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
 }
 
-// MARK: - Automatic Uploads
-
-extension PostCoordinator: Uploader {
-    func resume() {
-        guard !isSyncPublishingEnabled else {
-            return
-        }
-    }
-
-    private func trackAutoUpload(action: PostAutoUploadInteractor.AutoUploadAction, status: BasePost.Status?) {
-        guard action != .nothing, let status = status else {
-            return
-        }
-        WPAnalytics.track(.autoUploadPostInvoked, withProperties:
-            ["upload_action": action.rawValue,
-             "post_status": status.rawValue])
-    }
-}
-
 private extension NSManagedObjectID {
     var shortDescription: String {
         let description = "\(self)"

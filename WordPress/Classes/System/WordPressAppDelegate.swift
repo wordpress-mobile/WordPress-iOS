@@ -52,24 +52,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         return ContextManager.shared.mainContext
     }
 
-    private lazy var uploadsManager: UploadsManager = {
-
-        // It's not great that we're using singletons here.  This change is a good opportunity to
-        // revisit if we can make the coordinators children to another owning object.
-        //
-        // We're leaving as-is for now to avoid digressing.
-        let uploaders: [Uploader] = [
-            // Ideally we should be able to retry uploads of standalone media to the media library, but the truth is
-            // that uploads started from the MediaCoordinator are currently not updating their parent post references
-            // very well.  For this reason I'm disabling automated upload retries that don't start from PostCoordinator.
-            //
-            // MediaCoordinator.shared,
-            PostCoordinator.shared
-        ]
-
-        return UploadsManager(uploaders: uploaders)
-    }()
-
     private let loggingStack = WPLoggingStack.shared
 
     /// Access the crash logging type
@@ -187,7 +169,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         DDLogInfo("\(self) \(#function)")
 
-        uploadsManager.resume()
         updateFeatureFlags()
         updateRemoteConfig()
 
@@ -293,7 +274,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
             MediaCoordinator.shared.refreshMediaStatus()
             PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
-            self?.uploadsManager.resume()
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
