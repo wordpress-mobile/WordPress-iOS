@@ -187,9 +187,9 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        configureReplyView()
+//        configureReplyView()
         setupKeyboardManager()
-        configureSuggestionsView()
+//        configureSuggestionsView()
         configureNavigationBar()
         configureTable()
         configureSections()
@@ -290,18 +290,28 @@ private extension CommentDetailViewController {
     }
 
     func configureView() {
-        containerStackView.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(containerStackView)
-        containerStackView.axis = .vertical
-        containerStackView.addArrangedSubview(tableView)
-        if comment.allowsModeration() {
-            let commentModerationView = CommentModerationView(
-                viewModel: commentModerationViewModel
-            )
-            let hostingController = UIHostingController(rootView: commentModerationView)
-            containerStackView.addArrangedSubview(hostingController.view)
+        self.configureTableView()
+        self.configureModerationView()
+    }
+
+    func configureTableView() {
+        self.tableView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(tableView)
+        self.view.pinSubviewToAllEdges(tableView)
+    }
+
+    func configureModerationView() {
+        guard comment.allowsModeration() else {
+            return
         }
-        view.pinSubviewToAllEdges(containerStackView)
+        let moderationView = CommentModerationSheetHostingView(viewModel: commentModerationViewModel, parent: self) { [weak self] size in
+            let bottomInset = size.height
+            self?.tableView.contentInset.bottom = bottomInset
+            self?.tableView.verticalScrollIndicatorInsets.bottom = bottomInset
+        }
+        moderationView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(moderationView)
+        self.view.pinSubviewToAllEdges(moderationView)
     }
 
     func createCommentModerationViewModel() -> CommentModerationViewModel {
@@ -333,9 +343,6 @@ private extension CommentDetailViewController {
         tableView.dataSource = self
         tableView.separatorInsetReference = .fromAutomaticInsets
         tableView.separatorStyle = .none
-
-        // get rid of the separator line for the last cell.
-        tableView.tableFooterView = UIView(frame: .init(x: 0, y: 0, width: tableView.frame.size.width, height: Constants.tableBottomMargin))
 
         // assign 20pt leading inset to the table view, as per the design.
         tableView.directionalLayoutMargins = .init(top: tableView.directionalLayoutMargins.top,
