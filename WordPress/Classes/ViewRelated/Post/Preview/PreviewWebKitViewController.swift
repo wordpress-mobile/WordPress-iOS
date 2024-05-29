@@ -47,10 +47,7 @@ class PreviewWebKitViewController: WebKitViewController {
 
         self.post = post
 
-        let autoUploadInteractor = PostAutoUploadInteractor()
-
-        let isNotCancelableWithFailedToUploadChanges: Bool = post.isFailed && post.hasLocalChanges() && !autoUploadInteractor.canCancelAutoUpload(of: post)
-        canPublish = post.isDraft() || isNotCancelableWithFailedToUploadChanges
+        canPublish = post.isDraft()
 
         guard let url = PreviewNonceHandler.nonceURL(post: post, previewURL: previewURL) else {
             super.init(configuration: WebViewControllerConfiguration(url: Constants.blankURL))

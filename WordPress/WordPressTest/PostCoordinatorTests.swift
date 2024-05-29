@@ -250,39 +250,6 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(post.status).to(equal(.draft))
     }
 
-    func testTracksAutoUploadPostInvoked() {
-        // Arrange
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
-        let interactor = PostAutoUploadInteractor()
-        let post = PostBuilder(mainContext)
-            .withRemote()
-            .with(status: .draft)
-            .with(remoteStatus: .failed)
-            .supportsWPComAPI()
-            .build()
-        try! mainContext.save()
-
-        let expectedAction = interactor.autoUploadAction(for: post)
-
-        // Act
-        postCoordinator.resume()
-        guard let status = post.status else {
-            return
-        }
-
-        // Assert
-        expect(TestAnalyticsTracker.tracked.count).toEventually(equal(1))
-        let trackEvent = TestAnalyticsTracker.tracked.first
-        expect(trackEvent?.stat).toEventually(equal(WPAnalyticsStat.autoUploadPostInvoked))
-
-        let propertyAction = trackEvent?.properties["upload_action"] as? String
-        expect(propertyAction).toEventually(equal(expectedAction.rawValue))
-
-        let propertyStatus = trackEvent?.properties["post_status"] as? String
-        expect(propertyStatus).toEventually(equal(status.rawValue))
-    }
-
     func testSavingSuccessfullyWillDispatchASuccessNotice() {
         // Arrange
         let post = PostBuilder(mainContext)
