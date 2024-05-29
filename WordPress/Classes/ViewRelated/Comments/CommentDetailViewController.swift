@@ -35,7 +35,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private var managedObjectContext: NSManagedObjectContext
     private var sections = [SectionType] ()
     private var rows = [RowType]()
-    private var commentStatus: CommentStatusType?
     private var notification: Notification?
 
     private var isNotificationComment: Bool {
@@ -159,7 +158,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
                isLastInList: Bool,
                managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
-        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.isLastInList = isLastInList
         self.managedObjectContext = managedObjectContext
         super.init(nibName: nil, bundle: nil)
@@ -170,7 +168,6 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
          notificationDelegate: CommentDetailsNotificationDelegate?,
          managedObjectContext: NSManagedObjectContext = ContextManager.sharedInstance().mainContext) {
         self.comment = comment
-        self.commentStatus = CommentStatusType.typeForStatus(comment.status)
         self.notification = notification
         self.notificationDelegate = notificationDelegate
         self.managedObjectContext = managedObjectContext
@@ -267,18 +264,12 @@ private extension CommentDetailViewController {
         case header
         case content
         case replyIndicator
-        case status(status: CommentStatusType)
     }
 
     struct Constants {
         static let tableHorizontalInset: CGFloat = CGFloat.DS.Padding.double
         static let tableBottomMargin: CGFloat = 40.0
         static let replyIndicatorVerticalSpacing: CGFloat = 14.0
-        static let deleteButtonInsets = UIEdgeInsets(top: 4, left: 20, bottom: 4, right: 20)
-        static let deleteButtonNormalColor = UIColor(light: .error, dark: .muriel(name: .red, .shade40))
-        static let deleteButtonHighlightColor: UIColor = .white
-        static let trashButtonBackgroundColor = UIColor.quaternarySystemFill
-        static let trashButtonHighlightColor: UIColor = UIColor.tertiarySystemFill
         static let notificationDetailSource = ["source": "notification_details"]
     }
 
@@ -317,7 +308,6 @@ private extension CommentDetailViewController {
 
                 case .failure(let error):
                     self?.displayNotice(title: error.failureMessage)
-                    self?.commentStatus = CommentStatusType.typeForStatus(self?.comment.status)
                 }
             }
         )
@@ -369,14 +359,6 @@ private extension CommentDetailViewController {
     func refreshData() {
         configureSections()
         tableView.reloadData()
-    }
-
-    /// Checks if the index path is positioned before the delete button cell.
-    func shouldHideCellSeparator(for indexPath: IndexPath) -> Bool {
-        switch sections[indexPath.section] {
-        case .content:
-            return false
-        }
     }
 
     // MARK: Cell configuration
@@ -441,22 +423,6 @@ private extension CommentDetailViewController {
             self?.openWebView(for: url)
         }
         cell.configure(with: contentConfig, onOptionSelected: onOptionSelected, parent: self)
-    }
-
-    func configuredStatusCell(for status: CommentStatusType) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: .moderationCellIdentifier) ?? .init(style: .subtitle, reuseIdentifier: .moderationCellIdentifier)
-
-        cell.selectionStyle = .none
-        cell.tintColor = Style.tintColor
-
-        cell.detailTextLabel?.font = Style.textFont
-        cell.detailTextLabel?.textColor = Style.textColor
-        cell.detailTextLabel?.numberOfLines = 0
-        cell.detailTextLabel?.text = status.title
-
-        cell.accessoryView = status == commentStatus ? UIImageView(image: .gridicon(.checkmark)) : nil
-
-        return cell
     }
 
     // MARK: Data Sync
@@ -670,9 +636,6 @@ private extension String {
     // MARK: Constants
     static let replyIndicatorCellIdentifier = "reply-indicator-cell"
     static let replyIndicatorTextIdentifier = "reply-indicator-text"
-    static let moderationCellIdentifier = "moderationCell"
-    static let trashButtonAccessibilityId = "trash-comment-button"
-    static let deleteButtonAccessibilityId = "delete-comment-button"
     static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
@@ -680,23 +643,6 @@ private extension String {
                                                           + "%1$@ is a placeholder for the comment author."
                                                           + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
-    static let deleteButtonText = NSLocalizedString("Delete Permanently", comment: "Title for button on the comment details page that deletes the comment when tapped.")
-    static let trashButtonText = NSLocalizedString("Move to Trash", comment: "Title for button on the comment details page that moves the comment to trash when tapped.")
-}
-
-private extension CommentStatusType {
-    var title: String? {
-        switch self {
-        case .pending:
-            return NSLocalizedString("Pending", comment: "Button title for Pending comment state.")
-        case .approved:
-            return NSLocalizedString("Approved", comment: "Button title for Approved comment state.")
-        case .spam:
-            return NSLocalizedString("Spam", comment: "Button title for Spam comment state.")
-        default:
-            return nil
-        }
-    }
 }
 
 // MARK: - Comment Moderation Actions
@@ -785,9 +731,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
             case .replyIndicator:
                 return replyIndicatorCell
-
-            case .status(let statusType):
-                return configuredStatusCell(for: statusType)
             }
         }()
 
@@ -798,11 +741,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
         let header = view as! UITableViewHeaderFooterView
         header.textLabel?.font = Style.tertiaryTextFont
         header.textLabel?.textColor = UIColor.secondaryLabel
-    }
-
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        // Hide cell separator if it's positioned before the delete button cell.
-        cell.separatorInset = self.shouldHideCellSeparator(for: indexPath) ? self.insetsForHiddenCellSeparator : .zero
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
