@@ -40,7 +40,6 @@ final class CommentModerationSheetHostingView: UIView {
     }
 
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        //
         guard let hitView = super.hitTest(point, with: event),
               let hostingView = self.hostingController?.view,
               let parent = superview,
@@ -49,7 +48,7 @@ final class CommentModerationSheetHostingView: UIView {
             return super.hitTest(point, with: event)
         }
 
-        //
+        // Iterate through the parent's subviews to find the view that should respond to the touch event
         for subview in parent.subviews where subview !== self {
             let point = convert(point, to: subview)
             if let respondingView = subview.hitTest(point, with: event) {
@@ -57,7 +56,7 @@ final class CommentModerationSheetHostingView: UIView {
             }
         }
 
-        //
+        // If no subviews are hit, return the parent view
         return parent
     }
 
