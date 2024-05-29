@@ -176,30 +176,6 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(invocation.forceDraftIfCreating).to(beTrue())
     }
 
-    func testCancelAutoUploadOfAPost() {
-        let post = PostBuilder(mainContext).confirmedAutoUpload().build()
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
-
-        postCoordinator.cancelAutoUploadOf(post)
-
-        expect(post.shouldAttemptAutoUpload).to(beFalse())
-    }
-
-    func testCancelAutoUploadDoNotChangePostStatusToDraftWhenPostHasRemote() {
-        let post = PostBuilder(mainContext)
-            .withRemote()
-            .with(status: .publish)
-            .with(remoteStatus: .failed)
-            .build()
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
-
-        postCoordinator.cancelAutoUploadOf(post)
-
-        expect(post.status).to(equal(.publish))
-    }
-
     func testChangeDraftToPublishWhenPublishing() {
         let post = PostBuilder(mainContext).drafted().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)

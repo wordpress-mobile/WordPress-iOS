@@ -1045,22 +1045,6 @@ class PostCoordinator: NSObject {
     }
 
     // - warning: deprecated (kahu-offline-mode)
-    func cancelAutoUploadOf(_ post: AbstractPost) {
-        cancelAnyPendingSaveOf(post: post)
-
-        post.shouldAttemptAutoUpload = false
-
-        let moc = post.managedObjectContext
-
-        moc?.perform {
-            try? moc?.save()
-        }
-
-        let notice = Notice(title: PostAutoUploadMessages(for: post).cancelMessage(), message: "")
-        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
-    }
-
-    // - warning: deprecated (kahu-offline-mode)
     private func dispatchNotice(_ post: AbstractPost) {}
 
     // MARK: - State
