@@ -138,7 +138,7 @@ class PostCoordinator: NSObject {
             post.date_created_gmt = Date()
         }
 
-        post.shouldAttemptAutoUpload = true
+        // post.shouldAttemptAutoUpload = true
 
         save(post)
     }

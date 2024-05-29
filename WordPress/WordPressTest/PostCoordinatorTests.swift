@@ -137,45 +137,6 @@ class PostCoordinatorTests: CoreDataTestCase {
         expect(returnedError).toEventuallyNot(beNil())
     }
 
-    func testResumeWillAutoSaveUnconfirmedExistingPosts() {
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
-        _ = PostBuilder(mainContext)
-            .withRemote()
-            .with(status: .draft)
-            .with(remoteStatus: .failed)
-            .supportsWPComAPI()
-            .build()
-        try! mainContext.save()
-
-        postCoordinator.resume()
-
-        expect(postServiceMock.didCallAutoSave).toEventually(beTrue())
-    }
-
-    func testResumeWillUploadUnconfirmedPublishedPostsAsDraftsOnSelfHostedSites() throws {
-        // Arrange
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock, isSyncPublishingEnabled: false)
-        _ = PostBuilder(mainContext)
-            .with(status: .publish)
-            .with(remoteStatus: .failed)
-            .with(title: "Ipsam nihil")
-            .build()
-        try! mainContext.save()
-
-        // Act
-        postCoordinator.resume()
-
-        // Assert
-        expect(postServiceMock.didCallUploadPost).toEventually(beTrue())
-        expect(postServiceMock.lastUploadPostInvocation).toEventuallyNot(beNil())
-
-        let invocation = try XCTUnwrap(postServiceMock.lastUploadPostInvocation)
-        expect(invocation.post.postTitle).to(equal("Ipsam nihil"))
-        expect(invocation.forceDraftIfCreating).to(beTrue())
-    }
-
     func testChangeDraftToPublishWhenPublishing() {
         let post = PostBuilder(mainContext).drafted().build()
         let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
@@ -194,16 +155,6 @@ class PostCoordinatorTests: CoreDataTestCase {
         postCoordinator.publish(post)
 
         expect(post.date_created_gmt).to(equal(Date(timeIntervalSince1970: 50)))
-    }
-
-    func testSetShouldAttemptAutoUploadToTrue() {
-        let post = PostBuilder(mainContext).drafted().build()
-        let postServiceMock = PostServiceMock(managedObjectContext: mainContext)
-        let postCoordinator = PostCoordinator(mainService: postServiceMock)
-
-        postCoordinator.publish(post)
-
-        expect(post.shouldAttemptAutoUpload).to(beTrue())
     }
 
     func testCallPostCoordinatorToSaveAPost() {

@@ -239,7 +239,7 @@ extension PublishingEditor {
 
             self.post.isFirstTimePublish = action == .publish
 
-            self.post.shouldAttemptAutoUpload = true
+            // self.post.shouldAttemptAutoUpload = true
 
             emitPostSaveEvent()
 
@@ -394,7 +394,7 @@ extension PublishingEditor {
         /// If a post is marked to be auto uploaded and can be saved, it means that the changes
         /// had been already confirmed by the user. In this case, we just close the editor.
         /// Otherwise, we'll show an Action Sheet with options.
-        if post.shouldAttemptAutoUpload && post.canSave() {
+        if /* post.shouldAttemptAutoUpload && */ post.canSave() {
             editorSession.end(outcome: .cancel)
             /// If there are ongoing media uploads, save with completion processing
             if MediaCoordinator.shared.isUploadingMedia(for: post) {
@@ -412,7 +412,7 @@ extension PublishingEditor {
 
     /// - note: Deprecated (kahu-offline-mode)
     private func resumeSaving() {
-        post.shouldAttemptAutoUpload = false
+        // post.shouldAttemptAutoUpload = false
         let action: PostEditorAction = post.status == .draft ? .update : .publish
         self.postEditorStateContext.action = action
         self.publishPost(action: action, dismissWhenDone: true, analyticsStat: nil)

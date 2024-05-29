@@ -1206,7 +1206,6 @@
 		401AC82722DD2387006D78D4 /* Blog+Plans.swift in Sources */ = {isa = PBXBuildFile; fileRef = 401AC82622DD2387006D78D4 /* Blog+Plans.swift */; };
 		4020B2BD2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */; };
 		4020B2BE2007AC850002C963 /* WPStyleGuide+Gridicon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */; };
-		40232A9E230A6A740036B0B6 /* AbstractPost+HashHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 40232A9D230A6A740036B0B6 /* AbstractPost+HashHelpers.m */; };
 		40247E022120FE3600AE1C3C /* AutomatedTransferHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 40247E012120FE3600AE1C3C /* AutomatedTransferHelper.swift */; };
 		402B2A7920ACD7690027C1DC /* ActivityStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 402B2A7820ACD7690027C1DC /* ActivityStore.swift */; };
 		403269922027719C00608441 /* PluginDirectoryAccessoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 403269912027719C00608441 /* PluginDirectoryAccessoryItem.swift */; };
@@ -4674,7 +4673,6 @@
 		FABB22532602FC2C00C8785C /* BlogDetailsViewController+FancyAlerts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435D10192130C2AB00BB2AA8 /* BlogDetailsViewController+FancyAlerts.swift */; };
 		FABB22542602FC2C00C8785C /* StoriesIntroDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F532AD60253B81320013B42E /* StoriesIntroDataSource.swift */; };
 		FABB22552602FC2C00C8785C /* StoreContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1ECE34E1FA88DA2007FA37A /* StoreContainer.swift */; };
-		FABB22562602FC2C00C8785C /* AbstractPost+HashHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 40232A9D230A6A740036B0B6 /* AbstractPost+HashHelpers.m */; };
 		FABB22572602FC2C00C8785C /* StartOverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE420191C5AEFE100C1D036 /* StartOverViewController.swift */; };
 		FABB22592602FC2C00C8785C /* UINavigationController+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1790A4521E28F0ED00AE54C2 /* UINavigationController+Helpers.swift */; };
 		FABB225A2602FC2C00C8785C /* UnifiedProloguePages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17C2FF0825D4852400CDB712 /* UnifiedProloguePages.swift */; };
@@ -6950,8 +6948,6 @@
 		401A3D012027DBD80099A127 /* PluginListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PluginListCell.xib; sourceTree = "<group>"; };
 		401AC82622DD2387006D78D4 /* Blog+Plans.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Blog+Plans.swift"; sourceTree = "<group>"; };
 		4020B2BC2007AC850002C963 /* WPStyleGuide+Gridicon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPStyleGuide+Gridicon.swift"; sourceTree = "<group>"; };
-		40232A9C230A6A740036B0B6 /* AbstractPost+HashHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "AbstractPost+HashHelpers.h"; sourceTree = "<group>"; };
-		40232A9D230A6A740036B0B6 /* AbstractPost+HashHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "AbstractPost+HashHelpers.m"; sourceTree = "<group>"; };
 		40247E012120FE3600AE1C3C /* AutomatedTransferHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutomatedTransferHelper.swift; sourceTree = "<group>"; };
 		402B2A7820ACD7690027C1DC /* ActivityStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStore.swift; sourceTree = "<group>"; };
 		402FFB20218C33BF00FF4A0B /* WordPress 84.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 84.xcdatamodel"; sourceTree = "<group>"; };
@@ -11302,8 +11298,6 @@
 				5D42A3D7175E7452005CFF05 /* AbstractPost.m */,
 				F1527300243B290D00C8DC7A /* AbstractPost+Autosave.swift */,
 				FA4B203729A8C48F0089FE68 /* AbstractPost+Blaze.swift */,
-				40232A9C230A6A740036B0B6 /* AbstractPost+HashHelpers.h */,
-				40232A9D230A6A740036B0B6 /* AbstractPost+HashHelpers.m */,
 				F15272FC243B27BC00C8DC7A /* AbstractPost+Local.swift */,
 				8BC12F732320181E004DDA72 /* AbstractPost+MarkAsFailedAndDraftIfNeeded.swift */,
 				E19B17B11E5C8F36007517C6 /* AbstractPost.swift */,
@@ -22095,7 +22089,6 @@
 				F1E72EBA267790110066FF91 /* UIViewController+Dismissal.swift in Sources */,
 				F532AD61253B81320013B42E /* StoriesIntroDataSource.swift in Sources */,
 				E1ECE34F1FA88DA2007FA37A /* StoreContainer.swift in Sources */,
-				40232A9E230A6A740036B0B6 /* AbstractPost+HashHelpers.m in Sources */,
 				FAE4201A1C5AEFE100C1D036 /* StartOverViewController.swift in Sources */,
 				0A3FCA1D28B71CBD00499A15 /* FullScreenCommentReplyViewModel.swift in Sources */,
 				1790A4531E28F0ED00AE54C2 /* UINavigationController+Helpers.swift in Sources */,
@@ -25002,7 +24995,6 @@
 				F41D98E52B39CAAA004EC050 /* BlogDashboardDynamicCardCoordinator.swift in Sources */,
 				FABB22542602FC2C00C8785C /* StoriesIntroDataSource.swift in Sources */,
 				FABB22552602FC2C00C8785C /* StoreContainer.swift in Sources */,
-				FABB22562602FC2C00C8785C /* AbstractPost+HashHelpers.m in Sources */,
 				FABB22572602FC2C00C8785C /* StartOverViewController.swift in Sources */,
 				934098C4271957A600B3E77E /* SiteStatsInsightsDelegate.swift in Sources */,
 				FABB22592602FC2C00C8785C /* UINavigationController+Helpers.swift in Sources */,
