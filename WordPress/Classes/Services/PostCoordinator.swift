@@ -834,8 +834,8 @@ class PostCoordinator: NSObject {
 
             SearchManager.shared.indexItem(uploadedPost)
 
-            let model = PostNoticeViewModel(post: uploadedPost)
-            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
+//            let model = PostNoticeViewModel(post: uploadedPost)
+//            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
 
             completion?(.success(uploadedPost))
         }, failure: { [weak self] error in
@@ -1060,12 +1060,8 @@ class PostCoordinator: NSObject {
         actionDispatcherFacade.dispatch(NoticeAction.post(notice))
     }
 
-    private func dispatchNotice(_ post: AbstractPost) {
-        DispatchQueue.main.async {
-            let model = PostNoticeViewModel(post: post)
-            self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
-        }
-    }
+    // - warning: deprecated (kahu-offline-mode)
+    private func dispatchNotice(_ post: AbstractPost) {}
 
     // MARK: - State
 
@@ -1205,6 +1201,10 @@ private struct Constants {
 extension Foundation.Notification.Name {
     /// Contains a set of updated objects under the `NSUpdatedObjectsKey` key.
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
+}
+
+enum PostNoticeUserInfoKey {
+    static let postID = "post_id"
 }
 
 private extension NSManagedObjectID {
