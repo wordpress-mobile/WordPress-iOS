@@ -4,6 +4,7 @@ import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WordPressUI
+import SwiftUI
 
 ///
 ///
@@ -150,6 +151,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
+        setupShareButton()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -250,6 +252,30 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
         previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+    }
+
+    fileprivate func setupShareButton() {
+        guard let contentUrl = note.url else {
+            return
+        }
+        var shareKind: ShareFooterView.Kind
+        switch note.kind {
+        case .like:
+            shareKind = .post
+        case .commentLike:
+            shareKind = .comment
+        case .follow:
+            shareKind = .blog
+        default:
+            return
+        }
+        let shareButton = ShareFooterView(kind: shareKind) {
+            let activityViewController = UIActivityViewController(activityItems: [contentUrl as Any], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self.stackView
+            self.present(activityViewController, animated: true, completion: nil)
+        }
+        let hostingController = UIHostingController(rootView: shareButton)
+        stackView.addArrangedSubview(hostingController.view)
     }
 }
 
