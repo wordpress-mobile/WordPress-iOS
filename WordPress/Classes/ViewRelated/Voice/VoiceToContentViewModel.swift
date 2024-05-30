@@ -94,7 +94,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let info = try await service.getAssistantFeatureDetails()
             didFetchFeatureDetails(info)
         } catch {
-            self.subtitle = Strings.subtitleError
+            self.subtitle = Strings.errorMessageGeneric
             self.loadingState = .failed(message: error.localizedDescription) { [weak self] in
                 self?.checkFeatureAvailability()
             }
@@ -244,10 +244,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - AVAudioRecorderDelegate
 
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
-        // TODO: Handle error when iOS finished recording due to an interruption
         if !flag {
             audioRecorder?.stop()
             self.step = .welcome
+            showError(VoiceToContentError.generic)
         }
     }
 
@@ -260,10 +260,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 }
 
 private enum VoiceToContentError: Error, LocalizedError {
+    case generic
     case cantUnderstandRequest
 
     var errorDescription: String? {
         switch self {
+        case .generic: return Strings.errorMessageGeneric
         case .cantUnderstandRequest: return Strings.errorMessageCantUnderstandRequest
         }
     }
@@ -271,7 +273,7 @@ private enum VoiceToContentError: Error, LocalizedError {
 
 private enum Strings {
     static let title = NSLocalizedString("postFromAudio.title", value: "Post from Audio", comment: "The screen title")
-    static let subtitleError = NSLocalizedString("postFromAudio.subtitleError", value: "Something went wrong", comment: "The screen subtitle in the error state")
+    static let errorMessageGeneric = NSLocalizedString("postFromAudio.errorMessage.generic", value: "Something went wrong", comment: "The screen subtitle in the error state")
     static let errorMessageCantUnderstandRequest = NSLocalizedString("postFromAudio.errorMessage.cantUnderstandRequest", value: "There were some issues processing the request. Please, try again later.", comment: "The AI failed to understand the request for any reasons")
     static let subtitleRequestsAvailable = NSLocalizedString("postFromAudio.subtitleRequestsAvailable", value: "Requests available:", comment: "The screen subtitle")
     static let titleRecoding = NSLocalizedString("postFromAudio.titleRecoding", value: "Recording…", comment: "The screen title when recording")
