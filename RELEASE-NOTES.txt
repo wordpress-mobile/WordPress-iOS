@@ -1,6 +1,9 @@
 25.0
 -----
 
+24.9.1
+-----
+* [**] Fix bug where the option to switch to the Jetpack app is broken [#23276]
 
 24.9
 -----

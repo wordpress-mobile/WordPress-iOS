@@ -1,5 +1,4 @@
 import Foundation
-import StoreKit
 
 class JetpackRedirector {
 
