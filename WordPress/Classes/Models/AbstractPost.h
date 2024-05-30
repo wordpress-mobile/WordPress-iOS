@@ -136,25 +136,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRemoteChanges;
 
 /**
- An array of statuses available to a post while editing
- @details Subset of status a user may assign to a post they are editing.
- Status included are: draft, pending, and publish.
- Private is not listed as this is determined by the visibility settings.
- Scheduled is not listed as this should be handled by assigning a
- future date.
- Trash is not listed as this should be handled via a delete action.
- */
-- (NSArray *)availableStatusesForEditing;
-
-
-/**
- Returns the correct "publish" status for the current value of date_created_gmt.
- Future dates return PostStatusScheduled. Otherwise PostStatusPublish. This is not
- necessarily the current value of `status`
- */
-- (NSString *)availableStatusForPublishOrScheduled;
-
-/**
  Returns YES if the post is has a `future` post status
  */
 - (BOOL)isScheduled;
