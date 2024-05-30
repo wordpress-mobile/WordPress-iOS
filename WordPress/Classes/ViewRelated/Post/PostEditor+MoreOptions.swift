@@ -115,13 +115,6 @@ extension PostEditor {
             return
         }
 
-        if !FeatureFlag.syncPublishing.enabled {
-            guard post.remoteStatus != .pushing else {
-                displayPostIsUploadingAlert()
-                return
-            }
-        }
-
         emitPostSaveEvent()
 
         savePostBeforePreview() { [weak self] previewURLString, error in
