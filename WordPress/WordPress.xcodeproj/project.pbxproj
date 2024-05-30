@@ -2355,7 +2355,6 @@
 		8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E62D525758AAF009A0F80 /* ActivityTypeSelectorViewController.swift */; };
 		8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */; };
 		8B25F8DA24B7683A009DD4C9 /* ReaderCSSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */; };
-		8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
 		8B2D4F5327ECE089009B085C /* dashboard-200-without-posts.json in Resources */ = {isa = PBXBuildFile; fileRef = 8B2D4F5227ECE089009B085C /* dashboard-200-without-posts.json */; };
 		8B2D4F5527ECE376009B085C /* BlogDashboardPostsParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B2D4F5427ECE376009B085C /* BlogDashboardPostsParserTests.swift */; };
 		8B36256625A60CCA00D7CCE3 /* BackupListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */; };
@@ -5476,7 +5475,6 @@
 		FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16FB7E01F8B5D7D0004DD9F /* WebViewControllerConfiguration.swift */; };
 		FABB25EE2602FC2C00C8785C /* ViewMoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B3FA8321C05BDC00148DD4 /* ViewMoreRow.swift */; };
 		FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BADF16424801BCE005AD038 /* ReaderWebView.swift */; };
-		FABB25F02602FC2C00C8785C /* PostVisibilitySelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */; };
 		FABB25F12602FC2C00C8785C /* UIApplication+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = B5416D001C17693B00006DD8 /* UIApplication+Helpers.m */; };
 		FABB25F22602FC2C00C8785C /* ErrorStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 731E88C721C9A10A0055C014 /* ErrorStateView.swift */; };
 		FABB25F32602FC2C00C8785C /* MenusSelectionDetailView.m in Sources */ = {isa = PBXBuildFile; fileRef = 08D345491CD7F50900358E8C /* MenusSelectionDetailView.m */; };
@@ -7777,7 +7775,6 @@
 		8B1E62D525758AAF009A0F80 /* ActivityTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineReaderWebView.swift; sourceTree = "<group>"; };
 		8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSSTests.swift; sourceTree = "<group>"; };
-		8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostVisibilitySelectorViewController.swift; sourceTree = "<group>"; };
 		8B2D4F5227ECE089009B085C /* dashboard-200-without-posts.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-without-posts.json"; sourceTree = "<group>"; };
 		8B2D4F5427ECE376009B085C /* BlogDashboardPostsParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardPostsParserTests.swift; sourceTree = "<group>"; };
 		8B36256525A60CCA00D7CCE3 /* BackupListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupListViewController.swift; sourceTree = "<group>"; };
@@ -15286,7 +15283,6 @@
 				FFEECFFB2084DE2B009B8CDB /* PostSettingsViewController+FeaturedImageUpload.swift */,
 				83914BD32A2EA03A0017A588 /* PostSettingsViewController+JetpackSocial.swift */,
 				0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */,
-				8B260D7D2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift */,
 				593F26601CAB00CA00F14073 /* PostSharingController.swift */,
 				E155EC711E9B7DCE009D7F63 /* PostTagPickerViewController.swift */,
 				0C02E6C42BE3B6E30055F0F6 /* PostTrashedOverlayView.swift */,
@@ -23399,7 +23395,6 @@
 				FEF9A74B2BA1CF370014045E /* ReaderTopicChangeObserver.swift in Sources */,
 				98B3FA8421C05BDC00148DD4 /* ViewMoreRow.swift in Sources */,
 				8BADF16524801BCE005AD038 /* ReaderWebView.swift in Sources */,
-				8B260D7E2444FC9D0010F756 /* PostVisibilitySelectorViewController.swift in Sources */,
 				C3C21EB928385EC8002296E2 /* RemoteSiteDesigns.swift in Sources */,
 				B5416D011C17693B00006DD8 /* UIApplication+Helpers.m in Sources */,
 				731E88CA21C9A10B0055C014 /* ErrorStateView.swift in Sources */,
@@ -26318,7 +26313,6 @@
 				FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */,
 				FABB25EE2602FC2C00C8785C /* ViewMoreRow.swift in Sources */,
 				FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */,
-				FABB25F02602FC2C00C8785C /* PostVisibilitySelectorViewController.swift in Sources */,
 				0CF7EAD02B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */,
 				FABB25F12602FC2C00C8785C /* UIApplication+Helpers.m in Sources */,
 				FA141F2B2AEC23E300C9A653 /* PageListViewController+Menu.swift in Sources */,

@@ -182,7 +182,7 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
 // MARK: - PostSettingsViewController (Visibility)
 
 extension PostSettingsViewController {
-    @objc func showUpdatedPostVisibilityPicker() {
+    @objc func showPostVisibilitySelector() {
         let view = PostVisibilityPicker(selection: .init(post: apost)) { [weak self] selection in
             guard let self else { return }
 

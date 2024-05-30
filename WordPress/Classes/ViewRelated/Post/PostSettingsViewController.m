@@ -1111,22 +1111,6 @@ FeaturedImageViewControllerDelegate>
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)showPostVisibilitySelector
-{
-    if ([Feature enabled:FeatureFlagSyncPublishing]) {
-        [self showUpdatedPostVisibilityPicker];
-        return;
-    }
-    PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
-    __weak PostVisibilitySelectorViewController *weakVc = vc;
-    vc.completion = ^(NSString *__unused visibility) {
-        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
-        [weakVc dismiss];
-        [self.tableView reloadData];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)showPostAuthorSelector
 {
     PostAuthorSelectorViewController *vc = [[PostAuthorSelectorViewController alloc] init:self.apost];
