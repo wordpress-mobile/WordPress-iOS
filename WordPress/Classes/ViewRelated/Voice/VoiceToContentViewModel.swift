@@ -129,7 +129,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         self.audioSession = recordingSession
 
         self.title = Strings.titleRecoding
-        self.subtitle = "00:00"
+        self.subtitle = Constants.recordingTimeLimitFormatted
 
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
@@ -176,13 +176,21 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func startRecordingTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.016, repeats: true) { [weak self] _ in
-            guard let self else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+            guard let self, let currentTime = self.audioRecorder?.currentTime else { return }
+
+            let timeRemaining = Constants.recordingTimeLimit - currentTime
+
+            guard timeRemaining > 0 else {
+                startProcessing()
+                return
+            }
+
             if #available(iOS 16.0, *) {
-                self.subtitle = Duration.seconds(self.audioRecorder?.currentTime ?? 0)
-                    .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2, fractionalSecondsLength: 2)))
+                self.subtitle = Duration.seconds(timeRemaining)
+                    .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
             } else {
-                self.subtitle = (self.audioRecorder?.currentTime ?? 0).minuteSecondMillisecond
+                self.subtitle = timeRemaining.minuteSecond
             }
         }
     }
@@ -271,6 +279,11 @@ private enum VoiceToContentError: Error, LocalizedError {
     }
 }
 
+private enum Constants {
+    static let recordingTimeLimit: TimeInterval = 5 * 60 // 5 Minutes
+    static let recordingTimeLimitFormatted = "05:00" // 5 Minutes
+}
+
 private enum Strings {
     static let title = NSLocalizedString("postFromAudio.title", value: "Post from Audio", comment: "The screen title")
     static let errorMessageGeneric = NSLocalizedString("postFromAudio.errorMessage.generic", value: "Something went wrong", comment: "The screen subtitle in the error state")
@@ -302,16 +315,13 @@ extension JetpackAssistantFeatureDetails {
 }
 
 extension TimeInterval {
-    var minuteSecondMillisecond: String {
-        String(format: "%d:%02d.%02d", minute, second, millisecond)
+    var minuteSecond: String {
+        String(format: "%d:%02d", minute, second)
     }
     var minute: Int {
         Int((self / 60).truncatingRemainder(dividingBy: 60))
     }
     var second: Int {
         Int(truncatingRemainder(dividingBy: 60))
-    }
-    var millisecond: Int {
-        Int((self * 1000).truncatingRemainder(dividingBy: 1000))
     }
 }
