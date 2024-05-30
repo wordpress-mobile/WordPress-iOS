@@ -87,10 +87,6 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         }
         let service = JetpackAIServiceRemote(wordPressComRestApi: api, siteID: blog.dotComID ?? 0)
         do {
-            if #available(iOS 16, *) {
-                try await Task.sleep(for: .seconds(2))
-            }
-
             let info = try await service.getAssistantFeatureDetails()
             didFetchFeatureDetails(info)
         } catch {
