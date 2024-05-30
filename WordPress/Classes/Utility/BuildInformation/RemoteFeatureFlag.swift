@@ -97,7 +97,7 @@ enum RemoteFeatureFlag: Int, CaseIterable {
         case .readingPreferencesFeedback:
             return true
         case .readerAnnouncementCard:
-            return BuildConfiguration.current ~= [.localDeveloper, .a8cBranchTest]
+            return AppConfiguration.isJetpack
         case .inAppUpdates:
             return false
         case .voiceToContent:
