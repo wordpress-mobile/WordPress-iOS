@@ -721,11 +721,8 @@ class PostCoordinator: NSObject {
             }
 
             // Ensure that all synced media references are up to date
-            post.media.forEach { media in
-                if media.remoteStatus == .sync {
-                    self.updateReferences(to: media, in: post)
-                }
-            }
+            let syncedMedia = post.media.filter { $0.remoteStatus == .sync }
+            updateMediaBlocksBeforeSave(in: post, with: syncedMedia)
 
             let uuid = observeMedia(for: post, completion: completion)
             trackObserver(receipt: uuid, for: post)
@@ -733,12 +730,19 @@ class PostCoordinator: NSObject {
             return
         } else {
             // Ensure that all media references are up to date
-            post.media.forEach { media in
-                self.updateReferences(to: media, in: post)
-            }
+            updateMediaBlocksBeforeSave(in: post, with: post.media)
         }
 
         completion(.success(post))
+    }
+
+    func updateMediaBlocksBeforeSave(in post: AbstractPost, with media: Set<Media>) {
+        guard let postContent = post.content else {
+            return
+        }
+        let contentParser = GutenbergContentParser(for: postContent)
+        media.forEach { self.updateReferences(to: $0, in: contentParser.blocks, post: post) }
+        post.content = contentParser.html()
     }
 
     // - warning: deprecated (kahu-offline-mode)
@@ -879,7 +883,7 @@ class PostCoordinator: NSObject {
             switch state {
             case .ended:
                 let successHandler = {
-                    self.updateReferences(to: media, in: post)
+                    self.updateMediaBlocksBeforeSave(in: post, with: [media])
                     if self.isSyncPublishingEnabled {
                         if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
                             self.removeObserver(for: post)
@@ -915,7 +919,7 @@ class PostCoordinator: NSObject {
         }, forMediaFor: post)
     }
 
-    private func updateReferences(to media: Media, in post: AbstractPost) {
+    private func updateReferences(to media: Media, in contentBlocks: [GutenbergParsedBlock], post: AbstractPost) {
         guard var postContent = post.content,
             let mediaID = media.mediaID?.intValue,
             let remoteURLStr = media.remoteURL else {
@@ -935,19 +939,21 @@ class PostCoordinator: NSObject {
         if media.remoteStatus == .failed {
             return
         }
-        var gutenbergProcessors = [Processor]()
-        var aztecProcessors = [Processor]()
+
+        var gutenbergBlockProcessors: [GutenbergProcessor] = []
+        var gutenbergProcessors: [Processor] = []
+        var aztecProcessors: [Processor] = []
 
         // File block can upload any kind of media.
         let gutenbergFileProcessor = GutenbergFileUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: remoteURLStr)
-        gutenbergProcessors.append(gutenbergFileProcessor)
+        gutenbergBlockProcessors.append(gutenbergFileProcessor)
 
         if media.mediaType == .image {
             let gutenbergImgPostUploadProcessor = GutenbergImgUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL)
-            gutenbergProcessors.append(gutenbergImgPostUploadProcessor)
+            gutenbergBlockProcessors.append(gutenbergImgPostUploadProcessor)
 
             let gutenbergGalleryPostUploadProcessor = GutenbergGalleryUploadProcessor(mediaUploadID: gutenbergMediaUploadID, serverMediaID: mediaID, remoteURLString: imageURL, mediaLink: mediaLink)
-            gutenbergProcessors.append(gutenbergGalleryPostUploadProcessor)
+            gutenbergBlockProcessors.append(gutenbergGalleryPostUploadProcessor)
 
             let imgPostUploadProcessor = ImgUploadProcessor(mediaUploadID: mediaUploadID, remoteURLString: remoteURLStr, width: media.width?.intValue, height: media.height?.intValue)
             aztecProcessors.append(imgPostUploadProcessor)
@@ -980,6 +986,7 @@ class PostCoordinator: NSObject {
         }
 
         // Gutenberg processors need to run first because they are more specific/and target only content inside specific blocks
+        gutenbergBlockProcessors.forEach { $0.process(contentBlocks) }
         postContent = gutenbergProcessors.reduce(postContent) { (content, processor) -> String in
             return processor.process(content)
         }

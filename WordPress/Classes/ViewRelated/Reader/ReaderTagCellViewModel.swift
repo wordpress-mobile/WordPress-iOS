@@ -16,11 +16,11 @@ struct ReaderTagCellViewModel {
         guard let parentViewController else {
             return
         }
-        ReaderHeaderAction().execute(post: post, origin: parentViewController)
+        ReaderHeaderAction().execute(post: post, origin: parentViewController, source: .tagsFeed)
     }
 
     func onLikeButtonTapped() {
-        ReaderLikeAction().execute(with: post)
+        ReaderLikeAction().execute(with: post, source: ReaderStreamViewController.StatSource.tagsFeed.rawValue)
     }
 
     mutating func onMenuButtonTapped(with anchor: UIView) {
@@ -40,7 +40,7 @@ struct ReaderTagCellViewModel {
             followCommentsService: followCommentsService,
             showAdditionalItems: true
         )
-        // TODO: Analytics
+        WPAnalytics.trackReader(.postCardMoreTapped)
     }
 
 }

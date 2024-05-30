@@ -55,7 +55,7 @@ def gravatar
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 17.1.0'
+  pod 'WordPressKit', '~> 17.1.2'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''

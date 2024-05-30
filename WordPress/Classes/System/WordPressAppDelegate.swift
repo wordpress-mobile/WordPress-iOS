@@ -638,7 +638,19 @@ extension WordPressAppDelegate {
     }
 
     func updateRemoteConfig() {
-        remoteConfigStore.update()
+        remoteConfigStore.update { [weak self] in
+            self?.checkForAppUpdates()
+        }
+    }
+
+    private func checkForAppUpdates() {
+        guard let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return wpAssertionFailure("No CFBundleShortVersionString found in Info.plist")
+        }
+        let coordinator = AppUpdateCoordinator(currentVersion: version)
+        Task {
+            await coordinator.checkForAppUpdates()
+        }
     }
 }
 

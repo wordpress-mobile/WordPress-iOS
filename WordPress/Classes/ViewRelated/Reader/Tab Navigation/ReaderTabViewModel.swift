@@ -256,7 +256,8 @@ extension ReaderTabViewModel {
             return
         }
 
-        WPAnalytics.track(.readerFilterSheetCleared)
+        let type = activeStreamFilter?.topic is ReaderSiteTopic ? "site" : "topic"
+        WPAnalytics.track(.readerFilterSheetCleared, properties: ["type": type])
         activeStreamFilter = nil
         setContent?(currentTab.content)
     }

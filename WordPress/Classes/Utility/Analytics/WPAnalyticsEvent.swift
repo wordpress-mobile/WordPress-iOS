@@ -82,6 +82,7 @@ import Foundation
     case readerPostCardTapped
     case readerPullToRefresh
     case readerDiscoverTopicTapped
+    case readerAnnouncementDismissed
     case postCardMoreTapped
     case followedBlogNotificationsReaderMenuOff
     case followedBlogNotificationsReaderMenuOn
@@ -109,6 +110,10 @@ import Foundation
     case readerArticleImageTapped
     case readerFollowConversationTooltipTapped
     case readerFollowConversationAnchorTapped
+    case readerArticleTextHighlighted
+    case readerArticleTextCopied
+    case readerCommentTextHighlighted
+    case readerCommentTextCopied
 
     // Stats - Empty Stats nudges
     case statsPublicizeNudgeShown
@@ -323,6 +328,11 @@ import Foundation
     // Reader: Navigation menu dropdown
     case readerDropdownOpened
     case readerDropdownItemTapped
+
+    // Reader: Tags Feed
+    case readerTagsFeedShown
+    case readerTagsFeedMoreFromTagTapped
+    case readerTagsFeedHeaderTapped
 
     // App Settings
     case settingsDidChange
@@ -600,6 +610,11 @@ import Foundation
     case statsEmailsViewMoreTapped
     case statsSubscribersChartTapped
 
+    // In-App Updates
+    case inAppUpdateShown
+    case inAppUpdateDismissed
+    case inAppUpdateAccepted
+
     /// A String that represents the event
     var value: String {
         switch self {
@@ -731,6 +746,8 @@ import Foundation
             return "reader_pull_to_refresh"
         case .readerDiscoverTopicTapped:
             return "reader_discover_topic_tapped"
+        case .readerAnnouncementDismissed:
+            return "reader_announcement_card_dismissed"
         case .postCardMoreTapped:
             return "post_card_more_tapped"
         case .followedBlogNotificationsReaderMenuOff:
@@ -785,6 +802,14 @@ import Foundation
             return "reader_follow_conversation_tooltip_tapped"
         case .readerFollowConversationAnchorTapped:
             return "reader_follow_conversation_anchor_tapped"
+        case .readerArticleTextHighlighted:
+            return "reader_article_text_highlighted"
+        case .readerArticleTextCopied:
+            return "reader_article_text_copied"
+        case .readerCommentTextHighlighted:
+            return "reader_comment_text_highlighted"
+        case .readerCommentTextCopied:
+            return "reader_comment_text_copied"
 
         // Stats - Empty Stats nudges
         case .statsPublicizeNudgeShown:
@@ -1163,6 +1188,13 @@ import Foundation
             return "reader_dropdown_menu_opened"
         case .readerDropdownItemTapped:
             return "reader_dropdown_menu_item_tapped"
+
+        case .readerTagsFeedShown:
+            return "reader_tags_feed_shown"
+        case .readerTagsFeedMoreFromTagTapped:
+            return "reader_tags_feed_more_from_tag_tapped"
+        case .readerTagsFeedHeaderTapped:
+            return "reader_tags_feed_header_tapped"
 
         // App Settings
         case .settingsDidChange:
@@ -1630,6 +1662,14 @@ import Foundation
             return "stats_emails_view_more_tapped"
         case .statsSubscribersChartTapped:
             return "stats_subscribers_chart_tapped"
+
+        // In-App Updates
+        case .inAppUpdateShown:
+            return "in_app_update_shown"
+        case .inAppUpdateDismissed:
+            return "in_app_update_dismissed"
+        case .inAppUpdateAccepted:
+            return "in_app_update_accepted"
 
         } // END OF SWITCH
     }

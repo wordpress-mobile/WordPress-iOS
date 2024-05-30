@@ -47,7 +47,11 @@ class PostNoticeNavigationCoordinator {
         let viewController = UIHostingController(rootView: view)
         if UIDevice.current.userInterfaceIdiom == .phone {
             if let sheetController = viewController.sheetPresentationController {
-                sheetController.detents = [.medium()]
+                if #available(iOS 16, *) {
+                    sheetController.detents = [.custom { _ in 420 }]
+                } else {
+                    sheetController.detents = [.medium()]
+                }
                 sheetController.preferredCornerRadius = 20
             }
         } else {

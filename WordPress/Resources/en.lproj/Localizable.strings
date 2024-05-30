@@ -866,6 +866,27 @@
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Image Quality";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Cancel";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Get the latest version";
+
+/* Update button title */
+"appUpdate.action.update" = "Update";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "To use this app, download the latest version.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "App Update Available";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Version %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "What's New";
+
 /* Menus alert message for alerting the user to unsaved changes while trying back out of Menus. */
 "Are you sure you want to cancel and discard changes?" = "Are you sure you want to cancel and discard changes?";
 
@@ -2214,12 +2235,6 @@ Example: Reply to Pamela Nguyen */
 /* Displayed in the Notifications Tab as a button title, when the Unread Filter shows no notifications */
 "Create a Post" = "Create a Post";
 
-/*  Accessibility hint for create floating action button */
-"Create a post or page" = "Create a post or page";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
-
 /* Navigates to a new flow for site creation. */
 "Create a Site" = "Create a Site";
 
@@ -2275,11 +2290,11 @@ Example: Reply to Pamela Nguyen */
 /* Title of a Quick Start Tour */
 "Create your site" = "Create your site";
 
-/*  Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Post from Audio";
 
-/*  Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Create a post or page";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?";
@@ -6859,6 +6874,33 @@ Please install the %3$@ to use the app with this site.";
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Saving draft...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Upgrade for more requests";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "You don't have enough requests available to create a post from audio.";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "Retry";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Something went wrong";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Requests available:";
+
+/* The screen title */
+"postFromAudio.title" = "Post from Audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Processing…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Recording…";
+
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
 "Posting Activity" = "Posting Activity";
@@ -7503,6 +7545,24 @@ Tapping on this row allows the user to edit the sharing message. */
    Title of the 'Reader' tab - used for spotlight indexing on iOS. */
 "Reader" = "Reader";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Done";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Choose colors and fonts that suit you. When you’re reading a post tap the AA icon at the top of the screen.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Reading Preferences";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Tap the dropdown at the top and select Tags to access streams from your followed tags.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Tags Stream";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "New in Reader";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
 
@@ -7637,7 +7697,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Tags";
+"reader.navigation.filter.blog.unspecified" = "Blogs";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
