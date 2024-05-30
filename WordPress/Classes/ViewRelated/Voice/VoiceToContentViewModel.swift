@@ -182,7 +182,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
                 self.subtitle = Duration.seconds(self.audioRecorder?.currentTime ?? 0)
                     .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2, fractionalSecondsLength: 2)))
             } else {
-                // TODO: Make this feature available on iOS 16+?
+                self.subtitle = (self.audioRecorder?.currentTime ?? 0).minuteSecondMillisecond
             }
         }
     }
@@ -296,5 +296,20 @@ extension JetpackAssistantFeatureDetails {
         let requestsLimit = currentTier?.limit ?? requestsLimit
         let requestsCount = usagePeriod?.requestsCount ?? requestsCount
         return max(0, requestsLimit - requestsCount).description
+    }
+}
+
+extension TimeInterval {
+    var minuteSecondMillisecond: String {
+        String(format: "%d:%02d.%02d", minute, second, millisecond)
+    }
+    var minute: Int {
+        Int((self / 60).truncatingRemainder(dividingBy: 60))
+    }
+    var second: Int {
+        Int(truncatingRemainder(dividingBy: 60))
+    }
+    var millisecond: Int {
+        Int((self * 1000).truncatingRemainder(dividingBy: 1000))
     }
 }
