@@ -334,6 +334,11 @@ import Foundation
     case readerTagsFeedMoreFromTagTapped
     case readerTagsFeedHeaderTapped
 
+    // Reader: Floating Button Experiment
+    case readerFloatingButtonShown
+    case readerCreateSheetAnswerPromptTapped
+    case readerCreateSheetPromptHelpTapped
+
     // App Settings
     case settingsDidChange
 
@@ -1195,6 +1200,14 @@ import Foundation
             return "reader_tags_feed_more_from_tag_tapped"
         case .readerTagsFeedHeaderTapped:
             return "reader_tags_feed_header_tapped"
+
+        // Reader: Floating Button Experiment
+        case .readerFloatingButtonShown:
+            return "reader_create_fab_shown"
+        case .readerCreateSheetAnswerPromptTapped:
+            return "my_site_create_sheet_answer_prompt_tapped"
+        case .readerCreateSheetPromptHelpTapped:
+            return "my_site_create_sheet_prompt_help_tapped"
 
         // App Settings
         case .settingsDidChange:

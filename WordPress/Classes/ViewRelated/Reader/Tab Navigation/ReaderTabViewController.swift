@@ -9,6 +9,8 @@ class ReaderTabViewController: UIViewController {
 
     private var createButtonCoordinator: CreateButtonCoordinator?
 
+    private var isFABTracked: Bool = false
+
     private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
@@ -115,6 +117,13 @@ class ReaderTabViewController: UIViewController {
         createButtonCoordinator?.add(to: window,
                                     trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
                                     bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if !isFABTracked {
+            // we only need to track this once since it will remain visible everytime Reader is opened
+            // once a user gets the feature. For clickthrough, refer to `create_sheet_shown` with source: `reader`.
+            WPAnalytics.track(.readerFloatingButtonShown)
+            isFABTracked.toggle()
+        }
 
         // Should we hide when the onboarding is shown?
         createButtonCoordinator?.showCreateButton(for: blog)

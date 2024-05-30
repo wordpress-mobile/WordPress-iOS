@@ -300,7 +300,14 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
+            let answerPromptEvent: WPAnalyticsEvent = {
+                if self?.source == "reader" {
+                    return .readerCreateSheetAnswerPromptTapped
+                }
+                return .promptsBottomSheetAnswerPrompt
+            }()
+
+            WPAnalytics.track(answerPromptEvent)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
@@ -310,7 +317,14 @@ private extension CreateButtonCoordinator {
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetHelp)
+            let helpEvent: WPAnalyticsEvent = {
+                if self?.source == "reader" {
+                    return .readerCreateSheetPromptHelpTapped
+                }
+                return .promptsBottomSheetHelp
+            }()
+
+            WPAnalytics.track(helpEvent)
             guard let presentedViewController = self?.viewController?.presentedViewController else {
                 return
             }
