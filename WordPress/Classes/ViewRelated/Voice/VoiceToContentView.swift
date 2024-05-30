@@ -1,7 +1,6 @@
 import SwiftUI
 import DesignSystem
 
-// TODO: Add localization
 struct VoiceToContentView: View {
     @StateObject var viewModel: VoiceToContentViewModel
     @Environment(\.dismiss) var dismiss
