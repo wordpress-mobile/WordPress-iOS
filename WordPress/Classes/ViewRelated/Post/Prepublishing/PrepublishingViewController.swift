@@ -5,10 +5,6 @@ import WordPressUI
 import SwiftUI
 
 enum PrepublishingSheetResult {
-    /// The user confirms that they want to publish (legacy behavior).
-    ///
-    /// - note: Deprecated (kahu-offline-mode)
-    case confirmed
     /// The sheet published the post (new behavior)
     case published
     /// The user cancelled.

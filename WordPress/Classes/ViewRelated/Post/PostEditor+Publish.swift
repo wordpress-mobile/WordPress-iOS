@@ -110,12 +110,9 @@ extension PublishingEditor {
     }
 
     private func showPublishingConfirmation(for action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
-        displayPublishConfirmationAlert(for: action) { [weak self] result in
+        PrepublishingViewController.show(for: post, action: action, from: self) { [weak self] result in
             guard let self else { return }
             switch result {
-            case .confirmed:
-                wpAssertionFailure("Not used when .syncPublishing is enabled")
-                break
             case .published:
                 self.emitPostSaveEvent()
                 if let analyticsStat {
@@ -158,10 +155,6 @@ extension PublishingEditor {
         let alertController = UIAlertController(title: MediaUploadingAlert.title, message: MediaUploadingAlert.message, preferredStyle: .alert)
         alertController.addDefaultActionWithTitle(MediaUploadingAlert.acceptTitle)
         present(alertController, animated: true, completion: nil)
-    }
-
-    fileprivate func displayPublishConfirmationAlert(for action: PostEditorAction, completion: @escaping (PrepublishingSheetResult) -> Void) {
-        PrepublishingViewController.show(for: post, action: action, from: self, completion: completion)
     }
 
     private func trackPostSave(stat: WPAnalyticsStat) {
