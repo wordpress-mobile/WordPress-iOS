@@ -2351,7 +2351,6 @@
 		8B15D27528009EBF0076628A /* BlogDashboardAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B15D27328009EBF0076628A /* BlogDashboardAnalytics.swift */; };
 		8B16CE9A25251C89007BE5A9 /* ReaderPostStreamService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B16CE9925251C89007BE5A9 /* ReaderPostStreamService.swift */; };
 		8B1CF00F2433902700578582 /* PasswordAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF00E2433902700578582 /* PasswordAlertController.swift */; };
-		8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */; };
 		8B1E62D625758AAF009A0F80 /* ActivityTypeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1E62D525758AAF009A0F80 /* ActivityTypeSelectorViewController.swift */; };
 		8B24C4E3249A4C3E0005E8A5 /* OfflineReaderWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */; };
 		8B25F8DA24B7683A009DD4C9 /* ReaderCSSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */; };
@@ -5389,7 +5388,6 @@
 		FABB258C2602FC2C00C8785C /* ActivityContentStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E3AB3DA20F52654001F33B6 /* ActivityContentStyles.swift */; };
 		FABB258D2602FC2C00C8785C /* CategorySectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469CE06B24BCED75003BDC8B /* CategorySectionTableViewCell.swift */; };
 		FABB258E2602FC2C00C8785C /* StatsForegroundObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A034CEA237DB8660047B41B /* StatsForegroundObservable.swift */; };
-		FABB258F2602FC2C00C8785C /* AbstractPost+TitleForVisibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */; };
 		FABB25902602FC2C00C8785C /* SharingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E6431DE41C4E892900FD8D90 /* SharingViewController.m */; };
 		FABB25912602FC2C00C8785C /* FormattableActivity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7E4123C720F417EF00DF8486 /* FormattableActivity.swift */; };
 		FABB25922602FC2C00C8785C /* RevisionPreviewTextViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A162F2A21C2A21A00FDC035 /* RevisionPreviewTextViewManager.swift */; };
@@ -7771,7 +7769,6 @@
 		8B15D27328009EBF0076628A /* BlogDashboardAnalytics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlogDashboardAnalytics.swift; sourceTree = "<group>"; };
 		8B16CE9925251C89007BE5A9 /* ReaderPostStreamService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderPostStreamService.swift; sourceTree = "<group>"; };
 		8B1CF00E2433902700578582 /* PasswordAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAlertController.swift; sourceTree = "<group>"; };
-		8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPost+TitleForVisibility.swift"; sourceTree = "<group>"; };
 		8B1E62D525758AAF009A0F80 /* ActivityTypeSelectorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityTypeSelectorViewController.swift; sourceTree = "<group>"; };
 		8B24C4E2249A4C3E0005E8A5 /* OfflineReaderWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineReaderWebView.swift; sourceTree = "<group>"; };
 		8B25F8D924B7683A009DD4C9 /* ReaderCSSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderCSSTests.swift; sourceTree = "<group>"; };
@@ -11297,7 +11294,6 @@
 				8BC12F732320181E004DDA72 /* AbstractPost+MarkAsFailedAndDraftIfNeeded.swift */,
 				E19B17B11E5C8F36007517C6 /* AbstractPost.swift */,
 				74729CAD205722E300D1394D /* AbstractPost+Searchable.swift */,
-				8B1CF0102433E61C00578582 /* AbstractPost+TitleForVisibility.swift */,
 				0A9610F828B2E56300076EBA /* UserSuggestion+Comparable.swift */,
 				B0B68A9A252FA91E0001B28C /* UserSuggestion+CoreDataClass.swift */,
 				B0B68A9B252FA91E0001B28C /* UserSuggestion+CoreDataProperties.swift */,
@@ -23250,7 +23246,6 @@
 				469CE06D24BCED75003BDC8B /* CategorySectionTableViewCell.swift in Sources */,
 				809101982908DE8500FCB4EA /* JetpackFullscreenOverlayViewModel.swift in Sources */,
 				9A034CEB237DB8660047B41B /* StatsForegroundObservable.swift in Sources */,
-				8B1CF0112433E61C00578582 /* AbstractPost+TitleForVisibility.swift in Sources */,
 				0141929C2983F0A300CAEDB0 /* SupportConfiguration.swift in Sources */,
 				E6431DE71C4E892900FD8D90 /* SharingViewController.m in Sources */,
 				7E4123C820F417EF00DF8486 /* FormattableActivity.swift in Sources */,
@@ -26176,7 +26171,6 @@
 				FABB258E2602FC2C00C8785C /* StatsForegroundObservable.swift in Sources */,
 				80348F332AF880820045CCD3 /* DomainPurchaseChoicesView.swift in Sources */,
 				FAFF7A292B695EA3006A7CB2 /* NoAtomicLogsView.swift in Sources */,
-				FABB258F2602FC2C00C8785C /* AbstractPost+TitleForVisibility.swift in Sources */,
 				FABB25902602FC2C00C8785C /* SharingViewController.m in Sources */,
 				0C75E26F2A9F63CB00B784E5 /* MediaImageService.swift in Sources */,
 				FABB25912602FC2C00C8785C /* FormattableActivity.swift in Sources */,
