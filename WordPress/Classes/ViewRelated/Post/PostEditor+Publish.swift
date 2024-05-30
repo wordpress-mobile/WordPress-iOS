@@ -46,9 +46,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Debouncer used to save the post locally with a delay
     var debouncer: Debouncer { get }
 
-    /// - warning: deprecated (kahu-offline-mode)
-    var prepublishingIdentifiers: [PrepublishingIdentifier] { get }
-
     func emitPostSaveEvent()
 }
 

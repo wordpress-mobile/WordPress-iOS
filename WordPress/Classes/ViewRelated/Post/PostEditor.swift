@@ -131,10 +131,6 @@ extension PostEditor {
     var prepublishingSourceView: UIView? {
         return navigationBarManager.publishButton
     }
-
-    var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        PrepublishingIdentifier.defaultIdentifiers
-    }
 }
 
 extension PostEditor where Self: UIViewController {
