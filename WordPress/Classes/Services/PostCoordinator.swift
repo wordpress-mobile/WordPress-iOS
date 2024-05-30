@@ -53,7 +53,6 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
 
     private let mainService: PostService
-    private let failedPostsFetcher: FailedPostsFetcher
 
     private let actionDispatcherFacade: ActionDispatcherFacade
     private let isSyncPublishingEnabled: Bool
@@ -65,7 +64,6 @@ class PostCoordinator: NSObject {
 
     init(mainService: PostService? = nil,
          mediaCoordinator: MediaCoordinator? = nil,
-         failedPostsFetcher: FailedPostsFetcher? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
          coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
          isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
@@ -75,7 +73,6 @@ class PostCoordinator: NSObject {
 
         self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
-        self.failedPostsFetcher = failedPostsFetcher ?? FailedPostsFetcher(mainContext)
 
         self.actionDispatcherFacade = actionDispatcherFacade
         self.isSyncPublishingEnabled = isSyncPublishingEnabled
@@ -141,7 +138,7 @@ class PostCoordinator: NSObject {
             post.date_created_gmt = Date()
         }
 
-        post.shouldAttemptAutoUpload = true
+        // post.shouldAttemptAutoUpload = true
 
         save(post)
     }
@@ -837,8 +834,8 @@ class PostCoordinator: NSObject {
 
             SearchManager.shared.indexItem(uploadedPost)
 
-            let model = PostNoticeViewModel(post: uploadedPost)
-            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
+//            let model = PostNoticeViewModel(post: uploadedPost)
+//            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
 
             completion?(.success(uploadedPost))
         }, failure: { [weak self] error in
@@ -1048,27 +1045,7 @@ class PostCoordinator: NSObject {
     }
 
     // - warning: deprecated (kahu-offline-mode)
-    func cancelAutoUploadOf(_ post: AbstractPost) {
-        cancelAnyPendingSaveOf(post: post)
-
-        post.shouldAttemptAutoUpload = false
-
-        let moc = post.managedObjectContext
-
-        moc?.perform {
-            try? moc?.save()
-        }
-
-        let notice = Notice(title: PostAutoUploadMessages(for: post).cancelMessage(), message: "")
-        actionDispatcherFacade.dispatch(NoticeAction.post(notice))
-    }
-
-    private func dispatchNotice(_ post: AbstractPost) {
-        DispatchQueue.main.async {
-            let model = PostNoticeViewModel(post: post)
-            self.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
-        }
-    }
+    private func dispatchNotice(_ post: AbstractPost) {}
 
     // MARK: - State
 
@@ -1210,68 +1187,8 @@ extension Foundation.Notification.Name {
     static let postCoordinatorDidUpdate = Foundation.Notification.Name("org.automattic.postCoordinatorDidUpdate")
 }
 
-// MARK: - Automatic Uploads
-
-extension PostCoordinator: Uploader {
-    func resume() {
-        guard !isSyncPublishingEnabled else {
-            return
-        }
-        failedPostsFetcher.postsAndRetryActions { [weak self] postsAndActions in
-            guard let self = self else {
-                return
-            }
-
-            postsAndActions.forEach { post, action in
-                self.trackAutoUpload(action: action, status: post.status)
-
-                switch action {
-                case .upload:
-                    self.save(post, automatedRetry: true)
-                case .autoSave:
-                    self.autoSave(post, automatedRetry: true)
-                case .uploadAsDraft:
-                    self.save(post, automatedRetry: true, forceDraftIfCreating: true)
-                case .nothing:
-                    return
-                }
-            }
-        }
-    }
-
-    private func trackAutoUpload(action: PostAutoUploadInteractor.AutoUploadAction, status: BasePost.Status?) {
-        guard action != .nothing, let status = status else {
-            return
-        }
-        WPAnalytics.track(.autoUploadPostInvoked, withProperties:
-            ["upload_action": action.rawValue,
-             "post_status": status.rawValue])
-    }
-}
-
-extension PostCoordinator {
-    /// Fetches failed posts that should be retried when there is an internet connection.
-    class FailedPostsFetcher {
-        private let managedObjectContext: NSManagedObjectContext
-
-        init(_ managedObjectContext: NSManagedObjectContext) {
-            self.managedObjectContext = managedObjectContext
-        }
-
-        func postsAndRetryActions(result: @escaping ([AbstractPost: PostAutoUploadInteractor.AutoUploadAction]) -> Void) {
-            let interactor = PostAutoUploadInteractor()
-            managedObjectContext.perform {
-                let request = NSFetchRequest<AbstractPost>(entityName: NSStringFromClass(AbstractPost.self))
-                request.predicate = NSPredicate(format: "remoteStatusNumber == %d", AbstractPostRemoteStatus.failed.rawValue)
-                let posts = (try? self.managedObjectContext.fetch(request)) ?? []
-
-                let postsAndActions = posts.reduce(into: [AbstractPost: PostAutoUploadInteractor.AutoUploadAction]()) { result, post in
-                    result[post] = interactor.autoUploadAction(for: post)
-                }
-                result(postsAndActions)
-            }
-        }
-    }
+enum PostNoticeUserInfoKey {
+    static let postID = "post_id"
 }
 
 private extension NSManagedObjectID {

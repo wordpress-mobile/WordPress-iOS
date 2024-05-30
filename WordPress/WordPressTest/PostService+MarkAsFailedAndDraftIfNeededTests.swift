@@ -19,18 +19,6 @@ class PostMarkAsFailedAndDraftIfNeededTests: CoreDataTestCase {
         expect(post.status).to(equal(.pending))
     }
 
-    func testMarkAPostAsFailedKeepShouldAttemptAutoUpload() {
-        let blog = BlogBuilder(mainContext).withAnAccount().build()
-        let post = PostBuilder(mainContext, blog: blog)
-            .with(status: .pending)
-            .confirmedAutoUpload()
-            .build()
-
-        post.markAsFailedAndDraftIfNeeded()
-
-        expect(post.shouldAttemptAutoUpload).to(beTrue())
-    }
-
     func testMarksALocalPageAsFailedAndResetsItToDraft() {
         let page = PageBuilder(mainContext)
             .with(status: .publish)

@@ -23,7 +23,8 @@ class PageTests: XCTestCase {
             .goToSitePage()
             .createBlankPage()
             .enterTextInTitle(text: postTitle, postType: .page)
-            .post(action: .publish, postType: .page)
+            .publish()
+            .confirm()
 
         // TODO: reimplement this part of the test (flaky)
 //        try MySiteScreen()

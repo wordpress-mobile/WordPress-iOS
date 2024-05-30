@@ -586,43 +586,6 @@
             || self.remoteStatus == AbstractPostRemoteStatusFailed);
 }
 
-- (BOOL)shouldAttemptAutoUpload {
-    if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
-        return NO;
-    }
-
-    NSTimeInterval timeDifference = [[NSDate date] timeIntervalSinceDate:self.confirmedChangesTimestamp];
-
-    BOOL timeDifferenceWithinRange = timeDifference <= (60 * 60 * 24 * 2);
-    // We want the user's confirmation to upload a thing to expire after 48h.
-    // This probably should be calculated using NSCalendar APIs — but those
-    // can get really expensive. This method can potentially be called a lot during
-    // scrolling of a Post List — and for our specific use-case, being slightly innacurate here in terms of
-    // leap seconds or other calendrical oddities doesn't actually matter.
-
-    BOOL hashesEqual = [self.confirmedChangesHash isEqualToString:[self calculateConfirmedChangesContentHash]];
-
-    return hashesEqual && timeDifferenceWithinRange;
-}
-
-- (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
-    if (shouldAttemptAutoUpload) {
-        NSString *currentHash = [self calculateConfirmedChangesContentHash];
-        NSDate *now = [NSDate date];
-
-        self.confirmedChangesHash = currentHash;
-        self.confirmedChangesTimestamp = now;
-    } else {
-        self.confirmedChangesHash = @"";
-        self.confirmedChangesTimestamp = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
-    }
-}
-
-- (BOOL)wasAutoUploadCancelled {
-    return [self.confirmedChangesHash isEqualToString:@""]
-    && [self.confirmedChangesTimestamp isEqualToDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
-}
-
 - (void)updatePathForDisplayImageBasedOnContent
 {
     // First lets check the post content for a suitable image

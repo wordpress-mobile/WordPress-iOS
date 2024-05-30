@@ -56,12 +56,6 @@ class Page: AbstractPost {
         }
     }
 
-    override func additionalContentHashes() -> [Data] {
-        return [
-            hash(for: parentID?.intValue ?? 0)
-        ]
-    }
-
     override func availableStatusesForEditing() -> [Any] {
         if isSiteHomepage && isPublished() {
             return [PostStatusPublish]

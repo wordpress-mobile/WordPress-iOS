@@ -213,14 +213,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 // Save changes to disk
 - (void)save;
 
-// This property is used to indicate whether an app should attempt to automatically retry upload this post
-// the next time a internet connection is available.
-@property (nonatomic, assign) BOOL shouldAttemptAutoUpload;
-
-// This property tracks whether a file's attempt to auto-upload was manually cancelled by the user.
-@property (nonatomic, assign, readonly) BOOL wasAutoUploadCancelled;
-
-
 /**
  * Updates the path for the display image by looking at the post content and trying to find an good image to use.
  * If no appropiated image is found the path is set to nil.
