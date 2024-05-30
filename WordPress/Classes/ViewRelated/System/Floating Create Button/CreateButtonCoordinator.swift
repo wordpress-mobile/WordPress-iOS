@@ -138,18 +138,14 @@ import WordPressUI
             return
         }
 
-        if actions.count == 1 {
-            actions.first?.handler()
-        } else {
-            let actionSheetVC = actionSheetController(with: viewController.traitCollection)
-            viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
-                WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
+        let actionSheetVC = actionSheetController(with: viewController.traitCollection)
+        viewController.present(actionSheetVC, animated: true, completion: { [weak self] in
+            WPAnalytics.track(.createSheetShown, properties: ["source": self?.source ?? ""])
 
-                if let element = self?.currentTourElement {
-                    QuickStartTourGuide.shared.visited(element)
-                }
-            })
-        }
+            if let element = self?.currentTourElement {
+                QuickStartTourGuide.shared.visited(element)
+            }
+        })
     }
 
     private func actionSheetController(with traitCollection: UITraitCollection) -> UIViewController {
