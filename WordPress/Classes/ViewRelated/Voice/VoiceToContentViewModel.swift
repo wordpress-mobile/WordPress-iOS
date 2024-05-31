@@ -183,6 +183,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let timeRemaining = Constants.recordingTimeLimit - currentTime
 
             guard timeRemaining > 0 else {
+                WPAnalytics.track(.voiceToContentRecordingLimitReached)
                 startProcessing()
                 return
             }

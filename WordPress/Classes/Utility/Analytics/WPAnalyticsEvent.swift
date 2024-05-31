@@ -593,6 +593,7 @@ import Foundation
     case voiceToContentButtonDoneTapped
     case voiceToContentButtonUpgradeTapped
     case voiceToContentButtonCloseTapped
+    case voiceToContentRecordingLimitReached
 
     // Widgets
     case widgetsLoadedOnApplicationOpened
@@ -1645,6 +1646,8 @@ import Foundation
             return "voice_to_content_button_upgrade_tapped"
         case .voiceToContentButtonCloseTapped:
             return "voice_to_content_button_close_tapped"
+        case .voiceToContentRecordingLimitReached:
+            return "voice_to_content_recording_limit_reached"
 
         // Widgets
         case .widgetsLoadedOnApplicationOpened:
