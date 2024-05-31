@@ -107,7 +107,7 @@ DEPENDENCIES:
   - Gifu (= 3.3.1)
   - Gravatar (= 1.0.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.119.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0-alpha1.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -177,7 +177,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.119.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0-alpha1.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -197,7 +197,7 @@ SPEC CHECKSUMS:
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gravatar: 51437de6811c1d8d6f60c52985f2ca00a85cfc8e
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: 7bc61c0ca4178a6e2de627222ece7b885c32be37
+  Gutenberg: 26a0d4389a45fd9870959e6c448a35bd25113e15
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
