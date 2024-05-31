@@ -39,7 +39,7 @@ struct VoiceToContentView: View {
             }
 
             if [VoiceToContentViewModel.Step.welcome, .recording].contains(viewModel.step) {
-                buttonRecord(viewModel: viewModel)
+                RecordButton(viewModel: viewModel)
             }
         }
         .padding(.horizontal, 20)
@@ -153,7 +153,7 @@ private struct VoiceToContentRecordingView: View {
     }
 }
 
-private struct buttonRecord: View {
+private struct RecordButton: View {
     @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
 
     private var isRecording: Bool { viewModel.step == .recording }
