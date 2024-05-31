@@ -34,7 +34,7 @@ struct VoiceToContentView: View {
                 case .recording:
                     VoiceToContentRecordingView(viewModel: viewModel)
                 case .processing:
-                    VoiceToContenProcessingView(viewModel: viewModel)
+                    VoiceToContentProcessingView(viewModel: viewModel)
                 }
             }
 
@@ -195,7 +195,7 @@ private struct RecordButton: View {
     }
 }
 
-private struct VoiceToContenProcessingView: View {
+private struct VoiceToContentProcessingView: View {
     @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
 
     var body: some View {
