@@ -807,15 +807,6 @@ class PostCoordinator: NSObject {
         return post.titleForDisplay()
     }
 
-    /// This method checks the status of all post objects and updates them to the correct status if needed.
-    /// The main cause of wrong status is the app being killed while uploads of posts are happening.
-    ///
-    /// - note: deprecated (kahu-offline-mode)
-    @objc func refreshPostStatus() {
-        guard !isSyncPublishingEnabled else { return }
-        Post.refreshStatus(with: coreDataStack)
-    }
-
     /// - note: Deprecated (kahu-offline-mode)
     private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
         mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in

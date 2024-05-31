@@ -4501,7 +4501,6 @@
 		FABB21852602FC2C00C8785C /* GravatarService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5772AC31C9C7A070031F97E /* GravatarService.swift */; };
 		FABB21862602FC2C00C8785C /* CountriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 981676D4221B7A4300B81C3F /* CountriesCell.swift */; };
 		FABB21882602FC2C00C8785C /* ReaderTopicsCardCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8BCF957924C6044000712056 /* ReaderTopicsCardCell.swift */; };
-		FABB21892602FC2C00C8785C /* Post+RefreshStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0F722B206E5345000DAAB5 /* Post+RefreshStatus.swift */; };
 		FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 326E281A250AC4A50029EBF0 /* ImageDimensionParser.swift */; };
 		FABB218C2602FC2C00C8785C /* DocumentUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F126FDFF20A33BDB0010EB6E /* DocumentUploadProcessor.swift */; };
 		FABB218D2602FC2C00C8785C /* ReaderTopicService+Interests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3236F79D24AE75790088E8F3 /* ReaderTopicService+Interests.swift */; };
@@ -5789,7 +5788,6 @@
 		FF0AAE0A1A150A560089841D /* WPProgressTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */; };
 		FF0B2567237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0B2566237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift */; };
 		FF0D8146205809C8000EE505 /* PostCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0D8145205809C8000EE505 /* PostCoordinator.swift */; };
-		FF0F722C206E5345000DAAB5 /* Post+RefreshStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF0F722B206E5345000DAAB5 /* Post+RefreshStatus.swift */; };
 		FF1B11E5238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1B11E4238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift */; };
 		FF1B11E7238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1B11E6238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift */; };
 		FF1FD0242091268900186384 /* URL+LinkNormalization.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF1FD0232091268900186384 /* URL+LinkNormalization.swift */; };
@@ -9681,7 +9679,6 @@
 		FF0AAE091A150A560089841D /* WPProgressTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPProgressTableViewCell.m; sourceTree = "<group>"; };
 		FF0B2566237A023C004E255F /* GutenbergVideoUploadProcessorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GutenbergVideoUploadProcessorTests.swift; sourceTree = "<group>"; };
 		FF0D8145205809C8000EE505 /* PostCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCoordinator.swift; sourceTree = "<group>"; };
-		FF0F722B206E5345000DAAB5 /* Post+RefreshStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Post+RefreshStatus.swift"; sourceTree = "<group>"; };
 		FF1B11E4238FDFE70038B93E /* GutenbergGalleryUploadProcessor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GutenbergGalleryUploadProcessor.swift; sourceTree = "<group>"; };
 		FF1B11E6238FE27A0038B93E /* GutenbergGalleryUploadProcessorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = GutenbergGalleryUploadProcessorTests.swift; path = Gutenberg/GutenbergGalleryUploadProcessorTests.swift; sourceTree = "<group>"; };
 		FF1FD0232091268900186384 /* URL+LinkNormalization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+LinkNormalization.swift"; sourceTree = "<group>"; };
@@ -11326,7 +11323,6 @@
 				E1E89C6B1FD80E74006E7A33 /* Plugin.swift */,
 				591AA4FF1CEF9BF20074934F /* Post.swift */,
 				591AA5001CEF9BF20074934F /* Post+CoreDataProperties.swift */,
-				FF0F722B206E5345000DAAB5 /* Post+RefreshStatus.swift */,
 				E148362E1C6DF7D8005ACF53 /* Product.swift */,
 				833AF259114575A50016DE8F /* PostAnnotation.h */,
 				833AF25A114575A50016DE8F /* PostAnnotation.m */,
@@ -21799,7 +21795,6 @@
 				B5772AC41C9C7A070031F97E /* GravatarService.swift in Sources */,
 				981676D6221B7A4300B81C3F /* CountriesCell.swift in Sources */,
 				8BCF957A24C6044000712056 /* ReaderTopicsCardCell.swift in Sources */,
-				FF0F722C206E5345000DAAB5 /* Post+RefreshStatus.swift in Sources */,
 				326E281C250AC4A50029EBF0 /* ImageDimensionParser.swift in Sources */,
 				F126FE0220A33BDB0010EB6E /* DocumentUploadProcessor.swift in Sources */,
 				3236F79E24AE75790088E8F3 /* ReaderTopicService+Interests.swift in Sources */,
@@ -24700,7 +24695,6 @@
 				FA25FA342609AAAA0005E08F /* AppConfiguration.swift in Sources */,
 				83C972E1281C45AB0049E1FE /* Post+BloggingPrompts.swift in Sources */,
 				3FE3D1FC26A6F2AC00F3CD10 /* ListTableViewCell.swift in Sources */,
-				FABB21892602FC2C00C8785C /* Post+RefreshStatus.swift in Sources */,
 				08F531FF2B7E94F20061BD0E /* CachedAsyncImage.swift in Sources */,
 				F1585405267D3B5000A2E966 /* BloggingRemindersFlowIntroViewController.swift in Sources */,
 				FABB218A2602FC2C00C8785C /* ImageDimensionParser.swift in Sources */,

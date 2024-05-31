@@ -272,7 +272,6 @@ class WordPressAppDelegate: UIResponder, UIApplicationDelegate {
         DispatchQueue.global(qos: .background).async { [weak self] in
             self?.mergeDuplicateAccountsIfNeeded()
             MediaCoordinator.shared.refreshMediaStatus()
-            PostCoordinator.shared.refreshPostStatus()
             MediaFileManager.clearUnusedMediaUploadFiles(onCompletion: nil, onError: nil)
         }
 
