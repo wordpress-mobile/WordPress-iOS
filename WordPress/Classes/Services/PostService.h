@@ -31,19 +31,6 @@ extern const NSUInteger PostServiceDefaultNumberToSync;
                     postServiceRemoteFactory:(PostServiceRemoteFactory *)postServiceRemoteFactory NS_DESIGNATED_INITIALIZER;
 
 /**
- Sync a specific post from the API
-
- @param postID The ID of the post to sync
- @param blog The blog that has the post.
- @param success A success block
- @param failure A failure block
- */
-- (void)getPostWithID:(NSNumber *)postID
-              forBlog:(Blog *)blog
-              success:(void (^)(AbstractPost *post))success
-              failure:(void (^)(NSError *))failure __attribute__((deprecated("Use `PostRepository` instead")));
-
-/**
  Sync an initial batch of posts from the specified blog.
  Please note that success and/or failure are called in the context of the
  NSManagedObjectContext supplied when the PostService was initialized, and may not
