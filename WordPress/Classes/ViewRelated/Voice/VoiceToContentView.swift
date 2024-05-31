@@ -37,6 +37,10 @@ struct VoiceToContentView: View {
                     VoiceToContenProcessingView(viewModel: viewModel)
                 }
             }
+
+            if [VoiceToContentViewModel.Step.welcome, .recording].contains(viewModel.step) {
+                RecordButton(viewModel: viewModel)
+            }
         }
         .padding(.horizontal, 20)
         .padding(.top, 24)
@@ -79,13 +83,12 @@ private struct VoiceToContentWelcomeView: View {
     @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
 
     var body: some View {
-        VStack(spacing: 16) {
+        VStack {
             if let isEligible = viewModel.isEligible, !isEligible {
                 Spacer()
                 notEnoughRequestsView
             }
             Spacer()
-            buttonRecord
         }
     }
 
@@ -100,26 +103,6 @@ private struct VoiceToContentWelcomeView: View {
                 }
             }
         }.frame(maxWidth: 320)
-    }
-
-    private var buttonRecord: some View {
-        VStack(spacing: 16) {
-            Button(action: viewModel.buttonRecordTapped) {
-                Image(systemName: "mic")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 36, height: 36)
-                    .padding(24)
-                    .background(viewModel.isButtonRecordEnabled ? Color(uiColor: .brand) : Color.secondary.opacity(0.5))
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-            }
-
-            Text(Strings.beginRecording)
-                .foregroundStyle(.primary)
-        }
-        .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
-        .disabled(!viewModel.isButtonRecordEnabled)
     }
 }
 
@@ -140,7 +123,6 @@ private struct VoiceToContentRecordingView: View {
                 }
             }
             Spacer()
-            buttonDone
         }
     }
 
@@ -168,6 +150,48 @@ private struct VoiceToContentRecordingView: View {
             Text(Strings.done)
                 .foregroundStyle(.primary)
         }
+    }
+}
+
+private struct RecordButton: View {
+    @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
+
+    private var isRecording: Bool { viewModel.step == .recording }
+
+    var body: some View {
+        VStack(spacing: 16) {
+            Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
+                if #available(iOS 17.0, *) {
+                    icon
+                        .contentTransition(.symbolEffect(.replace, options: .speed(4)))
+                } else {
+                    icon
+                }
+            }
+
+            Text(Strings.done)
+                .foregroundStyle(.primary)
+        }
+        .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
+        .disabled(!viewModel.isButtonRecordEnabled)
+    }
+
+    private var backgroundColor: Color {
+        if !isRecording {
+            return viewModel.isButtonRecordEnabled ? Color(uiColor: .brand) : Color.secondary.opacity(0.5)
+        }
+        return .black
+    }
+
+    private var icon: some View {
+        Image(systemName: isRecording ? "stop.fill" : "mic")
+            .resizable()
+            .scaledToFit()
+            .frame(width: isRecording ? 28 : 36)
+            .padding(isRecording ? 28 : 24)
+            .background(backgroundColor)
+            .foregroundColor(.white)
+            .clipShape(Circle())
     }
 }
 

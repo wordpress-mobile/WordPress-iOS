@@ -321,7 +321,7 @@ extension JetpackAssistantFeatureDetails {
 
 extension TimeInterval {
     var minuteSecond: String {
-        String(format: "%d:%02d", minute, second)
+        String(format: "%02d:%02d", minute, second)
     }
     var minute: Int {
         Int((self / 60).truncatingRemainder(dividingBy: 60))
