@@ -1,7 +1,7 @@
 import UIKit
 
 extension PrepublishingViewController {
-    static func show(for revision: AbstractPost, action: PostEditorAction, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
+    static func show(for revision: AbstractPost, isStandalone: Bool = false, from presentingViewController: UIViewController, completion: @escaping (PrepublishingSheetResult) -> Void) {
         // End editing to avoid issues with accessibility
         presentingViewController.view.endEditing(true)
 
