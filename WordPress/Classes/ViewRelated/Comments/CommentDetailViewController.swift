@@ -187,9 +187,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-//        configureReplyView()
         setupKeyboardManager()
-//        configureSuggestionsView()
         configureNavigationBar()
         configureTable()
         configureSections()
