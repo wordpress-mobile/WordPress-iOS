@@ -1,7 +1,6 @@
 import Foundation
 
 extension PostService {
-    /// - note: Deprecated (kahu-offline-mode)
     @objc func updateMediaFor(post: AbstractPost,
                               success: @escaping () -> Void,
                               failure: @escaping (Error?) -> Void) {
