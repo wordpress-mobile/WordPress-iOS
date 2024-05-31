@@ -79,7 +79,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
     /// Share Footer View
     ///
-    var shareFooterView: UIView!
+    var shareFooterView: UIView?
 
     /// Arrows Navigation Datasource
     ///
