@@ -308,9 +308,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        if !FeatureFlag.syncPublishing.enabled {
-            PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
-        }
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }

@@ -169,8 +169,6 @@ final class InteractiveNotificationsManager: NSObject {
 
                 if let action = NoteActionDefinition(rawValue: identifier) {
                     switch action {
-                    case .postRetry:
-                        PostNoticeNavigationCoordinator.retryPostUpload(with: userInfo)
                     case .postView:
                         PostNoticeNavigationCoordinator.presentPostEpilogue(with: userInfo)
                     default:
@@ -422,7 +420,7 @@ extension InteractiveNotificationsManager {
             case .postUploadSuccess:
                 return [.postView]
             case .postUploadFailure:
-                return [.postRetry]
+                return []
             case .shareUploadSuccess:
                 return [.shareEditPost]
             case .shareUploadFailure:
@@ -475,7 +473,6 @@ extension InteractiveNotificationsManager {
         case commentReply     = "COMMENT_REPLY"
         case mediaWritePost   = "MEDIA_WRITE_POST"
         case mediaRetry       = "MEDIA_RETRY"
-        case postRetry        = "POST_RETRY"
         case postView         = "POST_VIEW"
         case shareEditPost    = "SHARE_EDIT_POST"
         case approveLogin     = "APPROVE_LOGIN_ATTEMPT"
@@ -495,8 +492,6 @@ extension InteractiveNotificationsManager {
                 return NSLocalizedString("Write Post", comment: "Opens the editor to write a new post.")
             case .mediaRetry:
                 return NSLocalizedString("Retry", comment: "Opens the media library .")
-            case .postRetry:
-                return NSLocalizedString("Retry", comment: "Retries the upload of a user's post.")
             case .postView:
                 return NSLocalizedString("View", comment: "Opens the post epilogue screen to allow sharing / viewing of a post.")
             case .shareEditPost:
@@ -584,7 +579,7 @@ extension InteractiveNotificationsManager {
             }
         }
 
-        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
+        static var allDefinitions = [commentApprove, commentLike, commentReply, mediaWritePost, mediaRetry, postView, shareEditPost, approveLogin, denyLogin, answerPrompt, dismissPrompt]
     }
 }
 

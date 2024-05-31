@@ -84,55 +84,6 @@ class PostCoordinator: NSObject {
         }
     }
 
-    /// Upload or update a post in the server.
-    ///
-    /// - Parameter forceDraftIfCreating Please see `PostService.uploadPost:forceDraftIfCreating`.
-    ///
-    /// - note: deprecated (kahu-offline-mode)
-    func save(_ postToSave: AbstractPost,
-              automatedRetry: Bool = false,
-              forceDraftIfCreating: Bool = false,
-              defaultFailureNotice: Notice? = nil,
-              completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
-
-        notifyNewPostCreated()
-
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
-            switch result {
-            case .success(let post):
-                break
-                // self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
-            case .failure(let error):
-                switch error {
-                case SavingError.mediaFailure(let savedPost, _):
-                    self.dispatchNotice(savedPost)
-                default:
-                    if let notice = defaultFailureNotice {
-                        self.actionDispatcherFacade.dispatch(NoticeAction.post(notice))
-                    }
-                }
-
-                completion?(.failure(error))
-            }
-        }
-    }
-
-    /// - note: Deprecated (kahu-offline-mode) (See PostCoordinator.publish)
-    func publish(_ post: AbstractPost) {
-        if post.status == .draft {
-            post.status = .publish
-            post.isFirstTimePublish = true
-        }
-
-        if post.status != .scheduled {
-            post.date_created_gmt = Date()
-        }
-
-        // post.shouldAttemptAutoUpload = true
-
-        save(post)
-    }
-
     struct PublishingOptions {
         var visibility: PostVisibility
         var password: String?
@@ -303,20 +254,9 @@ class PostCoordinator: NSObject {
     }
 
     func moveToDraft(_ post: AbstractPost) {
-        guard isSyncPublishingEnabled else {
-            _moveToDraft(post)
-            return
-        }
-
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.draft.rawValue
         _performChanges(changes, for: post)
-    }
-
-    /// - note: Deprecated (kahu-offline-mode) (along with all related types)
-    private func _moveToDraft(_ post: AbstractPost) {
-        post.status = .draft
-        save(post)
     }
 
     /// Restores a trashed post by moving it to draft.
@@ -732,11 +672,6 @@ class PostCoordinator: NSObject {
         post.content = contentParser.html()
     }
 
-    // - warning: deprecated (kahu-offline-mode)
-    func cancelAnyPendingSaveOf(post: AbstractPost) {
-        removeObserver(for: post)
-    }
-
     func isUploading(post: AbstractPost) -> Bool {
         return post.remoteStatus == .pushing
     }
@@ -993,9 +928,6 @@ class PostCoordinator: NSObject {
             completion?(post)
         }
     }
-
-    // - warning: deprecated (kahu-offline-mode)
-    private func dispatchNotice(_ post: AbstractPost) {}
 
     // MARK: - State
 

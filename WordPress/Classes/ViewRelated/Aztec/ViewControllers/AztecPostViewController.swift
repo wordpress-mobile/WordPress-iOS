@@ -459,7 +459,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
         super.init(nibName: nil, bundle: nil)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
         disableSocialConnectionsIfNecessary()
