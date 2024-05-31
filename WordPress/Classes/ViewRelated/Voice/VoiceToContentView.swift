@@ -189,7 +189,7 @@ private struct RecordButton: View {
             Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
                 if #available(iOS 17.0, *) {
                     icon
-                        .contentTransition(.symbolEffect(.replace, options: .speed(4)))
+                        .contentTransition(.symbolEffect(.replace, options: .speed(5)))
                 } else {
                     icon
                 }
