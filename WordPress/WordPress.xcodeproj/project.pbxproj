@@ -316,6 +316,8 @@
 		083ED8CD2A4322CB007F89B3 /* ComplianceLocationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */; };
 		0840513E2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */; };
 		0840513F2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */; };
+		084409982C0A5060003A49F7 /* AuthorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084409972C0A5060003A49F7 /* AuthorView.swift */; };
+		084409992C0A5060003A49F7 /* AuthorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084409972C0A5060003A49F7 /* AuthorView.swift */; };
 		0844BF872BDFBC7200AAFC02 /* CommentModerationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0844BF862BDFBC7200AAFC02 /* CommentModerationView.swift */; };
 		0845B8C61E833C56001BA771 /* URL+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0845B8C51E833C56001BA771 /* URL+Helpers.swift */; };
 		08472A201C727E020040769D /* PostServiceOptions.m in Sources */ = {isa = PBXBuildFile; fileRef = 08472A1F1C727E020040769D /* PostServiceOptions.m */; };
@@ -6160,6 +6162,7 @@
 		083683DC2B4859BB00331ED0 /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		083ED8CB2A4322CB007F89B3 /* ComplianceLocationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplianceLocationService.swift; sourceTree = "<group>"; };
 		0840513D2A4DDE3400A596E6 /* CompliancePopoverCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopoverCoordinator.swift; sourceTree = "<group>"; };
+		084409972C0A5060003A49F7 /* AuthorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthorView.swift; sourceTree = "<group>"; };
 		0844BF862BDFBC7200AAFC02 /* CommentModerationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModerationView.swift; sourceTree = "<group>"; };
 		0845B8C51E833C56001BA771 /* URL+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Helpers.swift"; sourceTree = "<group>"; };
 		08472A1E1C7273FA0040769D /* PostServiceOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostServiceOptions.h; sourceTree = "<group>"; };
@@ -12243,6 +12246,7 @@
 			isa = PBXGroup;
 			children = (
 				3FEC241425D73E8B007AFE63 /* ConfettiView.swift */,
+				084409972C0A5060003A49F7 /* AuthorView.swift */,
 			);
 			path = "Milestone Notifications";
 			sourceTree = "<group>";
@@ -22240,6 +22244,7 @@
 				1788106F260E488B00A98BD8 /* UnifiedPrologueNotificationsContentView.swift in Sources */,
 				3223393C24FEC18100BDD4BF /* ReaderDetailFeaturedImageView.swift in Sources */,
 				98B52AE121F7AF4A006FF6B4 /* StatsDataHelper.swift in Sources */,
+				084409982C0A5060003A49F7 /* AuthorView.swift in Sources */,
 				8BAD272C241FEF3300E9D105 /* DeprecatedPrepublishingViewController.swift in Sources */,
 				4A1E77C92988997C006281CC /* PublicizeConnection+Creation.swift in Sources */,
 				01E70EBB2BB5CCCF000BFE45 /* NumberFormatter+Stats.swift in Sources */,
@@ -25610,6 +25615,7 @@
 				FABB23F22602FC2C00C8785C /* Animator.swift in Sources */,
 				F4FF50E82B4D7D590076DB0C /* SubmitFeedbackViewController.swift in Sources */,
 				FABB23F32602FC2C00C8785C /* SiteStatsDashboardViewController.swift in Sources */,
+				084409992C0A5060003A49F7 /* AuthorView.swift in Sources */,
 				F4141EEC2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift in Sources */,
 				9895401226C1F39300EDEB5A /* EditCommentTableViewController.swift in Sources */,
 				FABB23F42602FC2C00C8785C /* MediaSettings.swift in Sources */,
