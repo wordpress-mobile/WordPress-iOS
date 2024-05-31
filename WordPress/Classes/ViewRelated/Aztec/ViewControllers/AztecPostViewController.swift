@@ -1070,10 +1070,6 @@ extension AztecPostViewController {
         handlePrimaryActionButtonTap()
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
-        handleSecondaryActionButtonTap()
-    }
-
     @IBAction func closeWasPressed() {
         cancelEditing()
     }
@@ -1161,14 +1157,6 @@ private extension AztecPostViewController {
             let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
-        }
-
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
-            }
         }
 
         if post.blog.isGutenbergEnabled, post.isContentEmpty() || post.containsGutenbergBlocks() {
