@@ -39,6 +39,17 @@ final class CommentModerationSheetHostingView: UIView {
         self.hostingController = controller
     }
 
+    /// There was a bug where the moderation view did not resize correctly when the moderation view state changed,
+    /// resulting in an incorrect view height after state transitions.
+    ///
+    /// To address this bug, the hosting view was laid out to the edges of `viewController.view` to provide enough space
+    /// for the moderation view to animate smoothly. However, this setup caused the hosting view to intercept touch events,
+    /// preventing them from passing through to underlying views.
+    ///
+    /// This custom `hitTest` method resolves the touch event handling issue by ensuring that touch events are forwarded to
+    /// the appropriate subview or parent view.
+    ///
+    /// This method has unit tests to verify its functionality.
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         guard let hitView = super.hitTest(point, with: event),
               let hostingView = self.hostingController?.view,
