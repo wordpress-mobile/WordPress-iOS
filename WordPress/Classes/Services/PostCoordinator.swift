@@ -47,7 +47,6 @@ class PostCoordinator: NSObject {
 
     private var workers: [NSManagedObjectID: SyncWorker] = [:]
     private var pendingPostIDs: Set<NSManagedObjectID> = []
-    private var pendingDeletionPostIDs: Set<NSManagedObjectID> = []
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
     private let mediaCoordinator: MediaCoordinator
@@ -672,6 +671,11 @@ class PostCoordinator: NSObject {
         post.content = contentParser.html()
     }
 
+    // - warning: deprecated (kahu-offline-mode)
+    func cancelAnyPendingSaveOf(post: AbstractPost) {
+        removeObserver(for: post)
+    }
+
     func isUploading(post: AbstractPost) -> Bool {
         return post.remoteStatus == .pushing
     }
@@ -982,71 +986,6 @@ class PostCoordinator: NSObject {
         } catch {
             trackError(error, operation: "post-delete")
             handleError(error, for: post)
-        }
-    }
-
-    func isDeleting(_ post: AbstractPost) -> Bool {
-        pendingDeletionPostIDs.contains(post.objectID)
-    }
-
-    /// Moves the post to trash or delets it permanently in case it's already in trash.
-    @MainActor
-    func delete(_ post: AbstractPost) async {
-        wpAssert(post.managedObjectContext == mainContext)
-
-        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics(for: post))
-
-        setPendingDeletion(true, post: post)
-
-        let trashed = (post.status == .trash)
-
-        let repository = PostRepository(coreDataStack: ContextManager.shared)
-        do {
-            try await repository.trash(TaggedManagedObjectID(post))
-
-            if trashed {
-                cancelAnyPendingSaveOf(post: post)
-                MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
-            }
-
-            // Remove the trashed post from spotlight
-            SearchManager.shared.deleteSearchableItem(post)
-
-            let message: String
-            switch post {
-            case _ as Post:
-                message = trashed ? Strings.deletePost : Strings.movePostToTrash
-            case _ as Page:
-                message = trashed ? Strings.deletePage : Strings.movePageToTrash
-            default:
-                fatalError("Unsupported item: \(type(of: post))")
-            }
-
-            let notice = Notice(title: message)
-            ActionDispatcher.dispatch(NoticeAction.dismiss)
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-
-            // No need to notify as the object gets deleted
-            setPendingDeletion(false, post: post, notify: false)
-        } catch {
-            if let error = error as NSError?, error.code == Constants.httpCodeForbidden {
-                delegate?.postCoordinator(self, promptForPasswordForBlog: post.blog)
-            } else {
-                WPError.showXMLRPCErrorAlert(error)
-            }
-
-            setPendingDeletion(false, post: post)
-        }
-    }
-
-    private func setPendingDeletion(_ isDeleting: Bool, post: AbstractPost, notify: Bool = true) {
-        if isDeleting {
-            pendingDeletionPostIDs.insert(post.objectID)
-        } else {
-            pendingDeletionPostIDs.remove(post.objectID)
-        }
-        if notify {
-            postDidUpdateNotification(for: post)
         }
     }
 

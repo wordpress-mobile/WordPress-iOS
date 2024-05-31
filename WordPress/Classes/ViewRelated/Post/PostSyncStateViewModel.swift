@@ -18,7 +18,7 @@ final class PostSyncStateViewModel {
     }
 
     var state: State {
-        if PostCoordinator.shared.isDeleting(post) || PostCoordinator.shared.isUpdating(post) {
+        if PostCoordinator.shared.isUpdating(post) {
             return .uploading
         }
         if let error = PostCoordinator.shared.syncError(for: post.original()) {
