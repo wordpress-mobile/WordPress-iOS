@@ -50,9 +50,6 @@ class PostCoordinator: NSObject {
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
     private let mediaCoordinator: MediaCoordinator
-
-    private let mainService: PostService
-
     private let actionDispatcherFacade: ActionDispatcherFacade
 
     /// The initial sync retry delay. By default, 8 seconds.
@@ -60,17 +57,11 @@ class PostCoordinator: NSObject {
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil,
-         mediaCoordinator: MediaCoordinator? = nil,
+    init(mediaCoordinator: MediaCoordinator? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
          coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
         self.coreDataStack = coreDataStack
-
-        let mainContext = self.coreDataStack.mainContext
-
-        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
-
         self.actionDispatcherFacade = actionDispatcherFacade
 
         super.init()
@@ -623,12 +614,9 @@ class PostCoordinator: NSObject {
             return
         }
 
-        change(post: post, status: .pushing)
-
         let hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
 
         if hasPendingMedia {
-            change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
@@ -650,7 +638,7 @@ class PostCoordinator: NSObject {
         completion(.success(post))
     }
 
-    func updateMediaBlocksBeforeSave(in post: AbstractPost, with media: Set<Media>) {
+    private func updateMediaBlocksBeforeSave(in post: AbstractPost, with media: Set<Media>) {
         guard let postContent = post.content else {
             return
         }
@@ -740,9 +728,7 @@ class PostCoordinator: NSObject {
             // completion() multiple times.
             self.removeObserver(for: post)
 
-            self.change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost, error)))
-            }
+            completion(.failure(SavingError.mediaFailure(post, error)))
         }
 
         return mediaCoordinator.addObserver({ [weak self](media, state) in
@@ -941,19 +927,6 @@ class PostCoordinator: NSObject {
             handleError(error, for: post)
         }
     }
-
-    private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {
-        var properties = [String: AnyObject]()
-        properties["type"] = ((post is Post) ? "post" : "page") as AnyObject
-        if let dotComID = post.blog.dotComID {
-            properties[WPAppAnalyticsKeyBlogID] = dotComID
-        }
-        return properties
-    }
-}
-
-private struct Constants {
-    static let httpCodeForbidden = 403
 }
 
 extension Foundation.Notification.Name {
@@ -975,11 +948,6 @@ private extension NSManagedObjectID {
 }
 
 private enum Strings {
-    static let movePostToTrash = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
-    static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
-    static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
-    static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
     static let genericErrorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
     static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
-    static let errorUnsyncedChangesMessage = NSLocalizedString("postNotice.errorUnsyncedChangesMessage", value: "The app is uploading previously made changes to the server. Please try again later.", comment: "An error message")
 }

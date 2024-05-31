@@ -21,7 +21,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         try mainContext.save()
 
         mediaCoordinator = MediaCoordinator(coreDataStack: contextManager)
-        coordinator = PostCoordinator(mediaCoordinator: mediaCoordinator, coreDataStack: contextManager, isSyncPublishingEnabled: true)
+        coordinator = PostCoordinator(mediaCoordinator: mediaCoordinator, coreDataStack: contextManager)
     }
 
     override func tearDown() {
