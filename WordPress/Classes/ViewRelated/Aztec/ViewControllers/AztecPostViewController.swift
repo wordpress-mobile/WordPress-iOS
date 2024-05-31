@@ -355,11 +355,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    /// - warning: deprecated (kahu-offline-mode)
-    private let loadAutosaveRevision: Bool
-
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloaderTask]()
@@ -453,14 +448,12 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
@@ -498,7 +491,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
 
         // Setup
         configureNavigationBar()
