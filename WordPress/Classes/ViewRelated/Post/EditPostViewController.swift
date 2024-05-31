@@ -83,9 +83,7 @@ class EditPostViewController: UIViewController {
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
 
-        if FeatureFlag.syncPublishing.enabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
     }
 
     required init?(coder: NSCoder) {
