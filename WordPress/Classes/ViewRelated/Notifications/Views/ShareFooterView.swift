@@ -22,7 +22,6 @@ struct ShareFooterView: View {
         VStack {
             if colorScheme == .light {
                 Divider()
-                    .frame(height: 1)
                     .foregroundStyle(Color.DS.Background.secondary)
             }
             DSButton(
