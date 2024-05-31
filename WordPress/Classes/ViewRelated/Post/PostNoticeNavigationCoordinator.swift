@@ -62,12 +62,6 @@ class PostNoticeNavigationCoordinator {
         context.viewController = viewController
     }
 
-    static func retryPostUpload(with userInfo: NSDictionary) {
-        if let post = self.post(from: userInfo) {
-            PostCoordinator.shared.save(post)
-        }
-    }
-
     private static func post(from userInfo: NSDictionary) -> AbstractPost? {
         let context = ContextManager.sharedInstance().mainContext
 
