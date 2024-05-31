@@ -659,11 +659,6 @@ class PostCoordinator: NSObject {
         post.content = contentParser.html()
     }
 
-    // - warning: deprecated (kahu-offline-mode)
-    func cancelAnyPendingSaveOf(post: AbstractPost) {
-        removeObserver(for: post)
-    }
-
     func isUploading(post: AbstractPost) -> Bool {
         return post.remoteStatus == .pushing
     }
