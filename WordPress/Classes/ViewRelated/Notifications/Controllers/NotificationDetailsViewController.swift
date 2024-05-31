@@ -274,10 +274,10 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         default:
             return
         }
-        let shareFooterView = ShareFooterView(kind: shareKind) {
+        let shareFooterView = ShareFooterView(kind: shareKind) { [weak self] in
             let activityViewController = UIActivityViewController(activityItems: [contentUrl as Any], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.shareFooterView
-            self.present(activityViewController, animated: true, completion: nil)
+            activityViewController.popoverPresentationController?.sourceView = self?.shareFooterView
+            self?.present(activityViewController, animated: true, completion: nil)
         }
         let hostingController = UIHostingController(rootView: shareFooterView)
         self.shareFooterView = hostingController.view
