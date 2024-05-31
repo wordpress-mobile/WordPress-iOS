@@ -77,6 +77,10 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     ///
     var nextNavigationButton: UIButton!
 
+    /// Share Footer View
+    ///
+    var shareFooterView: UIView!
+
     /// Arrows Navigation Datasource
     ///
     weak var dataSource: NotificationsNavigationDataSource?
@@ -218,6 +222,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
         refreshNavigationBar()
+        refreshShareFooterView()
     }
 
     fileprivate func refreshNavigationBar() {
@@ -275,9 +280,20 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
             self.present(activityViewController, animated: true, completion: nil)
         }
         let hostingController = UIHostingController(rootView: shareFooterView)
+        self.shareFooterView = hostingController.view
         hostingController.view.setContentHuggingPriority(.required, for: .vertical)
         hostingController.view.setContentCompressionResistancePriority(.required, for: .vertical)
         stackView.addArrangedSubview(hostingController.view)
+    }
+
+    fileprivate func refreshShareFooterView() {
+        guard let shareFooterView = shareFooterView else {
+            setupShareFooterView()
+            return
+        }
+        shareFooterView.removeFromSuperview()
+        self.shareFooterView = nil
+        setupShareFooterView()
     }
 }
 
