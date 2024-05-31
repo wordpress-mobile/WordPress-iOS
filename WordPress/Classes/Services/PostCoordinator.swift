@@ -54,7 +54,6 @@ class PostCoordinator: NSObject {
     private let mainService: PostService
 
     private let actionDispatcherFacade: ActionDispatcherFacade
-    private let isSyncPublishingEnabled: Bool
 
     /// The initial sync retry delay. By default, 8 seconds.
     var syncRetryDelay: TimeInterval = 8
@@ -64,8 +63,7 @@ class PostCoordinator: NSObject {
     init(mainService: PostService? = nil,
          mediaCoordinator: MediaCoordinator? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
-         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
+         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
         self.coreDataStack = coreDataStack
 
         let mainContext = self.coreDataStack.mainContext
@@ -74,13 +72,10 @@ class PostCoordinator: NSObject {
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
 
         self.actionDispatcherFacade = actionDispatcherFacade
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
 
         super.init()
 
-        if isSyncPublishingEnabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
     }
 
     struct PublishingOptions {
@@ -624,20 +619,13 @@ class PostCoordinator: NSObject {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost, URLError(.unknown))))
-            }
+            completion(.failure(SavingError.mediaFailure(post, URLError(.unknown))))
             return
         }
 
         change(post: post, status: .pushing)
 
-        let hasPendingMedia: Bool
-        if isSyncPublishingEnabled {
-            hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
-        } else {
-            hasPendingMedia = mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia
-        }
+        let hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
 
         if hasPendingMedia {
             change(post: post, status: .pushingMedia)
@@ -770,17 +758,9 @@ class PostCoordinator: NSObject {
             case .ended:
                 let successHandler = {
                     self.updateMediaBlocksBeforeSave(in: post, with: [media])
-                    if self.isSyncPublishingEnabled {
-                        if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
-                    } else {
-                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
+                    if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
+                        self.removeObserver(for: post)
+                        completion(.success(post))
                     }
                 }
                 switch media.mediaType {
@@ -909,28 +889,6 @@ class PostCoordinator: NSObject {
             result = observerUUIDs[post] != nil
         }
         return result
-    }
-
-    private func change(post: AbstractPost, status: AbstractPostRemoteStatus, then completion: ((AbstractPost) -> ())? = nil) {
-        guard !isSyncPublishingEnabled else {
-            completion?(post)
-            return
-        }
-        guard let context = post.managedObjectContext else {
-            return
-        }
-
-        context.perform {
-            if status == .failed {
-                post.markAsFailedAndDraftIfNeeded()
-            } else {
-                post.remoteStatus = status
-            }
-
-            ContextManager.sharedInstance().saveContextAndWait(context)
-
-            completion?(post)
-        }
     }
 
     // MARK: - State
