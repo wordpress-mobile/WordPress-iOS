@@ -100,7 +100,8 @@ class PostCoordinator: NSObject {
         prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
             switch result {
             case .success(let post):
-                self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
+                break
+                // self.upload(post: post, forceDraftIfCreating: forceDraftIfCreating, completion: completion)
             case .failure(let error):
                 switch error {
                 case SavingError.mediaFailure(let savedPost, _):
@@ -112,17 +113,6 @@ class PostCoordinator: NSObject {
                 }
 
                 completion?(.failure(error))
-            }
-        }
-    }
-
-    func autoSave(_ postToSave: AbstractPost, automatedRetry: Bool = false) {
-        prepareToSave(postToSave, automatedRetry: automatedRetry) { result in
-            switch result {
-            case .success(let post):
-                self.mainService.autoSave(post, success: { uploadedPost, _ in }, failure: { _ in })
-            case .failure:
-                break
             }
         }
     }
@@ -805,37 +795,6 @@ class PostCoordinator: NSObject {
         }
 
         return post.titleForDisplay()
-    }
-
-    /// - note: Deprecated (kahu-offline-mode)
-    private func upload(post: AbstractPost, forceDraftIfCreating: Bool, completion: ((Result<AbstractPost, Error>) -> ())? = nil) {
-        mainService.uploadPost(post, forceDraftIfCreating: forceDraftIfCreating, success: { [weak self] uploadedPost in
-            guard let uploadedPost = uploadedPost else {
-                completion?(.failure(SavingError.unknown))
-                return
-            }
-
-            print("Post Coordinator -> upload succesfull: \(String(describing: uploadedPost.content))")
-
-            if uploadedPost.isScheduled() {
-                self?.notifyNewPostScheduled()
-            } else if uploadedPost.isPublished() {
-                self?.notifyNewPostPublished()
-            }
-
-            SearchManager.shared.indexItem(uploadedPost)
-
-//            let model = PostNoticeViewModel(post: uploadedPost)
-//            self?.actionDispatcherFacade.dispatch(NoticeAction.post(model.notice))
-
-            completion?(.success(uploadedPost))
-        }, failure: { [weak self] error in
-            self?.dispatchNotice(post)
-
-            completion?(.failure(error ?? SavingError.unknown))
-
-            print("Post Coordinator -> upload error: \(String(describing: error))")
-        })
     }
 
     func add(assets: [ExportableAsset], to post: AbstractPost) -> [Media?] {
