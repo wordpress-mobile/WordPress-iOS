@@ -23,7 +23,7 @@ struct ShareFooterView: View {
             if colorScheme == .light {
                 Divider()
                     .frame(height: 1)
-                    .background(Color.DS.Background.secondary)
+                    .foregroundStyle(Color.DS.Background.secondary)
             }
             DSButton(
                 title: title,
@@ -34,7 +34,7 @@ struct ShareFooterView: View {
             .padding(.top, .DS.Padding.double)
             .padding(.horizontal, .DS.Padding.medium)
             .padding(.bottom, .DS.Padding.medium)
-        }.background(colorScheme == .light ? Color.DS.Background.primary : Color.DS.Background.secondary)
+        }.background(Color.DS.Background.primary)
     }
 
     enum Kind: String {
