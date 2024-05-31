@@ -276,7 +276,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         }
         let shareFooterView = ShareFooterView(kind: shareKind) {
             let activityViewController = UIActivityViewController(activityItems: [contentUrl as Any], applicationActivities: nil)
-            activityViewController.popoverPresentationController?.sourceView = self.stackView
+            activityViewController.popoverPresentationController?.sourceView = self.shareFooterView
             self.present(activityViewController, animated: true, completion: nil)
         }
         let hostingController = UIHostingController(rootView: shareFooterView)
@@ -287,13 +287,9 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     }
 
     fileprivate func refreshShareFooterView() {
-        guard let shareFooterView = shareFooterView else {
-            setupShareFooterView()
-            return
-        }
-        shareFooterView.removeFromSuperview()
+        self.shareFooterView?.removeFromSuperview()
         self.shareFooterView = nil
-        setupShareFooterView()
+        self.setupShareFooterView()
     }
 }
 
