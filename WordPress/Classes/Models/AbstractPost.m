@@ -234,22 +234,6 @@
     return self.date_created_gmt == nil || [self.date_created_gmt isEqualToDate:self.dateModified];
 }
 
-- (NSString *)availableStatusForPublishOrScheduled
-{
-    if ([self hasFuturePublishDate]) {
-        return PostStatusScheduled;
-    }
-    return PostStatusPublish;
-}
-
-- (NSArray *)availableStatusesForEditing
-{
-    // Note: Read method description before changing values.
-    return @[PostStatusDraft,
-             PostStatusPending,
-             [self availableStatusForPublishOrScheduled]];
-}
-
 - (BOOL)hasSiteSpecificChanges
 {
     if (![self isRevision]) {
