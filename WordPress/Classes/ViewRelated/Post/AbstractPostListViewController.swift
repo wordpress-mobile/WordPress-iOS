@@ -643,6 +643,7 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Actions
 
     func publish(_ post: AbstractPost) {
+        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
         let action = AbstractPostHelper.editorPublishAction(for: post)
         PrepublishingViewController.show(for: post, action: action, isStandalone: true, from: self) { [weak self] result in
             switch result {
