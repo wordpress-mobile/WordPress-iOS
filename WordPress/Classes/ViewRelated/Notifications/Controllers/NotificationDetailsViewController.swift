@@ -151,7 +151,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
-        setupShareButton()
+        setupShareFooterView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -254,7 +254,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
     }
 
-    fileprivate func setupShareButton() {
+    fileprivate func setupShareFooterView() {
         guard let contentUrl = note.url else {
             return
         }
@@ -269,12 +269,14 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         default:
             return
         }
-        let shareButton = ShareFooterView(kind: shareKind) {
+        let shareFooterView = ShareFooterView(kind: shareKind) {
             let activityViewController = UIActivityViewController(activityItems: [contentUrl as Any], applicationActivities: nil)
             activityViewController.popoverPresentationController?.sourceView = self.stackView
             self.present(activityViewController, animated: true, completion: nil)
         }
-        let hostingController = UIHostingController(rootView: shareButton)
+        let hostingController = UIHostingController(rootView: shareFooterView)
+        hostingController.view.setContentHuggingPriority(.required, for: .vertical)
+        hostingController.view.setContentCompressionResistancePriority(.required, for: .vertical)
         stackView.addArrangedSubview(hostingController.view)
     }
 }
