@@ -24,6 +24,7 @@
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
 @dynamic foreignID;
+@synthesize voiceContent;
 
 + (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
 {

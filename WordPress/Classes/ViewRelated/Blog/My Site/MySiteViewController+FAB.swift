@@ -61,13 +61,8 @@ extension MySiteViewController {
             self.dismiss(animated: true) {
                 let presenter = RootViewCoordinator.sharedPresenter
                 let post = blog.createDraftPost()
-                let revision = post._createRevision() as! Post
-                revision.content = """
-                <!-- wp:paragraph -->
-                <p>\(transcription.escapeHtmlNamedEntities())</p>
-                <!-- /wp:paragraph -->
-                """
-                presenter.showPostTab(animated: true, post: revision)
+                post.voiceContent = transcription
+                presenter.showPostTab(animated: true, post: post)
             }
         }
         let view = VoiceToContentView(viewModel: viewModel)

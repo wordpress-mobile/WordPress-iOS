@@ -877,6 +877,10 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             insertPrePopulatedMedia()
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
+
+            if let content = post.original().voiceContent {
+                gutenberg.onContentUpdate(content: content)
+            }
         }
     }
 
