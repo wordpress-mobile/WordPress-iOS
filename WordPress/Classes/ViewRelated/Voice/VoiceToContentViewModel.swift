@@ -65,6 +65,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func onViewAppeared() {
+        WPAnalytics.track(.voiceToContentSheetShown)
         checkFeatureAvailability()
     }
 
@@ -110,6 +111,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonUpgradeTapped() {
+        WPAnalytics.track(.voiceToContentButtonUpgradeTapped)
+
         // TODO: this does not work
         guard let siteURL = blog.url.flatMap(URL.init) else {
             return wpAssertionFailure("invalid blog URL")
@@ -121,6 +124,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - Recording
 
     func buttonRecordTapped() {
+        WPAnalytics.track(.voiceToContentButtonStartRecordingTapped)
+
         let recordingSession = AVAudioSession.sharedInstance()
         self.audioSession = recordingSession
 
@@ -178,6 +183,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             let timeRemaining = Constants.recordingTimeLimit - currentTime
 
             guard timeRemaining > 0 else {
+                WPAnalytics.track(.voiceToContentRecordingLimitReached)
                 startProcessing()
                 return
             }
@@ -192,6 +198,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonDoneRecordingTapped() {
+        WPAnalytics.track(.voiceToContentButtonDoneTapped)
+
         startProcessing()
     }
 
@@ -241,6 +249,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     func buttonCancelTapped() {
+        WPAnalytics.track(.voiceToContentButtonCloseTapped)
+
         audioRecorder?.stop()
         audioRecorder = nil
     }
