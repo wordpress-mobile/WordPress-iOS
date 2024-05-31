@@ -129,7 +129,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         self.audioSession = recordingSession
 
         self.title = Strings.titleRecoding
-        self.subtitle = Constants.recordingTimeLimitFormatted
+        self.subtitle = Constants.recordingTimeLimit.minuteSecond
 
         do {
             try recordingSession.setCategory(.playAndRecord, mode: .default)
@@ -281,7 +281,6 @@ private enum VoiceToContentError: Error, LocalizedError {
 
 private enum Constants {
     static let recordingTimeLimit: TimeInterval = 5 * 60 // 5 Minutes
-    static let recordingTimeLimitFormatted = "05:00" // 5 Minutes
 }
 
 private enum Strings {
