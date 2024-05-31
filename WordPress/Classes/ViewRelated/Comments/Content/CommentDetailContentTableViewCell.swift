@@ -67,6 +67,7 @@ private extension CommentDetailContentTableViewCell {
             hostingController.rootView = content
         } else {
             let hostingController = UIHostingController<CommentContentHeaderView>(rootView: content)
+            hostingController.view.setContentCompressionResistancePriority(.required, for: .vertical)
             hostingController.view.backgroundColor = .clear
             hostingController.willMove(toParent: parent)
             stackView.insertArrangedSubview(hostingController.view, at: 0)

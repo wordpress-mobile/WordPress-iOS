@@ -27,6 +27,7 @@ struct CommentModerationView: View {
             }
             .padding(.horizontal, .DS.Padding.double)
         }
+        .background(Color.DS.Background.primary)
         .animation(.smooth, value: viewModel.state)
     }
 }
@@ -234,7 +235,9 @@ private struct TrashSpam: View {
             ) {
                 self.viewModel.didTapPrimaryCTA()
             }
-        }.onChange(of: viewModel.state) { state in
+        }
+        .padding(.bottom, .DS.Padding.double)
+        .onChange(of: viewModel.state) { state in
             if let title = Self.title(for: state) {
                 self.title = title
             }

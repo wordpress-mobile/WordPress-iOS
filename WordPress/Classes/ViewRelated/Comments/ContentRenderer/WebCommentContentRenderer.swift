@@ -43,6 +43,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.bounces = false
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
+        webView.scrollView.isScrollEnabled = false
         webView.configuration.allowsInlineMediaPlayback = true
     }
 
