@@ -187,8 +187,7 @@ class StoryEditor: CameraController {
                     assertionFailure("Failed to save post during story update: \(error)")
                 }
 
-                self.publishPost(action: .publish, dismissWhenDone: true, analyticsStat:
-                                    .editorPublishedPost)
+                wpAssertionFailure("stories are no longer supported")
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
@@ -212,14 +211,6 @@ class StoryEditor: CameraController {
 }
 
 extension StoryEditor: PublishingEditor {
-    var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return  [.title, .visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-
-        return  [.title, .visibility, .schedule, .tags, .categories]
-    }
-
     var prepublishingSourceView: UIView? {
         return nil
     }

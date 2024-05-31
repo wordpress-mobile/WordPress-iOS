@@ -108,7 +108,7 @@ private extension ReaderReblogPresenter {
 
         post.prepareForReblog(with: readerPost, imageSize: photonSize)
         // instantiate & configure editor
-        let editor = EditPostViewController(post: post, loadAutosaveRevision: false)
+        let editor = EditPostViewController(post: post)
         editor.modalPresentationStyle = .fullScreen
         editor.postIsReblogged = true
         // present

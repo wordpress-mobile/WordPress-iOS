@@ -355,11 +355,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    /// - warning: deprecated (kahu-offline-mode)
-    private let loadAutosaveRevision: Bool
-
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloaderTask]()
@@ -453,20 +448,17 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
         disableSocialConnectionsIfNecessary()
@@ -498,7 +490,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
 
         // Setup
         configureNavigationBar()
@@ -1070,10 +1062,6 @@ extension AztecPostViewController {
         handlePrimaryActionButtonTap()
     }
 
-    @IBAction func secondaryPublishButtonTapped() {
-        handleSecondaryActionButtonTap()
-    }
-
     @IBAction func closeWasPressed() {
         cancelEditing()
     }
@@ -1161,14 +1149,6 @@ private extension AztecPostViewController {
             let textCounterTitle = String(format: NSLocalizedString("%li words, %li characters", comment: "Displays the number of words and characters in text"), richTextView.wordCount, richTextView.characterCount)
 
             alert.title = textCounterTitle
-        }
-
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
-            }
         }
 
         if post.blog.isGutenbergEnabled, post.isContentEmpty() || post.containsGutenbergBlocks() {

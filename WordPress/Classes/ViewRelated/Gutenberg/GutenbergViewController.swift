@@ -203,10 +203,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    var loadAutosaveRevision: Bool
-
     let navigationBarManager: PostEditorNavigationBarManager
 
     // swiftlint:disable:next weak_delegate
@@ -276,13 +272,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     // MARK: - Initializers
     required convenience init(
-        post: AbstractPost, loadAutosaveRevision: Bool,
+        post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession?
     ) {
         self.init(
             post: post,
-            loadAutosaveRevision: loadAutosaveRevision,
             replaceEditor: replaceEditor,
             editorSession: editorSession,
             // Notice this parameter.
@@ -297,14 +292,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession? = nil,
         navigationBarManager: PostEditorNavigationBarManager? = nil
     ) {
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
@@ -315,9 +308,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        if !FeatureFlag.syncPublishing.enabled {
-            PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
-        }
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -339,7 +329,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         super.viewDidLoad()
         setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()

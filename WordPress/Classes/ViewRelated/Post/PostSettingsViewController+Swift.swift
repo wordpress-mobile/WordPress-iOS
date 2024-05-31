@@ -17,7 +17,7 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = FeatureFlag.syncPublishing.enabled ? post._createRevision() : post.latest()
+        let revision = post._createRevision()
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
@@ -31,10 +31,6 @@ extension PostSettingsViewController {
 
     @objc func setupStandaloneEditor() {
         guard isStandalone else { return }
-
-        guard FeatureFlag.syncPublishing.enabled else {
-            return _setupStandaloneEditor()
-        }
 
         configureDefaultNavigationBarAppearance()
 
@@ -67,20 +63,6 @@ extension PostSettingsViewController {
         objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
-    /// - warning: deprecated (kahu-offline-mode)
-    @objc private func _setupStandaloneEditor() {
-        configureDefaultNavigationBarAppearance()
-
-        refreshNavigationBarButtons()
-        navigationItem.rightBarButtonItem?.isEnabled = false
-
-        var cancellables: [AnyCancellable] = []
-        apost.objectWillChange.sink { [weak self] in
-            self?.navigationItem.rightBarButtonItem?.isEnabled = true
-        }.store(in: &cancellables)
-        objc_setAssociatedObject(self, &PostSettingsViewController.cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-    }
-
     private func didUpdateSettings() {
         navigationItem.rightBarButtonItem?.isEnabled = !changes.isEmpty
     }
@@ -94,17 +76,12 @@ extension PostSettingsViewController {
     }
 
     @objc private func buttonCancelTapped() {
-        if FeatureFlag.syncPublishing.enabled {
-            deleteRevision()
-        }
+        wpAssert(self.isStandalone, "should only be shown for a standalone editor")
+        deleteRevision()
         presentingViewController?.dismiss(animated: true)
     }
 
     @objc private func buttonSaveTapped() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return _buttonSaveTapped()
-        }
-
         navigationItem.rightBarButtonItem = .activityIndicator
         setEnabled(false)
 
@@ -120,24 +97,6 @@ extension PostSettingsViewController {
             } catch {
                 setEnabled(true)
                 refreshNavigationBarButtons()
-            }
-        }
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    private func _buttonSaveTapped() {
-        navigationItem.rightBarButtonItem = .activityIndicator
-        setEnabled(false)
-
-        PostCoordinator.shared.save(apost) { [weak self] result in
-            switch result {
-            case .success:
-                self?.isStandaloneEditorDismissingAfterSave = true
-                self?.presentingViewController?.dismiss(animated: true)
-            case .failure:
-                self?.setEnabled(true)
-                SVProgressHUD.showError(withStatus: Strings.errorMessage)
-                self?.refreshNavigationBarButtons()
             }
         }
     }
@@ -182,7 +141,7 @@ extension PostSettingsViewController: UIAdaptivePresentationControllerDelegate {
 // MARK: - PostSettingsViewController (Visibility)
 
 extension PostSettingsViewController {
-    @objc func showUpdatedPostVisibilityPicker() {
+    @objc func showPostVisibilitySelector() {
         let view = PostVisibilityPicker(selection: .init(post: apost)) { [weak self] selection in
             guard let self else { return }
 
@@ -280,7 +239,5 @@ extension PostSettingsViewController {
 }
 
 private enum Strings {
-    static let errorMessage = NSLocalizedString("postSettings.updateFailedMessage", value: "Failed to update the post settings", comment: "Error message on post/page settings screen")
-
     static let warningPostWillBePublishedAlertMessage = NSLocalizedString("postSettings.warningPostWillBePublishedAlertMessage", value: "By changing the visibility to 'Private', the post will be published immediately", comment: "An alert message explaning that by changing the visibility to private, the post will be published immediately to your site")
 }

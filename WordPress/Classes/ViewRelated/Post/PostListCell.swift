@@ -94,9 +94,6 @@ final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
         contentView.isUserInteractionEnabled = viewModel.isEditable
         headerView.configure(with: viewModel)
     }

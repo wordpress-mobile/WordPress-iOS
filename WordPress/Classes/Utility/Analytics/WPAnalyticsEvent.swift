@@ -587,6 +587,14 @@ import Foundation
     case sotw2023NudgePostEventCardCTATapped
     case sotw2023NudgePostEventCardHideTapped
 
+    // Voice to Content (aka "Post from Audio")
+    case voiceToContentSheetShown
+    case voiceToContentButtonStartRecordingTapped
+    case voiceToContentButtonDoneTapped
+    case voiceToContentButtonUpgradeTapped
+    case voiceToContentButtonCloseTapped
+    case voiceToContentRecordingLimitReached
+
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
@@ -1626,6 +1634,20 @@ import Foundation
             return "sotw_2023_nudge_post_event_card_cta_tapped"
         case .sotw2023NudgePostEventCardHideTapped:
             return "sotw_2023_nudge_post_event_card_hide_tapped"
+
+        // Voice to Content (aka "Post from Audio")
+        case .voiceToContentSheetShown:
+            return "voice_to_content_sheet_shown"
+        case .voiceToContentButtonStartRecordingTapped:
+            return "voice_to_content_button_start_recording_tapped"
+        case .voiceToContentButtonDoneTapped:
+            return "voice_to_content_button_done_tapped"
+        case .voiceToContentButtonUpgradeTapped:
+            return "voice_to_content_button_upgrade_tapped"
+        case .voiceToContentButtonCloseTapped:
+            return "voice_to_content_button_close_tapped"
+        case .voiceToContentRecordingLimitReached:
+            return "voice_to_content_recording_limit_reached"
 
         // Widgets
         case .widgetsLoadedOnApplicationOpened:

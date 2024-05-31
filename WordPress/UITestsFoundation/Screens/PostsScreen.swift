@@ -31,16 +31,11 @@ public class PostsScreen: ScreenObject {
         $0.buttons["Create Post Button"]
     }
 
-    private let autosaveAlertGetter: (XCUIApplication) -> XCUIElement = {
-        $0.alerts["autosave-options-alert"]
-    }
-
     var postsTable: XCUIElement { postsTableGetter(app) }
     var publishedButton: XCUIElement { publishedButtonGetter(app) }
     var draftsButton: XCUIElement { draftsButtonGetter(app) }
     var scheduledButton: XCUIElement { scheduledButtonGetter(app) }
     var createPostButton: XCUIElement { createPostButtonGetter(app) }
-    var autosaveAlert: XCUIElement { autosaveAlertGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         try super.init(
@@ -77,20 +72,10 @@ public class PostsScreen: ScreenObject {
         cell.scrollIntoView(within: expectedElement)
         cell.tap()
 
-        dismissAutosaveDialogIfNeeded()
-
         let editorScreen = EditorScreen()
         try editorScreen.dismissDialogsIfNeeded()
 
         return EditorScreen()
-    }
-
-    /// If there are two versions of a local post, the app will ask which version we want to use when editing.
-    /// We always want to use the local version (which is currently the first option)
-    private func dismissAutosaveDialogIfNeeded() {
-        if autosaveAlert.exists {
-            autosaveAlert.buttons.firstMatch.tap()
-        }
     }
 
     public func verifyPostExists(withTitle title: String) {

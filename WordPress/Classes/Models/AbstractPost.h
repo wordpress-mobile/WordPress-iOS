@@ -136,25 +136,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRemoteChanges;
 
 /**
- An array of statuses available to a post while editing
- @details Subset of status a user may assign to a post they are editing.
- Status included are: draft, pending, and publish.
- Private is not listed as this is determined by the visibility settings.
- Scheduled is not listed as this should be handled by assigning a
- future date.
- Trash is not listed as this should be handled via a delete action.
- */
-- (NSArray *)availableStatusesForEditing;
-
-
-/**
- Returns the correct "publish" status for the current value of date_created_gmt.
- Future dates return PostStatusScheduled. Otherwise PostStatusPublish. This is not
- necessarily the current value of `status`
- */
-- (NSString *)availableStatusForPublishOrScheduled;
-
-/**
  Returns YES if the post is has a `future` post status
  */
 - (BOOL)isScheduled;
@@ -212,14 +193,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (void)remove;
 // Save changes to disk
 - (void)save;
-
-// This property is used to indicate whether an app should attempt to automatically retry upload this post
-// the next time a internet connection is available.
-@property (nonatomic, assign) BOOL shouldAttemptAutoUpload;
-
-// This property tracks whether a file's attempt to auto-upload was manually cancelled by the user.
-@property (nonatomic, assign, readonly) BOOL wasAutoUploadCancelled;
-
 
 /**
  * Updates the path for the display image by looking at the post content and trying to find an good image to use.

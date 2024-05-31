@@ -27,8 +27,6 @@ typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowTags,
     PostSettingsRowAuthor,
     PostSettingsRowPublishDate,
-    // - warning: deprecated (kahu-offline-mode)
-    PostSettingsRowStatus,
     PostSettingsRowPendingReview,
     PostSettingsRowVisibility,
     PostSettingsRowPassword,
@@ -170,25 +168,6 @@ FeaturedImageViewControllerDelegate>
     [self setupPublicizeConnections]; // Refresh in case the user disconnects from unsupported services.
     [self configureMetaSectionRows];
     [self reloadData];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-
-    if (self.isStandalone) {
-        if ([Feature enabled:FeatureFlagSyncPublishing]) {
-            return; // No longer needed
-        }
-        if ((self.isBeingDismissed || self.parentViewController.isBeingDismissed) && !self.isStandaloneEditorDismissingAfterSave) {
-            // TODO: Implement it using a ViewModel or a child context to eliminate the risk of accidently saving the changes without uploading them
-            [self.apost.managedObjectContext refreshObject:self.apost mergeChanges:NO];
-        }
-    } else {
-        [self.apost.managedObjectContext performBlock:^{
-            [self.apost.managedObjectContext save:nil];
-        }];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -601,8 +580,6 @@ FeaturedImageViewControllerDelegate>
         [self showTagsPicker];
     } else if (cell.tag == PostSettingsRowPublishDate) {
         [self showPublishDatePicker];
-    } else if (cell.tag == PostSettingsRowStatus) {
-        [self showPostStatusSelector];
     } else if (cell.tag == PostSettingsRowVisibility) {
         [self showPostVisibilitySelector];
     } else if (cell.tag == PostSettingsRowAuthor) {
@@ -673,22 +650,13 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
-    if ([Feature enabled:FeatureFlagSyncPublishing]) {
-        if (self.isDraftOrPending) {
-            [metaRows addObject:@(PostSettingsRowPendingReview)];
-        } else {
-            [metaRows addObjectsFromArray:@[
-                @(PostSettingsRowPublishDate),
-                @(PostSettingsRowVisibility)
-            ]];
-        }
+    if (self.isDraftOrPending) {
+        [metaRows addObject:@(PostSettingsRowPendingReview)];
     } else {
-        [metaRows addObject:@(PostSettingsRowPublishDate)];
-        [metaRows addObjectsFromArray:@[  @(PostSettingsRowStatus),
-                                          @(PostSettingsRowVisibility) ]];
-        if (self.apost.password) {
-            [metaRows addObject:@(PostSettingsRowPassword)];
-        }
+        [metaRows addObjectsFromArray:@[
+            @(PostSettingsRowPublishDate),
+            @(PostSettingsRowVisibility)
+        ]];
     }
 
     self.postMetaSectionRows = [metaRows copy];
@@ -710,12 +678,11 @@ FeaturedImageViewControllerDelegate>
         // Publish date
         cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
-        // Note: it's safe to remove `shouldPublishImmediately` when
-        // `RemoteFeatureFlagSyncPublishing` is enabled because this cell is not displayed.
-        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
+        if (self.apost.dateCreated) {
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
-            cell.detailTextLabel.text = NSLocalizedString(@"Immediately", @"");
+            // Should never happen as this field is displayed only for published/scheduled posts
+            cell.detailTextLabel.text = @"";
         }
 
         if ([self.apost.status isEqualToString:PostStatusPrivate]) {
@@ -726,21 +693,6 @@ FeaturedImageViewControllerDelegate>
         }
 
         cell.tag = PostSettingsRowPublishDate;
-    } else if (row == PostSettingsRowStatus) {
-        // Publish Status
-        cell = [self getWPTableViewDisclosureCell];
-        cell.textLabel.text = NSLocalizedString(@"Status", @"The status of the post. Should be the same as in core WP.");
-        cell.accessibilityIdentifier = @"Status";
-        cell.detailTextLabel.text = self.apost.statusTitle;
-
-        if ([self.apost.status isEqualToString:PostStatusPrivate]) {
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        } else {
-            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-        }
-
-        cell.tag = PostSettingsRowStatus;
-
     } else if (row == PostSettingsRowVisibility) {
         // Visibility
         cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowVisibility"];
@@ -1079,51 +1031,6 @@ FeaturedImageViewControllerDelegate>
 {
     BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
     UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showPostStatusSelector
-{
-    if ([self.apost.status isEqualToString:PostStatusPrivate]) {
-        return;
-    }
-
-    NSArray *statuses = [self.apost availableStatusesForEditing];
-    NSArray *titles = [statuses wp_map:^id(NSString *status) {
-        return [AbstractPost titleForStatus:status];
-    }];
-
-    NSDictionary *statusDict = @{
-                                 @"DefaultValue": [self.apost availableStatusForPublishOrScheduled],
-                                 @"Title" : NSLocalizedString(@"Status", nil),
-                                 @"Titles" : titles,
-                                 @"Values" : statuses,
-                                 @"CurrentValue" : self.apost.status
-                                 };
-    SettingsSelectionViewController *vc = [[SettingsSelectionViewController alloc] initWithDictionary:statusDict];
-    __weak SettingsSelectionViewController *weakVc = vc;
-    vc.onItemSelected = ^(NSString *status) {
-        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostStatusChanged properties:@{@"via": @"settings"}];
-        self.apost.status = status;
-        [weakVc dismiss];
-        [self.tableView reloadData];
-    };
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)showPostVisibilitySelector
-{
-    if ([Feature enabled:FeatureFlagSyncPublishing]) {
-        [self showUpdatedPostVisibilityPicker];
-        return;
-    }
-    PostVisibilitySelectorViewController *vc = [[PostVisibilitySelectorViewController alloc] init:self.apost];
-    __weak PostVisibilitySelectorViewController *weakVc = vc;
-    vc.completion = ^(NSString *__unused visibility) {
-        [WPAnalytics trackEvent:WPAnalyticsEventEditorPostVisibilityChanged properties:@{@"via": @"settings"}];
-        [weakVc dismiss];
-        [self.tableView reloadData];
-    };
     [self.navigationController pushViewController:vc animated:YES];
 }
 

@@ -1,9 +1,6 @@
 import UIKit
 
 class RevisionsTableViewController: UITableViewController {
-    typealias RevisionLoadedBlock = (AbstractPost) -> Void
-
-    var onRevisionLoaded: RevisionLoadedBlock
     var onRevisionSelected: ((Revision) -> Void)?
 
     private var post: AbstractPost?
@@ -35,9 +32,8 @@ class RevisionsTableViewController: UITableViewController {
         return tableViewHandler.resultsController?.sections?.count ?? 0
     }
 
-    required init(post: AbstractPost, onRevisionLoaded: @escaping RevisionLoadedBlock) {
+    required init(post: AbstractPost) {
         self.post = post
-        self.onRevisionLoaded = onRevisionLoaded
         super.init(style: .insetGrouped)
     }
 
@@ -151,34 +147,7 @@ private extension RevisionsTableViewController {
     }
 
     private func load(_ revision: Revision) {
-        if let onRevisionSelected {
-            onRevisionSelected(revision)
-            return
-        }
-
-        // - warning: deprecated (kahu-offline-mode_
-        guard let blog = post?.blog else {
-            return
-        }
-
-        SVProgressHUD.show(withStatus: Strings.loading)
-
-        let coreDataStack = ContextManager.shared
-        let postRepository = PostRepository(coreDataStack: coreDataStack)
-        Task { @MainActor in
-            do {
-                let postID = try await postRepository.getPost(withID: revision.revisionId, from: .init(blog))
-                let post = try coreDataStack.mainContext.existingObject(with: postID)
-
-                await SVProgressHUD.dismiss()
-                WPAnalytics.track(.postRevisionsRevisionLoaded)
-                self.onRevisionLoaded(post)
-                self.navigationController?.popViewController(animated: true)
-            } catch {
-                DDLogError("Error loading revision: \(error.localizedDescription)")
-                SVProgressHUD.showDismissibleError(withStatus: NSLocalizedString("Error occurred\nduring loading", comment: "Text displayed in HUD while a post revision is being loaded."))
-            }
-        }
+        onRevisionSelected?(revision)
     }
 }
 
