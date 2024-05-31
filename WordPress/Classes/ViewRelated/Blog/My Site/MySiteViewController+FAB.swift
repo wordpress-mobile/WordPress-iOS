@@ -59,15 +59,15 @@ extension MySiteViewController {
         let viewModel = VoiceToContentViewModel(blog: blog) { [weak self] transcription in
             guard let self else { return }
             self.dismiss(animated: true) {
-                // TODO: Are we adding all necessary fields?
                 let presenter = RootViewCoordinator.sharedPresenter
                 let post = blog.createDraftPost()
-                post.content = """
+                let revision = post._createRevision() as! Post
+                revision.content = """
                 <!-- wp:paragraph -->
                 <p>\(transcription.escapeHtmlNamedEntities())</p>
                 <!-- /wp:paragraph -->
                 """
-                presenter.showPostTab(animated: true, post: post)
+                presenter.showPostTab(animated: true, post: revision)
             }
         }
         let view = VoiceToContentView(viewModel: viewModel)
