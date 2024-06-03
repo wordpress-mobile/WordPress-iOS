@@ -64,6 +64,8 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
 
+@property (nonatomic, strong, nullable) NSString *voiceContent;
+
 // Revision management
 - (AbstractPost *)createRevision;
 /// A new version of `createRevision` that allows you to create revisions based
