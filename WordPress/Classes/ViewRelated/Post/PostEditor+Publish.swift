@@ -99,6 +99,15 @@ extension PublishingEditor {
         performEditorAction(action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    func buttonSaveDraftTapped() {
+        WPAnalytics.track(.editorPostSaveDraftTapped)
+        mapUIContentToPostAndSave(immediate: true)
+        guard !isUploadingMedia else {
+            return displayMediaIsUploadingAlert()
+        }
+        performUpdateAction(analyticsStat: .editorSavedDraft)
+    }
+
     /// - note: deprecated (kahu-offline-mode)
     func handleSecondaryActionButtonTap() {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
