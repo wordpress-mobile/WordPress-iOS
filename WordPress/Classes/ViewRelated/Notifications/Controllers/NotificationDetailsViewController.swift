@@ -4,6 +4,7 @@ import Gridicons
 import SVProgressHUD
 import WordPressShared
 import WordPressUI
+import SwiftUI
 
 ///
 ///
@@ -75,6 +76,10 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     /// Next NavBar Navigation Button
     ///
     var nextNavigationButton: UIButton!
+
+    /// Share Footer View
+    ///
+    var shareFooterView: UIView?
 
     /// Arrows Navigation Datasource
     ///
@@ -150,6 +155,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         setupReplyTextView()
         setupSuggestionsView()
         setupKeyboardManager()
+        setupShareFooterView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -216,6 +222,7 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
         attachSuggestionsViewIfNeeded()
         adjustLayoutConstraintsIfNeeded()
         refreshNavigationBar()
+        refreshShareFooterView()
     }
 
     fileprivate func refreshNavigationBar() {
@@ -250,6 +257,39 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
 
         previousNavigationButton.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         nextNavigationButton.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
+    }
+
+    fileprivate func setupShareFooterView() {
+        guard let contentUrl = note.url else {
+            return
+        }
+        var shareKind: ShareFooterView.Kind
+        switch note.kind {
+        case .like:
+            shareKind = .post
+        case .commentLike:
+            shareKind = .comment
+        case .follow:
+            shareKind = .blog
+        default:
+            return
+        }
+        let shareFooterView = ShareFooterView(kind: shareKind) { [weak self] in
+            let activityViewController = UIActivityViewController(activityItems: [contentUrl as Any], applicationActivities: nil)
+            activityViewController.popoverPresentationController?.sourceView = self?.shareFooterView
+            self?.present(activityViewController, animated: true, completion: nil)
+        }
+        let hostingController = UIHostingController(rootView: shareFooterView)
+        self.shareFooterView = hostingController.view
+        hostingController.view.setContentHuggingPriority(.required, for: .vertical)
+        hostingController.view.setContentCompressionResistancePriority(.required, for: .vertical)
+        stackView.addArrangedSubview(hostingController.view)
+    }
+
+    fileprivate func refreshShareFooterView() {
+        self.shareFooterView?.removeFromSuperview()
+        self.shareFooterView = nil
+        self.setupShareFooterView()
     }
 }
 
