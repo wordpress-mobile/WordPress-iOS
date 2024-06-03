@@ -85,7 +85,9 @@ import WordPressUI
         listenForQuickStart()
 
         // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
-        if actions.count > 1 {
+        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
+        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
+        if actions.count > 1 || source == Strings.readerSource {
             fetchBloggingPrompt()
         }
     }
@@ -138,7 +140,9 @@ import WordPressUI
             return
         }
 
-        if actions.count == 1 {
+        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
+        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
+        if actions.count == 1, source != Strings.readerSource {
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
@@ -304,7 +308,14 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
+            let answerPromptEvent: WPAnalyticsEvent = {
+                if self?.source == Strings.readerSource {
+                    return .readerCreateSheetAnswerPromptTapped
+                }
+                return .promptsBottomSheetAnswerPrompt
+            }()
+
+            WPAnalytics.track(answerPromptEvent)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
@@ -314,7 +325,14 @@ private extension CreateButtonCoordinator {
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetHelp)
+            let helpEvent: WPAnalyticsEvent = {
+                if self?.source == Strings.readerSource {
+                    return .readerCreateSheetPromptHelpTapped
+                }
+                return .promptsBottomSheetHelp
+            }()
+
+            WPAnalytics.track(helpEvent)
             guard let presentedViewController = self?.viewController?.presentedViewController else {
                 return
             }
@@ -339,5 +357,6 @@ private extension CreateButtonCoordinator {
 }
 
 private enum Strings {
+    static let readerSource = "reader"
     static let createPostHint = NSLocalizedString("createPostSheet.createPostHint", value: "Create a post or page", comment: "Accessibility hint for create floating action button")
 }
