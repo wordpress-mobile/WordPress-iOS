@@ -1,0 +1,3 @@
+L’enregistrement de vos articles prenait du temps ? Cela pouvait être provoqué par les blocs Image, Galerie ou Fichier – mais ça, c’était avant. L’enregistrement devrait rester rapide et simple, qu’importe le nombre de photos ou de fichiers mis en ligne.
+Le flux Étiquettes est lancé ! Vous pouvez désormais voir le contenu avec des étiquettes spécifiques dans un seul et même endroit. Étiqueté, c’est pesé.
+Enfin, nous avons corrigé le chevauchement du bouton « Terminé » sur l’écran « Article publié ». Les doigts dans le nez.
