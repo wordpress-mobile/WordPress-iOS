@@ -1,24 +1,2 @@
-Vi har varit mer upptagna än Batman efter ännu en rymning från Arkham. (Vi vill gärna veta vad den lokala miljardären Bruce Wayne har tänkt göra åt saken.) Håll i hatten! Det här är en stor uppdatering.
-
-Vi har åtgärdat flera problem med synkronisering av inlägg. Till exempel att inlägg inte läses in när du öppnar appen och att de inte visas i rätt statusflik. En plats för varje inlägg och varje inlägg på sin plats.
-
-När du redigerar en sida kan du nu ange en överordnad sida i sidans inställningar. Vi har lagt till fälten permalänk och utdrag i inställningsområdet och vi har tagit bort statusfältet. Vi har även förbättrat hur olika inställningar är ordnade och grupperade.
-
-Vi har även löst problem med fältet Publiceringsdatum i inläggets inställningar. Den nya datumväljaren gör det enklare att välja publiceringsdatum även om du befinner dig i en annan tidszon än bloggen. Du ser bara fältet Publiceringsdatum när du är redo att trycka på publicera.
-
-Vi har lagt till en ny Mediauppladdningar-skärm till ditt publiceringsarbetsflöde så att du kan se pågående uppladdningar. Här får du upp felmeddelanden för eventuella misslyckade uppladdningar och kan avbryta dem. På tal om fel, vi har även förbättrad aviseringar om fel vid uppladdning och publicering.
-
-Vi har uppdaterat mer-menyn i redigeringsprogrammet och gett den ett nytt utseende och vi har lagt till ett märke för att indikera när ett inlägg är lösenordsskyddat. (vi rekommenderar inte lösenordet 1-2-3-4-5. Det är otroligt nog samma kombination vi har på vårt baggage.)
-
-Väntande inlägg har nu ett tydligare arbetsflöde för administratörer och deltagare. Vi har även uppdaterat klart-vyn för publicerade inlägg. Nu är det enklare att dela och Blaze:a ett inlägg.
-
-Har du ångrat dig om ett slängt inlägg? Nu kan du visa och återställa slängda inlägg och sidor från redigeringsprogrammet.
-
-Vi har tagit bort fältet "utkast uppladdat" som fanns längst ner på skärmen när du sparade eller uppdaterade ett utkastinlägg. Det var ingen hit så vi sade tack och adjö till det.
-
-Slutligen har vi fixat en lång list med buggar och även ett antal ovanliga krascher som orsakades av kodningsproblem.
-
-– Om ett utkast på din enhet skiljer sig från det utkast som sparades till webben så visar nu appen en konfliktlösningsskärm i stället för att utföra ändringar på egen hand.
-– Om du avfärdar ändringar i ett utkast så tas inte längre hela utkastet bort. Du kommer inte heller att få upp alternativet att avfärda ändringar när du inte gjort några.
-– Nu får du upp ett felmeddelande när du tilldelar en författare till sidan som inte är behörig att vara författare.
-– Om du växlar mellan flikar i Inlägg så får du upp alla utkastinlägg och allt publicerat innehåll, oavsett hur mycket du har. Ja, även du, användaren med 1239 sparade utkast. Vi är imponerade och lite oroade, men respekterar din skrivprocess.
+Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks—but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.
+We also fixed the overlapping “Done” button on the “Post Published” screen. Lätt som en plätt.
