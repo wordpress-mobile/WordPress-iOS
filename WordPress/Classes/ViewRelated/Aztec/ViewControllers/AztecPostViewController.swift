@@ -1164,7 +1164,7 @@ private extension AztecPostViewController {
         }
 
         if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
-            alert.addDefaultActionWithTitle(MoreSheetAlert.saveDraft) { _ in
+            alert.addDefaultActionWithTitle(PostEditorAction.saveDraftLocalizedTitle) { _ in
                 self.buttonSaveDraftTapped()
             }
         }
@@ -3188,7 +3188,6 @@ extension AztecPostViewController {
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
-        static let saveDraft = NSLocalizedString("classicEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button `Save Draft``")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 
