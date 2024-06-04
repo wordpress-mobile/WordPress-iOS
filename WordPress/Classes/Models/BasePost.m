@@ -22,7 +22,6 @@
 @dynamic pathForDisplayImage;
 
 @synthesize isFeaturedImageChanged;
-@synthesize isFirstTimePublish;
 
 - (NSDate *)dateCreated
 {
@@ -91,11 +90,6 @@
         return self.wp_slug;
     }
     return self.suggested_slug;
-}
-
-- (NSString *)statusForDisplay
-{
-    return [self valueForKey:@"status"];
 }
 
 - (BOOL)hasContent

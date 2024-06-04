@@ -103,8 +103,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 #pragma mark - Conveniece Methods
 /// - note: deprecated (kahu-offline-mode)
-- (void)publishImmediately;
-/// - note: deprecated (kahu-offline-mode)
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
@@ -115,13 +113,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 
 #pragma mark - Unsaved Changes
-
-/**
- *  @brief      Wether the post can be saved or not.
- *
- *  @returns    YES if the post can be saved, NO otherwise.
- */
-- (BOOL)canSave;
 
 /**
  *  @brief      Call this method to know if the post has either local or remote unsaved changes.
@@ -172,14 +163,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 /// - note: deprecated (kahu-offline-mode)
 - (BOOL)dateCreatedIsNilOrEqualToDateModified;
-
-/**
- *  Whether there was any attempt ever to upload this post, either successful or failed.
- *
- *  @returns    YES if there ever was an attempt to upload this post, NO otherwise.
- */
-/// - warning: deprecated (kahu-offline-mode)
-- (BOOL)hasNeverAttemptedToUpload;
 
 /**
  *  Whether the post has local changes or not.  Local changes are all changes that are have not been
