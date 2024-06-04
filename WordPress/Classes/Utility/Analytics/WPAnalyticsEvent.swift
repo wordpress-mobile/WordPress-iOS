@@ -32,6 +32,7 @@ import Foundation
     case editorPostTagsChanged
     case editorPostAuthorChanged
     case editorPostPublishNowTapped
+    case editorPostSaveDraftTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
     case editorPostFormatChanged
@@ -667,6 +668,8 @@ import Foundation
             return "editor_post_tags_changed"
         case .editorPostPublishNowTapped:
             return "editor_post_publish_now_tapped"
+        case .editorPostSaveDraftTapped:
+            return "editor_post_save_draft_tapped"
         case .editorPostCategoryChanged:
             return "editor_post_category_changed"
         case .editorPostStatusChanged:

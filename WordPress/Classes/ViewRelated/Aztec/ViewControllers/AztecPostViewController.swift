@@ -1163,6 +1163,12 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
+        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+            alert.addDefaultActionWithTitle(PostEditorAction.saveDraftLocalizedTitle) { _ in
+                self.buttonSaveDraftTapped()
+            }
+        }
+
         if postEditorStateContext.isSecondaryPublishButtonShown,
             let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
 

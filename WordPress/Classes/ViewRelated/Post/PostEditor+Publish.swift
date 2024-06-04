@@ -99,6 +99,15 @@ extension PublishingEditor {
         performEditorAction(action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    func buttonSaveDraftTapped() {
+        WPAnalytics.track(.editorPostSaveDraftTapped)
+        mapUIContentToPostAndSave(immediate: true)
+        guard !isUploadingMedia else {
+            return displayMediaIsUploadingAlert()
+        }
+        performUpdateAction(analyticsStat: .editorSavedDraft)
+    }
+
     /// - note: deprecated (kahu-offline-mode)
     func handleSecondaryActionButtonTap() {
         guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
@@ -822,6 +831,12 @@ private enum Strings {
     static let closeConfirmationAlertDelete = NSLocalizedString("postEditor.closeConfirmationAlert.discardDraft", value: "Discard Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertDiscardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
+}
+
+extension PostEditorAction {
+    /// This value needs to be replaced with a separate entry in l10n.
+    /// - warning: Deprecated (kahu-offline-mode)
+    static var saveDraftLocalizedTitle: String { Strings.closeConfirmationAlertSaveDraft }
 }
 
 private struct MediaUploadingAlert {
