@@ -44,10 +44,6 @@ public class BlockEditorScreen: ScreenObject {
         $0.buttons["Insert from URL"]
     }
 
-    private let keepEditingButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Keep Editing"]
-    }
-
     private let moreButtonGetter: (XCUIApplication) -> XCUIElement = {
         $0.buttons["more_post_options"]
     }
@@ -85,7 +81,7 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private let switchToHTMLModeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Switch to HTML Mode"]
+        $0.buttons["Code Editor"]
     }
 
     private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {
@@ -94,6 +90,10 @@ public class BlockEditorScreen: ScreenObject {
 
     private let unsavedChangesLabelGetter: (XCUIApplication) -> XCUIElement = {
         $0.staticTexts["You have unsaved changes."]
+    }
+
+    private let publishButtonGetter: (XCUIApplication) -> XCUIElement = {
+        $0.buttons["Publish"]
     }
 
     var addBlockButton: XCUIElement { addBlockButtonGetter(app) }
@@ -106,7 +106,6 @@ public class BlockEditorScreen: ScreenObject {
     var firstParagraphBlock: XCUIElement { firstParagraphBlockGetter(app) }
     var fullScreenImage: XCUIElement { fullScreenImageGetter(app) }
     var insertFromUrlButton: XCUIElement { insertFromUrlButtonGetter(app) }
-    var keepEditingButton: XCUIElement { keepEditingButtonGetter(app) }
     var moreButton: XCUIElement { moreButtonGetter(app) }
     var noticeViewButton: XCUIElement { noticeViewButtonGetter(app) }
     var noticeViewTitle: XCUIElement { noticeViewTitleGetter(app) }
@@ -119,6 +118,7 @@ public class BlockEditorScreen: ScreenObject {
     var switchToHTMLModeButton: XCUIElement { switchToHTMLModeButtonGetter(app) }
     var undoButton: XCUIElement { undoButtonGetter(app) }
     var unsavedChangesLabel: XCUIElement { unsavedChangesLabelGetter(app) }
+    var publishButton: XCUIElement { publishButtonGetter(app) }
 
     public init(app: XCUIApplication = XCUIApplication()) throws {
         // The block editor has _many_ elements but most are loaded on-demand. To verify the screen
@@ -273,34 +273,15 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     public func postAndViewEpilogue(action: postAction) throws -> EditorPublishEpilogueScreen {
-        try post(action: action)
+        try publish().confirm()
         waitAndTap(noticeViewButton)
 
         return try EditorPublishEpilogueScreen()
     }
 
-    @discardableResult
-    public func post(action: postAction, postType: postType = .post) throws -> Self {
-        let postButton = app.buttons[action.rawValue]
-        let postNowButton: XCUIElement
-
-        // To handle both post types - post and page
-        if postType == .page && XCUIDevice.isPad {
-            postNowButton = app.alerts.buttons[action.rawValue]
-        } else if postType == .page && XCUIDevice.isPhone {
-            postNowButton = app.scrollViews.buttons[action.rawValue]
-        } else {
-            postNowButton = app.buttons["publish"]
-        }
-
-        waitForExistenceAndTap(postButton)
-        waitForExistenceAndTap(postNowButton)
-
-        if action == .publish && postType == .post {
-            dismissBloggingRemindersAlertIfNeeded()
-        }
-
-        return self
+    public func publish() throws -> PrepublishingSheetScreen {
+        waitForExistenceAndTap(publishButton)
+        return try PrepublishingSheetScreen()
     }
 
     public func waitForNoticeToDisappear() throws {
@@ -324,20 +305,24 @@ public class BlockEditorScreen: ScreenObject {
     }
 
     private func getContentStructure() -> String {
+        // Gutenberg takes a bit of time to generate this info
+        let delayExpectation = XCTestExpectation()
+        delayExpectation.isInverted = true
+        _ = XCTWaiter.wait(for: [delayExpectation], timeout: 3)
+
         moreButton.tap()
-        let contentStructure = app.staticTexts.element(matching: NSPredicate(format: "label CONTAINS 'Content Structure'")).label
+        let contentStructure = app.buttons.element(matching: NSPredicate(format: "label CONTAINS 'Blocks:'")).label
         dismissBlockEditorPopovers()
 
         return contentStructure
     }
 
     private func dismissBlockEditorPopovers() {
-        if XCUIDevice.isPad {
-            dismissPopoverRegion.tap()
-            dismissImageViewIfNeeded()
-        } else {
-            keepEditingButton.tap()
-        }
+        // TODO: Find a better way to reliably dismiss a UIMenu without interacting with it
+        waitAndTap(postSettingsButton)
+        _ = try? EditorPostSettings().closePostSettings()
+
+        dismissImageViewIfNeeded()
     }
 
     private func dismissImageViewIfNeeded() {
@@ -346,7 +331,7 @@ public class BlockEditorScreen: ScreenObject {
 
     @discardableResult
     public func verifyContentStructure(blocks: Int, words: Int, characters: Int) throws -> BlockEditorScreen {
-        let expectedStructure = "Content Structure Blocks: \(blocks), Words: \(words), Characters: \(characters)"
+        let expectedStructure = "Blocks: \(blocks), Words: \(words), Characters: \(characters)"
         let actualStructure = getContentStructure()
 
         XCTAssertEqual(actualStructure, expectedStructure, "Unexpected post structure.")

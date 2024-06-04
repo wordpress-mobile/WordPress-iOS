@@ -27,15 +27,6 @@ extension GutenbergViewController {
             alert.title = textCounterTitle
         }
 
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.handleSecondaryActionButtonTap()
-                ActionDispatcher.dispatch(NoticeAction.unlock)
-            }
-        }
-
         let toggleModeTitle: String = {
             if mode == .richText {
                 return MoreSheetAlert.htmlTitle

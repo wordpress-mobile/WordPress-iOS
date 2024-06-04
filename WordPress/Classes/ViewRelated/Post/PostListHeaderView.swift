@@ -36,10 +36,6 @@ final class PostListHeaderView: UIView {
     }
 
     func configure(with viewModel: PostSyncStateViewModel) {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-
         if let iconInfo = viewModel.iconInfo {
             icon.image = iconInfo.image
             icon.tintColor = iconInfo.color
@@ -66,14 +62,9 @@ final class PostListHeaderView: UIView {
         setupIcon()
         setupEllipsisButton()
 
-        let stackView: UIStackView
-        if FeatureFlag.syncPublishing.enabled {
-            let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
-            innerStackView.spacing = 4
-            stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
-        } else {
-            stackView = UIStackView(arrangedSubviews: [textLabel, ellipsisButton])
-        }
+        let innerStackView = UIStackView(arrangedSubviews: [icon, indicator, ellipsisButton])
+        innerStackView.spacing = 4
+        let stackView = UIStackView(arrangedSubviews: [textLabel, innerStackView])
 
         indicator.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
 
@@ -84,9 +75,6 @@ final class PostListHeaderView: UIView {
     }
 
     private func setupIcon() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
         NSLayoutConstraint.activate([
             icon.widthAnchor.constraint(equalToConstant: 22),
             icon.heightAnchor.constraint(equalToConstant: 22)

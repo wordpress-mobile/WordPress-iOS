@@ -13,7 +13,6 @@ enum FeatureFlag: Int, CaseIterable {
     case newTabIcons
     case syncPublishing
     case autoSaveDrafts
-    case voiceToContent
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -43,8 +42,6 @@ enum FeatureFlag: Int, CaseIterable {
         case .syncPublishing:
             return true
         case .autoSaveDrafts:
-            return false
-        case .voiceToContent:
             return false
         }
     }
@@ -90,8 +87,6 @@ extension FeatureFlag {
             return "Synchronous Publishing"
         case .autoSaveDrafts:
             return "Autosave Drafts"
-        case .voiceToContent:
-            return "Voice to Content"
         }
     }
 }

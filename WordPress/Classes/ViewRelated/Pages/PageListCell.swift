@@ -83,10 +83,6 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func configure(with viewModel: PostSyncStateViewModel) {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-
         contentView.isUserInteractionEnabled = viewModel.isEditable
 
         titleLabel.alpha = viewModel.isEditable ? 1 : 0.5
@@ -135,15 +131,9 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         labelsStackView.spacing = 4
         labelsStackView.axis = .vertical
 
-        if FeatureFlag.syncPublishing.enabled {
-            contentStackView.addArrangedSubviews([
-                indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
-            ])
-        } else {
-            contentStackView.addArrangedSubviews([
-                indentationIconView, labelsStackView, featuredImageView, ellipsisButton
-            ])
-        }
+        contentStackView.addArrangedSubviews([
+            indentationIconView, labelsStackView, UIView(), icon, indicator, featuredImageView, ellipsisButton
+        ])
         contentStackView.spacing = 8
         contentStackView.alignment = .center
         contentStackView.isLayoutMarginsRelativeArrangement = true
@@ -169,9 +159,6 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
     }
 
     private func setupIcon() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
         NSLayoutConstraint.activate([
             icon.widthAnchor.constraint(equalToConstant: 22),
             icon.heightAnchor.constraint(equalToConstant: 22)

@@ -282,9 +282,7 @@ class MediaCoordinator: NSObject {
     func cancelUploadAndDeleteMedia(_ media: Media) {
         cancelUpload(of: media)
         delete(media: [media])
-        if FeatureFlag.syncPublishing.enabled {
-            notifyObserversForMedia(media, ofStateChange: .cancelled)
-        }
+        notifyObserversForMedia(media, ofStateChange: .cancelled)
     }
 
     /// Cancels any ongoing upload for the media object

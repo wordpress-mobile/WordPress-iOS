@@ -22,20 +22,7 @@ extension PostEditor {
         self.navigationController?.present(navigation, animated: true)
     }
 
-    private func createPostRevisionBeforePreview(completion: @escaping (() -> Void)) {
-        let context = ContextManager.sharedInstance().mainContext
-        context.performAndWait {
-            post = self.post.createRevision()
-            ContextManager.sharedInstance().save(context)
-            completion()
-        }
-    }
-
     private func savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return _savePostBeforePreview(completion: completion)
-        }
-
         guard !post.changes.isEmpty else {
             completion(nil, nil)
             return
@@ -66,43 +53,6 @@ extension PostEditor {
         }
     }
 
-    // - warning: deprecated (kahu-offline-mode)
-    private func _savePostBeforePreview(completion: @escaping ((String?, Error?) -> Void)) {
-        let context = ContextManager.sharedInstance().mainContext
-        let postService = PostService(managedObjectContext: context)
-
-        if !post.hasUnsavedChanges() {
-            completion(nil, nil)
-            return
-        }
-
-        SVProgressHUD.setDefaultMaskType(.clear)
-        SVProgressHUD.show(withStatus: NSLocalizedString("Generating Preview", comment: "Message to indicate progress of generating preview"))
-
-        postService.autoSave(post, success: { [weak self] savedPost, previewURL in
-
-            guard let self = self else {
-                return
-            }
-
-            self.post = savedPost
-
-            if self.post.isRevision() {
-                ContextManager.sharedInstance().save(context)
-                completion(previewURL, nil)
-            } else {
-                self.createPostRevisionBeforePreview() {
-                    completion(previewURL, nil)
-                }
-            }
-        }) { error in
-
-            //When failing to save a published post will result in "preview not available"
-            DDLogError("Error while trying to save post before preview: \(String(describing: error))")
-            completion(nil, error)
-        }
-    }
-
     private func displayPreviewNotAvailable(title: String, subtitle: String? = nil) {
         let noResultsController = NoResultsViewController.controllerWith(title: title, subtitle: subtitle)
         noResultsController.hidesBottomBarWhenPushed = true
@@ -113,13 +63,6 @@ extension PostEditor {
         guard !isUploadingMedia else {
             displayMediaIsUploadingAlert()
             return
-        }
-
-        if !FeatureFlag.syncPublishing.enabled {
-            guard post.remoteStatus != .pushing else {
-                displayPostIsUploadingAlert()
-                return
-            }
         }
 
         emitPostSaveEvent()
@@ -158,11 +101,7 @@ extension PostEditor {
     }
 
     func displayRevisionsList() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            _displayHistory()
-            return
-        }
-        let viewController = RevisionsTableViewController(post: post) { _ in }
+        let viewController = RevisionsTableViewController(post: post)
         viewController.onRevisionSelected = { [weak self] revision in
             guard let self else { return }
 
@@ -186,37 +125,6 @@ extension PostEditor {
             }
         }
         navigationController?.pushViewController(viewController, animated: true)
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    private func _displayHistory() {
-        let revisionsViewController = RevisionsTableViewController(post: post) { [weak self] revision in
-            guard let post = self?.post.update(from: revision) else {
-                return
-            }
-
-            // show the notice with undo button
-            let notice = Notice(title: "Revision loaded", message: nil, feedbackType: .success, notificationInfo: nil, actionTitle: "Undo", cancelTitle: nil) { (happened) in
-                guard happened else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    guard let original = self?.post.original(),
-                        let clone = self?.post.clone(from: original) else {
-                        return
-                    }
-                    self?.post = clone
-
-                    WPAnalytics.track(.postRevisionsLoadUndone)
-                }
-            }
-            ActionDispatcher.dispatch(NoticeAction.post(notice))
-
-            DispatchQueue.main.async {
-                self?.post = post
-            }
-        }
-        navigationController?.pushViewController(revisionsViewController, animated: true)
     }
 }
 

@@ -38,7 +38,6 @@ final class PublishDatePickerViewController: UIHostingController<PublishDatePick
     }
 }
 
-/// - warning: deprecated (kahu-offline-mode)
 extension PublishDatePickerViewController {
     static func make(viewModel: PublishSettingsViewModel, onDateUpdated: @escaping (Date?) -> Void) -> PublishDatePickerViewController {
         PublishDatePickerViewController(configuration: .init(

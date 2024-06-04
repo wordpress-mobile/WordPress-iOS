@@ -421,64 +421,6 @@ class PostTests: CoreDataTestCase {
         XCTAssertTrue(post.canEditPublicizeSettings())
     }
 
-    func testHashing() {
-        let post = newTestPost()
-
-        post.postTitle = "Lorem Ipsum"
-        post.content = "Dolor Sit Amet"
-        post.password = "sikrit"
-        post.author = "jk"
-        post.authorID = 9001
-        post.wp_slug = "lorem-ipsum"
-        post.publicID = "90210"
-        post.tags = "lorem,ipsum,test"
-        post.isStickyPost = true
-
-        let correctHash = "4889b28f7061f11ea295583a34decf42b3cba7191912b3d2ed0472362495b0d2"
-
-        XCTAssertEqual(post.calculateConfirmedChangesContentHash(), correctHash)
-
-        post.isStickyPost = false
-
-        XCTAssertNotEqual(post.calculateConfirmedChangesContentHash(), correctHash)
-    }
-
-    func testAutoUploadExpiration() {
-        let post = newTestPost()
-
-        post.shouldAttemptAutoUpload = false
-        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
-
-        post.shouldAttemptAutoUpload = true
-        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
-
-        let threeDaysAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -3, to: Date())!
-
-        post.setValue(threeDaysAgo, forKey: "confirmedChangesTimestamp")
-        // It's not great that we're setting a private property, but it's deliberately one that's private.
-        // We still want to test it though!
-        XCTAssertEqual(post.shouldAttemptAutoUpload, false)
-
-        let aDayAgo = Calendar.autoupdatingCurrent.date(byAdding: .day, value: -1, to: Date())!
-        post.setValue(aDayAgo, forKey: "confirmedChangesTimestamp")
-
-        XCTAssertEqual(post.shouldAttemptAutoUpload, true)
-    }
-
-    func testAutoUploadCancellationProperty() {
-        let post = newTestPost()
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, false)
-
-        post.shouldAttemptAutoUpload = true
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, false)
-
-        post.shouldAttemptAutoUpload = false
-
-        XCTAssertEqual(post.wasAutoUploadCancelled, true)
-    }
-
     /// Confidence check for the string setter of `Post.statusAfterSync`
     func testStatusAfterSyncStringTranslatesToEnumValues() {
         // Arrange

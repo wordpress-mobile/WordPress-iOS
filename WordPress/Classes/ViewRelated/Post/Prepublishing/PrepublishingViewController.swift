@@ -5,10 +5,6 @@ import WordPressUI
 import SwiftUI
 
 enum PrepublishingSheetResult {
-    /// The user confirms that they want to publish (legacy behavior).
-    ///
-    /// - note: Deprecated (kahu-offline-mode)
-    case confirmed
     /// The sheet published the post (new behavior)
     case published
     /// The user cancelled.
@@ -246,8 +242,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         let cell = dequeueCell(for: option.type, indexPath: indexPath)
 
         switch option.type {
-        case .textField:
-            wpAssertionFailure("no longer suppored")
         case .value:
             cell.accessoryType = .disclosureIndicator
             cell.textLabel?.text = option.title
@@ -256,8 +250,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
 
         switch option.id {
-        case .title:
-            wpAssertionFailure("no longer suppored")
         case .tags:
             configureTagCell(cell)
         case .visibility:
@@ -275,9 +267,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func dequeueCell(for type: PrepublishingCellType, indexPath: IndexPath) -> WPTableViewCell {
         switch type {
-        case .textField:
-            wpAssertionFailure("no longer suppored")
-            return WPTableViewCell()
         case .value:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
                 return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
@@ -302,8 +291,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             didTapCategoriesCell()
         case .autoSharing:
             didTapAutoSharingCell()
-        default:
-            break
         }
     }
 
@@ -516,15 +503,27 @@ struct PrepublishingOption {
 
 enum PrepublishingCellType {
     case value
-    case textField
     case customContainer
+}
+
+enum PrepublishingIdentifier {
+    case schedule
+    case visibility
+    case tags
+    case categories
+    case autoSharing
+
+    static var defaultIdentifiers: [PrepublishingIdentifier] {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
+            return [.visibility, .schedule, .tags, .categories, .autoSharing]
+        }
+        return [.visibility, .schedule, .tags, .categories]
+    }
 }
 
 extension PrepublishingOption {
     init(identifier: PrepublishingIdentifier) {
         switch identifier {
-        case .title:
-            self.init(id: .title, title: Strings.postTitle, type: .textField)
         case .schedule:
             self.init(id: .schedule, title: Strings.publishDate, type: .value)
         case .categories:
@@ -588,7 +587,6 @@ private enum Strings {
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
     static let publishDate = NSLocalizedString("prepublishing.publishDate", value: "Publish Date", comment: "Label for a cell in the pre-publishing sheet")
-    static let postTitle = NSLocalizedString("prepublishing.postTitle", value: "Title", comment: "Placeholder for a cell in the pre-publishing sheet")
     static let visibility = NSLocalizedString("prepublishing.visibility", value: "Visibility", comment: "Label for a cell in the pre-publishing sheet")
     static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
     static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
