@@ -1216,9 +1216,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 
     private var isJetpackSSOEnabled: Bool {
         let blog = post.blog
-        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
-
-        return isJetpackSSOEnabled
+        return (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
     }
 
     private var isUnsupportedBlockEditorEnabled: Bool {
