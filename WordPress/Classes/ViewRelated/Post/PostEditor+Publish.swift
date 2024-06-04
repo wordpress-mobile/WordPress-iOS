@@ -82,6 +82,15 @@ extension PublishingEditor {
         performEditorAction(postEditorStateContext.action, analyticsStat: postEditorStateContext.publishActionAnalyticsStat)
     }
 
+    func buttonSaveDraftTapped() {
+        WPAnalytics.track(.editorPostSaveDraftTapped)
+        mapUIContentToPostAndSave(immediate: true)
+        guard !isUploadingMedia else {
+            return displayMediaIsUploadingAlert()
+        }
+        performUpdateAction(analyticsStat: .editorSavedDraft)
+    }
+
     func performEditorAction(_ action: PostEditorAction, analyticsStat: WPAnalyticsStat?) {
         if action == .publish {
             WPAnalytics.track(.editorPostPublishTap)
@@ -96,14 +105,14 @@ extension PublishingEditor {
             guard !isUploadingMedia else {
                 return displayMediaIsUploadingAlert()
             }
-            performUpdateAction()
+            performUpdateAction(analyticsStat: .editorUpdatedPost)
         case .submitForReview:
             guard !isUploadingMedia else {
                 return displayMediaIsUploadingAlert()
             }
             var changes = RemotePostUpdateParameters()
             changes.status = Post.Status.pending.rawValue
-            performUpdateAction(changes: changes)
+            performUpdateAction(changes: changes, analyticsStat: .editorPublishedPost)
         }
     }
 
@@ -132,7 +141,7 @@ extension PublishingEditor {
         dismissOrPopView()
     }
 
-    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil) {
+    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil, analyticsStat: WPAnalyticsStat) {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
         postEditorStateContext.updated(isBeingPublished: true)
@@ -142,6 +151,7 @@ extension PublishingEditor {
                 let post = try await PostCoordinator.shared._save(post, changes: changes)
                 self.post = post
                 self.createRevisionOfPost()
+                self.trackPostSave(stat: analyticsStat)
             } catch {
                 postEditorStateContext.updated(isBeingPublished: false)
             }
@@ -364,6 +374,12 @@ private enum Strings {
     static let closeConfirmationAlertDelete = NSLocalizedString("postEditor.closeConfirmationAlert.discardDraft", value: "Discard Draft", comment: "Button in an alert confirming discaring a new draft")
     static let closeConfirmationAlertDiscardChanges = NSLocalizedString("postEditor.closeConfirmationAlert.discardChanges", value: "Discard Changes", comment: "Button in an alert confirming discaring changes")
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
+}
+
+extension PostEditorAction {
+    /// This value needs to be replaced with a separate entry in l10n.
+    /// - warning: Deprecated (kahu-offline-mode)
+    static var saveDraftLocalizedTitle: String { Strings.closeConfirmationAlertSaveDraft }
 }
 
 private struct MediaUploadingAlert {

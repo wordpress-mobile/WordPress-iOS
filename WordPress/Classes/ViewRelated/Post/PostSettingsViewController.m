@@ -1027,13 +1027,6 @@ FeaturedImageViewControllerDelegate>
     return cell;
 }
 
-- (void)showPublishDatePicker
-{
-    BOOL isRequired = self.apost.status == PostStatusPublish || self.apost.status == PostStatusScheduled;
-    UIViewController *vc = [PublishDatePickerHelper makeDatePickerWithPost:self.apost isRequired:isRequired];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)showPostAuthorSelector
 {
     PostAuthorSelectorViewController *vc = [[PostAuthorSelectorViewController alloc] init:self.apost];

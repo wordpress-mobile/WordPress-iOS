@@ -1,0 +1,3 @@
+Reparou na demora para salvar os posts? Ela pode ter sido causada pelos blocos de imagem, galeria ou arquivo. Agora, isso mudou. Salvar deve ser rápido e fácil, não importa quantas fotos ou arquivos você enviou.
+O feed de tags está no ar! Agora você pode ver o conteúdo com tags específicas, tudo em um só lugar. É a sua vez de aproveitar as tags.
+Por fim, corrigimos a sobreposição do botão "Concluído" na tela "Post publicado". Mamão com açúcar.

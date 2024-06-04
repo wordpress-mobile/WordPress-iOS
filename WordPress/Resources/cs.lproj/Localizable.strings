@@ -1919,12 +1919,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Vytvořte nový web pro své podnikání, časopis nebo osobní blog; nebo připojte stávající instalaci WordPress.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Vytvořte příspěvek nebo stránku";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Vytvořte příspěvek, stránku nebo příběh";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Vytvořte ikonu webu";
 
@@ -1942,12 +1936,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Vytvořit stránku";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Vytvoří nový příspěvek nebo stránku";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Vytvoří nový příspěvek, stránku nebo příběh";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Vytvořením nového menu ztratíte změny, které jste provedli v aktuálním menu. Jste si jisti, že chcete pokračovat?";

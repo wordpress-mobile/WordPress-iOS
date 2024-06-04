@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-23 12:32:32+0000 */
+/* Translation-Revision-Date: 2024-05-29 17:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: de */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Erstelle eine neue Website für dein Geschäft, dein Magazin oder deinen persönlichen Blog oder verbinde eine vorhandene WordPress-Installation.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Erstelle einen Beitrag oder eine Seite";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Erstelle einen Beitrag, eine Seite oder eine Story";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Ein Website-Icon erstellen";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Erstelle deine Website";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Erstellt einen neuen Beitrag oder eine neue Seite";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Erstellt einen neuen Beitrag, eine neue Seite oder eine neue Story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Durch Erstellen eines neuen Menüs werden Änderungen, die du am aktuellen Menü vorgenommen hast, verworfen. Bist du sicher, dass du weitermachen möchtest? ";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Bildqualität";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Abbrechen";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Neueste Version herunterladen";
+
+/* Update button title */
+"appUpdate.action.update" = "Aktualisieren";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Lade die neueste Version herunter, um diese App zu verwenden.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "App-Update verfügbar";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Version %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Neuigkeiten";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "Audiodatei";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "Verbindungen";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Beitrag aus Audio erstellen";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Seite oder Beitrag erstellen";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Erstelle dein eigenes, individuelles Dashboard und wähle aus, welche Berichte angezeigt werden sollen. Konzentriere dich dabei auf die Daten, die für dich am wichtigsten sind.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Entwurf wird gespeichert …";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Upgrade für mehr Anfragen durchführen";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Du verfügst nicht über genügend Anfragen, um einen Beitrag aus Audio zu erstellen.";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "Erneut versuchen";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Es ist ein Fehler aufgetreten";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Anfragen verfügbar:";
+
+/* The screen title */
+"postFromAudio.title" = "Beitrag aus Audio erstellen";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Wird verarbeitet …";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Aufnahme läuft …";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Von %@.";
 
@@ -10796,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mehr";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Fertig";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Wähle Farben und Schriftarten, die zu dir passen. Wenn du einen Beitrag liest, klicke oben im Bildschirm auf das AA-Icon.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Leseeinstellungen";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Tippe oben auf das Dropdown-Menü und wähle „Schlagwörter“ aus, um auf Streams deiner abonnierten Schlagwörter zuzugreifen.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Schlagwörter-Feed";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Neu im Reader";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Der Blog %@ wird nicht mehr in deinem Reader erscheinen. Tippe, um es rückgängig zu machen.";
 
@@ -10930,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Schlagwörter";
+"reader.navigation.filter.blog.unspecified" = "Blogs";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

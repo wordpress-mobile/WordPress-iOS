@@ -179,6 +179,19 @@ extension PostSettingsViewController {
     }
 }
 
+// MARK: - PostSettingsViewController (Publish Date)
+
+extension PostSettingsViewController {
+    @objc func showPublishDatePicker() {
+        var viewModel = PublishSettingsViewModel(post: self.apost)
+        let viewController = PublishDatePickerViewController.make(viewModel: viewModel) { date in
+            WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
+            viewModel.setDate(date)
+        }
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+}
+
 // MARK: - PostSettingsViewController (Page Attributes)
 
 extension PostSettingsViewController {

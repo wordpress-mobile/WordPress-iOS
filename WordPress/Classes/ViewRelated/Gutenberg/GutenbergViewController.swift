@@ -1181,7 +1181,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .videoPressV5Support:
                 post.blog.supports(.videoPressV5),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
-            .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
+            .canEnableUnsupportedBlockEditor: (post.blog.jetpack?.isConnected ?? false) && !isJetpackSSOEnabled,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
@@ -1196,13 +1196,16 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ]
     }
 
+    private var isJetpackSSOEnabled: Bool {
+        let blog = post.blog
+        return (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+    }
+
     private var isUnsupportedBlockEditorEnabled: Bool {
         // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
         // This is because they can have their web editor to be set to classic and then the fallback will not work.
 
         let blog = post.blog
-        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
-
         return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }

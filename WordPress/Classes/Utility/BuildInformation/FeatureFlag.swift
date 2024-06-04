@@ -42,7 +42,7 @@ enum FeatureFlag: Int, CaseIterable {
         case .syncPublishing:
             return true
         case .autoSaveDrafts:
-            return true
+            return false
         }
     }
 

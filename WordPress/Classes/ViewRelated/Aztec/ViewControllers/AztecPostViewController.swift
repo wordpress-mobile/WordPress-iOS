@@ -1151,6 +1151,12 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
+        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+            alert.addDefaultActionWithTitle(PostEditorAction.saveDraftLocalizedTitle) { _ in
+                self.buttonSaveDraftTapped()
+            }
+        }
+
         if post.blog.isGutenbergEnabled, post.isContentEmpty() || post.containsGutenbergBlocks() {
 
             alert.addDefaultActionWithTitle(MoreSheetAlert.gutenbergTitle) { [unowned self] _ in

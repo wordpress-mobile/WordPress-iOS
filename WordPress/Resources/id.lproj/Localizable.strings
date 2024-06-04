@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 13:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Buat situs baru untuk bisnis, majalah, atau blog personal Anda; atau hubungkan akun WordPress yang sudah ada.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Buat pos atau halaman";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Buat pos, halaman, atau cerita";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Buat favicon";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Buat situs Anda";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Buat pos atau halaman baru";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Buat pos, halaman, atau cerita baru";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Membuat menu baru akan membuang perubahan yang telah Anda lakukan terhadap menu saat ini. Anda yakin ingin melanjutkan?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Kualitas Gambar";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Batal";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Dapatkan versi terbaru";
+
+/* Update button title */
+"appUpdate.action.update" = "Perbarui";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Unduh versi terbaru untuk menggunakan aplikasi ini.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Update Apllikasi Tersedia";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Versi %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Apa yang Baru?";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "file audio";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "sambungan";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Pos dari Audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Buat pos atau halaman";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Buat dasbor kustom Anda sendiri dan pilih laporan apa yang ingin dilihat. Fokus pada data yang paling penting bagi Anda.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Menyimpan draf...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Upgrade untuk mendapat lebih banyak kuota permintaan";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Kuota permintaan Anda tidak cukup untuk membuat pos dari audio.";
+
+/* Button title */
+"postFromAudio.ok" = "Oke";
+
+/* Button title */
+"postFromAudio.retry" = "Coba lagi";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Terjadi kesalahan";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Permintaan tersedia:";
+
+/* The screen title */
+"postFromAudio.title" = "Pos dari Audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Memproses…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Merekam…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Oleh %@";
 
@@ -10796,6 +10838,21 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Lainnya";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Selesai";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Pilih warna dan font sesuai selera. Saat membaca pos, ketuk ikon AA di bagian atas layar.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Preferensi Membaca";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Ketuk menu tarik-turun di bagian atas dan pilih Tag untuk mengakses stream dari tag yang Anda ikuti.";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Baru di Reader";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Blog %@ tidak akan muncul lagi di pembaca Anda. Ketuk untuk mengurungkan.";
 
@@ -10930,7 +10987,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Tag";
+"reader.navigation.filter.blog.unspecified" = "Blog";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

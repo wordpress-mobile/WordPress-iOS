@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-02 09:28:41+0000 */
+/* Translation-Revision-Date: 2024-05-30 08:07:33+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sq_AL */
@@ -1988,12 +1988,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Krijoni një sajt të ri për biznesin tuaj, revistë ose blog personal; ose lidhni një instalim WordPress ekzistues.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Krijoni një postim ose faqe";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Krijoni një postim, faqe ose shkrim";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Krijoni një ikonë sajti";
 
@@ -2011,12 +2005,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Krijoni sajtin tuaj";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Krijon postim ose faqe të re";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Krijon postim, faqe ose shkrim të ri";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Krijimi i një menuje te re do të shkaktojë hedhjen tej të ndryshimeve që bëtë te menuja e tanishme. Jeni i sigurt se doni të vazhdohet?";
@@ -8764,8 +8752,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Cilësi Figurash";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Anuloje";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Merrni versionin më të ri";
+
+/* Update button title */
+"appUpdate.action.update" = "Përditësoje";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Që të përdorni këtë aplikacion, shkarkoni versionin më të ri.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Ka Përditësim Aplikacioni";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Version %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Ç’ka të Re";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "kartelë audio";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Anuloje";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Keni bërë te ky postim, nga një pajisje tjetër, ndryshime të paruajtura. Të përpunuar: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Vetëruajtje Aktive";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Shihini Ndryshimet";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "S’arrihet të ngarkohet figura. Ju lutemi, zgjidhni një tjetër, ose riprovoni më vonë.";
@@ -8971,6 +8992,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "lidhje";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Postim që nga Audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Krijoni një postim, ose faqe";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Krijoni pultin tuaj të përshtatur dhe zgjidhni cilët raporte të shihen. Përqendrohuni te të dhënat për të cilat merakoseni më shumë.";
@@ -9343,6 +9370,9 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Hidhe tej";
 
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Zbuloni blogje për t’u pajtuar";
+
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Ribëje";
 
@@ -9351,6 +9381,9 @@ Example: Reply to Pamela Nguyen */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Jeni lidhur me blogje të tjerë";
+
+/* A detailed message to users about growing the audience for their site through reader discover. */
+"growAudienceCell.readerDiscover.details" = "Lidhuni me blogues të tjerë, përmes pajtimit, pëlqimit dhe komentimit në postimet e tyre.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Aktivizo ndarje postimesh me të tjerët";
@@ -9426,6 +9459,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Që të shtohen foto ose video te postimet tuaja.";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -9537,6 +9573,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Që të gjeni, ndiqni dhe pëlqeni krejt sajtet dhe postimet tuaj të parapëlqyer me Lexuesin, kaloni te aplikacioni Jetpack.";
+
+/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Pajtohuni te çfarëdo sajti, me aplikacionin Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack-u furnizon statistika, njoftime, etj, për t’ju ndihmuar të ngrini dhe fuqizoni sajtin tuaj WordPress që keni ëndërruar.";
@@ -10048,8 +10087,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Hidhe tej";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Pajtime te sajti";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Përshtatni rregullimet për sajtin me pajtim, për Postime dhe Komente të Reja";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Sajte Me Pajtim";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "S’keni leje të shihni këtë blog privat.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Pajtohuni te blogu.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Shpajtohuni nga blogu.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "I pajtuar";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Pajtomë";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Mund të përmirësohet";
@@ -10062,6 +10122,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Dërgoni përshtypje";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Pajtomë";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "I pajtuar";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Pajtimtarë te blogu.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Pajtimtarë";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "pajtohuni";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Ende pa pajtimtarë";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Shihni postimin tim “%@”:";
@@ -10129,6 +10207,9 @@ Example: Reply to Pamela Nguyen */
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Anuloje";
 
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Faqe Mëmë";
+
 /* No comment provided by engineer. */
 "password" = "fjalëkalim";
 
@@ -10195,6 +10276,102 @@ Example: Reply to Pamela Nguyen */
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Po shpihet postim në hedhurina…";
 
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Hidhi Tej Ndryshimet";
+
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Hidhe Tej Skicën";
+
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Vazhdoni Përpunimin";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Ruaje Skicën";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Po krijohet vetëruajtje…";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Përpunues Kodi";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Blloqe: %1$li, Fjalë: %2$li, Shenja: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Ndihmë";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Ndihmë & Asistencë";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Rregullime Faqeje";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Rregullime Postimi";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Bëjini Paraparje";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Rishikime";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Përpunues Pamor";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Parje";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "S’u arrit të ngarkohen disa objekte media";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Postimi u rikthye si një skicë";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Anuloje";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "S’mund të përpunohet një %1$@ i shpënë te hedhurinat. Që të përpunoni këtë %1$@, do t’ju duhet ta riktheni, duke e kthyer si skicë.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Riktheje";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Shpënë te Hedhurinat %@";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Rishikimi u ngarkua";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Po ruhet skica…";
+
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Për më tepër kërkesa, përmirësojeni";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "S’keni aq kërkesa sa duhet për të krijuar një postim që nga audio.";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "Riprovoni";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Diç shkoi ters";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Kërkesa të përdorshme:";
+
+/* The screen title */
+"postFromAudio.title" = "Postim që nga Audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Po përpunohet…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Po regjistrohet…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Nga %@.";
 
@@ -10206,6 +10383,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "Në pritje të shqyrtimit";
+
+/* Cancels an Action */
+"postList.cancel" = "Anuloje";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Fshije Përgjithmonë";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "Jeni i sigurt se doni të fshihet përgjithmonë “%@”?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Aplikacioni po ngarkon te shërbyesi ndryshime të bëra më herët. Ju lutemi, riprovoni më vonë.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Diç shkoi ters";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Ndryshime jashtë interneti";
@@ -10221,6 +10416,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Shiheni";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Shpjere te Hedhurinat";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "Jeni i sigurt se doni të shpihet “%@” te hedhurinat? Çfarëdo ndryshime që s’qenë dërguar më parë te shërbyesi, do të humbin.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Anuloje Ngarkimin";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Mbylle";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "S’ka ngarkime pezull";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ nga %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Riprovo Ngarkimin";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Riprovo Ngarkimet";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Ngarkime Media";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Ndodhi një gabim";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Aplikacioni po ngarkon në shërbyes ndryshime të bëra më herët. Ju lutemi, riprovoni më vonë.";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Skica e faqes u ngarkua";
@@ -10255,6 +10486,15 @@ Example: Reply to Pamela Nguyen */
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Shiheni";
 
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Lënda u ndryshua në tjetër pajisje";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "“%@” u fshi përgjithmonë dhe s’mund të përditësohet më";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Pa titull";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Hidhe tej";
 
@@ -10267,14 +10507,65 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Mundësi Figure të Zgjedhur";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Faqe mëmë";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Në pritje të shqyrtimit";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Ndarja e Automatizuar nga Twitter S’është Më e Përdorshme";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Atribute Faqeje";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Caktoni Figurë të Zgjedhur";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "S’u arrit të përditësohen rregullime postimi";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Duke ndryshuar dukshmërinë në “Private”, postimi do të botohet menjëherë";
+
+/* Localized post type: `Page` */
+"postType.page" = "faqe";
+
+/* Localized post type: `Post` */
+"postType.post" = "postim";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "I dukshëm vetëm për përgjegjës sajti dhe redaktorë";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Privat";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "I dukshëm për këdo, por lyp fjalëkalim";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Mbrojtur me fjalëkalim";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "I dukshëm për këdo";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Publik";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Anuloje";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Dukshmëri";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Fjalëkalim";
+
+/* Button save */
+"postVisibilityPicker.save" = "Ruaje";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
@@ -10299,6 +10590,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Paraparje";
+
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publikoje";
 
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Riprovoni";
@@ -10363,6 +10657,12 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "S’u arrit të ngarkohen %@ objekte";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "S’u arrit të ngarkohej te media";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Titull";
 
@@ -10371,6 +10671,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Datë Botimi";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Menjëherë";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Botim te";
@@ -10436,17 +10739,62 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketa";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "Edhe %@ objekte";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "Edhe %@ objekt";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Po ngarkohet media";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Dukshmëri";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Pajtohuni te sajtet tuaj të parapëlqyer dhe zbuloni blogje të rinj.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Shihni krejt përgjigjet";
 
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Datë Botimi";
+
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Data sipas zonës tuaj të tanishme kohore:";
+
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Menjëherë";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Hiqe Datën e Botimit";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Përzgjidhni Datë Botimi";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Zonë Kohore";
+
 /* Post publish date picker */
 "publishDatePicker.title" = "Datë Botimi";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "U bë";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promovojeni me Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Ndajeni postimin me të tjerët";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Postimi u botua!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Përfitoni më tepër trafik:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Shihni postimin";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Hidhe tej";
@@ -10465,6 +10813,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Më tepër";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "U bë";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Zgjidhni ngjyra dhe shkronja që ju vijnë për shtat. Kur lexoni një postim, prekni ikonën AA në krye të ekranit.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Parapëlqime Leximi";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Prekni menunë hapmbyll më krye dhe përzgjidhni Etiketa për përdorim rrjedhash nga etiketat që ndiqni.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Rrjedhë Etiketash";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Të reja në Lexues";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Blogu %@ s’do të shfaqet më në lexuesin tuaj. Prekeni që të zhbëhet.";
@@ -10581,6 +10947,9 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Po sillen blogje…";
 
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Sajte Me Pajtim";
+
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blogje";
 
@@ -10597,7 +10966,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Etiketa";
+"reader.navigation.filter.blog.unspecified" = "Blogje";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
@@ -10637,11 +11006,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Pajtime";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Etiketat Tuaja";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Kërko";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Rregullime për Reader";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Shtoni një blog";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Zbuloni Blogje";
@@ -10666,6 +11041,9 @@ with the filter chip button. */
 
 /* Button title. Tapping lets the user view the blogs they're subscribed to. */
 "reader.no.results.subscriptions.button" = "Kaloni te Pajtime";
+
+/* No Tags View Button Label */
+"reader.no.tags.title" = "Shtoni një etiketë";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "S’arrihet të bllokohet blogu";
@@ -10779,11 +11157,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Shpajtohuni nga blogu";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Kallamsheqeri";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Parazgjedhje";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Mbrëmje";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -10794,11 +11178,66 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Të buta";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Ngjyra";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "U bë";
 
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Shkronja";
+
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Madhësi";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Eksperimentale>";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Kjo është një veçori e re ende në zhvillim. Që të na ndihmoni ta përmirësojmë, %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "dërgoni përshtypjet tuaja";
+
+/* Description text for the preview section of Reader Preferences */
+"reader.preferences.preview.body.text" = "Zgjidhni ngjyra, shkronja dhe madhësi tuajat. Bëjini paraparje përzgjedhjes këtu dhe lexojini postimet në stilin tuaj, pasi të keni mbaruar.";
+
+/* Title text for a preview */
+"reader.preferences.preview.header" = "Parapëlqime Leximi";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "ngjyra";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "shkronja";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "të lexuarit";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Etiketa shembuj";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Shumë të Mëdha";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Shumë të Vogla";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Të mëdha";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normale";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Të vogla";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Administroni Blogje";
@@ -10818,11 +11257,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Po ndiqen etiketa të reja…";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Që të vazhdohet, përzgjidhni ndoca";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "U bë";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Gjeni blogje dhe shkrime që do t’i doni…";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "S’ka etiketa të reja për t’u ndjekur";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Zgjidhni etiketat tuaja";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Zbuloni dhe ndiqni blogje që keni për zemër";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Pajtohuni";
@@ -10839,6 +11290,19 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogje te të cilët të pajtoheni";
 
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Riprovoni";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "S’ngarkuam dot postime nga kjo etiketë tani";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "S’u arrit të ngarkoheshin postime";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Shtoni një Etiketë";
 
@@ -10851,6 +11315,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Shtoni një Etiketë";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Pëlqejeni";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "U pëlqye";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Zbuloni më tepër etiketa";
 
@@ -10859,6 +11329,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Ndiqeni";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Më tepër nga %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Hiqe ndjekjen e %@";
@@ -10871,6 +11344,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Hidhe tej";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Parapëlqime Leximi";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "E kuptova";
@@ -10949,6 +11425,39 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Postime të Afërta";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Pajisje tjetër";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Pajisja e tanishme";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "Postimi u ndryshua në tjetër pajisje. Ju lutemi, përzgjidhni versionin e postimit që duhet mbajtur.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Anuloje";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Ruaje";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Zgjidheni Përplasjen";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Kur bëni ndryshime te përpunuesi, këtu do të jeni në gjendje të shihni historikun e rishikimeve";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Ende pa versione";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Po ngarkohet…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Rishikime";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Kopjoji Lidhjen";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Hidhe tej";
@@ -11124,6 +11633,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "E panjohur";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Krejt sajtet";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Sajte të fiksuar";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Sajte së fundi";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Shtoni një sajt";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Anuloje";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "U bë";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Përpunojeni";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Zgjidhni një sajt";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Kujtues";
 
@@ -11160,6 +11693,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Ndarja e automatizuar me të tjerë që nga Twitter s’mund të përdoret më, për shkak ndryshimesh në kushte dhe çmime nga ana e Twitter-it.";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Pajtimtarë";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Trafik";
 
@@ -11168,6 +11704,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "7 ditët e shkuara";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.higherNumber" = "*%1$@%2$@ (%3$@)* më sipër se 7 ditët e shkuara";
+
+/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* më poshtë se 7 ditët e shkuara";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Njësoj si 7 ditët e shkuara";
@@ -11244,8 +11786,14 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "Koha Më Popullore";
 
+/* Label showing the percentage of views to a user's site which fall on a particular day. */
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ parje";
+
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Pa veprimtari të mjaftueshme. Kontrolloni më vonë, kur sajti juaj të ketë më tepër vizitorë!";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Pajtimtarë";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
@@ -11253,8 +11801,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Postimi juaj më i ri %1$@ ka marrë %2$@ pëlqime.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Pajtimtarë WordPress.com Gjithsej: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Pajtimtarë me Email Gjithsej: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Pajtimtarë Gjithsej";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Sot";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Pajtimtar që prej";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Emër";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Pajtimtarë";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Klikime";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Hapje";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Email-et më të rinj";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "Email-e";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Shtim Pajtimtarësh";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Pajtimtarë";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Tabelë që shfaq %1$@, %2$@ dhe %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Grafik Me Shtylla që tregon Komente për periudhën e përzgjedhur.";
@@ -11268,6 +11858,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Grafik Me Shtylla që tregon Vizitorë për periudhën e përzgjedhur.";
 
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Ditë";
+
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Muaj";
+
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Javë";
+
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Vjet";
+
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Hidhe tej";
 
@@ -11277,8 +11879,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Kërkoni për të gjetur foto të lira që t’i shtoni te Mediateka juaj!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Në daçi, mund të përfshini email-in dhe emrin tuaj të përdoruesit, për të na ndihmuar të kuptojmë rastin tuaj.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "s’u dha email";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "s’u dha emër përdoruesi";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "U bë";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Faleminderit për përshtypjet tuaja";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Parashtroje";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Po dërgohet";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Dërgim në mënyrë anonime";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Përshtypje";
@@ -11450,6 +12073,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "të palexuar";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Pajtimtar Sajti";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Përdorues Sajti";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Parës Sajti";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "Pajtimtarë";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "vizitoni faqen tonë të dokumentimit";

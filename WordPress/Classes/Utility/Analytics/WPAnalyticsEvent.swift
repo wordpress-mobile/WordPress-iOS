@@ -32,6 +32,7 @@ import Foundation
     case editorPostTagsChanged
     case editorPostAuthorChanged
     case editorPostPublishNowTapped
+    case editorPostSaveDraftTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
     case editorPostFormatChanged
@@ -333,6 +334,11 @@ import Foundation
     case readerTagsFeedShown
     case readerTagsFeedMoreFromTagTapped
     case readerTagsFeedHeaderTapped
+
+    // Reader: Floating Button Experiment
+    case readerFloatingButtonShown
+    case readerCreateSheetAnswerPromptTapped
+    case readerCreateSheetPromptHelpTapped
 
     // App Settings
     case settingsDidChange
@@ -670,6 +676,8 @@ import Foundation
             return "editor_post_tags_changed"
         case .editorPostPublishNowTapped:
             return "editor_post_publish_now_tapped"
+        case .editorPostSaveDraftTapped:
+            return "editor_post_save_draft_tapped"
         case .editorPostCategoryChanged:
             return "editor_post_category_changed"
         case .editorPostStatusChanged:
@@ -1203,6 +1211,14 @@ import Foundation
             return "reader_tags_feed_more_from_tag_tapped"
         case .readerTagsFeedHeaderTapped:
             return "reader_tags_feed_header_tapped"
+
+        // Reader: Floating Button Experiment
+        case .readerFloatingButtonShown:
+            return "reader_create_fab_shown"
+        case .readerCreateSheetAnswerPromptTapped:
+            return "my_site_create_sheet_answer_prompt_tapped"
+        case .readerCreateSheetPromptHelpTapped:
+            return "my_site_create_sheet_prompt_help_tapped"
 
         // App Settings
         case .settingsDidChange:

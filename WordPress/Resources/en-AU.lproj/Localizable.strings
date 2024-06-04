@@ -1973,12 +1973,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Create a post or page";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
 
@@ -1996,12 +1990,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Create your site";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post or page";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?";

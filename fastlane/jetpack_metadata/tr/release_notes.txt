@@ -1,0 +1,3 @@
+Gönderileri kaydederken uzun bir gecikme mi fark ettiniz? Bunun nedeni görsel, galeri veya dosya blokları olabilirdi ancak artık değil. Ne kadar fotoğraf veya dosya yüklediğiniz fark etmeksiniz hızlı ve kolay bir şekilde kaydedebilmelisiniz.
+Etiketler beslemesi yayında! Artık belirli etiketler içeren içeriklerin hepsini bir yerde görebilirsiniz. Etiketleme zamanı geldi.
+Son olarak "Gönderi Yayımlandı" ekranındaki örtüşen "Tamam" düğmesini düzelttik. Bu kadar kolay.

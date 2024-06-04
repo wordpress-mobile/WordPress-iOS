@@ -92,12 +92,25 @@ extension GutenbergViewController {
 
     private func makeMoreMenuSections() -> [UIMenuElement] {
         var sections: [UIMenuElement] = [
-            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions())
+            // Common actions at the top so they are always in the same relative place
+            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeMoreMenuActions()),
+            // Dynamic actions at the bottom
+            UIMenu(title: "", subtitle: "", options: .displayInline, children: makeSecondaryActions())
         ]
         if let string = makeContextStructureString() {
             sections.append(UIAction(subtitle: string, attributes: [.disabled], handler: { _ in }))
         }
         return sections
+    }
+
+    private func makeSecondaryActions() -> [UIAction] {
+        var actions: [UIAction] = []
+        if post.original().isStatus(in: [.draft, .pending]) {
+            actions.append(UIAction(title: Strings.saveDraft, image: UIImage(systemName: "doc"), attributes: editorHasChanges ? [] : [.disabled]) { [weak self] _ in
+                self?.buttonSaveDraftTapped()
+            })
+        }
+        return actions
     }
 
     private func makeMoreMenuActions() -> [UIAction] {
@@ -166,5 +179,6 @@ private enum Strings {
     static let postSettings = NSLocalizedString("postEditor.moreMenu.postSettings", value: "Post Settings", comment: "Post Editor / Button in the 'More' menu")
     static let helpAndSupport = NSLocalizedString("postEditor.moreMenu.helpAndSupport", value: "Help & Support", comment: "Post Editor / Button in the 'More' menu")
     static let help = NSLocalizedString("postEditor.moreMenu.help", value: "Help", comment: "Post Editor / Button in the 'More' menu")
+    static var saveDraft: String { PostEditorAction.saveDraftLocalizedTitle }
     static let contentStructure = NSLocalizedString("postEditor.moreMenu.contentStructure", value: "Blocks: %li, Words: %li, Characters: %li", comment: "Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order)")
 }
