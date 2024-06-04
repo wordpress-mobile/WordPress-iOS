@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-20 16:44:55+0000 */
+/* Translation-Revision-Date: 2024-05-29 15:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: he_IL */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "יצירה של אתר חדש לעסק שלך, מגזין, או בלוג אישי; או חיבור התקנה קיימת של WordPress.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "ליצור פוסט או עמוד";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "ליצור פוסט, עמוד או סטורי חדש";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "ליצור את סמל האתר";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "יצירת האתר שלך";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "יצירת פוסט או עמוד חדש";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "יצירת פוסט, עמוד או סטורי חדש";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "יצירת תפריט חדש תבטל את השינויים שביצעת בתפריט הנוכחי. בחרת להמשיך - האם ההחלטה סופית?";
@@ -8776,6 +8764,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "איכות תמונה";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "ביטול";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "לקבל את הגרסה האחרונה";
+
+/* Update button title */
+"appUpdate.action.update" = "לעדכן";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "כדי להשתמש באפליקציה הזאת, יש להוריד את הגרסה האחרונה.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "עדכון זמין לאפליקציה";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "גרסה %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "מה חדש";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "קובץ אודיו";
 
@@ -8992,6 +9001,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "חשבונות מקושרים";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "פוסט מאודיו";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "ליצור פוסט או עמוד";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "ניתן ליצור לוח בקרה מותאם ולבחור אילו דוחות ברצונך להציג. להתמקד במידע שהכי חשוב לך.";
@@ -10348,6 +10363,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "שומר טיוטה...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "יש לשדרג לבקשות נוספות";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "אין לך יתרת בקשות מספקת ליצירת פוסט מאודיו.";
+
+/* Button title */
+"postFromAudio.ok" = "אישור";
+
+/* Button title */
+"postFromAudio.retry" = "לנסות שוב";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "משהו השתבש";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "בקשות זמינות:";
+
+/* The screen title */
+"postFromAudio.title" = "פוסט מאודיו";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "מעבד...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "מקליט...";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "מאת %@.";
 
@@ -10787,6 +10829,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "עוד";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "בוצע";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "לבחור צבעים וגופנים לפי טעמך. כשקוראים פוסט, אפשר ללחוץ על הסמל AA שבחלקו העליון של המסך.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "העדפות קריאה";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "יש להקיש על התפריט הנפתח למעלה ולבחור 'תגיות' כדי לגשת לפיד של התגיות שבמעקב שלך.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "פיד תגיות";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "חדש ב-Reader";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "הבלוג %@ לא יופיע עוד ב-Reader שלך. יש להקיש כדי לבטל.";
 
@@ -10921,7 +10981,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "תגיות";
+"reader.navigation.filter.blog.unspecified" = "בלוגים";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

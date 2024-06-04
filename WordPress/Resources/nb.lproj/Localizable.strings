@@ -1325,17 +1325,11 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Lag en ny side for din business, ditt magasin, eller din personlige blogg; eller koble til en eksisterende WordPress-installasjon.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Lag et innlegg eller en side";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Lag nettstedsikon";
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Lag ditt nettsted";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Oppretter nytt innlegg eller ny side";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Å lage en ny meny vil forkaste endringene du har gjort på den gjeldende menyen. Er du sikker på at du vil fortsette?";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-23 18:05:36+0000 */
+/* Translation-Revision-Date: 2024-05-29 19:54:08+0000 */
 /* Plural-Forms: nplurals=3; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ru */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Создайте новый сайт для вашего бизнеса, журнал или персональный блог; или подключите имеющуюся установку WordPress.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Создать запись или страницу";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Создать запись, страницу или историю";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Создать значок сайта";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Создайте свой сайт";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Создать запись или страницу";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Создать запись, страницу или историю";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Если создать новое меню, изменения текущего меню будут потеряны. Вы уверены, что хотите продолжить?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Качество изображения";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Отмена";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Загрузить последнюю версию";
+
+/* Update button title */
+"appUpdate.action.update" = "Обновить";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Обновите приложение до последней версии.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Доступно обновление приложения";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Версия %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Что нового";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "аудио файл";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "подключения";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Публикация из аудио";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Создать запись или страницу";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Настройте вашу консоль и выберите отчёты, которые хотите видеть. Сфокусируйтесь на данных, которые вам наиболее важны.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Сохранение черновика...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Перейти на платный тарифный план, чтобы получить больше запросов";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Недостаточно запросов для создания публикации из аудио.";
+
+/* Button title */
+"postFromAudio.ok" = "ОК";
+
+/* Button title */
+"postFromAudio.retry" = "Повторить";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Что-то пошло не так";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Доступно запросов:";
+
+/* The screen title */
+"postFromAudio.title" = "Публикация из аудио";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Обработка…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Запись…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Автор: %@.";
 
@@ -10796,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Далее";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Готово";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Выберите цвета и шрифты по своему вкусу. Во время чтения записи нажмите значок АА в верхней части экрана.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Настройки чтения";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Нажмите раскрывающееся меню в верхней части и выберите «Метки», чтобы перейти к лентам записей с метками, на которые вы подписались.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Ленты записей с метками";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Новое в «Чтиве»";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Блог %@ больше не будет отображаться в приложении «Чтиво». Нажмите, чтобы отменить действие.";
 
@@ -10930,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Теги";
+"reader.navigation.filter.blog.unspecified" = "Блоги";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 13:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-01 01:29:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "İşletmeniz, derginiz veya kişisel blogunuz için yeni bir site oluşturun ya da var olan bir WordPress kurulumunu bağlayın.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Yazı ya da sayfa oluştur";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Bir yazı, sayfa ya da öykü oluştur";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Bir site simgesi oluştur";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Sitenizi oluşturun";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Yeni bir yazı ya da sayfa oluşturur";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Bir yazı, sayfa ya da öykü oluşturur";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Yeni bir menü oluşturursanız var olan menüde yaptığınız değişiklikler yok sayılacak. İlerlemek istediğinize emin misiniz?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Görsel kalitesi";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "İptal Et";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "En son sürümü indir";
+
+/* Update button title */
+"appUpdate.action.update" = "Güncelle";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Bu uygulamayı kullanmak için en son sürümü indirin.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Uygulama Güncellemesi Mevcut";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Sürüm %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Yenilikler";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "bağlantılar";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Sesten gönderi oluştur";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Gönderi veya sayfa oluştur";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Taslak kaydediliyor...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Daha fazla istek için paketinizi yükseltin";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Sesten gönderi oluşturmak için yeterli isteğiniz yok.";
+
+/* Button title */
+"postFromAudio.ok" = "Tamam";
+
+/* Button title */
+"postFromAudio.retry" = "Tekrar dene";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Bir sorun oluştu";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Mevcut istekler:";
+
+/* The screen title */
+"postFromAudio.title" = "Sesten gönderi oluştur";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "İşleniyor...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Kaydediliyor…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ tarafından.";
 
@@ -10642,6 +10684,9 @@ Example: Reply to Pamela Nguyen */
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ öğe karşıya yüklenemedi";
 
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Ortam dosyası yüklenemedi";
+
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Başlık";
 
@@ -10793,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Diğer";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Tamam";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Size uygun renkler ve yazı tipleri seçin. Bir gönderiyi okurken ekranın üst kısmındaki AA simgesine dokunun.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Okuma Tercihleri";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Üstteki açılır menüye dokunun ve takip ettiğiniz etiketlerin akışına erişmek için Etiketler seçeneğini belirleyin.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Etiket Akışı";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Okuyucuda Yeni";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "%@ bloğu artık okuyucunuzda görüntülenmeyecek. Geri almak için dokunun.";
 
@@ -10927,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Etiketler";
+"reader.navigation.filter.blog.unspecified" = "Bloglar";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
@@ -11150,6 +11213,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Boyut";
+
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
 
 /* Text format for the feedback line text, to be displayed in the preview section.
 %1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
@@ -11776,6 +11845,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Table column title that shows the names of subscribers. */
 "stats.section.itemSubtitles.subscriber" = "Ad";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Aboneler";
 
 /* A title for table's column that shows a number of times a post was opened from an email */
 "stats.subscribers.emailsSummary.column.clicks" = "Tıklamalar";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-20 16:44:24+0000 */
+/* Translation-Revision-Date: 2024-05-29 19:54:08+0000 */
 /* Plural-Forms: nplurals=6; plural=(n == 0) ? 0 : ((n == 1) ? 1 : ((n == 2) ? 2 : ((n % 100 >= 3 && n % 100 <= 10) ? 3 : ((n % 100 >= 11 && n % 100 <= 99) ? 4 : 5)))); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ar */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "أنشئ موقعًا جديدًا لأعمالك أو مجلتك أو مدونتك الشخصية؛ أو اتصل بموقع ووردبريس موجود وتم تثبيته مسبقًا.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "إنشاء مقالة أو صفحة";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "إنشاء مقالة، صفحة، أو قصة";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "إنشاء أيقونة للموقع";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "إنشاء موقعك";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "لإنشاء مقالة أو صفحة جديدة";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "لإنشاء مقالة، صفحة، أو قصة جديدة";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "إن إنشاء قائمة جديدة سيتجاهل التغييرات التي قمت بإجرائها على القائمة الحالية. هل أنت متأكد من رغبتك في المتابعة؟";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "جودة الصورة";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "إلغاء";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "الحصول على أحدث إصدار";
+
+/* Update button title */
+"appUpdate.action.update" = "تحديث";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "لاستخدام هذا التطبيق، قم بتنزيل أحدث إصدار.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "تحديث التطبيق متوفر";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "الإصدار %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "الأشياء الجديدة";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ملف صوت";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "الاتصالات";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "تدوينة من ملف صوتي";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "إنشاء تدوينة أو صفحة";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "أنشئ لوحة التحكم المخصصة الخاصة بك واختر التقارير المراد رؤيتها. ركّز على البيانات التي تهتم بها اكثر.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "جار حفظ المسودة...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "الترقية للحصول على مزيد الطلبات";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "ليست لديك طلبات كافية متوفرة لإنشاء تدوينة من ملف صوتي.";
+
+/* Button title */
+"postFromAudio.ok" = "موافق";
+
+/* Button title */
+"postFromAudio.retry" = "إعادة المحاولة";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "حدث خطأ ما";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "الطلبات المتوفرة:";
+
+/* The screen title */
+"postFromAudio.title" = "تدوينة من ملف صوتي";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "جارٍ المعالجة...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "جارٍ التسجيل…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "بواسطة %@.";
 
@@ -10790,6 +10832,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "مزيد";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "تم";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "اختر الألوان والخطوط الملائمة لك. عند قراءة تدوينة، اضغط على أيقونة AA في أعلى الشاشة.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "تفضيلات القراءة";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "اضغط على القائمة المنسدلة في الأعلى وحدد الوسوم للوصول إلى التدفقات الواردة من الوسوم التي تتابعها.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "تدفق الوسوم";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "جديد في القارئ";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "لن تظهر %@ المدونة في القارئ الخاص بك انقر للتراجع.";
 
@@ -10924,7 +10984,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "الوسوم";
+"reader.navigation.filter.blog.unspecified" = "المدونات";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

@@ -748,9 +748,6 @@
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Utwórz tag";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Stwórz wpis lub stronę";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Utwórz ikonkę witryny";
 

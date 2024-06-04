@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 11:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "为您的业务、杂志或个人博客创建新站点；或连接现有的 WordPress 站点。";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "创建文章或页面";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "创建文章、页面或故事";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "创建站点图标";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "创建站点";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "创建新文章或页面";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "创建文章、页面或故事";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "创建新菜单将放弃您对当前菜单所做的更改。是否确定要继续？";
@@ -8776,6 +8764,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "图像质量";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "取消";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "获取最新版本";
+
+/* Update button title */
+"appUpdate.action.update" = "更新";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "要使用此应用程序，请下载最新版本。";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "可用的应用程序更新";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "版本 %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "新功能";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音频文件";
 
@@ -8989,6 +8998,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "连接";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "从音频创建的文章";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "创建文章或页面";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "创建专属于您的定制仪表盘并选择查看哪些报告。 重点关注您最关心的数据。";
@@ -10336,6 +10351,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "正在保存草稿……";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "升级以获得更多请求次数";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "您的可用请求次数不足，无法从音频创建文章。";
+
+/* Button title */
+"postFromAudio.ok" = "确定";
+
+/* Button title */
+"postFromAudio.retry" = "重试";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "出错了";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "可用的请求次数：";
+
+/* The screen title */
+"postFromAudio.title" = "从音频创建的文章";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "正在处理…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "正在录音…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作者是 %@。";
 
@@ -10775,6 +10817,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "更多";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "完成";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "选择适合您的颜色和字体。 阅读文章时，请点击屏幕顶部的 AA 图标。";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "阅读偏好";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "点击顶部的下拉菜单，然后选择“标签”，即可访问您所关注的标签下的数据流。";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "标签流";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "阅读器新功能";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "博客 %@ 将不再显示在您的阅读器中。 轻点以撤消。";
 
@@ -10909,7 +10969,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "标签";
+"reader.navigation.filter.blog.unspecified" = "博客";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

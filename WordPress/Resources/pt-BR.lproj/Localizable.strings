@@ -1919,12 +1919,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Crie um novo site para o seu negócio, revista ou blog pessoal ou conecte uma instalação WordPress já existente.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Criar um post ou página";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Criar um post, página ou story";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Criar um ícone para o site";
 
@@ -1942,12 +1936,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Crie seu site";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Cria um novo post ou página";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Cria um novo post, página ou story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Ao criar um novo menu as alterações feitas no menu atual serão perdidas. Tem certeza de que deseja continuar?";
@@ -9362,10 +9350,6 @@ but tapping on this button will remove their like from the post. */
 /* Singular button title to filter the Reader stream by blog.
 %1$d is a placeholder for the number of blogs. */
 "reader.navigation.filter.blog.singular" = "%1$d blog";
-
-/* Button title to filter the Reader stream by blog.
-This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Tags";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
