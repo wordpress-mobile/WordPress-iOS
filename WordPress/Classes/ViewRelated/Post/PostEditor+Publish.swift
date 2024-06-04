@@ -135,14 +135,14 @@ extension PublishingEditor {
             guard !isUploadingMedia else {
                 return displayMediaIsUploadingAlert()
             }
-            performUpdateAction()
+            performUpdateAction(analyticsStat: .editorUpdatedPost)
         case .submitForReview:
             guard !isUploadingMedia else {
                 return displayMediaIsUploadingAlert()
             }
             var changes = RemotePostUpdateParameters()
             changes.status = Post.Status.pending.rawValue
-            performUpdateAction(changes: changes)
+            performUpdateAction(changes: changes, analyticsStat: .editorPublishedPost)
         case .save, .saveAsDraft:
             wpAssertionFailure("No longer used and supported")
             break
@@ -177,7 +177,7 @@ extension PublishingEditor {
         dismissOrPopView()
     }
 
-    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil) {
+    private func performUpdateAction(changes: RemotePostUpdateParameters? = nil, analyticsStat: WPAnalyticsStat) {
         SVProgressHUD.setDefaultMaskType(.clear)
         SVProgressHUD.show()
         postEditorStateContext.updated(isBeingPublished: true)
@@ -187,6 +187,7 @@ extension PublishingEditor {
                 let post = try await PostCoordinator.shared._save(post, changes: changes)
                 self.post = post
                 self.createRevisionOfPost()
+                self.trackPostSave(stat: analyticsStat)
             } catch {
                 postEditorStateContext.updated(isBeingPublished: false)
             }

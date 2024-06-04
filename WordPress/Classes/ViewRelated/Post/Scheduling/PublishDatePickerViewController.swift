@@ -50,16 +50,6 @@ extension PublishDatePickerViewController {
     }
 }
 
-/// - warning: deprecated (kahu-offline-mode)
-final class PublishDatePickerHelper: NSObject {
-    @objc class func makeDatePicker(post: AbstractPost, isRequired: Bool) -> UIViewController {
-        var viewModel = PublishSettingsViewModel(post: post)
-        return PublishDatePickerViewController.make(viewModel: viewModel) { date in
-            viewModel.setDate(date)
-        }
-    }
-}
-
 struct PublishDatePickerView: View {
     @State var configuration: PublishDatePickerConfiguration
 
