@@ -50,37 +50,23 @@ class PostCoordinator: NSObject {
     private var observerUUIDs: [AbstractPost: UUID] = [:]
 
     private let mediaCoordinator: MediaCoordinator
-
-    private let mainService: PostService
-
     private let actionDispatcherFacade: ActionDispatcherFacade
-    private let isSyncPublishingEnabled: Bool
 
     /// The initial sync retry delay. By default, 8 seconds.
     var syncRetryDelay: TimeInterval = 8
 
     // MARK: - Initializers
 
-    init(mainService: PostService? = nil,
-         mediaCoordinator: MediaCoordinator? = nil,
+    init(mediaCoordinator: MediaCoordinator? = nil,
          actionDispatcherFacade: ActionDispatcherFacade = ActionDispatcherFacade(),
-         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance(),
-         isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled) {
+         coreDataStack: CoreDataStackSwift = ContextManager.sharedInstance()) {
         self.coreDataStack = coreDataStack
-
-        let mainContext = self.coreDataStack.mainContext
-
-        self.mainService = mainService ?? PostService(managedObjectContext: mainContext)
         self.mediaCoordinator = mediaCoordinator ?? MediaCoordinator.shared
-
         self.actionDispatcherFacade = actionDispatcherFacade
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
 
         super.init()
 
-        if isSyncPublishingEnabled {
-            NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
-        }
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateReachability), name: .reachabilityChanged, object: nil)
     }
 
     struct PublishingOptions {
@@ -624,23 +610,13 @@ class PostCoordinator: NSObject {
         post.autoUploadAttemptsCount = NSNumber(value: automatedRetry ? post.autoUploadAttemptsCount.intValue + 1 : 0)
 
         guard mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry) else {
-            change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost, URLError(.unknown))))
-            }
+            completion(.failure(SavingError.mediaFailure(post, URLError(.unknown))))
             return
         }
 
-        change(post: post, status: .pushing)
-
-        let hasPendingMedia: Bool
-        if isSyncPublishingEnabled {
-            hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
-        } else {
-            hasPendingMedia = mediaCoordinator.isUploadingMedia(for: post) || post.hasFailedMedia
-        }
+        let hasPendingMedia = post.media.contains { $0.remoteStatus != .sync }
 
         if hasPendingMedia {
-            change(post: post, status: .pushingMedia)
             // Only observe if we're not already
             guard !isObserving(post: post) else {
                 return
@@ -662,18 +638,13 @@ class PostCoordinator: NSObject {
         completion(.success(post))
     }
 
-    func updateMediaBlocksBeforeSave(in post: AbstractPost, with media: Set<Media>) {
+    private func updateMediaBlocksBeforeSave(in post: AbstractPost, with media: Set<Media>) {
         guard let postContent = post.content else {
             return
         }
         let contentParser = GutenbergContentParser(for: postContent)
         media.forEach { self.updateReferences(to: $0, in: contentParser.blocks, post: post) }
         post.content = contentParser.html()
-    }
-
-    // - warning: deprecated (kahu-offline-mode)
-    func cancelAnyPendingSaveOf(post: AbstractPost) {
-        removeObserver(for: post)
     }
 
     func isUploading(post: AbstractPost) -> Bool {
@@ -757,9 +728,7 @@ class PostCoordinator: NSObject {
             // completion() multiple times.
             self.removeObserver(for: post)
 
-            self.change(post: post, status: .failed) { savedPost in
-                completion(.failure(SavingError.mediaFailure(savedPost, error)))
-            }
+            completion(.failure(SavingError.mediaFailure(post, error)))
         }
 
         return mediaCoordinator.addObserver({ [weak self](media, state) in
@@ -770,17 +739,9 @@ class PostCoordinator: NSObject {
             case .ended:
                 let successHandler = {
                     self.updateMediaBlocksBeforeSave(in: post, with: [media])
-                    if self.isSyncPublishingEnabled {
-                        if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
-                    } else {
-                        // Let's check if media uploading is still going, if all finished with success then we can upload the post
-                        if !self.mediaCoordinator.isUploadingMedia(for: post) && !post.hasFailedMedia {
-                            self.removeObserver(for: post)
-                            completion(.success(post))
-                        }
+                    if post.media.allSatisfy({ $0.remoteStatus == .sync }) {
+                        self.removeObserver(for: post)
+                        completion(.success(post))
                     }
                 }
                 switch media.mediaType {
@@ -911,28 +872,6 @@ class PostCoordinator: NSObject {
         return result
     }
 
-    private func change(post: AbstractPost, status: AbstractPostRemoteStatus, then completion: ((AbstractPost) -> ())? = nil) {
-        guard !isSyncPublishingEnabled else {
-            completion?(post)
-            return
-        }
-        guard let context = post.managedObjectContext else {
-            return
-        }
-
-        context.perform {
-            if status == .failed {
-                post.markAsFailedAndDraftIfNeeded()
-            } else {
-                post.remoteStatus = status
-            }
-
-            ContextManager.sharedInstance().saveContextAndWait(context)
-
-            completion?(post)
-        }
-    }
-
     // MARK: - State
 
     func isUpdating(_ post: AbstractPost) -> Bool {
@@ -988,19 +927,6 @@ class PostCoordinator: NSObject {
             handleError(error, for: post)
         }
     }
-
-    private func propertiesForAnalytics(for post: AbstractPost) -> [String: AnyObject] {
-        var properties = [String: AnyObject]()
-        properties["type"] = ((post is Post) ? "post" : "page") as AnyObject
-        if let dotComID = post.blog.dotComID {
-            properties[WPAppAnalyticsKeyBlogID] = dotComID
-        }
-        return properties
-    }
-}
-
-private struct Constants {
-    static let httpCodeForbidden = 403
 }
 
 extension Foundation.Notification.Name {
@@ -1022,11 +948,6 @@ private extension NSManagedObjectID {
 }
 
 private enum Strings {
-    static let movePostToTrash = NSLocalizedString("postsList.movePostToTrash.message", value: "Post moved to trash", comment: "A short message explaining that a post was moved to the trash bin.")
-    static let deletePost = NSLocalizedString("postsList.deletePost.message", value: "Post deleted permanently", comment: "A short message explaining that a post was deleted permanently.")
-    static let movePageToTrash = NSLocalizedString("postsList.movePageToTrash.message", value: "Page moved to trash", comment: "A short message explaining that a page was moved to the trash bin.")
-    static let deletePage = NSLocalizedString("postsList.deletePage.message", value: "Page deleted permanently", comment: "A short message explaining that a page was deleted permanently.")
     static let genericErrorTitle = NSLocalizedString("postNotice.errorTitle", value: "An error occured", comment: "A generic error message title")
     static let buttonOK = NSLocalizedString("postNotice.ok", value: "OK", comment: "Button OK")
-    static let errorUnsyncedChangesMessage = NSLocalizedString("postNotice.errorUnsyncedChangesMessage", value: "The app is uploading previously made changes to the server. Please try again later.", comment: "An error message")
 }

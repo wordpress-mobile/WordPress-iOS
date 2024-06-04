@@ -98,15 +98,11 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 extension PostEditor {
 
     var editorHasContent: Bool {
-        return post.hasContent()
+        post.hasContent()
     }
 
     var editorHasChanges: Bool {
-        if FeatureFlag.syncPublishing.enabled {
-            return !post.changes.isEmpty
-        } else {
-            return post.hasUnsavedChanges()
-        }
+        !post.changes.isEmpty
     }
 
     func editorContentWasUpdated() {
@@ -133,10 +129,6 @@ extension PostEditor {
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-
         if post.original().status == .trash {
             showPostTrashedOverlay()
         } else {

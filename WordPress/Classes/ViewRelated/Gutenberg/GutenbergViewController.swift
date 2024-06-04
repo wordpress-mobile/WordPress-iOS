@@ -337,7 +337,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         gutenberg.delegate = self
         fetchBlockSettings()
-        presentNewPageNoticeIfNeeded()
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
@@ -514,19 +513,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     func showEditorHelp() {
         WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
         gutenberg.showEditorHelp()
-    }
-
-    private func presentNewPageNoticeIfNeeded() {
-        guard !FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-        // Validate if the post is a newly created page or not.
-        guard post is Page,
-            post.isDraft(),
-            post.remoteStatus == AbstractPostRemoteStatus.local else { return }
-
-        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
-        gutenberg.showNotice(message)
     }
 
     private func handleMissingBlockAlertButtonPressed() {

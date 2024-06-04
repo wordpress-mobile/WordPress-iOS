@@ -23,7 +23,7 @@ class PostRepositoryTests: CoreDataTestCase {
         remoteMock = PostServiceRESTMock()
         let remoteFactory = PostServiceRemoteFactoryMock()
         remoteFactory.remoteToReturn = remoteMock
-        repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory, isSyncPublishingEnabled: false)
+        repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory)
     }
 
     func testFetchAllPagesAPIError() async throws {

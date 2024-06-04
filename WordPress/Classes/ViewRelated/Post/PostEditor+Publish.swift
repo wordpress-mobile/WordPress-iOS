@@ -69,9 +69,7 @@ extension PublishingEditor {
             guard let self = self else {
                 return
             }
-
-            let hasChanges = FeatureFlag.syncPublishing.enabled ? self.post.hasChanges : self.post.hasLocalChanges()
-            if hasChanges {
+            if self.post.hasChanges {
                 guard let context = self.post.managedObjectContext else {
                     return
                 }
