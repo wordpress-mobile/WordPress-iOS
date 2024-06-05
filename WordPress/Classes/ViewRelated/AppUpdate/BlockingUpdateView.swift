@@ -32,9 +32,9 @@ struct BlockingUpdateView: View {
             appInfoView
                 .padding([.top, .bottom], 16)
 
-            whatsNewView
-
-            Spacer()
+            ScrollView {
+                whatsNewView
+            }
 
             DSButton(title: viewModel.latestVersionButtonTitle, style: .init(emphasis: .primary, size: .large)) {
                 onButtonTapped()
