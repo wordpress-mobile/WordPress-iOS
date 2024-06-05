@@ -22,10 +22,16 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     private let tableView = UITableView(frame: .zero, style: .plain)
 
     // Reply properties
-    private var replyTextView: ReplyTextView?
+
+    private lazy var replyTextViewController = CommentDetailReplyTextViewController(comment: comment) { [weak self] content in
+        self?.createReply(content: content)
+    }
+
+    private var replyTextView: ReplyTextView {
+        return replyTextViewController.replyTextView
+    }
+
     private var suggestionsTableView: SuggestionsTableView?
-    private var keyboardManager: KeyboardDismissHelper?
-    private var dismissKeyboardTapGesture = UITapGestureRecognizer()
 
     @objc weak var commentDelegate: CommentDetailsDelegate?
     private weak var notificationDelegate: CommentDetailsNotificationDelegate?
@@ -184,21 +190,11 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
-        setupKeyboardManager()
         configureNavigationBar()
         configureTable()
         configureSections()
+        configureReplyView()
         refreshCommentReplyIfNeeded()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        keyboardManager?.startListeningToKeyboardNotifications()
-    }
-
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        keyboardManager?.stopListeningToKeyboardNotifications()
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -216,7 +212,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
     @objc func displayComment(_ comment: Comment, isLastInList: Bool = true) {
         self.comment = comment
         self.isLastInList = isLastInList
-        replyTextView?.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
+        replyTextViewController.update(with: comment)
         refreshData()
         refreshCommentReplyIfNeeded()
     }
@@ -245,6 +241,12 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         let bottomSheetViewController = BottomSheetViewController(childViewController: controller, customHeaderSpacing: 0)
         bottomSheetViewController.show(from: self)
         self.changeStatusViewController = bottomSheetViewController
+    }
+
+    // MARK: - API
+
+    func showReplyView() {
+        replyTextViewController.showReplyView(in: view)
     }
 }
 
@@ -287,6 +289,13 @@ private extension CommentDetailViewController {
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
+    }
+
+    func configureReplyView() {
+        if #available(iOS 16.0, *) {
+            self.tableView.keyboardDismissMode = .interactive
+        }
+        self.replyTextView.delegate = self
     }
 
     func configureModerationView() {
@@ -641,12 +650,8 @@ private extension String {
     // MARK: Constants
     static let replyIndicatorCellIdentifier = "reply-indicator-cell"
     static let replyIndicatorTextIdentifier = "reply-indicator-text"
-    static let replyViewAccessibilityId = "reply-comment-view"
 
     // MARK: Localization
-    static let replyPlaceholderFormat = NSLocalizedString("Reply to %1$@", comment: "Placeholder text for the reply text field."
-                                                          + "%1$@ is a placeholder for the comment author."
-                                                          + "Example: Reply to Pamela Nguyen")
     static let replyIndicatorLabelText = NSLocalizedString("You replied to this comment.", comment: "Informs that the user has replied to this comment.")
 }
 
@@ -767,54 +772,6 @@ extension CommentDetailViewController: UITableViewDelegate, UITableViewDataSourc
 
 private extension CommentDetailViewController {
 
-    func configureReplyView() {
-        let replyView = ReplyTextView(width: view.frame.width)
-
-        replyView.placeholder = String(format: .replyPlaceholderFormat, comment.authorForDisplay())
-        replyView.accessibilityIdentifier = .replyViewAccessibilityId
-        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        replyView.delegate = self
-        replyView.onReply = { [weak self] content in
-            self?.createReply(content: content)
-        }
-
-        replyView.isHidden = true
-        containerStackView.addArrangedSubview(replyView)
-        replyTextView = replyView
-    }
-
-    func showReplyView() {
-        guard replyTextView?.isFirstResponder == false else {
-            return
-        }
-
-        replyTextView?.isHidden = false
-        replyTextView?.becomeFirstResponder()
-        addDismissKeyboardTapGesture()
-    }
-
-    func setupKeyboardManager() {
-        guard let replyTextView = replyTextView,
-              let bottomLayoutConstraint = view.constraints.first(where: { $0.firstAttribute == .bottom }) else {
-                  return
-              }
-
-        keyboardManager = KeyboardDismissHelper(parentView: view,
-                                                scrollView: tableView,
-                                                dismissableControl: replyTextView,
-                                                bottomLayoutConstraint: bottomLayoutConstraint)
-    }
-
-    func addDismissKeyboardTapGesture() {
-        dismissKeyboardTapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tableView.addGestureRecognizer(dismissKeyboardTapGesture)
-    }
-
-    @objc func dismissKeyboard() {
-        view.endEditing(true)
-        tableView.removeGestureRecognizer(dismissKeyboardTapGesture)
-    }
-
     @objc func createReply(content: String) {
         isNotificationComment ? WPAppAnalytics.track(.notificationsCommentRepliedTo) :
                                 CommentAnalytics.trackCommentRepliedTo(comment: comment)
@@ -859,11 +816,9 @@ private extension CommentDetailViewController {
     }
 
     func configureSuggestionsView() {
-        guard shouldShowSuggestions,
-              let siteID = siteID,
-              let replyTextView = replyTextView else {
-                  return
-              }
+        guard shouldShowSuggestions, let siteID = siteID else {
+            return
+        }
 
         let suggestionsView = SuggestionsTableView(siteID: siteID, suggestionType: .mention, delegate: self)
         suggestionsView.translatesAutoresizingMaskIntoConstraints = false
@@ -932,7 +887,7 @@ extension CommentDetailViewController: ReplyTextViewDelegate {
 extension CommentDetailViewController: SuggestionsTableViewDelegate {
 
     func suggestionsTableView(_ suggestionsTableView: SuggestionsTableView, didSelectSuggestion suggestion: String?, forSearchText text: String) {
-        replyTextView?.replaceTextAtCaret(text as NSString?, withText: suggestion)
+        replyTextView.replaceTextAtCaret(text as NSString?, withText: suggestion)
         suggestionsTableView.hideSuggestions()
     }
 

@@ -3906,6 +3906,8 @@
 		F49B9A0A293A3249000CEFCE /* MigrationAnalyticsTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */; };
 		F49D7BEB29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */; };
 		F49D7BEC29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */; };
+		F4A1A3D92C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A1A3D82C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift */; };
+		F4A1A3DA2C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4A1A3D82C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift */; };
 		F4AA1E5E2AF66D3300EBA201 /* AllDomainsListItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4141EEB2AE945C7000D2AAE /* AllDomainsListItemViewModel.swift */; };
 		F4B0F4832ADED9B5003ABC61 /* DomainsService+AllDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B0F4822ADED9B5003ABC61 /* DomainsService+AllDomains.swift */; };
 		F4B0F4842ADED9B5003ABC61 /* DomainsService+AllDomains.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4B0F4822ADED9B5003ABC61 /* DomainsService+AllDomains.swift */; };
@@ -9335,6 +9337,7 @@
 		F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAnalyticsTracker.swift; sourceTree = "<group>"; };
 		F49B9A07293A21F4000CEFCE /* MigrationEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationEvent.swift; sourceTree = "<group>"; };
 		F49D7BEA29DF329500CB93A5 /* UIPopoverPresentationController+PopoverAnchor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPopoverPresentationController+PopoverAnchor.swift"; sourceTree = "<group>"; };
+		F4A1A3D82C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDetailReplyTextViewController.swift; sourceTree = "<group>"; };
 		F4B0F4822ADED9B5003ABC61 /* DomainsService+AllDomains.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DomainsService+AllDomains.swift"; sourceTree = "<group>"; };
 		F4BECD1A288EE5220078391A /* SuggestionsViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuggestionsViewModelType.swift; sourceTree = "<group>"; };
 		F4C1FC622A44831300AD7CB0 /* PrivacySettingsAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacySettingsAnalyticsTracker.swift; sourceTree = "<group>"; };
@@ -15735,6 +15738,7 @@
 				2906F810110CDA8900169D56 /* EditCommentViewController.m */,
 				0A3FCA1C28B71CBC00499A15 /* FullScreenCommentReplyViewModel.swift */,
 				328CEC5D23A532BA00A6899E /* FullScreenCommentReplyViewController.swift */,
+				F4A1A3D82C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -22641,6 +22645,7 @@
 				B532D4E9199D4357006E4DF6 /* NoteBlockCommentTableViewCell.swift in Sources */,
 				4AA33EF829963ABE005B6E23 /* ReaderAbstractTopic+Lookup.swift in Sources */,
 				73BFDA8A211D054800907245 /* Notifiable.swift in Sources */,
+				F4A1A3D92C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift in Sources */,
 				404B35D322E9BA0800AD0B37 /* RegisterDomainDetailsViewModel+CountryDialCodes.swift in Sources */,
 				F41D98D72B389735004EC050 /* DashboardDynamicCardAnalyticsEvent.swift in Sources */,
 				D8EB1FD121900810002AE1C4 /* BlogListViewController+SiteCreation.swift in Sources */,
@@ -25787,6 +25792,7 @@
 				FABB24532602FC2C00C8785C /* GutenbergGalleryUploadProcessor.swift in Sources */,
 				FABB24542602FC2C00C8785C /* StoriesIntroViewController.swift in Sources */,
 				FABB24552602FC2C00C8785C /* WPStyleGuide+Suggestions.m in Sources */,
+				F4A1A3DA2C0F84F700B2EFA9 /* CommentDetailReplyTextViewController.swift in Sources */,
 				FABB24562602FC2C00C8785C /* SiteStatsInsightsViewModel.swift in Sources */,
 				0C71959C2A3CA582002EA18C /* SiteSettingsRelatedPostsView.swift in Sources */,
 				FACF66CE2ADD645C008C3E13 /* PostListHeaderView.swift in Sources */,
