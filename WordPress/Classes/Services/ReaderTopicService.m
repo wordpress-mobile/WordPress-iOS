@@ -551,16 +551,7 @@ static NSString * const ReaderTopicCurrentTopicPathKey = @"ReaderTopicCurrentTop
 
         NSManagedObjectID * __block topicObjectID = nil;
         [self.coreDataStack performAndSaveUsingBlock:^(NSManagedObjectContext *context) {
-            ReaderSiteTopic *siteTopic = nil;
-            if (isFeed) {
-                siteTopic = [ReaderSiteTopic lookupWithFeedID:siteID inContext:context];
-            } else {
-                siteTopic = [ReaderSiteTopic lookupWithSiteID:siteID inContext:context];
-            }
-            if (siteTopic) {
-                [context deleteObject:siteTopic];
-            }
-
+            // always upsert new data to existing site topic.
             ReaderSiteTopic *topic = [self siteTopicForRemoteSiteInfo:siteInfo inContext:context];
             [context obtainPermanentIDsForObjects:@[topic] error:nil];
             topicObjectID = topic.objectID;
