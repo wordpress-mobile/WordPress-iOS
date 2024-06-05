@@ -817,6 +817,8 @@ extension NotificationsViewController {
             let viewController: UIViewController?
             if note.kind == .comment {
                 viewController = getNotificationCommentDetailViewController(for: note)
+            } else if note.achievement != nil {
+                viewController = getNotificationMilestoneViewController(for: note)
             } else {
                 viewController = getNotificationDetailsViewController(for: note)
             }
@@ -848,6 +850,21 @@ extension NotificationsViewController {
         }
         configureDetailsViewController(detailsViewController, withNote: note)
         return detailsViewController
+    }
+
+    private func getNotificationMilestoneViewController(for note: Notification) -> UIViewController {
+        let hostingController = MilestoneHostingController(
+            rootView: MilestoneView(
+                milestoneImageURL: URL(
+                    string: "https://fastly.picsum.photos/id/118/136/136.jpg?hmac=awxrwstCvwE4TbHX1BAVRAfBfjylou8s0NpL5Q-yUko"
+                )!,
+                accentColor: .mint,
+                title: "Happy aniversary with WordPress! "
+            )
+        )
+        hostingController.navigationItem.largeTitleDisplayMode = .never
+        hostingController.hidesBottomBarWhenPushed = true
+        return hostingController
     }
 
     private func displayViewController(_ controller: UIViewController) {
@@ -2036,3 +2053,4 @@ extension NotificationsViewController: StoryboardLoadable {
         return "Notifications"
     }
 }
+

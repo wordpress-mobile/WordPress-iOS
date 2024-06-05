@@ -30,7 +30,7 @@ struct AuthorView: View {
     }
 
     private var avatar: some View {
-        AsyncImage(url: avatarURL)
+        CachedAsyncImage(url: avatarURL)
             .frame(
                 width: Constants.avatarDiameter,
                 height: Constants.avatarDiameter

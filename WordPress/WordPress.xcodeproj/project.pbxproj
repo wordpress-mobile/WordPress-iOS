@@ -338,6 +338,10 @@
 		086023DB2B73BA67000D084A /* AvatarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarsView.swift */; };
 		086023DC2B73BA67000D084A /* AvatarsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086023DA2B73BA67000D084A /* AvatarsView.swift */; };
 		086103961EE09C91004D7C01 /* MediaVideoExporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086103951EE09C91004D7C01 /* MediaVideoExporter.swift */; };
+		086980642C0DF0840014211C /* MilestoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980632C0DF0830014211C /* MilestoneView.swift */; };
+		086980652C0DF0840014211C /* MilestoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980632C0DF0830014211C /* MilestoneView.swift */; };
+		086980672C10ADD30014211C /* MilestoneHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980662C10ADD30014211C /* MilestoneHostingController.swift */; };
+		086980682C10ADD30014211C /* MilestoneHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980662C10ADD30014211C /* MilestoneHostingController.swift */; };
 		086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C4D0F1E81F9240011D960 /* Media+Blog.swift */; };
@@ -6186,6 +6190,8 @@
 		086023D62B73B44A000D084A /* HostingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HostingTableViewCell.swift; sourceTree = "<group>"; };
 		086023DA2B73BA67000D084A /* AvatarsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarsView.swift; sourceTree = "<group>"; };
 		086103951EE09C91004D7C01 /* MediaVideoExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaVideoExporter.swift; sourceTree = "<group>"; };
+		086980632C0DF0830014211C /* MilestoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneView.swift; sourceTree = "<group>"; };
+		086980662C10ADD30014211C /* MilestoneHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneHostingController.swift; sourceTree = "<group>"; };
 		086C117B2A2F6451004A3821 /* CompliancePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopover.swift; sourceTree = "<group>"; };
 		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
 		086CCE7C2A7A70F0002A349E /* DashboardGoogleDomainsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardView.swift; sourceTree = "<group>"; };
@@ -12247,6 +12253,8 @@
 			children = (
 				3FEC241425D73E8B007AFE63 /* ConfettiView.swift */,
 				084409972C0A5060003A49F7 /* AuthorView.swift */,
+				086980632C0DF0830014211C /* MilestoneView.swift */,
+				086980662C10ADD30014211C /* MilestoneHostingController.swift */,
 			);
 			path = "Milestone Notifications";
 			sourceTree = "<group>";
@@ -22078,6 +22086,7 @@
 				F1D690161F82913F00200E30 /* FeatureFlag.swift in Sources */,
 				F499CFB32BD978340072FB00 /* DynamicDashboardCard.swift in Sources */,
 				74989B8C2088E3650054290B /* BlogDetailsViewController+Activity.swift in Sources */,
+				086980672C10ADD30014211C /* MilestoneHostingController.swift in Sources */,
 				FA3A28182A38D36900206D74 /* BlazeCampaignTableViewCell.swift in Sources */,
 				FABEC3502BDAABA8009F513C /* FeatureFlagRolloutStore.swift in Sources */,
 				B532D4EB199D4357006E4DF6 /* NoteBlockTableViewCell.swift in Sources */,
@@ -22909,6 +22918,7 @@
 				D83CA3A920842D190060E310 /* StockPhotosPageable.swift in Sources */,
 				FAF13E3025A59240003EE470 /* JetpackRestoreStatusViewController.swift in Sources */,
 				3FA62FD326FE2E4B0020793A /* ShapeWithTextView.swift in Sources */,
+				086980642C0DF0840014211C /* MilestoneView.swift in Sources */,
 				F10465142554260600655194 /* BindableTapGestureRecognizer.swift in Sources */,
 				E62079DF1CF79FC200F5CD46 /* ReaderSearchSuggestion.swift in Sources */,
 				0CB4057E29C8DF84008EED0A /* BlogDashboardPersonalizeCardCell.swift in Sources */,
@@ -24941,6 +24951,7 @@
 				FABB22102602FC2C00C8785C /* PageTemplateCategory+CoreDataProperties.swift in Sources */,
 				FABB22112602FC2C00C8785C /* MyProfileHeaderView.swift in Sources */,
 				FABB22142602FC2C00C8785C /* TitleBadgeDisclosureCell.swift in Sources */,
+				086980682C10ADD30014211C /* MilestoneHostingController.swift in Sources */,
 				FABB22152602FC2C00C8785C /* FormattableContent.swift in Sources */,
 				4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */,
 				C7AFF87D283D5CF4000E01DF /* QRLoginVerifyCoordinator.swift in Sources */,
@@ -25232,6 +25243,7 @@
 				FABB22E32602FC2C00C8785C /* PreviewWebKitViewController.swift in Sources */,
 				FA85F5F62A9DFDCC001D8425 /* NoSitesViewModel.swift in Sources */,
 				FABB22E42602FC2C00C8785C /* PeriodChart.swift in Sources */,
+				086980652C0DF0840014211C /* MilestoneView.swift in Sources */,
 				98BC522B27F6259700D6E8C2 /* BloggingPromptsFeatureDescriptionView.swift in Sources */,
 				3F2ABE1C277118C9005D8916 /* VideoLimitsAlertPresenter.swift in Sources */,
 				C7F7BE0726262B9A00CE547F /* AuthenticationHandler.swift in Sources */,

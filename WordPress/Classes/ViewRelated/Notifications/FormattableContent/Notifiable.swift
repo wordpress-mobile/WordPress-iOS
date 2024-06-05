@@ -20,6 +20,27 @@ enum NotificationKind: String {
     case unknown        = "unknown"
 }
 
+enum NotificationAchievement: String {
+    case userGoalMet = "user_goal_met"
+    case a8cAchievement = "automattician_achievement"
+    case burritoFriday = "achieve_burrito_friday"
+    case dailyStreak = "achieve_daily_streak"
+    case followedMilestone = "followed_milestone_achievement"
+    case likeMilestone = "like_milestone_achievement"
+    case onFire = "on_fire_achievement"
+    case postMilestone = "post_milestone_achievement"
+    case userAnniversary = "achieve_user_anniversary"
+    case bestFollowedDayFeat = "best_followed_day_feat"
+    case bestLikedDayFeat = "best_liked_day_feat"
+    case newTrafficSurge = "new_traffic_surge"
+    case privacyChange = "privacy_change"
+    case freeTrialStart = "free_trial_start"
+    case freeTrialNearEndNote = "free_trial_near_end_note"
+    case freeTrialEnd = "free_trial_end"
+    case ascProfileRegenerationStarted = "asc_profile_regeneration_started"
+    case ascProfileRegenerationFinished = "asc_profile_regeneration_finished"
+}
+
 extension NotificationKind {
     /// Enumerates the Kinds that currently provide Rich Notification support
     private static var kindsWithRichNotificationSupport: Set<NotificationKind> = [
@@ -95,6 +116,13 @@ extension Notifiable {
             return .unknown
         }
         return kind
+    }
+
+    var achievement: NotificationAchievement? {
+        guard let type = type, let achievement = NotificationAchievement(rawValue: type) else {
+            return nil
+        }
+        return achievement
     }
 }
 
