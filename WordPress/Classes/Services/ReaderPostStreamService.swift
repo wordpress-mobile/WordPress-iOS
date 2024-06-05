@@ -62,10 +62,15 @@ class ReaderPostStreamService {
         do {
             let results = try context.fetch(fetchRequest)
             for object in results {
-                guard let objectData = object as? NSManagedObject else { continue }
-                context.delete(objectData)
-
-                // Checar se ta em uso ou foi salvo
+                // do not delete if the post is displayed somewhere or saved by the user.
+                // the content and all the metadata should be updated correctly later while preserving
+                // `inUse` and `isSavedForLater`.
+                guard let post = object as? ReaderPost,
+                      !post.inUse,
+                      !post.isSavedForLater else {
+                    continue
+                }
+                context.delete(post)
             }
         } catch let error {
             print("Clean post error:", error)
