@@ -81,6 +81,7 @@ final class CommentModerationSheetHostingView: UIView {
                 CommentModerationView(viewModel: viewModel)
                     .readSize(sizeChanged)
             }
+            .ignoresSafeArea(.keyboard)
         }
     }
 }
