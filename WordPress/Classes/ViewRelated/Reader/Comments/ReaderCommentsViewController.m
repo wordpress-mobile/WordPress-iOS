@@ -848,33 +848,40 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
 /// method locates that comment and scrolls the tableview to display it.
 - (void)navigateToCommentIDIfNeeded
 {
-    if (self.navigateToCommentID != nil) {
-        // Find the comment if it exists
-        NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
-        NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
-        Comment *comment = [filteredComments firstObject];
+    if (self.navigateToCommentID == nil) {
+        return;
+    }
+    double delayInSeconds = 0.5;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self scrollToCommentID];
+    });
+}
 
-        if (!comment) {
-            return;
-        }
+- (void)scrollToCommentID
+{
+    // Find the comment if it exists
+    NSArray<Comment *> *comments = [self.tableViewHandler.resultsController fetchedObjects];
+    NSArray<Comment *> *filteredComments = [comments filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"commentID == %@", self.navigateToCommentID]];
+    Comment *comment = [filteredComments firstObject];
 
-        // Force the table view to be laid out first before scrolling to indexPath.
-        // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
-        NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
-        [self.tableView layoutIfNeeded];
+    if (!comment) {
+        return;
+    }
 
-        // Ensure that the indexPath exists before scrolling to it.
-        if (indexPath.section >=0
-            && indexPath.row >=0
-            && indexPath.section < self.tableView.numberOfSections
-            && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
-        {
-            [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
-            self.highlightedIndexPath = indexPath;
-        }
+    // Force the table view to be laid out first before scrolling to indexPath.
+    // This avoids a case where a cell instance could be orphaned and displayed randomly on top of the other cells.
+    NSIndexPath *indexPath = [self.tableViewHandler.resultsController indexPathForObject:comment];
+    [self.tableView layoutIfNeeded];
 
-        // Reset the commentID so we don't do this again.
-        self.navigateToCommentID = nil;
+    // Ensure that the indexPath exists before scrolling to it.
+    if (indexPath.section >=0
+        && indexPath.row >=0
+        && indexPath.section < self.tableView.numberOfSections
+        && indexPath.row < [self.tableView numberOfRowsInSection:indexPath.section])
+    {
+        [self.tableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        self.highlightedIndexPath = indexPath;
     }
 }
 
