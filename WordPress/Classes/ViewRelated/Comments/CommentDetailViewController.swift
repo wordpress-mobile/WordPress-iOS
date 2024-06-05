@@ -23,7 +23,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // Reply properties
 
-    private lazy var replyTextViewController = CommentDetailReplyTextViewController(comment: comment) { [weak self] content in
+    private lazy var replyTextViewController = CommentDetailReplyTextViewController(view: view, comment: comment) { [weak self] content in
         self?.createReply(content: content)
     }
 
@@ -286,15 +286,13 @@ private extension CommentDetailViewController {
     }
 
     func configureTableView() {
+        self.tableView.keyboardDismissMode = .interactive
         self.tableView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(tableView)
         self.view.pinSubviewToAllEdges(tableView)
     }
 
     func configureReplyView() {
-        if #available(iOS 16.0, *) {
-            self.tableView.keyboardDismissMode = .interactive
-        }
         self.replyTextView.delegate = self
     }
 

@@ -5,6 +5,8 @@ final class CommentModerationViewModel: ObservableObject {
 
     @Published var state: CommentModerationState
     @Published var isLoading: Bool = false
+    @Published var reply: String? = nil
+
     private let comment: Comment
     private let coordinator: CommentModerationCoordinator
     private let notification: Notification?
@@ -63,7 +65,7 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapReply() {
-        // TODO
+        self.coordinator.didTapReply()
     }
 
     func didTapPrimaryCTA() {

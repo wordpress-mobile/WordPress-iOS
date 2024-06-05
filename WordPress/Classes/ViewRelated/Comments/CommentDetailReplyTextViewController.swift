@@ -2,6 +2,10 @@ import UIKit
 
 final class CommentDetailReplyTextViewController: NSObject, UIScrollViewDelegate {
 
+    // MARK: - Dependencies
+
+    private unowned var view: UIView
+
     // MARK: - Properties
 
     let replyTextView: ReplyTextView
@@ -13,23 +17,26 @@ final class CommentDetailReplyTextViewController: NSObject, UIScrollViewDelegate
         )
     }()
 
-    private weak var bottomConstraint: NSLayoutConstraint?
-
     // MARK: - Init
 
-    init(placeholder: String, onReply: ((String) -> Void)? = nil) {
-        let replyView = ReplyTextView(width: 0)
-        replyView.placeholder = placeholder
-        replyView.accessibilityIdentifier = Strings.replyViewAccessibilityId
-        replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
-        replyView.onReply = onReply
-        self.replyTextView = replyView
+    init(view: UIView, placeholder: String, onReply: ((String) -> Void)? = nil) {
+        self.view = view
+        self.replyTextView = {
+            let replyView = ReplyTextView(width: 0)
+            replyView.isHidden = true
+            replyView.placeholder = placeholder
+            replyView.accessibilityIdentifier = Strings.replyViewAccessibilityId
+            replyView.accessibilityHint = NSLocalizedString("Reply Text", comment: "Notifications Reply Accessibility Identifier")
+            replyView.onReply = onReply
+            return replyView
+        }()
         super.init()
         self.observeKeyboardNotifications()
+        self.layout(in: view)
     }
 
-    convenience init(comment: Comment, onReply: ((String) -> Void)? = nil) {
-        self.init(placeholder: Self.placeholder(from: comment), onReply: onReply)
+    convenience init(view: UIView, comment: Comment, onReply: ((String) -> Void)? = nil) {
+        self.init(view: view, placeholder: Self.placeholder(from: comment), onReply: onReply)
     }
 
     // MARK: - API
@@ -38,10 +45,7 @@ final class CommentDetailReplyTextViewController: NSObject, UIScrollViewDelegate
         guard !replyTextView.isFirstResponder else {
             return
         }
-        self.layout(in: view)
-        self.replyTextView.isHidden = true
         self.replyTextView.becomeFirstResponder()
-        view.addGestureRecognizer(dismissKeyboardTapGesture)
     }
 
     func update(with comment: Comment) {
@@ -56,24 +60,15 @@ private extension CommentDetailReplyTextViewController {
     // MARK: Layout
 
     private func layout(in view: UIView) {
-        replyTextView.removeFromSuperview()
         view.addSubview(replyTextView)
         if #available(iOS 17.0, *) {
             view.keyboardLayoutGuide.usesBottomSafeArea = false
         }
-        let bottomConstraint: NSLayoutConstraint = {
-            if #available(iOS 16.0, *) {
-                return replyTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
-            } else {
-                return replyTextView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            }
-        }()
         NSLayoutConstraint.activate([
             replyTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             replyTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            bottomConstraint
+            replyTextView.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
         ])
-        self.bottomConstraint = bottomConstraint
     }
 
     // MARK: Keyboard Notifications
@@ -88,20 +83,8 @@ private extension CommentDetailReplyTextViewController {
         )
         nc.addObserver(
             self,
-            selector: #selector(keyboardWillDisappear),
+            selector: #selector(keyboardWillHide),
             name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
-        nc.addObserver(
-            self,
-            selector: #selector(keyboardWillChangeFrame),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil
-        )
-        nc.addObserver(
-            self,
-            selector: #selector(keyboardDidHide),
-            name: UIResponder.keyboardDidHideNotification,
             object: nil
         )
     }
@@ -111,35 +94,22 @@ private extension CommentDetailReplyTextViewController {
             return
         }
         self.replyTextView.isHidden = false
-    }
-
-    @objc func keyboardWillChangeFrame(_ note: Foundation.Notification) {
-        guard let view = replyTextView.superview, let bottomConstraint = bottomConstraint, replyTextView.isFirstResponder else {
-            return
-        }
-        let keyboardCoordinateSpace = keyboardCoordinateSpaceFromNote(note) ?? view.window?.window ?? view.coordinateSpace
-        let keyboardFrame = keyboardCoordinateSpace.convert(keyboardFrameEndFromNote(note), to: view.coordinateSpace)
-        print("WILL CHANGE FRAME TO: \(keyboardFrame)")
-    }
-
-    @objc func keyboardWillDisappear() {
-        guard let view = replyTextView.superview, replyTextView.isFirstResponder else {
-            return
+        if dismissKeyboardTapGesture.view == nil {
+            view.addGestureRecognizer(dismissKeyboardTapGesture)
         }
     }
 
-    @objc func keyboardDidHide(_ note: Foundation.Notification) {
-        guard !replyTextView.isFirstResponder, replyTextView.window != nil else {
+    @objc func keyboardWillHide(_ note: Foundation.Notification) {
+        guard replyTextView.isFirstResponder else {
             return
         }
         let duration = durationFromKeyboardNote(note)
         let curve = curveFromKeyboardNote(note)
         let options = UIView.AnimationOptions(rawValue: UInt(curve.rawValue))
         UIView.animate(withDuration: duration, delay: 0, options: options) {
-            self.replyTextView.frame.origin.y += self.replyTextView.bounds.height
+            self.replyTextView.frame.origin.y = self.view.frame.maxY
         } completion: { _ in
-            self.removeReplyTextView()
-
+            self.resetReplyTextView()
         }
     }
 
@@ -158,22 +128,16 @@ private extension CommentDetailReplyTextViewController {
         return curve
     }
 
-    func keyboardFrameEndFromNote(_ note: Foundation.Notification) -> CGRect {
-        return note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect ?? .zero
-    }
-
-    func keyboardCoordinateSpaceFromNote(_ note: Foundation.Notification) -> UICoordinateSpace? {
-        return (note.object as? UIScreen)?.coordinateSpace
-    }
-
     // MARK: -
 
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
         self.replyTextView.resignFirstResponder()
     }
 
-    func removeReplyTextView() {
-        self.replyTextView.removeFromSuperview()
+    func resetReplyTextView() {
+        self.replyTextView.isHidden = true
+        self.view.setNeedsLayout()
+        self.view.layoutIfNeeded()
         if let view = dismissKeyboardTapGesture.view {
             view.removeGestureRecognizer(dismissKeyboardTapGesture)
         }

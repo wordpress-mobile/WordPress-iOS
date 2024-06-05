@@ -20,4 +20,8 @@ final class CommentModerationCoordinator {
     func didDeleteComment() {
         commentDetailViewController.navigationController?.popViewController(animated: true)
     }
+
+    func didTapReply() {
+        commentDetailViewController.showReplyView()
+    }
 }

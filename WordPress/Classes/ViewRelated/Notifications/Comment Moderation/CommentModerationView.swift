@@ -157,6 +157,7 @@ private struct Approved: View {
                     image: .init(url: viewModel.imageURL, placeholder: Image("gravatar")),
                     text: viewModel.userName
                 ) {
+                    self.viewModel.didTapReply()
                 }
                 DSButton(
                     title: likeButtonTitle,
