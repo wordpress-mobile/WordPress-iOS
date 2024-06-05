@@ -12,7 +12,6 @@ class MeViewController: UITableViewController {
 
     override init(style: UITableView.Style) {
         super.init(style: style)
-        navigationItem.title = NSLocalizedString("Me", comment: "Me page title")
         clearsSelectionOnViewWillAppear = false
     }
 
@@ -50,6 +49,7 @@ class MeViewController: UITableViewController {
         reloadViewModel()
 
         extendedLayoutIncludesOpaqueBars = true
+        configureDefaultNavigationBarAppearance()
     }
 
     override func viewDidLayoutSubviews() {
