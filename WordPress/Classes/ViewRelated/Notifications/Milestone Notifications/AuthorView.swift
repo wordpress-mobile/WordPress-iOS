@@ -25,7 +25,8 @@ struct AuthorView: View {
             avatar
             textsVStack
             Spacer()
-            contextButton
+            // Out of scope for current implementation.
+//            contextButton
         }
     }
 
@@ -53,7 +54,7 @@ struct AuthorView: View {
 
     private var contextButton: some View {
         Button(action: {
-
+            // TODO: Out of scope for current iteration.
         }, label: {
             Image(systemName: "ellipsis")
                 .foregroundStyle(Color.DS.Foreground.secondary)

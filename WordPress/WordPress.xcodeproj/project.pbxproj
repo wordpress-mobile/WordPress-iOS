@@ -342,6 +342,8 @@
 		086980652C0DF0840014211C /* MilestoneView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980632C0DF0830014211C /* MilestoneView.swift */; };
 		086980672C10ADD30014211C /* MilestoneHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980662C10ADD30014211C /* MilestoneHostingController.swift */; };
 		086980682C10ADD30014211C /* MilestoneHostingController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980662C10ADD30014211C /* MilestoneHostingController.swift */; };
+		0869806A2C10F3620014211C /* MilestoneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980692C10F3620014211C /* MilestoneCoordinator.swift */; };
+		0869806B2C10F3620014211C /* MilestoneCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086980692C10F3620014211C /* MilestoneCoordinator.swift */; };
 		086C117C2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C117D2A2F6451004A3821 /* CompliancePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C117B2A2F6451004A3821 /* CompliancePopover.swift */; };
 		086C4D101E81F9240011D960 /* Media+Blog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 086C4D0F1E81F9240011D960 /* Media+Blog.swift */; };
@@ -6192,6 +6194,7 @@
 		086103951EE09C91004D7C01 /* MediaVideoExporter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaVideoExporter.swift; sourceTree = "<group>"; };
 		086980632C0DF0830014211C /* MilestoneView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneView.swift; sourceTree = "<group>"; };
 		086980662C10ADD30014211C /* MilestoneHostingController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneHostingController.swift; sourceTree = "<group>"; };
+		086980692C10F3620014211C /* MilestoneCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MilestoneCoordinator.swift; sourceTree = "<group>"; };
 		086C117B2A2F6451004A3821 /* CompliancePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CompliancePopover.swift; sourceTree = "<group>"; };
 		086C4D0F1E81F9240011D960 /* Media+Blog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Media+Blog.swift"; sourceTree = "<group>"; };
 		086CCE7C2A7A70F0002A349E /* DashboardGoogleDomainsCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardGoogleDomainsCardView.swift; sourceTree = "<group>"; };
@@ -12255,6 +12258,7 @@
 				084409972C0A5060003A49F7 /* AuthorView.swift */,
 				086980632C0DF0830014211C /* MilestoneView.swift */,
 				086980662C10ADD30014211C /* MilestoneHostingController.swift */,
+				086980692C10F3620014211C /* MilestoneCoordinator.swift */,
 			);
 			path = "Milestone Notifications";
 			sourceTree = "<group>";
@@ -21600,6 +21604,7 @@
 				80DB57982AF99E0900C728FF /* BlogListConfiguration.swift in Sources */,
 				80D9CFFA29E5E6FE00FE3400 /* DashboardCardTableView.swift in Sources */,
 				984B4EF320742FCC00F87888 /* ZendeskUtils.swift in Sources */,
+				0869806A2C10F3620014211C /* MilestoneCoordinator.swift in Sources */,
 				982DDF90263238A6002B3904 /* LikeUser+CoreDataClass.swift in Sources */,
 				17D9362324729FB6008B2205 /* Blog+HomepageSettings.swift in Sources */,
 				1E9D544D23C4C56300F6A9E0 /* GutenbergRollout.swift in Sources */,
@@ -26220,6 +26225,7 @@
 				9822A8422624CFB900FD8A03 /* UserProfileSiteCell.swift in Sources */,
 				FABB25882602FC2C00C8785C /* Routes+Notifications.swift in Sources */,
 				FABB25892602FC2C00C8785C /* Autosaver.swift in Sources */,
+				0869806B2C10F3620014211C /* MilestoneCoordinator.swift in Sources */,
 				982D26202788DDF200A41286 /* ReaderCommentsFollowPresenter.swift in Sources */,
 				FABB258A2602FC2C00C8785C /* BlogAuthor.swift in Sources */,
 				FABB258B2602FC2C00C8785C /* Blog+BlogAuthors.swift in Sources */,

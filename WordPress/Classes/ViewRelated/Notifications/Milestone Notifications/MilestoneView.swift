@@ -7,12 +7,12 @@ struct MilestoneView: View {
         static let accentColorHeight: CGFloat = 281
     }
 
-    private let milestoneImageURL: URL
+    private let milestoneImageURL: URL?
     private let accentColor: Color?
     private let title: String
 
     init(
-        milestoneImageURL: URL,
+        milestoneImageURL: URL?,
         accentColor: Color?,
         title: String
     ) {
@@ -78,12 +78,14 @@ struct MilestoneView: View {
     }
 
     private var milestoneImage: some View {
-        CachedAsyncImage(url: milestoneImageURL)
-            .frame(
-                width: Constants.milestoneImageDiameter,
-                height: Constants.milestoneImageDiameter
-            )
-            .clipShape(Circle())
+        CachedAsyncImage(url: milestoneImageURL) { phase in
+            phase.image?.resizable()
+        }
+        .frame(
+            width: Constants.milestoneImageDiameter,
+            height: Constants.milestoneImageDiameter
+        )
+        .clipShape(Circle())
     }
 
     private var titleText: some View {
