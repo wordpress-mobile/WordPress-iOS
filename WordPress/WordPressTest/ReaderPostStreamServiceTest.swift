@@ -27,7 +27,7 @@ final class ReaderPostStreamServiceTest: CoreDataTestCase {
         stubFetchPostsReturningEmptyResults()
 
         // Seed tag locally
-        let tag = try makeTag(slug)
+        let tag = try makeTag(slug, in: mainContext)
         let posts = try seedPosts(for: tag, count: postCount)
 
         // Mark a post as in use
@@ -58,6 +58,29 @@ final class ReaderPostStreamServiceTest: CoreDataTestCase {
         XCTAssertEqual(count, 2)
     }
 
+    func testFetchPostsWithNonExistentTag() async throws {
+        // Given
+        stubFetchPostsReturningEmptyResults()
+
+        // Create a "non-existent" tag
+        let secondaryStack = coreDataStackForTesting()
+        let tag = try makeTag("test", in: secondaryStack.mainContext)
+
+        // When
+        let (count, hasMore) = try await withCheckedThrowingContinuation { continuation in
+            service.fetchPosts(for: tag, isFirstPage: true) { count, hasMore in
+                // the use of checkedThrowingContinuation ensures that the success block should only be called once.
+                continuation.resume(returning: (count, hasMore))
+            } failure: { error in
+                continuation.resume(throwing: error!)
+            }
+        }
+
+        // Then
+        XCTAssertEqual(count, 0)
+        XCTAssertFalse(hasMore)
+    }
+
 }
 
 // MARK: - Private helpers
@@ -65,13 +88,13 @@ final class ReaderPostStreamServiceTest: CoreDataTestCase {
 private extension ReaderPostStreamServiceTest {
 
     @discardableResult
-    func makeTag(_ slug: String) throws -> ReaderTagTopic {
-        let topic = ReaderTagTopic(context: mainContext)
+    func makeTag(_ slug: String, in context: NSManagedObjectContext) throws -> ReaderTagTopic {
+        let topic = ReaderTagTopic(context: context)
         topic.title = slug
         topic.path = "/tags/\(slug)"
         topic.type = ReaderTagTopic.TopicType
 
-        try mainContext.save()
+        try context.save()
         return topic
     }
 
