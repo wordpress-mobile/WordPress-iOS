@@ -144,7 +144,13 @@ private struct Pending: View {
 private struct Approved: View {
 
     @ObservedObject var viewModel: CommentModerationViewModel
+
     let liked: Bool
+
+    init(viewModel: CommentModerationViewModel, liked: Bool) {
+        self.viewModel = viewModel
+        self.liked = liked
+    }
 
     private var likeButtonTitle: String {
         liked ? Strings.commentLikedTitle : String(format: Strings.commentLikeTitle, viewModel.userName)
@@ -153,12 +159,9 @@ private struct Approved: View {
     var body: some View {
         Container(title: Strings.title, icon: { icon }) {
             VStack {
-                ContentPreview(
-                    image: .init(url: viewModel.imageURL, placeholder: Image("gravatar")),
-                    text: viewModel.userName
-                ) {
-                    self.viewModel.didTapReply()
-                }
+                ReplyTextSwiftUIView(replyTextView: viewModel.textView)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
                 DSButton(
                     title: likeButtonTitle,
                     iconName: liked ? .starFill : .starOutline,
@@ -211,6 +214,32 @@ private struct Approved: View {
             comment: "Like title for comment like button."
         )
     }
+}
+
+final class FooView: UIView {
+    override var intrinsicContentSize: CGSize {
+        return .init(width: UIView.noIntrinsicMetric, height: 100)
+    }
+}
+
+struct ReplyTextSwiftUIView: UIViewRepresentable {
+    let replyTextView: NewReplyTextView
+
+    init(replyTextView: NewReplyTextView) {
+        self.replyTextView = replyTextView
+    }
+
+    func makeUIView(context: Context) -> NewReplyTextView {
+        replyTextView.translatesAutoresizingMaskIntoConstraints = true
+        replyTextView.sizeToFit()
+        return replyTextView
+    }
+
+    func updateUIView(_ uiView: NewReplyTextView, context: Context) {
+        uiView.sizeToFit()
+    }
+
+    typealias UIViewType = NewReplyTextView
 }
 
 private struct TrashSpam: View {
@@ -269,5 +298,26 @@ private struct TrashSpam: View {
             value: "Delete Permanently",
             comment: "Title for Comment Deletion CTA"
         )
+    }
+}
+
+struct CommentModerationView_Previews: PreviewProvider {
+    static let viewModel: CommentModerationViewModel = {
+        let comment = Comment(context: ContextManager.shared.mainContext)
+        let vm = CommentModerationViewModel(
+            comment: comment,
+            coordinator: .init(commentDetailViewController: .init(comment: comment, isLastInList: false)),
+            notification: nil,
+            stateChanged: { _ in }
+        )
+        vm.state = .approved(liked: false)
+        return vm
+    }()
+
+    static var previews: some View {
+        VStack {
+            Spacer()
+            CommentModerationView(viewModel: Self.viewModel)
+        }
     }
 }

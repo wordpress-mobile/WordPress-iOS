@@ -3896,6 +3896,8 @@
 		F48EE3052C072F8C0068EA92 /* View+ReadSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EE3032C072E570068EA92 /* View+ReadSize.swift */; };
 		F48EE3072C0747520068EA92 /* CommentModerationSheetHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EE3062C0747520068EA92 /* CommentModerationSheetHostingView.swift */; };
 		F48EE3082C07478C0068EA92 /* CommentModerationSheetHostingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F48EE3062C0747520068EA92 /* CommentModerationSheetHostingView.swift */; };
+		F49114BC2C12163D00FCC030 /* NewReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49114BB2C12163D00FCC030 /* NewReplyTextView.swift */; };
+		F49114BD2C12163D00FCC030 /* NewReplyTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49114BB2C12163D00FCC030 /* NewReplyTextView.swift */; };
 		F499CFB32BD978340072FB00 /* DynamicDashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499CFB22BD978340072FB00 /* DynamicDashboardCard.swift */; };
 		F499CFB42BD978340072FB00 /* DynamicDashboardCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = F499CFB22BD978340072FB00 /* DynamicDashboardCard.swift */; };
 		F49B99FF2937C9B4000CEFCE /* MigrationEmailService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */; };
@@ -9332,6 +9334,7 @@
 		F48EBF912B333111004CD561 /* dashboard-200-with-only-one-dynamic-card.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "dashboard-200-with-only-one-dynamic-card.json"; sourceTree = "<group>"; };
 		F48EE3032C072E570068EA92 /* View+ReadSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ReadSize.swift"; sourceTree = "<group>"; };
 		F48EE3062C0747520068EA92 /* CommentModerationSheetHostingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentModerationSheetHostingView.swift; sourceTree = "<group>"; };
+		F49114BB2C12163D00FCC030 /* NewReplyTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewReplyTextView.swift; sourceTree = "<group>"; };
 		F499CFB22BD978340072FB00 /* DynamicDashboardCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDashboardCard.swift; sourceTree = "<group>"; };
 		F49B99FE2937C9B4000CEFCE /* MigrationEmailService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MigrationEmailService.swift; sourceTree = "<group>"; };
 		F49B9A05293A21BF000CEFCE /* MigrationAnalyticsTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrationAnalyticsTracker.swift; sourceTree = "<group>"; };
@@ -15644,6 +15647,7 @@
 			children = (
 				B54E1DEE1A0A7BAA00807537 /* ReplyTextView.swift */,
 				B54E1DEF1A0A7BAA00807537 /* ReplyTextView.xib */,
+				F49114BB2C12163D00FCC030 /* NewReplyTextView.swift */,
 			);
 			path = ReplyTextView;
 			sourceTree = "<group>";
@@ -22264,6 +22268,7 @@
 				B5AC00681BE3C4E100F8E7C3 /* DiscussionSettingsViewController.swift in Sources */,
 				B0637543253E7E7A00FD45D2 /* GutenbergSuggestionsViewController.swift in Sources */,
 				F4F7B2542AFA5D8600207282 /* AllDomainsListCardView.swift in Sources */,
+				F49114BC2C12163D00FCC030 /* NewReplyTextView.swift in Sources */,
 				D816C1F620E0896F00C4D82F /* TrashComment.swift in Sources */,
 				8384C64128AAC82600EABE26 /* KeychainUtils.swift in Sources */,
 				08AAD69F1CBEA47D002B2418 /* MenusService.m in Sources */,
@@ -24838,6 +24843,7 @@
 				803DE822290642B4007D4E9C /* JetpackFeaturesRemovalCoordinator.swift in Sources */,
 				F4FF50ED2B4ECE320076DB0C /* MySiteOverlaysCoordinator.swift in Sources */,
 				FABB21B12602FC2C00C8785C /* Array.swift in Sources */,
+				F49114BD2C12163D00FCC030 /* NewReplyTextView.swift in Sources */,
 				FABB21B22602FC2C00C8785C /* NotificationActionParser.swift in Sources */,
 				FABB21B32602FC2C00C8785C /* SiteTagsViewController.swift in Sources */,
 				FABB21B42602FC2C00C8785C /* GutenbergImageLoader.swift in Sources */,

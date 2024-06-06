@@ -23,11 +23,15 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
 
     // Reply properties
 
-    private lazy var replyTextViewController = CommentDetailReplyTextViewController(view: view, comment: comment) { [weak self] content in
+    private lazy var replyTextViewController = CommentDetailReplyTextViewController(
+        view: view,
+        moderationViewModel: commentModerationViewModel,
+        comment: comment
+    ) { [weak self] content in
         self?.createReply(content: content)
     }
 
-    private var replyTextView: ReplyTextView {
+    private var replyTextView: NewReplyTextView {
         return replyTextViewController.replyTextView
     }
 
@@ -195,6 +199,7 @@ class CommentDetailViewController: UIViewController, NoResultsViewHost {
         configureSections()
         configureReplyView()
         refreshCommentReplyIfNeeded()
+        _ = replyTextViewController
     }
 
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -293,7 +298,7 @@ private extension CommentDetailViewController {
     }
 
     func configureReplyView() {
-        self.replyTextView.delegate = self
+//        self.replyTextView.delegate = self
     }
 
     func configureModerationView() {

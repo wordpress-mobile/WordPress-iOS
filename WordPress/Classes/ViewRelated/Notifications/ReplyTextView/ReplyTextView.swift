@@ -249,7 +249,7 @@ import Gridicons
 
         // Calculate the entire control's size
         let newHeight = min(max(contentHeight, minimumHeight), maximumHeight)
-        let intrinsicSize = CGSize(width: frame.width, height: newHeight)
+        let intrinsicSize = CGSize(width: UIView.noIntrinsicMetric, height: newHeight)
 
         return intrinsicSize
     }

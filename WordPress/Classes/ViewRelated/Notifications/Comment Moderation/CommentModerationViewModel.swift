@@ -5,7 +5,9 @@ final class CommentModerationViewModel: ObservableObject {
 
     @Published var state: CommentModerationState
     @Published var isLoading: Bool = false
-    @Published var reply: String? = nil
+    @Published var reply: String = ""
+
+    let textView = NewReplyTextView(frame: .zero)
 
     private let comment: Comment
     private let coordinator: CommentModerationCoordinator
