@@ -1,44 +1,21 @@
 import SwiftUI
 import UIKit
-import DesignSystem
 
 final class MilestoneHostingController<Content: View>: UIHostingController<Content> {
-    private lazy var nextButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowUp), for: .normal)
-//        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
-        return button
+    private let notification: Notification
+    private let milestoneCoordinator: MilestoneCoordinator
+    private lazy var arrowConfigurator: NotificationDetailsArrowConfigurator = {
+        NotificationDetailsArrowConfigurator(nextAction: nextAction, previousAction: previousAction)
     }()
 
-    private lazy var previousButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowDown), for: .normal)
-//        button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
-        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
-        return button
-    }()
-
-    func configureNavBarButtons() {
-        var barButtonItems: [UIBarButtonItem] = []
-
-        if splitViewControllerIsHorizontallyCompact {
-            barButtonItems.append(makeNavigationButtons())
-        }
-
-        navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
+    init(rootView: Content, milestoneCoordinator: MilestoneCoordinator, notification: Notification) {
+        self.notification = notification
+        self.milestoneCoordinator = milestoneCoordinator
+        super.init(rootView: rootView)
     }
 
-    func makeNavigationButtons() -> UIBarButtonItem {
-        // Create custom view to match that in NotificationDetailsViewController.
-        let buttonStackView = UIStackView(arrangedSubviews: [nextButton, previousButton])
-        buttonStackView.axis = .horizontal
-        buttonStackView.spacing = .DS.Padding.split // Constants.arrowButtonSpacing
-
-        let width = CGFloat.DS.Padding.max + .DS.Padding.split // Constants.arrowButtonSpacing
-        buttonStackView.frame = CGRect(x: 0, y: 0, width: width, height: .DS.Padding.medium)
-
-        return UIBarButtonItem(customView: buttonStackView)
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
@@ -71,5 +48,23 @@ final class MilestoneHostingController<Content: View>: UIHostingController<Conte
             view.topAnchor.constraint(equalTo: superview.topAnchor),
             view.bottomAnchor.constraint(equalTo: superview.bottomAnchor)
         ])
+    }
+
+    private func configureNavBarButtons() {
+        var barButtonItems: [UIBarButtonItem] = []
+
+        if splitViewControllerIsHorizontallyCompact {
+            barButtonItems.append(arrowConfigurator.makeNavigationButtons())
+        }
+
+        navigationItem.setRightBarButtonItems(barButtonItems, animated: false)
+    }
+
+    private func previousAction() {
+        milestoneCoordinator.previousNotificationTapped(current: notification)
+    }
+
+    private func nextAction() {
+        milestoneCoordinator.nextNotificationTapped(current: notification)
     }
 }

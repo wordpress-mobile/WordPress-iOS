@@ -371,7 +371,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
             return
         }
 
-        showDetails(for: note)
+        showDetails(for: note, animated: true)
 
         if !note.read {
             AppRatingUtility.shared.incrementSignificantEvent()
@@ -723,22 +723,22 @@ extension NotificationsViewController {
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
     @objc
-    func showDetailsForNotificationWithID(_ noteId: String) {
+    func showDetailsForNotificationWithID(_ noteId: String, animated: Bool = true) {
         if let note = loadNotification(with: noteId) {
-            showDetails(for: note)
+            showDetails(for: note, animated: animated)
             return
         }
 
         syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { [weak self] note in
             guard let self else { return }
 
-            self.showDetails(for: note)
+            self.showDetails(for: note, animated: animated)
         }
     }
 
     /// Pushes the details for a given Notification Instance.
     ///
-    private func showDetails(for note: Notification) {
+    private func showDetails(for note: Notification, animated: Bool) {
         DDLogInfo("Pushing Notification Details for: [\(note.notificationId)]")
 
         // Before trying to show the details of a notification, we need to make sure the view is loaded.
@@ -792,14 +792,14 @@ extension NotificationsViewController {
             readerViewController.navigationItem.largeTitleDisplayMode = .never
             readerViewController.hidesBottomBarWhenPushed = true
             readerViewController.coordinator?.notificationID = note.notificationId
-            displayViewController(readerViewController)
+            displayViewController(readerViewController, animated: animated)
             return
         }
 
-        presentDetails(for: note)
+        presentDetails(for: note, animated: animated)
     }
 
-    private func presentDetails(for note: Notification) {
+    private func presentDetails(for note: Notification, animated: Bool) {
         // This dispatch avoids a bug that was occurring occasionally where navigation (nav bar and tab bar)
         // would be missing entirely when launching the app from the background and presenting a notification.
         // The issue seems tied to performing a `pop` in `prepareToShowDetails` and presenting
@@ -818,12 +818,15 @@ extension NotificationsViewController {
             if note.kind == .comment {
                 viewController = getNotificationCommentDetailViewController(for: note)
             } else if note.achievement != nil {
-                viewController = MilestoneCoordinator(notification: note).createHostingController()
+                viewController = MilestoneCoordinator(
+                    notification: note,
+                    coordinatorDelegate: self
+                ).createHostingController()
             } else {
                 viewController = getNotificationDetailsViewController(for: note)
             }
             if let viewController {
-                displayViewController(viewController)
+                displayViewController(viewController, animated: animated)
             }
         }
     }
@@ -852,9 +855,9 @@ extension NotificationsViewController {
         return detailsViewController
     }
 
-    private func displayViewController(_ controller: UIViewController) {
+    private func displayViewController(_ controller: UIViewController, animated: Bool) {
         if shouldPushDetailsViewController {
-            navigationController?.pushViewController(controller, animated: true)
+            navigationController?.pushViewController(controller, animated: animated)
         } else {
             showDetailViewController(controller, sender: nil)
         }
@@ -930,6 +933,18 @@ extension NotificationsViewController {
 
     func cancelNextUpdateAnimation() {
         shouldCancelNextUpdateAnimation = true
+    }
+}
+
+// MARK: - MilestoneCoordinatorDelegate
+extension NotificationsViewController: MilestoneCoordinatorDelegate {
+    func previousNotificationTapped(notification: Notification?) {
+        navigationController?.popViewController(animated: false)
+        showDetailsForNotificationWithID("8181759289", animated: false)
+    }
+    
+    func nextNotificationTapped(notification: Notification?) {
+        navigationController?.popViewController(animated: false)
     }
 }
 
