@@ -50,6 +50,7 @@ class MeViewController: UITableViewController {
         reloadViewModel()
 
         extendedLayoutIncludesOpaqueBars = true
+        configureDefaultNavigationBarAppearance()
     }
 
     override func viewDidLayoutSubviews() {
