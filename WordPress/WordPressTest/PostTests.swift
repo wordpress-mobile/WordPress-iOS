@@ -276,71 +276,6 @@ class PostTests: CoreDataTestCase {
         XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
     }
 
-    func testThatHasLocalChangesWorks() {
-        let original = newTestPost()
-        var revision = original.createRevision() as! Post
-
-        XCTAssertFalse(original.hasLocalChanges())
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.tags = "Ahoi"
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        original.deleteRevision()
-        original.tags = "ioha"
-        revision = original.createRevision() as! Post
-
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.tags = "Ahoi"
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.tags = original.tags
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.publicizeMessage = ""
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.publicizeMessage = nil
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.publicizeMessage = "Make it notorious"
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.publicizeMessage = original.publicizeMessage
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        original.deleteRevision()
-        original.disablePublicizeConnectionWithKeyringID(8888)
-        revision = original.createRevision() as! Post
-
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.disablePublicizeConnectionWithKeyringID(1234)
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.enablePublicizeConnectionWithKeyringID(1234)
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.enablePublicizeConnectionWithKeyringID(8888)
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.disablePublicizeConnectionWithKeyringID(8888)
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.mt_excerpt = "Say cheese"
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.mt_excerpt = original.mt_excerpt
-        XCTAssertFalse(revision.hasLocalChanges())
-
-        revision.wp_slug = "New pretty slug"
-        XCTAssertTrue(revision.hasLocalChanges())
-
-        revision.wp_slug = original.wp_slug
-        XCTAssertFalse(revision.hasLocalChanges())
-    }
-
     func testThatEnablingDisablingPublicizeConnectionsWorks() {
         let post = newTestPost()
 
@@ -394,56 +329,6 @@ class PostTests: CoreDataTestCase {
         // Assert
         XCTAssertNil(post.statusAfterSync)
         XCTAssertNil(post.statusAfterSyncString)
-    }
-
-    /// When removing the featured image hasLocalChanges returns true
-    func testLocalChangesWhenfeaturedImageIsRemoved() {
-        let post = newTestPost()
-        post.featuredImage = Media.makeMedia(in: mainContext)
-        let revision = post.createRevision()
-        revision.featuredImage = nil
-
-        XCTAssertTrue(revision.hasLocalChanges())
-    }
-
-    /// When adding a featured image hasLocalChanges returns true
-    func testLocalChangesWhenfeaturedImageIsAdded() {
-        let post = newTestPost()
-        let revision = post.createRevision()
-        revision.featuredImage = Media.makeMedia(in: mainContext)
-
-        XCTAssertTrue(revision.hasLocalChanges())
-    }
-
-    /// When keeping the featured image hasLocalChanges returns false
-    func testLocalChangesWhenFeaturedImageIsTheSame() {
-        let post = newTestPost()
-        let media = Media.makeMedia(in: mainContext)
-        post.featuredImage = media
-        let revision = post.createRevision()
-        revision.featuredImage = media
-
-        XCTAssertFalse(revision.hasLocalChanges())
-    }
-
-    /// When changing an authorID hasLocalChanges returns true
-    func testLocalChangesWhenAuthorIsChanged() {
-        let post = newTestPost()
-        post.authorID = 1
-        let revision = post.createRevision()
-        revision.authorID = 2
-
-        XCTAssertTrue(revision.hasLocalChanges())
-    }
-
-    /// When setting the same authorID hasLocalChanges returns false
-    func testLocalChangesWhenAuthorIsTheSame() {
-        let post = newTestPost()
-        post.authorID = 1
-        let revision = post.createRevision()
-        revision.authorID = 1
-
-        XCTAssertFalse(revision.hasLocalChanges())
     }
 
     func testCountLocalDrafts() {

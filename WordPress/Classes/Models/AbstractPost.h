@@ -83,7 +83,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 ///
 - (AbstractPost *)latest;
 - (AbstractPost *)cloneFrom:(AbstractPost *)source;
-- (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
@@ -113,20 +112,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 
 #pragma mark - Unsaved Changes
-
-/**
- *  @brief      Call this method to know if the post has either local or remote unsaved changes.
- *  @details    There should be no need to override this method.  Consider overriding
- *              methods hasLocalChanges and hasRemoteChanges instead.
- *  @returns    YES if there are unsaved changes, NO otherwise.
- */
-- (BOOL)hasUnsavedChanges;
-
-/**
- *  @brief      Call this method to know if the post has remote changes.
- *  @returns    YES if there are unsaved changes, NO otherwise.
- */
-- (BOOL)hasRemoteChanges;
 
 /**
  Returns YES if the post is has a `future` post status
@@ -163,14 +148,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
  */
 /// - note: deprecated (kahu-offline-mode)
 - (BOOL)dateCreatedIsNilOrEqualToDateModified;
-
-/**
- *  Whether the post has local changes or not.  Local changes are all changes that are have not been
- *  published to the server yet.
- *
- *  @returns    YES if the post has local changes, NO otherwise.
- */
-- (BOOL)hasLocalChanges;
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
