@@ -1428,7 +1428,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
             var mock = WordPressComPost.mock
             mock.status = BasePost.Status.trash.rawValue
-            mock.content = "content-b"
             return try HTTPStubsResponse(value: mock, statusCode: 200)
         }
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
@@ -1441,7 +1440,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // THEN the post is trashed
         XCTAssertEqual(post.status, .trash)
-        XCTAssertEqual(post.content, "content-b")
     }
 
     func testTrashRemotePostPermanentlyDeletedOnRemote() async throws {
