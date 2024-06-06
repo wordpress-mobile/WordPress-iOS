@@ -10,8 +10,6 @@
 - (NSDate *)dateForDisplay;
 @optional
 - (NSString *)blogNameForDisplay;
-- (NSString *)statusForDisplay;
-- (BOOL)unreadStatusForDisplay;
 - (NSURL *)featuredImageURLForDisplay;
 - (NSURL *)authorURL;
 - (NSString *)slugForDisplay;

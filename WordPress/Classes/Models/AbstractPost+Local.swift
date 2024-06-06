@@ -1,17 +1,6 @@
 import Foundation
 
 extension AbstractPost {
-    /// Returns true if the post is a draft and has never been uploaded to the server.
-    /// - note: deprecated (kahu-offline-mode)
-    var isLocalDraft: Bool {
-        return self.isDraft() && !self.hasRemote()
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    var isLocalRevision: Bool {
-        return self.originalIsDraft() && self.isRevision() && self.remoteStatus == .local
-    }
-
     /// Count posts that have never been uploaded to the server.
     ///
     /// - Parameter context: A `NSManagedObjectContext` in which to count the posts

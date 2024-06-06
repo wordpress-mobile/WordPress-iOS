@@ -18,10 +18,6 @@ class MockContentProvider: NSObject, ReaderPostContentProvider {
         return "A blog name"
     }
 
-    func statusForDisplay() -> String! {
-        return "A status"
-    }
-
     func contentForDisplay() -> String! {
         return "The post content"
     }

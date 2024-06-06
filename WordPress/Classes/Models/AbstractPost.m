@@ -82,30 +82,6 @@
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
-
-    if ([Feature enabled:FeatureFlagSyncPublishing]) {
-        return;
-    }
-
-    /*
-     If the date is nil it means publish immediately so set the status to publish.
-     If the date is in the future set the status to scheduled if current status is published.
-     If the date is now or in the past, and the status is scheduled, set the status
-     to published.
-     */
-    if ([self dateCreatedIsNilOrEqualToDateModified]) {
-        // A nil date means publish immediately.
-        self.status = PostStatusPublish;
-
-    } else if ([self hasFuturePublishDate]) {
-        // Needs to be a nested conditional so future date + scheduled status
-        // is handled correctly.
-        if ([self.status isEqualToString:PostStatusPublish]) {
-            self.status = PostStatusScheduled;
-        }
-    } else if ([self.status isEqualToString:PostStatusScheduled]) {
-        self.status = PostStatusPublish;
-    }
 }
 
 #pragma mark -
@@ -329,11 +305,6 @@
     return self.revision != nil;
 }
 
-- (BOOL)hasNeverAttemptedToUpload
-{
-    return self.remoteStatus == AbstractPostRemoteStatusLocal;
-}
-
 - (BOOL)hasRemote
 {
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
@@ -385,12 +356,6 @@
         return YES;
     }
     return NO;
-}
-
-- (void)publishImmediately
-{
-    self.dateModified = [NSDate date];
-    [self setDateCreated:self.dateModified];
 }
 
 - (BOOL)shouldPublishImmediately
@@ -470,19 +435,6 @@
 
 
 #pragma mark - Post
-
-/// - note: Deprecated (kahu-offline-mode)
-- (BOOL)canSave
-{
-    NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString* contentWithoutSpaces = [self.content stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    BOOL isTitleEmpty = (titleWithoutSpaces == nil || titleWithoutSpaces.length == 0);
-    BOOL isContentEmpty = (contentWithoutSpaces == nil || contentWithoutSpaces.length == 0);
-    BOOL areBothTitleAndContentsEmpty = isTitleEmpty && isContentEmpty;
-    
-    return (!areBothTitleAndContentsEmpty && [self hasUnsavedChanges]);
-}
 
 - (BOOL)hasUnsavedChanges
 {
