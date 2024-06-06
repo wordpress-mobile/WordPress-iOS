@@ -15,23 +15,3 @@ extension PostServiceRemote {
         }
     }
 }
-
-extension PostServiceRemoteREST {
-    struct AutosaveResponse {
-        var previewURL: URL
-    }
-
-    func createAutosave(with post: RemotePost) async throws -> AutosaveResponse {
-        try await withCheckedThrowingContinuation { continuation in
-            self.autoSave(post, success: { _, previewURL in
-                guard let previewURL = previewURL.flatMap(URL.init) else {
-                    return continuation.resume(throwing: URLError(.unknown))
-                }
-                let response = AutosaveResponse(previewURL: previewURL)
-                continuation.resume(returning: response)
-            }, failure: {
-                continuation.resume(throwing: $0 ?? URLError(.unknown))
-            })
-        }
-    }
-}

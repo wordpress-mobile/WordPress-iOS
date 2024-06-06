@@ -6,13 +6,13 @@ final class PostRepository {
     enum Error: Swift.Error, LocalizedError {
         case remoteAPIUnavailable
         case hasUnsyncedChanges
-        case patchingUnsyncedPost // Should never happen
+        case missingPostID // Should never happen
 
         var errorDescription: String? {
             switch self {
             case .remoteAPIUnavailable: return Strings.genericErrorMessage
             case .hasUnsyncedChanges: return Strings.errorUnsyncedChangesMessage
-            case .patchingUnsyncedPost: return Strings.genericErrorMessage
+            case .missingPostID: return Strings.genericErrorMessage
             }
         }
     }
@@ -210,7 +210,7 @@ final class PostRepository {
         }
         guard let postID = post.postID?.intValue, postID > 0 else {
             wpAssertionFailure("Trying to patch a non-existent post")
-            throw PostRepository.Error.patchingUnsyncedPost
+            throw PostRepository.Error.missingPostID
         }
         let uploadedPost = try await _patch(post, postID: postID, changes: changes, overwrite: true)
 
@@ -343,13 +343,17 @@ final class PostRepository {
 
     /// Creates an autosave with the changes in the given revision.
     @MainActor
-    func autosave(_ revision: AbstractPost) async throws -> PostServiceRemoteREST.AutosaveResponse {
+    func autosave(_ revision: AbstractPost) async throws -> RemotePostAutosaveResponse {
         assert(revision.isRevision())
         guard let remote = try getRemoteService(for: revision.blog) as? PostServiceRemoteREST else {
             throw Error.remoteAPIUnavailable
         }
-        let post = PostHelper.remotePost(with: revision)
-        return try await remote.createAutosave(with: post)
+        guard let postID = revision.postID?.intValue, postID > 0 else {
+            wpAssertionFailure("missing post ID – programmer error")
+            throw PostRepository.Error.missingPostID
+        }
+        let parameters = RemotePostCreateParameters(post: revision)
+        return try await remote.createAutosave(forPostID: postID, parameters: parameters)
     }
 
     @MainActor
