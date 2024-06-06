@@ -2,6 +2,7 @@ import Foundation
 import AlamofireImage
 import WordPressUI
 import protocol Gravatar.ImageCaching
+import enum Gravatar.CacheEntry
 
 protocol MemoryCacheProtocol: AnyObject {
     subscript(key: String) -> UIImage? { get set }
@@ -63,6 +64,25 @@ final class MemoryCache: MemoryCacheProtocol {
     func removeData(forKey key: String) {
         cache.removeObject(forKey: key as NSString)
     }
+
+    // MARK: - CacheEntry
+
+    func setCacheEntry(_ entry: CacheEntry?, forKey key: String) {
+        if let entry {
+            cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString)
+        } else {
+            cache.removeObject(forKey: key as NSString)
+        }
+    }
+
+    func getCacheEntry(forKey key: String) -> CacheEntry? {
+        (cache.object(forKey: key as NSString) as? CacheEntryObject)?.entry
+    }
+}
+
+private final class CacheEntryObject: Sendable {
+    let entry: CacheEntry
+    init(entry: CacheEntry) { self.entry = entry }
 }
 
 private extension UIImage {
@@ -100,6 +120,16 @@ private struct WordpressUICacheAdapter: GravatarImageCaching {
 
     func getImage(forKey key: String) -> UIImage? {
         cache.getImage(forKey: key)
+    }
+
+    // MARK: Gravatar
+
+    func setEntry(_ entry: CacheEntry?, for key: String) {
+        cache.setCacheEntry(entry, forKey: key)
+    }
+
+    func getEntry(with key: String) -> CacheEntry? {
+        cache.getCacheEntry(forKey: key)
     }
 }
 
