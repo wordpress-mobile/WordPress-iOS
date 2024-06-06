@@ -312,10 +312,10 @@ final class PostRepository {
         // If the post is already in trash, do nothing. If the app were to
         // proceed with `/delete`, it would permanently delete the post.
         if remotePost.status != BasePost.Status.trash.rawValue {
-            remotePost = try await remote.trashPost(PostHelper.remotePost(with: post))
+            try await remote.deletePost(withID: postID)
         }
 
-        PostHelper.update(post, with: remotePost, in: context)
+        post.status = .trash
         ContextManager.shared.saveContextAndWait(context)
     }
 

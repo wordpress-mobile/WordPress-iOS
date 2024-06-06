@@ -638,8 +638,6 @@
 		0CF2BD1A2C07AED00041707D /* PrepublishingSheetScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2BD192C07AED00041707D /* PrepublishingSheetScreen.swift */; };
 		0CF2BD1C2C07BFB80041707D /* PostSettingsPublishDateScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF2BD1B2C07BFB80041707D /* PostSettingsPublishDateScreen.swift */; };
 		0CF7D6C32ABB753A006D1E89 /* MediaImageServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */; };
-		0CF7EACF2B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
-		0CF7EAD02B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */; };
 		0CFDEE802BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */; };
 		0CFDEE812BB8729000FA3EE0 /* PostVisibilityPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */; };
 		0CFE9AC62AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */; };
@@ -6400,7 +6398,6 @@
 		0CF2BD192C07AED00041707D /* PrepublishingSheetScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepublishingSheetScreen.swift; sourceTree = "<group>"; };
 		0CF2BD1B2C07BFB80041707D /* PostSettingsPublishDateScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostSettingsPublishDateScreen.swift; sourceTree = "<group>"; };
 		0CF7D6C22ABB753A006D1E89 /* MediaImageServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageServiceTests.swift; sourceTree = "<group>"; };
-		0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PostServiceRemote+Concurrency.swift"; sourceTree = "<group>"; };
 		0CFD6C792A73E703003DD0A0 /* WordPress 152.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "WordPress 152.xcdatamodel"; sourceTree = "<group>"; };
 		0CFDEE7F2BB8729000FA3EE0 /* PostVisibilityPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostVisibilityPicker.swift; sourceTree = "<group>"; };
 		0CFE9AC52AF44A9F00B8F659 /* AbstractPostHelper+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AbstractPostHelper+Actions.swift"; sourceTree = "<group>"; };
@@ -14598,7 +14595,6 @@
 				8B5E1DD727EA5929002EBEE3 /* PostCoordinator+Dashboard.swift */,
 				4A2C73F32A95856000ACE79E /* PostRepository.swift */,
 				0C1C083D2B9BF9A000E52F8C /* PostRepository+Helpers.swift */,
-				0CF7EACE2B859535003CC558 /* PostServiceRemote+Concurrency.swift */,
 				E1A6DBE319DC7D230071AC1E /* PostService.h */,
 				E1A6DBE419DC7D230071AC1E /* PostService.m */,
 				98E0829E2637545C00537BF1 /* PostService+Likes.swift */,
@@ -22951,7 +22947,6 @@
 				4A9B81E32921AE03007A05D1 /* ContextManager.swift in Sources */,
 				F5D0A64923C8FA1500B20D27 /* LinkBehavior.swift in Sources */,
 				08E6E07B2A4C3E3A00B807B0 /* CompliancePopoverViewController.swift in Sources */,
-				0CF7EACF2B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */,
 				0C75E26E2A9F63CB00B784E5 /* MediaImageService.swift in Sources */,
 				80C523A429959DE000B1C14B /* BlazeWebViewController.swift in Sources */,
 				E6DE44671B90D251000FA7EF /* ReaderHelpers.swift in Sources */,
@@ -26264,7 +26259,6 @@
 				FABB25ED2602FC2C00C8785C /* WebViewControllerConfiguration.swift in Sources */,
 				FABB25EE2602FC2C00C8785C /* ViewMoreRow.swift in Sources */,
 				FABB25EF2602FC2C00C8785C /* ReaderWebView.swift in Sources */,
-				0CF7EAD02B859535003CC558 /* PostServiceRemote+Concurrency.swift in Sources */,
 				FABB25F12602FC2C00C8785C /* UIApplication+Helpers.m in Sources */,
 				FA141F2B2AEC23E300C9A653 /* PageListViewController+Menu.swift in Sources */,
 				FABB25F22602FC2C00C8785C /* ErrorStateView.swift in Sources */,
