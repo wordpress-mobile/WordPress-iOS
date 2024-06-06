@@ -40,15 +40,15 @@ final class MemoryCache: MemoryCacheProtocol {
     }
 
     func setImage(_ image: UIImage, forKey key: String) {
-        cache.setObject(image, forKey: key as NSString, cost: image.cost)
+        setCacheEntry(.ready(image), forKey: key)
     }
 
     func getImage(forKey key: String) -> UIImage? {
-        cache.object(forKey: key as NSString) as? UIImage
+        getCacheEntry(forKey: key)?.image
     }
 
     func removeImage(forKey key: String) {
-        cache.removeObject(forKey: key as NSString)
+        setCacheEntry(nil, forKey: key)
     }
 
     // MARK: - Data
@@ -69,7 +69,12 @@ final class MemoryCache: MemoryCacheProtocol {
 
     func setCacheEntry(_ entry: CacheEntry?, forKey key: String) {
         if let entry {
-            cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString)
+            if let cost = entry.cost {
+                cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString, cost: cost)
+            }
+            else {
+                cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString)
+            }
         } else {
             cache.removeObject(forKey: key as NSString)
         }
@@ -83,6 +88,26 @@ final class MemoryCache: MemoryCacheProtocol {
 private final class CacheEntryObject: Sendable {
     let entry: CacheEntry
     init(entry: CacheEntry) { self.entry = entry }
+}
+
+extension CacheEntry {
+    var cost: Int? {
+        switch self {
+        case .ready(let image):
+            return image.cost
+        case .inProgress(let task):
+            return nil
+        }
+    }
+
+    var image: UIImage? {
+        switch self {
+        case .ready(let image):
+            return image
+        case .inProgress:
+            return nil
+        }
+    }
 }
 
 private extension UIImage {
