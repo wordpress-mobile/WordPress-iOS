@@ -276,60 +276,6 @@ class PostTests: CoreDataTestCase {
         XCTAssertEqual(post.contentPreviewForDisplay(), "some contents\u{A0}go here")
     }
 
-    func testThatStatusForDisplayWorksForOriginalPost() {
-        let post = newTestPost()
-
-        post.status = .draft
-        XCTAssertNil(post.statusForDisplay())
-
-        post.status = .pending
-        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .pending))
-
-        post.status = .publishPrivate
-        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .publishPrivate))
-
-        post.status = .publish
-        XCTAssertNil(post.statusForDisplay())
-
-        post.status = .scheduled
-        XCTAssertEqual(post.statusForDisplay(), "")
-
-        post.status = .trash
-        XCTAssertEqual(post.statusForDisplay(), "")
-
-        post.status = .deleted
-        XCTAssertEqual(post.statusForDisplay(), Post.title(for: .deleted))
-    }
-
-    func testThatStatusForDisplayWorksForRevisionPost() {
-        let original = newTestPost()
-        let revision = original.createRevision()
-        let local = NSLocalizedString("Local changes", comment: "Local")
-        revision.status = .draft
-        XCTAssertEqual(revision.statusForDisplay(), local)
-
-        revision.status = .pending
-        let pendingStatusDisplay = "\(Post.title(for: .pending))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", pendingStatusDisplay, local))
-
-        revision.status = .publishPrivate
-        let publishPrivateStatusDisplay = "\(Post.title(for: .publishPrivate))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", publishPrivateStatusDisplay, local))
-
-        revision.status = .publish
-        XCTAssertEqual(revision.statusForDisplay(), NSLocalizedString("Local changes", comment: "Local"))
-
-        revision.status = .scheduled
-        XCTAssertEqual(revision.statusForDisplay(), local)
-
-        revision.status = .trash
-        XCTAssertEqual(revision.statusForDisplay(), local)
-
-        revision.status = .deleted
-        let deletedStatusDisplay = "\(Post.title(for: .deleted))"
-        XCTAssertEqual(revision.statusForDisplay(), String(format: "%@, %@", deletedStatusDisplay, local))
-    }
-
     func testThatHasLocalChangesWorks() {
         let original = newTestPost()
         var revision = original.createRevision() as! Post

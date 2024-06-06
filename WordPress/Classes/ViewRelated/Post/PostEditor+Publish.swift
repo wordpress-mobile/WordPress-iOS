@@ -376,12 +376,6 @@ private enum Strings {
     static let closeConfirmationAlertSaveDraft = NSLocalizedString("postEditor.closeConfirmationAlert.saveDraft", value: "Save Draft", comment: "Button in an alert confirming saving a new draft")
 }
 
-extension PostEditorAction {
-    /// This value needs to be replaced with a separate entry in l10n.
-    /// - warning: Deprecated (kahu-offline-mode)
-    static var saveDraftLocalizedTitle: String { Strings.closeConfirmationAlertSaveDraft }
-}
-
 private struct MediaUploadingAlert {
     static let title = NSLocalizedString("Uploading media", comment: "Title for alert when trying to save/exit a post before media upload process is complete.")
     static let message = NSLocalizedString("You are currently uploading media. Please wait until this completes.", comment: "This is a notification the user receives if they are trying to save a post (or exit) before the media upload process is complete.")

@@ -33,13 +33,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
-/**
- BOOL flag set to true if the post is first time published.
-
- - note: Deprecated (kahu-offline-mode)
- */
-@property (nonatomic, assign) BOOL isFirstTimePublish;
-
 //date conversion
 @property (nonatomic, strong, nullable) NSDate * dateCreated;
 

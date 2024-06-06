@@ -297,28 +297,6 @@ class Post: AbstractPost {
         return false
     }
 
-    override func statusForDisplay() -> String? {
-        var statusString: String?
-
-        if status == .trash || status == .scheduled {
-            statusString = ""
-        } else if status != .publish && status != .draft {
-            statusString = statusTitle
-        }
-
-        if isRevision() {
-            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-
-            if let tempStatusString = statusString, !tempStatusString.isEmpty {
-                statusString = String(format: "%@, %@", tempStatusString, localOnly)
-            } else {
-                statusString = localOnly
-            }
-        }
-
-        return statusString
-    }
-
     override func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         title = title

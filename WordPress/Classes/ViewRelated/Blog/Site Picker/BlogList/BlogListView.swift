@@ -159,8 +159,11 @@ struct BlogListView: View {
 
     private func siteHStack(site: Site) -> some View {
         HStack(spacing: 0) {
-            AvatarsView(style: .single(site.imageURL))
-                .padding(.trailing, .DS.Padding.split)
+            AvatarsView(
+                avatarShape: RoundedRectangle(cornerRadius: 5),
+                style: .single(site.imageURL)
+            )
+            .padding(.trailing, .DS.Padding.split)
 
             textsVStack(title: site.title, domain: site.domain)
 
