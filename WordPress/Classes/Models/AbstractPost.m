@@ -122,7 +122,6 @@
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
-    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
     return post;
 }
 
@@ -153,7 +152,6 @@
 {
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
-        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
     }
 }
 
@@ -167,7 +165,6 @@
             [self setValue:[NSDate date] forKey:key];
         }
     }
-    self.isFeaturedImageChanged = revision.isFeaturedImageChanged;
     return self;
 }
 
