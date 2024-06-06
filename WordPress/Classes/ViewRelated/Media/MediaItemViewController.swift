@@ -66,7 +66,7 @@ final class MediaItemViewController: UITableViewController {
                                             action: editAlt())
 
         var mediaInfoRows = [titleRow, captionRow, descRow]
-        if media.mediaType == .image {
+        if media.mediaType == .image && media.blog.supports(BlogFeature.mediaAltEditing) {
             mediaInfoRows.append(altRow)
         }
 
