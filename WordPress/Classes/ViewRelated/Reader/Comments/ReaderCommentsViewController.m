@@ -813,16 +813,20 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
     [self.tableView performBatchUpdates:nil completion:nil];
 }
 
-
-- (void)refreshTableViewAndNoResultsView
-{
+- (void)refreshTableViewAndNoResultsView:(BOOL)scrollToHighlightedComment {
     [self.tableViewHandler refreshTableView];
     [self refreshNoResultsView];
     [self.managedObjectContext performBlock:^{
         [self updateCachedContent];
     }];
 
-    [self navigateToCommentIDIfNeeded];
+    if (scrollToHighlightedComment) {
+        [self navigateToCommentIDIfNeeded];
+    }
+}
+
+- (void)refreshTableViewAndNoResultsView {
+    [self refreshTableViewAndNoResultsView:YES];
 }
 
 - (void)updateCachedContent
@@ -919,7 +923,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         // Dispatch is used here to address an issue in iOS 15 where some cells could disappear from the screen after `reloadData`.
         // This seems to be affecting the Simulator environment only since I couldn't reproduce it on the device, but I'm fixing it just in case.
         dispatch_async(dispatch_get_main_queue(), ^{
-            [weakSelf refreshTableViewAndNoResultsView];
+            [weakSelf refreshTableViewAndNoResultsView:NO];
         });
     };
 
@@ -929,7 +933,7 @@ static NSString *CommentContentCellIdentifier = @"CommentContentTableViewCell";
         NSString *message = NSLocalizedString(@"There has been an unexpected error while sending your reply", "Reply Failure Message");
         [weakSelf displayNoticeWithTitle:message message:nil];
 
-        [weakSelf refreshTableViewAndNoResultsView];
+        [weakSelf refreshTableViewAndNoResultsView:NO];
     };
 
     CommentService *service = [[CommentService alloc] initWithCoreDataStack:[ContextManager sharedInstance]];
