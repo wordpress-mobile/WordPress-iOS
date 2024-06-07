@@ -5,7 +5,10 @@ final class MilestoneHostingController<Content: View>: UIHostingController<Conte
     private let notification: Notification
     private let milestoneCoordinator: MilestoneCoordinator
     private lazy var arrowConfigurator: NotificationDetailsArrowConfigurator = {
-        NotificationDetailsArrowConfigurator(nextAction: nextAction, previousAction: previousAction)
+        NotificationDetailsArrowConfigurator(
+            nextAction: milestoneCoordinator.shouldShowNext ? nextAction : nil,
+            previousAction: milestoneCoordinator.shouldShowPrevious ? previousAction : nil
+        )
     }()
 
     init(rootView: Content, milestoneCoordinator: MilestoneCoordinator, notification: Notification) {

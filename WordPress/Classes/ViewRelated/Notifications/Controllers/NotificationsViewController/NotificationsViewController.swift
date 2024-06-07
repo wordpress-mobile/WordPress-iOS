@@ -723,16 +723,16 @@ extension NotificationsViewController {
     /// - Parameter notificationID: The ID of the Notification that should be rendered onscreen.
     ///
     @objc
-    func showDetailsForNotificationWithID(_ noteId: String, animated: Bool = true) {
+    func showDetailsForNotificationWithID(_ noteId: String) {
         if let note = loadNotification(with: noteId) {
-            showDetails(for: note, animated: animated)
+            showDetails(for: note, animated: true)
             return
         }
 
         syncNotification(with: noteId, timeout: Syncing.pushMaxWait) { [weak self] note in
             guard let self else { return }
 
-            self.showDetails(for: note, animated: animated)
+            self.showDetails(for: note, animated: true)
         }
     }
 
@@ -781,7 +781,7 @@ extension NotificationsViewController {
 
         ensureNotificationsListIsOnscreen()
         ensureNoteIsNotBeingFiltered(note)
-        selectRow(for: note, animated: false, scrollPosition: .top)
+        selectRow(for: note, animated: true, scrollPosition: .top)
 
         // Display Details
         //
@@ -809,6 +809,8 @@ extension NotificationsViewController {
 
         view.isUserInteractionEnabled = false
 
+        let preceding = self.notification(preceding: note)
+        let succeeding = self.notification(succeeding: note)
         DispatchQueue.main.async { [weak self] in
             guard let self = self else {
                 return
@@ -820,6 +822,8 @@ extension NotificationsViewController {
             } else if note.achievement != nil {
                 viewController = MilestoneCoordinator(
                     notification: note,
+                    shouldShowPrevious: preceding != nil,
+                    shouldShowNext: succeeding != nil,
                     coordinatorDelegate: self
                 ).createHostingController()
             } else {
@@ -939,12 +943,21 @@ extension NotificationsViewController {
 // MARK: - MilestoneCoordinatorDelegate
 extension NotificationsViewController: MilestoneCoordinatorDelegate {
     func previousNotificationTapped(notification: Notification?) {
-        navigationController?.popViewController(animated: false)
-        showDetailsForNotificationWithID("8181759289", animated: false)
+        guard let notification,
+              let previousNotification = self.notification(preceding: notification) else {
+            return
+        }
+
+        showDetails(for: previousNotification, animated: false)
     }
-    
+
     func nextNotificationTapped(notification: Notification?) {
-        navigationController?.popViewController(animated: false)
+        guard let notification,
+              let nextNotification = self.notification(succeeding: notification) else {
+            return
+        }
+
+        showDetails(for: nextNotification, animated: false)
     }
 }
 

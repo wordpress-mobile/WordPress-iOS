@@ -2,16 +2,16 @@ import UIKit
 import DesignSystem
 
 final class NotificationDetailsArrowConfigurator {
-    private let nextAction: (() -> Void)
-    private let previousAction: (() -> Void)
+    private let nextAction: (() -> Void)?
+    private let previousAction: (() -> Void)?
 
-    init(nextAction: @escaping () -> Void, previousAction: @escaping () -> Void) {
+    init(nextAction: (() -> Void)?, previousAction: (() -> Void)?) {
         self.nextAction = nextAction
         self.previousAction = previousAction
     }
 
     func makeNavigationButtons() -> UIBarButtonItem {
-        let buttonStackView = UIStackView(arrangedSubviews: [createNextButton(), createPreviousButton()])
+        let buttonStackView = UIStackView(arrangedSubviews: [createPreviousButton(), createNextButton()])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = .DS.Padding.split
 
@@ -26,6 +26,7 @@ final class NotificationDetailsArrowConfigurator {
         button.setImage(.gridicon(.arrowUp), for: .normal)
         button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
         button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.isEnabled = nextAction != nil
         return button
     }
 
@@ -34,14 +35,15 @@ final class NotificationDetailsArrowConfigurator {
         button.setImage(.gridicon(.arrowDown), for: .normal)
         button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
         button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
+        button.isEnabled = previousAction != nil
         return button
     }
 
     @objc private func previousButtonTapped() {
-        previousAction()
+        previousAction?()
     }
 
     @objc private func nextButtonTapped() {
-        nextAction()
+        nextAction?()
     }
 }

@@ -7,11 +7,18 @@ protocol MilestoneCoordinatorDelegate: AnyObject {
 }
 
 final class MilestoneCoordinator {
+    let shouldShowPrevious: Bool
+    let shouldShowNext: Bool
     private let notification: Notification
     private weak var coordinatorDelegate: MilestoneCoordinatorDelegate?
 
-    init(notification: Notification, coordinatorDelegate: MilestoneCoordinatorDelegate?) {
+    init(notification: Notification, 
+         shouldShowPrevious: Bool,
+         shouldShowNext: Bool,
+         coordinatorDelegate: MilestoneCoordinatorDelegate?) {
         self.notification = notification
+        self.shouldShowPrevious = shouldShowPrevious
+        self.shouldShowNext = shouldShowNext
         self.coordinatorDelegate = coordinatorDelegate
     }
 
