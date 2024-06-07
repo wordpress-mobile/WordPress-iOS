@@ -392,6 +392,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         }
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/974")) { request in
             XCTAssertEqual(request.getBodyParameters(), [
+                "date": "2024-03-07T23:00:40+0000",
                 "slug": "hello",
                 "status": "publish"
             ])
@@ -406,7 +407,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         await fulfillment(of: [expectation], timeout: 2)
 
         // WHEN
-        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: Date(timeIntervalSince1970: 1709852440)))
 
         // THEN the coordinator wait for the sync to complete and the post to
         // be created and only then sends a parial update to get it published
