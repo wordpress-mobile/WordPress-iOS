@@ -1,6 +1,7 @@
 25.1
 -----
 * [*] [internal] Block editor: Add onContentUpdate bridge functionality [#23234]
+* [*] Fix a rare crash when trashing posts [#23321]
 
 25.0
 -----
