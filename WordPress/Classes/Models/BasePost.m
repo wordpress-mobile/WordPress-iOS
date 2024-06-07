@@ -31,11 +31,6 @@
     self.date_created_gmt = localDate;
 }
 
-- (void)findComments
-{
-}
-
-
 #pragma mark - PostContentProvider protocol
 
 - (NSString *)titleForDisplay

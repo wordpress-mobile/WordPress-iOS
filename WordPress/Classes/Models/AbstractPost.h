@@ -108,7 +108,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (NSString *)dateStringForDisplay;
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isPrivateAtWPCom;
-- (BOOL)supportsStats;
 
 
 #pragma mark - Unsaved Changes
@@ -135,14 +134,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)originalIsDraft;
 
 /**
- Returns YES if the post has a future date_created_gmt.
- This is different from "isScheduled" in that  a post with a draft, pending, or
- trashed status can also have a date_created_gmt with a future value.
- */
-/// - note: deprecated (kahu-offline-mode)
-- (BOOL)hasFuturePublishDate;
-
-/**
  Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal.
  Used when determining if a post should publish immediately.
  */
@@ -151,8 +142,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
-// Deletes post locally
-- (void)remove;
+
 // Save changes to disk
 - (void)save;
 

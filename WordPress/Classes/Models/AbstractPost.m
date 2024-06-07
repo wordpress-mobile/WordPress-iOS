@@ -41,18 +41,6 @@
 
 #pragma mark - Life Cycle Methods
 
-- (void)remove
-{
-    if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
-    }
-
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext deleteObject:self];
-    }];
-
-}
-
 - (void)save
 {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -282,27 +270,7 @@
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
 }
 
-- (void)findComments
-{
-    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
-                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
-    if ([comments count] > 0) {
-        [self addComments:comments];
-    }
-}
-
-
-
 #pragma mark - Convenience methods
-
-// This is different than isScheduled. See .h for details.
-- (BOOL)hasFuturePublishDate
-{
-    if (!self.date_created_gmt) {
-        return NO;
-    }
-    return (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]);
-}
 
 // If the post has a scheduled status.
 - (BOOL)isScheduled
@@ -383,11 +351,6 @@
         return NSLocalizedString(@"Publish Immediately",@"A short phrase indicating a post is due to be immedately published.");
     }
     return [[self dateCreated] mediumString];
-}
-
-- (BOOL)supportsStats
-{
-    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
 }
 
 - (BOOL)isPrivateAtWPCom

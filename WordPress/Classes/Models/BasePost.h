@@ -32,9 +32,6 @@ NS_ASSUME_NONNULL_BEGIN
 //date conversion
 @property (nonatomic, strong, nullable) NSDate * dateCreated;
 
-//comments
-- (void)findComments;
-
 // Returns true if title or content is non empty
 - (BOOL)hasContent;
 
