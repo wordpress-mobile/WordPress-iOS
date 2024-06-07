@@ -650,13 +650,12 @@ FeaturedImageViewControllerDelegate>
         [metaRows addObject:@(PostSettingsRowAuthor)];
     }
 
+    [metaRows addObject:@(PostSettingsRowPublishDate)];
+
     if (self.isDraftOrPending) {
         [metaRows addObject:@(PostSettingsRowPendingReview)];
     } else {
-        [metaRows addObjectsFromArray:@[
-            @(PostSettingsRowPublishDate),
-            @(PostSettingsRowVisibility)
-        ]];
+        [metaRows addObject:@(PostSettingsRowVisibility)];
     }
 
     self.postMetaSectionRows = [metaRows copy];
@@ -678,11 +677,11 @@ FeaturedImageViewControllerDelegate>
         // Publish date
         cell = [self getWPTableViewDisclosureCellWithIdentifier:@"PostSettingsRowPublishDate"];
         cell.textLabel.text = NSLocalizedString(@"Publish Date", @"Label for the publish date button.");
-        if (self.apost.dateCreated) {
+        if (self.apost.dateCreated && ![self.apost shouldPublishImmediately]) {
             cell.detailTextLabel.text = [self.postDateFormatter stringFromDate:self.apost.dateCreated];
         } else {
             // Should never happen as this field is displayed only for published/scheduled posts
-            cell.detailTextLabel.text = @"";
+            cell.detailTextLabel.text = NSLocalizedStringWithDefaultValue(@"postSettings.publishDateImmediately", nil, [NSBundle mainBundle], @"Immediately", @"The placeholder value for 'Publish Date' field");
         }
 
         if ([self.apost.status isEqualToString:PostStatusPrivate]) {

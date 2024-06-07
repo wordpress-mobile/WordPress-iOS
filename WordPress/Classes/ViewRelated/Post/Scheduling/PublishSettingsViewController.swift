@@ -33,7 +33,19 @@ struct PublishSettingsViewModel {
 
     private let post: AbstractPost
 
-    var isRequired: Bool { (post.original ?? post).status == .publish }
+    var isRequired: Bool {
+        if post.original().isStatus(in: [.publish, .publishPrivate, .scheduled]) {
+            // You can't remove the publish date for these statuses.
+            return true
+        }
+        if post.original().isStatus(in: [.draft, .pending]) && !(post.original?.shouldPublishImmediately() ?? false) {
+            // If you ever set a publish date for a draft, the API that the app
+            // uses doesn't allow you to remove it.
+            return true
+        }
+        return false
+    }
+
     let dateFormatter: DateFormatter
     let dateTimeFormatter: DateFormatter
 

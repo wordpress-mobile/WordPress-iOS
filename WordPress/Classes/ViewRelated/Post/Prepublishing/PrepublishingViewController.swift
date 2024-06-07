@@ -555,8 +555,7 @@ private final class PrepublishingViewModel {
         self.post = post
 
         self.visibility = .init(post: post)
-        // Ask the user to provide the date every time (ignore the obscure WP dateCreated/dateModified logic)
-        self.publishDate = nil
+        self.publishDate = post.shouldPublishImmediately() ? nil : post.dateCreated
     }
 
     @MainActor

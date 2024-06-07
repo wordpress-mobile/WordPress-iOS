@@ -74,7 +74,11 @@ public class PostEditorStateContext {
 
     fileprivate var originalPostStatus: BasePost.Status?
     fileprivate var currentPostStatus: BasePost.Status?
-    fileprivate var currentPublishDate: Date?
+    fileprivate var currentPublishDate: Date? {
+        didSet {
+            updatePublishAction()
+        }
+    }
     fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
@@ -103,8 +107,7 @@ public class PostEditorStateContext {
     }
 
     convenience init(post: AbstractPost,
-                     delegate: PostEditorStateContextDelegate,
-                     action: PostEditorAction? = nil) {
+                     delegate: PostEditorStateContextDelegate) {
         var originalPostStatus: BasePost.Status? = nil
 
         let originalPost = post.original()
@@ -121,10 +124,6 @@ public class PostEditorStateContext {
                   userCanPublish: userCanPublish,
                   publishDate: post.dateCreated,
                   delegate: delegate)
-
-        if let action = action {
-            self.action = action
-        }
     }
 
     /// The default initializer
@@ -215,6 +214,10 @@ public class PostEditorStateContext {
     ///
     var publishActionAnalyticsStat: WPAnalyticsStat {
         return action.publishActionAnalyticsStat
+    }
+
+    private func updatePublishAction() {
+        action = PostEditorStateContext.initialAction(for: originalPostStatus, publishDate: currentPublishDate, userCanPublish: userCanPublish)
     }
 
     /// Indicates whether the Publish Action should be allowed, or not

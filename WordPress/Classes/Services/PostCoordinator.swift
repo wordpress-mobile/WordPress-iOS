@@ -104,13 +104,7 @@ class PostCoordinator: NSObject {
         if (latest.password ?? "") != (options.password ?? "") {
             parameters.password = options.password
         }
-        if let publishDate = options.publishDate {
-            parameters.date = publishDate
-        } else {
-            // If the post was previously scheduled for a different date,
-            // the app has to send a new value to override it.
-            parameters.date = post.shouldPublishImmediately() ? nil : Date()
-        }
+        parameters.date = options.publishDate ?? .now
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
