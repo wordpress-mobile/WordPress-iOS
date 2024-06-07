@@ -83,7 +83,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 ///
 - (AbstractPost *)latest;
 - (AbstractPost *)cloneFrom:(AbstractPost *)source;
-- (BOOL)hasSiteSpecificChanges;
 - (BOOL)hasPhoto;
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
@@ -109,24 +108,9 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (NSString *)dateStringForDisplay;
 - (BOOL)isMultiAuthorBlog;
 - (BOOL)isPrivateAtWPCom;
-- (BOOL)supportsStats;
 
 
 #pragma mark - Unsaved Changes
-
-/**
- *  @brief      Call this method to know if the post has either local or remote unsaved changes.
- *  @details    There should be no need to override this method.  Consider overriding
- *              methods hasLocalChanges and hasRemoteChanges instead.
- *  @returns    YES if there are unsaved changes, NO otherwise.
- */
-- (BOOL)hasUnsavedChanges;
-
-/**
- *  @brief      Call this method to know if the post has remote changes.
- *  @returns    YES if there are unsaved changes, NO otherwise.
- */
-- (BOOL)hasRemoteChanges;
 
 /**
  Returns YES if the post is has a `future` post status
@@ -150,32 +134,15 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)originalIsDraft;
 
 /**
- Returns YES if the post has a future date_created_gmt.
- This is different from "isScheduled" in that  a post with a draft, pending, or
- trashed status can also have a date_created_gmt with a future value.
- */
-/// - note: deprecated (kahu-offline-mode)
-- (BOOL)hasFuturePublishDate;
-
-/**
  Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal.
  Used when determining if a post should publish immediately.
  */
 /// - note: deprecated (kahu-offline-mode)
 - (BOOL)dateCreatedIsNilOrEqualToDateModified;
 
-/**
- *  Whether the post has local changes or not.  Local changes are all changes that are have not been
- *  published to the server yet.
- *
- *  @returns    YES if the post has local changes, NO otherwise.
- */
-- (BOOL)hasLocalChanges;
-
 // Does the post exist on the blog?
 - (BOOL)hasRemote;
-// Deletes post locally
-- (void)remove;
+
 // Save changes to disk
 - (void)save;
 

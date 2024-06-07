@@ -28,16 +28,9 @@ NS_ASSUME_NONNULL_BEGIN
  Not part of the post's canoncial data.
  */
 @property (nonatomic, strong, nullable) NSString *pathForDisplayImage;
-/**
- BOOL flag if the feature image was changed.
- */
-@property (nonatomic, assign) BOOL isFeaturedImageChanged;
 
 //date conversion
 @property (nonatomic, strong, nullable) NSDate * dateCreated;
-
-//comments
-- (void)findComments;
 
 // Returns true if title or content is non empty
 - (BOOL)hasContent;

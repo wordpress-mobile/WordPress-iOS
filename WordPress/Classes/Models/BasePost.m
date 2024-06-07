@@ -21,8 +21,6 @@
 @dynamic suggested_slug;
 @dynamic pathForDisplayImage;
 
-@synthesize isFeaturedImageChanged;
-
 - (NSDate *)dateCreated
 {
     return self.date_created_gmt;
@@ -32,11 +30,6 @@
 {
     self.date_created_gmt = localDate;
 }
-
-- (void)findComments
-{
-}
-
 
 #pragma mark - PostContentProvider protocol
 
