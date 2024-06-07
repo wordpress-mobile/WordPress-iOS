@@ -123,7 +123,10 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
     private var shouldCancelNextUpdateAnimation = false
 
     private lazy var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator = {
-        return NotificationCommentDetailCoordinator(notificationsNavigationDataSource: self)
+        return NotificationCommentDetailCoordinator(
+            notificationsNavigationDataSource: self,
+            notificationDetailArrowDelegate: self
+        )
     }()
 
     /// Activity Indicator to be shown when refreshing a Jetpack site status.
@@ -447,6 +450,7 @@ class NotificationsViewController: UIViewController, UITableViewDataSource, UITa
         detailsViewController.hidesBottomBarWhenPushed = true
         detailsViewController.dataSource = self
         detailsViewController.notificationCommentDetailCoordinator = notificationCommentDetailCoordinator
+        detailsViewController.notificationDetailArrowDelegate = self
         detailsViewController.note = note
         detailsViewController.onDeletionRequestCallback = { [weak self] request in
             guard let self else { return }
@@ -940,8 +944,8 @@ extension NotificationsViewController {
     }
 }
 
-// MARK: - MilestoneCoordinatorDelegate
-extension NotificationsViewController: MilestoneCoordinatorDelegate {
+// MARK: - NotificationDetailArrowDelegate
+extension NotificationsViewController: NotificationDetailArrowDelegate {
     func previousNotificationTapped(notification: Notification?) {
         guard let notification,
               let previousNotification = self.notification(preceding: notification) else {

@@ -28,6 +28,11 @@ final class MilestoneHostingController<Content: View>: UIHostingController<Conte
         configureNavBarButtons()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationSyncMediator()?.markAsRead(notification)
+    }
+
     private func makeNavigationBarTransparent() {
         if let navigationController = navigationController {
             let appearance = UINavigationBarAppearance()

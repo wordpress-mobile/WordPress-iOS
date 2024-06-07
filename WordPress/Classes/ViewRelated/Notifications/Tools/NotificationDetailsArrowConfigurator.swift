@@ -11,7 +11,7 @@ final class NotificationDetailsArrowConfigurator {
     }
 
     func makeNavigationButtons() -> UIBarButtonItem {
-        let buttonStackView = UIStackView(arrangedSubviews: [createPreviousButton(), createNextButton()])
+        let buttonStackView = UIStackView(arrangedSubviews: [createNextButton(), createPreviousButton()])
         buttonStackView.axis = .horizontal
         buttonStackView.spacing = .DS.Padding.split
 
@@ -21,21 +21,21 @@ final class NotificationDetailsArrowConfigurator {
         return UIBarButtonItem(customView: buttonStackView)
     }
 
-    private func createNextButton() -> UIButton {
-        let button = UIButton(type: .custom)
-        button.setImage(.gridicon(.arrowUp), for: .normal)
-        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
-        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
-        button.isEnabled = nextAction != nil
-        return button
-    }
-
     private func createPreviousButton() -> UIButton {
         let button = UIButton(type: .custom)
         button.setImage(.gridicon(.arrowDown), for: .normal)
-        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        button.accessibilityLabel = NSLocalizedString("Next notification", comment: "Accessibility label for the next notification button")
         button.addTarget(self, action: #selector(previousButtonTapped), for: .touchUpInside)
         button.isEnabled = previousAction != nil
+        return button
+    }
+
+    private func createNextButton() -> UIButton {
+        let button = UIButton(type: .custom)
+        button.setImage(.gridicon(.arrowUp), for: .normal)
+        button.accessibilityLabel = NSLocalizedString("Previous notification", comment: "Accessibility label for the previous notification button")
+        button.addTarget(self, action: #selector(nextButtonTapped), for: .touchUpInside)
+        button.isEnabled = nextAction != nil
         return button
     }
 

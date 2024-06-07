@@ -1,7 +1,7 @@
 import SwiftUI
 import UIKit
 
-protocol MilestoneCoordinatorDelegate: AnyObject {
+protocol NotificationDetailArrowDelegate: AnyObject {
     func previousNotificationTapped(notification: Notification?)
     func nextNotificationTapped(notification: Notification?)
 }
@@ -10,12 +10,12 @@ final class MilestoneCoordinator {
     let shouldShowPrevious: Bool
     let shouldShowNext: Bool
     private let notification: Notification
-    private weak var coordinatorDelegate: MilestoneCoordinatorDelegate?
+    private weak var coordinatorDelegate: NotificationDetailArrowDelegate?
 
     init(notification: Notification, 
          shouldShowPrevious: Bool,
          shouldShowNext: Bool,
-         coordinatorDelegate: MilestoneCoordinatorDelegate?) {
+         coordinatorDelegate: NotificationDetailArrowDelegate?) {
         self.notification = notification
         self.shouldShowPrevious = shouldShowPrevious
         self.shouldShowNext = shouldShowNext
@@ -40,10 +40,12 @@ final class MilestoneCoordinator {
 
 extension MilestoneCoordinator: CommentDetailsNotificationDelegate {
     func previousNotificationTapped(current: Notification?) {
+        WPAnalytics.track(.notificationsPreviousTapped)
         coordinatorDelegate?.previousNotificationTapped(notification: current)
     }
 
     func nextNotificationTapped(current: Notification?) {
+        WPAnalytics.track(.notificationsNextTapped)
         coordinatorDelegate?.nextNotificationTapped(notification: current)
     }
 

@@ -84,6 +84,8 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     ///
     weak var notificationCommentDetailCoordinator: NotificationCommentDetailCoordinator?
 
+    weak var notificationDetailArrowDelegate: NotificationDetailArrowDelegate?
+
     /// Notification being displayed
     ///
     var note: Notification! {
@@ -1287,7 +1289,11 @@ extension NotificationDetailsViewController {
         }
 
         WPAnalytics.track(.notificationsPreviousTapped)
-        refreshView(with: previous)
+        if previous.achievement != nil {
+            notificationDetailArrowDelegate?.nextNotificationTapped(notification: note)
+        } else {
+            refreshView(with: previous)
+        }
     }
 
     @IBAction func nextNotificationWasPressed() {
@@ -1296,7 +1302,11 @@ extension NotificationDetailsViewController {
         }
 
         WPAnalytics.track(.notificationsNextTapped)
-        refreshView(with: next)
+        if next.achievement != nil {
+            notificationDetailArrowDelegate?.nextNotificationTapped(notification: note)
+        } else {
+            refreshView(with: next)
+        }
     }
 
     private func refreshView(with note: Notification) {

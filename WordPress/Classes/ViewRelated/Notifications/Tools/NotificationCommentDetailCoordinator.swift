@@ -14,6 +14,7 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     private var viewController: NotificationCommentDetailViewController?
     private let managedObjectContext = ContextManager.shared.mainContext
+    private weak var notificationDetailArrowDelegate: NotificationDetailArrowDelegate?
 
     private var notification: Notification? {
         didSet {
@@ -34,8 +35,10 @@ class NotificationCommentDetailCoordinator: NSObject {
 
     // MARK: - Init
 
-    init(notificationsNavigationDataSource: NotificationsNavigationDataSource? = nil) {
+    init(notificationsNavigationDataSource: NotificationsNavigationDataSource? = nil,
+         notificationDetailArrowDelegate: NotificationDetailArrowDelegate?) {
         self.notificationsNavigationDataSource = notificationsNavigationDataSource
+        self.notificationDetailArrowDelegate = notificationDetailArrowDelegate
         super.init()
     }
 
@@ -146,7 +149,11 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
               }
 
         WPAnalytics.track(.notificationsPreviousTapped)
-        updateViewWith(notification: previousNotification)
+        if previousNotification.achievement != nil {
+            notificationDetailArrowDelegate?.previousNotificationTapped(notification: current)
+        } else {
+            updateViewWith(notification: previousNotification)
+        }
     }
 
     func nextNotificationTapped(current: Notification?) {
@@ -156,7 +163,11 @@ extension NotificationCommentDetailCoordinator: CommentDetailsNotificationDelega
               }
 
         WPAnalytics.track(.notificationsNextTapped)
-        updateViewWith(notification: nextNotification)
+        if nextNotification.achievement != nil {
+            notificationDetailArrowDelegate?.nextNotificationTapped(notification: current)
+        } else {
+            updateViewWith(notification: nextNotification)
+        }
     }
 
     func commentWasModerated(for notification: Notification?) {
