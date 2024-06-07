@@ -302,35 +302,6 @@ class PostTests: CoreDataTestCase {
         XCTAssertTrue(post.canEditPublicizeSettings())
     }
 
-    /// Confidence check for the string setter of `Post.statusAfterSync`
-    func testStatusAfterSyncStringTranslatesToEnumValues() {
-        // Arrange
-        let post = newTestPost()
-        XCTAssertNil(post.statusAfterSync)
-        XCTAssertNil(post.statusAfterSyncString)
-
-        // Act
-        post.statusAfterSyncString = "draft"
-
-        // Assert
-        XCTAssertEqual(post.statusAfterSync, BasePost.Status.draft)
-        XCTAssertEqual(post.statusAfterSyncString, "draft")
-    }
-
-    /// Confidence check for the string setter of `Post.statusAfterSync`
-    func testStatusAfterSyncStringSetterGraciouslyHandlesInvalidValues() {
-        // Arrange
-        let post = newTestPost()
-        XCTAssertNil(post.statusAfterSync)
-
-        // Act
-        post.statusAfterSyncString = "invalid value"
-
-        // Assert
-        XCTAssertNil(post.statusAfterSync)
-        XCTAssertNil(post.statusAfterSyncString)
-    }
-
     func testCountLocalDrafts() {
         let blog = BlogBuilder(mainContext).build()
         let _ = blog.createDraftPost()

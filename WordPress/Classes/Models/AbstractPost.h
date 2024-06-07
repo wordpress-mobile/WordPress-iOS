@@ -60,8 +60,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /// Used to deduplicate new posts
 @property (nonatomic, strong, nullable) NSUUID *foreignID;
 
-/// - warning: deprecated (kahu-offline-mode)
-@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
@@ -82,9 +80,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasVideo;
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
-
-/// - note: deprecated (kahu-offline-mode)
-@property (nonatomic, assign, readonly) BOOL isFailed;
 
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
 

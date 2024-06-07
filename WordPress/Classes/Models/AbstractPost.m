@@ -15,7 +15,6 @@
 @dynamic comments;
 @dynamic featuredImage;
 @dynamic revisions;
-@dynamic confirmedChangesHash;
 @dynamic confirmedChangesTimestamp;
 @dynamic autoUploadAttemptsCount;
 @dynamic autosaveContent;
@@ -211,11 +210,6 @@
     }
 
     return NO;
-}
-
-- (BOOL)isFailed
-{
-    return self.remoteStatus == AbstractPostRemoteStatusFailed || [[MediaCoordinator shared] hasFailedMediaFor:self] || self.hasFailedMedia;
 }
 
 - (BOOL)hasFailedMedia
