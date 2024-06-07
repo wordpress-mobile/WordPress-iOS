@@ -85,10 +85,8 @@ class PostCoordinator: NSObject {
     ///
     /// - warning: Before publishing, ensure that the media for the post got
     /// uploaded. Managing media is not the responsibility of `PostRepository.`
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _publish(_ post: AbstractPost, options: PublishingOptions) async throws {
+    func publish(_ post: AbstractPost, options: PublishingOptions) async throws {
         wpAssert(post.isOriginal())
         wpAssert(post.isStatus(in: [.draft, .pending]))
 
@@ -116,7 +114,7 @@ class PostCoordinator: NSObject {
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository._save(post, changes: parameters)
+            try await repository.save(post, changes: parameters)
             didPublish(post)
             show(PostCoordinator.makeUploadSuccessNotice(for: post))
         } catch {
@@ -141,10 +139,8 @@ class PostCoordinator: NSObject {
     }
 
     /// Uploads the changes made to the post to the server.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @discardableResult @MainActor
-    func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
+    func save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil) async throws -> AbstractPost {
         let post = post.original()
 
         await pauseSyncing(for: post)
@@ -152,7 +148,7 @@ class PostCoordinator: NSObject {
 
         do {
             let previousStatus = post.status
-            try await PostRepository()._save(post, changes: changes)
+            try await PostRepository().save(post, changes: changes)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
@@ -164,14 +160,13 @@ class PostCoordinator: NSObject {
 
     /// Patches the post.
     ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+    private func update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         wpAssert(post.isOriginal())
 
         let post = post.original()
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
+            try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
         } catch {
             trackError(error, operation: "post-patch")
             handleError(error, for: post)
@@ -241,7 +236,7 @@ class PostCoordinator: NSObject {
     func moveToDraft(_ post: AbstractPost) {
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.draft.rawValue
-        _performChanges(changes, for: post)
+        performChanges(changes, for: post)
     }
 
     /// Restores a trashed post by moving it to draft.
@@ -251,17 +246,17 @@ class PostCoordinator: NSObject {
 
         var changes = RemotePostUpdateParameters()
         changes.status = Post.Status.draft.rawValue
-        try await _update(post, changes: changes)
+        try await update(post, changes: changes)
     }
 
     /// Sets the post state to "updating" and performs the given changes.
-    private func _performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
+    private func performChanges(_ changes: RemotePostUpdateParameters, for post: AbstractPost) {
         Task { @MainActor in
             let post = post.original()
             setUpdating(true, for: post)
             defer { setUpdating(false, for: post) }
 
-            try await self._update(post, changes: changes)
+            try await self.update(post, changes: changes)
         }
     }
 
@@ -280,8 +275,6 @@ class PostCoordinator: NSObject {
     /// Sets a flag to sync the given revision and schedules the next sync.
     ///
     /// - warning: Should only be used for draft posts.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     func setNeedsSync(for revision: AbstractPost) {
         wpAssert(revision.isRevision(), "Must be used only on revisions")
         wpAssert(isSyncAllowed(for: revision.original()), "Sync is not supported for this post")
@@ -903,7 +896,7 @@ class PostCoordinator: NSObject {
         defer { resumeSyncing(for: post) }
 
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._trash(post)
+            try await PostRepository(coreDataStack: coreDataStack).trash(post)
 
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
@@ -914,14 +907,14 @@ class PostCoordinator: NSObject {
     }
 
     @MainActor
-    func _delete(_ post: AbstractPost) async {
+    func delete(_ post: AbstractPost) async {
         wpAssert(post.isOriginal())
 
         setUpdating(true, for: post)
         defer { setUpdating(false, for: post) }
 
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._delete(post)
+            try await PostRepository(coreDataStack: coreDataStack).delete(post)
         } catch {
             trackError(error, operation: "post-delete")
             handleError(error, for: post)
