@@ -640,8 +640,9 @@ extension PostRepository {
             throw PostRepository.Error.remoteAPIUnavailable
         }
 
+        let statuses = statuses?.map { $0.rawValue }
         let options = PostRepositoryPostsSerivceRemoteOptions(options: .init(
-            statuses: statuses?.strings,
+            statuses: statuses,
             number: range.count,
             offset: range.lowerBound,
             order: descending ? .descending : .ascending,
@@ -656,7 +657,7 @@ extension PostRepository {
             let updatedPosts = PostHelper.merge(
                 remotePosts,
                 ofType: postType,
-                withStatuses: statuses?.strings,
+                withStatuses: statuses,
                 byAuthor: authorUserID,
                 for: try context.existingObject(with: blogID),
                 purgeExisting: deleteOtherLocalPosts,
