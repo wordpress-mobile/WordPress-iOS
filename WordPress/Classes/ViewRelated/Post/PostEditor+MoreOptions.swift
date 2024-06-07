@@ -36,7 +36,7 @@ extension PostEditor {
                     SVProgressHUD.show(withStatus: Strings.savingDraft)
 
                     let original = post.original()
-                    try await coordinator._save(original)
+                    try await coordinator.save(original)
                     self.post = original
                     self.createRevisionOfPost()
 

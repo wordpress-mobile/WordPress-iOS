@@ -406,7 +406,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         await fulfillment(of: [expectation], timeout: 2)
 
         // WHEN
-        try await coordinator._publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
 
         // THEN the coordinator wait for the sync to complete and the post to
         // be created and only then sends a parial update to get it published
@@ -461,7 +461,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await coordinator._publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
+        try await coordinator.publish(post, options: .init(visibility: .public, password: nil, publishDate: nil))
 
         // THEN
         XCTAssertEqual(post.publicizeMessage, "message-a")
@@ -539,7 +539,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await coordinator._save(post)
+        try await coordinator.save(post)
 
         // THEN all changes were synced
         XCTAssertEqual(post.content, "content-c")
@@ -573,7 +573,7 @@ class PostCoordinatorTests: CoreDataTestCase {
 
         // WHEN
         do {
-            try await coordinator._save(post)
+            try await coordinator.save(post)
             XCTFail("Expected a failure")
         } catch {
             // Expect an error

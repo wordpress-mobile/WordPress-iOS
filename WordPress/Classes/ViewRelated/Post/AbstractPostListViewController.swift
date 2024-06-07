@@ -710,7 +710,7 @@ class AbstractPostListViewController: UIViewController,
         alert.addDestructiveActionWithTitle(Strings.Delete.actionTitle) { _ in
             completion()
             Task {
-                await PostCoordinator.shared._delete(post)
+                await PostCoordinator.shared.delete(post)
             }
         }
         alert.presentFromRootViewController()

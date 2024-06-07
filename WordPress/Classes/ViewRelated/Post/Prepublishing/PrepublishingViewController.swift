@@ -563,7 +563,7 @@ private final class PrepublishingViewModel {
     func publish() async throws {
         wpAssert(post.isRevision())
 
-        try await coordinator._publish(post.original(), options: .init(
+        try await coordinator.publish(post.original(), options: .init(
             visibility: visibility.type,
             password: visibility.password,
             publishDate: publishDate
