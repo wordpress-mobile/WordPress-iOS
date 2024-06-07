@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 09:28:59+0000 */
+/* Translation-Revision-Date: 2024-06-07 13:41:13+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -3210,6 +3210,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "godzina";
 
+/* Update button title */
+"appUpdate.action.update" = "Uaktualnij";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Wersja %@";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Odrzuć";
 
@@ -3529,6 +3535,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numer telefonu";
 
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Anuluj";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Przywrócić";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Usunięte %@";
+
+/* Button title */
+"postFromAudio.retry" = "Ponów";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Coś poszło nie tak";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Przetwarzanie…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Nagrywanie…";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Odrzuć";
 
@@ -3541,6 +3568,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opcje obrazka wyróżniającego";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Strona nadrzędna";
+
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Obserwuj swoje ulubione witryny i odkrywaj nowe blogi.";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Gotowe";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Udostępnij post";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Wpis został opublikowany.";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Odrzuć";
 
@@ -3549,6 +3594,25 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Zalgowano się!";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Gotowe";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unspecified" = "Blogi";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Dodaj bloga";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Gotowe";
+
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Lubię to";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Polubione";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Wróć";
@@ -3583,6 +3647,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Utwórz";
 
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Inne urządzenie";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Aktualne urządzenie";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Anuluj";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Zapisz";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Rozwiąż konflikt";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Odrzuć";
 
@@ -3603,6 +3682,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Błąd udostępniania";
+
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Wszystkie witryny";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Dodaj witrynę";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Anuluj";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentarze";

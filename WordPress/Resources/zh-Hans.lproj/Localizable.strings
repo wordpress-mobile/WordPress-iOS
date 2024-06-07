@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-07 13:14:44+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -2519,6 +2519,9 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* translators: %s: name of the host app (e.g. WordPress) */
 "Editing synced patterns is not yet supported on %s for Android" = "Android 版 %s 尚不支持编辑已同步的样板";
+
+/* translators: %s: name of the host app (e.g. WordPress) */
+"Editing synced patterns is not yet supported on %s for iOS" = "iOS 版 %s 尚不支持编辑已同步的样板";
 
 /* Editing GIF alert message. */
 "Editing this GIF will remove its animation." = "编辑此 GIF 将删除其动画。";
@@ -10159,6 +10162,12 @@ Example: Reply to Pamela Nguyen */
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithoutPost" = "查看我的文章：";
 
+/* Link to Notification Settings section */
+"notificationsViewController.navigationBar.action.settings" = "通知设置";
+
+/* Accessibility label for the navigation bar menu button */
+"notificationsViewController.navigationBar.menu.accessibilityLabel" = "导航栏菜单按钮";
+
 /* Badge for page cells */
 "pageList.badgeHomepage" = "主页";
 
@@ -10665,6 +10674,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@ 个项目上传失败";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "上传媒体失败";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "标题";
@@ -11809,6 +11821,9 @@ This empty state component is displayed only when the app fails to load posts un
 
 /* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
 "stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
+/* Stats 'Today' header */
+"stats.period.todayCard.title" = "今天";
 
 /* Table column title that shows the date since the user became a subscriber. */
 "stats.section.dataSubtitles.subscriberSince" = "成为订阅者的时间";

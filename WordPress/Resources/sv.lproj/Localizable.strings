@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-29 10:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-05 04:47:28+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: sv_SE */
@@ -2427,7 +2427,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Download backup" = "Ladda ned säkerhetskopia";
 
 /* Title for the button that will download the backup file. */
-"Download file" = "Ladda ned fil";
+"Download file" = "Ladda ner fil";
 
 /* Label for number of file downloads. */
 "Downloads" = "Nedladdningar";
