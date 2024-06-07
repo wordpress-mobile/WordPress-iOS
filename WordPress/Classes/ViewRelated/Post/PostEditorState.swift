@@ -7,6 +7,7 @@ import WordPressShared
 ///
 public enum PostEditorAction {
     case publish
+    case schedule
     case update
     case submitForReview
 
@@ -14,6 +15,8 @@ public enum PostEditorAction {
         switch self {
         case .publish:
             return NSLocalizedString("Publish", comment: "Label for the publish (verb) button. Tapping publishes a draft post.")
+        case .schedule:
+            return NSLocalizedString("postEditor.buttonSchedule", value: "Schedule", comment: "Schedule button, this is what the Publish button changes to in the Post Editor if the post has a Publish Date set in the future.")
         case .submitForReview:
             return NSLocalizedString("Submit for Review", comment: "Submit for review button label (saving content, ex: Post, Page, Comment).")
         case .update:
@@ -25,8 +28,7 @@ public enum PostEditorAction {
         switch self {
         case .update:
             return .save
-            // TODO: make a new analytics event(s) for site creation homepage changes
-        case .publish, .submitForReview:
+        case .publish, .schedule, .submitForReview:
             return .publish
         }
     }
@@ -35,6 +37,8 @@ public enum PostEditorAction {
         switch self {
         case .publish:
             return .editorPublishedPost
+        case .schedule:
+            return .editorScheduledPost
         case .update:
             return .editorUpdatedPost
         case .submitForReview:
@@ -137,19 +141,20 @@ public class PostEditorStateContext {
         self.userCanPublish = userCanPublish
         self.currentPublishDate = publishDate
         self.delegate = delegate
-        self.action = PostEditorStateContext.initialAction(for: originalPostStatus, userCanPublish: userCanPublish)
+        self.action = PostEditorStateContext.initialAction(for: originalPostStatus, publishDate: publishDate, userCanPublish: userCanPublish)
     }
 
-    private static func initialAction(for originalPostStatus: BasePost.Status?, userCanPublish: Bool) -> PostEditorAction {
-        action(status: originalPostStatus ?? .draft, userCanPublish: userCanPublish)
+    private static func initialAction(for originalPostStatus: BasePost.Status?, publishDate: Date?, userCanPublish: Bool) -> PostEditorAction {
+        action(status: originalPostStatus ?? .draft, publishDate: publishDate, userCanPublish: userCanPublish)
     }
 
-    static func action(status: BasePost.Status, userCanPublish: Bool) -> PostEditorAction {
+    static func action(status: BasePost.Status, publishDate: Date?, userCanPublish: Bool) -> PostEditorAction {
+        let isScheduled = (publishDate ?? .distantPast) > .now
         switch status {
         case .draft:
-            return userCanPublish ? .publish : .submitForReview
+            return userCanPublish ? (isScheduled ? .schedule : .publish) : .submitForReview
         case .pending:
-            return userCanPublish ? .publish : .update
+            return userCanPublish ? (isScheduled ? .schedule : .publish) : .update
         case .publishPrivate, .publish, .scheduled:
             return .update
         case .trash, .deleted:
@@ -216,7 +221,7 @@ public class PostEditorStateContext {
     ///
     private func updatePublishActionAllowed() {
         switch action {
-        case .publish, .submitForReview:
+        case .publish, .schedule, .submitForReview:
             publishActionAllowed = hasContent
         case .update:
             publishActionAllowed = hasContent && hasChanges && !isBeingPublished

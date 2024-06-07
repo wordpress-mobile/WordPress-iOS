@@ -99,7 +99,7 @@ extension PublishingEditor {
         mapUIContentToPostAndSave(immediate: true)
 
         switch action {
-        case .publish:
+        case .publish, .schedule:
             showPublishingConfirmation(for: action, analyticsStat: analyticsStat)
         case .update:
             guard !isUploadingMedia else {
