@@ -346,7 +346,7 @@ extension PublishingEditor {
 
         if !post.isUnsavedRevision && post.status != .trash {
             DDLogDebug("Creating new revision")
-            post = post._createRevision()
+            post = post.createRevision()
         }
 
         if loadAutosaveRevision {
