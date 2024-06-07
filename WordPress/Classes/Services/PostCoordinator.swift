@@ -114,7 +114,7 @@ class PostCoordinator: NSObject {
 
         do {
             let repository = PostRepository(coreDataStack: coreDataStack)
-            try await repository._save(post, changes: parameters)
+            try await repository.save(post, changes: parameters)
             didPublish(post)
             show(PostCoordinator.makeUploadSuccessNotice(for: post))
         } catch {
@@ -148,7 +148,7 @@ class PostCoordinator: NSObject {
 
         do {
             let previousStatus = post.status
-            try await PostRepository()._save(post, changes: changes)
+            try await PostRepository().save(post, changes: changes)
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
@@ -166,7 +166,7 @@ class PostCoordinator: NSObject {
 
         let post = post.original()
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._update(post, changes: changes)
+            try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
         } catch {
             trackError(error, operation: "post-patch")
             handleError(error, for: post)
@@ -896,7 +896,7 @@ class PostCoordinator: NSObject {
         defer { resumeSyncing(for: post) }
 
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._trash(post)
+            try await PostRepository(coreDataStack: coreDataStack).trash(post)
 
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
@@ -914,7 +914,7 @@ class PostCoordinator: NSObject {
         defer { setUpdating(false, for: post) }
 
         do {
-            try await PostRepository(coreDataStack: coreDataStack)._delete(post)
+            try await PostRepository(coreDataStack: coreDataStack).delete(post)
         } catch {
             trackError(error, operation: "post-delete")
             handleError(error, for: post)
