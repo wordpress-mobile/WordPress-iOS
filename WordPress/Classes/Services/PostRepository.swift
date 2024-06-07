@@ -249,11 +249,11 @@ final class PostRepository {
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
-                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
+                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": false])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
-                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
+                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": true])
 
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
