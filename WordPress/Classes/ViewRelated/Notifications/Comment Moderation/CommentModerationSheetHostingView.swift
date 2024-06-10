@@ -88,7 +88,7 @@ final class CommentModerationSheetHostingView: UIView {
                 VStack(spacing: 0) {
                     Spacer()
                     CommentModerationView(viewModel: viewModel)
-                        .readSize(sizeChanged)
+                        .readSize(includeSafeArea: true, sizeChanged: sizeChanged)
                 }
                 .frame(maxHeight: .infinity)
             }

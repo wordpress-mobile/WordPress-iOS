@@ -9,26 +9,39 @@ private struct SizePreferenceKey: PreferenceKey {
 }
 
 private struct SizeModifier: ViewModifier {
-    let size: (CGSize) -> Void
+    let includeSafeArea: Bool
+    let sizeChanged: (CGSize) -> Void
 
     private var sizeView: some View {
         GeometryReader { geometry in
-            Color.clear.preference(key: SizePreferenceKey.self, value: geometry.size)
+            Color.clear.preference(
+                key: SizePreferenceKey.self,
+                value: size(from: geometry)
+            )
         }
+    }
+
+    private func size(from proxy: GeometryProxy) -> CGSize {
+        var size = proxy.size
+        if includeSafeArea {
+            size.height += proxy.safeAreaInsets.top + proxy.safeAreaInsets.bottom
+            size.width += proxy.safeAreaInsets.leading + proxy.safeAreaInsets.trailing
+        }
+        return size
     }
 
     func body(content: Content) -> some View {
         content.background(
             sizeView
                 .onPreferenceChange(SizePreferenceKey.self, perform: { value in
-                    size(value)
+                    sizeChanged(value)
                 })
         )
     }
 }
 
 extension View {
-    func readSize(_ size: @escaping (CGSize) -> Void) -> some View {
-        modifier(SizeModifier(size: size))
+    func readSize(includeSafeArea: Bool = false, sizeChanged: @escaping (CGSize) -> Void) -> some View {
+        modifier(SizeModifier(includeSafeArea: includeSafeArea, sizeChanged: sizeChanged))
     }
 }

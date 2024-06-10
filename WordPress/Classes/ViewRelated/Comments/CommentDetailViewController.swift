@@ -283,9 +283,12 @@ private extension CommentDetailViewController {
             return
         }
         let moderationView = CommentModerationSheetHostingView(viewModel: commentModerationViewModel, parent: self) { [weak self] size in
-            let bottomInset = size.height
-            self?.tableView.contentInset.bottom = bottomInset
-            self?.tableView.verticalScrollIndicatorInsets.bottom = bottomInset
+            guard let self else {
+                return
+            }
+            let bottomInset = size.height - self.view.safeAreaInsets.bottom
+            self.tableView.contentInset.bottom = bottomInset
+            self.tableView.verticalScrollIndicatorInsets.bottom = bottomInset
         }
         moderationView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(moderationView)
