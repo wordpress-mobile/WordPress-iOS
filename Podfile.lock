@@ -107,7 +107,7 @@ DEPENDENCIES:
   - Gifu (= 3.3.1)
   - Gravatar (= 1.0.1)
   - Gridicons (~> 1.2)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-11a3a4525496b6c0fbd6a67de380a0c3575e41a5.podspec`)
   - JTAppleCalendar (~> 8.0.5)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
@@ -176,7 +176,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-11a3a4525496b6c0fbd6a67de380a0c3575e41a5.podspec
   WordPressKit:
     :commit: 5323909e18815c36706efca5ffd289c7d6759575
     :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
@@ -202,7 +202,7 @@ SPEC CHECKSUMS:
   Gifu: 416d4e38c4c2fed012f019e0a1d3ffcb58e5b842
   Gravatar: 51437de6811c1d8d6f60c52985f2ca00a85cfc8e
   Gridicons: 4455b9f366960121430e45997e32112ae49ffe1d
-  Gutenberg: a0cc56d764e14caf66c8a057255106a62808dd98
+  Gutenberg: 29087259f164b94359c8b6d16a27f68b31515ef1
   JTAppleCalendar: 16c6501b22cb27520372c28b0a2e0b12c8d0cd73
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
