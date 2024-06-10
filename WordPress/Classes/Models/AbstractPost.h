@@ -68,11 +68,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 
 // Revision management
 - (AbstractPost *)createRevision;
-/// A new version of `createRevision` that allows you to create revisions based
-/// on other revisions.
-/// 
-/// - warning: Work-in-progress (kahu-offline-mode)
-- (AbstractPost *)_createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (AbstractPost *)updatePostFrom:(AbstractPost *)revision;

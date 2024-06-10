@@ -37,7 +37,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.content = "content-a"
 
@@ -62,7 +62,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.content = "content-a"
 
@@ -100,7 +100,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
 
@@ -108,7 +108,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.2/sites/80511/posts/new")) { _ in
             XCTAssertFalse(Thread.isMainThread)
             DispatchQueue.main.sync {
-                let revision2 = revision1._createRevision()
+                let revision2 = revision1.createRevision()
                 revision2.postTitle = "title-b"
                 self.coordinator.setNeedsSync(for: revision2)
             }
@@ -164,7 +164,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         // important otherwise MediaService will use temporary objectID and fail
         try mainContext.save()
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.media = [media]
         let uploadID = media.gutenbergUploadID
@@ -203,7 +203,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.content = "content-a"
 
@@ -263,7 +263,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         // important otherwise MediaService will use temporary objectID and fail
         try mainContext.save()
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.media = [media]
         let uploadID = media.gutenbergUploadID
@@ -282,7 +282,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         coordinator.setNeedsSync(for: revision1)
         await fulfillment(of: [expectation], timeout: 2)
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.media = []
         revision2.content = "empty"
 
@@ -309,7 +309,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.postTitle = "title-b"
         post.content = "content-a"
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.content = "content-b"
 
         // GIVEN a server where the post was deleted
@@ -342,7 +342,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.content = "content-a"
 
@@ -374,12 +374,12 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.status = .draft
         post.authorID = 29043
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
 
         // WHEN a slug was changes during the current editor session
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.wp_slug = "hello"
 
         // GIVEN
@@ -433,7 +433,7 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.bloggingPromptID = "prompt-a"
 
         // GIVEN an editor revision
-        let revision = post._createRevision() as! Post
+        let revision = post.createRevision() as! Post
         revision.publicizeMessage = "message-a"
 
         // GIVEN
@@ -479,15 +479,15 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.authorID = 29043
         post.content = "content-a"
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.content = "content-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.content = "content-c"
         revision2.remoteStatus = .syncNeeded
 
-        let revision3 = revision2._createRevision()
+        let revision3 = revision2.createRevision()
         revision3.content = "content-d"
         XCTAssertFalse(revision3.isSyncNeeded)
 
@@ -521,11 +521,11 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.authorID = 29043
         post.content = "content-a"
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.content = "content-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.content = "content-c"
 
         try mainContext.save()
@@ -557,11 +557,11 @@ class PostCoordinatorTests: CoreDataTestCase {
         post.authorID = 29043
         post.content = "content-a"
 
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.content = "content-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.content = "content-c"
 
         try mainContext.save()

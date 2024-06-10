@@ -97,23 +97,6 @@
 
 - (AbstractPost *)createRevision
 {
-    if ([self isRevision]) {
-        DDLogInfo(@"Post is already a revision, no need to create a new one");
-        return self;
-    }
-    if (self.revision) {
-        DDLogInfo(@"Returning existing revision");
-        return self.revision;
-    }
-
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
-    [post cloneFrom:self];
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    return post;
-}
-
-- (AbstractPost *)_createRevision {
     NSParameterAssert(self.revision == nil);
 
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
