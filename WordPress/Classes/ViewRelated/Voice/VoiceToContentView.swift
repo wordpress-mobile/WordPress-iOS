@@ -128,6 +128,7 @@ private struct VoiceToContentProcessingView: View {
             Spacer()
 
             ProgressView()
+                .tint(.secondary)
                 .controlSize(.large)
 
             Spacer()
