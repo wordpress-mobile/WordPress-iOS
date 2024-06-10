@@ -71,7 +71,7 @@ PODS:
     - WordPressKit (~> 17.0)
     - WordPressShared (~> 2.1-beta)
     - WordPressUI (~> 1.7-beta)
-  - WordPressKit (17.1.2):
+  - WordPressKit (17.2.0):
     - NSObject-SafeExpectations (~> 0.0.4)
     - UIDeviceIdentifier (~> 2.0)
     - WordPressShared (~> 2.0-beta)
@@ -121,7 +121,7 @@ DEPENDENCIES:
   - SwiftLint (= 0.54.0)
   - WordPress-Editor-iOS (~> 1.19.11)
   - WordPressAuthenticator (>= 9.0.8, ~> 9.0)
-  - WordPressKit (from `https://github.com/wordpress-mobile/WordPressKit-iOS.git`, commit `5323909e18815c36706efca5ffd289c7d6759575`)
+  - WordPressKit (~> 17.2.0)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.16)
   - ZendeskSupportSDK (= 5.3.0)
@@ -160,6 +160,7 @@ SPEC REPOS:
     - SVProgressHUD
     - SwiftLint
     - UIDeviceIdentifier
+    - WordPressKit
     - WordPressUI
     - wpxmlrpc
     - ZendeskCommonUISDK
@@ -177,17 +178,11 @@ EXTERNAL SOURCES:
     :tag: 0.2.0
   Gutenberg:
     :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0.podspec
-  WordPressKit:
-    :commit: 5323909e18815c36706efca5ffd289c7d6759575
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
-  WordPressKit:
-    :commit: 5323909e18815c36706efca5ffd289c7d6759575
-    :git: https://github.com/wordpress-mobile/WordPressKit-iOS.git
 
 SPEC CHECKSUMS:
   Alamofire: 02b772c9910e8eba1a079227c32fbd9e46c90a24
@@ -221,7 +216,7 @@ SPEC CHECKSUMS:
   WordPress-Aztec-iOS: 3732c6d865a5c9f35788377bdeda8a80ea10d0a1
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
   WordPressAuthenticator: 898acaac75c5ade9b900c02622a15b9aef8fde1a
-  WordPressKit: bf29888bc32c1ac18669b81d49b148d867787666
+  WordPressKit: 98809cdb460bacc6634b49079335a5ccace34e59
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
   wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
@@ -234,6 +229,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: e1fecb2345dcdfd9a89c1a6dc49322a3d54fc075
+PODFILE CHECKSUM: 739f6071356a5d136381ca7788feb63eab4a3062
 
 COCOAPODS: 1.15.2
