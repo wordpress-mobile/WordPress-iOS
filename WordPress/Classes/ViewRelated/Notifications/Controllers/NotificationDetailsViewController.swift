@@ -226,7 +226,11 @@ class NotificationDetailsViewController: UIViewController, NoResultsViewHost {
     }
 
     fileprivate func refreshNavigationBar() {
-        title = note.title
+        if note.kind == .follow, let subscribersCount = note.body?.count {
+            title = NSLocalizedString("notifications.subscribers.details.title", value: "\(subscribersCount) Subscribers", comment: "Number of subscribers visible on the Subscribers notification detail screen.")
+        } else {
+            title = note.title
+        }
 
         if splitViewControllerIsHorizontallyCompact {
             enableNavigationRightBarButtonItems()
