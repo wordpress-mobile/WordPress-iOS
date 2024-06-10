@@ -24,15 +24,15 @@ private struct AudiowaveView: View {
                 Capsule(style: .continuous)
                     .fill(Color(uiColor: .brand))
                     .frame(width: 10, height: CGFloat(height))
-                    .animation(.spring(duration: 0.2), value: height)
+                    .animation(.spring(duration: 0.1), value: height)
             }
         }
     }
 
-    // For human voice, the expected range is in about -40 to -20.
     private func normalizePowerLevel(_ power: Float) -> Float {
-        let minPower: Float = -40
-        let maxPower: Float = -25
+        // About the expected range for voice
+        let minPower: Float = -42
+        let maxPower: Float = -22
         let value = (power + abs(minPower)) / abs(maxPower - minPower)
         return min(1, max(0, value))
     }
@@ -51,7 +51,7 @@ private final class AudioRecorderVisualizerViewModel: ObservableObject {
     }
 
     init() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.05, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.033, repeats: true) { [weak self] _ in
             self?.refresh()
         }
     }

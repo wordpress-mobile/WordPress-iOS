@@ -70,6 +70,7 @@ extension MySiteViewController {
 
         if UIDevice.isPad() {
             host.modalPresentationStyle = .formSheet
+            host.preferredContentSize = CGSize(width: 380, height: 480)
         } else {
             if let sheetController = host.sheetPresentationController {
                 sheetController.detents = [.medium()]
