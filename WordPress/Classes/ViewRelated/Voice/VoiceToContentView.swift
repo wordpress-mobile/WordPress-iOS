@@ -114,7 +114,9 @@ private struct VoiceToContentRecordingView: View {
     var body: some View {
         VStack {
             Spacer()
-            SpeechVisualizerView(viewModel: viewModel)
+            if let recorder = viewModel.audioRecorder {
+                AudioRecorderVisualizerView(recorder: recorder)
+            }
             Spacer()
         }
     }
@@ -133,32 +135,6 @@ private struct VoiceToContentProcessingView: View {
 
             Spacer()
         }
-    }
-}
-
-private struct SpeechVisualizerView: View {
-    @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
-
-    var body: some View {
-        HStack(spacing: 6) {
-            ForEach(viewModel.soundSamples, id: \.self) { decibel in
-                Capsule(style: .continuous)
-                    .fill(Color(uiColor: .brand))
-                    .frame(width: 10, height: self.normalizeSoundLevel(decibel, min: 1, max: 100))
-            }
-        }
-    }
-
-    /// Returns a normalized sound level between a specified min and max value.
-    ///
-    /// - Parameters:
-    ///     - decibels: Decibels relative to full scale. 0 dBFS is assigned to the maximum possible digital level.
-    ///       See https://en.wikipedia.org/wiki/DBFS for more details.
-    ///     - min: Minimum value for the normalized sound level.
-    ///     - max: Maximum value for the normalized sound level.
-    private func normalizeSoundLevel(_ decibels: Float, min minValue: CGFloat, max maxValue: CGFloat) -> CGFloat {
-        let level = max(minValue * 2, CGFloat(decibels) + 50) / 2
-        return CGFloat(level * (maxValue / 25))
     }
 }
 

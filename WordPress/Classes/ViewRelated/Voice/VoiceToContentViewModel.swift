@@ -11,8 +11,6 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     @Published private(set) var step: Step = .welcome
     @Published private(set) var loadingState: LoadingState?
 
-    @Published private(set) var soundSamples: [Float] = []
-
     private(set) var errorAlertMessage: String?
     @Published var isShowingErrorAlert = false
 
@@ -27,11 +25,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private var audioSession: AVAudioSession?
-    private var audioRecorder: AVAudioRecorder?
+    private(set) var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
     private let blog: Blog
-    private let numberOfSamples: Int
-    private var currentSample: Int
     private let completion: (String) -> Void
 
     enum Step {
@@ -62,11 +58,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         timer?.invalidate()
     }
 
-    init(blog: Blog, numberOfSamples: Int = 20, _ completion: @escaping (String) -> Void) {
+    init(blog: Blog, _ completion: @escaping (String) -> Void) {
         self.blog = blog
-        self.numberOfSamples = numberOfSamples
-        self.currentSample = 0
-        self.soundSamples = [Float](repeating: .zero, count: numberOfSamples)
         self.completion = completion
         self.title = Strings.title
     }
@@ -196,8 +189,6 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
                 return
             }
 
-            self.updateSoundSamples(from: audioRecorder)
-
             if #available(iOS 16.0, *) {
                 self.subtitle = Duration.seconds(timeRemaining)
                     .formatted(.time(pattern: .minuteSecond(padMinuteToLength: 2)))
@@ -205,12 +196,6 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
                 self.subtitle = timeRemaining.minuteSecond
             }
         }
-    }
-
-    private func updateSoundSamples(from audioRecorder: AVAudioRecorder) {
-        audioRecorder.updateMeters()
-        soundSamples[currentSample] = audioRecorder.averagePower(forChannel: 0)
-        currentSample = (currentSample + 1) % numberOfSamples
     }
 
     func buttonDoneRecordingTapped() {
