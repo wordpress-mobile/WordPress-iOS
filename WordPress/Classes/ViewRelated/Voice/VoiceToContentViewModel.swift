@@ -206,18 +206,22 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - Processing
 
     private func startProcessing() {
-        guard let fileURL = audioRecorder?.url else {
-            wpAssertionFailure("audio-recorder: file missing")
-            return
-        }
         audioRecorder?.stop()
-        audioRecorder = nil
         audioSession = nil
         timer?.invalidate()
 
         title = Strings.titleProcessing
         subtitle = ""
         step = .processing
+
+        processFile()
+    }
+
+    private func processFile() {
+        guard let fileURL = audioRecorder?.url else {
+            wpAssertionFailure("audio-recorder: file missing")
+            return
+        }
         Task {
             await self.process(fileURL: fileURL)
         }
@@ -225,6 +229,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 
     @MainActor
     private func process(fileURL: URL) async {
+        loadingState = .loading
+
         guard let api = blog.wordPressComRestApi() else {
             wpAssertionFailure("only available for .com sites")
             return
@@ -244,7 +250,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             }
             self.completion(content)
         } catch {
-            showError(error)
+            loadingState = .failed(message: error.localizedDescription) { [weak self] in
+                self?.processFile()
+            }
         }
     }
 
