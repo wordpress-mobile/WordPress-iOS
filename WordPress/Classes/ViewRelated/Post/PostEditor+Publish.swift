@@ -137,6 +137,13 @@ extension PublishingEditor {
     }
 
     private func performSaveDraftAction() {
+        if post.original().isNewDraft && post.dateCreated != nil {
+            // If the app sends `date` field in the original request, the existing
+            // API interprets it as "Created Date" and not "Publish Date".
+            // See `AbstractPost/shouldPublishImmediately` for more details.
+            // TODO: remove this workaround
+            post.dateCreated = nil
+        }
         PostCoordinator.shared.setNeedsSync(for: post)
         dismissOrPopView()
     }

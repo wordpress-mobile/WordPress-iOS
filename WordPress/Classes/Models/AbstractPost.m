@@ -298,6 +298,21 @@
     return NO;
 }
 
+/// - warning: There are multiple pitfalls with how the "Publish Date" field
+/// is represented in the WordPress API and database.
+///
+/// When you just create a draft for the first time without setting a custom
+/// "Publish Date", the `date` field contains the creation date of a draft.
+/// However, WordPress also uses the same `date` field to represent the
+/// "Publish Date" if it's set to a custom value. How does it know if the `date`
+/// field means "Creation" or "Publish" date? If `date` equals `dateModified`,
+/// then WordPress thinks the "Publish" date is not set, and the post should be
+/// published immediately. But `dateModified` gets updated every time you make
+/// changes to a post, so how does it solve it? It automatically sets `date`
+/// to `dateModified` every time you modify the post, losing its original value.
+///
+/// - warning: If you pass `date` in the original request to create a draft post,
+/// WordPress sets `dateModified` to the same date (in the future or past).
 - (BOOL)shouldPublishImmediately
 {
     /// - warning: Yes, this is WordPress logic and it matches the behavior on
