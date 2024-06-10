@@ -188,6 +188,7 @@ extension PostSettingsViewController {
             WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
             viewModel.setDate(date)
         }
+        viewController.configureDefaultNavigationBarAppearance()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }
