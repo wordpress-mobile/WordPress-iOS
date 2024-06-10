@@ -1,3 +1,5 @@
+import Foundation
+
 final class CommentModerationViewModel: ObservableObject {
     private enum Constants {
         static let notificationDetailSource = ["source": "notification_details"]
@@ -5,6 +7,9 @@ final class CommentModerationViewModel: ObservableObject {
 
     @Published var state: CommentModerationState
     @Published var isLoading: Bool = false
+    @Published var reply: String = ""
+    @Published var layout: Layout = .normal
+
     private let comment: Comment
     private let coordinator: CommentModerationCoordinator
     private let notification: Notification?
@@ -63,7 +68,6 @@ final class CommentModerationViewModel: ObservableObject {
     }
 
     func didTapReply() {
-        // TODO
     }
 
     func didTapPrimaryCTA() {
@@ -111,6 +115,13 @@ final class CommentModerationViewModel: ObservableObject {
         }, failure: { _ in
             self.state = .approved(liked: initialIsLiked)
         })
+    }
+
+    // MARK: - Types
+
+    enum Layout: Equatable {
+        case normal
+        case inputFocused
     }
 }
 
