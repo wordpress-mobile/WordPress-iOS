@@ -1,3 +1,7 @@
+25.2
+-----
+
+
 25.1
 -----
 * [*] [internal] Block editor: Add onContentUpdate bridge functionality [#23234]
