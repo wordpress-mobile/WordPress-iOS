@@ -5,6 +5,7 @@ import Combine
 final class KeyboardResponder: ObservableObject {
     @Published var notification: KeyboardNotification?
 
+    /// Indicates whether the keyboard is currently animating based on the notification name.
     var isAnimating: Bool {
         guard let name = notification?.name else {
             return false
@@ -17,6 +18,7 @@ final class KeyboardResponder: ObservableObject {
         return names.contains(name)
     }
 
+    /// Provides a SwiftUI animation based on the keyboard's animation curve and duration.
     var animation: Animation? {
         guard let curve = notification?.animationCurve, let duration = notification?.animationDuration else {
             return nil
@@ -30,6 +32,7 @@ final class KeyboardResponder: ObservableObject {
         return nil
     }
 
+    /// The duration of the keyboard animation.
     var animationDuration: TimeInterval {
         return notification?.animationDuration ?? 0
     }

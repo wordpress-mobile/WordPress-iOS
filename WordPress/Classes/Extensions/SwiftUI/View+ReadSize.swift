@@ -41,6 +41,11 @@ private struct SizeModifier: ViewModifier {
 }
 
 extension View {
+    /// A view extension that allows reading the size of a view and responding to size changes.
+    /// - Parameters:
+    ///   - includeSafeArea: A Boolean value that indicates whether to include the safe area insets in the size calculation.
+    ///   - sizeChanged: A callback function that is called with the new size whenever it changes.
+    /// - Returns: A view that reads its size and passes it to the `sizeChanged` callback.
     func readSize(includeSafeArea: Bool = false, sizeChanged: @escaping (CGSize) -> Void) -> some View {
         modifier(SizeModifier(includeSafeArea: includeSafeArea, sizeChanged: sizeChanged))
     }

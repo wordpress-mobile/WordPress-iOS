@@ -35,7 +35,7 @@ struct CommentModerationView: View {
             .padding(.horizontal, viewModel.layout == .inputFocused ? 0 : .DS.Padding.double)
         }
         .background(
-            Color(UIColor.basicBackground)
+            Color(UIColor.systemBackground)
                 .frame(maxHeight: .infinity)
                 .ignoresSafeArea(.all)
                 .transaction { t in
