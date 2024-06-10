@@ -3,12 +3,14 @@ import SwiftUI
 
 final class CommentModerationSheetHostingView: UIView {
 
+    private let viewModel: CommentModerationViewModel
+
     private var hostingController: UIHostingController<Content>?
-    private var intrinsicContentSizeChangeObservation: NSKeyValueObservation?
 
     init(viewModel: CommentModerationViewModel,
          parent: UIViewController,
          sizeChanged: @escaping (CGSize) -> Void) {
+        self.viewModel = viewModel
         super.init(frame: .zero)
         self.setup(
             with: viewModel,
@@ -27,7 +29,11 @@ final class CommentModerationSheetHostingView: UIView {
         parent: UIViewController
     ) {
         self.backgroundColor = .clear
-        let content = Content(viewModel: viewModel, sizeChanged: sizeChanged)
+        let content = Content(
+            viewModel: viewModel,
+            sizeChanged: sizeChanged,
+            keyboardLayoutGuide: keyboardLayoutGuide
+        )
         let controller = UIHostingController(rootView: content)
         controller.view.translatesAutoresizingMaskIntoConstraints = false
         controller.view.backgroundColor = .clear
@@ -72,16 +78,80 @@ final class CommentModerationSheetHostingView: UIView {
     }
 
     private struct Content: View {
-        let viewModel: CommentModerationViewModel
+        @ObservedObject var viewModel: CommentModerationViewModel
+
         let sizeChanged: (CGSize) -> Void
+        let keyboardLayoutGuide: UIKeyboardLayoutGuide
 
         var body: some View {
-            VStack(spacing: 0) {
-                Spacer()
-                CommentModerationView(viewModel: viewModel)
-                    .readSize(sizeChanged)
+            CommentModerationKeyboardAvoidingView(layout: $viewModel.layout, keyboardLayoutGuide: keyboardLayoutGuide) {
+                VStack(spacing: 0) {
+                    Spacer()
+                    CommentModerationView(viewModel: viewModel)
+                        .readSize(sizeChanged)
+                }
+                .frame(maxHeight: .infinity)
             }
-            .ignoresSafeArea(.keyboard)
         }
     }
+}
+
+fileprivate struct CommentModerationKeyboardAvoidingView<T: View>: View {
+    @ViewBuilder let content: () -> T
+
+    @Binding private var layout: Layout
+
+    @StateObject private var keyboardResponder = KeyboardResponder()
+
+    private let keyboardLayoutGuide: UIKeyboardLayoutGuide
+
+    init(
+        layout: Binding<Layout>,
+        keyboardLayoutGuide: UIKeyboardLayoutGuide,
+        @ViewBuilder _ content: @escaping () -> T
+    ) {
+        self.content = content
+        self.keyboardLayoutGuide = keyboardLayoutGuide
+        self._layout = layout
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            content()
+                .transaction { t in
+                    if t.animation != nil, keyboardResponder.isAnimating {
+                        t.animation = keyboardResponder.animation
+                    }
+                }
+                .onReceive(keyboardPublisher) { note in
+                    self.keyboardResponder.notification = note
+
+                    guard keyboardResponder.isAnimating else {
+                        return
+                    }
+
+                    let layoutGuide = self.keyboardLayoutGuide
+
+                    let frame: CGRect = {
+                        var frame = proxy.frame(in: .local)
+                        frame.size.height += proxy.safeAreaInsets.bottom
+                        return frame
+                    }()
+
+                    let layout: Layout = {
+                        let intersection = frame.intersection(layoutGuide.layoutFrame)
+                        return intersection.height >= 100 ? .inputFocused : .normal
+                    }()
+
+                    if self.layout != layout {
+                        withAnimation(keyboardResponder.animation) {
+                            self.layout = layout
+                        }
+                    }
+                }
+        }
+        .environmentObject(keyboardResponder)
+    }
+
+    typealias Layout = CommentModerationViewModel.Layout
 }

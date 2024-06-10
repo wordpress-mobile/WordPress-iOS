@@ -2,22 +2,29 @@ import SwiftUI
 import DesignSystem
 
 struct CommentModerationView: View {
-    @StateObject private var viewModel: CommentModerationViewModel
+    @EnvironmentObject private var keyboardResponder: KeyboardResponder
+
+    @ObservedObject private var viewModel: CommentModerationViewModel
 
     init(viewModel: CommentModerationViewModel) {
-        _viewModel = StateObject(wrappedValue: viewModel)
+        self.viewModel = viewModel
     }
 
     var body: some View {
-        VStack(spacing: .DS.Padding.double) {
+        VStack(spacing: viewModel.layout == .inputFocused ? 0 : .DS.Padding.double) {
             Divider()
                 .foregroundStyle(Color.DS.Background.secondary)
-            VStack(spacing: .DS.Padding.double) {
+                .transaction { t in
+                    if viewModel.layout == .normal, keyboardResponder.isAnimating {
+                        t.animation = nil
+                    }
+                }
+            VStack {
                 switch viewModel.state {
                 case .pending:
                     Pending(viewModel: viewModel)
-                case .approved(let liked):
-                    Approved(viewModel: viewModel, liked: liked)
+                case .approved:
+                    Approved(viewModel: viewModel)
                 case .trash, .spam:
                     TrashSpam(viewModel: viewModel)
                 case .deleted:
@@ -25,20 +32,53 @@ struct CommentModerationView: View {
                     EmptyView()
                 }
             }
-            .padding(.horizontal, .DS.Padding.double)
+            .padding(.horizontal, viewModel.layout == .inputFocused ? 0 : .DS.Padding.double)
         }
-        .background(Color.DS.Background.primary)
+        .background(
+            Color(UIColor.basicBackground)
+                .frame(maxHeight: .infinity)
+                .ignoresSafeArea(.all)
+                .transaction { t in
+                    if viewModel.layout == .normal, keyboardResponder.isAnimating {
+                        t.animation = nil
+                    }
+                }
+
+        )
         .animation(.smooth, value: viewModel.state)
     }
 }
 
 // MARK: - Subviews
 
-private struct Container<T: View, V: View>: View {
+private struct TitleHeader<T: View>: View {
+    let title: String?
 
-    let title: String
-    let icon: V
+    @ViewBuilder let icon: () -> T
+
+    init(title: String, @ViewBuilder icon: @escaping () -> T = { EmptyView() }) {
+        self.title = title
+        self.icon = icon
+    }
+
+    var body: some View {
+        HStack(spacing: 0) {
+            icon()
+            if let title {
+                Text(title)
+                    .style(.caption)
+                    .foregroundStyle(Color.DS.Foreground.secondary)
+            }
+        }
+    }
+}
+
+private struct Container<T: View, V: View>: View {
+    @EnvironmentObject private var keyboardResponder: KeyboardResponder
+
+    let header: V
     let content: T
+    let layout: CommentModerationViewModel.Layout
 
     private var transition: AnyTransition = .opacity
 
@@ -56,18 +96,18 @@ private struct Container<T: View, V: View>: View {
         return .smooth(duration: animationDuration)
     }
 
-    init(title: String, @ViewBuilder icon: () -> V = { EmptyView() }, @ViewBuilder content: () -> T) {
+    init(viewModel: CommentModerationViewModel, @ViewBuilder header: () -> V = { EmptyView() }, @ViewBuilder content: () -> T) {
         self.content = content()
-        self.icon = icon()
-        self.title = title
+        self.header = header()
+        self.layout = viewModel.layout
     }
 
     var body: some View {
         VStack(spacing: .DS.Padding.double) {
-            titleHStack
+            header
             content
         }
-        .padding(.horizontal, .DS.Padding.double)
+        .padding(.horizontal, layout == .normal ? .DS.Padding.double : 0)
         .transition(
             .asymmetric(
                 insertion: transition.animation(insertionAnimation),
@@ -75,22 +115,15 @@ private struct Container<T: View, V: View>: View {
             )
         )
     }
-
-    var titleHStack: some View {
-        HStack(spacing: 0) {
-            icon
-            Text(title)
-                .style(.caption)
-                .foregroundStyle(Color.DS.Foreground.secondary)
-        }
-    }
 }
+
+// MARK: - Pending
 
 private struct Pending: View {
     @ObservedObject var viewModel: CommentModerationViewModel
 
     var body: some View {
-        Container(title: Strings.title, icon: { icon }) {
+        Container(viewModel: viewModel, header: { header }) {
             VStack {
                 DSButton(
                     title: Strings.approveComment,
@@ -101,8 +134,8 @@ private struct Pending: View {
                     ),
                     isLoading: $viewModel.isLoading
                 ) {
-                        viewModel.didTapPrimaryCTA()
-                    }
+                    viewModel.didTapPrimaryCTA()
+                }
                 DSButton(
                     title: Strings.moreOptions,
                     style: .init(emphasis: .tertiary, size: .large)) {
@@ -110,6 +143,10 @@ private struct Pending: View {
                     }
             }
         }
+    }
+
+    var header: some View {
+        TitleHeader(title: Strings.title, icon: { icon })
     }
 
     @ViewBuilder
@@ -141,36 +178,48 @@ private struct Pending: View {
     }
 }
 
+// MARK: - Approved
+
 private struct Approved: View {
+    @EnvironmentObject private var keyboardResponder: KeyboardResponder
 
     @ObservedObject var viewModel: CommentModerationViewModel
-    let liked: Bool
 
     private var likeButtonTitle: String {
         liked ? Strings.commentLikedTitle : String(format: Strings.commentLikeTitle, viewModel.userName)
     }
 
-    var body: some View {
-        Container(title: Strings.title, icon: { icon }) {
-            VStack {
-                ContentPreview(
-                    image: .init(url: viewModel.imageURL, placeholder: Image("gravatar")),
-                    text: viewModel.userName
-                ) {
-                }
-                DSButton(
-                    title: likeButtonTitle,
-                    iconName: liked ? .starFill : .starOutline,
-                    style: .init(
-                        emphasis: .tertiary,
-                        size: .large
-                    )
-                ) {
-                    withAnimation(.interactiveSpring) {
-                        viewModel.didTapLike()
-                    }
-                }
+    private let liked: Bool
+
+    init(viewModel: CommentModerationViewModel) {
+        self.viewModel = viewModel
+        self.liked = {
+            switch viewModel.state {
+            case .approved(let liked): return liked
+            default: return false
             }
+        }()
+    }
+
+    var body: some View {
+        Container(viewModel: viewModel, header: { header }) {
+            VStack {
+                textView
+                likeButton
+            }
+        }
+    }
+
+    @ViewBuilder
+    var header: some View {
+        if viewModel.layout == .normal {
+            TitleHeader(title: Strings.title, icon: { icon })
+                .transition(
+                    .asymmetric(
+                        insertion: .identity.animation(nil),
+                        removal: .opacity.animation(.linear(duration: .leastNonzeroMagnitude).delay(keyboardResponder.animationDuration))
+                    )
+                )
         }
     }
 
@@ -181,6 +230,38 @@ private struct Approved: View {
             .frame(width: 20, height: 20)
             .foregroundStyle(Color.DS.Foreground.secondary)
             .padding(.trailing, 2)
+    }
+
+    @ViewBuilder
+    var textView: some View {
+        CommentModerationReplyTextView(
+            text: $viewModel.reply,
+            layout: viewModel.layout
+        )
+    }
+
+    @ViewBuilder
+    var likeButton: some View {
+        if viewModel.layout == .normal {
+            DSButton(
+                title: likeButtonTitle,
+                iconName: liked ? .starFill : .starOutline,
+                style: .init(
+                    emphasis: .tertiary,
+                    size: .large
+                )
+            ) {
+                withAnimation(.interactiveSpring) {
+                    viewModel.didTapLike()
+                }
+            }
+            .transition(
+                .asymmetric(
+                    insertion: .identity.animation(nil),
+                    removal: .opacity.animation(.linear(duration: .leastNonzeroMagnitude).delay(keyboardResponder.animationDuration))
+                )
+            )
+        }
     }
 
     enum Strings {
@@ -212,6 +293,8 @@ private struct Approved: View {
     }
 }
 
+// MARK: - Trash & Spam
+
 private struct TrashSpam: View {
     @ObservedObject var viewModel: CommentModerationViewModel
 
@@ -223,7 +306,7 @@ private struct TrashSpam: View {
     }
 
     var body: some View {
-        Container(title: title) {
+        Container(viewModel: viewModel, header: { TitleHeader(title: title) }) {
             DSButton(
                 title: Strings.delete,
                 iconName: .trash,
