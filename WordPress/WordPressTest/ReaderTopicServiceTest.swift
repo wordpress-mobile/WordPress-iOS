@@ -2,12 +2,19 @@ import XCTest
 import Foundation
 import CoreData
 import Nimble
+import OHHTTPStubs
 
 @testable import WordPress
 
 final class ReaderTopicSwiftTest: CoreDataTestCase {
 
     let expectationTimeout = 5.0
+
+    override func tearDown() {
+        HTTPStubs.removeAllStubs()
+
+        super.tearDown()
+    }
 
     // MARK: - Config / Helpers
 
@@ -138,6 +145,34 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
         remoteTopics.append(def)
 
         return remoteTopics
+    }
+
+    func seedReaderSiteTopic(siteID: Int, path: String) {
+        let topic = ReaderSiteTopic(context: mainContext)
+        topic.siteID = NSNumber(value: siteID)
+        topic.path = path
+
+        do {
+            try mainContext.save()
+        } catch let error as NSError {
+            XCTAssertNil(error, "Error seeding site topic")
+        }
+    }
+
+    func fetchSiteTopic(siteID: Int) throws -> ReaderSiteTopic? {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: ReaderSiteTopic.classNameWithoutNamespaces())
+        request.predicate = NSPredicate(format: "siteID == %@", NSNumber(value: siteID))
+        let result = try mainContext.fetch(request)
+
+        return result.first as? ReaderSiteTopic
+    }
+
+    func stubFetchRemoteInfo(for siteID: Int) {
+        stub(condition: isPath("/rest/v1.2/read/sites/\(siteID)")) { _ in
+            return HTTPStubsResponse(jsonObject: ["ID": NSNumber(value: siteID)],
+                                     statusCode: 200,
+                                     headers: nil)
+        }
     }
 
     // MARK: Tests
@@ -397,5 +432,46 @@ final class ReaderTopicSwiftTest: CoreDataTestCase {
                 done()
             }
         }
+    }
+
+    /**
+        Ensure that pre-existing site topic is not deleted when fetching siteTopicForSiteWithID
+     */
+    func testReaderSiteTopicUpdated() async throws {
+        // GIVEN:
+        let service = ReaderTopicService(coreDataStack: contextManager)
+        let siteID = 1
+        // the postsEndpoint value is actually hardcoded on the client-side to this URL format,
+        // and ReaderSiteTopic lookups are based on the postsEndpoint. So we'll need to match it here.
+        let path = "https://public-api.wordpress.com/rest/v1.2/read/sites/\(siteID)/posts/"
+
+        // Mock network request
+        stubFetchRemoteInfo(for: siteID)
+
+        // Create a "pre-existing" ReaderSiteTopic
+        seedReaderSiteTopic(siteID: siteID, path: path)
+        let topic = try XCTUnwrap(fetchSiteTopic(siteID: siteID))
+        let objectID = topic.objectID
+
+        // Add some posts to this topic
+        seedPostsForTopic(topic)
+
+        // WHEN:
+        // Call siteTopicForSiteWithID
+        let fetchedID: NSManagedObjectID? = try await withCheckedThrowingContinuation { continuation in
+            service.siteTopicForSite(withID: NSNumber(value: siteID), isFeed: false) { objectID, _ in
+                continuation.resume(returning: objectID)
+            } failure: { error in
+                continuation.resume(throwing: error!)
+            }
+        }
+
+        // THEN:
+        // Verify that the previous site topic is updated, instead of creating a new one.
+        let someFetchedID = try XCTUnwrap(fetchedID)
+        XCTAssertEqual(objectID, someFetchedID)
+
+        // Verify that posts associated with the topic is not deleted.
+        XCTAssertEqual(topic.posts.count, 3)
     }
 }
