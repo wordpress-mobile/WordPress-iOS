@@ -71,9 +71,9 @@ extension UIImageView {
                 assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
             }
             do {
-                let _ = try await gravatar.setImage(with: fullURL,
-                                                    placeholder: placeholder,
-                                                    options: options)
+                try await gravatar.setImage(with: fullURL,
+                                            placeholder: placeholder,
+                                            options: options)
                 if animate {
                     fadeInAnimation()
                 }
