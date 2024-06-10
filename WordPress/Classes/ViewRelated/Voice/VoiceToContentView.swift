@@ -118,24 +118,6 @@ private struct VoiceToContentRecordingView: View {
             Spacer()
         }
     }
-
-    private var buttonDone: some View {
-        VStack(spacing: 16) {
-            Button(action: viewModel.buttonDoneRecordingTapped) {
-                Image(systemName: "stop.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 28)
-                    .padding(28)
-                    .background(.black)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-            }
-
-            Text(Strings.done)
-                .foregroundStyle(.primary)
-        }
-    }
 }
 
 private struct VoiceToContentProcessingView: View {
@@ -195,7 +177,7 @@ private struct RecordButton: View {
                 }
             }
 
-            Text(Strings.done)
+            Text(isRecording ? Strings.done : Strings.beginRecording)
                 .foregroundStyle(.primary)
         }
         .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
@@ -211,10 +193,8 @@ private struct RecordButton: View {
 
     private var icon: some View {
         Image(systemName: isRecording ? "stop.fill" : "mic")
-            .resizable()
-            .scaledToFit()
-            .frame(width: isRecording ? 28 : 36)
-            .padding(isRecording ? 28 : 24)
+            .font(.system(size: isRecording ? 36 : 30))
+            .frame(width: 84, height: 84)
             .background(backgroundColor)
             .foregroundColor(.white)
             .clipShape(Circle())
