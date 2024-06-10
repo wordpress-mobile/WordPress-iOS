@@ -105,18 +105,14 @@ final class PostRepository {
     ///   or its latest revision.
     ///   - overwrite: Set to `true` to overwrite the values on the server and
     ///   ignore the ``PostSaveError/conflict(latest:)`` error.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
+    func save(_ post: AbstractPost, changes: RemotePostUpdateParameters? = nil, overwrite: Bool = false) async throws {
         try await _sync(post, revision: post.latest(), changes: changes, overwrite: overwrite)
     }
 
     /// Syncs revisions that have unsaved changes (see `isSyncNeeded`).
     ///
     /// - note: This method is designed to be used with drafts.
-    ///
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
     func sync(_ post: AbstractPost, revision: AbstractPost? = nil) async throws {
         wpAssert(post.original == nil, "Must be called on an original post")
@@ -202,7 +198,7 @@ final class PostRepository {
     /// - note: This method can be used for quick edits for published posts where
     /// revisions are used only for content.
     @MainActor
-    func _update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
+    func update(_ post: AbstractPost, changes: RemotePostUpdateParameters) async throws {
         wpAssert(post.isOriginal())
 
         guard post.revision == nil else {
@@ -253,11 +249,11 @@ final class PostRepository {
                 let remotePost = try await service.post(withID: postID)
                 // Check for false positives
                 if changes.content != nil && remotePost.content != changes.content && remotePost.content != original.content {
-                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": false])
+                    WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": false])
                     // The conflict in content can be resolved only manually
                     throw PostSaveError.conflict(latest: remotePost)
                 }
-                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false-positive": true])
+                WPAnalytics.track(.postRepositoryConflictEncountered, properties: ["false_positive": true])
 
                 // There is no conflict, so go ahead and overwrite the changes
                 changes.ifNotModifiedSince = nil
@@ -269,9 +265,10 @@ final class PostRepository {
         }
     }
 
-    /// - warning: Work-in-progress (kahu-offline-mode)
+    /// Resolves the conflict by overwriting the changes made locally with the
+    /// selected remote revision.
     @MainActor
-    func _resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
+    func resolveConflict(for post: AbstractPost, pickingRemoteRevision revision: RemotePost) throws {
         let context = coreDataStack.mainContext
         post.deleteRevision()
         PostHelper.update(post, with: revision, in: context)
@@ -281,9 +278,8 @@ final class PostRepository {
     /// Trashes the given post.
     ///
     /// - warning: This method delets all local revision of the post.
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _trash(_ post: AbstractPost) async throws {
+    func trash(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
         let context = coreDataStack.mainContext
@@ -312,17 +308,16 @@ final class PostRepository {
         // If the post is already in trash, do nothing. If the app were to
         // proceed with `/delete`, it would permanently delete the post.
         if remotePost.status != BasePost.Status.trash.rawValue {
-            remotePost = try await remote.trashPost(PostHelper.remotePost(with: post))
+            try await remote.deletePost(withID: postID)
         }
 
-        PostHelper.update(post, with: remotePost, in: context)
+        post.status = .trash
         ContextManager.shared.saveContextAndWait(context)
     }
 
     /// Permanently delete the given post.
-    /// - warning: Work-in-progress (kahu-offline-mode)
     @MainActor
-    func _delete(_ post: AbstractPost) async throws {
+    func delete(_ post: AbstractPost) async throws {
         wpAssert(post.isOriginal())
 
         let context = coreDataStack.mainContext

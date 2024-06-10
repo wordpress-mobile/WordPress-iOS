@@ -53,10 +53,10 @@ private func makeBadgesString(for page: Page) -> NSAttributedString {
         }
         badges.append(date)
     }
-    if page.hasPrivateState {
+    if page.status == .publishPrivate {
         badges.append(Strings.badgePrivatePage)
     }
-    if page.hasPendingReviewState {
+    if page.status == .pending {
         badges.append(Strings.badgePendingReview)
     }
     return AbstractPostHelper.makeBadgesString(with: badges.enumerated().map { index, badge in

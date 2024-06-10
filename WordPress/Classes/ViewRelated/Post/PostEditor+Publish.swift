@@ -148,7 +148,7 @@ extension PublishingEditor {
 
         Task { @MainActor in
             do {
-                let post = try await PostCoordinator.shared._save(post, changes: changes)
+                let post = try await PostCoordinator.shared.save(post, changes: changes)
                 self.post = post
                 self.createRevisionOfPost()
                 self.trackPostSave(stat: analyticsStat)

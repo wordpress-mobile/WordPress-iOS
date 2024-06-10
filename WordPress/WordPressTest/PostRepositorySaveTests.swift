@@ -64,7 +64,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the post was created
         XCTAssertEqual(post.postID, 974)
@@ -143,7 +143,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the post was created
         XCTAssertEqual(post.postID, 974)
@@ -191,7 +191,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing a post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
-        try await repository._save(post, changes: parameters)
+        try await repository.save(post, changes: parameters)
 
         // THEN the post is published
         XCTAssertEqual(post.postID, 974)
@@ -240,7 +240,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing a post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.scheduled.rawValue
-        try await repository._save(post, changes: parameters)
+        try await repository.save(post, changes: parameters)
 
         // THEN the post is scheduled
         XCTAssertEqual(post.postID, 974)
@@ -288,7 +288,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
         do {
-            try await repository._save(post, changes: parameters)
+            try await repository.save(post, changes: parameters)
             XCTFail("Expected the save to fail")
         } catch {
             let error = try XCTUnwrap((error as NSError).underlyingErrors.first)
@@ -332,7 +332,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN publishing the post
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
-        try await repository._save(post, changes: parameters)
+        try await repository.save(post, changes: parameters)
 
         // THEN the post got published
         XCTAssertEqual(post.status, .publish)
@@ -373,7 +373,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the title got updated
         XCTAssertEqual(post.postTitle, "new-title")
@@ -425,7 +425,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         var parameters = RemotePostUpdateParameters()
         parameters.status = Post.Status.publish.rawValue
         parameters.date = dateCreated.addingTimeInterval(5)
-        try await repository._save(post, changes: parameters)
+        try await repository.save(post, changes: parameters)
 
         // THEN the post got published
         XCTAssertEqual(post.status, .publish)
@@ -508,7 +508,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the title got updated
         XCTAssertEqual(post.postTitle, "title-b")
@@ -552,7 +552,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN saving the post
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN post got updated and the status now reflects the status on backend
         XCTAssertEqual(post.status, .trash)
@@ -592,7 +592,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         // WHEN saving the post with changes but without creating a new revision
         var changes = RemotePostUpdateParameters()
         changes.isSticky = true
-        try await repository._save(post, changes: changes)
+        try await repository.save(post, changes: changes)
 
         // THEN post got updated
         XCTAssertTrue(post.isStickyPost)
@@ -636,7 +636,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // WHEN saving the post that was deleted on the backend
         do {
-            try await repository._save(post)
+            try await repository.save(post)
             XCTFail("Expected the save to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -698,7 +698,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         var latest: RemotePost!
         do {
             // WHEN
-            try await repository._save(post)
+            try await repository.save(post)
             XCTFail("Expected the request to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -712,7 +712,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN the user resolves a conflict by picking the server revision
-        try repository._resolveConflict(for: post, pickingRemoteRevision: latest)
+        try repository.resolveConflict(for: post, pickingRemoteRevision: latest)
 
         // THEN the content got updated to the server's version
         XCTAssertEqual(post.content, "content-c")
@@ -799,7 +799,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         do {
             // WHEN
-            try await repository._save(post)
+            try await repository.save(post)
             XCTFail("Expected the request to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -813,7 +813,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN the user picks the local version and overwrites what's on the remote
-        try await repository._save(post, overwrite: true)
+        try await repository.save(post, overwrite: true)
 
         // THEN the content got updated to the version from the local revision
         XCTAssertEqual(post.content, "content-b")
@@ -900,7 +900,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the content got updated to the version from the local revision
         XCTAssertEqual(post.content, "content-b")
@@ -986,7 +986,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             try HTTPStubsResponse(value: serverPost, statusCode: 200)
         }
 
-        try await repository._save(post)
+        try await repository.save(post)
 
         // THEN the content got updated to the version from the local revision
         XCTAssertEqual(post.content, "content-b")
@@ -1051,7 +1051,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // WHEN saving the post that was deleted on the backend
         do {
-            try await repository._save(post)
+            try await repository.save(post)
             XCTFail("Expected the save to fail")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)
@@ -1376,7 +1376,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._trash(post)
+        try await repository.trash(post)
 
         // THEN the post is deleted
         XCTAssertNil(post.managedObjectContext)
@@ -1405,7 +1405,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._trash(post)
+        try await repository.trash(post)
 
         // THEN the post is trashed
         XCTAssertEqual(post.status, .trash)
@@ -1428,7 +1428,6 @@ class PostRepositorySaveTests: CoreDataTestCase {
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974")) { request in
             var mock = WordPressComPost.mock
             mock.status = BasePost.Status.trash.rawValue
-            mock.content = "content-b"
             return try HTTPStubsResponse(value: mock, statusCode: 200)
         }
         stub(condition: isPath("/rest/v1.1/sites/80511/posts/974/delete")) { _ in
@@ -1437,11 +1436,10 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // WHEN
-        try await repository._trash(post)
+        try await repository.trash(post)
 
         // THEN the post is trashed
         XCTAssertEqual(post.status, .trash)
-        XCTAssertEqual(post.content, "content-b")
     }
 
     func testTrashRemotePostPermanentlyDeletedOnRemote() async throws {
@@ -1468,7 +1466,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
 
         // WHEN
         do {
-            try await repository._trash(post)
+            try await repository.trash(post)
             XCTFail("Expected failure")
         } catch {
             let error = try XCTUnwrap(error as? PostRepository.PostSaveError)

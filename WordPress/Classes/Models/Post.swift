@@ -212,27 +212,6 @@ class Post: AbstractPost {
 
     // MARK: - AbstractPost
 
-    override func hasSiteSpecificChanges() -> Bool {
-        if super.hasSiteSpecificChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if postFormat != originalPost.postFormat {
-                return true
-            }
-
-            if categories != originalPost.categories {
-                return true
-            }
-        }
-
-        return false
-    }
-
     override func hasCategories() -> Bool {
         categories?.isEmpty == false
     }
@@ -265,36 +244,6 @@ class Post: AbstractPost {
         } else {
             return ""
         }
-    }
-
-    override func hasLocalChanges() -> Bool {
-        if super.hasLocalChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if tags ?? "" != originalPost.tags ?? "" {
-                return true
-            }
-
-            if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
-                return true
-            }
-
-            if !NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
-                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:]) {
-                return true
-            }
-
-            if isStickyPost != originalPost.isStickyPost {
-                return true
-            }
-        }
-
-        return false
     }
 
     override func titleForDisplay() -> String {

@@ -41,18 +41,6 @@
 
 #pragma mark - Life Cycle Methods
 
-- (void)remove
-{
-    if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
-    }
-
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext deleteObject:self];
-    }];
-
-}
-
 - (void)save
 {
     [[ContextManager sharedInstance] saveContext:self.managedObjectContext];
@@ -122,7 +110,6 @@
     [post cloneFrom:self];
     [post setValue:self forKey:@"original"];
     [post setValue:nil forKey:@"revision"];
-    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
     return post;
 }
 
@@ -153,7 +140,6 @@
 {
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
-        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
     }
 }
 
@@ -167,7 +153,6 @@
             [self setValue:[NSDate date] forKey:key];
         }
     }
-    self.isFeaturedImageChanged = revision.isFeaturedImageChanged;
     return self;
 }
 
@@ -209,31 +194,6 @@
 - (BOOL)dateCreatedIsNilOrEqualToDateModified
 {
     return self.date_created_gmt == nil || [self.date_created_gmt isEqualToDate:self.dateModified];
-}
-
-- (BOOL)hasSiteSpecificChanges
-{
-    if (![self isRevision]) {
-        return NO;
-    }
-
-    AbstractPost *original = (AbstractPost *)self.original;
-
-    //Do not move the Featured Image check below in the code.
-    if ((self.featuredImage != original.featuredImage) && (![self.featuredImage isEqual:original.featuredImage])) {
-        self.isFeaturedImageChanged = YES;
-        return YES;
-    }
-
-    self.isFeaturedImageChanged = NO;
-
-    // Relationships are not going to be nil, just empty sets,
-    // so we can avoid the extra check
-    if (![self.media isEqual:original.media]) {
-        return YES;
-    }
-
-    return NO;
 }
 
 - (BOOL)hasPhoto
@@ -310,27 +270,7 @@
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
 }
 
-- (void)findComments
-{
-    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
-                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
-    if ([comments count] > 0) {
-        [self addComments:comments];
-    }
-}
-
-
-
 #pragma mark - Convenience methods
-
-// This is different than isScheduled. See .h for details.
-- (BOOL)hasFuturePublishDate
-{
-    if (!self.date_created_gmt) {
-        return NO;
-    }
-    return (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]);
-}
 
 // If the post has a scheduled status.
 - (BOOL)isScheduled
@@ -413,11 +353,6 @@
     return [[self dateCreated] mediumString];
 }
 
-- (BOOL)supportsStats
-{
-    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
-}
-
 - (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;
@@ -433,95 +368,7 @@
     return self.remoteStatus == AbstractPostRemoteStatusPushing;
 }
 
-
 #pragma mark - Post
-
-- (BOOL)hasUnsavedChanges
-{
-    return [self hasLocalChanges] || [self hasRemoteChanges];
-}
-
-- (BOOL)hasLocalChanges
-{
-    if(self.remoteStatus == AbstractPostRemoteStatusLocal ||
-       self.remoteStatus == AbstractPostRemoteStatusFailed ||
-       self.remoteStatus == AbstractPostRemoteStatusAutoSaved) {
-        return YES;
-    }
-    
-    if (![self isRevision]) {
-        return NO;
-    }
-    
-    if ([self hasSiteSpecificChanges]) {
-        return YES;
-    }
-    
-    AbstractPost *original = (AbstractPost *)self.original;
-    
-    // We need the extra check since [nil isEqual:nil] returns NO
-    // and because @"" != nil
-    if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
-        && (![self.postTitle isEqual:original.postTitle])) {
-        return YES;
-    }
-    
-    if (!([self.content length] == 0 && [original.content length] == 0)
-        && (![self.content isEqual:original.content])) {
-        return YES;
-    }
-    
-    if (!([self.status length] == 0 && [original.status length] == 0)
-        && (![self.status isEqual:original.status])) {
-        return YES;
-    }
-    
-    if (!([self.password length] == 0 && [original.password length] == 0)
-        && (![self.password isEqual:original.password])) {
-        return YES;
-    }
-    
-    if ((self.dateCreated != original.dateCreated)
-        && (![self.dateCreated isEqual:original.dateCreated])) {
-        return YES;
-    }
-    
-    if (!([self.permaLink length] == 0 && [original.permaLink length] == 0)
-        && (![self.permaLink isEqual:original.permaLink])) {
-        return YES;
-    }
-    
-    if (!([self.mt_excerpt length] == 0 && [original.mt_excerpt length] == 0)
-        && (![self.mt_excerpt isEqual:original.mt_excerpt]))
-    {
-        return YES;
-    }
-
-    if (!([self.wp_slug length] == 0 && [original.wp_slug length] == 0)
-        && (![self.wp_slug isEqual:original.wp_slug]))
-    {
-        return YES;
-    }
-
-    if ( ((self.featuredImage != nil) && ![self.featuredImage.objectID isEqual: original.featuredImage.objectID]) ||
-        (self.featuredImage == nil && self.original.featuredImage != nil) ) {
-        return YES;
-    }
-
-    if ((self.authorID != original.authorID)
-        && (![self.authorID isEqual:original.authorID]))
-    {
-        return YES;
-    }
-
-    return NO;
-}
-
-- (BOOL)hasRemoteChanges
-{
-    return (self.hasRemote == NO
-            || self.remoteStatus == AbstractPostRemoteStatusFailed);
-}
 
 - (void)updatePathForDisplayImageBasedOnContent
 {

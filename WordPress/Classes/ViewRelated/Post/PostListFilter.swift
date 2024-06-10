@@ -108,8 +108,6 @@ import Foundation
         let filterType: Status = .draft
         let statuses: [BasePost.Status] = [.draft, .pending]
 
-        let statusesForLocalDrafts: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
-
         let predicate = makePredicateForStatuses([.draft, .pending])
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")

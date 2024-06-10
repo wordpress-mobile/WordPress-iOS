@@ -91,7 +91,7 @@ extension PostSettingsViewController {
                 if coordinator.isSyncAllowed(for: apost) {
                     coordinator.setNeedsSync(for: apost)
                 } else {
-                    try await coordinator._save(apost)
+                    try await coordinator.save(apost)
                 }
                 presentingViewController?.dismiss(animated: true)
             } catch {
