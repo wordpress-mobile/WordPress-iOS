@@ -96,10 +96,12 @@ private struct VoiceToContentWelcomeView: View {
         VStack(spacing: 4) {
             Text(Strings.notEnoughRequests)
                 .multilineTextAlignment(.center)
-            Button(action: viewModel.buttonUpgradeTapped) {
-                HStack {
-                    Text(Strings.upgrade)
-                    Image("icon-post-actionbar-view")
+            if let upgradeURL = viewModel.upgradeURL {
+                Button(action: { viewModel.buttonUpgradeTapped(withUpgradeURL: upgradeURL) }) {
+                    HStack {
+                        Text(Strings.upgrade)
+                        Image("icon-post-actionbar-view")
+                    }
                 }
             }
         }.frame(maxWidth: 320)

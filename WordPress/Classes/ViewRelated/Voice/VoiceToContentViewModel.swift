@@ -24,6 +24,9 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         return isEligible
     }
 
+    var upgradeURL: URL? {
+        featureInfo?.upgradeURL.flatMap(URL.init)
+    }
     private var featureInfo: JetpackAssistantFeatureDetails?
     private var audioSession: AVAudioSession?
     private var audioRecorder: AVAudioRecorder?
@@ -112,15 +115,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         }
     }
 
-    func buttonUpgradeTapped() {
+    func buttonUpgradeTapped(withUpgradeURL upgradeURL: URL) {
         WPAnalytics.track(.voiceToContentButtonUpgradeTapped)
-
-        guard let featureInfo else {
-            return wpAssertionFailure("feature info missing")
-        }
-        guard let upgradeURL = featureInfo.upgradeURL.flatMap(URL.init) else {
-            return wpAssertionFailure("invalid or missing upgrade URL")
-        }
         UIApplication.shared.open(upgradeURL)
     }
 
