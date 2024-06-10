@@ -39,7 +39,9 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            self.parent.text = textView.text
+            DispatchQueue.main.async {
+                self.parent.text = textView.text
+            }
         }
     }
 
