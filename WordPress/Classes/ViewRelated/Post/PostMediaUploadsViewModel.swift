@@ -174,7 +174,8 @@ final class PostMediaUploadItemViewModel: ObservableObject, Identifiable {
               (reachable as? Bool) == true else {
             return
         }
-        if (media.error as? URLError)?.code == .notConnectedToInternet {
+        let code = (media.error as? URLError)?.code
+        if code == .notConnectedToInternet || code == .networkConnectionLost {
             retry()
         }
     }
