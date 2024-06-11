@@ -150,7 +150,6 @@ fileprivate struct CommentModerationKeyboardAvoidingView<T: View>: View {
                     }
                 }
         }
-        .environmentObject(keyboardResponder)
     }
 
     typealias Layout = CommentModerationViewModel.Layout

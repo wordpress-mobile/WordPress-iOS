@@ -21,13 +21,13 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
         view.layoutManager.allowsNonContiguousLayout = false
         view.accessibilityIdentifier = "reply-text-view"
         view.delegate = context.coordinator
-        view.sizeToFit()
         return view
     }
 
     func updateUIView(_ uiView: SelfSizingTextView, context: Context) {
         uiView.text = text
-        uiView.sizeToFit()
+        uiView.setNeedsLayout()
+        uiView.layoutIfNeeded()
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
@@ -39,9 +39,7 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
         }
 
         func textViewDidChange(_ textView: UITextView) {
-            DispatchQueue.main.async {
-                self.parent.text = textView.text
-            }
+            self.parent.text = textView.text
         }
     }
 
@@ -49,6 +47,7 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
 
     class SelfSizingTextView: UITextView {
         open override func sizeToFit() {
+            super.sizeToFit()
             self.invalidateIntrinsicContentSize()
         }
 
@@ -57,7 +56,7 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
         }
 
         override func layoutSubviews() {
-            self.sizeToFit()
+            self.invalidateIntrinsicContentSize()
             super.layoutSubviews()
         }
     }

@@ -2,8 +2,6 @@ import SwiftUI
 import DesignSystem
 
 struct CommentModerationView: View {
-    @EnvironmentObject private var keyboardResponder: KeyboardResponder
-
     @ObservedObject private var viewModel: CommentModerationViewModel
 
     init(viewModel: CommentModerationViewModel) {
@@ -14,11 +12,6 @@ struct CommentModerationView: View {
         VStack(spacing: viewModel.layout == .inputFocused ? 0 : .DS.Padding.double) {
             Divider()
                 .foregroundStyle(Color.DS.Background.secondary)
-                .transaction { t in
-                    if viewModel.layout == .normal, keyboardResponder.isAnimating {
-                        t.animation = nil
-                    }
-                }
             VStack {
                 switch viewModel.state {
                 case .pending:
@@ -38,11 +31,6 @@ struct CommentModerationView: View {
             Color(UIColor.systemBackground)
                 .frame(maxHeight: .infinity)
                 .ignoresSafeArea(.all)
-                .transaction { t in
-                    if viewModel.layout == .normal, keyboardResponder.isAnimating {
-                        t.animation = nil
-                    }
-                }
 
         )
         .animation(.smooth, value: viewModel.state)
@@ -74,8 +62,6 @@ private struct TitleHeader<T: View>: View {
 }
 
 private struct Container<T: View, V: View>: View {
-    @EnvironmentObject private var keyboardResponder: KeyboardResponder
-
     let header: V
     let content: T
     let layout: CommentModerationViewModel.Layout
@@ -181,8 +167,6 @@ private struct Pending: View {
 // MARK: - Approved
 
 private struct Approved: View {
-    @EnvironmentObject private var keyboardResponder: KeyboardResponder
-
     @ObservedObject var viewModel: CommentModerationViewModel
 
     private var likeButtonTitle: String {
@@ -214,13 +198,8 @@ private struct Approved: View {
     var header: some View {
         if viewModel.layout == .normal {
             TitleHeader(title: Strings.title, icon: { icon })
-                .transition(
-                    .asymmetric(
-                        insertion: .identity.animation(nil),
-                        removal: .opacity.animation(.linear(duration: .leastNonzeroMagnitude).delay(keyboardResponder.animationDuration))
-                    )
-                )
         }
+
     }
 
     @ViewBuilder
@@ -255,12 +234,6 @@ private struct Approved: View {
                     viewModel.didTapLike()
                 }
             }
-            .transition(
-                .asymmetric(
-                    insertion: .identity.animation(nil),
-                    removal: .opacity.animation(.linear(duration: .leastNonzeroMagnitude).delay(keyboardResponder.animationDuration))
-                )
-            )
         }
     }
 
