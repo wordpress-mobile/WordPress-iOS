@@ -566,7 +566,7 @@ class PostCoordinator: NSObject {
         for worker in workers.values {
             if let error = worker.error,
                let urlError = (error as NSError).underlyingErrors.first as? URLError,
-               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
+               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost || urlError.code == .timedOut {
                 worker.log("connection is reachable – retrying now")
                 startSync(for: worker.post)
             }
