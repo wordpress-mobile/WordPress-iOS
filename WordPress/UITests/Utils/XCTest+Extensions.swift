@@ -5,7 +5,7 @@ extension XCTestCase {
 
     // Require main actor isolation because of the calls to app.terminate() and app.activate()
     // which require running on the main thread.
-    @MainActor
+//    @MainActor
     public func setUpTestSuite(
         for app: XCUIApplication = XCUIApplication(),
         removeBeforeLaunching: Bool = false,

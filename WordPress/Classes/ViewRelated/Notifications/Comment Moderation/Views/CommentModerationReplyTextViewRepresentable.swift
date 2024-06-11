@@ -2,48 +2,76 @@ import SwiftUI
 
 struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
     @Binding var text: String
+    @Binding var isFirstResponder: Bool
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(
+            text: $text,
+            isFirstResponder: $isFirstResponder
+        )
     }
 
     func makeUIView(context: Context) -> SelfSizingTextView {
-        let view = SelfSizingTextView()
-        view.text = text
-        view.translatesAutoresizingMaskIntoConstraints = true
-        view.scrollsToTop = false
-        view.contentInset = .zero
-        view.textContainerInset = .init(top: 8, left: 16, bottom: 8, right: 16)
-        view.autocorrectionType = .yes
-        view.textColor = Style.textColor
-        view.font = Style.font
-        view.textContainer.lineFragmentPadding = 0
-        view.layoutManager.allowsNonContiguousLayout = false
-        view.accessibilityIdentifier = "reply-text-view"
-        view.delegate = context.coordinator
-        return view
+        return context.coordinator.textView
     }
 
     func updateUIView(_ uiView: SelfSizingTextView, context: Context) {
+        // Update text
         uiView.text = text
         uiView.setNeedsLayout()
         uiView.layoutIfNeeded()
+
+        // Become or resign first responder
+        DispatchQueue.main.async {
+            if uiView.isFirstResponder != isFirstResponder {
+                _ = isFirstResponder ? uiView.becomeFirstResponder() : uiView.resignFirstResponder()
+            }
+        }
     }
 
     final class Coordinator: NSObject, UITextViewDelegate {
-        let parent: CommentModerationReplyTextViewRepresentable
+        private let text: Binding<String>
+        private let isFirstResponder: Binding<Bool>
 
-        init(_ parent: CommentModerationReplyTextViewRepresentable) {
-            self.parent = parent
-            super.init()
+        init(text: Binding<String>, isFirstResponder: Binding<Bool>) {
+            self.text = text
+            self.isFirstResponder = isFirstResponder
         }
+
+        private(set) lazy var textView: SelfSizingTextView = {
+            let view = SelfSizingTextView()
+            view.translatesAutoresizingMaskIntoConstraints = true
+            view.scrollsToTop = false
+            view.contentInset = .zero
+            view.textContainerInset = Style.textContainerInset
+            view.autocorrectionType = .yes
+            view.textColor = Style.textColor
+            view.font = Style.font
+            view.textContainer.lineFragmentPadding = 0
+            view.layoutManager.allowsNonContiguousLayout = false
+            view.accessibilityIdentifier = "reply-text-view"
+            view.delegate = self
+            return view
+        }()
 
         func textViewDidChange(_ textView: UITextView) {
-            self.parent.text = textView.text
+            self.text.wrappedValue = textView.text
+        }
+
+        func textViewDidEndEditing(_ textView: UITextView) {
+            self.updateIsFirstResponder(textView: textView)
+        }
+
+        func textViewDidBeginEditing(_ textView: UITextView) {
+            self.updateIsFirstResponder(textView: textView)
+        }
+
+        private func updateIsFirstResponder(textView: UITextView) {
+            if self.isFirstResponder.wrappedValue != textView.isFirstResponder {
+                self.isFirstResponder.wrappedValue = textView.isFirstResponder
+            }
         }
     }
-
-    typealias UIViewType = SelfSizingTextView
 
     class SelfSizingTextView: UITextView {
         open override func sizeToFit() {
@@ -62,8 +90,9 @@ struct CommentModerationReplyTextViewRepresentable: UIViewRepresentable {
     }
 
     private struct Style {
-        static let font = UIFont.DS.font(.bodyMedium(.regular))
+        static let font = UIFont.DS.font(.bodyLarge(.regular))
         static let textColor = UIColor.DS.Foreground.primary
         static let placeholderTextColor = UIColor.DS.Foreground.secondary
+        static let textContainerInset = UIEdgeInsets.zero
     }
 }
