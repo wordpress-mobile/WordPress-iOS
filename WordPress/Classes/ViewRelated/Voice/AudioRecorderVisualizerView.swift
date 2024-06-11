@@ -31,7 +31,7 @@ private struct AudiowaveView: View {
 
     private func normalizePowerLevel(_ power: Float) -> Float {
         // About the expected range for voice
-        let minPower: Float = -42
+        let minPower: Float = -41
         let maxPower: Float = -22
         let value = (power + abs(minPower)) / abs(maxPower - minPower)
         return min(1, max(0, value))
@@ -51,7 +51,7 @@ private final class AudioRecorderVisualizerViewModel: ObservableObject {
     }
 
     init() {
-        timer = Timer.scheduledTimer(withTimeInterval: 0.033, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 0.04, repeats: true) { [weak self] _ in
             self?.refresh()
         }
     }

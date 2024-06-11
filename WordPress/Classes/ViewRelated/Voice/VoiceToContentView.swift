@@ -69,6 +69,7 @@ struct VoiceToContentView: View {
                     .font(.title2)
                     .foregroundStyle(.secondary, Color(uiColor: .secondarySystemFill))
             }
+            .accessibilityLabel(Strings.close)
             .buttonStyle(.plain)
         }
     }
@@ -144,18 +145,18 @@ private struct RecordButton: View {
     private var isRecording: Bool { viewModel.step == .recording }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
+        Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
+            VStack(spacing: 16) {
                 if #available(iOS 17.0, *) {
                     icon
                         .contentTransition(.symbolEffect(.replace, options: .speed(5)))
                 } else {
                     icon
                 }
+                Text(isRecording ? Strings.done : Strings.beginRecording)
+                    .font(.callout)
+                    .tint(.primary)
             }
-
-            Text(isRecording ? Strings.done : Strings.beginRecording)
-                .foregroundStyle(.primary)
         }
         .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
         .disabled(!viewModel.isButtonRecordEnabled)
@@ -185,4 +186,5 @@ private enum Strings {
     static let notEnoughRequests = NSLocalizedString("postFromAudio.notEnoughRequestsMessage", value: "You don't have enough requests available to create a post from audio.", comment: "Message for 'not eligible' state view")
     static let upgrade = NSLocalizedString("postFromAudio.buttonUpgrade", value: "Upgrade for more requests", comment: "Button title")
     static let ok = NSLocalizedString("postFromAudio.ok", value: "OK", comment: "Button title")
+    static let close = NSLocalizedString("postFromAudio.close", value: "Close", comment: "Button close title (only used as an accessibility identifier)")
 }
