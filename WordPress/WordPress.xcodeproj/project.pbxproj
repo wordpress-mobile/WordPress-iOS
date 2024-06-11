@@ -517,6 +517,8 @@
 		0C75E26F2A9F63CB00B784E5 /* MediaImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C75E26D2A9F63CB00B784E5 /* MediaImageService.swift */; };
 		0C7762232AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7762222AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift */; };
 		0C7762242AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7762222AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift */; };
+		0C7A48452C1727BE00B16BAA /* AudioRecorderVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A48442C1727BE00B16BAA /* AudioRecorderVisualizerView.swift */; };
+		0C7A48462C1727BE00B16BAA /* AudioRecorderVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C7A48442C1727BE00B16BAA /* AudioRecorderVisualizerView.swift */; };
 		0C7D481A2A4DB9300023CF84 /* blaze-search-response.json in Resources */ = {isa = PBXBuildFile; fileRef = 0C7D48192A4DB9300023CF84 /* blaze-search-response.json */; };
 		0C7E09202A4286A00052324C /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E091F2A4286A00052324C /* PostMetaButton.m */; };
 		0C7E09212A4286A00052324C /* PostMetaButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C7E091F2A4286A00052324C /* PostMetaButton.m */; };
@@ -6330,6 +6332,7 @@
 		0C749D792B0543D0004CB468 /* WPImageViewController+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "WPImageViewController+Swift.swift"; sourceTree = "<group>"; };
 		0C75E26D2A9F63CB00B784E5 /* MediaImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageService.swift; sourceTree = "<group>"; };
 		0C7762222AAFD39700E07A88 /* SiteMediaAddMediaMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiteMediaAddMediaMenuController.swift; sourceTree = "<group>"; };
+		0C7A48442C1727BE00B16BAA /* AudioRecorderVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioRecorderVisualizerView.swift; sourceTree = "<group>"; };
 		0C7D48192A4DB9300023CF84 /* blaze-search-response.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "blaze-search-response.json"; sourceTree = "<group>"; };
 		0C7E091F2A4286A00052324C /* PostMetaButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PostMetaButton.m; sourceTree = "<group>"; };
 		0C7E09222A4286AA0052324C /* PostMetaButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PostMetaButton.h; sourceTree = "<group>"; };
@@ -10535,6 +10538,7 @@
 			children = (
 				0C13ACC62BF406CB00FF7405 /* VoiceToContentView.swift */,
 				0C13ACC82BF406E700FF7405 /* VoiceToContentViewModel.swift */,
+				0C7A48442C1727BE00B16BAA /* AudioRecorderVisualizerView.swift */,
 			);
 			path = Voice;
 			sourceTree = "<group>";
@@ -21859,6 +21863,7 @@
 				4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */,
 				0CA10F6D2ADAE86D00CE75AC /* PostSearchSuggestionsService.swift in Sources */,
 				02761EC02270072F009BAF0F /* BlogDetailsViewController+SectionHelpers.swift in Sources */,
+				0C7A48452C1727BE00B16BAA /* AudioRecorderVisualizerView.swift in Sources */,
 				984B138E21F65F870004B6A2 /* SiteStatsPeriodTableViewController.swift in Sources */,
 				83F1BED22BA4D1190057BC0F /* ReaderTopicService+FollowedSites.swift in Sources */,
 				433ADC1D223B2A7F00ED9DE1 /* TextBundleWrapper.m in Sources */,
@@ -24728,6 +24733,7 @@
 				FABB21B72602FC2C00C8785C /* TopicsCollectionView.swift in Sources */,
 				08A250FD28D9F0E200F50420 /* CommentDetailInfoViewModel.swift in Sources */,
 				FABB21B82602FC2C00C8785C /* SiteSegmentsService.swift in Sources */,
+				0C7A48462C1727BE00B16BAA /* AudioRecorderVisualizerView.swift in Sources */,
 				FABB21B92602FC2C00C8785C /* BlogListDataSource.swift in Sources */,
 				FABB21BA2602FC2C00C8785C /* MediaItemHeaderView.swift in Sources */,
 				F158541A267D3B6000A2E966 /* BloggingRemindersStore.swift in Sources */,

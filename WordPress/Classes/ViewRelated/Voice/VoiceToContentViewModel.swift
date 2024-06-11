@@ -29,7 +29,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
     private var featureInfo: JetpackAssistantFeatureDetails?
     private var audioSession: AVAudioSession?
-    private var audioRecorder: AVAudioRecorder?
+    private(set) var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
     private let blog: Blog
     private let completion: (String) -> Void
@@ -166,6 +166,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             self.audioRecorder = audioRecorder
 
             audioRecorder.delegate = self
+            audioRecorder.isMeteringEnabled = true
             audioRecorder.record()
 
             step = .recording
@@ -176,10 +177,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func startRecordingTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self, let currentTime = self.audioRecorder?.currentTime else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
+            guard let self, let audioRecorder = self.audioRecorder else { return }
 
-            let timeRemaining = Constants.recordingTimeLimit - currentTime
+            let timeRemaining = Constants.recordingTimeLimit - audioRecorder.currentTime
 
             guard timeRemaining > 0 else {
                 WPAnalytics.track(.voiceToContentRecordingLimitReached)
