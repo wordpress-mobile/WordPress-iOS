@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-14 07:48:39+0000 */
+/* Translation-Revision-Date: 2024-05-27 22:34:54+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: en_GB */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Create a post or page";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Create a post, page, or story";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Create a site icon";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Create your site";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creates new post, or page";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creates new post, page, or story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Image Quality";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Cancel";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Get the latest version";
+
+/* Update button title */
+"appUpdate.action.update" = "Update";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "To use this app, download the latest version.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "App Update Available";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Version %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "What's New";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "audio file";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "connections";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Post from Audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Create a post or page";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Create your own customised dashboard and choose what reports to see. Focus on the data you care most about.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Saving draft…";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Upgrade for more requests";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "You don't have enough requests available to create a post from audio.";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "Retry";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Something went wrong";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Requests available:";
+
+/* The screen title */
+"postFromAudio.title" = "Post from Audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Processing…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Recording…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "By %@.";
 
@@ -10796,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "More";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Done";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Choose colours and fonts that suit you. When you’re reading a post, tap the AA icon at the top of the screen.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Reading Preferences";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Tap the dropdown at the top and select Tags to access streams from your followed tags.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Tags Stream";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "New in Reader";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "The blog %@ will no longer appear in your reader. Tap to undo.";
 
@@ -10930,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Tags";
+"reader.navigation.filter.blog.unspecified" = "Blogs";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

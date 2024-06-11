@@ -11,9 +11,7 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
-    case syncPublishing
     case autoSaveDrafts
-    case voiceToContent
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -40,11 +38,7 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
-        case .syncPublishing:
-            return true
         case .autoSaveDrafts:
-            return true
-        case .voiceToContent:
             return false
         }
     }
@@ -86,12 +80,8 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
-        case .syncPublishing:
-            return "Synchronous Publishing"
         case .autoSaveDrafts:
             return "Autosave Drafts"
-        case .voiceToContent:
-            return "Voice to Content"
         }
     }
 }

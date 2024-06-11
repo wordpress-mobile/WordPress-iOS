@@ -12,7 +12,7 @@
 }
 
 + (void)updatePost:(AbstractPost *)post withRemotePost:(RemotePost *)remotePost inContext:(NSManagedObjectContext *)managedObjectContext overwrite:(BOOL)overwrite {
-    if ([Feature enabled:FeatureFlagSyncPublishing] && (post.revision != nil && !overwrite)) {
+    if ((post.revision != nil && !overwrite)) {
         return;
     }
 
@@ -99,8 +99,6 @@
         postPost.publicizeMessageID = publicizeMessageID;
         postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
-
-    post.statusAfterSync = post.status;
 }
 
 + (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
@@ -131,72 +129,6 @@
     // In theory, there shouldn't be duplicated fields, but I've seen some bugs where there's more than one geo_* value
     // In any case, they should be sorted by id, so `lastObject` should have the newer value
     return [matchingEntries lastObject];
-}
-
-+ (RemotePost *)remotePostWithPost:(AbstractPost *)post
-{
-    RemotePost *remotePost = [RemotePost new];
-    remotePost.postID = post.postID;
-    remotePost.date = post.date_created_gmt;
-    remotePost.dateModified = post.dateModified;
-    remotePost.title = post.postTitle ?: @"";
-    remotePost.content = post.content;
-    remotePost.status = post.status;
-    if (post.featuredImage) {
-        remotePost.postThumbnailID = post.featuredImage.mediaID;
-    }
-    remotePost.password = post.password;
-    remotePost.type = @"post";
-    remotePost.authorAvatarURL = post.authorAvatarURL;
-    // If a Post's authorID is 0 (the default Core Data value)
-    // or nil, don't send it to the API.
-    if (post.authorID.integerValue != 0) {
-        remotePost.authorID = post.authorID;
-    }
-    remotePost.excerpt = post.mt_excerpt;
-    remotePost.slug = post.wp_slug;
-
-    if ([post isKindOfClass:[Page class]]) {
-        Page *pagePost = (Page *)post;
-        remotePost.parentID = pagePost.parentID;
-        remotePost.type = @"page";
-    }
-    if ([post isKindOfClass:[Post class]]) {
-        Post *postPost = (Post *)post;
-        remotePost.format = postPost.postFormat;
-        remotePost.tags = [[postPost.tags componentsSeparatedByString:@","] wp_map:^id(NSString *obj) {
-            return [obj stringByTrimmingCharactersInSet:NSCharacterSet.whitespaceCharacterSet];
-        }];
-        remotePost.categories = [self remoteCategoriesForPost:postPost];
-        remotePost.metadata = [self remoteMetadataForPost:postPost];
-
-        // Because we can't get what's the self-hosted non Jetpack site capabilities
-        // only Admin users are allowed to set a post as sticky.
-        // This doesn't affect WPcom sites.
-        //
-        BOOL canMarkPostAsSticky = ([post.blog supports:BlogFeatureWPComRESTAPI] || post.blog.isAdmin);
-        remotePost.isStickyPost = canMarkPostAsSticky ? @(postPost.isStickyPost) : nil;
-    }
-
-    remotePost.isFeaturedImageChanged = post.isFeaturedImageChanged;
-
-    return remotePost;
-}
-
-+ (NSArray *)remoteCategoriesForPost:(Post *)post
-{
-    return [[post.categories allObjects] wp_map:^id(PostCategory *category) {
-        return [self remoteCategoryWithCategory:category];
-    }];
-}
-
-+ (RemotePostCategory *)remoteCategoryWithCategory:(PostCategory *)category
-{
-    RemotePostCategory *remoteCategory = [RemotePostCategory new];
-    remoteCategory.categoryID = category.categoryID;
-    remoteCategory.name = category.categoryName;
-    remoteCategory.parentID = category.parentID;
-    return remoteCategory;
 }
 
 + (NSArray *)remoteMetadataForPost:(Post *)post
@@ -271,12 +203,7 @@
 
     if (purge) {
         // Set up predicate for fetching any posts that could be purged for the sync.
-        NSPredicate *predicate = nil;
-        if ([Feature enabled:FeatureFlagSyncPublishing]) {
-            predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
-        } else {
-            predicate = [NSPredicate predicateWithFormat:@"(remoteStatusNumber = %@) AND (postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", @(AbstractPostRemoteStatusSync), blog];
-        }
+        NSPredicate *predicate = [NSPredicate predicateWithFormat:@"(postID != NULL) AND (original = NULL) AND (revision = NULL) AND (blog = %@)", blog];
         if ([statuses count] > 0) {
             NSPredicate *statusPredicate = [NSPredicate predicateWithFormat:@"status IN %@", statuses];
             predicate = [NSCompoundPredicate andPredicateWithSubpredicates:@[predicate, statusPredicate]];

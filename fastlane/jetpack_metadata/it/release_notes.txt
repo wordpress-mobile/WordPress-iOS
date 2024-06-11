@@ -1,0 +1,3 @@
+Hai notato che il salvataggio degli articoli richiedeva molto tempo? Probabilmente le cause erano i blocchi immagine, galleria o file, ma ormai è acqua passata. È necessario che il salvataggio sia facile e veloce, indipendentemente dal numero di foto o file caricati.
+Il feed dei tag è finalmente attivo. Ora puoi vedere tutti i contenuti con tag specifici in un unico posto. Così è tutto molto più semplice!
+Finalmente, abbiamo risolto la sovrapposizione del pulsante "Fatto" nella schermata "Articolo pubblicato". Facile come bere un bicchier d'acqua.

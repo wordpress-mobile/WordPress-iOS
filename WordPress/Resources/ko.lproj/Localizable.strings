@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-18 13:51:45+0000 */
+/* Translation-Revision-Date: 2024-05-30 08:54:09+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ko_KR */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "비즈니스, 잡지 또는 개인 블로그를 위한 새 사이트를 만들거나 기존 워드프레스 사이트에 연결하세요.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "글 또는 페이지 만들기";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "글, 페이지, 또는 이야기 만들기";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "사이트 아이콘 생성";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "사이트 작성";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "새 글 또는 페이지 만들기";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "새 글, 페이지, 또는 이야기 만들기";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "새 메뉴를 만들면 현재 메뉴에 대한 변경 사항이 취소됩니다. 계속하시겠어요?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "이미지 품질";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "취소";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "최신 버전 받기";
+
+/* Update button title */
+"appUpdate.action.update" = "업데이트";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "이 앱을 사용하려면 최신 버전을 다운로드하세요.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "앱 업데이트 가능";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "버전 %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "새로운 기능";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "오디오 파일";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "연결";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "오디오에서 글 작성하기";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "글 또는 페이지 만들기";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "나만의 사용자 정의 알림판을 만들고 보고 싶은 보고서를 선택하세요. 가장 중요한 데이터에 집중하세요.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "임시글 저장중…";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "추가 요청을 위해 업그레이드";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "요청이 오디오에서 글을 작성할 만큼 충분하지 않습니다.";
+
+/* Button title */
+"postFromAudio.ok" = "확인";
+
+/* Button title */
+"postFromAudio.retry" = "다시 시도";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "문제가 발생했습니다.";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "확인된 요청:";
+
+/* The screen title */
+"postFromAudio.title" = "오디오에서 글 작성하기";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "처리 중…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "녹음 중…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ 작성.";
 
@@ -10796,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "더 보기";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "완료";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "자신에게 맞는 색상과 글꼴을 선택하세요. 글을 읽을 때 화면 상단의 AA 아이콘을 탭하세요.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "읽기 기본 설정";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "상단의 드롭다운을 탭하고 태그를 선택하여 회원님이 팔로우하는 태그의 스트림에 접근하세요.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "태그 스트림";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "뉴스피드 새 항목";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "블로그 %@은(는) 더 이상 리더에 표시되지 않습니다. 눌러서 취소하세요.";
 
@@ -10930,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "태그";
+"reader.navigation.filter.blog.unspecified" = "블로그";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

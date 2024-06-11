@@ -38,7 +38,6 @@ final class PublishDatePickerViewController: UIHostingController<PublishDatePick
     }
 }
 
-/// - warning: deprecated (kahu-offline-mode)
 extension PublishDatePickerViewController {
     static func make(viewModel: PublishSettingsViewModel, onDateUpdated: @escaping (Date?) -> Void) -> PublishDatePickerViewController {
         PublishDatePickerViewController(configuration: .init(
@@ -47,16 +46,6 @@ extension PublishDatePickerViewController {
             timeZone: viewModel.timeZone,
             updated: onDateUpdated
         ))
-    }
-}
-
-/// - warning: deprecated (kahu-offline-mode)
-final class PublishDatePickerHelper: NSObject {
-    @objc class func makeDatePicker(post: AbstractPost, isRequired: Bool) -> UIViewController {
-        var viewModel = PublishSettingsViewModel(post: post)
-        return PublishDatePickerViewController.make(viewModel: viewModel) { date in
-            viewModel.setDate(date)
-        }
     }
 }
 

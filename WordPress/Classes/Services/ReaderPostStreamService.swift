@@ -41,9 +41,9 @@ class ReaderPostStreamService {
                 }
 
                 // Clean up
-                let serivce = ReaderPostService(coreDataStack: self.coreDataStack)
-                serivce.deletePostsInExcessOfMaxAllowed(for: readerTopic)
-                serivce.deletePostsFromBlockedSites()
+                let service = ReaderPostService(coreDataStack: self.coreDataStack)
+                service.deletePostsInExcessOfMaxAllowed(for: readerTopic)
+                service.deletePostsFromBlockedSites()
             }, completion: {
                 let hasMore = pageHandle != nil
                 success(posts.count, hasMore)

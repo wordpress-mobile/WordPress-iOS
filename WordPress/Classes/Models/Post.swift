@@ -212,27 +212,6 @@ class Post: AbstractPost {
 
     // MARK: - AbstractPost
 
-    override func hasSiteSpecificChanges() -> Bool {
-        if super.hasSiteSpecificChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if postFormat != originalPost.postFormat {
-                return true
-            }
-
-            if categories != originalPost.categories {
-                return true
-            }
-        }
-
-        return false
-    }
-
     override func hasCategories() -> Bool {
         categories?.isEmpty == false
     }
@@ -267,58 +246,6 @@ class Post: AbstractPost {
         }
     }
 
-    override func hasLocalChanges() -> Bool {
-        if super.hasLocalChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if tags ?? "" != originalPost.tags ?? "" {
-                return true
-            }
-
-            if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
-                return true
-            }
-
-            if !NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
-                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:]) {
-                return true
-            }
-
-            if isStickyPost != originalPost.isStickyPost {
-                return true
-            }
-        }
-
-        return false
-    }
-
-    override func statusForDisplay() -> String? {
-        var statusString: String?
-
-        if status == .trash || status == .scheduled {
-            statusString = ""
-        } else if status != .publish && status != .draft {
-            statusString = statusTitle
-        }
-
-        if isRevision() {
-            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-
-            if let tempStatusString = statusString, !tempStatusString.isEmpty {
-                statusString = String(format: "%@, %@", tempStatusString, localOnly)
-            } else {
-                statusString = localOnly
-            }
-        }
-
-        return statusString
-    }
-
     override func titleForDisplay() -> String {
         var title = postTitle?.trimmingCharacters(in: CharacterSet.whitespaces) ?? ""
         title = title
@@ -330,20 +257,6 @@ class Post: AbstractPost {
         }
 
         return title
-    }
-
-    override func additionalContentHashes() -> [Data] {
-        // Since the relationship between the categories and a Post is a `Set` and not a `OrderedSet`, we
-        // need to sort it manually here, so it won't magically change between runs.
-        let stringifiedCategories = categories?.compactMap { $0.categoryName }.sorted().reduce("") { acc, obj in
-            return acc + obj
-        } ?? ""
-
-        return [hash(for: publicID ?? ""),
-                hash(for: tags ?? ""),
-                hash(for: postFormat ?? ""),
-                hash(for: stringifiedCategories),
-                hash(for: isStickyPost ? 1 : 0)]
     }
 }
 

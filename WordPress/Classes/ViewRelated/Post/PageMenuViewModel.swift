@@ -7,7 +7,6 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     private let isSitePostsPage: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
-    private let isSyncPublishingEnabled: Bool
 
     var buttonSections: [AbstractPostButtonSection] {
         [
@@ -29,30 +28,20 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         isSiteHomepage: Bool,
         isSitePostsPage: Bool,
         isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
-        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled(),
-        isSyncPublishingEnabled: Bool = FeatureFlag.syncPublishing.enabled
+        isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()
     ) {
         self.page = page
         self.isSiteHomepage = isSiteHomepage
         self.isSitePostsPage = isSitePostsPage
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
-        self.isSyncPublishingEnabled = isSyncPublishingEnabled
     }
 
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
-
-        if isSyncPublishingEnabled {
-            if page.status != .trash {
-                buttons.append(.view)
-            }
-        } else {
-            if !page.isFailed && page.status != .trash {
-                buttons.append(.view)
-            }
+        if page.status != .trash {
+            buttons.append(.view)
         }
-
         return AbstractPostButtonSection(buttons: buttons)
     }
 
@@ -75,19 +64,10 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if !isSyncPublishingEnabled {
-            if page.status != .trash && page.isFailed {
-                buttons.append(.retry)
-            }
-        }
-
         return AbstractPostButtonSection(buttons: buttons)
     }
 
     private var canPublish: Bool {
-        guard isSyncPublishingEnabled else {
-            return !page.isFailed && page.status != .publish && page.status != .trash
-        }
         let userCanPublish = page.blog.capabilities != nil ? page.blog.isPublishingPostsAllowed() : true
         return page.isStatus(in: [.draft, .pending]) && userCanPublish
     }

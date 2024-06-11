@@ -1,0 +1,3 @@
+Dir ist aufgefallen, dass das Speichern von Beiträgen sehr lange dauert? Das lag möglicherweise an Bild-, Galerie- oder Dateiblöcken. Aber das haben wir behoben! Jetzt sollte das Speichern schnell und reibungslos verlaufen – egal, wie viele Fotos oder Dateien du hochgeladen hast.
+Der Schlagwort-Feed ist live! Jetzt kannst du Inhalte mit spezifischen Schlagwörtern an einem zentralen Ort sehen. Viel Spaß damit!
+Außerdem haben wir den überlappenden Button „Fertig“ auf dem Bildschirm „Beitrag veröffentlicht“ repariert. Wenn das mal nicht kinderleicht war.

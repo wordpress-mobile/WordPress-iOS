@@ -32,12 +32,10 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     /// - Parameters:
     ///     - post: the post to edit. Must be already assigned to a `ManagedObjectContext` since
     ///     that's necessary for the edits to be saved.
-    ///     - loadAutosaveRevision: if true, apply autosave content when the editor creates a revision.
     ///     - replaceEditor: a closure that handles switching from one editor to another
     ///     - editorSession: post editor analytics session
     init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession?)
 
@@ -100,15 +98,11 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
 extension PostEditor {
 
     var editorHasContent: Bool {
-        return post.hasContent()
+        post.hasContent()
     }
 
     var editorHasChanges: Bool {
-        if FeatureFlag.syncPublishing.enabled {
-            return !post.changes.isEmpty
-        } else {
-            return post.hasUnsavedChanges()
-        }
+        !post.changes.isEmpty
     }
 
     func editorContentWasUpdated() {
@@ -131,18 +125,10 @@ extension PostEditor {
     var prepublishingSourceView: UIView? {
         return navigationBarManager.publishButton
     }
-
-    var prepublishingIdentifiers: [PrepublishingIdentifier] {
-        PrepublishingIdentifier.defaultIdentifiers
-    }
 }
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
-        guard FeatureFlag.syncPublishing.enabled else {
-            return
-        }
-
         if post.original().status == .trash {
             showPostTrashedOverlay()
         } else {

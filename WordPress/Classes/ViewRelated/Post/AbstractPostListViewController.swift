@@ -643,25 +643,14 @@ class AbstractPostListViewController: UIViewController,
     // MARK: - Actions
 
     func publish(_ post: AbstractPost) {
-        let action = AbstractPostHelper.editorPublishAction(for: post)
-        PrepublishingViewController.show(for: post, action: action, isStandalone: true, from: self) { [weak self] result in
+        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
+        PrepublishingViewController.show(for: post, isStandalone: true, from: self) { [weak self] result in
             switch result {
-            case .confirmed:
-                self?.didConfirmPublish(for: post)
             case .published:
                 self?.dismiss(animated: true)
             case .cancelled:
                 break
             }
-        }
-    }
-
-    private func didConfirmPublish(for post: AbstractPost) {
-        WPAnalytics.track(.postListPublishAction, withProperties: propertiesForAnalytics())
-        PostCoordinator.shared.publish(post)
-
-        if post is Post {
-            BloggingRemindersFlow.present(from: self, for: post.blog, source: .publishFlow, alwaysShow: false)
         }
     }
 
@@ -687,7 +676,7 @@ class AbstractPostListViewController: UIViewController,
         navigationController?.present(navWrapper, animated: true)
     }
 
-    func _trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+    func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
         let post = post.original()
 
         func performAction() {
@@ -721,17 +710,10 @@ class AbstractPostListViewController: UIViewController,
         alert.addDestructiveActionWithTitle(Strings.Delete.actionTitle) { _ in
             completion()
             Task {
-                await PostCoordinator.shared._delete(post)
+                await PostCoordinator.shared.delete(post)
             }
         }
         alert.presentFromRootViewController()
-    }
-
-    /// - warning: deprecated (kahu-offline-mode)
-    func deletePost(_ post: AbstractPost) {
-        Task {
-            await PostCoordinator.shared.delete(post)
-        }
     }
 
     func stats(for post: AbstractPost) {

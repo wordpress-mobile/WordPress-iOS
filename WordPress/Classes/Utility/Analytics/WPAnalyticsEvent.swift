@@ -32,6 +32,7 @@ import Foundation
     case editorPostTagsChanged
     case editorPostAuthorChanged
     case editorPostPublishNowTapped
+    case editorPostSaveDraftTapped
     case editorPostCategoryChanged
     case editorPostStatusChanged
     case editorPostFormatChanged
@@ -334,6 +335,11 @@ import Foundation
     case readerTagsFeedMoreFromTagTapped
     case readerTagsFeedHeaderTapped
 
+    // Reader: Floating Button Experiment
+    case readerFloatingButtonShown
+    case readerCreateSheetAnswerPromptTapped
+    case readerCreateSheetPromptHelpTapped
+
     // App Settings
     case settingsDidChange
 
@@ -587,6 +593,14 @@ import Foundation
     case sotw2023NudgePostEventCardCTATapped
     case sotw2023NudgePostEventCardHideTapped
 
+    // Voice to Content (aka "Post from Audio")
+    case voiceToContentSheetShown
+    case voiceToContentButtonStartRecordingTapped
+    case voiceToContentButtonDoneTapped
+    case voiceToContentButtonUpgradeTapped
+    case voiceToContentButtonCloseTapped
+    case voiceToContentRecordingLimitReached
+
     // Widgets
     case widgetsLoadedOnApplicationOpened
 
@@ -662,6 +676,8 @@ import Foundation
             return "editor_post_tags_changed"
         case .editorPostPublishNowTapped:
             return "editor_post_publish_now_tapped"
+        case .editorPostSaveDraftTapped:
+            return "editor_post_save_draft_tapped"
         case .editorPostCategoryChanged:
             return "editor_post_category_changed"
         case .editorPostStatusChanged:
@@ -1196,6 +1212,14 @@ import Foundation
         case .readerTagsFeedHeaderTapped:
             return "reader_tags_feed_header_tapped"
 
+        // Reader: Floating Button Experiment
+        case .readerFloatingButtonShown:
+            return "reader_create_fab_shown"
+        case .readerCreateSheetAnswerPromptTapped:
+            return "my_site_create_sheet_answer_prompt_tapped"
+        case .readerCreateSheetPromptHelpTapped:
+            return "my_site_create_sheet_prompt_help_tapped"
+
         // App Settings
         case .settingsDidChange:
             return "settings_did_change"
@@ -1626,6 +1650,20 @@ import Foundation
             return "sotw_2023_nudge_post_event_card_cta_tapped"
         case .sotw2023NudgePostEventCardHideTapped:
             return "sotw_2023_nudge_post_event_card_hide_tapped"
+
+        // Voice to Content (aka "Post from Audio")
+        case .voiceToContentSheetShown:
+            return "voice_to_content_sheet_shown"
+        case .voiceToContentButtonStartRecordingTapped:
+            return "voice_to_content_button_start_recording_tapped"
+        case .voiceToContentButtonDoneTapped:
+            return "voice_to_content_button_done_tapped"
+        case .voiceToContentButtonUpgradeTapped:
+            return "voice_to_content_button_upgrade_tapped"
+        case .voiceToContentButtonCloseTapped:
+            return "voice_to_content_button_close_tapped"
+        case .voiceToContentRecordingLimitReached:
+            return "voice_to_content_recording_limit_reached"
 
         // Widgets
         case .widgetsLoadedOnApplicationOpened:

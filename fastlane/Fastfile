@@ -241,7 +241,7 @@ module FastlaneActionLogGroup
 
   def execute_action(action_name)
     print_group(action_name)
-    super(action_name)
+    super
   end
 end
 

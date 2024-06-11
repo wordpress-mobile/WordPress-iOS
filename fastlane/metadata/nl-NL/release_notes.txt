@@ -1,23 +1,2 @@
-We zijn drukker geweest dan Batman na weer een ontsnapping uit Arkham. (We zouden graag willen weten wat de lokale miljardair Bruce Wayne daaraan doet.) Maak je klaar, deze update is een grote.
-
-We hebben meerdere problemen opgelost met het synchroniseren van berichten, zoals berichten die niet laden wanneer de app wordt geopend en niet verschijnen in het juiste status tabblad. Een plek voor elk bericht, en elk bericht op zijn plek.
-
-Bij het bewerken van een pagina kun je nu de hoofdpagina instellen binnen de instellingen van de pagina. We hebben slug en samenvattingsvelden toegevoegd aan het instellingen gebied, en we hebben het statusveld verwijderd. We hebben ook de manier verbeterd waarop verschillende instellingen zijn gerangschikt en gegroepeerd.
-
-We hebben ook problemen opgelost met het publicatie datumveld in je berichtinstellingen. De nieuwe datumkiezer maakt het gemakkelijk om je publicatiedatum te kiezen, zelfs als je in een andere tijdzone bent dan de blog. Je ziet het publicatie datumveld alleen wanneer je klaar bent om te publiceren.
-
-We hebben een nieuw scherm voor mediabestanden toegevoegd aan je publicatie workflow, zodat je uploads in uitvoering kunt zien. Hier zie je eventuele foutmeldingen voor mislukte uploads, samen met de optie om ze te annuleren. Oh, en over fouten gesproken, we hebben meldingen verbeterd voor fouten bij het uploaden en publiceren.
-
-We hebben het "meer" menu in de editor bijgewerkt met een nieuwe uitstraling, en we hebben een badge toegevoegd om aan te geven wanneer een bericht beveiligd is met een wachtwoord. (We raden het gebruik van het wachtwoord 1-2-3-4-5 niet aan. Verbazingwekkend genoeg is dat dezelfde combinatie die we op onze bagage hebben.)
-
-Conceptberichten hebben nu duidelijkere workflows voor beheerders en bijdragers. We hebben ook de succes weergave voor gepubliceerde berichten bijgewerkt. Het is nu gemakkelijker om een bericht te delen en te bewerken.
-
-Ben je van gedachten veranderd over het verwijderen van een bericht? Je kunt nu verwijderde berichten en pagina's bekijken en herstellen vanuit de editor.
-
-We hebben de "concept geüpload" balk verwijderd die onderaan je scherm verscheen wanneer je een conceptbericht opslaat of bijwerkt. Dit bracht geen vreugde, dus we hebben het bedankt en afscheid genomen.
-
-Tot slot hebben we een lange lijst met bugs verholpen en een handvol zeldzame crashes veroorzaakt door codeproblemen opgelost.
-
-- Als een concept op je apparaat verschilt van het concept dat is opgeslagen op het web, toont de app nu een conflict resolutiescherm in plaats van zelf wijzigingen aan te brengen.
-- Wijzigingen in een concept verwerpen zal niet langer het hele concept verwijderen. Je zult ook niet de optie zien om wijzigingen te negeren wanneer je er geen hebt gemaakt.
-- Je zult nu een foutmelding zien wanneer je een pagina auteur toewijst die niet in aanmerking komt om auteur te zijn.
+Merkte je een lange vertraging bij het opslaan van berichten? Dat kan zijn geweest door afbeelding, galerij of bestandsblokken - maar niet meer. Opslaan zou snel en gemakkelijk moeten zijn, ongeacht hoeveel foto's of bestanden je hebt geüpload.
+We hebben ook de overlappende "Klaar" knop op het "Bericht gepubliceerd" scherm opgelost. Makkelijk toch.

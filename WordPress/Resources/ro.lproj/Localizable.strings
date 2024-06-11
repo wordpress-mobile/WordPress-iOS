@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-14 09:18:22+0000 */
+/* Translation-Revision-Date: 2024-05-28 10:20:09+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n == 0 || n % 100 >= 2 && n % 100 <= 19) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ro */
@@ -1380,7 +1380,7 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Default subtitle for no-results when there is no connection
    Default subtitle for no-results when there is no connection. */
-"Check your network connection and try again." = "Verifică conexiunea rețelei și încearcă din nou.";
+"Check your network connection and try again." = "Verifică conexiunea la rețea și încearcă din nou.";
 
 /* Subtitle for No results full page screen displayed from pages list when there is no connection */
 "Check your network connection and try again. Or draft a page." = "Verifică conexiunea la rețea și încearcă din nou. Sau creează o ciornă a paginii.";
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Creează un site nou pentru afacerea, revista ta sau blogul personal; sau conectează o instalare WordPress existentă.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Creează un articol sau o pagină";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Creează un articol, o pagină sau o narațiune";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Creează un icon pentru site";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Creează-ți site-ul";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Creează un articol nou sau o pagină nouă";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Creează un articol nou, o pagină sau o narațiune nouă";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Crearea unui meniu nou va anula modificările pe care le-ai făcut în meniul actual. Sigur vrei să continui?";
@@ -8779,6 +8767,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Calitate imagini";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Anulează";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Ia ultima versiune";
+
+/* Update button title */
+"appUpdate.action.update" = "Actualizează";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Pentru a folosi această aplicație, descarcă ultima versiune.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Este disponibilă o actualizare pentru aplicație";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Versiunea %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Ce este nou";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fișier audio";
 
@@ -8998,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexiuni";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Articol din fișier audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Creează un articol sau o pagină";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Creează-ți propriul panou de control personalizat și alege ce rapoarte vrei să vezi. Axează-te pe datele care te interesează cel mai mult.";
@@ -10354,6 +10369,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Salvez ciorna...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Actualizează pentru mai multe cereri";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Nu ai disponibile suficiente cereri ca să creezi un articol dintr-un fișier audio.";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "Reîncearcă";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Ceva nu a mers bine";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Cereri disponibile:";
+
+/* The screen title */
+"postFromAudio.title" = "Articol din fișier audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Procesez...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Înregistrez...";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "De %@.";
 
@@ -10796,6 +10838,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Mai multe";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Gata";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Alegi culorile și fonturile pe care le vrei. Când citești un articol, atinge iconul AA în partea de sus a ecranului.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Preferințe pentru citire";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Atinge lista derulantă în partea de sus și selectează Etichete pentru a accesa fluxurile pentru etichetele urmărite.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Flux de etichete";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Noutăți în Cititor";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Blogul %@ nu va mai apărea în Cititor. Atinge pentru a reveni.";
 
@@ -10930,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Etichete";
+"reader.navigation.filter.blog.unspecified" = "Bloguri";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

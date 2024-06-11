@@ -10,12 +10,9 @@
 @dynamic blog;
 @dynamic dateModified;
 @dynamic media;
-@dynamic metaIsLocal;
-@dynamic metaPublishImmediately;
 @dynamic comments;
 @dynamic featuredImage;
 @dynamic revisions;
-@dynamic confirmedChangesHash;
 @dynamic confirmedChangesTimestamp;
 @dynamic autoUploadAttemptsCount;
 @dynamic autosaveContent;
@@ -24,33 +21,9 @@
 @dynamic autosaveModifiedDate;
 @dynamic autosaveIdentifier;
 @dynamic foreignID;
-
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
-{
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-    if ([key isEqualToString:@"metaIsLocal"]) {
-        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"remoteStatusNumber"]];
-
-    } else if ([key isEqualToString:@"metaPublishImmediately"]) {
-        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"date_created_gmt"]];
-    }
-
-    return keyPaths;
-}
+@synthesize voiceContent;
 
 #pragma mark - Life Cycle Methods
-
-- (void)remove
-{
-    if (self.remoteStatus == AbstractPostRemoteStatusPushing || self.remoteStatus == AbstractPostRemoteStatusLocal) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"PostUploadCancelled" object:self];
-    }
-
-    [self.managedObjectContext performBlock:^{
-        [self.managedObjectContext deleteObject:self];
-    }];
-
-}
 
 - (void)save
 {
@@ -64,7 +37,6 @@
 {
     NSString *key = @"remoteStatusNumber";
     [self willChangeValueForKey:key];
-    self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
     [self setPrimitiveValue:remoteStatusNumber forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -73,7 +45,6 @@
 {
     NSString *key = @"date_created_gmt";
     [self willChangeValueForKey:key];
-    self.metaPublishImmediately = [self shouldPublishImmediately];
     [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -81,30 +52,6 @@
 - (void)setDateCreated:(NSDate *)localDate
 {
     self.date_created_gmt = localDate;
-
-    if ([Feature enabled:FeatureFlagSyncPublishing]) {
-        return;
-    }
-
-    /*
-     If the date is nil it means publish immediately so set the status to publish.
-     If the date is in the future set the status to scheduled if current status is published.
-     If the date is now or in the past, and the status is scheduled, set the status
-     to published.
-     */
-    if ([self dateCreatedIsNilOrEqualToDateModified]) {
-        // A nil date means publish immediately.
-        self.status = PostStatusPublish;
-
-    } else if ([self hasFuturePublishDate]) {
-        // Needs to be a nested conditional so future date + scheduled status
-        // is handled correctly.
-        if ([self.status isEqualToString:PostStatusPublish]) {
-            self.status = PostStatusScheduled;
-        }
-    } else if ([self.status isEqualToString:PostStatusScheduled]) {
-        self.status = PostStatusPublish;
-    }
 }
 
 #pragma mark -
@@ -132,24 +79,6 @@
 
 - (AbstractPost *)createRevision
 {
-    if ([self isRevision]) {
-        DDLogInfo(@"Post is already a revision, no need to create a new one");
-        return self;
-    }
-    if (self.revision) {
-        DDLogInfo(@"Returning existing revision");
-        return self.revision;
-    }
-
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
-    [post cloneFrom:self];
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    post.isFeaturedImageChanged = self.isFeaturedImageChanged;
-    return post;
-}
-
-- (AbstractPost *)_createRevision {
     NSParameterAssert(self.revision == nil);
 
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
@@ -176,7 +105,6 @@
 {
     if ([self isOriginal]) {
         [self cloneFrom:self.revision];
-        self.isFeaturedImageChanged = self.revision.isFeaturedImageChanged;
     }
 }
 
@@ -190,7 +118,6 @@
             [self setValue:[NSDate date] forKey:key];
         }
     }
-    self.isFeaturedImageChanged = revision.isFeaturedImageChanged;
     return self;
 }
 
@@ -234,47 +161,6 @@
     return self.date_created_gmt == nil || [self.date_created_gmt isEqualToDate:self.dateModified];
 }
 
-- (NSString *)availableStatusForPublishOrScheduled
-{
-    if ([self hasFuturePublishDate]) {
-        return PostStatusScheduled;
-    }
-    return PostStatusPublish;
-}
-
-- (NSArray *)availableStatusesForEditing
-{
-    // Note: Read method description before changing values.
-    return @[PostStatusDraft,
-             PostStatusPending,
-             [self availableStatusForPublishOrScheduled]];
-}
-
-- (BOOL)hasSiteSpecificChanges
-{
-    if (![self isRevision]) {
-        return NO;
-    }
-
-    AbstractPost *original = (AbstractPost *)self.original;
-
-    //Do not move the Featured Image check below in the code.
-    if ((self.featuredImage != original.featuredImage) && (![self.featuredImage isEqual:original.featuredImage])) {
-        self.isFeaturedImageChanged = YES;
-        return YES;
-    }
-
-    self.isFeaturedImageChanged = NO;
-
-    // Relationships are not going to be nil, just empty sets,
-    // so we can avoid the extra check
-    if (![self.media isEqual:original.media]) {
-        return YES;
-    }
-
-    return NO;
-}
-
 - (BOOL)hasPhoto
 {
     if ([self.media count] == 0) {
@@ -309,11 +195,6 @@
     return NO;
 }
 
-- (BOOL)isFailed
-{
-    return self.remoteStatus == AbstractPostRemoteStatusFailed || [[MediaCoordinator shared] hasFailedMediaFor:self] || self.hasFailedMedia;
-}
-
 - (BOOL)hasFailedMedia
 {
     if ([self.media count] == 0) {
@@ -344,37 +225,12 @@
     return self.revision != nil;
 }
 
-- (BOOL)hasNeverAttemptedToUpload
-{
-    return self.remoteStatus == AbstractPostRemoteStatusLocal;
-}
-
 - (BOOL)hasRemote
 {
     return ((self.postID != nil) && ([self.postID longLongValue] > 0));
 }
 
-- (void)findComments
-{
-    NSSet *comments = [self.blog.comments filteredSetUsingPredicate:
-                       [NSPredicate predicateWithFormat:@"(postID == %@) AND (post == NULL)", self.postID]];
-    if ([comments count] > 0) {
-        [self addComments:comments];
-    }
-}
-
-
-
 #pragma mark - Convenience methods
-
-// This is different than isScheduled. See .h for details.
-- (BOOL)hasFuturePublishDate
-{
-    if (!self.date_created_gmt) {
-        return NO;
-    }
-    return (self.date_created_gmt == [self.date_created_gmt laterDate:[NSDate date]]);
-}
 
 // If the post has a scheduled status.
 - (BOOL)isScheduled
@@ -400,12 +256,6 @@
         return YES;
     }
     return NO;
-}
-
-- (void)publishImmediately
-{
-    self.dateModified = [NSDate date];
-    [self setDateCreated:self.dateModified];
 }
 
 - (BOOL)shouldPublishImmediately
@@ -463,11 +313,6 @@
     return [[self dateCreated] mediumString];
 }
 
-- (BOOL)supportsStats
-{
-    return [self.blog supports:BlogFeatureStats] && [self hasRemote];
-}
-
 - (BOOL)isPrivateAtWPCom
 {
     return self.blog.isPrivateAtWPCom;
@@ -483,145 +328,7 @@
     return self.remoteStatus == AbstractPostRemoteStatusPushing;
 }
 
-
 #pragma mark - Post
-
-/// - note: Deprecated (kahu-offline-mode)
-- (BOOL)canSave
-{
-    NSString* titleWithoutSpaces = [self.postTitle stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSString* contentWithoutSpaces = [self.content stringByReplacingOccurrencesOfString:@" " withString:@""];
-    
-    BOOL isTitleEmpty = (titleWithoutSpaces == nil || titleWithoutSpaces.length == 0);
-    BOOL isContentEmpty = (contentWithoutSpaces == nil || contentWithoutSpaces.length == 0);
-    BOOL areBothTitleAndContentsEmpty = isTitleEmpty && isContentEmpty;
-    
-    return (!areBothTitleAndContentsEmpty && [self hasUnsavedChanges]);
-}
-
-- (BOOL)hasUnsavedChanges
-{
-    return [self hasLocalChanges] || [self hasRemoteChanges];
-}
-
-- (BOOL)hasLocalChanges
-{
-    if(self.remoteStatus == AbstractPostRemoteStatusLocal ||
-       self.remoteStatus == AbstractPostRemoteStatusFailed ||
-       self.remoteStatus == AbstractPostRemoteStatusAutoSaved) {
-        return YES;
-    }
-    
-    if (![self isRevision]) {
-        return NO;
-    }
-    
-    if ([self hasSiteSpecificChanges]) {
-        return YES;
-    }
-    
-    AbstractPost *original = (AbstractPost *)self.original;
-    
-    // We need the extra check since [nil isEqual:nil] returns NO
-    // and because @"" != nil
-    if (!([self.postTitle length] == 0 && [original.postTitle length] == 0)
-        && (![self.postTitle isEqual:original.postTitle])) {
-        return YES;
-    }
-    
-    if (!([self.content length] == 0 && [original.content length] == 0)
-        && (![self.content isEqual:original.content])) {
-        return YES;
-    }
-    
-    if (!([self.status length] == 0 && [original.status length] == 0)
-        && (![self.status isEqual:original.status])) {
-        return YES;
-    }
-    
-    if (!([self.password length] == 0 && [original.password length] == 0)
-        && (![self.password isEqual:original.password])) {
-        return YES;
-    }
-    
-    if ((self.dateCreated != original.dateCreated)
-        && (![self.dateCreated isEqual:original.dateCreated])) {
-        return YES;
-    }
-    
-    if (!([self.permaLink length] == 0 && [original.permaLink length] == 0)
-        && (![self.permaLink isEqual:original.permaLink])) {
-        return YES;
-    }
-    
-    if (!([self.mt_excerpt length] == 0 && [original.mt_excerpt length] == 0)
-        && (![self.mt_excerpt isEqual:original.mt_excerpt]))
-    {
-        return YES;
-    }
-
-    if (!([self.wp_slug length] == 0 && [original.wp_slug length] == 0)
-        && (![self.wp_slug isEqual:original.wp_slug]))
-    {
-        return YES;
-    }
-
-    if ( ((self.featuredImage != nil) && ![self.featuredImage.objectID isEqual: original.featuredImage.objectID]) ||
-        (self.featuredImage == nil && self.original.featuredImage != nil) ) {
-        return YES;
-    }
-
-    if ((self.authorID != original.authorID)
-        && (![self.authorID isEqual:original.authorID]))
-    {
-        return YES;
-    }
-
-    return NO;
-}
-
-- (BOOL)hasRemoteChanges
-{
-    return (self.hasRemote == NO
-            || self.remoteStatus == AbstractPostRemoteStatusFailed);
-}
-
-- (BOOL)shouldAttemptAutoUpload {
-    if (!self.confirmedChangesTimestamp || !self.confirmedChangesHash) {
-        return NO;
-    }
-
-    NSTimeInterval timeDifference = [[NSDate date] timeIntervalSinceDate:self.confirmedChangesTimestamp];
-
-    BOOL timeDifferenceWithinRange = timeDifference <= (60 * 60 * 24 * 2);
-    // We want the user's confirmation to upload a thing to expire after 48h.
-    // This probably should be calculated using NSCalendar APIs — but those
-    // can get really expensive. This method can potentially be called a lot during
-    // scrolling of a Post List — and for our specific use-case, being slightly innacurate here in terms of
-    // leap seconds or other calendrical oddities doesn't actually matter.
-
-    BOOL hashesEqual = [self.confirmedChangesHash isEqualToString:[self calculateConfirmedChangesContentHash]];
-
-    return hashesEqual && timeDifferenceWithinRange;
-}
-
-- (void)setShouldAttemptAutoUpload:(BOOL)shouldAttemptAutoUpload {
-    if (shouldAttemptAutoUpload) {
-        NSString *currentHash = [self calculateConfirmedChangesContentHash];
-        NSDate *now = [NSDate date];
-
-        self.confirmedChangesHash = currentHash;
-        self.confirmedChangesTimestamp = now;
-    } else {
-        self.confirmedChangesHash = @"";
-        self.confirmedChangesTimestamp = [NSDate dateWithTimeIntervalSinceReferenceDate:0];
-    }
-}
-
-- (BOOL)wasAutoUploadCancelled {
-    return [self.confirmedChangesHash isEqualToString:@""]
-    && [self.confirmedChangesTimestamp isEqualToDate:[NSDate dateWithTimeIntervalSinceReferenceDate:0]];
-}
 
 - (void)updatePathForDisplayImageBasedOnContent
 {

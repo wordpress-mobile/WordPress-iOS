@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 09:54:09+0000 */
+/* Translation-Revision-Date: 2024-05-29 13:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: fr */
@@ -1985,12 +1985,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Créer un nouveau site pour votre entreprise, magazine ou blog personnel ou connectez un site WordPress existant.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Créer un article ou une page";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Créez un article, une page ou une story";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Créer une icône de site";
 
@@ -2008,12 +2002,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Créez votre site";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Créé un nouvel article ou une nouvelle page";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Créez un nouvel article, une nouvelle page ou une nouvelle story";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "La création d'un nouveau menu annulera les modifications apportées dans le menu actuel. Voulez-vous vraiment continuer ?";
@@ -8752,6 +8740,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Indicates an image will use medium quality when uploaded. */
 "appSettings.media.imageQuality.medium" = "Moyenne";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Annuler";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Obtenir la dernière version";
+
+/* Update button title */
+"appUpdate.action.update" = "Mettre à jour";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Pour utiliser cette application, téléchargez la dernière version.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Mise à jour de l’application disponible";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Nouveautés";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "fichier audio";
 
@@ -8968,6 +8974,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "connexions";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Publier à partir d’un contenu audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Créer un article ou une page";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Créez votre propre tableau de bord personnalisé et choisissez quels rapports afficher. Concentrez-vous sur les données qui vous importent le plus.";
@@ -10309,6 +10321,30 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "Enregistrement du brouillon…";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Mettre à niveau pour obtenir plus de requêtes";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Vous n’avez pas assez de requêtes disponibles pour créer un article à partir d’un contenu audio.";
+
+/* Button title */
+"postFromAudio.retry" = "Réessayer";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Un problème est survenu";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Requêtes disponibles :";
+
+/* The screen title */
+"postFromAudio.title" = "Publier à partir d’un contenu audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Traitement…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Enregistrement…";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Par %@.";
 
@@ -10730,6 +10766,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Plus";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Terminé";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Choisissez les couleurs et polices qui vous conviennent. Lorsque vous lisez un article, appuyez sur l’icône AA en haut de l’écran.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Préférences de lecture";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Appuyez sur la liste déroulante en haut et sélectionnez Étiquettes pour accéder aux flux des étiquettes que vous suivez.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Flux Étiquettes";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Nouveau dans le Lecteur";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "Le blog %@ n’apparaîtra plus dans votre lecteur. Appuyez pour annuler.";
 
@@ -10861,10 +10915,6 @@ but tapping on this button will remove their like from the post. */
 /* Singular button title to filter the Reader stream by blog.
 %1$d is a placeholder for the number of blogs. */
 "reader.navigation.filter.blog.singular" = "%1$d blog";
-
-/* Button title to filter the Reader stream by blog.
-This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Étiquettes";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */

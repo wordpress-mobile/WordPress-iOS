@@ -14,7 +14,6 @@
 
 @property (nonnull, nonatomic, strong, readonly) AbstractPost *apost;
 @property (nonatomic) BOOL isStandalone;
-@property (nonatomic) BOOL isStandaloneEditorDismissingAfterSave;
 @property (nonnull, nonatomic, strong, readonly) NSArray *publicizeConnections;
 @property (nonnull, nonatomic, strong, readonly) NSArray *unsupportedConnections;
 

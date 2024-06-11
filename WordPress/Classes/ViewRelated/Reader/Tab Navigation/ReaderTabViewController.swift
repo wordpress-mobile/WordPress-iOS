@@ -7,6 +7,10 @@ class ReaderTabViewController: UIViewController {
 
     private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
+    private var createButtonCoordinator: CreateButtonCoordinator?
+
+    private var isFABTracked: Bool = false
+
     private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
@@ -52,6 +56,8 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
         readerTabView.disableScrollsToTop()
 
+        createFABIfNeeded()
+
         if AppConfiguration.showsWhatIsNew {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
@@ -67,6 +73,8 @@ class ReaderTabViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         ReaderTracker.shared.stop(.main)
+
+        createButtonCoordinator?.removeCreateButton()
 
         QuickStartTourGuide.shared.endCurrentTour()
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -91,6 +99,45 @@ class ReaderTabViewController: UIViewController {
         viewModel.shouldShowCommentSpotlight = true
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: ReaderTabConstants.discoverIndex)
+    }
+
+    // MARK: - Reader FAB
+
+    private func createFABIfNeeded() {
+        // ensure that the button is truly removed before showing a new one.
+        createButtonCoordinator?.removeCreateButton()
+
+        guard RemoteFeatureFlag.readerFloatingButton.enabled(),
+              let blog = RootViewCoordinator.sharedPresenter.currentOrLastBlog(),
+              let window = UIApplication.shared.mainWindow else {
+            return
+        }
+
+        createButtonCoordinator = makeCreateButtonCoordinator(for: blog)
+        createButtonCoordinator?.add(to: window,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if !isFABTracked {
+            // we only need to track this once since it will remain visible everytime Reader is opened
+            // once a user gets the feature. For clickthrough, refer to `create_sheet_shown` with source: `reader`.
+            WPAnalytics.track(.readerFloatingButtonShown)
+            isFABTracked.toggle()
+        }
+
+        // Should we hide when the onboarding is shown?
+        createButtonCoordinator?.showCreateButton(for: blog)
+    }
+
+    private func makeCreateButtonCoordinator(for blog: Blog) -> CreateButtonCoordinator {
+        let source = "reader"
+
+        let postAction = PostAction(handler: {
+            let presenter = RootViewCoordinator.sharedPresenter
+            presenter.showPostTab()
+        }, source: source)
+
+        return CreateButtonCoordinator(self, actions: [postAction], source: source, blog: blog)
     }
 }
 

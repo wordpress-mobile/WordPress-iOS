@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-16 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -1991,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "ビジネス、マガジン、個人ブログ用の新しいサイトを作成するか、既存の WordPress インストール環境を関連付けてください。";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "投稿またはページを作成";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "投稿、ページ、ストーリーを作成";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "絵文字アイコンを作成";
 
@@ -2014,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "サイトを作成";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "新しい投稿またはページを作成します";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "投稿、ページ、ストーリーを作成";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "新しいメニューを作成すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -8776,6 +8764,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "画質";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "キャンセル";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "最新バージョンを入手";
+
+/* Update button title */
+"appUpdate.action.update" = "更新";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "このアプリを使用するには、最新バージョンをダウンロードしてください。";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "アプリの更新が利用可能です";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "バージョン %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "新機能";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音声ファイル";
 
@@ -8989,6 +8998,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "連携";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "音声ファイルから投稿";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "投稿またはページを作成";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。 最も重視するデータに集中できます。";
@@ -10342,6 +10357,33 @@ Example: Reply to Pamela Nguyen */
 /* Saving draft to generate a preview (status message */
 "postEditor.savingDraftForPreview" = "下書きを保存中...";
 
+/* Button title */
+"postFromAudio.buttonUpgrade" = "アップグレードしてリクエストを増やす";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "音声ファイルから投稿を作成するためのリクエストが足りません。";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "再試行";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "エラーが発生しました";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "利用可能なリクエスト:";
+
+/* The screen title */
+"postFromAudio.title" = "音声ファイルから投稿";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "処理しています...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "録音しています...";
+
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作成者: %@。";
 
@@ -10775,6 +10817,24 @@ Tapping on this row allows the user to edit the sharing message. */
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "詳細";
 
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "完了";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "お好みの色とフォントを選択してください。 投稿を読んでいるときに、画面上部の AA アイコンをタップします。";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "閲覧の設定";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "上部のドロップダウンをタップし、「タグ」を選択して、フォロー中のタグからストリームにアクセスします。";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "タグのストリーム";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Reader の新規";
+
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "ブログ %@ がリーダーに表示されなくなります。 タップして元に戻します。";
 
@@ -10909,7 +10969,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "タグ";
+"reader.navigation.filter.blog.unspecified" = "ブログ";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
