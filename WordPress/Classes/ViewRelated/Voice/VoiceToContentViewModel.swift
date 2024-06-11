@@ -24,6 +24,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         return isEligible
     }
 
+    var upgradeURL: URL? {
+        featureInfo?.upgradeURL.flatMap(URL.init)
+    }
+    private var featureInfo: JetpackAssistantFeatureDetails?
     private var audioSession: AVAudioSession?
     private var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
@@ -99,6 +103,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func didFetchFeatureDetails(_ info: JetpackAssistantFeatureDetails) {
+        self.featureInfo = info
         self.loadingState = nil
         if info.isSiteUpdateRequired == true {
             self.subtitle = Strings.subtitleRequestsAvailable + " 0"
@@ -110,14 +115,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         }
     }
 
-    func buttonUpgradeTapped() {
+    func buttonUpgradeTapped(withUpgradeURL upgradeURL: URL) {
         WPAnalytics.track(.voiceToContentButtonUpgradeTapped)
-
-        // TODO: this does not work
-        guard let siteURL = blog.url.flatMap(URL.init) else {
-            return wpAssertionFailure("invalid blog URL")
-        }
-        let upgradeURL = siteURL.appendingPathComponent("/wp-admin/admin.php?page=my-jetpack#/add-jetpack-ai")
         UIApplication.shared.open(upgradeURL)
     }
 
