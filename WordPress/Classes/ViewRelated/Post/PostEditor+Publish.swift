@@ -198,7 +198,7 @@ extension PublishingEditor {
         ActionDispatcher.dispatch(NoticeAction.clearWithTag(uploadFailureNoticeTag))
         stopEditing()
 
-        guard !post.changes.isEmpty else {
+        guard !post.changes.isEmpty && post.hasContent() else {
             return discardAndDismiss()
         }
 
