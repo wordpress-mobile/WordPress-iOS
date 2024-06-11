@@ -26,9 +26,7 @@ echo "--- 🔬 Testing"
 xcrun simctl list >> /dev/null
 rake mocks &
 set +e
-# See https://github.com/fastlane/fastlane/issues/20919#issuecomment-1344976529
-FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT=120 \
-  bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
+bundle exec fastlane test_without_building name:Jetpack device:"$DEVICE"
 TESTS_EXIT_STATUS=$?
 set -e
 
