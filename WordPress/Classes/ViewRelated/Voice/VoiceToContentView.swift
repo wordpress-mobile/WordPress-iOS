@@ -97,10 +97,12 @@ private struct VoiceToContentWelcomeView: View {
         VStack(spacing: 4) {
             Text(Strings.notEnoughRequests)
                 .multilineTextAlignment(.center)
-            Button(action: viewModel.buttonUpgradeTapped) {
-                HStack {
-                    Text(Strings.upgrade)
-                    Image("icon-post-actionbar-view")
+            if let upgradeURL = viewModel.upgradeURL {
+                Button(action: { viewModel.buttonUpgradeTapped(withUpgradeURL: upgradeURL) }) {
+                    HStack {
+                        Text(Strings.upgrade)
+                        Image("icon-post-actionbar-view")
+                    }
                 }
             }
         }.frame(maxWidth: 320)
@@ -118,22 +120,6 @@ private struct VoiceToContentRecordingView: View {
             if let recorder = viewModel.audioRecorder {
                 AudioRecorderVisualizerView(recorder: recorder)
             }
-            Spacer()
-        }
-    }
-}
-
-private struct VoiceToContentProcessingView: View {
-    @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
-
-    var body: some View {
-        VStack {
-            Spacer()
-
-            ProgressView()
-                .tint(.secondary)
-                .controlSize(.large)
-
             Spacer()
         }
     }
@@ -176,6 +162,24 @@ private struct RecordButton: View {
             .background(backgroundColor)
             .foregroundColor(.white)
             .clipShape(Circle())
+    }
+}
+
+private struct VoiceToContentProcessingView: View {
+    @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
+
+    var body: some View {
+        VStack {
+            Spacer()
+
+            if case .loading = viewModel.loadingState {
+                ProgressView()
+                    .tint(.secondary)
+                    .controlSize(.large)
+            }
+
+            Spacer()
+        }
     }
 }
 

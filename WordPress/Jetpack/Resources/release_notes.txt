@@ -1,3 +1,4 @@
-Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks—but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.
-The Tags feed is live! You can now see content with specific tags, all in one place. Tag, you’re it.
-Finally, we fixed the overlapping “Done” button on the “Post Published” screen. Easy peasy, lemon squeezy.
+* [*] [internal] Block editor: Add onContentUpdate bridge functionality [#23234]
+* [*] Fix a rare crash when trashing posts [#23321]
+* [*] Fix an issue with a missing navigation bar background in Post Settings [#23334]
+

@@ -7,11 +7,24 @@ extension XCTestCase {
     // which require running on the main thread.
     @MainActor
     public func setUpTestSuite(
-        for app: XCUIApplication = XCUIApplication(),
+        // It doesn't feel right to set app to nil by default, but we cannot set it to XCUIApplication()
+        // because of the main actor isolation requirement:
+        //
+        // > Call to main actor-isolated initializer 'init()' in a synchronous nonisolated context; this is an error in Swift 6
+        //
+        // Requiring every caller to pass an instance would be cumbersome DevEx, so here's the compromise.
+        for inputApp: XCUIApplication? = .none,
         removeBeforeLaunching: Bool = false,
         crashOnCoreDataConcurrencyIssues: Bool = true,
-        selectWPComSite: String? = nil
+        selectWPComSite: String? = .none
     ) {
+        let app: XCUIApplication
+        if inputApp == .none {
+            app = XCUIApplication()
+        } else {
+            app = inputApp!
+        }
+
         // To ensure that the test starts with a new simulator launch each time
         app.terminate()
         super.setUp()
@@ -38,7 +51,6 @@ extension XCTestCase {
         // Media permissions alert handler
         let alertButtonTitle = "Allow Access to All Photos"
         systemAlertHandler(alertTitle: "“WordPress” Would Like to Access Your Photos", alertButton: alertButtonTitle)
-
     }
 
     public func takeScreenshotOfFailedTest() {

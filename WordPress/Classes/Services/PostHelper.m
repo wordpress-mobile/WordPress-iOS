@@ -99,8 +99,6 @@
         postPost.publicizeMessageID = publicizeMessageID;
         postPost.disabledPublicizeConnections = [self disabledPublicizeConnectionsForPost:post andMetadata:remotePost.metadata];
     }
-
-    post.statusAfterSync = post.status;
 }
 
 + (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {

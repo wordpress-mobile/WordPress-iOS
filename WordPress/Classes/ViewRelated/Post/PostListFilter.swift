@@ -19,17 +19,6 @@ import Foundation
     @objc var title: String
     @objc var accessibilityIdentifier: String = ""
 
-    /// For Obj-C compatibility only
-    @objc(statuses)
-    var statusesStrings: [String] {
-        get {
-            return statuses.strings
-        }
-        set {
-            statuses = newValue.compactMap({ BasePost.Status(rawValue: $0) })
-        }
-    }
-
     init(title: String, filterType: Status, predicate: NSPredicate, statuses: [BasePost.Status]) {
         hasMore = false
 
