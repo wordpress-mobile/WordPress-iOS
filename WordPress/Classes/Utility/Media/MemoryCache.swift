@@ -2,6 +2,7 @@ import Foundation
 import AlamofireImage
 import WordPressUI
 import protocol Gravatar.ImageCaching
+import enum Gravatar.CacheEntry
 
 protocol MemoryCacheProtocol: AnyObject {
     subscript(key: String) -> UIImage? { get set }
@@ -39,15 +40,15 @@ final class MemoryCache: MemoryCacheProtocol {
     }
 
     func setImage(_ image: UIImage, forKey key: String) {
-        cache.setObject(image, forKey: key as NSString, cost: image.cost)
+        setCacheEntry(.ready(image), forKey: key)
     }
 
     func getImage(forKey key: String) -> UIImage? {
-        cache.object(forKey: key as NSString) as? UIImage
+        getCacheEntry(forKey: key)?.image
     }
 
     func removeImage(forKey key: String) {
-        cache.removeObject(forKey: key as NSString)
+        setCacheEntry(nil, forKey: key)
     }
 
     // MARK: - Data
@@ -62,6 +63,50 @@ final class MemoryCache: MemoryCacheProtocol {
 
     func removeData(forKey key: String) {
         cache.removeObject(forKey: key as NSString)
+    }
+
+    // MARK: - CacheEntry
+
+    func setCacheEntry(_ entry: CacheEntry?, forKey key: String) {
+        if let entry {
+            if let cost = entry.cost {
+                cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString, cost: cost)
+            }
+            else {
+                cache.setObject(CacheEntryObject(entry: entry), forKey: key as NSString)
+            }
+        } else {
+            cache.removeObject(forKey: key as NSString)
+        }
+    }
+
+    func getCacheEntry(forKey key: String) -> CacheEntry? {
+        (cache.object(forKey: key as NSString) as? CacheEntryObject)?.entry
+    }
+}
+
+private final class CacheEntryObject: Sendable {
+    let entry: CacheEntry
+    init(entry: CacheEntry) { self.entry = entry }
+}
+
+extension CacheEntry {
+    var cost: Int? {
+        switch self {
+        case .ready(let image):
+            return image.cost
+        case .inProgress(let task):
+            return nil
+        }
+    }
+
+    var image: UIImage? {
+        switch self {
+        case .ready(let image):
+            return image
+        case .inProgress:
+            return nil
+        }
     }
 }
 
@@ -100,6 +145,16 @@ private struct WordpressUICacheAdapter: GravatarImageCaching {
 
     func getImage(forKey key: String) -> UIImage? {
         cache.getImage(forKey: key)
+    }
+
+    // MARK: Gravatar
+
+    func setEntry(_ entry: CacheEntry?, for key: String) {
+        cache.setCacheEntry(entry, forKey: key)
+    }
+
+    func getEntry(with key: String) -> CacheEntry? {
+        cache.getCacheEntry(forKey: key)
     }
 }
 
