@@ -1083,16 +1083,16 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN a post that has changes that need to be synced (across two local revision)
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.postTitle = "title-c"
         revision2.remoteStatus = .syncNeeded
 
         // GIVEN a revision created by an editor
-        let revision3 = revision2._createRevision()
+        let revision3 = revision2.createRevision()
         revision3.postTitle = "title-d"
 
         // GIVEN a server where the post was deleted
@@ -1165,11 +1165,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN a post that has changes that need to be synced (across two local revision)
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.content = "content-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.content = "content-c"
 
         // GIVEN a server where the post was deleted
@@ -1282,11 +1282,11 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN a change that was reverted in a more recent revision
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-b"
         revision1.remoteStatus = .syncNeeded
 
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.postTitle = "title-a"
         revision2.remoteStatus = .syncNeeded
 
@@ -1319,13 +1319,13 @@ class PostRepositorySaveTests: CoreDataTestCase {
         }
 
         // GIVEN a saved revision
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
         revision1.postTitle = "title-a"
         revision1.content = "content-a"
         revision1.remoteStatus = .syncNeeded
 
         // GIVEN a local revision
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.postTitle = "title-b"
 
         // GIVEN a server accepting the new post
@@ -1391,7 +1391,7 @@ class PostRepositorySaveTests: CoreDataTestCase {
             $0.content = "content-a"
         }
 
-        let revision = post._createRevision()
+        let revision = post.createRevision()
         revision.content = "content-b"
 
         // GIVEN

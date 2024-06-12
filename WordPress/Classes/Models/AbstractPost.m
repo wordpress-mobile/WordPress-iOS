@@ -10,12 +10,9 @@
 @dynamic blog;
 @dynamic dateModified;
 @dynamic media;
-@dynamic metaIsLocal;
-@dynamic metaPublishImmediately;
 @dynamic comments;
 @dynamic featuredImage;
 @dynamic revisions;
-@dynamic confirmedChangesHash;
 @dynamic confirmedChangesTimestamp;
 @dynamic autoUploadAttemptsCount;
 @dynamic autosaveContent;
@@ -25,19 +22,6 @@
 @dynamic autosaveIdentifier;
 @dynamic foreignID;
 @synthesize voiceContent;
-
-+ (NSSet *)keyPathsForValuesAffectingValueForKey:(NSString *)key
-{
-    NSSet *keyPaths = [super keyPathsForValuesAffectingValueForKey:key];
-    if ([key isEqualToString:@"metaIsLocal"]) {
-        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"remoteStatusNumber"]];
-
-    } else if ([key isEqualToString:@"metaPublishImmediately"]) {
-        keyPaths = [keyPaths setByAddingObjectsFromArray:@[@"date_created_gmt"]];
-    }
-
-    return keyPaths;
-}
 
 #pragma mark - Life Cycle Methods
 
@@ -53,7 +37,6 @@
 {
     NSString *key = @"remoteStatusNumber";
     [self willChangeValueForKey:key];
-    self.metaIsLocal = ([remoteStatusNumber integerValue] == AbstractPostRemoteStatusLocal);
     [self setPrimitiveValue:remoteStatusNumber forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -62,7 +45,6 @@
 {
     NSString *key = @"date_created_gmt";
     [self willChangeValueForKey:key];
-    self.metaPublishImmediately = [self shouldPublishImmediately];
     [self setPrimitiveValue:date_created_gmt forKey:key];
     [self didChangeValueForKey:key];
 }
@@ -97,23 +79,6 @@
 
 - (AbstractPost *)createRevision
 {
-    if ([self isRevision]) {
-        DDLogInfo(@"Post is already a revision, no need to create a new one");
-        return self;
-    }
-    if (self.revision) {
-        DDLogInfo(@"Returning existing revision");
-        return self.revision;
-    }
-
-    AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
-    [post cloneFrom:self];
-    [post setValue:self forKey:@"original"];
-    [post setValue:nil forKey:@"revision"];
-    return post;
-}
-
-- (AbstractPost *)_createRevision {
     NSParameterAssert(self.revision == nil);
 
     AbstractPost *post = [NSEntityDescription insertNewObjectForEntityForName:NSStringFromClass(self.class) inManagedObjectContext:self.managedObjectContext];
@@ -228,11 +193,6 @@
     }
 
     return NO;
-}
-
-- (BOOL)isFailed
-{
-    return self.remoteStatus == AbstractPostRemoteStatusFailed || [[MediaCoordinator shared] hasFailedMediaFor:self] || self.hasFailedMedia;
 }
 
 - (BOOL)hasFailedMedia

@@ -17,7 +17,7 @@ extension PostSettingsViewController {
     }
 
     static func showStandaloneEditor(for post: AbstractPost, from presentingViewController: UIViewController) {
-        let revision = post._createRevision()
+        let revision = post.createRevision()
         let viewController = PostSettingsViewController.make(for: revision)
         viewController.isStandalone = true
         let navigation = UINavigationController(rootViewController: viewController)
@@ -188,6 +188,7 @@ extension PostSettingsViewController {
             WPAnalytics.track(.editorPostScheduledChanged, properties: ["via": "settings"])
             viewModel.setDate(date)
         }
+        viewController.configureDefaultNavigationBarAppearance()
         self.navigationController?.pushViewController(viewController, animated: true)
     }
 }

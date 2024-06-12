@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
     AbstractPostRemoteStatusPushingMedia, // Push Media
     AbstractPostRemoteStatusAutoSaved,       // Post remote auto-saved
 
-    // All the previous states were deprecated in 24.7 and are no longer used
+    // All the previous states were deprecated in 24.9 and are no longer used
     // by the app. To get the status of the uploads, use `PostCoordinator`.
 
     /// The default state of the newly created local revision.
@@ -35,22 +35,12 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 @property (nonatomic, strong) NSSet *comments;
 @property (nonatomic, strong, nullable) Media *featuredImage;
 
-// By convention these should be treated as read only and not manually set.
-// These are primarily used as helpers sorting fetchRequests.
-@property (nonatomic, assign) BOOL metaIsLocal;
-@property (nonatomic, assign) BOOL metaPublishImmediately;
-/**
- This array will contain a list of revision IDs.
- */
+/// This array will contain a list of revision IDs.
 @property (nonatomic, strong, nullable) NSArray *revisions;
-/**
- The default value of autoUploadAttemptsCount is 0.
-*/
+/// The default value of autoUploadAttemptsCount is 0.
 @property (nonatomic, strong, nonnull) NSNumber *autoUploadAttemptsCount;
 
-/**
- Autosave attributes hold a snapshot of the post's content.
- */
+/// Autosave attributes hold a snapshot of the post's content.
 @property (nonatomic, copy, nullable) NSString *autosaveContent;
 @property (nonatomic, copy, nullable) NSString *autosaveExcerpt;
 @property (nonatomic, copy, nullable) NSString *autosaveTitle;
@@ -60,19 +50,12 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /// Used to deduplicate new posts
 @property (nonatomic, strong, nullable) NSUUID *foreignID;
 
-/// - warning: deprecated (kahu-offline-mode)
-@property (nonatomic, strong, nullable) NSString *confirmedChangesHash;
 @property (nonatomic, strong, nullable) NSDate *confirmedChangesTimestamp;
 
 @property (nonatomic, strong, nullable) NSString *voiceContent;
 
 // Revision management
 - (AbstractPost *)createRevision;
-/// A new version of `createRevision` that allows you to create revisions based
-/// on other revisions.
-/// 
-/// - warning: Work-in-progress (kahu-offline-mode)
-- (AbstractPost *)_createRevision;
 - (void)deleteRevision;
 - (void)applyRevision;
 - (AbstractPost *)updatePostFrom:(AbstractPost *)revision;
@@ -88,9 +71,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasCategories;
 - (BOOL)hasTags;
 
-/// - note: deprecated (kahu-offline-mode)
-@property (nonatomic, assign, readonly) BOOL isFailed;
-
 @property (nonatomic, assign, readonly) BOOL hasFailedMedia;
 
 /**
@@ -101,7 +81,6 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 - (BOOL)hasRevision;
 
 #pragma mark - Conveniece Methods
-/// - note: deprecated (kahu-offline-mode)
 - (BOOL)shouldPublishImmediately;
 - (NSString *)authorNameForDisplay;
 - (NSString *)blavatarForDisplay;
@@ -130,15 +109,7 @@ typedef NS_ENUM(NSUInteger, AbstractPostRemoteStatus) {
 /**
  Returns YES if the original post is a draft
  */
-/// - note: deprecated (kahu-offline-mode)
 - (BOOL)originalIsDraft;
-
-/**
- Returns YES if dateCreated is nil, or if dateCreated and dateModified are equal.
- Used when determining if a post should publish immediately.
- */
-/// - note: deprecated (kahu-offline-mode)
-- (BOOL)dateCreatedIsNilOrEqualToDateModified;
 
 // Does the post exist on the blog?
 - (BOOL)hasRemote;

@@ -51,7 +51,7 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         // If presented from the editor, it make changes to the revision managed by
         // the editor. But for a standalone publishing sheet, it has to manage
         // its own revision.
-        self.post = isStandalone ? post._createRevision() : post
+        self.post = isStandalone ? post.createRevision() : post
         self.isStandalone = isStandalone
         self.viewModel = PrepublishingViewModel(post: self.post)
         self.uploadsViewModel = PostMediaUploadsViewModel(post: post)

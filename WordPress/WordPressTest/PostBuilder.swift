@@ -126,11 +126,6 @@ class PostBuilder {
         return self
     }
 
-    func with(statusAfterSync: BasePost.Status?) -> PostBuilder {
-        post.statusAfterSync = statusAfterSync
-        return self
-    }
-
     func with(image: String, status: MediaRemoteStatus? = nil, autoUploadFailureCount: Int = 0) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
@@ -159,12 +154,6 @@ class PostBuilder {
              item.blog = post.blog
         }
         post.media = Set(media)
-
-        return self
-    }
-
-    func with(autoUploadAttemptsCount: Int) -> PostBuilder {
-        post.autoUploadAttemptsCount = NSNumber(value: autoUploadAttemptsCount)
 
         return self
     }

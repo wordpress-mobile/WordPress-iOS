@@ -44,13 +44,13 @@ class AbstractPostTest: CoreDataTestCase {
         XCTAssertNil(post.getLatestRevisionNeedingSync())
 
         // GIVEN a post with a revision that doesn't need sync
-        let revision1 = post._createRevision()
+        let revision1 = post.createRevision()
 
         // THEN
         XCTAssertNil(post.getLatestRevisionNeedingSync())
 
         // GIVEN a post with a revision that needs sync
-        let revision2 = revision1._createRevision()
+        let revision2 = revision1.createRevision()
         revision2.remoteStatus = .syncNeeded
 
         // THEN
@@ -60,9 +60,9 @@ class AbstractPostTest: CoreDataTestCase {
     func testDeleteSyncedRevisions() {
         // GIVEN a post with three revisions
         let post = PostBuilder(mainContext).build()
-        let revision1 = post._createRevision()
-        let revision2 = revision1._createRevision()
-        let revision3 = revision2._createRevision()
+        let revision1 = post.createRevision()
+        let revision2 = revision1.createRevision()
+        let revision3 = revision2.createRevision()
 
         // WHEN
         post.deleteSyncedRevisions(until: revision2)
@@ -78,8 +78,8 @@ class AbstractPostTest: CoreDataTestCase {
     func testDeleteRevisionDeletsAll() {
         // GIVEN a post with two revisions
         let post = PostBuilder(mainContext).build()
-        let revision1 = post._createRevision()
-        let revision2 = revision1._createRevision()
+        let revision1 = post.createRevision()
+        let revision2 = revision1.createRevision()
 
         // WHEN
         post.deleteAllRevisions()

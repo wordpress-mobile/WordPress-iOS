@@ -24,8 +24,12 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         return isEligible
     }
 
+    var upgradeURL: URL? {
+        featureInfo?.upgradeURL.flatMap(URL.init)
+    }
+    private var featureInfo: JetpackAssistantFeatureDetails?
     private var audioSession: AVAudioSession?
-    private var audioRecorder: AVAudioRecorder?
+    private(set) var audioRecorder: AVAudioRecorder?
     private weak var timer: Timer?
     private let blog: Blog
     private let completion: (String) -> Void
@@ -99,6 +103,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func didFetchFeatureDetails(_ info: JetpackAssistantFeatureDetails) {
+        self.featureInfo = info
         self.loadingState = nil
         if info.isSiteUpdateRequired == true {
             self.subtitle = Strings.subtitleRequestsAvailable + " 0"
@@ -110,14 +115,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         }
     }
 
-    func buttonUpgradeTapped() {
+    func buttonUpgradeTapped(withUpgradeURL upgradeURL: URL) {
         WPAnalytics.track(.voiceToContentButtonUpgradeTapped)
-
-        // TODO: this does not work
-        guard let siteURL = blog.url.flatMap(URL.init) else {
-            return wpAssertionFailure("invalid blog URL")
-        }
-        let upgradeURL = siteURL.appendingPathComponent("/wp-admin/admin.php?page=my-jetpack#/add-jetpack-ai")
         UIApplication.shared.open(upgradeURL)
     }
 
@@ -167,6 +166,7 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
             self.audioRecorder = audioRecorder
 
             audioRecorder.delegate = self
+            audioRecorder.isMeteringEnabled = true
             audioRecorder.record()
 
             step = .recording
@@ -177,10 +177,10 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     }
 
     private func startRecordingTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
-            guard let self, let currentTime = self.audioRecorder?.currentTime else { return }
+        timer = Timer.scheduledTimer(withTimeInterval: 0.01, repeats: true) { [weak self] _ in
+            guard let self, let audioRecorder = self.audioRecorder else { return }
 
-            let timeRemaining = Constants.recordingTimeLimit - currentTime
+            let timeRemaining = Constants.recordingTimeLimit - audioRecorder.currentTime
 
             guard timeRemaining > 0 else {
                 WPAnalytics.track(.voiceToContentRecordingLimitReached)
@@ -206,18 +206,22 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
     // MARK: - Processing
 
     private func startProcessing() {
-        guard let fileURL = audioRecorder?.url else {
-            wpAssertionFailure("audio-recorder: file missing")
-            return
-        }
         audioRecorder?.stop()
-        audioRecorder = nil
         audioSession = nil
         timer?.invalidate()
 
         title = Strings.titleProcessing
         subtitle = ""
         step = .processing
+
+        processFile()
+    }
+
+    private func processFile() {
+        guard let fileURL = audioRecorder?.url else {
+            wpAssertionFailure("audio-recorder: file missing")
+            return
+        }
         Task {
             await self.process(fileURL: fileURL)
         }
@@ -225,6 +229,8 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
 
     @MainActor
     private func process(fileURL: URL) async {
+        loadingState = .loading
+
         guard let api = blog.wordPressComRestApi() else {
             wpAssertionFailure("only available for .com sites")
             return
@@ -232,19 +238,21 @@ final class VoiceToContentViewModel: NSObject, ObservableObject, AVAudioRecorder
         let service = JetpackAIServiceRemote(wordPressComRestApi: api, siteID: blog.dotComID ?? 0)
         do {
             let token = try await service.getAuthorizationToken()
-            // TODO: this doesn't seem to handle 401 and other "error" status codes correctly
             let transcription = try await service.transcribeAudio(from: fileURL, token: token)
             let content = try await service.makePostContent(fromPlainText: transcription, token: token)
 
             // "the __JETPACK_AI_ERROR__ is a special marker we ask GPT to add to
             // the request when it can’t understand the request for any reason"
             guard content != "__JETPACK_AI_ERROR__" else {
-                showError(VoiceToContentError.cantUnderstandRequest)
+                // There is no point in retrying, but the transcription can still be useful.
+                self.completion(transcription)
                 return
             }
             self.completion(content)
         } catch {
-            showError(error)
+            loadingState = .failed(message: error.localizedDescription) { [weak self] in
+                self?.processFile()
+            }
         }
     }
 

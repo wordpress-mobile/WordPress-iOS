@@ -34,7 +34,7 @@ struct VoiceToContentView: View {
                 case .recording:
                     VoiceToContentRecordingView(viewModel: viewModel)
                 case .processing:
-                    VoiceToContenProcessingView(viewModel: viewModel)
+                    VoiceToContentProcessingView(viewModel: viewModel)
                 }
             }
 
@@ -69,6 +69,7 @@ struct VoiceToContentView: View {
                     .font(.title2)
                     .foregroundStyle(.secondary, Color(uiColor: .secondarySystemFill))
             }
+            .accessibilityLabel(Strings.close)
             .buttonStyle(.plain)
         }
     }
@@ -96,10 +97,12 @@ private struct VoiceToContentWelcomeView: View {
         VStack(spacing: 4) {
             Text(Strings.notEnoughRequests)
                 .multilineTextAlignment(.center)
-            Button(action: viewModel.buttonUpgradeTapped) {
-                HStack {
-                    Text(Strings.upgrade)
-                    Image("icon-post-actionbar-view")
+            if let upgradeURL = viewModel.upgradeURL {
+                Button(action: { viewModel.buttonUpgradeTapped(withUpgradeURL: upgradeURL) }) {
+                    HStack {
+                        Text(Strings.upgrade)
+                        Image("icon-post-actionbar-view")
+                    }
                 }
             }
         }.frame(maxWidth: 320)
@@ -114,41 +117,10 @@ private struct VoiceToContentRecordingView: View {
     var body: some View {
         VStack {
             Spacer()
-            VStack(spacing: 8) {
-                if #available(iOS 17.0, *) {
-                    waveformIcon
-                        .symbolEffect(.variableColor)
-                } else {
-                    waveformIcon
-                }
+            if let recorder = viewModel.audioRecorder {
+                AudioRecorderVisualizerView(recorder: recorder)
             }
             Spacer()
-        }
-    }
-
-    private var waveformIcon: some View {
-        Image(systemName: "waveform")
-            .resizable()
-            .scaledToFit()
-            .frame(width: 80)
-            .foregroundStyle(Color(uiColor: .brand))
-    }
-
-    private var buttonDone: some View {
-        VStack(spacing: 16) {
-            Button(action: viewModel.buttonDoneRecordingTapped) {
-                Image(systemName: "stop.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 28)
-                    .padding(28)
-                    .background(.black)
-                    .foregroundColor(.white)
-                    .clipShape(Circle())
-            }
-
-            Text(Strings.done)
-                .foregroundStyle(.primary)
         }
     }
 }
@@ -159,18 +131,18 @@ private struct RecordButton: View {
     private var isRecording: Bool { viewModel.step == .recording }
 
     var body: some View {
-        VStack(spacing: 16) {
-            Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
+        Button(action: isRecording ? viewModel.buttonDoneRecordingTapped : viewModel.buttonRecordTapped) {
+            VStack(spacing: 16) {
                 if #available(iOS 17.0, *) {
                     icon
-                        .contentTransition(.symbolEffect(.replace, options: .speed(4)))
+                        .contentTransition(.symbolEffect(.replace, options: .speed(5)))
                 } else {
                     icon
                 }
+                Text(isRecording ? Strings.done : Strings.beginRecording)
+                    .font(.callout)
+                    .tint(.primary)
             }
-
-            Text(Strings.done)
-                .foregroundStyle(.primary)
         }
         .opacity(viewModel.isButtonRecordEnabled ? 1 : 0.5)
         .disabled(!viewModel.isButtonRecordEnabled)
@@ -185,25 +157,26 @@ private struct RecordButton: View {
 
     private var icon: some View {
         Image(systemName: isRecording ? "stop.fill" : "mic")
-            .resizable()
-            .scaledToFit()
-            .frame(width: isRecording ? 28 : 36)
-            .padding(isRecording ? 28 : 24)
+            .font(.system(size: isRecording ? 36 : 30))
+            .frame(width: 84, height: 84)
             .background(backgroundColor)
             .foregroundColor(.white)
             .clipShape(Circle())
     }
 }
 
-private struct VoiceToContenProcessingView: View {
+private struct VoiceToContentProcessingView: View {
     @ObservedObject fileprivate var viewModel: VoiceToContentViewModel
 
     var body: some View {
         VStack {
             Spacer()
 
-            ProgressView()
-                .controlSize(.large)
+            if case .loading = viewModel.loadingState {
+                ProgressView()
+                    .tint(.secondary)
+                    .controlSize(.large)
+            }
 
             Spacer()
         }
@@ -217,4 +190,5 @@ private enum Strings {
     static let notEnoughRequests = NSLocalizedString("postFromAudio.notEnoughRequestsMessage", value: "You don't have enough requests available to create a post from audio.", comment: "Message for 'not eligible' state view")
     static let upgrade = NSLocalizedString("postFromAudio.buttonUpgrade", value: "Upgrade for more requests", comment: "Button title")
     static let ok = NSLocalizedString("postFromAudio.ok", value: "OK", comment: "Button title")
+    static let close = NSLocalizedString("postFromAudio.close", value: "Close", comment: "Button close title (only used as an accessibility identifier)")
 }

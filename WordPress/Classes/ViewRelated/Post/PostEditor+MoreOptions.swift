@@ -4,21 +4,18 @@ import WordPressFlux
 extension PostEditor {
 
     func displayPostSettings() {
-        let settingsViewController: PostSettingsViewController
-        if post is Page {
-            settingsViewController = PageSettingsViewController(post: post)
-        } else {
-            settingsViewController = PostSettingsViewController(post: post)
-        }
-        settingsViewController.featuredImageDelegate = self as? FeaturedImageDelegate
+        let viewController = PostSettingsViewController.make(for: post)
+        viewController.featuredImageDelegate = self as? FeaturedImageDelegate
+        viewController.configureDefaultNavigationBarAppearance()
         let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: .init(handler: { [weak self] _ in
             self?.editorContentWasUpdated()
             self?.navigationController?.dismiss(animated: true)
         }))
         doneButton.accessibilityIdentifier = "close"
-        settingsViewController.navigationItem.rightBarButtonItem = doneButton
+        viewController.navigationItem.rightBarButtonItem = doneButton
 
-        let navigation = UINavigationController(rootViewController: settingsViewController)
+        let navigation = UINavigationController(rootViewController: viewController)
+        navigation.navigationBar.isTranslucent = true // Reset to default
         self.navigationController?.present(navigation, animated: true)
     }
 
