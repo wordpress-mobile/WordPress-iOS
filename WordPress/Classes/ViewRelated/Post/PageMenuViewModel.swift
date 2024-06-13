@@ -128,8 +128,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     }
 
     private func createUploadStatusSection() -> AbstractPostButtonSection {
-        guard let error = PostCoordinator.shared.syncError(for: page.original()),
-           PostCoordinator.isTerminalError(error) else {
+        guard let error = PostCoordinator.shared.syncError(for: page.original()) else {
             return AbstractPostButtonSection(buttons: [])
         }
         return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])

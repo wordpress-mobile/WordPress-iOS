@@ -379,12 +379,14 @@ class PostCoordinator: NSObject {
         var error: Error? // The previous sync error
 
         var nextRetryDelay: TimeInterval {
-            retryDelay = min(60, retryDelay * 2)
+            retryDelay = min(90, retryDelay * 2)
             return retryDelay
         }
+
         func setLongerDelay() {
-            retryDelay = max(retryDelay, 30)
+            retryDelay = max(retryDelay, 45)
         }
+
         var retryDelay: TimeInterval
         weak var retryTimer: Timer?
         var showNextError = false
@@ -578,7 +580,10 @@ class PostCoordinator: NSObject {
 
     /// Returns `true` if the error can't be resolved by simply retrying and
     /// requires user interventions, for example, resolving a conflict.
-    static func isTerminalError(_ error: Error) -> Bool {
+    private static func isTerminalError(_ error: Error) -> Bool {
+        if error is WordPressKit.WordPressComRestApiEndpointError {
+            return true
+        }
         if let saveError = error as? PostRepository.PostSaveError {
             switch saveError {
             case .deleted, .conflict:

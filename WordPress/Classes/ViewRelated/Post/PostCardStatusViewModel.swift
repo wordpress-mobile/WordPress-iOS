@@ -124,8 +124,7 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     }
 
     private func createUploadStatusSection() -> AbstractPostButtonSection {
-        guard let error = PostCoordinator.shared.syncError(for: post.original()),
-           PostCoordinator.isTerminalError(error) else {
+        guard let error = PostCoordinator.shared.syncError(for: post.original()) else {
             return AbstractPostButtonSection(buttons: [])
         }
         return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])
