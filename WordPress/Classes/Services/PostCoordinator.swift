@@ -14,7 +14,6 @@ class PostCoordinator: NSObject {
 
     enum SavingError: Error, LocalizedError, CustomNSError {
         case mediaFailure(AbstractPost, Error)
-        case unknown
 
         var errorDescription: String? {
             Strings.genericErrorTitle
@@ -24,8 +23,6 @@ class PostCoordinator: NSObject {
             switch self {
             case .mediaFailure(_, let error):
                 return [NSUnderlyingErrorKey: error]
-            case .unknown:
-                return [:]
             }
         }
     }
