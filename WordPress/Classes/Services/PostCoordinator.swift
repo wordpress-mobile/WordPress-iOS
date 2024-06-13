@@ -54,8 +54,8 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
     private let actionDispatcherFacade: ActionDispatcherFacade
 
-    /// The initial sync retry delay. By default, 8 seconds.
-    var syncRetryDelay: TimeInterval = 8
+    /// The initial sync retry delay. By default, 20 seconds.
+    var syncRetryDelay: TimeInterval = 20
 
     // MARK: - Initializers
 
@@ -379,12 +379,8 @@ class PostCoordinator: NSObject {
         var error: Error? // The previous sync error
 
         var nextRetryDelay: TimeInterval {
-            retryDelay = min(90, retryDelay * 2)
+            retryDelay = min(120, retryDelay * 2)
             return retryDelay
-        }
-
-        func setLongerDelay() {
-            retryDelay = max(retryDelay, 45)
         }
 
         var retryDelay: TimeInterval
@@ -554,10 +550,6 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if PostCoordinator.isTerminalError(error) {
-                worker.setLongerDelay()
-            }
-
             if worker.showNextError {
                 worker.showNextError = false
                 handleError(error, for: operation.post)
@@ -576,29 +568,6 @@ class PostCoordinator: NSObject {
                 workers[operation.post.objectID] = nil
             }
         }
-    }
-
-    /// Returns `true` if the error can't be resolved by simply retrying and
-    /// requires user interventions, for example, resolving a conflict.
-    private static func isTerminalError(_ error: Error) -> Bool {
-        if error is WordPressKit.WordPressComRestApiEndpointError {
-            return true
-        }
-        if let saveError = error as? PostRepository.PostSaveError {
-            switch saveError {
-            case .deleted, .conflict:
-                return true
-            }
-        }
-        if let error = error as? SavingError {
-            switch error {
-            case .mediaFailure(_, let error):
-                return MediaCoordinator.isTerminalError(error)
-            case .maximumRetryTimeIntervalReached:
-                return true
-            }
-        }
-        return false
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {
