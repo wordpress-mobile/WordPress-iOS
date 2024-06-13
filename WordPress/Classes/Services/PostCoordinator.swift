@@ -118,7 +118,7 @@ class PostCoordinator: NSObject {
             didPublish(post)
             show(PostCoordinator.makeUploadSuccessNotice(for: post))
         } catch {
-            trackError(error, operation: "post-publish")
+            trackError(error, operation: "post-publish", post: post)
             handleError(error, for: post)
             throw error
         }
@@ -152,7 +152,7 @@ class PostCoordinator: NSObject {
             show(PostCoordinator.makeUploadSuccessNotice(for: post, previousStatus: previousStatus))
             return post
         } catch {
-            trackError(error, operation: "post-save")
+            trackError(error, operation: "post-save", post: post)
             handleError(error, for: post)
             throw error
         }
@@ -168,7 +168,7 @@ class PostCoordinator: NSObject {
         do {
             try await PostRepository(coreDataStack: coreDataStack).update(post, changes: changes)
         } catch {
-            trackError(error, operation: "post-patch")
+            trackError(error, operation: "post-patch", post: post)
             handleError(error, for: post)
             throw error
         }
@@ -197,12 +197,18 @@ class PostCoordinator: NSObject {
         topViewController.present(alert, animated: true)
     }
 
-    private func trackError(_ error: Error, operation: String) {
+    private func trackError(_ error: Error, operation: String, post: AbstractPost) {
         DDLogError("post-coordinator-\(operation)-failed: \(error)")
 
         if let error = error as? TrackableErrorProtocol, var userInfo = error.getTrackingUserInfo() {
             userInfo["operation"] = operation
-            WPAnalytics.track(.postCoordinatorErrorEncountered, properties: userInfo)
+            for (key, value) in post.analyticsUserInfo {
+                userInfo[key] = String(describing: value)
+            }
+            if let postID = post.postID {
+                userInfo["post_id"] = postID.description
+            }
+            WPAnalytics.track(.postCoordinatorErrorEncountered, properties: userInfo, blog: post.blog)
         }
     }
 
@@ -487,7 +493,7 @@ class PostCoordinator: NSObject {
                     .sync(operation.post, revision: operation.revision)
                 syncOperation(operation, didFinishWithResult: .success(()))
             } catch {
-                trackError(error, operation: "post-sync")
+                trackError(error, operation: "post-sync", post: operation.revision)
                 syncOperation(operation, didFinishWithResult: .failure(error))
             }
         }
@@ -566,7 +572,7 @@ class PostCoordinator: NSObject {
         for worker in workers.values {
             if let error = worker.error,
                let urlError = (error as NSError).underlyingErrors.first as? URLError,
-               urlError.code == .notConnectedToInternet {
+               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost || urlError.code == .timedOut {
                 worker.log("connection is reachable – retrying now")
                 startSync(for: worker.post)
             }
@@ -901,7 +907,7 @@ class PostCoordinator: NSObject {
             MediaCoordinator.shared.cancelUploadOfAllMedia(for: post)
             SearchManager.shared.deleteSearchableItem(post)
         } catch {
-            trackError(error, operation: "post-trash")
+            trackError(error, operation: "post-trash", post: post)
             handleError(error, for: post)
         }
     }
@@ -916,7 +922,7 @@ class PostCoordinator: NSObject {
         do {
             try await PostRepository(coreDataStack: coreDataStack).delete(post)
         } catch {
-            trackError(error, operation: "post-delete")
+            trackError(error, operation: "post-delete", post: post)
             handleError(error, for: post)
         }
     }

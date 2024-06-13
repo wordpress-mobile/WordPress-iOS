@@ -26,7 +26,7 @@ final class PostSyncStateViewModel {
                 return .failed
             }
             if let urlError = (error as NSError).underlyingErrors.first as? URLError,
-               urlError.code == .notConnectedToInternet {
+               urlError.code == .notConnectedToInternet || urlError.code == .networkConnectionLost {
                 return .offlineChanges // A better indicator on what's going on
             }
         }

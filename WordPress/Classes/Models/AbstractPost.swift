@@ -127,6 +127,7 @@ extension AbstractPost {
         [
             "post_type": analyticsPostType ?? "",
             "status": status?.rawValue ?? "",
+            "original_status": original().status?.rawValue ?? "unknown",
             "password_protected": PostVisibility(post: self) == .protected
         ]
     }

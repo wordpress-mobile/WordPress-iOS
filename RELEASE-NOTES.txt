@@ -7,6 +7,9 @@
 * [*] [internal] Block editor: Add onContentUpdate bridge functionality [#23234]
 * [*] Fix a rare crash when trashing posts [#23321]
 * [*] Fix an issue with a missing navigation bar background in Post Settings [#23334]
+* [*] Fix an issue where the app will sometimes save empty drafts [#23342]
+* [*] Add `.networkConnectionLost` to the list of "offline" scenarios so that the "offline changes" badge and fast retries work for this use case [#23348]
+
 
 25.0
 -----

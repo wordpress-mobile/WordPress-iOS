@@ -81,11 +81,10 @@ msgctxt "app_store_keywords"
 msgid "social,notes,jetpack,writing,geotagging,media,blog,website,blogging,journal"
 msgstr ""
 
-msgctxt "v25.0-whats-new"
+msgctxt "v25.1-whats-new"
 msgid ""
-"Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks—but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.\n"
-"The Tags feed is live! You can now see content with specific tags, all in one place. Tag, you’re it.\n"
-"Finally, we fixed the overlapping “Done” button on the “Post Published” screen. Easy peasy, lemon squeezy.\n"
+"We fixed a rare bug that made the app crash when trashing posts. One person’s trash is another person’s… still trash, we guess.\n"
+"We also fixed an issue with the navigation bar in the Post Visibility picker. While we were at it, we updated the editor’s Post Settings screen to use the new navigation bar style. Nice.\n"
 msgstr ""
 
 #. translators: This is a promo message that will be attached on top of the first screenshot in the App Store.

@@ -18,10 +18,11 @@ class ReaderPostStreamService {
 
         let remoteService = ReaderPostServiceRemote.withDefaultApi()
         remoteService.fetchPosts(for: [topic.slug], page: nextPageHandle, success: { posts, pageHandle in
+            var shouldBail = false
             self.coreDataStack.performAndSave({ context in
                 guard let readerTopic = try? context.existingObject(with: topic.objectID) as? ReaderAbstractTopic else {
                     // if there was an error or the topic was deleted just bail.
-                    success(0, false)
+                    shouldBail = true
                     return
                 }
 
@@ -45,6 +46,11 @@ class ReaderPostStreamService {
                 service.deletePostsInExcessOfMaxAllowed(for: readerTopic)
                 service.deletePostsFromBlockedSites()
             }, completion: {
+                if shouldBail {
+                    success(0, false)
+                    return
+                }
+
                 let hasMore = pageHandle != nil
                 success(posts.count, hasMore)
             }, on: .main)
@@ -62,10 +68,15 @@ class ReaderPostStreamService {
         do {
             let results = try context.fetch(fetchRequest)
             for object in results {
-                guard let objectData = object as? NSManagedObject else { continue }
-                context.delete(objectData)
-
-                // Checar se ta em uso ou foi salvo
+                // do not delete if the post is displayed somewhere or saved by the user.
+                // the content and all the metadata should be updated correctly later while preserving
+                // `inUse` and `isSavedForLater`.
+                guard let post = object as? ReaderPost,
+                      !post.inUse,
+                      !post.isSavedForLater else {
+                    continue
+                }
+                context.delete(post)
             }
         } catch let error {
             print("Clean post error:", error)
