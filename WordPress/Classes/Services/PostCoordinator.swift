@@ -54,8 +54,8 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
     private let actionDispatcherFacade: ActionDispatcherFacade
 
-    /// The initial sync retry delay. By default, 20 seconds.
-    var syncRetryDelay: TimeInterval = 20
+    /// The initial sync retry delay. By default, 15 seconds.
+    var syncRetryDelay: TimeInterval = 15
 
     // MARK: - Initializers
 
