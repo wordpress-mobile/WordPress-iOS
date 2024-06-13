@@ -141,14 +141,6 @@ extension AbstractPostButton: AbstractPostMenuAction {
         }
     }
 
-    func subtitle(for post: AbstractPost) -> String? {
-        if self == .retry {
-            let error = PostCoordinator.shared.syncError(for: post.original())
-            return error?.localizedDescription
-        }
-        return nil
-    }
-
     func performAction(for post: AbstractPost, view: UIView, delegate: InteractivePostViewDelegate) {
         switch self {
         case .view:
