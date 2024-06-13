@@ -15,7 +15,8 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             createBlazeSection(),
             createSetPageAttributesSection(),
             createNavigationSection(),
-            createTrashSection()
+            createTrashSection(),
+            createUploadStatusSection()
         ]
     }
 
@@ -124,5 +125,13 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
         let action: AbstractPostButton = page.original().status == .trash ? .delete : .trash
         return AbstractPostButtonSection(buttons: [action])
+    }
+
+    private func createUploadStatusSection() -> AbstractPostButtonSection {
+        guard let error = PostCoordinator.shared.syncError(for: page.original()),
+           PostCoordinator.isTerminalError(error) else {
+            return AbstractPostButtonSection(buttons: [])
+        }
+        return AbstractPostButtonSection(title: error.localizedDescription, buttons: [.retry])
     }
 }

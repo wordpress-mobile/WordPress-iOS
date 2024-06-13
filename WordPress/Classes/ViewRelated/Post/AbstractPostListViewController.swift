@@ -716,6 +716,10 @@ class AbstractPostListViewController: UIViewController,
         alert.presentFromRootViewController()
     }
 
+    func retry(_ post: AbstractPost) {
+        PostCoordinator.shared.retrySync(for: post.original())
+    }
+
     func stats(for post: AbstractPost) {
         viewStatsForPost(post)
     }
