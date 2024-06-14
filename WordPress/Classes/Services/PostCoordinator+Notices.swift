@@ -77,7 +77,7 @@ private enum Strings {
                 return NSLocalizedString("postNotice.pagePublished", value: "Page published", comment: "Title of notification displayed when a page has been successfully published.")
             }
         default:
-            assertionFailure("Unexpected post type: \(post)")
+            wpAssertionFailure("unexpected post type", userInfo: ["post_type": String(describing: type(of: post))])
             return ""
         }
     }
