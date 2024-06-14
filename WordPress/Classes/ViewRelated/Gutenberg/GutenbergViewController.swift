@@ -4,6 +4,7 @@ import Aztec
 import WordPressFlux
 import React
 import AutomatticTracks
+import Combine
 
 class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelegate, PublishingEditor {
     let errorDomain: String = "GutenbergViewController.errorDomain"
@@ -270,6 +271,10 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         BlockEditorSettingsService(blog: post.blog, coreDataStack: ContextManager.sharedInstance())
     }()
 
+    private let htmlDidChange = PassthroughSubject<Void, Never>()
+    private var isRequestingHTML = false
+    private var cancellables: [AnyCancellable] = []
+
     // MARK: - Initializers
     required convenience init(
         post: AbstractPost,
@@ -498,6 +503,16 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     func requestHTML(for reason: RequestHTMLReason) {
         requestHTMLReason = reason
+        gutenberg.requestHTML()
+    }
+
+    func requestHTML(_ completion: @escaping () -> Void) {
+        htmlDidChange.first()
+            .sink { completion() }
+            .store(in: &cancellables)
+
+        guard !isRequestingHTML else { return }
+        isRequestingHTML = true
         gutenberg.requestHTML()
     }
 
@@ -823,6 +838,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
     }
 
     func gutenbergDidProvideHTML(title: String, html: String, changed: Bool, contentInfo: ContentInfo?) {
+        isRequestingHTML = false
         if changed {
             self.html = html
             self.postTitle = title
@@ -848,6 +864,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 break
             }
         }
+        htmlDidChange.send(())
     }
 
     func gutenbergDidLayout() {
