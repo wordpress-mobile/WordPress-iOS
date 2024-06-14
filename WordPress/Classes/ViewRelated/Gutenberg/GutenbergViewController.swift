@@ -100,10 +100,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return mediaInserterHelper.isUploadingMedia()
     }
 
-    var hasFailedMedia: Bool {
-        return mediaInserterHelper.hasFailedMedia()
-    }
-
     func cancelUploadOfAllMedia(for post: AbstractPost) {
         return mediaInserterHelper.cancelUploadOfAllMedia()
     }
@@ -190,8 +186,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     var post: AbstractPost {
         didSet {
-            removeObservers(fromPost: oldValue)
-            addObservers(toPost: post)
             postEditorStateContext = PostEditorStateContext(post: post, delegate: self)
             attachmentDelegate = AztecAttachmentDelegate(post: post)
             mediaPickerHelper = GutenbergMediaPickerHelper(context: self, post: post)
@@ -311,8 +305,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         super.init(nibName: nil, bundle: nil)
 
-        addObservers(toPost: post)
-
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -323,7 +315,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     deinit {
         tearDownKeyboardObservers()
-        removeObservers(fromPost: post)
         gutenberg.invalidate()
         attachmentDelegate.cancelAllPendingMediaRequests()
     }
@@ -1228,24 +1219,6 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
 // MARK: - PostEditorStateContextDelegate
 
 extension GutenbergViewController: PostEditorStateContextDelegate {
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-        guard let keyPath = keyPath else {
-            return
-        }
-
-        switch keyPath {
-        case BasePost.statusKeyPath:
-            if let status = post.status {
-                postEditorStateContext.updated(postStatus: status)
-            }
-        case #keyPath(AbstractPost.date_created_gmt):
-            let dateCreated = post.dateCreated ?? Date()
-            postEditorStateContext.updated(publishDate: dateCreated)
-        default:
-            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-        }
-    }
-
     func context(_ context: PostEditorStateContext, didChangeAction: PostEditorAction) {
         reloadPublishButton()
     }
@@ -1256,16 +1229,6 @@ extension GutenbergViewController: PostEditorStateContextDelegate {
 
     func reloadPublishButton() {
         navigationBarManager.reloadPublishButton()
-    }
-
-    internal func addObservers(toPost: AbstractPost) {
-        toPost.addObserver(self, forKeyPath: AbstractPost.statusKeyPath, options: [], context: nil)
-        toPost.addObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt), options: [], context: nil)
-    }
-
-    internal func removeObservers(fromPost: AbstractPost) {
-        fromPost.removeObserver(self, forKeyPath: AbstractPost.statusKeyPath)
-        fromPost.removeObserver(self, forKeyPath: #keyPath(AbstractPost.date_created_gmt))
     }
 }
 

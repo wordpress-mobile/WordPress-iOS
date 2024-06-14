@@ -125,10 +125,6 @@ class GutenbergMediaInserterHelper: NSObject {
         _ = mediaCoordinator.uploadMedia(for: post, automatedRetry: automatedRetry)
     }
 
-    func hasFailedMedia() -> Bool {
-        return mediaCoordinator.hasFailedMedia(for: post)
-    }
-
     func insert(exportableAsset: ExportableAsset, source: MediaSource) -> Media? {
         let info = MediaAnalyticsInfo(origin: .editor(source), selectionMethod: mediaSelectionMethod)
         return mediaCoordinator.addMedia(from: exportableAsset, to: self.post, analyticsInfo: info)

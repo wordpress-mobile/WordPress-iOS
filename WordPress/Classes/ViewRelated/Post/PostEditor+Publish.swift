@@ -22,8 +22,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Title of the post
     var postTitle: String { get set }
 
-    var prepublishingSourceView: UIView? { get }
-
     var alertBarButtonItem: UIBarButtonItem? { get }
 
     /// Closure to be executed when the editor gets closed.
@@ -37,8 +35,6 @@ protocol PublishingEditor where Self: UIViewController {
 
     /// When the Prepublishing sheet or Prepublishing alert is dismissed, this is called.
     func publishingDismissed()
-
-    func removeFailedMedia()
 
     /// Returns the word counts of the content in the editor.
     var wordCount: UInt { get }
@@ -57,10 +53,6 @@ extension PublishingEditor {
 
     func emitPostSaveEvent() {
         // Default implementation is empty, can be optionally implemented by other classes.
-    }
-
-    func removeFailedMedia() {
-        // TODO: we can only implement this when GB bridge allows removal of blocks
     }
 
     // The debouncer will perform this callback every 500ms in order to save the post locally with a delay.
