@@ -57,8 +57,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
     var buttonSections: [AbstractPostButtonSection] {
         return [
             createPrimarySection(),
-            createSecondarySection(),
-            createBlazeSection(),
             createNavigationSection(),
             createTrashSection(),
             createUploadStatusSection()
@@ -67,14 +65,10 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
+
         if post.status != .trash {
             buttons.append(.view)
         }
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createSecondarySection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
 
         if canPublish {
             buttons.append(.publish)
@@ -94,19 +88,13 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         return AbstractPostButtonSection(buttons: buttons)
     }
 
-    private func createBlazeSection() -> AbstractPostButtonSection {
+    private func createNavigationSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && post.canBlaze {
             BlazeEventsTracker.trackEntryPointDisplayed(for: .postsList)
             buttons.append(.blaze)
         }
-
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createNavigationSection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
 
         if isJetpackFeaturesEnabled, post.status == .publish && post.hasRemote() {
             buttons.append(contentsOf: [.stats, .comments])
