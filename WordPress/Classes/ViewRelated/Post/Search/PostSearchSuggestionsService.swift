@@ -92,6 +92,9 @@ actor PostSearchSuggestionsService {
     }
 
     private func getAllTagTokens() async -> [PostSearchTagToken] {
+        if let tags = cachedTags {
+            return tags
+        }
         let tags = try? await coreData.performQuery { [blogID] context in
             let blog = try context.existingObject(with: blogID)
             let tags = (blog.tags as? Set<PostTag>) ?? []
