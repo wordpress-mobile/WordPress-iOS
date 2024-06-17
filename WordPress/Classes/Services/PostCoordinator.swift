@@ -13,8 +13,10 @@ protocol PostCoordinatorDelegate: AnyObject {
 class PostCoordinator: NSObject {
 
     enum SavingError: Error, LocalizedError, CustomNSError {
+        /// One of the media uploads failed.
         case mediaFailure(AbstractPost, Error)
-        case unknown
+        /// The upload has been failing for too long.
+        case maximumRetryTimeIntervalReached
 
         var errorDescription: String? {
             Strings.genericErrorTitle
@@ -24,7 +26,7 @@ class PostCoordinator: NSObject {
             switch self {
             case .mediaFailure(_, let error):
                 return [NSUnderlyingErrorKey: error]
-            case .unknown:
+            case .maximumRetryTimeIntervalReached:
                 return [:]
             }
         }
@@ -52,8 +54,8 @@ class PostCoordinator: NSObject {
     private let mediaCoordinator: MediaCoordinator
     private let actionDispatcherFacade: ActionDispatcherFacade
 
-    /// The initial sync retry delay. By default, 8 seconds.
-    var syncRetryDelay: TimeInterval = 8
+    /// The initial sync retry delay. By default, 15 seconds.
+    var syncRetryDelay: TimeInterval = 15
 
     // MARK: - Initializers
 
@@ -293,6 +295,19 @@ class PostCoordinator: NSObject {
         startSync(for: revision.original())
     }
 
+    func retrySync(for post: AbstractPost) {
+        wpAssert(post.isOriginal())
+
+        guard let revision = post.getLatestRevisionNeedingSync() else {
+            return
+        }
+        revision.confirmedChangesTimestamp = Date()
+        ContextManager.shared.saveContextAndWait(coreDataStack.mainContext)
+
+        getWorker(for: post).showNextError = true
+        startSync(for: post)
+    }
+
     /// Schedules sync for all the posts with revisions that need syncing.
     ///
     /// - note: It should typically only be called once during the app launch.
@@ -354,20 +369,23 @@ class PostCoordinator: NSObject {
 
     /// A manages sync for the given post. Every post has its own worker.
     private final class SyncWorker {
+        /// Defines for how many days (in seconds) the app should continue trying
+        /// to upload the post before giving up and requiring manual intervention.
+        static let maximumRetryTimeInterval: TimeInterval = 86400 * 3 // 3 days
+
         let post: AbstractPost
         var isPaused = false
         var operation: SyncOperation? // The sync operation that's currently running
         var error: Error? // The previous sync error
 
         var nextRetryDelay: TimeInterval {
-            retryDelay = min(60, retryDelay * 2)
+            retryDelay = min(120, retryDelay * 2)
             return retryDelay
         }
-        func setLongerDelay() {
-            retryDelay = max(retryDelay, 30)
-        }
+
         var retryDelay: TimeInterval
         weak var retryTimer: Timer?
+        var showNextError = false
 
         deinit {
             self.log("deinit")
@@ -439,6 +457,13 @@ class PostCoordinator: NSObject {
         wpAssert(!post.objectID.isTemporaryID)
 
         let worker = getWorker(for: post)
+
+        if let date = revision.confirmedChangesTimestamp,
+           Date.now.timeIntervalSince(date) > SyncWorker.maximumRetryTimeInterval {
+            worker.error = PostCoordinator.SavingError.maximumRetryTimeIntervalReached
+            postDidUpdateNotification(for: post)
+            return worker.log("stopping – failing to upload changes for too long")
+        }
 
         guard !worker.isPaused else {
             return worker.log("start failed: worker is paused")
@@ -525,8 +550,9 @@ class PostCoordinator: NSObject {
             worker.error = error
             postDidUpdateNotification(for: operation.post)
 
-            if PostCoordinator.isTerminalError(error) {
-                worker.setLongerDelay()
+            if worker.showNextError {
+                worker.showNextError = false
+                handleError(error, for: operation.post)
             }
 
             let delay = worker.nextRetryDelay
@@ -542,21 +568,6 @@ class PostCoordinator: NSObject {
                 workers[operation.post.objectID] = nil
             }
         }
-    }
-
-    /// Returns `true` if the error can't be resolved by simply retrying and
-    /// requires user interventions, for example, resolving a conflict.
-    static func isTerminalError(_ error: Error) -> Bool {
-        if let saveError = error as? PostRepository.PostSaveError {
-            switch saveError {
-            case .deleted, .conflict:
-                return true
-            }
-        }
-        if let error = error as? SavingError, case .mediaFailure(_, let error) = error {
-            return MediaCoordinator.isTerminalError(error)
-        }
-        return false
     }
 
     private func didRetryTimerFire(for worker: SyncWorker) {

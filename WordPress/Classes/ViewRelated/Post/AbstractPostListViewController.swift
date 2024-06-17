@@ -677,6 +677,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func trash(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListTrashAction, withProperties: propertiesForAnalytics())
+
         let post = post.original()
 
         func performAction() {
@@ -701,6 +703,8 @@ class AbstractPostListViewController: UIViewController,
     }
 
     func delete(_ post: AbstractPost, completion: @escaping () -> Void) {
+        WPAnalytics.track(.postListDeleteAction, properties: propertiesForAnalytics())
+
         let post = post.original()
 
         let alert = UIAlertController(title: Strings.Delete.actionTitle, message: Strings.Delete.message(for: post.latest()), preferredStyle: .alert)
@@ -714,6 +718,11 @@ class AbstractPostListViewController: UIViewController,
             }
         }
         alert.presentFromRootViewController()
+    }
+
+    func retry(_ post: AbstractPost) {
+        WPAnalytics.track(.postListRetryAction, properties: propertiesForAnalytics())
+        PostCoordinator.shared.retrySync(for: post.original())
     }
 
     func stats(for post: AbstractPost) {
