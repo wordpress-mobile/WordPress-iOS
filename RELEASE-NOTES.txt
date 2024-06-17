@@ -10,7 +10,7 @@
 * [*] Fix an issue where the app will sometimes save empty drafts [#23342]
 * [*] Add `.networkConnectionLost` to the list of "offline" scenarios so that the "offline changes" badge and fast retries work for this use case [#23348]
 * [*] Fix an issue with post content structure not loading in some scenarios [#23347]
-* [*] Fix a rare crash when updating posts with newly added categories [#23354]
+* [*] Fix a rare crash when updating posts with categories [#23354]
 
 
 25.0
