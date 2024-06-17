@@ -62,6 +62,8 @@ open class LoginViewController: NUXViewController, LoginFacadeDelegate {
     }
 
     override open func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         if isBeingDismissedInAnyWay {
             tracker.track(click: .dismiss)
         }

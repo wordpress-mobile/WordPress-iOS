@@ -32,6 +32,8 @@ class GoogleAuthViewController: LoginViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
         if isMovingFromParent {
             AuthenticatorAnalyticsTracker.shared.track(click: .dismiss)
         }
