@@ -61,11 +61,7 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
 
 fileprivate extension StatsTabType {
     static var displayedTabs: [StatsTabType] {
-        if RemoteFeatureFlag.statsTrafficSubscribersTabs.enabled() {
-            return [.traffic, .insights, .subscribers]
-        } else {
-            return [.insights, .days, .weeks, .months, .years]
-        }
+        return [.traffic, .insights, .subscribers]
     }
 
     var analyticsAccessEvent: WPAnalyticsStat? {
