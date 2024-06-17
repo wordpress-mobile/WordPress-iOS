@@ -13,7 +13,7 @@ Pod::Spec.new do |s|
   DESC
 
   s.homepage      = 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS'
-  s.license       = { type: 'GPLv2', file: 'LICENSE' }
+  s.license       = { type: 'GPLv2', file: '../LICENSE' }
   s.author        = { 'The WordPress Mobile Team' => 'mobile@wordpress.org' }
 
   s.platform      = :ios, '13.0'
@@ -21,14 +21,14 @@ Pod::Spec.new do |s|
 
   s.source        = { git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git',
                       tag: s.version.to_s }
-  s.source_files  = 'WordPressAuthenticator/**/*.{h,m,swift}'
-  s.private_header_files = 'WordPressAuthenticator/Private/*.h'
+  s.source_files  = 'Sources/**/*.{h,m,swift}'
+  s.private_header_files = 'Sources/Private/*.h'
   s.resource_bundles = {
     WordPressAuthenticatorResources: [
-      'WordPressAuthenticator/Resources/Assets.xcassets',
-      'WordPressAuthenticator/Resources/SupportedEmailClients/*.plist',
-      'WordPressAuthenticator/Resources/Animations/*.json',
-      'WordPressAuthenticator/**/*.{storyboard,xib}'
+      'Sources/Resources/Assets.xcassets',
+      'Sources/Resources/SupportedEmailClients/*.plist',
+      'Sources/Resources/Animations/*.json',
+      'Sources/**/*.{storyboard,xib}'
     ]
   }
   s.header_dir = 'WordPressAuthenticator'

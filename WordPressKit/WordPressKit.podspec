@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
   DESC
 
   s.homepage      = 'https://github.com/wordpress-mobile/WordPressKit-iOS'
-  s.license       = { type: 'GPLv2', file: 'LICENSE' }
+  s.license       = { type: 'GPLv2', file: '../LICENSE' }
   s.author        = { 'The WordPress Mobile Team' => 'mobile@wordpress.org' }
 
   s.platform      = :ios, '13.0'
