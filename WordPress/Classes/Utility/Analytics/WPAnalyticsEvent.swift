@@ -43,6 +43,7 @@ import Foundation
     case editorPostExcerptChanged
     case editorPostSiteChanged
     case editorPostLegacyMoreMenuShown
+    case editorPostRefreshed
 
     // Resolve post version conflict
     case resolveConflictScreenShown
@@ -700,6 +701,8 @@ import Foundation
             return "editor_post_site_changed"
         case .editorPostLegacyMoreMenuShown:
             return "editor_post_legacy_more_menu_shown"
+        case .editorPostRefreshed:
+            return "editor_post_refreshed"
         case .resolveConflictScreenShown:
             return "resolve_conflict_screen_shown"
         case .resolveConflictSaveTapped:

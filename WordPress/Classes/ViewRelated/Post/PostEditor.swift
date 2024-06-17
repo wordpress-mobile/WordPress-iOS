@@ -129,6 +129,60 @@ extension PostEditor {
 
 extension PostEditor where Self: UIViewController {
     func onViewDidLoad() {
+        refreshPost()
+    }
+
+    private func refreshPost() {
+        let overlay = showLoadingOverlay()
+        let post = post.original()
+
+        let task = Task { @MainActor [weak self] in
+            do {
+                let startTime = CFAbsoluteTimeGetCurrent()
+                let isModified = try await PostCoordinator.shared.refresh(post)
+                if isModified {
+                    self?.reloadEditor()
+                }
+                WPAnalytics.track(.editorPostRefreshed, properties: [
+                    "duration": CFAbsoluteTimeGetCurrent() - startTime,
+                    "modified": isModified,
+                    "cancelled": Task.isCancelled
+                ])
+            } catch {
+                guard !(error is CancellationError) else { return }
+                self?.showRefreshError(error)
+            }
+            overlay.removeFromSuperview()
+            self?.didFinishRefreshingPost()
+        }
+        objc_setAssociatedObject(self, &refreshTaskCancellableKey, AnyCancellable({
+            task.cancel()
+        }), .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    }
+
+    private func showLoadingOverlay() -> UIView {
+        let overlay = UIView()
+        view.addSubview(overlay)
+        overlay.translatesAutoresizingMaskIntoConstraints = false
+        overlay.backgroundColor = UIColor.systemBackground
+        overlay.alpha = 0.5
+        view.pinSubviewToAllEdges(overlay)
+        UIView.animate(withDuration: 1.0) {
+            UIView.modifyAnimations(withRepeatCount: 100, autoreverses: true) {
+                overlay.alpha = 0.8
+            }
+        }
+        return overlay
+    }
+
+    // TODO: Add notice title (kahu-offline-mode)
+    // TODO: Add "Not Found" support (kahu-offline-mode)
+    private func showRefreshError(_ error: Error) {
+        let notice = Notice(title: error.localizedDescription, feedbackType: .error)
+        ActionDispatcherFacade().dispatch(NoticeAction.post(notice))
+    }
+
+    private func didFinishRefreshingPost() {
         if post.original().status == .trash {
             showPostTrashedOverlay()
         } else {
@@ -153,6 +207,10 @@ extension PostEditor where Self: UIViewController {
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
+    private func reloadEditor() {
+        self.post = self.post // Yes, this is how you reload it with the current API
+    }
+
     // MARK: - Autosave
 
     private func showAutosaveAvailableAlertIfNeeded() {
@@ -171,7 +229,7 @@ extension PostEditor where Self: UIViewController {
         alert.addAction(UIAlertAction(title: Strings.autosaveAlertContinue, style: .default, handler: { [weak self] _ in
             guard let self else { return }
             self.createRevisionOfPost(loadAutosaveRevision: true)
-            self.post = self.post // Reload UI
+            self.reloadEditor()
         }))
         alert.addAction(UIAlertAction(title: Strings.autosaveAlertCancel, style: .cancel, handler: nil))
         present(alert, animated: true)
@@ -296,6 +354,7 @@ extension PostEditor where Self: UIViewController {
 }
 
 private var cancellablesKey: UInt8 = 0
+private var refreshTaskCancellableKey = malloc(1)!
 
 enum PostEditorEntryPoint: String {
     case unknown

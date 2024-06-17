@@ -266,6 +266,14 @@ class PostCoordinator: NSObject {
         }
     }
 
+    /// Refreshes the post content if needed.
+    @MainActor
+    func refresh(_ post: AbstractPost) async throws -> Bool {
+        try await PostRepository().refresh(post)
+
+        // TODO: handle "not found"
+    }
+
     // MARK: - Sync
 
     /// Returns `true` if the post is eligible for syncing.

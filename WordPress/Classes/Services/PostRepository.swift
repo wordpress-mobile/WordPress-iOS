@@ -275,6 +275,44 @@ final class PostRepository {
         ContextManager.shared.saveContextAndWait(context)
     }
 
+    /// Refreshes the post content if needed.
+    ///
+    /// - Returns `true` if the post was updated.
+    @MainActor
+    func refresh(_ post: AbstractPost) async throws -> Bool {
+        wpAssert(post.isOriginal())
+
+        guard let postID = post.postID?.intValue, postID > 0 else {
+            return false // Never synced, so nothing to fetch
+        }
+        guard post.status != .trash else {
+            return false // No need to update trashed posts
+        }
+        guard post.revision == nil || (post.latest() == post.revision && post.latest().changes.isEmpty) else {
+            return false // Only update if the post no local changes
+        }
+
+        let service = try getRemoteService(for: post.blog)
+        let context = coreDataStack.mainContext
+        let remotePost = try await service.post(withID: postID)
+
+        guard remotePost.dateModified > (post.dateModified ?? .distantPast) else {
+            return false // No changes
+        }
+        guard !Task.isCancelled else {
+            // Defensive code. WPKit supports cancellation, so it should not be reachable.
+            return false
+        }
+
+        PostHelper.update(post, with: remotePost, in: context, overwrite: true)
+        if let revision = post.revision {
+            revision.clone(from: post)
+        }
+        ContextManager.shared.saveContextAndWait(context)
+
+        return true
+    }
+
     /// Trashes the given post.
     ///
     /// - warning: This method delets all local revision of the post.
