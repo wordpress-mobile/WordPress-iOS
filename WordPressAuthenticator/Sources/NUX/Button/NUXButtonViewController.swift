@@ -7,7 +7,6 @@ import WordPressKit
     @objc optional func tertiaryButtonPressed()
 }
 
-
 struct NUXButtonConfig {
     typealias CallBackType = () -> Void
 

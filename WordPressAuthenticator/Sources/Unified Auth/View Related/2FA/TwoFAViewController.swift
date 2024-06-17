@@ -687,7 +687,6 @@ private extension TwoFAViewController {
         ///
         private let heightConstraint: NSLayoutConstraint
 
-
         override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 
             let spacerView = UIView()
