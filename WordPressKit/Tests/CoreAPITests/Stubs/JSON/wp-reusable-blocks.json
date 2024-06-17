@@ -1,0 +1,50 @@
+{
+    "id": 6,
+    "date": "2021-02-10T11:51:53",
+    "date_gmt": "2021-02-10T11:51:53",
+    "guid": {
+        "rendered": "https:\/\/test-site.org\/2021\/02\/10\/untitled-reusable-block\/",
+        "raw": "https:\/\/test-site.org\/2021\/02\/10\/untitled-reusable-block\/"
+    },
+    "modified": "2021-02-10T12:31:39",
+    "modified_gmt": "2021-02-10T12:31:39",
+    "password": "",
+    "slug": "untitled-reusable-block",
+    "status": "publish",
+    "type": "wp_block",
+    "link": "https:\/\/test-site.org\/2021\/02\/10\/untitled-reusable-block\/",
+    "title": {
+        "raw": "A resuable block"
+    },
+    "content": {
+        "raw": "<!-- wp:paragraph -->\n<p>Some text<\/p>\n<!-- \/wp:paragraph -->\n\n<!-- wp:list -->\n<ul><li>Item 1<\/li><li>Item 2<\/li><li>Item 3<\/li><\/ul>\n<!-- \/wp:list -->",
+        "protected": false,
+        "block_version": 1
+    },
+    "template": "",
+    "_links": {
+        "self": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/blocks\/6"
+        }],
+        "collection": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/blocks"
+        }],
+        "about": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/types\/wp_block"
+        }],
+        "wp:attachment": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/media?parent=6"
+        }],
+        "wp:action-publish": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/blocks\/6"
+        }],
+        "wp:action-unfiltered-html": [{
+            "href": "https:\/\/test-site.org\/wp-json\/wp\/v2\/blocks\/6"
+        }],
+        "curies": [{
+            "name": "wp",
+            "href": "https:\/\/api.w.org\/{rel}",
+            "templated": true
+        }]
+    }
+}

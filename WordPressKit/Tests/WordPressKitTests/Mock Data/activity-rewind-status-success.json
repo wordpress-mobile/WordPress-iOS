@@ -1,0 +1,12 @@
+{
+    "credentials": [
+                    {
+                    "still_valid": true,
+                    "type": "auto",
+                    "role": "main"
+                    }
+                    ],
+    "state": "active",
+    "downloads": [],
+    "last_updated": "2017-10-24T15:16:38.123+00:00"
+}

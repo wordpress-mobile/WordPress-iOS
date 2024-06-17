@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Google Auth View Controller-->
+        <scene sceneID="MMt-yQ-y29">
+            <objects>
+                <viewController storyboardIdentifier="GoogleAuthViewController" id="nkP-9y-aas" customClass="GoogleAuthViewController" customModule="WordPressAuthenticatorResources" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="qQD-Kd-Dmk">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="social-signup-waiting" translatesAutoresizingMaskIntoConstraints="NO" id="UWt-Xu-XZp">
+                                <rect key="frame" x="70.5" y="377" width="273" height="152"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="UWt-Xu-XZp" secondAttribute="height" multiplier="273:152" id="rJg-QF-nzN"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Waiting for Google to complete…" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wzq-mF-V4b">
+                                <rect key="frame" x="20" y="559" width="374" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="GL3-rH-WLV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <color key="textColor" red="0.18039215689999999" green="0.2274509804" blue="0.32549019610000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="wzq-mF-V4b" firstAttribute="centerX" secondItem="UWt-Xu-XZp" secondAttribute="centerX" id="0LH-s7-5YN"/>
+                            <constraint firstItem="wzq-mF-V4b" firstAttribute="top" secondItem="UWt-Xu-XZp" secondAttribute="bottom" constant="30" id="PCR-54-cOa"/>
+                            <constraint firstItem="v8C-Wi-7gi" firstAttribute="trailing" secondItem="wzq-mF-V4b" secondAttribute="trailing" constant="20" id="QgU-Ot-BdI"/>
+                            <constraint firstItem="wzq-mF-V4b" firstAttribute="leading" secondItem="v8C-Wi-7gi" secondAttribute="leading" constant="20" id="ZEh-9u-dC6"/>
+                            <constraint firstItem="UWt-Xu-XZp" firstAttribute="centerX" secondItem="v8C-Wi-7gi" secondAttribute="centerX" id="wZC-1Z-50h"/>
+                            <constraint firstItem="UWt-Xu-XZp" firstAttribute="centerY" secondItem="v8C-Wi-7gi" secondAttribute="centerY" id="xAL-22-Ir0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="v8C-Wi-7gi"/>
+                    </view>
+                    <connections>
+                        <outlet property="titleLabel" destination="wzq-mF-V4b" id="trk-oh-FeK"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LZN-e8-2hh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-600" y="427"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="social-signup-waiting" width="273" height="152"/>
+    </resources>
+</document>

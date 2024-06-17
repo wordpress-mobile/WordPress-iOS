@@ -1,0 +1,17 @@
+{
+    "code": "rest_invalid_param",
+    "message": "Invalid parameter(s): cards",
+    "data": {
+        "status": 400,
+        "params": {
+            "cards": "Invalid request: Empty Params."
+        },
+        "details": {
+            "cards": {
+                "code": "sites_dashboard_validate_cards",
+                "message": "Invalid request: Empty Params.",
+                "data": 400
+            }
+        }
+    }
+}

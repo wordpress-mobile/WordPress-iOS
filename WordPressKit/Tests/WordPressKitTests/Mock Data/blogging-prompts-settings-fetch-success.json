@@ -1,0 +1,15 @@
+{
+    "prompts_card_opted_in": true,
+    "prompts_reminders_opted_in": true,
+    "reminders_days": {
+        "monday": false,
+        "tuesday": true,
+        "wednesday": false,
+        "thursday": true,
+        "friday": false,
+        "saturday": true,
+        "sunday": false
+    },
+    "reminders_time": "14.30",
+    "is_potential_blogging_site": true
+}

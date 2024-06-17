@@ -1,0 +1,54 @@
+{
+  "designs": [
+  ],
+  "categories": [
+    {
+      "slug": "business",
+      "title": "Business",
+      "description": "Business",
+      "emoji": "💼"
+    },
+    {
+      "slug": "blog",
+      "title": "Blog",
+      "description": "Blog",
+      "emoji": "📰"
+    },
+    {
+      "slug": "professional",
+      "title": "Professional",
+      "description": "Professional",
+      "emoji": "💼"
+    },
+    {
+      "slug": "blank",
+      "title": "Blank",
+      "description": "Blank",
+      "emoji": "📄"
+    },
+    {
+      "slug": "about",
+      "title": "About",
+      "description": "About",
+      "emoji": "👋"
+    },
+    {
+      "slug": "highlights",
+      "title": "Highlights",
+      "description": "Highlights",
+      "emoji": "👋"
+    },
+    {
+      "slug": "splash",
+      "title": "Splash",
+      "description": "Splash",
+      "emoji": "🏖️"
+    },
+    {
+      "slug": "links",
+      "title": "Links",
+      "description": "Links",
+      "emoji": "🔗"
+    }
+  ]
+}

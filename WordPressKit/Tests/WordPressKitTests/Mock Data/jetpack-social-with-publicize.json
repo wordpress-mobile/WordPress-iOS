@@ -1,0 +1,10 @@
+{
+    "is_share_limit_enabled": true,
+    "to_be_publicized_count": 1,
+    "share_limit": 30,
+    "publicized_count": 15,
+    "shared_posts_count": 15,
+    "shares_remaining": 14,
+    "is_enhanced_publishing_enabled": false,
+    "is_social_image_generator_enabled": false
+}

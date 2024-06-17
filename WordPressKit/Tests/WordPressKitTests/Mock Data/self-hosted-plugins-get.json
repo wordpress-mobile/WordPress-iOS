@@ -1,0 +1,98 @@
+[
+  {
+    "plugin": "akismet/akismet",
+    "status": "active",
+    "name": "Akismet Anti-spam: Spam Protection",
+    "plugin_uri": "https://akismet.com/",
+    "author": "Automattic - Anti-spam Team",
+    "author_uri": "https://automattic.com/wordpress-plugins/",
+    "description": {
+      "raw": "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. Akismet Anti-spam keeps your site protected even while you sleep. To get started: activate the Akismet plugin and then go to your Akismet Settings page to set up your API key.",
+      "rendered": "Used by millions, Akismet is quite possibly the best way in the world to <strong>protect your blog from spam</strong>. Akismet Anti-spam keeps your site protected even while you sleep. To get started: activate the Akismet plugin and then go to your Akismet Settings page to set up your API key. <cite>By <a href=\"https://automattic.com/wordpress-plugins/\">Automattic - Anti-spam Team</a>.</cite>"
+    },
+    "version": "5.3.1",
+    "network_only": false,
+    "requires_wp": "5.8",
+    "requires_php": "5.6.20",
+    "textdomain": "akismet",
+    "_links": {
+      "self": [
+        {
+          "href": "https://unlikely-student-crown.jurassic.ninja/wp-json/wp/v2/plugins/akismet/akismet"
+        }
+      ]
+    }
+  },
+  {
+    "plugin": "companion/companion",
+    "status": "active",
+    "name": "Companion Plugin",
+    "plugin_uri": "https://github.com/Automattic/companion",
+    "author": "Osk",
+    "author_uri": "",
+    "description": {
+      "raw": "Helps keep the launched WordPress in order.",
+      "rendered": "Helps keep the launched WordPress in order. <cite>By Osk.</cite>"
+    },
+    "version": "1.30",
+    "network_only": false,
+    "requires_wp": "",
+    "requires_php": "",
+    "textdomain": "companion",
+    "_links": {
+      "self": [
+        {
+          "href": "https://unlikely-student-crown.jurassic.ninja/wp-json/wp/v2/plugins/companion/companion"
+        }
+      ]
+    }
+  },
+  {
+    "plugin": "jetpack/jetpack",
+    "status": "active",
+    "name": "Jetpack",
+    "plugin_uri": "https://jetpack.com",
+    "author": "Automattic",
+    "author_uri": "https://jetpack.com",
+    "description": {
+      "raw": "Security, performance, and marketing tools made by WordPress experts. Jetpack keeps your site protected so you can focus on more important things.",
+      "rendered": "Security, performance, and marketing tools made by WordPress experts. Jetpack keeps your site protected so you can focus on more important things. <cite>By <a href=\"https://jetpack.com\">Automattic</a>.</cite>"
+    },
+    "version": "13.1.1",
+    "network_only": false,
+    "requires_wp": "6.3",
+    "requires_php": "7.0",
+    "textdomain": "jetpack",
+    "_links": {
+      "self": [
+        {
+          "href": "https://unlikely-student-crown.jurassic.ninja/wp-json/wp/v2/plugins/jetpack/jetpack"
+        }
+      ]
+    }
+  },
+  {
+    "plugin": "woocommerce/woocommerce",
+    "status": "active",
+    "name": "WooCommerce",
+    "plugin_uri": "https://woo.com/",
+    "author": "Automattic",
+    "author_uri": "https://woo.com",
+    "description": {
+      "raw": "An eCommerce toolkit that helps you sell anything. Beautifully.",
+      "rendered": "An eCommerce toolkit that helps you sell anything. Beautifully. <cite>By <a href=\"https://woo.com\">Automattic</a>.</cite>"
+    },
+    "version": "8.5.2",
+    "network_only": false,
+    "requires_wp": "6.3",
+    "requires_php": "7.4",
+    "textdomain": "woocommerce",
+    "_links": {
+      "self": [
+        {
+          "href": "https://unlikely-student-crown.jurassic.ninja/wp-json/wp/v2/plugins/woocommerce/woocommerce"
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<methodResponse>
+    <params>
+        <param>
+            <value>
+                <struct>
+                    <member><name>date_created_gmt</name><value><dateTime.iso8601>20210804T21:01:08</dateTime.iso8601></value></member>
+                    <member><name>user_id</name><value><string>1</string></value></member>
+                    <member><name>comment_id</name><value><string>1</string></value></member>
+                    <member><name>parent</name><value><string>1</string></value></member>
+                    <member><name>status</name><value><string>approve</string></value></member>
+                    <member><name>content</name><value><string>I am comment content</string></value></member>
+                    <member><name>link</name><value><string>comment URL</string></value></member>
+                    <member><name>post_id</name><value><string>2</string></value></member>
+                    <member><name>post_title</name><value><string>Post title</string></value></member>
+                    <member><name>author</name><value><string>Comment Author</string></value></member>
+                    <member><name>author_url</name><value><string>author URL</string></value></member>
+                    <member><name>author_email</name><value><string>author@email.com</string></value></member>
+                    <member><name>author_ip</name><value><string>000.0.00.000</string></value></member>
+                    <member><name>type</name><value><string>comment</string></value></member>
+                </struct>
+            </value>
+        </param>
+    </params>
+</methodResponse>
