@@ -150,6 +150,12 @@ extension PostEditor where Self: UIViewController {
                 self?.postConflictResolved(notification)
             }.store(in: &cancellables)
 
+        let originalPostID = post.original().objectID
+        NotificationCenter.default
+            .publisher(for: NSManagedObjectContext.didChangeObjectsNotification, object: post.managedObjectContext)
+            .sink { [weak self] in self?.didChangeObjects($0, originalPostID: originalPostID) }
+            .store(in: &cancellables)
+
         objc_setAssociatedObject(self, &cancellablesKey, cancellables, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
     }
 
@@ -292,6 +298,17 @@ extension PostEditor where Self: UIViewController {
             nav.additionalSafeAreaInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0, right: 0)
         }
         self.present(nav, animated: true)
+    }
+
+    // MARK: - Notifications
+
+    private func didChangeObjects(_ notification: Foundation.Notification, originalPostID: NSManagedObjectID) {
+        guard let userInfo = notification.userInfo else { return }
+
+        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
+        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
+            onClose?(false)
+        }
     }
 }
 
