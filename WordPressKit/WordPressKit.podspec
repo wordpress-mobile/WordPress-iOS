@@ -42,13 +42,13 @@ Pod::Spec.new do |s|
       # The files in this bundle are duplicated at the root of the test bundle,
       # because some tests are still looking for them at the root directory,
       # instead of the `CoreAPITests` bundle.
-      'CoreAPITests' => 'Tests/CoreAPITests/Stubs/**/*',
+      'CoreAPITests' => 'Tests/CoreAPITests/Stubs/**/*'
     }
     test_spec.resources = [
       'Tests/WordPressKitTests/Mock Data/**/*',
       'WordPressKitTests/**/*',
       'Tests/CoreAPITests/Stubs/**/*',
-      'Tests/**/*.{json,html,xml}',
+      'Tests/**/*.{json,html,xml}'
     ]
   end
 end
