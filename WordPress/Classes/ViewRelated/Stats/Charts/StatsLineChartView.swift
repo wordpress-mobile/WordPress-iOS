@@ -45,10 +45,6 @@ class StatsLineChartView: LineChartView {
     ///
     private var xAxisDates: [Date]
 
-    private var primaryDataSet: ChartDataSetProtocol? {
-        return data?.dataSets.first
-    }
-
     // MARK: StatsLineChartView
 
     override var bounds: CGRect {
@@ -290,7 +286,7 @@ private extension StatsLineChartView {
         }
     }
 
-    func highlightBar(for entry: ChartDataEntry, with highlight: Highlight) {
+    func highlightBar(for entry: ChartDataEntry) {
         drawChartMarker(for: entry)
     }
 
@@ -313,7 +309,7 @@ private extension StatsLineChartView {
 
         let postRotationDelay = DispatchTime.now() + Constants.rotationDelay
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.highlightBar(for: entry, with: highlight)
+            self.highlightBar(for: entry)
         }
     }
 }
@@ -323,7 +319,7 @@ private extension StatsLineChartView {
 extension StatsLineChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         captureAnalyticsEvent()
-        highlightBar(for: entry, with: highlight)
+        highlightBar(for: entry)
     }
 }
 

@@ -225,7 +225,7 @@ struct LatestPostSummaryRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
+        cell.configure(withInsightData: summaryData, andDelegate: siteStatsInsightsDelegate)
     }
 
     static func == (lhs: LatestPostSummaryRow, rhs: LatestPostSummaryRow) -> Bool {
@@ -374,7 +374,7 @@ struct MostPopularTimeInsightStatsRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(data: data)
     }
 
     static func == (lhs: MostPopularTimeInsightStatsRow, rhs: MostPopularTimeInsightStatsRow) -> Bool {
