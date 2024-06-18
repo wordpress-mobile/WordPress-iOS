@@ -31,7 +31,7 @@ Pod::Spec.new do |s|
   # If you want to update which of these is used, specify it in the host app.
   s.dependency 'WordPressShared', '~> 2.0-beta'
 
-  s.test_spec do |test_spec|
+  s.test_spec 'WordPressKitTests' do |test_spec|
     test_spec.dependency 'OHHTTPStubs', '~> 9.0'
     test_spec.dependency 'OHHTTPStubs/Swift', '~> 9.0'
     test_spec.dependency 'OCMock', '~> 3.4'
