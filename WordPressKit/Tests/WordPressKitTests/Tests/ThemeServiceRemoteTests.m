@@ -1,6 +1,15 @@
+
 #import <OCMock/OCMock.h>
 #import <XCTest/XCTest.h>
+
+#if __has_include("WordPressKit-Swift.h")
 #import "WordPressKitTests-Swift.h"
+#endif
+
+#if __has_include("WordPressKit_Unit_WordPressKitTests-Swift.h")
+#import "WordPressKit_Unit_WordPressKitTests-Swift.h"
+#endif
+
 @import WordPressKit;
 
 // OCMock helper typedefs
