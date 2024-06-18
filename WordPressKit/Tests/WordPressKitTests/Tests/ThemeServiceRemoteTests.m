@@ -6,8 +6,8 @@
 #import "WordPressKitTests-Swift.h"
 #endif
 
-#if __has_include("WordPressKit_Unit_WordPressKitTests-Swift.h")
-#import "WordPressKit_Unit_WordPressKitTests-Swift.h"
+#if __has_include("WordPressKit_Unit_Tests-Swift.h")
+#import "WordPressKit_Unit_Tests-Swift.h"
 #endif
 
 @import WordPressKit;

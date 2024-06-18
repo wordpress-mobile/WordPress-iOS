@@ -58,7 +58,7 @@ def gravatar
 end
 
 def wordpress_kit
-  pod 'WordPressKit', path: './WordPressKit', testspecs: ['WordPressKitTests']
+  pod 'WordPressKit', path: './WordPressKit', testspecs: ['Tests']
 end
 
 def kanvas
