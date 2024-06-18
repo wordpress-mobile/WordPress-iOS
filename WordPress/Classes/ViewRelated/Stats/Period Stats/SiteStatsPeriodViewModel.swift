@@ -284,19 +284,6 @@ final class SiteStatsPeriodViewModel: Observable {
         return snapshot
     }
 
-    func barChartFetchingStatus() -> StoreFetchingStatus {
-        switch (store.timeIntervalsSummaryStatus, store.totalsSummaryStatus) {
-        case (.success, .success):
-            return .success
-        case (.loading, _), (_, .loading):
-            return .loading
-        case (.error, _), (_, .error):
-            return .error
-        default:
-            return .idle
-        }
-    }
-
     // MARK: - Chart Date
 
     func entryIndex(for date: Date) -> Int {
@@ -464,32 +451,6 @@ private extension SiteStatsPeriodViewModel {
         }
 
         return (currentCount, difference, roundedPercentage)
-    }
-
-    func todayRows() -> [any StatsHashableImmuTableRow] {
-        let todaySummary = store.getTotalsSummary()?.summaryData.first
-        let dataRows = [
-            StatsTwoColumnRowData(
-                leftColumnName: StatSection.periodOverviewViews.tabTitle,
-                leftColumnData: (todaySummary?.viewsCount ?? 0).abbreviatedString(),
-                rightColumnName: StatSection.periodOverviewVisitors.tabTitle,
-                rightColumnData: (todaySummary?.visitorsCount ?? 0).abbreviatedString()
-            ),
-            StatsTwoColumnRowData(
-                leftColumnName: StatSection.periodOverviewLikes.tabTitle,
-                leftColumnData: (todaySummary?.likesCount ?? 0).abbreviatedString(),
-                rightColumnName: StatSection.periodOverviewComments.tabTitle,
-                rightColumnData: (todaySummary?.commentsCount ?? 0).abbreviatedString()
-            )
-        ]
-
-        return [
-            TwoColumnStatsRow(
-                dataRows: dataRows,
-                statSection: .periodToday,
-                siteStatsInsightsDelegate: nil
-            )
-        ]
     }
 
     func postsAndPagesTableRows() -> [any StatsHashableImmuTableRow] {
