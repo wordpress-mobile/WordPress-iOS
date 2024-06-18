@@ -149,8 +149,6 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', path: './WordPressAuthenticator', testspecs: ['Tests']
-
   pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
   # pod 'MediaEditor', path: '../MediaEditor-iOS'
