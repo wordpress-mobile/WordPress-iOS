@@ -14,7 +14,7 @@
 * [*] Fix a rare crash when updating posts with categories [#23354]
 * [*] Fix an issue where a Page editor will not close automatically after trying to update a permanently deleted post [#23363]
 * [*] Fix an issue where you could remove the scheduled date on a scheduled post [#23360]
-
+* [*] The Post List screen now fetches updates faster and shows a spinner when refreshing stale data [#23362]
 
 25.0
 -----
