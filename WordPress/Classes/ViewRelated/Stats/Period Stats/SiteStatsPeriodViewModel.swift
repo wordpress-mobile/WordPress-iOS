@@ -19,7 +19,6 @@ final class SiteStatsPeriodViewModel: Observable {
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
     private let store: any StatsPeriodStoreProtocol
     private var lastRequestedDate: Date
-    private var lastRequestedDateForPeriod: [StatsPeriodUnit: Date] = [:]
     private var lastRequestedPeriod: StatsPeriodUnit {
         didSet {
             SiteStatsDashboardPreferences.setSelected(periodUnit: lastRequestedPeriod)
@@ -97,11 +96,6 @@ final class SiteStatsPeriodViewModel: Observable {
     }
 
     // MARK: - Loading
-
-    func isFetchingChart() -> Bool {
-        return store.isFetchingSummary &&
-            mostRecentChartData == nil
-    }
 
     func fetchingFailed() -> Bool {
         return store.fetchingOverviewHasFailed
