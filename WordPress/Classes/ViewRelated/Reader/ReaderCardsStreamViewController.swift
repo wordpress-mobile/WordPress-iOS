@@ -23,12 +23,23 @@ class ReaderCardsStreamViewController: ReaderStreamViewController {
         return isViewLoaded && view.window != nil
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    init() {
+        super.init(nibName: nil, bundle: nil)
 
+        // register table view cells specific to this controller as early as possible.
+        // the superclass might trigger `layoutIfNeeded` from its `viewDidLoad`, and we want to make sure that
+        // all the cell types have been registered by that time.
+        // see: https://github.com/wordpress-mobile/WordPress-iOS/pull/23368
         tableView.register(ReaderTopicsCardCell.defaultNib, forCellReuseIdentifier: readerCardTopicsIdentifier)
         tableView.register(ReaderSitesCardCell.self, forCellReuseIdentifier: readerCardSitesIdentifier)
+    }
 
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
         addObservers()
     }
 
