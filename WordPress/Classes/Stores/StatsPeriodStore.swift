@@ -642,15 +642,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshPostsAndPages(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchPostsAndPages() else {
-            DDLogInfo("Stats Period Posts And Pages refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllPostsAndPages(date: date, period: period)
-    }
-
     private func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -672,15 +663,6 @@ private extension StatsPeriodStore {
             }
             self?.storeDataInCache()
         })
-    }
-
-    private func refreshSearchTerms(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchSearchTerms() else {
-            DDLogInfo("Stats Period Search Terms refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllSearchTerms(date: date, period: period)
     }
 
     private func fetchAllVideos(date: Date, period: StatsPeriodUnit) {
@@ -706,15 +688,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshVideos(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchVideos() else {
-            DDLogInfo("Stats Period Videos refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllVideos(date: date, period: period)
-    }
-
     private func fetchAllClicks(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -736,15 +709,6 @@ private extension StatsPeriodStore {
             }
             self?.storeDataInCache()
         })
-    }
-
-    private func refreshClicks(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchClicks() else {
-            DDLogInfo("Stats Period Clicks refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllClicks(date: date, period: period)
     }
 
     private func fetchAllAuthors(date: Date, period: StatsPeriodUnit) {
@@ -770,15 +734,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshAuthors(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchAuthors() else {
-            DDLogInfo("Stats Period Authors refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllAuthors(date: date, period: period)
-    }
-
     private func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -800,15 +755,6 @@ private extension StatsPeriodStore {
                 self?.storeDataInCache()
             }
         })
-    }
-
-    private func refreshReferrers(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchReferrers() else {
-            DDLogInfo("Stats Period Referrers refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllReferrers(date: date, period: period)
     }
 
     private func fetchAllCountries(date: Date, period: StatsPeriodUnit) {
