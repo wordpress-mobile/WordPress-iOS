@@ -126,8 +126,11 @@ class URLSessionHelperTests: XCTestCase {
         XCTAssertEqual(progress.fractionCompleted, 0)
 
         let _ = await session.perform(request: .init(url: URL(string: "https://wordpress.org/hello")!), fulfilling: progress, errorType: TestError.self)
-        XCTAssertEqual(progress.completedUnitCount, 20)
-        XCTAssertEqual(progress.fractionCompleted, 1)
+
+        await MainActor.run {
+            XCTAssertEqual(progress.completedUnitCount, 20)
+            XCTAssertEqual(progress.fractionCompleted, 1)
+        }
     }
 
     func testProgressUpdateOnMainThread() async throws {
