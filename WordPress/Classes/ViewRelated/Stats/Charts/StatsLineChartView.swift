@@ -1,12 +1,6 @@
 import UIKit
 import DGCharts
 
-// MARK: - StatsLineChartViewDelegate
-
-protocol StatsLineChartViewDelegate: AnyObject {
-    func statsLineChartValueSelected(_ statsLineChartView: StatsLineChartView, entryIndex: Int, entryCount: Int)
-}
-
 // MARK: - StatsLineChartView
 
 private let LineChartAnalyticsPropertyKey = "property"
@@ -51,10 +45,6 @@ class StatsLineChartView: LineChartView {
     ///
     private var xAxisDates: [Date]
 
-    /// When set, the delegate is advised of user-initiated line selections
-    ///
-    private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
-
     private var primaryDataSet: ChartDataSetProtocol? {
         return data?.dataSets.first
     }
@@ -73,12 +63,11 @@ class StatsLineChartView: LineChartView {
         updateXAxisTicks()
     }
 
-    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
+    init(configuration: StatsLineChartConfiguration) {
         self.statType = configuration.type
         self.lineChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
-        self.statsLineChartViewDelegate = delegate
         self.xAxisDates = configuration.xAxisDates
 
         super.init(frame: .zero)

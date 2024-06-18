@@ -11,7 +11,6 @@ class SiteStatsImmuTableRows {
                                           selectedSegment: StatsSegmentedControlData.Segment,
                                           periodDate: Date,
                                           periodEndDate: Date? = nil,
-                                          statsLineChartViewDelegate: StatsLineChartViewDelegate?,
                                           siteStatsInsightsDelegate: SiteStatsInsightsDelegate?,
                                           viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?) -> [any StatsHashableImmuTableRow] {
         var tableRows = [any StatsHashableImmuTableRow]()
@@ -69,7 +68,6 @@ class SiteStatsImmuTableRows {
                 chartData: lineChartData,
                 chartStyling: lineChartStyling,
                 period: StatsPeriodUnit.day,
-                statsLineChartViewDelegate: statsLineChartViewDelegate,
                 siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                 viewsAndVisitorsDelegate: viewsAndVisitorsDelegate,
                 xAxisDates: xAxisDates,

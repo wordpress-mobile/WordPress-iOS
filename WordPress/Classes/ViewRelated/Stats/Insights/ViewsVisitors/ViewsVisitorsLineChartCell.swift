@@ -142,7 +142,6 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
     private var chartData: [LineChartDataConvertible] = []
     private var chartStyling: [LineChartStyling] = []
-    private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
     private var chartHighlightIndex: Int?
 
     private var period: StatsPeriodUnit?
@@ -173,7 +172,6 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         self.segmentsData = row.segmentsData
         self.chartData = row.chartData
         self.chartStyling = row.chartStyling
-        self.statsLineChartViewDelegate = row.statsLineChartViewDelegate
         self.viewsAndVisitorsDelegate = row.viewsAndVisitorsDelegate
         self.period = row.period
         self.xAxisDates = row.xAxisDates
@@ -272,10 +270,9 @@ private extension ViewsVisitorsLineChartCell {
                                                         data: chartData[selectedSegmentIndex],
                                                         styling: chartStyling[selectedSegmentIndex],
                                                         analyticsGranularity: period?.analyticsGranularityLine,
-                                                        indexToHighlight: 0,
                                                         xAxisDates: xAxisDates)
 
-        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate)
+        let chartView = StatsLineChartView(configuration: configuration)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)

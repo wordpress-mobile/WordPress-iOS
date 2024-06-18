@@ -46,8 +46,6 @@ class SiteStatsInsightsViewModel: Observable {
 
     private typealias Style = WPStyleGuide.Stats
 
-    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
-
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         periodStore.getSummary()
     }
@@ -548,7 +546,6 @@ private extension SiteStatsInsightsViewModel {
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
                                                                 selectedSegment: selectedViewsVisitorsSegment,
                                                                 periodDate: periodDate,
-                                                                statsLineChartViewDelegate: statsLineChartViewDelegate,
                                                                 siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                                                 viewsAndVisitorsDelegate: viewsAndVisitorsDelegate)
     }

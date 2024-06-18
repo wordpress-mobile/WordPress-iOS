@@ -54,7 +54,6 @@ struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     let chartData: [LineChartDataConvertible]
     let chartStyling: [LineChartStyling]
     let period: StatsPeriodUnit?
-    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
     let xAxisDates: [Date]

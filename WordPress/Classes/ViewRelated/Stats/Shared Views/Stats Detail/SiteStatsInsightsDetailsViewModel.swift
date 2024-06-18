@@ -278,7 +278,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                                                              selectedSegment: selectedViewsVisitorsSegment,
                                                                                              periodDate: selectedDate!,
                                                                                              periodEndDate: weekEnd,
-                                                                                             statsLineChartViewDelegate: nil,
                                                                                              siteStatsInsightsDelegate: nil,
                                                                                              viewsAndVisitorsDelegate: viewsAndVisitorsDelegate))
 
