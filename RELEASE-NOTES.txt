@@ -1,6 +1,7 @@
 25.2
 -----
 
+* [*] [Jetpack-only] Stats: Made optimizations to enhance scrolling performance. [#22847]
 
 25.1
 -----
@@ -61,7 +62,6 @@
 24.7
 -----
 
-* [*] [Jetpack-only] Stats: Made optimizations to enhance loading and scrolling performance. [#22592, #22847]
 * [**] [Jetpack-only] Reader: Introducing Reading Preferences, an experimental feature that allows users to customize their Reader post content screen with the color, font, and size that they like the most. [#22999]
 * [*] [Jetpack-only] Stats: Optimized the Insights tab to enhance loading and scrolling performance. [#22592]
 
