@@ -1,2 +1,2 @@
-We fixed a rare bug that made the app crash when binning posts. One person’s rubbish is another person’s… still rubbish, we guess.
+We fixed a rare bug that made the app crash when trashing posts. One person’s trash is another person’s… still trash, we guess.
 We also fixed an issue with the navigation bar in the Post Visibility picker. While we were at it, we updated the editor’s Post Settings screen to use the new navigation bar style. Nice.

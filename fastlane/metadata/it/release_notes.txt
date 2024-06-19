@@ -1,2 +1,2 @@
-Hai notato che il salvataggio degli articoli richiedeva molto tempo? Probabilmente le cause erano i blocchi immagine, galleria o file, ma ormai è acqua passata. È necessario che il salvataggio sia facile e veloce, indipendentemente dal numero di foto o file caricati.
-Abbiamo anche risolto la sovrapposizione del pulsante "Fatto" nella schermata "Articolo pubblicato". Facile come bere un bicchier d'acqua.
+Abbiamo risolto un bug anomalo che causava l'arresto dell'app quando venivano sposati gli articoli nel cestino. La spazzatura... è pur sempre spazzatura, no?
+Abbiamo anche risolto un problema con la barra di navigazione nel selezionatore della visibilità dell'articolo. Già che c'eravamo, abbiamo anche aggiornato la schermata delle impostazioni dell'articolo così da poter utilizzare il nuovo stile della barra di navigazione. Ottimo.

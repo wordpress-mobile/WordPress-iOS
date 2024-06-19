@@ -5,10 +5,12 @@ protocol AbstractPostMenuViewModel {
 }
 
 struct AbstractPostButtonSection {
+    let title: String?
     let buttons: [AbstractPostButton]
     let submenuButton: AbstractPostButton?
 
-    init(buttons: [AbstractPostButton], submenuButton: AbstractPostButton? = nil) {
+    init(title: String? = nil, buttons: [AbstractPostButton], submenuButton: AbstractPostButton? = nil) {
+        self.title = title
         self.buttons = buttons
         self.submenuButton = submenuButton
     }
@@ -22,6 +24,7 @@ enum AbstractPostButton: Equatable {
     case moveToDraft
     case trash
     case delete
+    case retry
     case share
     case blaze
     case comments

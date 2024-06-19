@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-06-07 13:41:13+0000 */
+/* Translation-Revision-Date: 2024-06-11 06:54:34+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -261,9 +261,6 @@
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Czy na pewno chcesz usunąć tag?";
 
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Czy na pewno chcesz przenieść ten wpis do kosza?";
-
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Czy próbujesz zalogować się do %1$@ w pobliżu %2$@?";
 
@@ -391,7 +388,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1016,11 +1012,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Wprowadź hasło";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Wprowadź hasło do ochrony wpisu";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Wpisz hasło";
 
 /* (placeholder) Help enter WordPress username */
@@ -1412,7 +1404,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Kontynuuj edycję";
 
@@ -1647,7 +1638,6 @@
 "Move block right from position %1$s to position %2$s" = "Przesuń blok w prawo z pozycji %1$s na pozycję %2$s";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Przenieś do kosza";
 
@@ -1933,9 +1923,6 @@
 /* Password field placeholder text */
 "Password (optional)" = "Hasło (opcjonalne)";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Zabezpieczono hasłem";
-
 /* No comment provided by engineer. */
 "Paste block after" = "Wklej blok po";
 
@@ -2085,8 +2072,7 @@
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Nota o ochronie prywatności dla użytkowników z Kalifornii";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Prywatny";
 
 /* Error message title informing the user that reader content could not be loaded. */
@@ -2095,11 +2081,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Publiczne";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Opublikuj";
@@ -2117,9 +2099,6 @@
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikowanie wpisu…";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Publikowanie…";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Zamówienia";
@@ -2253,10 +2232,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -2290,31 +2267,21 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Zapisz";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Zapisz szkic";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Zapisz wpis na później";
 
 /* A short message that informs the user a draft page is being saved to the server from the share extension. */
 "Saving page…" = "Zapisywanie strony...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Zapisywanie...";
 
 /* Button title that triggers a scan */
 "Scan Now" = "Skanuj teraz";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Harmonogram";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zaplanowano";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Planowanie…";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
@@ -2578,9 +2545,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Stats window title
    The item to select during a guided tour. */
 "Stats" = "Statystyki";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
 
 /* Label text that defines a post marked as sticky */
 "Sticky" = "Przypięty";
@@ -2889,9 +2853,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Uaktualnij";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Zaktualizuj szkic";
-
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Zaktualizuj zdjęcie profilowe";
 
@@ -2901,8 +2862,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes a status of a plugin */
 "Updating" = "Aktualizacja";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nie powiodło się przesyłanie";
 
 /* Title of a Quick Start Tour */
@@ -2918,12 +2878,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Przesyłanie multimediów";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Przesyłanie plików mediów…";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Ładowanie wpisu";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Przesyłanie…";
@@ -2967,8 +2921,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Filmy";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
@@ -3003,8 +2956,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Wyświetlenia i odwiedzający";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Widoczność";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */
@@ -3038,9 +2990,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when a refresh is taking longer than usual. The refresh hasn't failed and it might still succeed */
 "We are having trouble loading data" = "Mamy problem z ładowaniem danych";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Nie można było przesłać tego pliku mediów.";
 
 /* Error message displayed when a refresh failed */
 "We had trouble loading data" = "Mieliśmy problem z ładowaniem danych";
@@ -3174,14 +3123,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Error message informing the user that being logged into a WordPress.com account is required. */
 "You must be signed in to a WordPress.com account to perform this action." = "Przed podjęciem wybranego działania należy zalogować się na WordPress.com";
 
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Nie zapisano wszystkich zmian wpisu";
-
 /* Displayed in the Notification Settings View */
 "Your Sites" = "Twoje witryny";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Wpis jest właśnie aktualizowany. Proszę poczekać na zakończenie.";
 
 /* Message of Export Content confirmation alert; substitution is user's email address */
 "Your posts, pages, and settings will be mailed to you at %@." = "Twoje posty, podstrony i ustawienia zostaną wysłane do Ciebie na adres %@.";
@@ -3545,16 +3488,25 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "postEditor.recoverTrashedPostAlert.title" = "Usunięte %@";
 
 /* Button title */
-"postFromAudio.retry" = "Ponów";
+"postFromAudio.beginRecording" = "Rozpocznij nagrywanie";
+
+/* Button title */
+"postFromAudio.done" = "Gotowe";
 
 /* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Coś poszło nie tak";
+"postFromAudio.errorMessage.generic" = "Coś poszło nie tak";
+
+/* Button title */
+"postFromAudio.retry" = "Ponów";
 
 /* The screen title when recording */
 "postFromAudio.titleProcessing" = "Przetwarzanie…";
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "Nagrywanie…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "Nieograniczone";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Odrzuć";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-06-01 01:29:59+0000 */
+/* Translation-Revision-Date: 2024-06-13 10:54:08+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Bu ögeyi kalıcı olarak silmek istediğinize emin misiniz?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Bu yazıyı kalıcı olarak silmek istediğinize emin misiniz?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Yayınlamak istediğinize emin misiniz?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "%2$@ sitesinden %1$@ eklentisini kaldırmak istediğinize emin misiniz?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Sitenizi %1$@ zamanına döndürmek istediğinize emin misiniz? Bu işlem, o zamandan sonra oluşturulmuş veya değiştirilmiş içerik ve seçenekleri kaldırır.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Taslak olarak kaydetmek istediğinize emin misiniz?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Kaydetmek istediğinize emin misiniz?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Zamanlamak istediğinize emin misiniz?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Değerlendirilmek üzere göndermek istediğinize emin misiniz?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Bu yazıyı çöpe atmak istediğinize emin misiniz?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Güncellemek istediğinize emin misiniz?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "%1$@ için %2$@ yakınından oturum açmaya mı çalışıyorsunuz?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Şimdiye kadar en iyi görüntülemeler";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "Boş sayfa oluşturuldu";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "Gönderi metnini kopyala";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Sürümü bu uygulamadan kopyala";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Konu takip edilemedi";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Menüyü sil";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Kalıcı olarak sil";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Kalıcı olarak silinsin mi?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Paylaşım düğmelerini düzenle";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Önce yazıyı düzenleyin";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Site düzenleyicis ile düzenle";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Bir parola yazın";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Bu yazıyı korumak için bir parola yazın";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Parolayı yazın";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Yorum çöpe atılırken sorun çıktı.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Yükleme sırasında\nsorun çıktı";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Yayınlanırken sorun çıktı";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Kaydedilirken sorun çıktı";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Zamanlanırken sorun çıktı";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Etki alanı iletişim bilgileri alınırken sorun çıktı";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "Kaynak: %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Diğer aygıttaki";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Panodan";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Bu aygıttaki";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Tam boyut";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Yeni bağlantı oluştur";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Ön izleme oluşturuluyor";
 
 /* View title for initial auth views. */
 "Get Started" = "Haydi başlayalım";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Düzenlemeyi sürdür";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Menü ögesini taşı";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Çöpe at";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Sayfa sonu bloğu. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Sayfa oluşturuldu";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Sayfa taslağı yüklendi";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Sayfa yüklenemedi";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Sayfa değerlendirilmeyi bekliyor";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Sayfa yayınlandı";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Sayfa zamanlandı";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Sayfa başlığı. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Sayfa başlığı. Boş";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Sayfa güncellendi";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Parola değiştirildi";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Parola korumalı";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Adres yapıştır";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Yazı %@ zamanında oluşturuldu";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Yazı taslağı yüklendi";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Yazı yüklenemedi";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Yazı değerlendirilmeyi bekliyor";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Yazı yayınlandı";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Yazı kaldırıldı.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Yazı kaydedildi.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Yazı zamanlandı";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Yazı eşitlemesi çakışması";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Yazı başlığı. %s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "WordPress üzerine gönder";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Yazı güncellendi";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Posta kodu";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Californiya kullanıcıları için gizlilik notu";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Özel";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "İstemler";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Herkese açık";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Yayınla";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Yazı yayınlanıyor...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Yayınlanıyor...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Satın almalar";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "1 fotoğrafı taslak yazı olarak şuraya kaydet:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Taslak olarak kaydet";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Yazıyı sonrası için kaydet";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Taslak olarak kaydet";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Taslak sayfayı şuraya kaydet:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Yazı kaydediliyor…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Kaydediliyor...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Dosyalar taranıyor";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Zamanla";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zamanlandı";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Zamanlanıyor...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Kaydırılabilir blok menüsü kapandı.";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "İstatistikler yüklenmedi";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Durum";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "İletişimde kalın";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Değerlendirilmek üzere gönder";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Değerlendirilmek üzere gönderiliyor...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Gündem dizini temizlendi";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Bir sayfada görüntülenecek yazı sayısı.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Kopyalamaya çalıştığınız yazının çakışan iki sürümü var ya da yakın zamanda değişiklik yaptınız ancak bunları kaydetmediniz.\nHerhangi bir çakışmayı çözmek için önce yazıyı düzenleyin ya da sürümü bu uygulamadan kopyalayarak ilerleyin.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "İstek serileştirilemedi.";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Bu ortam ögesi silindi.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Bu sayfa şu anda yükleniyor. Bu işlem uzun sürmez. Kısa bir süre sonra yeniden deneyerek sayfayı düzenleyebilirsiniz.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Bu yazı şu anda yükleniyor. Bu işlem uzun sürmez. Kısa bir süre sonra yeniden deneyerek yazıyı düzenleyebilirsiniz.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Bu yazı Beğenilerim içinde";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Çöp";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Bu yazı çöpe atılsın mı?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Güncelle";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Taslağı güncelle";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Bağlantıyı güncelle";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Sayfayı güncelle";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Yazıyı güncelle";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Profil fotoğrafını güncelle";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Avatarınız, adınız ve hakkında bilgilerinizi güncellerseniz bunlar, Gravatar profillerini kullanan tüm sitelerde güncellenir.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Güncelleniyor...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Ses yüklemek için paketinizi yükseltin";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Ortam yükle";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Yüklenemedi";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Ortam yükleniyor";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Ortam yükleniyor...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Yazı yükleniyor";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Yazı yükleniyor...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "5 dakikadan uzun videolar yüklemek için ücretli bir paket gereklidir.";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Videolar";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Görüntüle";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Görüntülemeler ve ziyaretçiler";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Görünürlük";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7956,97 +7781,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "Her sürümde daha fazla blok eklemek için sıkı çalışıyoruz.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "Bu işlemi tamamlayamadık ve bu sayfayı yayınlamadık.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "Bu işlemi tamamlayamadık ve bu yazıyı yayınlamadık.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "Bu işlemi tamamlayamadık ve bu özel sayfayı yayınlamadık.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "Bu işlemi tamamlayamadık ve bu özel yazıyı yayınlamadık.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "Bu işlemi tamamlayamadık ve bu sayfayı zamanlamadık.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "Bu işlemi tamamlayamadık ve bu yazıyı zamanlamadık.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "Bu işlemi tamamlayamadık ve bu sayfayı değerlendirilmek üzere göndermedik.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "Bu işlemi tamamlayamadık ve bu yazıyı değerlendirilmek üzere göndermedik.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "Bu işlemi tamamlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "Bu işlemi tamamlayamadık.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Yedeğiniz oluşturulamadı. Lütfen bir süre sonra yeniden deneyin.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "Bu sayfayı yayınlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "Bu yazıyı yayınlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "Bu özel sayfayı yayınlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "Bu özel yazıyı yayınlayamadık ama daha sonra yeniden deneyeceğiz.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "Siteniz geri yüklenemedi. Lütfen bir süre sonra yeniden deneyin.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Bu ortamı alamadık.\nYeniden denemek için dokunun.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "Bu sayfayı zamanlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "Bu yazıyı zamanlayamadık ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "Bu sayfayı değerlendirilmek üzere gönderemedik ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "Bu yazıyı değerlendirilmek üzere gönderemedik ama daha sonra yeniden deneyeceğiz.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "Bu ortamı yükleyemedik ve bu sayfayı yayınlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "Bu ortamı yükleyemedik ve bu yazıyı yayınlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "Bu ortamı yükleyemedik ve bu özel sayfayı yayınlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "Bu ortamı yükleyemedik ve bu özel yazıyı yayınlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "Bu ortamı yükleyemedik ve bu sayfayı zamanlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "Bu ortamı yükleyemedik ve bu yazıyı zamanlamadık.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "Bu ortamı yükleyemedik ve bu sayfayı değerlendirilmek üzere göndermedik.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "Bu ortamı yükleyemedik ve bu yazıyı değerlendirilmek üzere göndermedik.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Bu ortam karşıya yüklenemedi.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "Yedeklemenizin ne kadar süreceği ile ilgili bir durum bilgisi bulunamadı.";
@@ -8081,22 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Güvenlik tehditleri bulunursa size e-posta gönderilir. Bu arada sitenizi normal şekilde kullanmayı sürdürebilir, istediğiniz zaman dönüp taramanın durumuna bakabilirsiniz.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "Bu değişiklikleri yayınlamayacağız.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "Taslağınızdaki son değişiklikleri kaydetmeyeceğiz.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "Bu değişiklikleri zamanlamayacağız.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "Bu değişiklikleri değerlendirilmek üzere göndermeyeceğiz.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Size e-posta ile, anında oturum açmanızı sağlayacak ve parola gerektirmeyen sihirli bir bağlantı göndereceğiz. Artık tek tek yazmanız gerekmiyor!";
 
@@ -8108,33 +7834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Yorum, beğeni ve yeni takipçi aldığınızda sizi bilgilendireceğiz. Anlık bildirimlere izin vermek istiyor musunuz?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda sayfayı yayınlayacağız.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda yazıyı yayınlayacağız.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda özel sayfanızı yayınlayacağız.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda özel yazınızı yayınlayacağız.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda taslağınızı kaydedeceğiz.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda sayfanızı zamanlayacağız.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda yazınızı zamanlayacağız.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda sayfanızı değerlendirilmek üzere göndereceğiz.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Aygıtınız yeniden çevrim içi olduğunda yazınızı değerlendirilmek üzere göndereceğiz.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Bu e-posta adresini yeni WordPress.com hesabınızı açmak için kullanacağız.";
@@ -8282,9 +7981,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Sitenizde değişiklik yaptığınızda etkinlik geçmişinizi burada görebileceksiniz.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Hangi sürümü düzenlemek istersiniz?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ne yazık ki bir sorun çıktı ve oturumunuzu açamadık. Lütfen yeniden deneyin!";
@@ -8580,10 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Bugün sitenizde *50 beğeni* aldınız";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Kısa süre önce bu yazıda değişiklikler yaptınız ancak kaydetmediniz. Yüklenecek sürümü seçin:\n\nBu aygıtta\n%1$@ zamanında kaydedilmiş\n\nBaşka bir aygıtta\n%2$@ zamanında kaydedilmiş\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8613,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Hesabı kapatma yetkiniz yok.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Bu yazıda henüz kaydedilmemiş değişiklikler yaptınız";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Site simgeniz";
@@ -8652,9 +8341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Parolanız en az altı karakter uzunluğunda olmalıdır. Zorlaştırmak için, büyük harf, küçük harf, sayı ve ! \"? $% ^ &) gibi karakterler kullanın.";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Yazınız şu anda yükleniyor. Lütfen bu işlem tamamlanıncaya kadar bekleyin.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Yazınız yayınlanıyor… Bu arada, yazı yayınlamak istediğiniz günler için blog hatırlatıcıları ayarlayabilirsiniz.";
@@ -8962,6 +8648,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "Ödeme";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "Taslağı Kaydet";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "yorum";
@@ -10201,32 +9890,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Sayfa güncellendi";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "Kalıcı olarak sil";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "Bu sayfayı kalıcı olarak silmek istediğinize emin misiniz?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Kalıcı olarak silinsin mi?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Herkesin sayfaları";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Benim sayfalarım";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "Çöpe at";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "Bu sayfayı çöpe atmak istediğinize emin misiniz?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Bu sayfa çöpe atılsın mı?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "İptal";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Üst Sayfa";
@@ -10294,12 +9962,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paketler";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "Yazı siliniyor...";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "Yazı çöpe atılıyor...";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Değişiklikleri İptal Et";
 
@@ -10340,6 +10002,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "Revizyonlar";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "Taslağı Kaydet";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Görsel Düzenleyici";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10370,7 +10035,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "Taslak kaydediliyor...";
 
 /* Button title */
+"postFromAudio.beginRecording" = "Kayda başla";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "Daha fazla istek için paketinizi yükseltin";
+
+/* Button title */
+"postFromAudio.done" = "Tamam";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "Talep işlenirken bazı sorunlar oluştu. Lütfen daha sonra tekrar deneyin.";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "Bir sorun oluştu";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "Sesten gönderi oluşturmak için yeterli isteğiniz yok.";
@@ -10380,9 +10057,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "Tekrar dene";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Bir sorun oluştu";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "Mevcut istekler:";
@@ -10395,6 +10069,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "Kaydediliyor…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "Sınırsız";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ tarafından.";
@@ -10471,9 +10148,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "Bir hata oluştu";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "Uygulama, sunucuda önceden yapılan değişiklikleri yüklüyor. Lütfen daha sonra tekrar deneyin.";
-
 /* Button OK */
 "postNotice.ok" = "Tamam";
 
@@ -10549,9 +10223,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Öne çıkarılmış görseli ayarla";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "Yazı ayarları güncellenemedi";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
 
@@ -10594,9 +10265,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "Yüklemeyi iptal et";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "Yorumlar";
 
@@ -10617,9 +10285,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "Yayımla";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "Yeniden dene";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Giriş sayfası olarak ayarla";
@@ -10644,18 +10309,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Görüntüle";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Sayfa kalıcı olarak silindi";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Yazı kalıcı olarak silindi";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "Sayfa çöpe atıldı";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "Yazı çöpe atıldı";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Herkesin yazıları";
@@ -10686,9 +10339,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Ortam dosyası yüklenemedi";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "Başlık";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Yayınla";
