@@ -97,7 +97,7 @@ extension StatsRoute: NavigationAction {
         case .daySite:
             showStatsForBlog(from: values, tab: .traffic, unit: .day, using: coordinator)
         case .weekSite:
-            showStatsForBlog(from: values, tab: .traffic, unit: . week, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .week, using: coordinator)
         case .monthSite:
             showStatsForBlog(from: values, tab: .traffic, unit: .month, using: coordinator)
         case .yearSite:
