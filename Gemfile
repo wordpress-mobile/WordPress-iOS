@@ -6,9 +6,11 @@ gem 'cocoapods', '~> 1.14'
 gem 'commonmarker'
 gem 'danger-dangermattic', '~> 1.0'
 gem 'dotenv'
-# 2.219.0 includes a fix for a bug introduced in 2.218.0
-# See https://github.com/fastlane/fastlane/issues/21762#issuecomment-1875208663
-gem 'fastlane', '~> 2.219'
+# 2.221.0 includes a fix for an ASC-interfacing bug
+#
+# See https://github.com/wordpress-mobile/WordPress-iOS/pull/23118#issuecomment-2173254418
+# and https://github.com/fastlane/fastlane/pull/21995
+gem 'fastlane', '~> 2.221'
 gem 'fastlane-plugin-appcenter', '~> 2.1'
 gem 'fastlane-plugin-sentry'
 # This comment avoids typing to switch to a development version for testing.
