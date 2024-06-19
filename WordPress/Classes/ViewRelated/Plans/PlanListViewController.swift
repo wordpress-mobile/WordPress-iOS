@@ -16,15 +16,9 @@ final class PlanListViewController: UITableViewController, ImmuTablePresenter {
 
     fileprivate var noResultsViewController: NoResultsViewController?
 
-    @objc static let restorationIdentifier = "PlanList"
-
     override init(style: UITableView.Style) {
         super.init(style: .grouped)
         title = NSLocalizedString("Plans", comment: "Title for the plan selector")
-        // Need to use `super` to work around a Swift compiler bug
-        // https://bugs.swift.org/browse/SR-3465
-        super.restorationIdentifier = PlanListViewController.restorationIdentifier
-        restorationClass = PlanListViewController.self
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -128,20 +122,4 @@ extension PlanListViewController: NoResultsViewControllerDelegate {
         let supportVC = SupportTableViewController()
         supportVC.showFromTabBar()
     }
-}
-
-// MARK: - UIViewControllerRestoration
-
-extension PlanListViewController: UIViewControllerRestoration {
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-        guard let identifier = identifierComponents.last,
-            identifier == PlanListViewController.restorationIdentifier else {
-            return nil
-        }
-
-        return PlanListViewController(style: .grouped)
-    }
-
 }

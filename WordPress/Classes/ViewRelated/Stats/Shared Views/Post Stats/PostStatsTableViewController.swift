@@ -25,8 +25,8 @@ class PostStatsTableViewController: UITableViewController, StoryboardLoadable {
     private let store = StatsPeriodStore()
     private var changeReceipt: Receipt?
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self, with: self)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: self)
     }()
 
     // MARK: - View
@@ -107,7 +107,8 @@ private extension PostStatsTableViewController {
                                        selectedDate: selectedDate,
                                        postTitle: postTitle,
                                        postURL: postURL,
-                                       postStatsDelegate: self)
+                                       postStatsDelegate: self,
+                                       store: store)
         refreshTableView()
 
         changeReceipt = viewModel?.onChange { [weak self] in
@@ -152,7 +153,7 @@ private extension PostStatsTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         refreshControl?.endRefreshing()
 
         if viewModel.fetchDataHasFailed() {
@@ -173,13 +174,16 @@ private extension PostStatsTableViewController {
 
         viewModel.refreshPostStats(postID: postID, selectedDate: selectedDate)
         if forceUpdate {
-            tableHandler.viewModel = viewModel.tableViewModel()
+            tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         }
     }
 
     func applyTableUpdates() {
-        tableView.performBatchUpdates({
-        })
+        guard let viewModel = viewModel else {
+            return
+        }
+
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
     }
 
 }
@@ -216,6 +220,10 @@ extension PostStatsTableViewController: PostStatsDelegate {
 // MARK: - StatsBarChartViewDelegate
 
 extension PostStatsTableViewController: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {
+        viewModel?.currentTabIndex = tabIndex
+    }
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         tableHeaderView?.statsBarChartValueSelected(statsBarChartView, entryIndex: entryIndex, entryCount: entryCount)
     }

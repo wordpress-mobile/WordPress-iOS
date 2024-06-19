@@ -11,19 +11,25 @@ enum StatsRoute {
     case dayCategory
     case annualStats
     case activityLog
+    case subscribers
+    case daySubscribers
 
     var tab: StatsTabType? {
         switch self {
         case .daySite:
-            return .days
+            return .traffic
         case .weekSite:
-            return .weeks
+            return .traffic
         case .monthSite:
-            return .months
+            return .traffic
         case .yearSite:
-            return .years
+            return .traffic
         case .insights:
             return .insights
+        case .subscribers:
+            return .subscribers
+        case .daySubscribers:
+            return .subscribers
         default:
             return nil
         }
@@ -61,6 +67,10 @@ extension StatsRoute: Route {
             return "/stats/annualstats/:domain"
         case .activityLog:
             return "/stats/activity/:domain"
+        case .subscribers:
+            return "/stats/subscribers/:domain"
+        case .daySubscribers:
+            return "/stats/subscribers/day/:domain"
         }
     }
 
@@ -85,19 +95,19 @@ extension StatsRoute: NavigationAction {
                 showStatsForDefaultBlog(from: values, with: coordinator)
             }
         case .daySite:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: coordinator)
         case .weekSite:
-            showStatsForBlog(from: values, tab: .weeks, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .week, using: coordinator)
         case .monthSite:
-            showStatsForBlog(from: values, tab: .months, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .month, using: coordinator)
         case .yearSite:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: coordinator)
         case .insights:
             showStatsForBlog(from: values, tab: .insights, using: coordinator)
         case .dayCategory:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: coordinator)
         case .annualStats:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: coordinator)
         case .activityLog:
             if let blog = blog(from: values) {
                 coordinator.showActivityLog(for: blog)
@@ -105,16 +115,20 @@ extension StatsRoute: NavigationAction {
                 showMySitesAndFailureNotice(using: coordinator,
                                             values: values)
             }
+        case .subscribers, .daySubscribers:
+            showStatsForBlog(from: values, tab: .subscribers, using: coordinator)
         }
     }
 
     private func showStatsForBlog(from values: [String: String],
                                   tab: StatsTabType,
+                                  unit: StatsPeriodUnit? = nil,
                                   using coordinator: MySitesCoordinator) {
         if let blog = blog(from: values) {
             coordinator.showStats(for: blog,
                                   source: source(from: values),
-                                  tab: tab)
+                                  tab: tab,
+                                  unit: unit)
         } else {
             showMySitesAndFailureNotice(using: coordinator,
                                         values: values)

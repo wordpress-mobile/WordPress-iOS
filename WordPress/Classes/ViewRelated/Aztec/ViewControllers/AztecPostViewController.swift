@@ -355,10 +355,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    private let loadAutosaveRevision: Bool
-
     /// Active Downloads
     ///
     fileprivate var activeMediaRequests = [ImageDownloaderTask]()
@@ -452,20 +448,17 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping (EditorViewController, EditorViewController) -> (),
         editorSession: PostEditorAnalyticsSession? = nil) {
 
         precondition(post.managedObjectContext != nil)
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
         self.replaceEditor = replaceEditor
         self.editorSession = editorSession ?? PostEditorAnalyticsSession(editor: .classic, post: post)
 
         super.init(nibName: nil, bundle: nil)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         addObservers(toPost: post)
         registerMediaObserver()
         disableSocialConnectionsIfNecessary()
@@ -497,7 +490,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         WPFontManager.loadNotoFontFamily()
 
         registerAttachmentImageProviders()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
 
         // Setup
         configureNavigationBar()
@@ -519,6 +512,8 @@ class AztecPostViewController: UIViewController, PostEditor {
             showDeprecationNotice()
             hasNoticeBeenShown = true
         }
+
+        onViewDidLoad()
     }
 
     private func shouldShowDeprecationNotice() -> Bool {
@@ -737,7 +732,6 @@ class AztecPostViewController: UIViewController, PostEditor {
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Azctec Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItemsAztec
         navigationItem.titleView = navigationBarManager.blogTitleViewLabel
     }
 
@@ -820,6 +814,7 @@ class AztecPostViewController: UIViewController, PostEditor {
         reloadEditorContents()
         reloadPublishButton()
         refreshTitleViewForMediaUploadIfNeeded()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItemsAztec
     }
 
     func refreshTitleViewForMediaUploadIfNeeded() {
@@ -1064,31 +1059,7 @@ extension AztecPostViewController: AztecNavigationControllerDelegate {
 //
 extension AztecPostViewController {
     @IBAction func publishButtonTapped(sender: UIButton) {
-        handlePublishButtonTap()
-    }
-
-    @IBAction func secondaryPublishButtonTapped() {
-        guard let action = self.postEditorStateContext.secondaryPublishButtonAction else {
-            // If the user tapped on the secondary publish action button, it means we should have a secondary publish action.
-            let error = NSError(domain: errorDomain, code: ErrorCode.expectedSecondaryAction.rawValue, userInfo: nil)
-            WordPressAppDelegate.crashLogging?.logError(error)
-            return
-        }
-
-        let secondaryStat = self.postEditorStateContext.secondaryPublishActionAnalyticsStat
-
-        let publishPostClosure = { [unowned self] in
-            self.publishPost(
-                action: action,
-                dismissWhenDone: action.dismissesEditor,
-                analyticsStat: secondaryStat)
-        }
-
-        if presentedViewController != nil {
-            dismiss(animated: true, completion: publishPostClosure)
-        } else {
-            publishPostClosure()
-        }
+        handlePrimaryActionButtonTap()
     }
 
     @IBAction func closeWasPressed() {
@@ -1103,7 +1074,6 @@ extension AztecPostViewController {
 // MARK: - Private Helpers
 //
 private extension AztecPostViewController {
-
     /// Presents an alert controller, allowing the user to insert a link to either:
     ///
     /// - Insert a link to the document
@@ -1181,11 +1151,9 @@ private extension AztecPostViewController {
             alert.title = textCounterTitle
         }
 
-        if postEditorStateContext.isSecondaryPublishButtonShown,
-            let buttonTitle = postEditorStateContext.secondaryPublishButtonText {
-
-            alert.addDefaultActionWithTitle(buttonTitle) { _ in
-                self.secondaryPublishButtonTapped()
+        if post.original().isStatus(in: [.draft, .pending]) && editorHasChanges {
+            alert.addDefaultActionWithTitle(MoreSheetAlert.saveDraft) { _ in
+                self.buttonSaveDraftTapped()
             }
         }
 
@@ -1215,7 +1183,7 @@ private extension AztecPostViewController {
 
         if (post.revisions ?? []).count > 0 {
             alert.addDefaultActionWithTitle(MoreSheetAlert.historyTitle) { [unowned self] _ in
-                self.displayHistory()
+                self.displayRevisionsList()
             }
         }
 
@@ -2197,6 +2165,8 @@ extension AztecPostViewController {
             handleError(error, onAttachment: attachment)
         case .progress(let value):
             handleProgress(value, forMedia: media, onAttachment: attachment)
+        case .cancelled:
+            richTextView.remove(attachmentID: attachment.identifier)
         }
     }
 
@@ -3198,6 +3168,7 @@ extension AztecPostViewController {
         static let postSettingsTitle = NSLocalizedString("Post Settings", comment: "Name of the button to open the post settings")
         static let pageSettingsTitle = NSLocalizedString("Page Settings", comment: "Name of the button to open the page settings")
         static let keepEditingTitle = NSLocalizedString("Keep Editing", comment: "Goes back to editing the post.")
+        static let saveDraft = NSLocalizedString("classicEditor.moreMenu.saveDraft", value: "Save Draft", comment: "Post Editor / Button in the 'More' menu")
         static let accessibilityIdentifier = "MoreSheetAccessibilityIdentifier"
     }
 

@@ -6,10 +6,7 @@ import Gridicons
 /// list of posts.  The user supplied search phrase is converted into a ReaderSearchTopic
 /// the results of which are displayed in the embedded ReaderStreamViewController.
 ///
-@objc open class ReaderSearchViewController: UIViewController, UIViewControllerRestoration {
-    @objc static let restorationClassIdentifier = "ReaderSearchViewControllerRestorationIdentifier"
-    @objc static let restorableSearchTopicPathKey: String = "RestorableSearchTopicPathKey"
-
+@objc open class ReaderSearchViewController: UIViewController {
     fileprivate enum Section: Int, FilterTabBarItem {
         case posts
         case sites
@@ -53,7 +50,6 @@ import Gridicons
         return jpSiteSearchController.childVC as? ReaderSiteSearchViewController
     }
     fileprivate var suggestionsController: ReaderSearchSuggestionsViewController?
-    fileprivate var restoredSearchTopic: ReaderSearchTopic?
     fileprivate var didBumpStats = false
 
     private lazy var bannerView: JetpackBannerView = {
@@ -92,37 +88,9 @@ import Gridicons
         return controller
     }
 
-    // MARK: - State Restoration
-
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        guard let path = coder.decodeObject(forKey: restorableSearchTopicPathKey) as? String else {
-            return ReaderSearchViewController.controller()
-        }
-
-        guard let topic = try? ReaderAbstractTopic.lookup(withPath: path, in: ContextManager.shared.mainContext) as? ReaderSearchTopic else {
-            return ReaderSearchViewController.controller()
-        }
-
-        let storyboard = UIStoryboard(name: "Reader", bundle: Bundle.main)
-        let controller = storyboard.instantiateViewController(withIdentifier: "ReaderSearchViewController") as! ReaderSearchViewController
-        controller.restoredSearchTopic = topic
-        return controller
-    }
-
-    open override func encodeRestorableState(with coder: NSCoder) {
-        if let topic = streamController?.readerTopic {
-            coder.encode(topic.path, forKey: type(of: self).restorableSearchTopicPathKey)
-        }
-        super.encodeRestorableState(with: coder)
-    }
-
     // MARK: Lifecycle methods
 
     open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationIdentifier = type(of: self).restorationClassIdentifier
-        restorationClass = type(of: self)
-
         return super.awakeAfter(using: aDecoder)
     }
 
@@ -140,7 +108,6 @@ import Gridicons
         setupSearchBar()
         configureFilterBar()
         configureBackgroundTapRecognizer()
-        configureForRestoredTopic()
         configureSiteSearchViewController()
         configureNavigationBar()
     }
@@ -230,14 +197,6 @@ import Gridicons
         view.addGestureRecognizer(backgroundTapRecognizer)
     }
 
-    @objc func configureForRestoredTopic() {
-        guard let topic = restoredSearchTopic else {
-            return
-        }
-        searchBar.text = topic.title
-        streamController?.readerTopic = topic
-    }
-
     private func configureSiteSearchViewController() {
         jpSiteSearchController.view.translatesAutoresizingMaskIntoConstraints = false
 
@@ -252,11 +211,6 @@ import Gridicons
             ])
 
         jpSiteSearchController.didMove(toParent: self)
-
-        if let topic = restoredSearchTopic {
-            siteSearchController?.searchQuery = topic.title
-        }
-
         jpSiteSearchController.view.isHidden = true
     }
 

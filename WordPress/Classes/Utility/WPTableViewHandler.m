@@ -286,6 +286,11 @@ static CGFloat const DefaultCellHeight = 44.0;
     [self clearCachedRowHeightAtIndexPath:indexPath];
 }
 
+- (void)resetResultsController
+{
+    _resultsController = nil;
+}
+
 
 #pragma mark - Required Delegate Methods
 

@@ -12,16 +12,16 @@ class EditorFactory {
 
     // MARK: - Editor: Instantiation
 
-    func instantiateEditor(for post: AbstractPost, loadAutosaveRevision: Bool = false, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
+    func instantiateEditor(for post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> EditorViewController {
         if gutenbergSettings.mustUseGutenberg(for: post) {
-            return createGutenbergVC(with: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
+            return createGutenbergVC(with: post, replaceEditor: replaceEditor)
         } else {
-            return AztecPostViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
+            return AztecPostViewController(post: post, replaceEditor: replaceEditor)
         }
     }
 
-    func createGutenbergVC(with post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorBlock) -> GutenbergViewController {
-        let gutenbergVC = GutenbergViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
+    func createGutenbergVC(with post: AbstractPost, replaceEditor: @escaping ReplaceEditorBlock) -> GutenbergViewController {
+        let gutenbergVC = GutenbergViewController(post: post, replaceEditor: replaceEditor)
 
         if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
             gutenbergSettings.setGutenbergEnabled(true, for: post.blog, source: .onBlockPostOpening)
@@ -33,19 +33,6 @@ class EditorFactory {
         return gutenbergVC
     }
 
-    // TODO: DRY this up
-    func createHomepageGutenbergVC(with post: AbstractPost, loadAutosaveRevision: Bool, replaceEditor: @escaping ReplaceEditorBlock) -> EditHomepageViewController {
-        let gutenbergVC = EditHomepageViewController(post: post, loadAutosaveRevision: loadAutosaveRevision, replaceEditor: replaceEditor)
-
-        if gutenbergSettings.shouldAutoenableGutenberg(for: post) {
-            gutenbergSettings.setGutenbergEnabled(true, for: post.blog, source: .onBlockPostOpening)
-            gutenbergSettings.postSettingsToRemote(for: post.blog)
-            gutenbergVC.shouldPresentInformativeDialog = true
-            gutenbergSettings.willShowDialog(for: post.blog)
-        }
-
-        return gutenbergVC
-    }
     func switchToGutenberg(from source: EditorViewController) {
         let replacement = GutenbergViewController(post: source.post, replaceEditor: source.replaceEditor, editorSession: source.editorSession)
         source.replaceEditor(source, replacement)

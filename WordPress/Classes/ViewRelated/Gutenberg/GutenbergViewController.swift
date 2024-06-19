@@ -13,7 +13,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         case close
         case more
         case autoSave
-        case continueFromHomepageEditing
     }
 
     private lazy var filesAppMediaPicker = GutenbergFilesAppMediaSource(gutenberg: gutenberg, mediaInserter: mediaInserterHelper)
@@ -204,10 +203,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         }
     }
 
-    /// If true, apply autosave content when the editor creates a revision.
-    ///
-    var loadAutosaveRevision: Bool
-
     let navigationBarManager: PostEditorNavigationBarManager
 
     // swiftlint:disable:next weak_delegate
@@ -277,13 +272,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     // MARK: - Initializers
     required convenience init(
-        post: AbstractPost, loadAutosaveRevision: Bool,
+        post: AbstractPost,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession?
     ) {
         self.init(
             post: post,
-            loadAutosaveRevision: loadAutosaveRevision,
             replaceEditor: replaceEditor,
             editorSession: editorSession,
             // Notice this parameter.
@@ -298,14 +292,12 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
     required init(
         post: AbstractPost,
-        loadAutosaveRevision: Bool = false,
         replaceEditor: @escaping ReplaceEditorCallback,
         editorSession: PostEditorAnalyticsSession? = nil,
         navigationBarManager: PostEditorNavigationBarManager? = nil
     ) {
 
         self.post = post
-        self.loadAutosaveRevision = loadAutosaveRevision
 
         self.replaceEditor = replaceEditor
         verificationPromptHelper = AztecVerificationPromptHelper(account: self.post.blog.account)
@@ -316,7 +308,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         addObservers(toPost: post)
 
-        PostCoordinator.shared.cancelAnyPendingSaveOf(post: post)
         self.navigationBarManager.delegate = self
         disableSocialConnectionsIfNecessary()
     }
@@ -338,7 +329,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         super.viewDidLoad()
         setupKeyboardObservers()
         WPFontManager.loadNotoFontFamily()
-        createRevisionOfPost(loadAutosaveRevision: loadAutosaveRevision)
+        createRevisionOfPost(loadAutosaveRevision: false)
         setupGutenbergView()
         configureNavigationBar()
         refreshInterface()
@@ -346,13 +337,14 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
 
         gutenberg.delegate = self
         fetchBlockSettings()
-        presentNewPageNoticeIfNeeded()
 
         service?.syncJetpackSettingsForBlog(post.blog, success: { [weak self] in
             self?.gutenberg.updateCapabilities()
         }, failure: { (error) in
             DDLogError("Error syncing JETPACK: \(String(describing: error))")
         })
+
+        onViewDidLoad()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -435,7 +427,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.accessibilityIdentifier = "Gutenberg Editor Navigation Bar"
         navigationItem.leftBarButtonItems = navigationBarManager.leftBarButtonItems
-        navigationItem.rightBarButtonItems = navigationBarManager.rightBarButtonItems
 
         // Add bottom border line
         let screenScale = UIScreen.main.scale
@@ -447,6 +438,13 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         borderBottom.frame = CGRect(x: 0, y: navigationController?.navigationBar.frame.size.height ?? 0 - borderWidth, width: navigationController?.navigationBar.frame.size.width ?? 0, height: borderWidth)
         borderBottom.autoresizingMask = [.flexibleWidth, .flexibleTopMargin]
         navigationController?.navigationBar.addSubview(borderBottom)
+
+        navigationBarManager.moreButton.menu = makeMoreMenu()
+        navigationBarManager.moreButton.showsMenuAsPrimaryAction = true
+    }
+
+    @objc private func buttonMoreTapped() {
+        displayMoreSheet()
     }
 
     private func reloadBlogIconView() {
@@ -478,6 +476,7 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         reloadBlogIconView()
         reloadEditorContents()
         reloadPublishButton()
+        navigationItem.rightBarButtonItems = post.status == .trash ? [] : navigationBarManager.rightBarButtonItems
     }
 
     func toggleEditingMode() {
@@ -512,16 +511,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
     func showEditorHelp() {
         WPAnalytics.track(.gutenbergEditorHelpShown, properties: [:], blog: post.blog)
         gutenberg.showEditorHelp()
-    }
-
-    private func presentNewPageNoticeIfNeeded() {
-        // Validate if the post is a newly created page or not.
-        guard post is Page,
-            post.isDraft(),
-            post.remoteStatus == AbstractPostRemoteStatus.local else { return }
-
-        let message = post.hasContent() ? NSLocalizedString("Page created", comment: "Notice that a page with content has been created") : NSLocalizedString("Blank page created", comment: "Notice that a page without content has been created")
-        gutenberg.showNotice(message)
     }
 
     private func handleMissingBlockAlertButtonPressed() {
@@ -578,6 +567,7 @@ extension GutenbergViewController {
 
 // MARK: - GutenbergBridgeDelegate
 
+/// - warning: the app can't make any assumption about the thread on which `GutenbergBridgeDelegate` gets invoked. In some scenarios, it gets called from the main thread, for example, if being invoked directly from [Gutenberg.swift](https://github.com/WordPress/gutenberg/blob/64f9d9d1ced7a5aa7f3874890306554c5b703ce6/packages/react-native-bridge/ios/Gutenberg.swift). And sometimes, it gets called on a dispatch queue created by the React Native runtime for a native module (see [React Native: Threading](https://reactnative.dev/docs/native-modules-ios#threading). It happens when the methods are invoked directly from JavaScript.
 extension GutenbergViewController: GutenbergBridgeDelegate {
     func gutenbergDidGetRequestFetch(path: String, completion: @escaping (Result<Any, NSError>) -> Void) {
         guard let context = post.managedObjectContext else {
@@ -845,7 +835,7 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             switch reason {
             case .publish:
                 if editorHasContent(title: title, content: html) {
-                    handlePublishButtonTap()
+                    handlePrimaryActionButtonTap()
                 } else {
                     showAlertForEmptyPostPublish()
                 }
@@ -856,17 +846,8 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
                 displayMoreSheet()
             case .autoSave:
                 break
-                // Inelegant :(
-            case .continueFromHomepageEditing:
-                continueFromHomepageEditing()
-                break
             }
         }
-    }
-
-    // Not ideal, but seems the least bad of the alternatives
-    @objc func continueFromHomepageEditing() {
-        fatalError("This method must be overriden by the extending class")
     }
 
     func gutenbergDidLayout() {
@@ -877,6 +858,12 @@ extension GutenbergViewController: GutenbergBridgeDelegate {
             insertPrePopulatedMedia()
             focusTitleIfNeeded()
             mediaInserterHelper.refreshMediaStatus()
+
+            let original = post.original()
+            if let content = original.voiceContent {
+                original.voiceContent = nil
+                gutenberg.onContentUpdate(content: content)
+            }
         }
     }
 
@@ -1144,14 +1131,14 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
     }
 
     func gutenbergMediaSources() -> [Gutenberg.MediaSource] {
-        workaroundCoreDataConcurrencyIssue(accessing: post) {
+        post.managedObjectContext?.performAndWait {
             [
                 post.blog.supports(.stockPhotos) ? .stockPhotos : nil,
                 post.blog.supports(.tenor) ? .tenor : nil,
                 .otherApps,
                 .allFiles,
             ].compactMap { $0 }
-        }
+        } ?? []
     }
 
     func gutenbergCapabilities() -> [Capabilities: Bool] {
@@ -1192,7 +1179,7 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
             .videoPressV5Support:
                 post.blog.supports(.videoPressV5),
             .unsupportedBlockEditor: isUnsupportedBlockEditorEnabled,
-            .canEnableUnsupportedBlockEditor: post.blog.jetpack?.isConnected ?? false,
+            .canEnableUnsupportedBlockEditor: (post.blog.jetpack?.isConnected ?? false) && !isJetpackSSOEnabled,
             .isAudioBlockMediaUploadEnabled: !isFreeWPCom,
             // Only enable reusable block in WP.com sites until the issue
             // (https://github.com/wordpress-mobile/gutenberg-mobile/issues/3457) in self-hosted sites is fixed
@@ -1207,13 +1194,16 @@ extension GutenbergViewController: GutenbergBridgeDataSource {
         ]
     }
 
+    private var isJetpackSSOEnabled: Bool {
+        let blog = post.blog
+        return (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
+    }
+
     private var isUnsupportedBlockEditorEnabled: Bool {
         // The Unsupported Block Editor is disabled for all self-hosted non-jetpack sites.
         // This is because they can have their web editor to be set to classic and then the fallback will not work.
 
         let blog = post.blog
-        let isJetpackSSOEnabled = (blog.jetpack?.isConnected ?? false) && (blog.settings?.jetpackSSOEnabled ?? false)
-
         return blog.isHostedAtWPcom || isJetpackSSOEnabled
     }
 }

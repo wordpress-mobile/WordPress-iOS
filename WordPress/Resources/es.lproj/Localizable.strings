@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-03 11:03:25+0000 */
+/* Translation-Revision-Date: 2024-05-29 16:47:03+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: es */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ se reconectó.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d entradas.";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "¿Estás seguro de querer enviar a la papelera esta entrada?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "¿Seguro que quieres actualizar tu página de inicio?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "¿Estás seguro de que quieres actualizar?";
 
@@ -915,7 +909,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Authenticating" = "Autenticando";
 
 /* Title for the error view when the authentication failed for any reason */
-"Authentication Failed" = "Ha fallado la autentificación";
+"Authentication Failed" = "Identificación fallida";
 
 /* Accessibility label for the 2FA text field.
    Placeholder for the 2FA code textfield. */
@@ -1120,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Entrada del blog";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Seguidor por correo electrónico del blog";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Seguidor del blog";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Usuario del blog";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Lector del blog";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Bloguear";
 
@@ -1229,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1268,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1639,7 +1619,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1804,7 +1783,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1980,8 +1958,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Crear página";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Crear entrada";
 
 /* Button to progress to the next step
@@ -2014,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Crear un nuevo sitio de negocios, revista o blog personal; o conecta con una instalación existente de WordPress.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Crear una entrada o página";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Crear una entrada, página o historia";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Crear un icono del sitio";
 
@@ -2037,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Crea tu sitio";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Crea una nueva entrada o página";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Crear una entrada, página o historia";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Crear un nuevo menú descartará los cambios que has hecho al menú actual. ¿Estás seguro de que quieres continuar?";
@@ -2117,9 +2082,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Personalizar el mensaje que quieras compartir.\nSi no añades aquí tu propio texto usaremos el título de la entrada como mensaje.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Personaliza los ajustes de los sitios que sigues para nuevas entradas y comentarios";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Personaliza los ajustes de tu sitio para los «me gusta», comentarios, seguimientos y más.";
 
@@ -2147,9 +2109,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Rango de fechas";
-
-/* Date and Time */
-"Date and Time" = "Fecha y hora";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2299,9 +2258,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Descubrir";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Descubre y sigue los blogs que te gustan";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Descubre y sigue sitios que te inspiren.";
 
@@ -2354,9 +2310,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2596,9 +2550,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Email";
 
-/* Blog Email Followers */
-"Email Followers" = "Seguidores por correo electrónico";
-
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2795,9 +2746,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Hubo un error\nal cargar";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Ocurrió un error\ndurante el guardado";
 
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Ocurrió un error durante la publicación";
@@ -3006,9 +2954,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Encuentra la dirección de tu sitio";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Encontrando blogs e historias que te encantarán...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3032,8 +2977,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Corrigiendo amenazas";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Seguir";
 
 /* Button title. Follow the comments on a post. */
@@ -3048,36 +2992,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Sigue las temáticas que te interesan y encontraremos algunos blogs que te pueden gustar.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Sigue tus sitios favoritos y descubre nuevos blogs.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Sitios que sigues";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Seguidor";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Seguidores";
-
-/* User is following the blog. */
-"Following" = "Siguiendo";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Siguiendo nuevas temáticas...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Siguiendo esta conversación";
-
-/* Filters Follows Notifications */
-"Follows" = "Seguimientos";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Sigue al blog.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Tamaño de la fuente";
@@ -3190,9 +3115,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Obtener soporte";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Pon la bola a rodar y aumenta las visitas compartiendo tu entrada.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Familiarízate con la aplicación Jetpack";
@@ -3350,9 +3272,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Icono de ayuda";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Así es como ha funcionado la entrada hasta ahora.";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Oculto";
 
@@ -3373,8 +3292,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Ocultar el encabezado de búsqueda";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historial";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3680,9 +3598,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Parece que has introducido una contraseña incorrecta ¿Quieres intentarlo de nuevo?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Ha pasado %1$@ desde que se publicó %2$@.";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "¡Es hora de bloguear en %@!";
 
@@ -3903,7 +3818,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Me gusta";
@@ -3955,7 +3869,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Enlace insertado";
 
 /* No comment provided by engineer. */
-"Link text" = "Texto del enlace";
+"Link label" = "Etiqueta del enlace";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Enlaza a contenido existente";
@@ -4007,9 +3921,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Cargando comentario...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Cargando el historial…";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Cargando menú…";
 
@@ -4030,7 +3941,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Cargando...";
 
@@ -4594,11 +4504,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "No hay ninguna amenaza corregida";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Aún no tienes seguidores";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Sin historial aún";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5051,9 +4957,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Categoría superior";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Página superior actualizada correctamente.";
-
 /* Parenting site intent topic */
 "Parenting" = "Paternidad";
 
@@ -5298,8 +5201,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Categorías de entrada";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formato de entrada";
 
 /* Name of the button to open the post settings
@@ -5493,8 +5395,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
 
 /* Label for the publish date button. */
@@ -5516,12 +5417,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publicadas";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publicada justo ahora en";
-
-/* Published on [date] */
-"Published on" = "Publicado el";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publicando página…";
@@ -5718,8 +5613,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Al eliminar los siguientes pasos se ocultarán todas las guías de este sitio. Esta acción es irreversible. ";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Eliminar seguidores hace que dejen de recibir novedades de tu sitio. Si eligen hacerlo pueden aún visitar tu sitio, y seguirlo de nuevo.";
 
 /* No comment provided by engineer. */
@@ -6001,12 +5895,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Programada";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Programada para el";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Programada para el %@ en";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Programando...";
 
@@ -6127,9 +6015,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Selecciona un color de arriba";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Selecciona algunos para continuar";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Seleccionar un diseño";
 
@@ -6239,9 +6124,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Servicio";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Establecer como padre";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Establecer como imagen destacada";
 
@@ -6285,7 +6167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Ha habido un error durante la actualización de la configuración";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6295,9 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Comparte Jetpack con un amigo";
-
-/* Label for action to share post. */
-"Share Post" = "Compartir entrada";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Comparte WordPress con un amigo";
@@ -6418,9 +6296,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Registro con correo electrónico";
 
-/* Label for time period in list of followers. */
-"Since" = "Desde";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Como estás con un plan gratuito verás eventos limitados en tu registro de actividad.";
 
@@ -6475,9 +6350,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Se ha eliminado el sitio";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Seguimientos del sitio";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Sitio no encontrado";
 
@@ -6513,10 +6385,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Hasta ahora, no se ha ignorado ninguna amenaza en tu sitio web.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Social";
 
 /* Title of a Quick Start Tour */
@@ -7440,21 +7310,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Total de comentarios";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Seguidores totales por correo electrónico: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Total de seguidores";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Total de «Me gusta»";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Total de entradas";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Seguidores totales de WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Total de palabras";
@@ -7703,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Dejar de seguir la conversación";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Deja de seguir el blog.";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "Desagrupar bloque";
@@ -7969,9 +7827,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Ver todo";
 
-/* Button label for viewing a post */
-"View Post" = "Ver entrada";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Ver sitio";
 
@@ -7984,10 +7839,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Ver menos…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Ver más";
@@ -8008,7 +7861,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8428,9 +8280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Cuando un comentario incluye cualquiera de las siguientes palabras en su contenido, nombre, URL, correo electrónico o IP, se marcará como spam. Puedes introducir palabras parciales, así «press» coincidirá con «WordPress».";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Cuando hagas cambios en el editor podrás ver aquí el historial";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Cuando hagas cambios en tu sitio aquí podrás ver tu historial de actividad.";
 
@@ -8710,9 +8559,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Todavía no has publicado ninguna entrada";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Aún no has publicado ninguna entrada. Una vez empieces a publicar aparecerá aquí un resumen de tus últimas entradas.";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Has alcanzado un hito 🚀";
 
@@ -8921,8 +8767,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Calidad de imagen";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "Cancelar";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "Obtener la versión más reciente";
+
+/* Update button title */
+"appUpdate.action.update" = "Actualizar";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Para usar esta aplicación, descarga la versión más reciente.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Actualización de la aplicación disponible";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Versión %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Novedades";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "archivo de audio";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "Cancelar";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Has realizado cambios no guardados en este mensaje desde un dispositivo diferente. Editado: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Autoguardado disponible";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Ver cambios";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "No ha sido posible subir la imagen. Por favor, elige una distinta o inténtalo de nuevo más tarde.";
@@ -9128,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "conexiones";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Publicar desde audio";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Crear una entrada o página";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Crea tu propio escritorio personalizado y elige los informes que quieres ver. Céntrate en los datos que más te interesan.";
@@ -9461,9 +9346,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "seguir";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "Obtén un dominio gratuito durante el primer año, elimina los anuncios de tu sitio y aumenta tu espacio de almacenamiento.";
 
@@ -9509,8 +9391,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Descartar";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Descubrir blogs a seguir";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Descubre blogs a los que suscribirte";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Volver a hacerlo";
@@ -9522,7 +9404,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "Has conectado con otros blogs";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Conecta con otros blogueros al seguir, dar «me gusta» y comentar sus entradas.";
+"growAudienceCell.readerDiscover.details" = "Conecta con otros blogueros suscribiéndote, dándoles a «me gusta» y comentando sus entradas.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Activar el uso compartido de entradas";
@@ -9599,8 +9481,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Para añadir fotos o vídeos en tus entradas.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -9714,7 +9596,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Cambia a la aplicación de Jetpack para buscar tus entradas y sitios favoritos, seguirlos e indicar que te gustan con el Lector.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Sigue cualquier sitio con la aplicación de Jetpack";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Suscríbete a cualquier sitio con la aplicación Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack proporciona estadísticas, notificaciones y mucho más para ayudarte a crear y ampliar el sitio de WordPress de tus sueños.";
@@ -10226,8 +10108,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Descartar";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Suscripciones al sitio";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Personaliza los ajustes de los sitios que sigues para nuevas entradas y comentarios";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Sitios suscritos";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "No tienes permiso para ver este blog privado.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Suscríbete al blog.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Cancelar suscripción al blog.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Suscrito";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Suscríbete";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "Podría mejorar";
@@ -10240,6 +10143,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Enviar comentarios";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Suscribirse";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Suscrito";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Suscribirse al blog.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Suscriptores";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "suscribirse";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Aún no hay suscriptores";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "Echa un vistazo a mi publicación \"%@\":";
@@ -10307,6 +10228,9 @@ Example: Reply to Pamela Nguyen */
 /* Cancels an Action */
 "pagesList.trash.cancel" = "Cancelar";
 
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Página superior";
+
 /* No comment provided by engineer. */
 "password" = "contraseña";
 
@@ -10370,26 +10294,107 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Planes";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Creado el %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Borrando entrada...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Editado el %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Moviendo a la papelera...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Publicado %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Descartar cambios";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Programado %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Descartar borrador";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Enviado a la papelera %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Continuar editando";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Guardar borrador";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Creando autoguardado...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Editor de código";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Bloques: %1$li, palabras: %2$li, caracteres: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Ayuda";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Ayuda y soporte";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Ajustes de página";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Ajustes de entradas";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Vista previa";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revisiones";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Editor visual";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Ver";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "No se han podido subir algunos elementos de medios";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Entrada restablecida como borrador";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Cancelar";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Una %1$@ borrada no se puede editar. Para editar esta %1$@, tendrás que restablecerla moviéndola de nuevo a borrador.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Restablecer";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Enviado a la papelera %@";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Revisión cargada";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Guardando borrador...";
+
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Actualizar para más solicitudes";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "No tienes bastantes solicitudes disponibles para crear una entrada desde audio.";
+
+/* Button title */
+"postFromAudio.ok" = "Aceptar";
+
+/* Button title */
+"postFromAudio.retry" = "Reintentar";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Se ha producido un error";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Solicitudes disponibles:";
+
+/* The screen title */
+"postFromAudio.title" = "Publicar desde audio";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Procesando…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Registrando…";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Por %@.";
@@ -10402,6 +10407,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "Pendiente de revisión";
+
+/* Cancels an Action */
+"postList.cancel" = "Cancelar";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Eliminar permanentemente";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "¿Estás seguro de que quieres borrar permanentemente \"%@\"?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "La aplicación está subiendo al servidor los cambios realizados anteriormente. Vuelve a intentarlo más tarde.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Algo salió mal";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Cambios sin conexión";
@@ -10417,6 +10440,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Ver";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Enviar a la papelera";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "¿Estás seguro de que quieres eliminar \"%@\"? Cualquier cambio que no se haya enviado previamente al servidor se perderá.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Cancelar la subida";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Cerrar";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "No hay cargas pendientes";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ de %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Reintentar la subida";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Reintentar subidas";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Subidas de medios";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Ha ocurrido un error";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "La aplicación está subiendo al servidor los cambios realizados anteriormente. Vuelve a intentarlo más tarde.";
+
+/* Button OK */
+"postNotice.ok" = "OK";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Borrador de página subido";
@@ -10448,11 +10507,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Entrada actualizada";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Carga fallida";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Ver";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "El contenido se modificó en otro dispositivo";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" se ha eliminado permanentemente y ya no se puede actualizar";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Sin título";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Descartar";
@@ -10466,14 +10531,65 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opciones de imagen destacada";
 
+/* Button OK */
+"postSettings.ok" = "Aceptar";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Página superior";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "Pendiente de revisión";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "La opción de compartir automáticamente en Twitter ya no está disponible";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Atributos de página";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Establecer la imagen destacada";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Error al actualizar los ajustes de la entrada";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Cambiando la visibilidad a «Privado», el post se publicará inmediatamente";
+
+/* Localized post type: `Page` */
+"postType.page" = "página";
+
+/* Localized post type: `Post` */
+"postType.post" = "entrada";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Sólo visible para los administradores y editores del sitio";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Privada";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Visible para todos pero requiere contraseña";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Protegida con contraseña";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Visible por todos";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Público";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "Cancelar";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Visibilidad";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Contraseña";
+
+/* Button save */
+"postVisibilityPicker.save" = "Guardar";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promocionar con Blaze";
@@ -10499,14 +10615,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Vista previa";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Publicar";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Volver a intentar";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Establecer como página de inicio";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Establecer como padre";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Establecer como página de entradas";
@@ -10565,8 +10681,11 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Se ha producido un error al subir medios";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "Ha fallado la subida de %@ elementos";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Se ha producido un error al subir medios";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Título";
@@ -10576,6 +10695,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Fecha de publicación";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Inmediatamente";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Publicando en";
@@ -10641,26 +10763,62 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiquetas";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ elementos restantes";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ elemento restante";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Subiendo medios";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Visibilidad";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Suscríbete a tus sitios favoritos y descubre nuevos blogs.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Ver todas las respuestas";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ de %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Fecha de publicación";
 
-/* Retry button title */
-"publishButton.retry" = "Volver a intentar";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "La fecha en tu zona horaria actual:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Ahora";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Inmediatamente";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Eliminar fecha de publicación";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Selecciona la fecha de publicación";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Zona horaria";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Fecha de publicación";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Hecho";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Promocionar con Blaze";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Compartir entrada";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "¡Entrada publicada!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Consigue más tráfico:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Ver la entrada";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Descartar";
@@ -10679,6 +10837,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Más";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Hecho";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Elige colores y fuentes que te gusten. Cuando estés leyendo una entrada, toca el icono AA en la parte superior de la pantalla.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Preferencias de lectura";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Toca el menú desplegable en la parte superior y selecciona Etiquetas para acceder al flujo de las etiquetas que sigues.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Flujo de etiquetas";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Nuevo en el lector";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "El blog %@ ya no aparecerá en tu lector. Toca para deshacer.";
@@ -10795,6 +10971,9 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Recuperando blogs...";
 
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Sitios suscritos";
+
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Blogs";
 
@@ -10811,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Etiquetas";
+"reader.navigation.filter.blog.unspecified" = "Blogs";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
@@ -10851,11 +11030,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Suscripciones";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Tus etiquetas";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Buscar";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Configuración del lector";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Añadir un blog";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Descubrir blogs";
@@ -10882,7 +11067,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "Ir a suscripciones";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Añadir un blog";
+"reader.no.tags.title" = "Añadir una etiqueta";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "No se puede bloquear el blog";
@@ -10996,11 +11181,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Cancelar suscripción al blog";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Caramelos";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Por defecto";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Noche";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -11011,35 +11202,66 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Suave";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Colores";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Hecho";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Fuentes";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Tamaño";
 
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "«Experimental»";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Esta función es nueva y aún está en fase de desarrollo. Para ayudarnos a mejorarla %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "envía tus comentarios";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "La lectura es algo personal, y queremos que tú tengas el control. Elige qué estilos se adaptan a ti.";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Envíanos comentarios sobre esta característica";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Esta característica está aún en desarrollo.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "perros";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "zorro";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "diseño";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "escritura";
+"reader.preferences.preview.body.text" = "Elige tus colores, fuentes y tamaños. Obtén una vista previa de tu selección aquí y lee las entradas con tus estilos cuando acabes.";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "Elige tus preferencias de lectura";
+"reader.preferences.preview.header" = "Preferencias de lectura";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "colores";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "fuentes";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "lectura";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Etiquetas de ejemplo";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Muy grande";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Muy pequeño";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Grande";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normal";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Pequeño";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Gestionar blogs";
@@ -11059,11 +11281,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Siguiendo nuevas etiquetas...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Selecciona algunos para continuar";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Hecho";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Encontrando blogs e historias que te encantarán…";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "No hay nuevas etiquetas para seguir";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Elige tus etiquetas";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Descubre y sigue los blogs que te gustan";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Suscribir";
@@ -11080,6 +11314,19 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Blogs a los que suscribirse";
 
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Reintentar";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "No podemos cargar las entradas de esta etiqueta en este momento";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "No se cargaron las entradas";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Añadir una etiqueta";
 
@@ -11092,6 +11339,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Añadir una etiqueta";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Me gusta";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Gustado";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Descubrir más etiquetas";
 
@@ -11100,6 +11353,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Siguiendo";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "Más de %1$@";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "Dejar de seguir %@";
@@ -11112,6 +11368,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Descartar";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Preferencias de lectura";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "De acuerdo";
@@ -11190,6 +11449,39 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "Entradas relacionadas";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Otro dispositivo";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Dispositivo actual";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "La entrada se ha modificado en otro dispositivo. Selecciona la versión de la entrada que quieres conservar.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Cancelar";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Guardar";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Resolver conflicto";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Cuando hagas cambios en el editor podrás ver aquí el historial de revisiones";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Aún no hay revisiones";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Cargando…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revisiones";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Copiar enlace";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Descartar";
@@ -11365,6 +11657,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Desconocido";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Todos los sitios";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Sitios anclados";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Sitios recientes";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Añadir un sitio";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Cancelar";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Hecho";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Editar";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Elige un sitio";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Recordatorios";
 
@@ -11401,6 +11717,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "La opción de compartir automáticamente en Twitter ya no está disponible por los cambios que ha habido en esta red social en lo que respecta a términos y precios.";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Suscriptores";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Tráfico";
 
@@ -11411,10 +11730,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Siete días anteriores";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "Un *%1$@%2$@ (%3$@%%)* más que en los siete días anteriores";
+"stats.insights.label.totalLikes.higherNumber" = "Un *%1$@%2$@ (%3$@)* más que en los siete días anteriores";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* por debajo de los anteriores 7 días";
+"stats.insights.label.totalLikes.lowerNumber" = "*%1$@%2$@ (%3$@)* por debajo de los anteriores 7 días";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Las mismas que en los siete días anteriores";
@@ -11492,10 +11811,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 El momento más popular";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% de vistas";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ de visualizaciones";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "No hay suficiente actividad. Vuelve a comprobarlo más tarde, cuando tu sitio haya tenido más visitas.";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Suscriptores";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Tu última entrada %1$@ ha recibido %2$@ me gusta.";
@@ -11503,8 +11825,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Tu última entrada %1$@ ha recibido %2$@ me gusta.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Suscriptores totales de WordPress.com: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Suscriptores totales por correo electrónico: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Suscriptores totales";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Hoy";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Suscriptor desde";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Nombre";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Suscriptores";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Clics";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Abiertos";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "Últimos correos electrónicos";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "Correos electrónicos";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Crecimiento de suscriptores";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Suscriptores";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "Tabla que muestra %1$@, %2$@ y %3$@";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Gráfico de barras que muestra los comentarios del periodo seleccionado.";
@@ -11518,41 +11882,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Gráfico de barras que muestra los visitantes del periodo seleccionado.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Por día";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Días";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Meses";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Semanas";
 
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "%@ superior al mes anterior\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "%@ inferior al mes anterior\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "%@ superior a los 7 días anteriores\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "%@ inferior a los 7 días anteriores\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "%@ superior al año anterior\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "%@ inferior al año anterior\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Por mes";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Por semana";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Por año";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Años";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Descartar";
@@ -11563,8 +11903,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "¡Busca fotos gratuitas que añadir a tu biblioteca de medios!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Puedes incluir opcionalmente tu correo electrónico y tu nombre de usuario para ayudarnos a comprender tu experiencia.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "no se ha introducido correo electrónico";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "no se ha introducido el nombre de usuario";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Hecho";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Gracias por tus comentarios";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Enviar";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Enviando";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Enviando de manera anónima";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Sugerencias";
@@ -11736,6 +12097,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "no leído";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Suscriptor del sitio";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Usuario del sitio";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Visor del sitio";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "Suscriptores";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "visita nuestra página de documentación";

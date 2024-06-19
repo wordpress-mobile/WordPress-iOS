@@ -7,6 +7,7 @@ final class PageListItemViewModel {
     let badges: NSAttributedString
     let imageURL: URL?
     let accessibilityIdentifier: String?
+    let syncStateViewModel: PostSyncStateViewModel
 
     init(page: Page) {
         self.page = page
@@ -15,6 +16,7 @@ final class PageListItemViewModel {
         self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
         self.accessibilityIdentifier = page.slugForDisplay()
+        self.syncStateViewModel = PostSyncStateViewModel(post: page)
     }
 }
 
@@ -51,16 +53,12 @@ private func makeBadgesString(for page: Page) -> NSAttributedString {
         }
         badges.append(date)
     }
-    if page.hasPrivateState {
+    if page.status == .publishPrivate {
         badges.append(Strings.badgePrivatePage)
     }
-    if page.hasPendingReviewState {
+    if page.status == .pending {
         badges.append(Strings.badgePendingReview)
     }
-    if page.hasLocalChanges() {
-        badges.append(Strings.badgeLocalChanges)
-    }
-
     return AbstractPostHelper.makeBadgesString(with: badges.enumerated().map { index, badge in
         (badge, colors[index])
     })

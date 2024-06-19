@@ -11,8 +11,7 @@ enum FeatureFlag: Int, CaseIterable {
     case compliancePopover
     case googleDomainsCard
     case newTabIcons
-    case readerCustomization
-    case readerTagsFeed
+    case autoSaveDrafts
 
     /// Returns a boolean indicating if the feature is enabled
     var enabled: Bool {
@@ -39,9 +38,7 @@ enum FeatureFlag: Int, CaseIterable {
             return false
         case .newTabIcons:
             return true
-        case .readerCustomization:
-            return false
-        case .readerTagsFeed:
+        case .autoSaveDrafts:
             return false
         }
     }
@@ -83,10 +80,8 @@ extension FeatureFlag {
             return "Google Domains Promotional Card"
         case .newTabIcons:
             return "New Tab Icons"
-        case .readerCustomization:
-            return "Reader Customization"
-        case .readerTagsFeed:
-            return "Reader Tags Feed"
+        case .autoSaveDrafts:
+            return "Autosave Drafts"
         }
     }
 }
@@ -104,5 +99,16 @@ extension FeatureFlag: OverridableFlag {
         default:
             return true
         }
+    }
+}
+
+extension FeatureFlag: RolloutConfigurableFlag {
+    /// Represents the percentage of users to roll the flag out to.
+    ///
+    /// To set a percentage rollout, return a value between 0.0 and 1.0.
+    /// If a percentage rollout isn't applicable for the flag, return nil.
+    ///
+    var rolloutPercentage: Double? {
+        return nil
     }
 }

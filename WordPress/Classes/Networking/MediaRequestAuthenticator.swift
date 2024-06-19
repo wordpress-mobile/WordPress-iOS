@@ -33,6 +33,7 @@ class MediaRequestAuthenticator {
     // MARK: - Request Authentication
 
     /// Returns an authenticated request for the given URL and the media host.
+    @MainActor
     func authenticatedRequest(for url: URL, host: MediaHost) async throws -> URLRequest {
         try await withUnsafeThrowingContinuation { continuation in
             authenticatedRequest(for: url, from: host) { request in

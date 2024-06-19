@@ -140,9 +140,6 @@
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ byl opět spojen.";
 
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
-
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d příspěvky.";
 
@@ -844,9 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Opravdu chcete odstranit tento příspěvek?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Opravdu chcete aktualizovat svou domovskou stránku?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Opravdu chcete provést aktualizaci?";
 
@@ -1069,18 +1063,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blogový příspěvek";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "E-mailový fanoušci blogu";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Sledovatel blogu";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog uživatele ";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Prohlížeč blogu";
-
 /* Label for the blogging reminders setting */
 "Blogging Reminders" = "Připomenutí blogů";
 
@@ -1169,7 +1151,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1208,7 +1189,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1576,7 +1556,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1741,7 +1720,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1908,8 +1886,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Vytvořit stránku";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Vytvořit příspěvek";
 
 /* Button to progress to the next step
@@ -1942,12 +1919,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "Vytvořte nový web pro své podnikání, časopis nebo osobní blog; nebo připojte stávající instalaci WordPress.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Vytvořte příspěvek nebo stránku";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Vytvořte příspěvek, stránku nebo příběh";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Vytvořte ikonu webu";
 
@@ -1965,12 +1936,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Vytvořit stránku";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Vytvoří nový příspěvek nebo stránku";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Vytvoří nový příspěvek, stránku nebo příběh";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Vytvořením nového menu ztratíte změny, které jste provedli v aktuálním menu. Jste si jisti, že chcete pokračovat?";
@@ -2045,9 +2010,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Přizpůsobte si zprávu, kterou chcete sdílet.\nPokud sem nepřidáte vlastní text, použijeme jako zprávu název příspěvku.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Přizpůsobte si nastavení sledovaného webu pro nové příspěvky a komentáře";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Přizpůsobte si nastavení pro To se mi líbí, Komentáře, Sledování a další.";
 
@@ -2075,9 +2037,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Časové rozmezí";
-
-/* Date and Time */
-"Date and Time" = "Datum a čas";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2218,9 +2177,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Objevujte";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Objevujte a sledujte své oblíbené blogy";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Objevujte a sledujte weby, které vás inspirují.";
 
@@ -2273,9 +2229,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2506,9 +2460,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "Emailová adresa";
 
-/* Blog Email Followers */
-"Email Followers" = "E-maily fanoušků";
-
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2702,9 +2653,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Vyskytla se chyba\nběhem aktualizace";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Nastala chyba\nběhem ukládání";
 
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Nastala chyba během publikování";
@@ -2910,9 +2858,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Najděte adresu svého webu";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Hledání blogů a příběhů, které se vám budou líbit ...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -2936,8 +2881,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Oprava hrozby";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Sledovat";
 
 /* Button title. Follow the comments on a post. */
@@ -2952,36 +2896,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Sledujte témata, která vás zajímají, a my najdeme blogy, které by se vám mohly líbit.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Sledujte své oblíbené weby a objevujte nové blogy.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Stránky které sledujete";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Odběratel";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Odběratelé";
-
-/* User is following the blog. */
-"Following" = "Sleduji";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Sledování nových témat...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Po tomto rozhovoru";
-
-/* Filters Follows Notifications */
-"Follows" = "Sledovat";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Sledovat tento blog.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Velikost písma";
@@ -3085,9 +3010,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Získejte podporu";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Rozviňte míč a sdílejte svůj příspěvek a zvyšte zobrazení příspěvku.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Seznamte se s aplikací Jetpack";
@@ -3245,9 +3167,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Ikona nápovědy";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Zde je ukázka toho, jak si příspěvek zatím vedl.";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Skrytý";
 
@@ -3268,8 +3187,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Skrýt nadpis vyhledávání";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historie";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3557,9 +3475,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Zdá se, že jste zadali nesprávné heslo. Chcete to zkusit znovu?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "Od zveřejnění %1$@ je to %2$@";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "Je čas napsat blog na %@!";
 
@@ -3780,7 +3695,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "To se mi líbí";
@@ -3832,7 +3746,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Odkaz vložen";
 
 /* No comment provided by engineer. */
-"Link text" = "Seznam textů";
+"Link label" = "Popisek odkazu";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Odkaz na existující obsah";
@@ -3884,9 +3798,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Načítání komentáře...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Načítání historie ...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Načítání menu...";
 
@@ -3907,7 +3818,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Načítání…";
 
@@ -4459,11 +4369,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Žádné opravené hrozby";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Zatím žádní fanoušci";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Zatím žádná historie";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -4910,9 +4816,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Nadřazená rubrika";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Nadřazená stránka byla úspěšně aktualizována.";
-
 /* Parenting site intent topic */
 "Parenting" = "Rodičovství";
 
@@ -5148,8 +5051,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Rubriky příspěvku";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Formát příspěvku";
 
 /* Name of the button to open the post settings
@@ -5340,8 +5242,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Publikováno";
 
 /* Label for the publish date button. */
@@ -5363,12 +5264,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Publikováno";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Publikované právě teď";
-
-/* Published on [date] */
-"Published on" = "Publikováno";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Publikuji stránku...";
@@ -5559,8 +5454,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Odebráním dalších kroků skryjete všechny prohlídky na tomto webu. Tuto akci nelze vrátit zpět.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Odebráním sledujících přestanou dostávat aktualizace z vašeho webu. Pokud se rozhodnou, mohou stále navštívit váš web a znovu jej sledovat.";
 
 /* No comment provided by engineer. */
@@ -5839,12 +5733,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Načasováno";
 
-/* Scheduled for [date] */
-"Scheduled for" = " Naplánováno na";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "Naplánováno na %@ v";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Plánování...";
 
@@ -5962,9 +5850,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Vyberte barvu výše";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Chcete-li pokračovat, vyberte několik";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Vyberte rozložení";
 
@@ -6074,9 +5959,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Služba";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Nastavit nadřazené";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Použít jako náhledový obrázek";
 
@@ -6120,7 +6002,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Aktualizace nastavení selhala";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6130,9 +6011,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Sdílejte Jetpack s přítelem";
-
-/* Label for action to share post. */
-"Share Post" = "Sdílejte příspěvek";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "Sdílejte WordPress s přítelem";
@@ -6253,9 +6131,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "Zaregistrujte se pomocí e-mailu";
 
-/* Label for time period in list of followers. */
-"Since" = "Od";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Jelikož máte bezplatný plán, uvidíte v protokolu aktivit omezené události.";
 
@@ -6310,9 +6185,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Web byl smazán";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Sledující weby";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Stránka nenalezena";
 
@@ -6348,10 +6220,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Na webu nejsou žádné ignorované hrozby.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sociální";
 
 /* Title of a Quick Start Tour */
@@ -7251,21 +7121,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Celkový počet komentářů";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Celkový počet e-mailových odběratelů: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Celkem počet fanoušků";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Celkem to se mi líbí";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Celkem příspěvků";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Celkový počet odběratelů WordPress.com: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Celkem slov";
@@ -7508,9 +7369,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Sledujte konverzaci";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Přestat sledovat tento blog.";
 
 /* Unhides a site from the site picker list */
 "Unhide" = "Odkryjte";
@@ -7759,9 +7617,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Zobrazit vše";
 
-/* Button label for viewing a post */
-"View Post" = "Zobrazit příspěvek";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobrazit web";
 
@@ -7774,10 +7629,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Zobrazit méně...";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Zobrazit více";
@@ -7798,7 +7651,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8208,9 +8060,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Pokud komentář obsahuje jakékoliv z těchto slov ve svém obsahu, jméně, URL, e-mailu, nebo IP, bude označen jako spam. Můžete také zadat části slov, takže podmínce \"press\" bude odpovídat \"WordPress\".";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Když provedete změny v editoru, zde uvidíte historii";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Když na svém webu provedete změny, uvidíte zde svoji historii aktivit.";
 
@@ -8469,9 +8318,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Zatím jste nepublikovali žádné příspěvky.";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Dosud jste nezveřejnili žádné příspěvky. Jakmile začnete publikovat, zobrazí se zde souhrn nejnovějších příspěvků.";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Dosáhli jste milníku 🚀";
 
@@ -8726,9 +8572,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Site Address placeholder */
 "example.com" = "example.com";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "sledovat";
-
 /* Title for button that will open up the blogging reminders screen. */
 "growAudienceCell.bloggingReminders.actionButton" = "Nastavte si připomenutí blogů";
 
@@ -8748,9 +8591,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "growAudienceCell.dismiss" = "Odmítnout";
 
 /* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Objevte blogy, které chcete sledovat";
-
-/* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Udělej to znova";
 
 /* A detailed message to users indicating that they've set up reader discover. */
@@ -8758,9 +8598,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* A hint to users that they've set up reader discover. */
 "growAudienceCell.readerDiscover.completed.tip" = "Připojili jste se k jiným blogům";
-
-/* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Spojte se s ostatními blogery sledováním, lajkováním a komentováním jejich příspěvků.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Povolit sdílení příspěvků";
@@ -8806,9 +8643,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Chcete přidat fotky a videa do vašeho příspěvku.";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -8914,9 +8748,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Subtitle of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Přepněte do aplikace Jetpack a najděte, sledujte a lajkujte všechny své oblíbené stránky a příspěvky pomocí aplikace Reader.";
-
-/* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Sledujte libovolnou stránku pomocí aplikace Jetpack";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack poskytuje statistiky, upozornění a další, které vám pomohou vytvořit a rozšířit web WordPress vašich snů.";
@@ -9230,12 +9061,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Insights Views Visitors Line chart. */
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Předchozích 7 dní";
 
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%3$@%%)* vyšší než za předchozích 7 dní";
-
-/* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* nižší než za předchozích 7 dní";
-
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Stejně jako předchozích 7 dní";
 
@@ -9310,9 +9135,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Insights 'Most Popular Time' header. Fire emoji should remain part of the string. */
 "stats.insights.mostPopularCard.title" = "🔥 Nejoblíbenější čas";
-
-/* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% shlédnutí";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Nedostatek aktivity. Vraťte se později, až budou mít vaše stránky více návštěvníků!";

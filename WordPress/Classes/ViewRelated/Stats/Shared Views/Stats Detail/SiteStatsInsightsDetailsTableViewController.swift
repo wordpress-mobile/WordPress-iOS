@@ -7,17 +7,16 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private var statType: StatType = .period
     private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsInsightsDetailsViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
 
     private var receipt: Receipt?
 
     private let insightsStore = StatsInsightsStore()
     private let periodStore = StatsPeriodStore()
+    private let revampStore = StatsRevampStore()
 
     private lazy var tableHandler: ImmuTableDiffableViewHandler = {
         return ImmuTableDiffableViewHandler(takeOver: self, with: nil)
@@ -54,7 +53,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         tableStyle = .insetGrouped
-        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
         updateHeader()
@@ -130,7 +128,10 @@ private extension SiteStatsInsightsDetailsTableViewController {
         viewModel = SiteStatsInsightsDetailsViewModel(insightsDetailsDelegate: self,
                                                       detailsDelegate: self,
                                                       referrerDelegate: self,
-                                                      viewsAndVisitorsDelegate: self)
+                                                      viewsAndVisitorsDelegate: self,
+                                                      insightsStore: insightsStore,
+                                                      periodStore: periodStore,
+                                                      revampStore: revampStore)
 
         guard let statSection = statSection else {
             return

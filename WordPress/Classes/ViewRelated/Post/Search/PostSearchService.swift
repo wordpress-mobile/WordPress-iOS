@@ -81,7 +81,9 @@ final class PostSearchService {
             offset += posts.count
             hasMore = !posts.isEmpty
 
-            let newPosts = posts.filter { !postIDs.contains($0.objectID) }
+            let newPosts = posts
+                .deduplicated(by: \.objectID)
+                .filter { !postIDs.contains($0.objectID) }
             postIDs.formUnion(newPosts.map(\.objectID))
             self.delegate?.service(self, didAppendPosts: newPosts)
         case .failure(let error):

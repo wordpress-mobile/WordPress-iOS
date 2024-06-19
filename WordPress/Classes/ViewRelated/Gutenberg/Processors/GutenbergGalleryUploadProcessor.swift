@@ -1,7 +1,7 @@
 import Foundation
-import Aztec
+import SwiftSoup
 
-class GutenbergGalleryUploadProcessor: Processor {
+class GutenbergGalleryUploadProcessor: GutenbergProcessor {
 
     let mediaUploadID: Int32
     let remoteURLString: String
@@ -28,76 +28,70 @@ class GutenbergGalleryUploadProcessor: Processor {
         static let dataLink = "data-link"
     }
 
-    lazy var imgPostMediaUploadProcessor = HTMLProcessor(for: ImageKeys.name, replacer: { (img) in
-        guard let imgClassAttributeValue = img.attributes[ImageKeys.classAttributes]?.value,
-            case let .string(imgClass) = imgClassAttributeValue else {
-                return nil
+    func processImgPostMediaUpload(_ element: Element) {
+        guard let imgTags = try? element.select(ImageKeys.name) else {
+            return
         }
+        imgTags.forEach {imgTag in
+            guard let imgClass = try? imgTag.attr(ImageKeys.classAttributes) else {
+                return
+            }
 
-        let classAttributes = imgClass.components(separatedBy: " ")
+            let classAttributes = imgClass.components(separatedBy: " ")
 
-        guard let imageIDAttribute = classAttributes.filter({ (value) -> Bool in
-            value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
-        }).first else {
-            return nil
+            guard let imageIDAttribute = classAttributes.filter({ (value) -> Bool in
+                value.hasPrefix(GutenbergImgUploadProcessor.imgClassIDPrefixAttribute)
+            }).first else {
+                return
+            }
+
+            let imageIDString = String(imageIDAttribute.dropFirst(ImageKeys.classIDPrefix.count))
+            let imgUploadID = Int32(imageIDString)
+
+            guard imgUploadID == self.mediaUploadID else {
+                return
+            }
+
+            let newImgClassAttributes = imgClass.replacingOccurrences(of: imageIDAttribute, with: ImageKeys.classIDPrefix + String(self.serverMediaID))
+
+            _ = try? imgTag.attr("src", self.remoteURLString)
+            _ = try? imgTag.attr("class", newImgClassAttributes)
+            _ = try? imgTag.attr(ImageKeys.dataID, String(self.serverMediaID))
+            _ = try? imgTag.attr(ImageKeys.dataFullURL, self.remoteURLString)
+
+            if let _ = try? imgTag.attr(ImageKeys.dataLink) {
+                _ = try? imgTag.attr(ImageKeys.dataLink, self.mediaLink)
+            }
         }
-
-        let imageIDString = String(imageIDAttribute.dropFirst(ImageKeys.classIDPrefix.count))
-        let imgUploadID = Int32(imageIDString)
-
-        guard imgUploadID == self.mediaUploadID else {
-            return nil
-        }
-
-        let newImgClassAttributes = imgClass.replacingOccurrences(of: imageIDAttribute, with: ImageKeys.classIDPrefix + String(self.serverMediaID))
-
-        var attributes = img.attributes
-        attributes.set(.string(self.remoteURLString), forKey: "src")
-        attributes.set(.string(newImgClassAttributes), forKey: "class")
-        attributes.set(.string("\(self.serverMediaID)"), forKey: ImageKeys.dataID)
-        attributes.set(.string(self.remoteURLString), forKey: ImageKeys.dataFullURL)
-        if attributes.contains(where: { $0.key == ImageKeys.dataLink } ) {
-            attributes.set(.string(self.mediaLink), forKey: ImageKeys.dataLink)
-        }
-
-        var html = "<\(ImageKeys.name) "
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        html += attributeSerializer.serialize(attributes)
-        html += " />"
-        return html
-    })
+    }
 
     private struct LinkKeys {
         static let name = "a"
     }
 
-    lazy var linkPostMediaUploadProcessor = HTMLProcessor(for: LinkKeys.name, replacer: { (link) in
-
-        guard let linkOriginalContent = link.content else {
-            return nil
+    func processLinkPostMediaUpload(_ block: GutenbergParsedBlock) {
+        guard let aTags = try? block.elements.select(LinkKeys.name) else {
+            return
         }
+        aTags.forEach { aTag in
+            guard let linkOriginalContent = try? aTag.html() else {
+                return
+            }
 
-        let linkUpdatedContent = self.imgPostMediaUploadProcessor.process(linkOriginalContent)
+            processImgPostMediaUpload(aTag)
+            let linkUpdatedContent = try? aTag.html()
 
-        guard linkUpdatedContent != linkOriginalContent else {
-            return nil
+            guard linkUpdatedContent != linkOriginalContent else {
+                return
+            }
+
+            if let linkToURL = self.linkToURL {
+                _ = try? aTag.attr("href", linkToURL)
+            } else {
+                _ = try? aTag.attr("href", self.remoteURLString)
+            }
         }
-
-        var attributes = link.attributes
-        if let linkToURL = self.linkToURL {
-            attributes.set(.string(linkToURL), forKey: "href")
-        } else {
-            attributes.set(.string(self.remoteURLString), forKey: "href")
-        }
-
-        var html = "<\(LinkKeys.name) "
-        let attributeSerializer = ShortcodeAttributeSerializer()
-        html += attributeSerializer.serialize(attributes)
-        html += " >"
-        html += linkUpdatedContent
-        html += "</\(LinkKeys.name)>"
-        return html
-    })
+    }
 
     private struct GalleryBlockKeys {
         static let name = "wp:gallery"
@@ -117,42 +111,35 @@ class GutenbergGalleryUploadProcessor: Processor {
         return ids
     }
 
-    lazy var galleryBlockProcessor = GutenbergBlockProcessor(for: GalleryBlockKeys.name, replacer: { block in
-        guard let idsAny = block.attributes[GalleryBlockKeys.ids] as? [Any] else {
-                return nil
-        }
-        var ids = self.convertToIntArray(idsAny)
-        guard ids.contains(self.mediaUploadID) else {
-            return nil
-        }
-        var updatedBlock = "<!-- \(GalleryBlockKeys.name) "
-        var attributes = block.attributes
-        if let index = ids.firstIndex(of: self.mediaUploadID ) {
-            ids[index] = Int32(self.serverMediaID)
-        }
-        attributes[GalleryBlockKeys.ids] = ids
-
-        if let jsonData = try? JSONSerialization.data(withJSONObject: attributes, options: .sortedKeys),
-            let jsonString = String(data: jsonData, encoding: .utf8) {
-            updatedBlock += jsonString
-        }
-        updatedBlock += " -->"
-        if let linkTo = block.attributes[GalleryBlockKeys.linkTo] as? String, linkTo != "none" {
-            if linkTo == "file" {
-                self.linkToURL = self.remoteURLString
-            } else if linkTo == "post" {
-                self.linkToURL = self.mediaLink
+    func processGalleryBlocks(_ blocks: [GutenbergParsedBlock]) {
+        let galleryBlocks = blocks.filter { $0.name == GalleryBlockKeys.name }
+        galleryBlocks.forEach { block in
+            guard let idsAny = block.attributes[GalleryBlockKeys.ids] as? [Any] else {
+                    return
             }
-            updatedBlock += self.linkPostMediaUploadProcessor.process(block.content)
-        } else {
-            updatedBlock += self.imgPostMediaUploadProcessor.process(block.content)
-        }
-        updatedBlock += "<!-- /\(GalleryBlockKeys.name) -->"
-        return updatedBlock
-    })
+            var ids = self.convertToIntArray(idsAny)
+            guard ids.contains(self.mediaUploadID) else {
+                return
+            }
+            if let index = ids.firstIndex(of: self.mediaUploadID ) {
+                ids[index] = Int32(self.serverMediaID)
+            }
+            block.attributes[GalleryBlockKeys.ids] = ids
 
-    func process(_ text: String) -> String {
-        let result = galleryBlockProcessor.process(text)
-        return result
+            if let linkTo = block.attributes[GalleryBlockKeys.linkTo] as? String, linkTo != "none" {
+                if linkTo == "file" {
+                    self.linkToURL = self.remoteURLString
+                } else if linkTo == "post" {
+                    self.linkToURL = self.mediaLink
+                }
+                processLinkPostMediaUpload(block)
+            } else {
+                block.elements.forEach { processImgPostMediaUpload($0) }
+            }
+        }
+    }
+
+    func process(_ blocks: [GutenbergParsedBlock]) {
+        processGalleryBlocks(blocks)
     }
 }

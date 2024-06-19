@@ -7,6 +7,10 @@ class ReaderTabViewController: UIViewController {
 
     private let makeReaderTabView: (ReaderTabViewModel) -> ReaderTabView
 
+    private var createButtonCoordinator: CreateButtonCoordinator?
+
+    private var isFABTracked: Bool = false
+
     private lazy var readerTabView: ReaderTabView = { [unowned viewModel] in
         return makeReaderTabView(viewModel)
     }()
@@ -17,8 +21,6 @@ class ReaderTabViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
 
         title = ReaderTabConstants.title
-
-        ReaderTabViewController.configureRestoration(on: self)
 
         ReaderCardService().clean()
 
@@ -54,6 +56,8 @@ class ReaderTabViewController: UIViewController {
         ReaderTracker.shared.start(.main)
         readerTabView.disableScrollsToTop()
 
+        createFABIfNeeded()
+
         if AppConfiguration.showsWhatIsNew {
             RootViewCoordinator.shared.presentWhatIsNew(on: self)
         }
@@ -69,6 +73,8 @@ class ReaderTabViewController: UIViewController {
         super.viewWillDisappear(animated)
 
         ReaderTracker.shared.stop(.main)
+
+        createButtonCoordinator?.removeCreateButton()
 
         QuickStartTourGuide.shared.endCurrentTour()
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -94,6 +100,45 @@ class ReaderTabViewController: UIViewController {
         viewModel.fetchReaderMenu()
         viewModel.showTab(at: ReaderTabConstants.discoverIndex)
     }
+
+    // MARK: - Reader FAB
+
+    private func createFABIfNeeded() {
+        // ensure that the button is truly removed before showing a new one.
+        createButtonCoordinator?.removeCreateButton()
+
+        guard RemoteFeatureFlag.readerFloatingButton.enabled(),
+              let blog = RootViewCoordinator.sharedPresenter.currentOrLastBlog(),
+              let window = UIApplication.shared.mainWindow else {
+            return
+        }
+
+        createButtonCoordinator = makeCreateButtonCoordinator(for: blog)
+        createButtonCoordinator?.add(to: window,
+                                    trailingAnchor: view.safeAreaLayoutGuide.trailingAnchor,
+                                    bottomAnchor: view.safeAreaLayoutGuide.bottomAnchor)
+
+        if !isFABTracked {
+            // we only need to track this once since it will remain visible everytime Reader is opened
+            // once a user gets the feature. For clickthrough, refer to `create_sheet_shown` with source: `reader`.
+            WPAnalytics.track(.readerFloatingButtonShown)
+            isFABTracked.toggle()
+        }
+
+        // Should we hide when the onboarding is shown?
+        createButtonCoordinator?.showCreateButton(for: blog)
+    }
+
+    private func makeCreateButtonCoordinator(for blog: Blog) -> CreateButtonCoordinator {
+        let source = "reader"
+
+        let postAction = PostAction(handler: {
+            let presenter = RootViewCoordinator.sharedPresenter
+            presenter.showPostTab()
+        }, source: source)
+
+        return CreateButtonCoordinator(self, actions: [postAction], source: source, blog: blog)
+    }
 }
 
 // MARK: Observing Quick Start
@@ -107,38 +152,6 @@ extension ReaderTabViewController {
 //        if let info = notification.userInfo,
 //           let element = info[QuickStartTourGuide.notificationElementKey] as? QuickStartTourElement {
 //        }
-    }
-}
-
-// MARK: - State Restoration
-extension ReaderTabViewController: UIViewControllerRestoration {
-
-    static func configureRestoration(on instance: ReaderTabViewController) {
-        instance.restorationIdentifier = ReaderTabConstants.restorationIdentifier
-        instance.restorationClass = ReaderTabViewController.self
-    }
-
-    static let encodedIndexKey = ReaderTabConstants.encodedIndexKey
-
-    static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                               coder: NSCoder) -> UIViewController? {
-
-        let index = Int(coder.decodeInt32(forKey: ReaderTabViewController.encodedIndexKey))
-
-        let controller = RootViewCoordinator.sharedPresenter.readerTabViewController
-        controller?.setStartIndex(index)
-
-        return controller
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        super.encodeRestorableState(with: coder)
-
-        coder.encode(viewModel.selectedIndex, forKey: ReaderTabViewController.encodedIndexKey)
-    }
-
-    func setStartIndex(_ index: Int) {
-        viewModel.selectedIndex = index
     }
 }
 
@@ -167,8 +180,6 @@ extension ReaderTabViewController {
             comment: "Reader search button accessibility label."
         )
         static let storyBoardInitError = "Storyboard instantiation not supported"
-        static let restorationIdentifier = "WPReaderTabControllerRestorationID"
-        static let encodedIndexKey = "WPReaderTabControllerIndexRestorationKey"
         static let discoverIndex = 0
         static let spotlightOffset = UIOffset(horizontal: 20, vertical: -10)
         static let settingsButtonContentEdgeInsets = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)

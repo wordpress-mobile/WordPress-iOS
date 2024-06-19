@@ -14,6 +14,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             createSecondarySection(),
             createBlazeSection(),
             createSetPageAttributesSection(),
+            createNavigationSection(),
             createTrashSection()
         ]
     }
@@ -38,16 +39,18 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
-
-        if !page.isFailed && page.status != .trash {
+        if page.status != .trash {
             buttons.append(.view)
         }
-
         return AbstractPostButtonSection(buttons: buttons)
     }
 
     private func createSecondarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
+
+        if canPublish {
+            buttons.append(.publish)
+        }
 
         if page.status != .draft && !isSiteHomepage {
             buttons.append(.moveToDraft)
@@ -61,15 +64,12 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             buttons.append(.share)
         }
 
-        if page.status != .trash && page.isFailed {
-            buttons.append(.retry)
-        }
-
-        if !page.isFailed, page.status != .publish && page.status != .trash {
-            buttons.append(.publish)
-        }
-
         return AbstractPostButtonSection(buttons: buttons)
+    }
+
+    private var canPublish: Bool {
+        let userCanPublish = page.blog.capabilities != nil ? page.blog.isPublishingPostsAllowed() : true
+        return page.isStatus(in: [.draft, .pending]) && userCanPublish
     }
 
     private func createBlazeSection() -> AbstractPostButtonSection {
@@ -90,8 +90,6 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: buttons)
         }
 
-        buttons.append(.setParent)
-
         guard page.status == .publish else {
             return AbstractPostButtonSection(buttons: buttons)
         }
@@ -105,11 +103,18 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         } else {
             buttons.append(.setRegularPage)
         }
+        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+    }
+
+    private func createNavigationSection() -> AbstractPostButtonSection {
+        var buttons = [AbstractPostButton]()
+        if isJetpackFeaturesEnabled, page.status == .publish && page.hasRemote() {
+            buttons.append(.stats)
+        }
         if page.status != .trash {
             buttons.append(.settings)
         }
-
-        return AbstractPostButtonSection(buttons: buttons, submenuButton: .pageAttributes)
+        return AbstractPostButtonSection(buttons: buttons)
     }
 
     private func createTrashSection() -> AbstractPostButtonSection {
@@ -117,6 +122,7 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
             return AbstractPostButtonSection(buttons: [])
         }
 
-        return AbstractPostButtonSection(buttons: [.trash])
+        let action: AbstractPostButton = page.original().status == .trash ? .delete : .trash
+        return AbstractPostButtonSection(buttons: [action])
     }
 }

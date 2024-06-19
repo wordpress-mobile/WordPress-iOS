@@ -395,7 +395,7 @@ private extension JetpackFullscreenOverlayGeneralViewModel {
 
             enum Reader {
                 static let title = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.reader.title",
-                                                     value: "Follow any site with the Jetpack app",
+                                                     value: "Subscribe to any site with the Jetpack app",
                                                      comment: "Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app.")
                 static let subtitle = NSLocalizedString("jetpack.fullscreen.overlay.phaseOne.reader.subtitle",
                                                      value: "Switch to the Jetpack app to find, follow, and like all your favorite sites and posts with Reader.",

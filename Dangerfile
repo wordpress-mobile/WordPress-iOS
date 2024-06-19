@@ -3,7 +3,8 @@
 github.dismiss_out_of_range_messages
 
 # `files: []` forces rubocop to scan all files, not just the ones modified in the PR
-rubocop.lint(files: [], force_exclusion: true, inline_comment: true, fail_on_inline_comment: true, include_cop_names: true)
+# Added a custom `rubocop_cmd` to prevent RuboCop from running using `bundle exec`, which we don't want on the linter agent
+rubocop.lint(files: [], force_exclusion: true, inline_comment: true, fail_on_inline_comment: true, include_cop_names: true, rubocop_cmd: ': | rubocop')
 
 manifest_pr_checker.check_all_manifest_lock_updated
 

@@ -3,9 +3,6 @@ import WordPressAuthenticator
 
 @objc
 class MySitesCoordinator: NSObject {
-    static let splitViewControllerRestorationID = "MySiteSplitViewControllerRestorationID"
-    static let navigationControllerRestorationID = "MySiteNavigationControllerRestorationID"
-
     let meScenePresenter: ScenePresenter
 
     let becomeActiveTab: () -> Void
@@ -53,7 +50,6 @@ class MySitesCoordinator: NSObject {
     lazy var splitViewController: WPSplitViewController = {
         let splitViewController = WPSplitViewController()
 
-        splitViewController.restorationIdentifier = MySitesCoordinator.splitViewControllerRestorationID
         splitViewController.presentsWithGesture = false
         splitViewController.setInitialPrimaryViewController(navigationController)
         splitViewController.tabBarItem = navigationController.tabBarItem
@@ -66,7 +62,6 @@ class MySitesCoordinator: NSObject {
         let navigationController = UINavigationController(rootViewController: rootContentViewController)
 
         navigationController.navigationBar.prefersLargeTitles = true
-        navigationController.restorationIdentifier = MySitesCoordinator.navigationControllerRestorationID
         navigationController.navigationBar.isTranslucent = false
 
         if FeatureFlag.newTabIcons.enabled {
@@ -83,11 +78,6 @@ class MySitesCoordinator: NSObject {
         navigationController.extendedLayoutIncludesOpaqueBars = true
 
         return navigationController
-    }()
-
-    @objc
-    private(set) lazy var blogListViewController: BlogListViewController = {
-        BlogListViewController(configuration: .defaultConfig, meScenePresenter: self.meScenePresenter)
     }()
 
     private lazy var mySiteViewController: MySiteViewController = {
@@ -139,7 +129,7 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .stats)
     }
 
-    func showStats(for blog: Blog, source: BlogDetailsNavigationSource, tab: StatsTabType? = nil, date: Date? = nil) {
+    func showStats(for blog: Blog, source: BlogDetailsNavigationSource, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             unsupportedFeatureFallback()
             return
@@ -153,6 +143,10 @@ class MySitesCoordinator: NSObject {
 
         if let siteID = blog.dotComID?.intValue, let tab = tab {
             SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
+        }
+
+        if let unit = unit {
+            SiteStatsDashboardPreferences.setSelected(periodUnit: unit)
         }
 
         let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): NSNumber(value: source.rawValue)]

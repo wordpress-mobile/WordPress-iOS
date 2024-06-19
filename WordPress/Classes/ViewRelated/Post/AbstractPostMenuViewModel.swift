@@ -15,14 +15,13 @@ struct AbstractPostButtonSection {
 }
 
 enum AbstractPostButton: Equatable {
-    case retry
     case view
     case publish
     case stats
     case duplicate
     case moveToDraft
     case trash
-    case cancelAutoUpload
+    case delete
     case share
     case blaze
     case comments
@@ -30,7 +29,6 @@ enum AbstractPostButton: Equatable {
 
     /// Specific to pages
     case pageAttributes
-    case setParent
     case setHomepage
     case setPostsPage
     case setRegularPage

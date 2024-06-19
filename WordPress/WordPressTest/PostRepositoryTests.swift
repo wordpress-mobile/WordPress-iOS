@@ -26,221 +26,6 @@ class PostRepositoryTests: CoreDataTestCase {
         repository = PostRepository(coreDataStack: contextManager, remoteFactory: remoteFactory)
     }
 
-    func testGetPost() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "post"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertFalse(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
-    }
-
-    func testGetPage() async throws {
-        let post = RemotePost(siteID: 1, status: "publish", title: "Post: Test", content: "This is a test post")
-        post?.type = "page"
-        remoteMock.remotePostToReturnOnGetPostWithID = post
-        let postID = try await repository.getPost(withID: 1, from: blogID)
-        let isPage = try await contextManager.performQuery { try $0.existingObject(with: postID) is Page }
-        let title = try await contextManager.performQuery { try $0.existingObject(with: postID).postTitle }
-        let content = try await contextManager.performQuery { try $0.existingObject(with: postID).content }
-        XCTAssertTrue(isPage)
-        XCTAssertEqual(title, "Post: Test")
-        XCTAssertEqual(content, "This is a test post")
-    }
-
-    func testDeletePost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        remoteMock.deletePostResult = .success(())
-        try await repository.delete(postID)
-
-        let isPostDeleted = await contextManager.performQuery { context in
-            (try? context.existingObject(with: postID)) == nil
-        }
-        XCTAssertTrue(isPostDeleted)
-    }
-
-    func testDeletePostWithRemoteFailure() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        remoteMock.deletePostResult = .failure(NSError.testInstance())
-        do {
-            try await repository.delete(postID)
-            XCTFail("The deletion should fail because of an API failure")
-        } catch {
-            // Do nothing
-        }
-
-        let isPostDeleted = await contextManager.performQuery { context in
-            (try? context.existingObject(with: postID)) == nil
-        }
-        XCTAssertTrue(isPostDeleted)
-    }
-
-    func testDeleteHistory() async throws {
-        let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
-            let second = first.createRevision()
-            second.postTitle = "Edited"
-            return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
-        }
-
-        remoteMock.deletePostResult = .success(())
-        try await repository.delete(firstRevision)
-
-        let isPostDeleted = await contextManager.performQuery { context in
-            (try? context.existingObject(with: firstRevision)) == nil
-              && (try? context.existingObject(with: secondRevision)) == nil
-        }
-        XCTAssertTrue(isPostDeleted)
-    }
-
-    func testDeleteLatest() async throws {
-        let (firstRevision, secondRevision) = try await contextManager.performAndSave { context in
-            let first = PostBuilder(context).with(status: .trash).withRemote().with(title: "Post: Test").build()
-            let second = first.createRevision()
-            second.postTitle = "Edited"
-            return (TaggedManagedObjectID(first), TaggedManagedObjectID(second))
-        }
-
-        remoteMock.deletePostResult = .success(())
-        try await repository.delete(secondRevision)
-
-        let isPostDeleted = await contextManager.performQuery { context in
-            (try? context.existingObject(with: firstRevision)) == nil
-              && (try? context.existingObject(with: secondRevision)) == nil
-        }
-        XCTAssertTrue(isPostDeleted)
-    }
-
-    func testTrashPost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        // No API call should be made, because the post is a local post
-        let remotePost = RemotePost(siteID: 1, status: "trash", title: "Post: Test", content: "New content")!
-        remotePost.type = "post"
-        remoteMock.trashPostResult = .success(remotePost)
-        try await repository.trash(postID)
-
-        let content = try await contextManager.performQuery { context in
-            (try context.existingObject(with: postID)).content
-        }
-        XCTAssertEqual(content, "New content")
-    }
-
-    func testTrashLocalPost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        // No API call should be made, because the post is a local post
-        remoteMock.trashPostResult = .failure(NSError.testInstance())
-        try await repository.trash(postID)
-
-        let status = try await contextManager.performQuery { context in
-            (try context.existingObject(with: postID)).status
-        }
-        XCTAssertEqual(status, .trash)
-    }
-
-    func testTrashTrashedPost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).with(status: .trash).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        // No API call should be made, because the post is a local post
-        remoteMock.trashPostResult = .failure(NSError.testInstance())
-        remoteMock.deletePostResult = .failure(NSError.testInstance())
-        try await repository.trash(postID)
-
-        let isPostDeleted = await contextManager.performQuery { context in
-            (try? context.existingObject(with: postID)) == nil
-        }
-        XCTAssertTrue(isPostDeleted)
-    }
-
-    func testTrashingAPostWillUpdateItsRevisionStatusAfterSyncProperty() async throws {
-        // Arrange
-        let (postID, revisionID) = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).with(statusAfterSync: .publish).withRemote().build()
-            let revision = post.createRevision()
-            return (TaggedManagedObjectID(post), TaggedManagedObjectID(revision))
-        }
-
-        let remotePost = RemotePost(siteID: 1, status: "trash", title: "Post: Test", content: "New content")!
-        remotePost.type = "post"
-        remoteMock.trashPostResult = .success(remotePost)
-
-        // Act
-        try await repository.trash(postID)
-
-        // Assert
-        let postStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: postID).statusAfterSync }
-        let postStatus = try await contextManager.performQuery { try $0.existingObject(with: postID).status }
-        let revisionStatusAfterSync = try await contextManager.performQuery { try $0.existingObject(with: revisionID).statusAfterSync }
-        let revisionStatus = try await contextManager.performQuery { try $0.existingObject(with: revisionID).status }
-
-        XCTAssertEqual(postStatusAfterSync, .trash)
-        XCTAssertEqual(postStatus, .trash)
-        XCTAssertEqual(revisionStatusAfterSync, .trash)
-        XCTAssertEqual(revisionStatus, .trash)
-     }
-
-    func testRestorePost() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        let remotePost = RemotePost(siteID: 1, status: "draft", title: "Post: Test", content: "New content")!
-        remotePost.type = "post"
-        remoteMock.restorePostResult = .success(remotePost)
-        try await repository.restore(postID, to: .publish)
-
-        // The restored post should match the post returned by WordPress API.
-        let (status, content) = try await contextManager.performQuery { context in
-            let post = try context.existingObject(with: postID)
-            return (post.status, post.content)
-        }
-        XCTAssertEqual(status, .draft)
-        XCTAssertEqual(content, "New content")
-    }
-
-    func testRestorePostFailure() async throws {
-        let postID = try await contextManager.performAndSave { context in
-            let post = PostBuilder(context).withRemote().with(status: .trash).with(title: "Post: Test").build()
-            return TaggedManagedObjectID(post)
-        }
-
-        remoteMock.restorePostResult = .failure(NSError.testInstance())
-
-        do {
-            try await repository.restore(postID, to: .publish)
-            XCTFail("The restore call should throw an error")
-        } catch {
-            let status = try await contextManager.performQuery { context in
-                let post = try context.existingObject(with: postID)
-                return post.status
-            }
-            XCTAssertEqual(status, .trash)
-        }
-    }
-
     func testFetchAllPagesAPIError() async throws {
         // Use an empty array to simulate an HTTP API error
         remoteMock.remotePostsToReturnOnSyncPostsOfType = []
@@ -454,7 +239,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
         case fail
     }
 
-    var remotePostToReturnOnGetPostWithID: RemotePost?
     var remotePostsToReturnOnSyncPostsOfType = [[RemotePost]]() // Each element contains an array of RemotePost for one API request.
     var remotePostToReturnOnUpdatePost: RemotePost?
     var remotePostToReturnOnCreatePost: RemotePost?
@@ -473,10 +257,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
     private(set) var invocationsCountOfCreatePost = 0
     private(set) var invocationsCountOfAutoSave = 0
     private(set) var invocationsCountOfUpdate = 0
-
-    override func getPostWithID(_ postID: NSNumber!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        success(self.remotePostToReturnOnGetPostWithID)
-    }
 
     override func getPostsOfType(_ postType: String!, options: [AnyHashable: Any]! = [:], success: (([RemotePost]?) -> Void)!, failure: ((Error?) -> Void)!) {
         guard !remotePostsToReturnOnSyncPostsOfType.isEmpty else {
@@ -502,15 +282,6 @@ private class PostServiceRESTMock: PostServiceRemoteREST {
 
     override func trashPost(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
         switch self.trashPostResult {
-        case let .failure(error):
-            failure(error)
-        case let .success(remotePost):
-            success(remotePost)
-        }
-    }
-
-    override func restore(_ post: RemotePost!, success: ((RemotePost?) -> Void)!, failure: ((Error?) -> Void)!) {
-        switch self.restorePostResult {
         case let .failure(error):
             failure(error)
         case let .success(remotePost):

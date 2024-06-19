@@ -4,7 +4,6 @@ import WidgetKit
 
 enum PeriodType: CaseIterable {
     case timeIntervalsSummary
-    case totalsSummary
     case topPostsAndPages
     case topReferrers
     case topPublished
@@ -30,7 +29,6 @@ enum PeriodQuery {
         let period: StatsPeriodUnit
         let chartBarsUnit: StatsPeriodUnit
         let chartBarsLimit: Int
-        let chartTotalsLimit: Int
     }
 
     case allCachedPeriodData(date: Date, period: StatsPeriodUnit, unit: StatsPeriodUnit)
@@ -132,9 +130,6 @@ struct PeriodStoreState {
 
     var timeIntervalsSummaryStatus: StoreFetchingStatus = .idle
 
-    var totalsSummary: StatsSummaryTimeIntervalData?
-    var totalsSummaryStatus: StoreFetchingStatus = .idle
-
     var topPostsAndPages: StatsTopPostsTimeIntervalData?
     var topPostsAndPagesStatus: StoreFetchingStatus = .idle
 
@@ -178,7 +173,6 @@ protocol StatsPeriodStoreMethods {
     var fetchingOverviewHasFailed: Bool { get }
     var containsCachedData: Bool { get }
     var timeIntervalsSummaryStatus: StoreFetchingStatus { get }
-    var totalsSummaryStatus: StoreFetchingStatus { get }
     var topPostsAndPagesStatus: StoreFetchingStatus { get }
     var topReferrersStatus: StoreFetchingStatus { get }
     var topPublishedStatus: StoreFetchingStatus { get }
@@ -189,7 +183,6 @@ protocol StatsPeriodStoreMethods {
     var topVideosStatus: StoreFetchingStatus { get }
     var topFileDownloadsStatus: StoreFetchingStatus { get }
     func getSummary() -> StatsSummaryTimeIntervalData?
-    func getTotalsSummary() -> StatsSummaryTimeIntervalData?
     func getTopReferrers() -> StatsTopReferrersTimeIntervalData?
     func getTopClicks() -> StatsTopClicksTimeIntervalData?
     func getTopAuthors() -> StatsTopAuthorsTimeIntervalData?
@@ -248,7 +241,6 @@ final class StatsPeriodStore: StatsPeriodStoreProtocol {
             cache.setValue(value, record: record, siteID: siteID)
         }
         state.timeIntervalsSummary.map { setValue($0, .timeIntervalsSummary) }
-        state.totalsSummary.map { setValue($0, .totalsSummary) }
         state.topPostsAndPages.map { setValue($0, .topPostsAndPages) }
         state.topReferrers.map { setValue($0, .topReferrers) }
         state.topClicks.map { setValue($0, .topClicks) }
@@ -282,7 +274,7 @@ private extension StatsPeriodStore {
         switch query {
         case .allCachedPeriodData(let date, let period, let unit):
             loadFromCache(date: date, period: period, unit: unit)
-        case .timeIntervalsSummary(let date, let period):
+        case .timeIntervalsSummary:
             if shouldFetchTimeIntervalsSummary() {
                 fetchTimeIntervalsSummary(date: query.date, period: query.period)
             }
@@ -509,10 +501,8 @@ private extension StatsPeriodStore {
             cache.getValue(record: record, date: date, period: period, unit: unit, siteID: siteID)
         }
         transaction { state in
-            // timeIntervalsSummary and totalsSummary depends on both period and unit
+            // timeIntervalsSummary depends on both period and unit
             state.timeIntervalsSummary = getValue(.timeIntervalsSummary, unit: unit)
-            // totals are fetched with a unit equal to period
-            state.totalsSummary = getValue(.totalsSummary, unit: period)
             state.topPostsAndPages = getValue(.topPostsAndPages)
             state.topReferrers = getValue(.topReferrers)
             state.topClicks = getValue(.topClicks)
@@ -543,24 +533,6 @@ private extension StatsPeriodStore {
         guard let service = statsRemote() else {
             return
         }
-
-        // Backend doesn't accept a future date when fetching totals in some cases
-        // https://github.com/Automattic/jetpack/issues/36117
-        let totalsOperationDate = min(params.date, StatsDataHelper.currentDateForSite())
-
-        let totalsOperation = PeriodOperation(service: service, for: params.period, unit: params.period, date: totalsOperationDate, limit: params.chartTotalsLimit) { [weak self] (totalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
-            if error != nil {
-                DDLogError("Stats Traffic: Error fetching totals summary: \(String(describing: error?.localizedDescription))")
-            }
-
-            DDLogInfo("Stats Traffic: Finished fetching total summary.")
-
-            DispatchQueue.main.async {
-                self?.receivedTotalsSummary(totalsSummary, error)
-                self?.storeDataInCache()
-            }
-        }
-        operationQueue.addOperation(totalsOperation)
 
         let chartOperation = PeriodOperation(service: service, for: params.period, unit: params.chartBarsUnit, date: params.date, limit: params.chartBarsLimit) { [weak self] (timeIntervalsSummary: StatsSummaryTimeIntervalData?, error: Error?) in
             if error != nil {
@@ -670,15 +642,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshPostsAndPages(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchPostsAndPages() else {
-            DDLogInfo("Stats Period Posts And Pages refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllPostsAndPages(date: date, period: period)
-    }
-
     private func fetchAllSearchTerms(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -700,15 +663,6 @@ private extension StatsPeriodStore {
             }
             self?.storeDataInCache()
         })
-    }
-
-    private func refreshSearchTerms(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchSearchTerms() else {
-            DDLogInfo("Stats Period Search Terms refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllSearchTerms(date: date, period: period)
     }
 
     private func fetchAllVideos(date: Date, period: StatsPeriodUnit) {
@@ -734,15 +688,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshVideos(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchVideos() else {
-            DDLogInfo("Stats Period Videos refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllVideos(date: date, period: period)
-    }
-
     private func fetchAllClicks(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -764,15 +709,6 @@ private extension StatsPeriodStore {
             }
             self?.storeDataInCache()
         })
-    }
-
-    private func refreshClicks(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchClicks() else {
-            DDLogInfo("Stats Period Clicks refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllClicks(date: date, period: period)
     }
 
     private func fetchAllAuthors(date: Date, period: StatsPeriodUnit) {
@@ -798,15 +734,6 @@ private extension StatsPeriodStore {
         })
     }
 
-    private func refreshAuthors(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchAuthors() else {
-            DDLogInfo("Stats Period Authors refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllAuthors(date: date, period: period)
-    }
-
     private func fetchAllReferrers(date: Date, period: StatsPeriodUnit) {
         guard let statsRemote = statsRemote() else {
             return
@@ -828,15 +755,6 @@ private extension StatsPeriodStore {
                 self?.storeDataInCache()
             }
         })
-    }
-
-    private func refreshReferrers(date: Date, period: StatsPeriodUnit) {
-        guard shouldFetchReferrers() else {
-            DDLogInfo("Stats Period Referrers refresh triggered while one was in progress.")
-            return
-        }
-
-        fetchAllReferrers(date: date, period: period)
     }
 
     private func fetchAllCountries(date: Date, period: StatsPeriodUnit) {
@@ -977,16 +895,6 @@ private extension StatsPeriodStore {
         }
     }
 
-    private func receivedTotalsSummary(_ summaryData: StatsSummaryTimeIntervalData?, _ error: Error?) {
-        transaction { state in
-            state.totalsSummaryStatus = error != nil ? .error : .success
-
-            if summaryData != nil {
-                state.totalsSummary = summaryData
-            }
-        }
-    }
-
     private func receivedPostsAndPages(_ postsAndPages: StatsTopPostsTimeIntervalData?, _ error: Error?) {
         transaction { state in
             state.topPostsAndPagesStatus = error != nil ? .error : .success
@@ -1119,7 +1027,6 @@ private extension StatsPeriodStore {
 
     private func shouldFetchOverview() -> Bool {
         return [state.timeIntervalsSummaryStatus,
-                state.totalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,
@@ -1134,7 +1041,6 @@ private extension StatsPeriodStore {
     private func setAllFetchingStatus(_ status: StoreFetchingStatus) {
         transaction { state in
             state.timeIntervalsSummaryStatus = status
-            state.totalsSummaryStatus = status
             state.topPostsAndPagesStatus = status
             state.topReferrersStatus = status
             state.topPublishedStatus = status
@@ -1199,10 +1105,6 @@ extension StatsPeriodStore {
         return state.timeIntervalsSummary
     }
 
-    func getTotalsSummary() -> StatsSummaryTimeIntervalData? {
-        return state.totalsSummary
-    }
-
     func getTopPostsAndPages() -> StatsTopPostsTimeIntervalData? {
         return state.topPostsAndPages
     }
@@ -1258,10 +1160,6 @@ extension StatsPeriodStore {
 
     var timeIntervalsSummaryStatus: StoreFetchingStatus {
         return state.timeIntervalsSummaryStatus
-    }
-
-    var totalsSummaryStatus: StoreFetchingStatus {
-        return state.totalsSummaryStatus
     }
 
     var isFetchingSummary: Bool {
@@ -1342,7 +1240,6 @@ extension StatsPeriodStore {
 
     var fetchingOverviewHasFailed: Bool {
         return [state.timeIntervalsSummaryStatus,
-                state.totalsSummaryStatus,
                 state.topPostsAndPagesStatus,
                 state.topReferrersStatus,
                 state.topPublishedStatus,

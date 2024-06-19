@@ -44,6 +44,7 @@ class WebCommentContentRenderer: NSObject, CommentContentRenderer {
         webView.scrollView.showsVerticalScrollIndicator = false
         webView.scrollView.backgroundColor = .clear
         webView.configuration.allowsInlineMediaPlayback = true
+        webView.configuration.userContentController.add(self, name: "eventHandler")
     }
 
     func render() -> UIView {
@@ -111,6 +112,20 @@ extension WebCommentContentRenderer: WKNavigationDelegate {
     }
 }
 
+// MARK: - WKScriptMessageHandler
+
+extension WebCommentContentRenderer: WKScriptMessageHandler {
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let body = message.body as? String,
+              let event = ReaderWebView.EventMessage(rawValue: body)?.analyticEvent else {
+            return
+        }
+        WPAnalytics.track(event)
+    }
+
+}
+
 // MARK: - Private Methods
 
 private extension WebCommentContentRenderer {
@@ -139,12 +154,27 @@ private extension WebCommentContentRenderer {
         ReaderDisplaySetting.customizationEnabled ? displaySetting.color.foreground : .text
     }
 
-    var highlightColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.highlightColor : displaySetting.color.foreground
+    var mentionBackgroundColor: UIColor {
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return Constants.mentionBackgroundColor
+        }
+
+        return displaySetting.color == .system ? Constants.mentionBackgroundColor : displaySetting.color.secondaryBackground
     }
 
-    var mentionBackgroundColor: UIColor {
-        ReaderDisplaySetting.customizationEnabled ? Constants.mentionBackgroundColor : .clear
+    var linkColor: UIColor {
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return Constants.highlightColor
+        }
+
+        return displaySetting.color == .system ? Constants.highlightColor : displaySetting.color.foreground
+    }
+
+    var secondaryBackgroundColor: UIColor {
+        guard ReaderDisplaySetting.customizationEnabled else {
+            return .secondarySystemBackground
+        }
+        return displaySetting.color.secondaryBackground
     }
 
     /// Cache the HTML template format. We only need read the template once.
@@ -186,22 +216,38 @@ private extension WebCommentContentRenderer {
         /* Basic style variables */
         :root {
             --text-font: \(displaySetting.font.cssString);
-            --text-color: \(textColor.lightVariant().cssRGBAString());
-            --primary-color: \(highlightColor.lightVariant().cssRGBAString());
-            --mention-background-color: \(mentionBackgroundColor.lightVariant().cssRGBAString());
+
+            /* link styling */
+            --link-font-weight: \(displaySetting.color == .system ? "inherit" : "600");
+            --link-text-decoration: \(displaySetting.color == .system ? "inherit" : "underline");
+        }
+
+        /* Color overrides for light mode */
+        @media(prefers-color-scheme: light) {
+            \(cssColors(interfaceStyle: .light))
         }
 
         /* Color overrides for dark mode */
         @media(prefers-color-scheme: dark) {
-            :root {
-                --text-color: \(textColor.darkVariant().cssRGBAString());
-                --primary-color: \(highlightColor.darkVariant().cssRGBAString());
-                --mention-background-color: \(mentionBackgroundColor.darkVariant().cssRGBAString());
-            }
+            \(cssColors(interfaceStyle: .dark))
         }
+        """
+    }
 
-        a {
-          text-decoration: \(displaySetting.color == .system ? "initial" : "underline");
+    /// CSS color definitions that matches the current color theme.
+    /// - Parameter interfaceStyle: The current `UIUserInterfaceStyle` value.
+    /// - Returns: A string of CSS colors to be injected.
+    private func cssColors(interfaceStyle: UIUserInterfaceStyle) -> String {
+        let trait = UITraitCollection(userInterfaceStyle: interfaceStyle)
+
+        return """
+        :root {
+            --text-color: \(textColor.color(for: trait).cssRGBAString());
+            --text-secondary-color: \(displaySetting.color.secondaryForeground.color(for: trait).cssRGBAString());
+            --link-color: \(linkColor.color(for: trait).cssRGBAString());
+            --mention-background-color: \(mentionBackgroundColor.color(for: trait).cssRGBAString());
+            --background-secondary-color: \(secondaryBackgroundColor.color(for: trait).cssRGBAString());
+            --border-color: \(displaySetting.color.border.color(for: trait).cssRGBAString());
         }
         """
     }

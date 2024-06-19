@@ -1,5 +1,6 @@
 import UIKit
 import WordPressUI
+import AutomatticTracks
 
 typealias RelatedPostsSection = (postType: RemoteReaderSimplePost.PostType, posts: [RemoteReaderSimplePost])
 
@@ -185,7 +186,9 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     // Reader customization model
     private lazy var displaySettingStore: ReaderDisplaySettingStore = {
-        return .init()
+        let store = ReaderDisplaySettingStore()
+        store.delegate = self
+        return store
     }()
 
     // Convenient access to the underlying structure
@@ -560,7 +563,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     /// Apply view styles
-    private func applyStyles() {
+    @MainActor private func applyStyles() {
         guard let readableGuide = webView.superview?.readableContentGuide else {
             return
         }
@@ -601,11 +604,16 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
         featuredImage.displaySetting = displaySetting
 
         // Update Reader Post web view
-        if let post {
+        if let contentForDisplay = post?.contentForDisplay() {
             webView.displaySetting = displaySetting
-            webView.loadHTMLString(post.contentForDisplay())
-            // TODO: Fix sizing
+            webView.loadHTMLString(contentForDisplay)
+        } else {
+            // It's unexpected for the `post` or `contentForDisplay()` to be nil. Let's keep track of it.
+            CrashLogging.main.logMessage("Expected contentForDisplay() to exist", level: .error)
         }
+
+        // Likes view
+        likesSummary.displaySetting = displaySetting
 
         // Comments table view
         commentsTableViewDelegate.displaySetting = displaySetting
@@ -713,6 +721,7 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
 
     private func configureLikesSummary() {
         likesSummary.delegate = coordinator
+        likesSummary.displaySetting = displaySetting
         likesContainerView.addSubview(likesSummary)
         likesContainerView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -841,7 +850,8 @@ class ReaderDetailViewController: UIViewController, ReaderDetailView {
     }
 
     @objc func didTapDisplaySettingButton(_ sender: UIBarButtonItem) {
-        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting) { [weak self] newSetting in
+        let viewController = ReaderDisplaySettingViewController(initialSetting: displaySetting,
+                                                                source: .readerPostNavBar) { [weak self] newSetting in
             // no need to refresh if there are no changes to the display setting.
             guard let self,
                   newSetting != self.displaySetting else {
@@ -1068,6 +1078,14 @@ extension ReaderDetailViewController: UITableViewDataSource, UITableViewDelegate
     }
 }
 
+// MARK: - ReaderDisplaySettingStoreDelegate
+
+extension ReaderDetailViewController: ReaderDisplaySettingStoreDelegate {
+    func displaySettingDidChange() {
+        applyDisplaySetting()
+    }
+}
+
 // MARK: - UIGestureRecognizerDelegate
 extension ReaderDetailViewController: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -1277,27 +1295,6 @@ private extension ReaderDetailViewController {
 extension ReaderDetailViewController: NoResultsViewControllerDelegate {
     func actionButtonPressed() {
         coordinator?.openInBrowser()
-    }
-}
-
-// MARK: - State Restoration
-
-extension ReaderDetailViewController: UIViewControllerRestoration {
-    public static func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                                      coder: NSCoder) -> UIViewController? {
-        return ReaderDetailCoordinator.viewController(withRestorationIdentifierPath: identifierComponents, coder: coder)
-    }
-
-    open override func encodeRestorableState(with coder: NSCoder) {
-        coordinator?.encodeRestorableState(with: coder)
-
-        super.encodeRestorableState(with: coder)
-    }
-
-    open override func awakeAfter(using aDecoder: NSCoder) -> Any? {
-        restorationClass = type(of: self)
-
-        return super.awakeAfter(using: aDecoder)
     }
 }
 

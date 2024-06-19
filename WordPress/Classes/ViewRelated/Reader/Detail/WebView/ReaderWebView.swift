@@ -26,6 +26,8 @@ class ReaderWebView: WKWebView {
         if #available(iOS 16.4, *) {
             isInspectable = true
         }
+
+        configuration.userContentController.add(self, name: "eventHandler")
     }
 
     /// Loads a HTML content into the webview and apply styles
@@ -89,6 +91,25 @@ class ReaderWebView: WKWebView {
                     });
                 }
             })
+            function debounce(fn, timeout) {
+                let timer;
+                return () => {
+                    clearTimeout(timer);
+                    timer = setTimeout(fn, timeout);
+                }
+            }
+            const postEvent = (event) => window.webkit.messageHandlers.eventHandler.postMessage(event);
+            const textHighlighted = debounce(
+                () => postEvent("articleTextHighlighted"),
+                1000
+            );
+            document.addEventListener('selectionchange', function(event) {
+                const selection = document.getSelection().toString();
+                if (selection.length > 0) {
+                    textHighlighted();
+                }
+            });
+            document.addEventListener('copy', event => postEvent("articleTextCopied"));
         </script>
         </html>
         """
@@ -191,6 +212,12 @@ class ReaderWebView: WKWebView {
                 font: -apple-system-body !important;
                 font-family: \(displaySetting.font.cssString) !important;
             }
+
+            /* link styling */
+            a {
+                font-weight: \(displaySetting.color == .system ? "inherit" : "600");
+                text-decoration: underline;
+            }
         """
     }
 
@@ -209,7 +236,8 @@ class ReaderWebView: WKWebView {
             """
         }
 
-        // doesn't matter what interface style we pass here because the colors are fixed either way.
+        // for other color themes not adapting to interface, it doesn't matter what interface style we pass here
+        // because the colors are fixed.
         return mappedCSSColors(.light)
     }
 
@@ -217,19 +245,117 @@ class ReaderWebView: WKWebView {
         let trait = UITraitCollection(userInterfaceStyle: style)
         return """
             :root {
-              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexString() ?? "");
-              --color-neutral-0: #\(UIColor.listForegroundUnread.color(for: trait).hexString() ?? "");
-              --color-neutral-5: #\(UIColor(light: .muriel(color: .gray, .shade5),
-                            dark: .muriel(color: .gray, .shade80)).color(for: trait).hexString() ?? "");
-              --color-neutral-10: #\(UIColor(light: .muriel(color: .gray, .shade10),
-                            dark: .muriel(color: .gray, .shade30)).color(for: trait).hexString() ?? "");
-              --color-neutral-40: #\(UIColor(light: .muriel(color: .gray, .shade40),
-              dark: .muriel(color: .gray, .shade20)).color(for: trait).hexString() ?? "");
-              --color-neutral-50: #\(UIColor.textSubtle.color(for: trait).hexString() ?? "");
-              --color-neutral-70: #\(UIColor.text.color(for: trait).hexString() ?? "");
-              --main-link-color: #\(UIColor.muriel(color: .init(name: .blue)).color(for: trait).hexString() ?? "");
-              --main-link-active-color: #\(UIColor.muriel(name: .blue, .shade30).color(for: trait).hexString() ?? "");
+              --color-text: #\(displaySetting.color.foreground.color(for: trait).hexStringWithAlpha);
+              --color-neutral-0: #\(neutralColor(shade: .shade0, trait: trait).hexStringWithAlpha);
+              --color-neutral-5: #\(neutralColor(shade: .shade5, trait: trait).hexStringWithAlpha);
+              --color-neutral-10: #\(neutralColor(shade: .shade10, trait: trait).hexStringWithAlpha);
+              --color-neutral-40: #\(neutralColor(shade: .shade40, trait: trait).hexStringWithAlpha);
+              --color-neutral-50: #\(neutralColor(shade: .shade50, trait: trait).hexStringWithAlpha);
+              --color-neutral-70: #\(neutralColor(shade: .shade70, trait: trait).hexStringWithAlpha);
+              --main-link-color: #\(linkColor(for: trait).hexStringWithAlpha);
+              --main-link-active-color: #\(activeLinkColor(for: trait).hexStringWithAlpha);
             }
         """
+    }
+
+    /// Returns the requested neutral color based on the current color theme.
+    /// Note that the previous color values were preserved for the `.system` color theme.
+    ///
+    /// - Parameters:
+    ///   - shade: `MurielColorShade` enum.
+    ///   - trait: The trait collection for the color.
+    /// - Returns: `UIColor`
+    func neutralColor(shade: MurielColorShade, trait: UITraitCollection) -> UIColor {
+        let color: UIColor = {
+            switch shade {
+            case .shade0:
+                if displaySetting.color == .system {
+                    return .listForegroundUnread
+                }
+                return displaySetting.color.foreground.withAlphaComponent(0.1)
+            case .shade5:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade5), dark: .muriel(color: .gray, .shade80))
+                }
+                return displaySetting.color.border
+            case .shade10:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade10), dark: .muriel(color: .gray, .shade30))
+                }
+                return displaySetting.color.border
+            case .shade40:
+                if displaySetting.color == .system {
+                    return .init(light: .muriel(color: .gray, .shade40), dark: .muriel(color: .gray, .shade20))
+                }
+                return displaySetting.color.secondaryForeground
+            case .shade50:
+                return displaySetting.color.secondaryForeground
+            default:
+                return displaySetting.color.foreground
+            }
+        }()
+
+        return color.color(for: trait)
+    }
+
+    func linkColor(for trait: UITraitCollection) -> UIColor {
+        let color = displaySetting.color == .system ? UIColor.muriel(color: .init(name: .blue)) : displaySetting.color.foreground
+        return color.color(for: trait)
+    }
+
+    func activeLinkColor(for trait: UITraitCollection) -> UIColor {
+        let color = displaySetting.color == .system ? UIColor.muriel(name: .blue, .shade30) : displaySetting.color.secondaryForeground
+        return color.color(for: trait)
+    }
+}
+
+extension ReaderWebView: WKScriptMessageHandler {
+
+    enum EventMessage: String {
+        case articleTextHighlighted
+        case articleTextCopied
+
+        // Comment events are located in `richCommentTemplate.html`
+        case commentTextHighlighted
+        case commentTextCopied
+
+        var analyticEvent: WPAnalyticsEvent {
+            switch self {
+            case .articleTextHighlighted:
+                return .readerArticleTextHighlighted
+            case .articleTextCopied:
+                return .readerArticleTextCopied
+            case .commentTextHighlighted:
+                return .readerCommentTextHighlighted
+            case .commentTextCopied:
+                return .readerCommentTextCopied
+            }
+        }
+    }
+
+    func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
+        guard let body = message.body as? String,
+              let event = EventMessage(rawValue: body)?.analyticEvent else {
+            return
+        }
+        WPAnalytics.track(event)
+    }
+
+}
+
+private extension UIColor {
+    /// Produces an 8-digit CSS color hex string representation of `UIColor`.
+    /// The last two digits represent the alpha value of the color.
+    var hexStringWithAlpha: String {
+        // A CGColor either has 4 components (r,g,b,a) or 2 components (white, alpha).
+        // Regardless the type of components, the last component is guaranteed to represent the alpha value.
+        guard let hexString = hexString(),
+              let components = cgColor.components,
+              let alphaValue: CGFloat = components.last?.clamp(min: .zero, max: 1.0) else {
+            return String()
+        }
+
+        let alphaValueInHex = String(format: "%02lx", lroundf(Float(alphaValue) * 255))
+        return hexString.appending(alphaValueInHex)
     }
 }

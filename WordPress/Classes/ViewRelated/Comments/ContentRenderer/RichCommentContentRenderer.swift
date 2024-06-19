@@ -43,6 +43,10 @@ extension RichCommentContentRenderer: WPRichContentViewDelegate {
     func richContentViewDidUpdateLayoutForAttachments(_ richContentView: WPRichContentView) {
         richContentDelegate?.richContentViewDidUpdateLayoutForAttachments?(richContentView)
     }
+
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        richContentDelegate?.textViewDidChangeSelection?(textView)
+    }
 }
 
 // MARK: - Private Helpers

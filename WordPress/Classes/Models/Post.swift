@@ -2,30 +2,6 @@ import Foundation
 import CoreData
 import CocoaLumberjack
 
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l < r
-  case (nil, _?):
-    return true
-  default:
-    return false
-  }
-}
-
-// FIXME: comparison operators with optionals were removed from the Swift Standard Libary.
-// Consider refactoring the code to use the non-optional operators.
-fileprivate func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
-  switch (lhs, rhs) {
-  case let (l?, r?):
-    return l > r
-  default:
-    return rhs < lhs
-  }
-}
-
 @objc(Post)
 class Post: AbstractPost {
     @objc static let typeDefaultIdentifier = "post"
@@ -55,39 +31,10 @@ class Post: AbstractPost {
         }
     }
 
-    // MARK: - Properties
-
-    fileprivate var storedContentPreviewForDisplay = ""
-
     // MARK: - NSManagedObject
 
     override class func entityName() -> String {
         return "Post"
-    }
-
-    override func awakeFromFetch() {
-        super.awakeFromFetch()
-        buildContentPreview()
-    }
-
-    override func willSave() {
-        super.willSave()
-
-        if isDeleted {
-            return
-        }
-
-        storedContentPreviewForDisplay = ""
-    }
-
-    // MARK: - Content Preview
-
-    fileprivate func buildContentPreview() {
-        if let excerpt = mt_excerpt, excerpt.count > 0 {
-            storedContentPreviewForDisplay = excerpt.makePlainText()
-        } else if let content = content {
-            storedContentPreviewForDisplay = content.summarized()
-        }
     }
 
     // MARK: - Format
@@ -265,99 +212,38 @@ class Post: AbstractPost {
 
     // MARK: - AbstractPost
 
-    override func hasSiteSpecificChanges() -> Bool {
-        if super.hasSiteSpecificChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if postFormat != originalPost.postFormat {
-                return true
-            }
-
-            if categories != originalPost.categories {
-                return true
-            }
-        }
-
-        return false
-    }
-
     override func hasCategories() -> Bool {
-        return (categories?.count > 0)
+        categories?.isEmpty == false
     }
 
     override func hasTags() -> Bool {
-        return (tags?.trim().count > 0)
+        tags?.trim().isEmpty == false
     }
 
     override func authorForDisplay() -> String? {
-        return author ?? blog.account?.displayName
+        author ?? blog.account?.displayName
     }
 
     // MARK: - BasePost
 
     override func contentPreviewForDisplay() -> String {
-        if storedContentPreviewForDisplay.count == 0 {
-            buildContentPreview()
-        }
-
-        return storedContentPreviewForDisplay
-    }
-
-    override func hasLocalChanges() -> Bool {
-        if super.hasLocalChanges() {
-            return true
-        }
-
-        assert(original == nil || original is Post)
-
-        if let originalPost = original as? Post {
-
-            if tags ?? "" != originalPost.tags ?? "" {
-                return true
+        if let excerpt = mt_excerpt, excerpt.count > 0 {
+            if let preview = PostPreviewCache.shared.excerpt[excerpt] {
+                return preview
             }
-
-            if publicizeMessage ?? "" != originalPost.publicizeMessage ?? "" {
-                return true
+            let preview = excerpt.makePlainText()
+            PostPreviewCache.shared.excerpt[excerpt] = preview
+            return preview
+        } else if let content = content {
+            if let preview = PostPreviewCache.shared.content[content] {
+                return preview
             }
-
-            if !NSDictionary(dictionary: disabledPublicizeConnections ?? [:])
-                             .isEqual(to: originalPost.disabledPublicizeConnections ?? [:]) {
-                return true
-            }
-
-            if isStickyPost != originalPost.isStickyPost {
-                return true
-            }
+            let preview = content.summarized()
+            PostPreviewCache.shared.content[content] = preview
+            return preview
+        } else {
+            return ""
         }
-
-        return false
-    }
-
-    override func statusForDisplay() -> String? {
-        var statusString: String?
-
-        if status == .trash || status == .scheduled {
-            statusString = ""
-        } else if status != .publish && status != .draft {
-            statusString = statusTitle
-        }
-
-        if isRevision() {
-            let localOnly = NSLocalizedString("Local changes", comment: "A status label for a post that only exists on the user's iOS device, and has not yet been published to their blog.")
-
-            if let tempStatusString = statusString, !tempStatusString.isEmpty {
-                statusString = String(format: "%@, %@", tempStatusString, localOnly)
-            } else {
-                statusString = localOnly
-            }
-        }
-
-        return statusString
     }
 
     override func titleForDisplay() -> String {
@@ -372,18 +258,21 @@ class Post: AbstractPost {
 
         return title
     }
+}
 
-    override func additionalContentHashes() -> [Data] {
-        // Since the relationship between the categories and a Post is a `Set` and not a `OrderedSet`, we
-        // need to sort it manually here, so it won't magically change between runs.
-        let stringifiedCategories = categories?.compactMap { $0.categoryName }.sorted().reduce("") { acc, obj in
-            return acc + obj
-        } ?? ""
+private final class PostPreviewCache {
+    static let shared = PostPreviewCache()
 
-        return [hash(for: publicID ?? ""),
-                hash(for: tags ?? ""),
-                hash(for: postFormat ?? ""),
-                hash(for: stringifiedCategories),
-                hash(for: isStickyPost ? 1 : 0)]
+    let excerpt = Cache<String, String>()
+    let content = Cache<String, String>()
+}
+
+private final class Cache<Key: Hashable, Value> {
+    private let lock = NSLock()
+    private var dictionary: [Key: Value] = [:]
+
+    subscript(key: Key) -> Value? {
+        get { lock.withLock { dictionary[key] } }
+        set { lock.withLock { dictionary[key] = newValue } }
     }
 }

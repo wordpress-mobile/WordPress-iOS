@@ -5,6 +5,27 @@
     <style>
         %2$@
     </style>
+    <script>
+        function debounce(fn, timeout) {
+            let timer;
+            return () => {
+                clearTimeout(timer);
+                timer = setTimeout(fn, timeout);
+            }
+        }
+        const postEvent = (event) => window.webkit.messageHandlers.eventHandler.postMessage(event);
+        const textHighlighted = debounce(
+            () => postEvent("commentTextHighlighted"),
+            1000
+        );
+        document.addEventListener('selectionchange', function(event) {
+            const selection = document.getSelection().toString();
+            if (selection.length > 0) {
+                textHighlighted();
+            }
+        });
+        document.addEventListener('copy', event => postEvent("commentTextCopied"));
+    </script>
 </head>
 <body>
     %3$@

@@ -24,7 +24,7 @@ workspace 'WordPress.xcworkspace'
 ##
 def wordpress_shared
   pod 'WordPressShared', '~> 2.3', '>= 2.3.1'
-  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: 'trunk'
+  # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', branch: ''
   # pod 'WordPressShared', git: 'https://github.com/wordpress-mobile/WordPress-iOS-Shared.git', commit: ''
   # pod 'WordPressShared', path: '../WordPress-iOS-Shared'
 end
@@ -50,13 +50,15 @@ end
 
 def gravatar
   # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  # pod 'GravatarUI', path: '../Gravatar-SDK-iOS'
   # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  pod 'Gravatar', '1.0.1'
+  # pod 'GravatarUI', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
+  pod 'Gravatar', '2.0.0'
+  pod 'GravatarUI', '2.0.0'
 end
 
 def wordpress_kit
-  # pod 'WordPressKit', '~> 16.0.0'
-  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: '7343890fb3b1b6a7be29cddb9194bf88a71a4a2a'
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'c334dad3c0e8fced5a61c5bf1d745d23d1924a9c'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'
@@ -76,7 +78,7 @@ def shared_with_all_pods
 end
 
 def shared_with_networking_pods
-  pod 'Reachability', '3.2'
+  pod 'Reachability', '~> 3.7'
 
   wordpress_kit
 end
@@ -150,7 +152,7 @@ abstract_target 'Apps' do
 
   pod 'NSURL+IDN', '~> 0.4'
 
-  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.6'
+  pod 'WordPressAuthenticator', '~> 9.0', '>= 9.0.8'
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', commit: ''
   # pod 'WordPressAuthenticator', git: 'https://github.com/wordpress-mobile/WordPressAuthenticator-iOS.git', branch: ''
   # pod 'WordPressAuthenticator', path: '../WordPressAuthenticator-iOS'
@@ -335,7 +337,7 @@ pre_install do |installer|
 end
 
 post_install do |installer|
-  gutenberg_post_install(installer:)
+  gutenberg_post_install(installer: installer)
 
   project_root = File.dirname(__FILE__)
 

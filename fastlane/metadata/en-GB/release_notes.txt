@@ -1,1 +1,2 @@
-We fixed a handful of issues with highlighted text formatting. We don’t know about you, but that’s the highlight of our week.
+Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks – but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.
+We also fixed the overlapping “Done” button on the “Post Published” screen. Easy peasy, lemon squeezy.

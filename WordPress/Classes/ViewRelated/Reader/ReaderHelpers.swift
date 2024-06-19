@@ -22,6 +22,8 @@ extension NSNotification.Name {
     static let ReaderUserBlockingWillBegin = NSNotification.Name(rawValue: "ReaderUserBlockingWillBegin")
     // Sent when the user blocking request is complete
     static let ReaderUserBlockingDidEnd = NSNotification.Name(rawValue: "ReaderUserBlockingDidEnd")
+    // Sent when the filter from a feed is updated
+    static let ReaderFilterUpdated = NSNotification.Name(rawValue: "ReaderFilterUpdated")
 }
 
 struct ReaderNotificationKeys {
@@ -35,6 +37,7 @@ struct ReaderNotificationKeys {
 enum ReaderPostMenuSource {
     case card
     case details
+    case tagCard
 
     var description: String {
         switch self {
@@ -42,6 +45,8 @@ enum ReaderPostMenuSource {
             return "post_card"
         case .details:
             return "post_details"
+        case .tagCard:
+            return "post_tag_card"
         }
     }
 }
@@ -629,7 +634,7 @@ extension ReaderHelpers {
 
     static let defaultSavedItemPosition = 2
 
-    /// Sorts the default tabs according to the order [Following, Discover, Likes], and adds the Saved tab
+    /// Sorts the default tabs according to the order [Discover, Subscriptions, Saved, Liked, Your Tags]
     class func rearrange(items: [ReaderTabItem]) -> [ReaderTabItem] {
 
         guard !items.isEmpty else {
@@ -642,7 +647,6 @@ extension ReaderHelpers {
                 return true
             }
 
-            // first item: Discover
             if topicIsDiscover(leftTopic) {
                 return true
             }
@@ -650,7 +654,6 @@ extension ReaderHelpers {
                 return false
             }
 
-            // second item: Following/subscriptions
             if topicIsFollowing(leftTopic) {
                 return true
             }
@@ -658,7 +661,6 @@ extension ReaderHelpers {
                 return false
             }
 
-            // third item: Likes
             if topicIsLiked(leftTopic) {
                 return true
             }
@@ -674,13 +676,18 @@ extension ReaderHelpers {
             return true
         }
 
-        // fourth item: Saved. It's manually inserted after the sorting
         let savedPosition = min(mutableItems.count, defaultSavedItemPosition)
         mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .saved)), at: savedPosition)
 
-        // in case of log in with a self hosted site, prepend a 'dummy' Following tab
+        if RemoteFeatureFlag.readerTagsFeed.enabled() {
+            mutableItems.append(ReaderTabItem(ReaderContent(topic: nil, contentType: .tags)))
+        }
+
+        // in case of log in with a self hosted site, prepend a 'dummy' Following tab after Discover.
         if !isLoggedIn() {
-            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: 0)
+            // to safeguard, ensure that there are items in the array before inserting. Otherwise, insert at index 0.
+            let targetIndex = mutableItems.count > 0 ? 1 : 0
+            mutableItems.insert(ReaderTabItem(ReaderContent(topic: nil, contentType: .selfHostedFollowing)), at: targetIndex)
         }
 
         return mutableItems

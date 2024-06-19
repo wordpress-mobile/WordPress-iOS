@@ -1,24 +1,44 @@
 import Foundation
 
 extension AbstractPost {
+    /// Returns the original post by navigating the entire list of revisions
+    /// until it reaches the head.
+    func original() -> AbstractPost {
+        original?.original() ?? self
+    }
+
+    /// Returns `true` if the post was never uploaded to the remote and has
+    /// not revisions that were marked for syncing.
+    var isNewDraft: Bool {
+        wpAssert(isOriginal(), "Must be called on the original")
+        return !hasRemote() && getLatestRevisionNeedingSync() == nil
+    }
+
+    var isUnsavedRevision: Bool {
+        isRevision() && !isSyncNeeded
+    }
+
+    /// Returns `true` if the post object is a revision created by one of the
+    /// versions of the app prior to 24.7.
+    var isLegacyUnsavedRevision: Bool {
+        isRevision() && AbstractPost.deprecatedStatuses.contains(remoteStatus)
+    }
+
+    private static let deprecatedStatuses: Set<AbstractPostRemoteStatus> = [.pushing, .failed, .local, .sync, .pushingMedia, .autoSaved]
 
     // MARK: - Status
 
-    @objc
-    var statusTitle: String? {
-        guard let status = self.status else {
-            return nil
-        }
-
-        return AbstractPost.title(for: status)
+    /// Returns `true` is the post has one of the given statuses.
+    func isStatus(in statuses: Set<Status>) -> Bool {
+        statuses.contains(status ?? .draft)
     }
 
     @objc
     var remoteStatus: AbstractPostRemoteStatus {
         get {
             guard let remoteStatusNumber = remoteStatusNumber?.uintValue,
-                let status = AbstractPostRemoteStatus(rawValue: remoteStatusNumber) else {
-                    return .pushing
+                  let status = AbstractPostRemoteStatus(rawValue: remoteStatusNumber) else {
+                return .pushing
             }
 
             return status
@@ -26,43 +46,6 @@ extension AbstractPost {
 
         set {
             remoteStatusNumber = NSNumber(value: newValue.rawValue)
-        }
-    }
-
-    /// The status of self when we last received its data from the API.
-    ///
-    /// This is mainly used to identify which Post List tab should the post be shown in. For
-    /// example, if a published post is transitioned to a draft but the app has not finished
-    /// updating the server yet, we will continue to show the post in the Published list instead of
-    /// the Drafts list. We believe this behavior is less confusing for the user.
-    ///
-    /// This is not meant to be up to date with the remote API. Eventually, this information will
-    /// be outdated. For example, the user could have changed the status in the web while the device
-    /// was offline. So we wouldn't recommend using this value aside from its original intention.
-    ///
-    /// - SeeAlso: PostService
-    /// - SeeAlso: PostListFilter
-    var statusAfterSync: Status? {
-        get {
-            return rawValue(forKey: "statusAfterSync")
-        }
-        set {
-            setRawValue(newValue, forKey: "statusAfterSync")
-        }
-    }
-
-    /// The string value of `statusAfterSync` based on `BasePost.Status`.
-    ///
-    /// This should only be used in Objective-C. For Swift, use `statusAfterSync`.
-    ///
-    /// - SeeAlso: statusAfterSync
-    @objc(statusAfterSync)
-    var statusAfterSyncString: String? {
-        get {
-            return statusAfterSync?.rawValue
-        }
-        set {
-            statusAfterSync = newValue.flatMap { Status(rawValue: $0) }
         }
     }
 
@@ -98,7 +81,21 @@ extension AbstractPost {
         }
     }
 
+    var localizedPostType: String {
+        switch self {
+        case is Page:
+            return NSLocalizedString("postType.page", value: "page", comment: "Localized post type: `Page`")
+        default:
+            return NSLocalizedString("postType.post", value: "post", comment: "Localized post type: `Post`")
+        }
+    }
+
     // MARK: - Misc
+
+    /// A title describing the status. Ie.: "Public" or "Private" or "Password protected"
+    @objc var titleForVisibility: String {
+        PostVisibility(post: self).localizedTitle
+    }
 
     /// Represent the supported properties used to sort posts.
     ///
@@ -126,6 +123,15 @@ extension AbstractPost {
         return content?.contains("<!-- wp:jetpack/story") ?? false
     }
 
+    var analyticsUserInfo: [String: Any] {
+        [
+            "post_type": analyticsPostType ?? "",
+            "status": status?.rawValue ?? "",
+            "original_status": original().status?.rawValue ?? "unknown",
+            "password_protected": PostVisibility(post: self) == .protected
+        ]
+    }
+
     var analyticsPostType: String? {
         switch self {
         case is Post:
@@ -145,5 +151,82 @@ extension AbstractPost {
     ///
     func hasPermanentFailedMedia() -> Bool {
         return media.first(where: { !$0.willAttemptToUploadLater() }) != nil
+    }
+
+    /// Returns the changes made in the current revision compared to the
+    /// previous revision or the original post if there is only one revision.
+    var changes: RemotePostUpdateParameters {
+        guard let original else {
+            return RemotePostUpdateParameters() // Empty
+        }
+        return RemotePostUpdateParameters.changes(from: original, to: self)
+    }
+
+    /// Returns all revisions of the post including the original one.
+    var allRevisions: [AbstractPost] {
+        var revisions: [AbstractPost] = [self]
+        var current = self
+        while let next = current.revision {
+            revisions.append(next)
+            current = next
+        }
+        return revisions
+    }
+
+    @objc var isSyncNeeded: Bool {
+        remoteStatus == .syncNeeded
+    }
+
+    /// Returns the latest saved revisions that needs to be synced with the server.
+    /// Returns `nil` if there are no such revisions.
+    func getLatestRevisionNeedingSync() -> AbstractPost? {
+        wpAssert(original == nil, "Must be called on an original revision")
+        let revision = allRevisions.last(where: \.isSyncNeeded)
+        guard revision != self else {
+            return nil
+        }
+        return revision
+    }
+
+    /// Deletes all of the synced revisions until and including the `latest`
+    /// one passed as a parameter.
+    func deleteSyncedRevisions(until latest: AbstractPost) {
+        wpAssert(original == nil, "Must be called on an original revision")
+        let tail = latest.revision
+
+        var current = self
+        while current !== latest, let next = current.revision {
+            current.deleteRevision()
+            current = next
+        }
+
+        if let tail {
+            willChangeValue(forKey: "revision")
+            setPrimitiveValue(tail, forKey: "revision")
+            didChangeValue(forKey: "revision")
+        }
+    }
+
+    /// Deletes the given revision and deletes the post if it's empty.
+    static func deleteLatestRevision(_ revision: AbstractPost, in context: NSManagedObjectContext) {
+        wpAssert(revision.isRevision() && !revision.isSyncNeeded, "must be a local revision")
+
+        // - warning: The use of `.original` is intentional – we want to get
+        // the previous revision in the list.
+        guard let previous = revision.original else {
+            return wpAssertionFailure("missing original")
+        }
+        let original = revision.original()
+        previous.deleteRevision()
+        if previous == original, !previous.hasRemote() {
+            context.delete(original)
+        }
+    }
+
+    func deleteAllRevisions() {
+        wpAssert(isOriginal())
+        for revision in allRevisions {
+            revision.deleteRevision()
+        }
     }
 }

@@ -19,17 +19,6 @@ import Foundation
     @objc var title: String
     @objc var accessibilityIdentifier: String = ""
 
-    /// For Obj-C compatibility only
-    @objc(statuses)
-    var statusesStrings: [String] {
-        get {
-            return statuses.strings
-        }
-        set {
-            statuses = newValue.compactMap({ BasePost.Status(rawValue: $0) })
-        }
-    }
-
     init(title: String, filterType: Status, predicate: NSPredicate, statuses: [BasePost.Status]) {
         hasMore = false
 
@@ -68,6 +57,10 @@ import Foundation
         return [publishedFilter(), draftFilter(), scheduledFilter(), trashedFilter()]
     }
 
+    static func makePredicateForStatuses(_ statuses: [BasePost.Status]) -> NSPredicate {
+        NSPredicate(format: "status IN (%@)", statuses.map(\.rawValue))
+    }
+
     /// The filter for the Published tab in the Post List
     ///
     /// Shows:
@@ -80,19 +73,7 @@ import Foundation
         let filterType: Status = .published
         let statuses: [BasePost.Status] = [.publish, .publishPrivate]
 
-        let query =
-            // existing published/private posts
-            "(statusAfterSync = status AND status IN (%@))"
-            // existing published/private posts transitioned to another status but not uploaded yet
-            + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
-            // Include other existing published/private posts with `nil` `statusAfterSync`. This is
-            // unlikely but this ensures that those posts will show up somewhere.
-            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
-        let predicate = NSPredicate(format: query,
-                                    statuses.strings,
-                                    statuses.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statuses.strings)
+        let predicate = makePredicateForStatuses([.publish, .publishPrivate])
 
         let title = NSLocalizedString("Published", comment: "Title of the published filter. This filter shows a list of posts that the user has published.")
 
@@ -116,25 +97,7 @@ import Foundation
         let filterType: Status = .draft
         let statuses: [BasePost.Status] = [.draft, .pending]
 
-        let statusesForLocalDrafts: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
-
-        let query =
-            // Existing draft/pending posts
-            "(statusAfterSync = status AND status IN (%@))"
-            // Existing draft/pending posts transitioned to another status but not uploaded yet
-            + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
-            // Posts existing only on the device with statuses defined in `statusesForLocalDrafts`.
-            + " OR (postID = %i AND status IN (%@))"
-            // Include other existing draft/pending posts with `nil` `statusAfterSync`. This is
-            // unlikely but this ensures that those posts will show up somewhere.
-            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
-        let predicate = NSPredicate(format: query,
-                                    statuses.strings,
-                                    statuses.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statusesForLocalDrafts.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statuses.strings)
+        let predicate = makePredicateForStatuses([.draft, .pending])
 
         let title = NSLocalizedString("Drafts", comment: "Title of the drafts filter.  This filter shows a list of draft posts.")
 
@@ -155,19 +118,7 @@ import Foundation
         let filterType: Status = .scheduled
         let statuses: [BasePost.Status] = [.scheduled]
 
-        let query =
-            // existing scheduled posts
-            "(statusAfterSync = status AND status IN (%@))"
-            // existing scheduled posts transitioned to another status but not uploaded yet
-            + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
-            // Include other existing scheduled posts with `nil` `statusAfterSync`. This is
-            // unlikely but this ensures that those posts will show up somewhere.
-            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
-        let predicate = NSPredicate(format: query,
-                                    statuses.strings,
-                                    statuses.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statuses.strings)
+        let predicate = makePredicateForStatuses([.scheduled])
 
         let title = NSLocalizedString("Scheduled", comment: "Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date.")
 
@@ -180,7 +131,7 @@ import Foundation
     @objc class func trashedFilter() -> PostListFilter {
         let filterType: Status = .trashed
         let statuses: [BasePost.Status] = [.trash]
-        let predicate = NSPredicate(format: "status IN %@", statuses.strings)
+        let predicate = makePredicateForStatuses(statuses)
         let title = NSLocalizedString("Trashed", comment: "Title of the trashed filter. This filter shows posts that have been moved to the trash bin.")
 
         let filter = PostListFilter(title: title, filterType: filterType, predicate: predicate, statuses: statuses)
@@ -193,23 +144,7 @@ import Foundation
         let filterType: Status = .allNonTrashed
         let statuses: [BasePost.Status] = [.draft, .pending, .publish, .publishPrivate, .scheduled]
 
-        let query =
-            // Existing non-trashed posts
-            "(statusAfterSync = status AND status IN (%@))"
-            // Existing non-trashed posts transitioned to another status but not uploaded yet
-            + " OR (statusAfterSync != status AND statusAfterSync IN (%@))"
-            // Non-trashed posts existing only on the device
-            + " OR (postID = %i AND status IN (%@))"
-            // Include other existing non-trashed posts with `nil` `statusAfterSync`. This is
-            // unlikely but this ensures that those posts will show up somewhere.
-            + " OR (postID > %i AND statusAfterSync = nil AND status IN (%@))"
-        let predicate = NSPredicate(format: query,
-                                    statuses.strings,
-                                    statuses.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statuses.strings,
-                                    BasePost.defaultPostIDValue,
-                                    statuses.strings)
+        let predicate = makePredicateForStatuses(statuses)
 
         let title = NSLocalizedString("All", comment: "Title of the drafts filter. This filter shows a list of draft posts.")
 

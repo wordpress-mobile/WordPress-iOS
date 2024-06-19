@@ -3,50 +3,6 @@
 # Lanes related to Code Signing and Provisioning Profiles
 #
 platform :ios do
-  # Registers a new device in the Developer Portal and update all the Provisioning Profiles
-  #
-  # @option [String] device_name name to give to the device. Will be prompted interactively if not provided.
-  # @option [String] device_id UDID of the device to add. Will be prompted interactively if not provided.
-  #
-  desc 'Registers a Device in the developer console'
-  lane :register_new_device do |options|
-    device_name = UI.input('Device Name: ') if options[:device_name].nil?
-    device_id = UI.input('Device ID: ') if options[:device_id].nil?
-    all_bundle_ids = ALL_WORDPRESS_BUNDLE_IDENTIFIERS + ALL_JETPACK_BUNDLE_IDENTIFIERS
-
-    UI.message "Registering #{device_name} with ID #{device_id} and registering it with any provisioning profiles associated with these bundle identifiers:"
-    all_bundle_ids.each do |identifier|
-      puts "\t#{identifier}"
-    end
-
-    team_id = get_required_env('EXT_EXPORT_TEAM_ID')
-
-    # Register the user's device
-    register_device(
-      name: device_name,
-      udid: device_id,
-      team_id:,
-      api_key_path: APP_STORE_CONNECT_KEY_PATH
-    )
-
-    # We're about to use `add_development_certificates_to_provisioning_profiles` and `add_all_devices_to_provisioning_profiles`.
-    # These actions use Developer Portal APIs that don't yet support authentication via API key (-.-').
-    # Let's preemptively ask for and set the email here to avoid being asked twice for it if not set.
-    prompt_user_for_app_store_connect_credentials
-
-    # Add all development certificates to the provisioning profiles (just in case – this is an easy step to miss)
-    add_development_certificates_to_provisioning_profiles(
-      team_id:,
-      app_identifier: all_bundle_ids
-    )
-
-    # Add all devices to the provisioning profiles
-    add_all_devices_to_provisioning_profiles(
-      team_id:,
-      app_identifier: all_bundle_ids
-    )
-  end
-
   # Downloads all the required certificates and profiles (using `match`) for all variants.
   # Optionally, it can create any new necessary certificate or profile.
   #
@@ -173,9 +129,9 @@ def update_code_signing_enterprise(readonly:, app_identifiers:)
     type: 'enterprise',
     # Enterprise builds belong to the "internal" team
     team_id: get_required_env('INT_EXPORT_TEAM_ID'),
-    readonly:,
-    app_identifiers:,
-    api_key_path:
+    readonly: readonly,
+    app_identifiers: app_identifiers,
+    api_key_path: api_key_path
   )
 end
 
@@ -184,8 +140,8 @@ def update_code_signing_app_store(readonly:, app_identifiers:)
     type: 'appstore',
     # App Store builds belong to the "external" team
     team_id: get_required_env('EXT_EXPORT_TEAM_ID'),
-    readonly:,
-    app_identifiers:,
+    readonly: readonly,
+    app_identifiers: app_identifiers,
     api_key_path: APP_STORE_CONNECT_KEY_PATH
   )
 end
@@ -194,14 +150,13 @@ def update_code_signing(type:, team_id:, readonly:, app_identifiers:, api_key_pa
   # NOTE: It might be neccessary to add `force: true` alongside `readonly: true` in order to regenerate some provisioning profiles.
   # If this turns out to be a hard requirement, we should consider updating the method with logic to toggle the two setting based on whether we're fetching or renewing.
   match(
-    storage_mode: 'google_cloud',
-    google_cloud_bucket_name: 'a8c-fastlane-match',
-    google_cloud_keys_file: File.join(SECRETS_DIR, 'google_cloud_keys.json'),
-    type:,
-    team_id:,
-    readonly:,
+    storage_mode: 's3',
+    s3_bucket: 'a8c-fastlane-match',
+    type: type,
+    team_id: team_id,
+    readonly: readonly,
     app_identifier: app_identifiers,
-    api_key_path:
+    api_key_path: api_key_path
   )
 end
 

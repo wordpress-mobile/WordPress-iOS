@@ -8,7 +8,7 @@ public class HTMLEditorScreen: ScreenObject {
     }
 
     private let switchToVisualModeButtonGetter: (XCUIApplication) -> XCUIElement = {
-        $0.buttons["Switch to Visual Mode"]
+        $0.buttons["Visual Editor"]
     }
 
     private let undoButtonGetter: (XCUIApplication) -> XCUIElement = {

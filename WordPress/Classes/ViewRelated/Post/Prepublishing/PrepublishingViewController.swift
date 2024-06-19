@@ -4,51 +4,23 @@ import Combine
 import WordPressUI
 import SwiftUI
 
-enum PrepublishingIdentifier {
-    case title
-    case schedule
-    case visibility
-    case tags
-    case categories
-    case autoSharing
-
-    static var defaultIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return [.visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-        return [.visibility, .schedule, .tags, .categories]
-    }
-}
-
 enum PrepublishingSheetResult {
-    /// The user confirms that they want to publish (legacy behavior).
-    ///
-    /// - note: Deprecated (kahu-offline-mode)
-    case confirmed
     /// The sheet published the post (new behavior)
     case published
     /// The user cancelled.
     case cancelled
 }
 
-final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    let post: Post
-    let identifiers: [PrepublishingIdentifier]
+final class PrepublishingViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAdaptivePresentationControllerDelegate {
+    private(set) var post: AbstractPost
+
     let coreDataStack: CoreDataStackSwift
     let persistentStore: UserPersistentRepository
 
-    lazy var postBlogID: Int? = {
-        coreDataStack.performQuery { [postObjectID = post.objectID] context in
-            guard let post = (try? context.existingObject(with: postObjectID)) as? Post else {
-                return nil
-            }
-            return post.blog.dotComID?.intValue
-        }
-    }()
+    private let viewModel: PrepublishingViewModel
 
-    /// The list of `PrepublishingIdentifier`s that have been filtered for display.
-    var filteredIdentifiers: [PrepublishingIdentifier] {
-        options.map { $0.id }
+    var postBlogID: Int? {
+        post.blog.dotComID?.intValue
     }
 
     private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
@@ -56,35 +28,33 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.
-    private var options = [PrepublishingOption]()
-
-    private var didTapPublish = false
+    private(set) var options = [PrepublishingOption]()
 
     private let headerView = PrepublishingHeaderView()
     let tableView = UITableView(frame: .zero, style: .plain)
-    private let footerSeparator = UIView()
-
-    private weak var titleField: UITextField?
 
     private lazy var publishButtonViewModel = PublishButtonViewModel(title: "Publish") { [weak self] in
         self?.buttonPublishTapped()
     }
 
-    /// Determines whether the text has been first responder already. If it has, don't force it back on the user unless it's been selected by them.
-    private var hasSelectedText: Bool = false
-
-    private var cancellables = Set<AnyCancellable>()
-    @Published private var keyboardShown: Bool = false
-
     private weak var mediaPollingTimer: Timer?
+    private let isStandalone: Bool
+    private let uploadsViewModel: PostMediaUploadsViewModel
 
-    init(post: Post,
-         identifiers: [PrepublishingIdentifier],
+    private var cancellables: [AnyCancellable] = []
+
+    init(post: AbstractPost,
+         isStandalone: Bool,
          completion: @escaping (PrepublishingSheetResult) -> (),
          coreDataStack: CoreDataStackSwift = ContextManager.shared,
          persistentStore: UserPersistentRepository = UserPersistentStoreFactory.instance()) {
-        self.post = post
-        self.identifiers = identifiers
+        // If presented from the editor, it make changes to the revision managed by
+        // the editor. But for a standalone publishing sheet, it has to manage
+        // its own revision.
+        self.post = isStandalone ? post.createRevision() : post
+        self.isStandalone = isStandalone
+        self.viewModel = PrepublishingViewModel(post: self.post)
+        self.uploadsViewModel = PostMediaUploadsViewModel(post: post)
         self.completion = completion
         self.coreDataStack = coreDataStack
         self.persistentStore = persistentStore
@@ -97,12 +67,13 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     func presentAsSheet(from presentingViewController: UIViewController) {
         let navigationController = UINavigationController(rootViewController: self)
+        navigationController.navigationBar.isTranslucent = true // Reset to default
         if UIDevice.isPad() {
             navigationController.modalPresentationStyle = .formSheet
         } else {
             if let sheetController = navigationController.sheetPresentationController {
                 if #available(iOS 16, *) {
-                    sheetController.detents = [.custom { _ in 510 }, .large()]
+                    sheetController.detents = [.custom { _ in 530 }, .large()]
                 } else {
                     sheetController.detents = [.medium(), .large()]
                 }
@@ -115,18 +86,24 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
     }
 
     func refreshOptions() {
-        options = identifiers.compactMap { identifier -> PrepublishingOption? in
-            switch identifier {
-            case .autoSharing:
-                // skip the social cell if the post's blog is not eligible for auto-sharing.
-                guard canDisplaySocialRow() else {
-                    return nil
-                }
-                break
-            default:
-                break
+        switch post {
+        case is Page:
+            options = [
+                PrepublishingOption(identifier: .visibility),
+                PrepublishingOption(identifier: .schedule)
+            ]
+        case is Post:
+            options = [
+                PrepublishingOption(identifier: .visibility),
+                PrepublishingOption(identifier: .schedule),
+                PrepublishingOption(identifier: .tags),
+                PrepublishingOption(identifier: .categories)
+            ]
+            if RemoteFeatureFlag.jetpackSocialImprovements.enabled() && canDisplaySocialRow() {
+                options.append(PrepublishingOption(identifier: .autoSharing))
             }
-            return .init(identifier: identifier)
+        default:
+            wpAssertionFailure("invalid post type")
         }
     }
 
@@ -139,31 +116,54 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
         configureHeader()
         configureTableView()
-        configureKeyboardToggle()
-        WPStyleGuide.applyBorderStyle(footerSeparator)
+        configurePublishButton()
+        observePostConflictResolved()
 
         title = ""
 
         let stackView = UIStackView(arrangedSubviews: [
             headerView,
-            tableView,
-            footerSeparator,
-            setupPublishButton()
+            tableView
         ])
         stackView.axis = .vertical
 
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        view.pinSubviewToSafeArea(stackView)
+        let contentView = VStack {
+            PrepublishingStackView(view: stackView)
+            PublishButton(viewModel: publishButtonViewModel)
+                .tint(Color(uiColor: .primary))
+                .padding()
+        }.ignoresSafeArea(.keyboard)
+
+        // Making the entire view `UIHostingController` to make sure keyboard
+        // avoidance can be disabled (see https://steipete.com/posts/disabling-keyboard-avoidance-in-swiftui-uihostingcontroller/?utm_campaign=%20SwiftUI%20Weekly&utm_medium=email&utm_source=Revue%20newsletter)
+        let hostingViewController = UIHostingController(rootView: contentView)
+        addChild(hostingViewController)
+
+        view.addSubview(hostingViewController.view)
+        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
+        view.pinSubviewToSafeArea(hostingViewController.view)
 
         view.backgroundColor = .systemBackground
+
+        wpAssert(navigationController?.presentationController != nil)
+        navigationController?.presentationController?.delegate = self
+
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
     }
 
     private func configureHeader() {
-        headerView.closeButton.addAction(.init(handler: { [weak self] _ in
-            self?.presentingViewController?.dismiss(animated: true)
-        }), for: .touchUpInside)
+        headerView.closeButton.addTarget(self, action: #selector(buttonCloseTapped), for: .touchUpInside)
         headerView.configure(post.blog)
+    }
+
+    @objc private func buttonCloseTapped() {
+        didCancel()
+        presentingViewController?.dismiss(animated: true)
+    }
+
+    private func didCancel() {
+        getCompletion()?(.cancelled)
+        deleteRevisionIfNeeded()
     }
 
     private func configureTableView() {
@@ -172,43 +172,19 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         tableView.rowHeight = UITableView.automaticDimension
     }
 
-    private func setupPublishButton() -> UIView {
-        let footerView = UIView()
-
-        let hostingViewController = UIHostingController(rootView: PublishButton(viewModel: publishButtonViewModel).tint(Color(uiColor: .primary)))
-        addChild(hostingViewController)
-
-        footerView.addSubview(hostingViewController.view)
-        hostingViewController.view.translatesAutoresizingMaskIntoConstraints = false
-        footerView.pinSubviewToSafeArea(hostingViewController.view, insets: Constants.nuxButtonInsets)
-
+    private func configurePublishButton() {
         updatePublishButtonLabel()
-
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            updatePublishButtonState()
-            mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
-                self?.updatePublishButtonState()
-            }
+        updatePublishButtonState()
+        mediaPollingTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] _ in
+            self?.updatePublishButtonState()
         }
-
-        return footerView
     }
 
-    /// Toggles `keyboardShown` as the keyboard notifications come in
-    private func configureKeyboardToggle() {
-        NotificationCenter.default.publisher(for: UIResponder.keyboardDidShowNotification)
-            .sink { [weak self] _ in self?.keyboardShown = true }
+    private func observePostConflictResolved() {
+        NotificationCenter.default
+            .publisher(for: .postConflictResolved)
+            .sink { [weak self] notification in self?.postConflictResolved(notification) }
             .store(in: &cancellables)
-
-        NotificationCenter.default.publisher(for: UIResponder.keyboardDidHideNotification)
-            .sink { [weak self] _ in self?.keyboardShown = false }
-            .store(in: &cancellables)
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
-        footerSeparator.isHidden = tableView.contentSize.height < tableView.bounds.height
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -219,14 +195,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         if let indexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: indexPath, animated: true)
         }
-
-        // Setting titleField first resonder alongside our transition to avoid layout issues.
-        transitionCoordinator?.animateAlongsideTransition(in: nil, animation: { [weak self] _ in
-            if self?.hasSelectedText == false {
-                self?.titleField?.becomeFirstResponder()
-                self?.hasSelectedText = true
-            }
-        })
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -236,13 +204,31 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         if isPushingViewController {
             navigationController?.setNavigationBarHidden(false, animated: animated)
         }
+    }
 
-        if (isBeingDismissed || parent?.isBeingDismissed == true) && !didTapPublish {
-            if post.status == .publishPrivate, let originalStatus = post.original?.status {
-                post.status = originalStatus
-            }
-            getCompletion()?(.cancelled)
-        }
+    // MARK: - Notifications
+
+    @objc private func appWillTerminate() {
+        deleteRevisionIfNeeded()
+    }
+
+    private func deleteRevisionIfNeeded() {
+        guard isStandalone else { return }
+        DDLogDebug("\(self): deleting unsaved changes")
+        post.original?.deleteRevision()
+        post.managedObjectContext.map(ContextManager.shared.saveContextAndWait)
+    }
+
+    private func postConflictResolved(_ notification: Foundation.Notification) {
+        // The user will have to re-opened the editor and/or the sheet to make
+        // sure the correct revision is shown.
+        presentingViewController?.dismiss(animated: true)
+    }
+
+    // MARK: - UIAdaptivePresentationControllerDelegate {
+
+    public func presentationControllerDidDismiss(_ presentationController: UIPresentationController) {
+        didCancel()
     }
 
     // MARK: - UITableViewDataSource
@@ -256,10 +242,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         let cell = dequeueCell(for: option.type, indexPath: indexPath)
 
         switch option.type {
-        case .textField:
-            if let cell = cell as? WPTextFieldTableViewCell {
-                setupTextFieldCell(cell)
-            }
         case .value:
             cell.accessoryType = .disclosureIndicator
             cell.textLabel?.text = option.title
@@ -268,10 +250,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
 
         switch option.id {
-        case .title:
-            if let cell = cell as? WPTextFieldTableViewCell {
-                configureTitleCell(cell)
-            }
         case .tags:
             configureTagCell(cell)
         case .visibility:
@@ -289,11 +267,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private func dequeueCell(for type: PrepublishingCellType, indexPath: IndexPath) -> WPTableViewCell {
         switch type {
-        case .textField:
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.textFieldReuseIdentifier) as? WPTextFieldTableViewCell else {
-                return WPTextFieldTableViewCell.init(style: .default, reuseIdentifier: Constants.textFieldReuseIdentifier)
-            }
-            return cell
         case .value:
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.reuseIdentifier) as? WPTableViewCell else {
                 return WPTableViewCell.init(style: .value1, reuseIdentifier: Constants.reuseIdentifier)
@@ -318,8 +291,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             didTapCategoriesCell()
         case .autoSharing:
             didTapAutoSharingCell()
-        default:
-            break
         }
     }
 
@@ -334,11 +305,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         tableView.reloadData()
     }
 
-    private func setupTextFieldCell(_ cell: WPTextFieldTableViewCell) {
-        WPStyleGuide.configureTableViewTextCell(cell)
-        cell.delegate = self
-    }
-
     /// Returns the completion closure and sets it to nil to make sure the screen
     /// only calls it once.
     private func getCompletion() -> ((PrepublishingSheetResult) -> Void)? {
@@ -347,102 +313,99 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         return completion
     }
 
-    // MARK: - Title
-
-    private func configureTitleCell(_ cell: WPTextFieldTableViewCell) {
-        cell.textField.text = post.postTitle
-        cell.textField.adjustsFontForContentSizeCategory = true
-        cell.textField.font = .preferredFont(forTextStyle: .body)
-        cell.textField.textColor = .text
-        cell.textField.placeholder = Strings.postTitle
-        cell.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        cell.textField.autocorrectionType = .yes
-        cell.textField.autocapitalizationType = .sentences
-        titleField = cell.textField
-    }
-
-    // MARK: - Tags
+    // MARK: - Tags (Post)
 
     private func configureTagCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.tags
+        cell.detailTextLabel?.text = (post as! Post).tags
     }
 
     private func didTapTagCell() {
+        let post = post as! Post
         let tagPickerViewController = PostTagPickerViewController(tags: post.tags ?? "", blog: post.blog)
 
         tagPickerViewController.onValueChanged = { [weak self] tags in
+            guard let self else { return }
             WPAnalytics.track(.editorPostTagsChanged, properties: Constants.analyticsDefaultProperty)
 
-            self?.post.tags = tags
-            self?.reloadData()
+            (self.post as! Post).tags = tags
+            self.reloadData()
         }
-
+        tagPickerViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(tagPickerViewController, animated: true)
     }
 
+    // MARK: - Categories (Post)
+
     private func configureCategoriesCell(_ cell: WPTableViewCell) {
+        let post = post as! Post
         cell.detailTextLabel?.text = Array(post.categories ?? [])
             .map { $0.categoryName }
             .joined(separator: ",")
     }
 
     private func didTapCategoriesCell() {
+        let post = post as! Post
         let categoriesViewController = PostCategoriesViewController(blog: post.blog, currentSelection: Array(post.categories ?? []), selectionMode: .post)
         categoriesViewController.delegate = self
         categoriesViewController.onCategoriesChanged = { [weak self] in
             self?.tableView.reloadData()
         }
+        categoriesViewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(categoriesViewController, animated: true)
     }
 
     // MARK: - Visibility
 
     private func configureVisibilityCell(_ cell: WPTableViewCell) {
-        cell.detailTextLabel?.text = post.titleForVisibility
+        cell.detailTextLabel?.text = viewModel.visibility.type.localizedTitle
     }
 
     private func didTapVisibilityCell() {
-        let visbilitySelectorViewController = PostVisibilitySelectorViewController(post)
-
-        visbilitySelectorViewController.completion = { [weak self] option in
-            self?.reloadData()
-            self?.updatePublishButtonLabel()
-
-            WPAnalytics.track(.editorPostVisibilityChanged, properties: Constants.analyticsDefaultProperty)
-
-            // If tue user selects password protected, prompt for a password
-            if option == AbstractPost.passwordProtectedLabel {
-                self?.showPasswordAlert()
-            } else {
-                self?.navigationController?.popViewController(animated: true)
+        let view = PostVisibilityPicker(selection: viewModel.visibility) { [weak self] selection in
+            guard let self else { return }
+            self.viewModel.visibility = selection
+            if selection.type == .private {
+                self.viewModel.publishDate = nil
+                self.updatePublishButtonLabel()
             }
+            self.reloadData()
+            self.navigationController?.popViewController(animated: true)
         }
-
-        navigationController?.pushViewController(visbilitySelectorViewController, animated: true)
+        let viewController = UIHostingController(rootView: view)
+        viewController.title = PostVisibilityPicker.title
+        viewController.configureDefaultNavigationBarAppearance()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Schedule
 
     func configureScheduleCell(_ cell: WPTableViewCell) {
         cell.textLabel?.text = Strings.publishDate
-        cell.detailTextLabel?.text = publishSettingsViewModel.detailString
-        post.status == .publishPrivate ? cell.disable() : cell.enable()
+        if let publishDate = viewModel.publishDate {
+            let formatter = SiteDateFormatters.dateFormatter(for: post.blog.timeZone ?? TimeZone.current, dateStyle: .medium, timeStyle: .short)
+            cell.detailTextLabel?.text = formatter.string(from: publishDate)
+        } else {
+            cell.detailTextLabel?.text = Strings.immediately
+        }
+        viewModel.visibility.type == .private ? cell.disable() : cell.enable()
     }
 
     func didTapSchedule(_ indexPath: IndexPath) {
-        let viewController = SchedulingDatePickerViewController.make(viewModel: publishSettingsViewModel) { [weak self] date in
+        let configuration = PublishDatePickerConfiguration(date: viewModel.publishDate, timeZone: post.blog.timeZone ?? TimeZone.current) { [weak self] date in
             WPAnalytics.track(.editorPostScheduledChanged, properties: Constants.analyticsDefaultProperty)
-            self?.publishSettingsViewModel.setDate(date)
+            self?.viewModel.publishDate = date
             self?.reloadData()
             self?.updatePublishButtonLabel()
         }
+        let viewController = PublishDatePickerViewController(configuration: configuration)
+        viewController.configureDefaultNavigationBarAppearance()
         navigationController?.pushViewController(viewController, animated: true)
     }
 
     // MARK: - Publish Button
 
     private func updatePublishButtonState() {
-        if let state = PublishButtonState.uploadingState(for: post) {
+        if let state = makeUploadingState() {
             publishButtonViewModel.state = state
         } else {
             if case .loading = publishButtonViewModel.state {
@@ -453,29 +416,40 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         }
     }
 
+    /// Returns the state of the button based on the current upload progress
+    /// for the given post.
+    private func makeUploadingState() -> PublishButtonState? {
+        let viewModel = uploadsViewModel
+        guard !viewModel.isCompleted else {
+            return nil
+        }
+        let errors = viewModel.uploads.compactMap(\.error)
+        if !errors.isEmpty {
+            let details = errors.count == 1 ? errors[0].localizedDescription : String(format: Strings.mediaUploadFailedDetailsMultipleFailures, errors.count.description)
+            return .failed(title: Strings.mediaUploadFailedTitle, details: details) { [weak self] in
+                self?.buttonShowUploadInfoTapped()
+            }
+        }
+        return .uploading(title: Strings.uploadingMedia, details: Strings.uploadMediaRemaining(count: viewModel.uploads.count - viewModel.completedUploadsCount), progress: viewModel.fractionCompleted, onInfoTapped: { [weak self] in
+            self?.buttonShowUploadInfoTapped()
+        })
+    }
+
+    private func buttonShowUploadInfoTapped() {
+        let view = PostMediaUploadsView(viewModel: uploadsViewModel)
+        let host = UIHostingController(rootView: view)
+        navigationController?.pushViewController(host, animated: true)
+    }
+
     private func updatePublishButtonLabel() {
-        publishButtonViewModel.title = post.isScheduled() ? Strings.schedule : Strings.publish
+        publishButtonViewModel.title = viewModel.publishButtonTitle
     }
 
     private func buttonPublishTapped() {
-        didTapPublish = true
-
-        if RemoteFeatureFlag.syncPublishing.enabled() {
-            publishPost()
-        } else {
-            let completion = getCompletion()
-            navigationController?.dismiss(animated: true) {
-                WPAnalytics.track(.editorPostPublishNowTapped)
-                completion?(.confirmed)
-            }
-        }
-    }
-
-    private func publishPost() {
         setLoading(true)
         Task {
             do {
-                try await PostCoordinator.shared._publish(post)
+                try await viewModel.publish()
                 getCompletion()?(.published)
             } catch {
                 setLoading(false)
@@ -495,88 +469,61 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
             case let control as UIControl:
                 control.isEnabled = !isLoading
             case let cell as UITableViewCell:
-                isLoading ? cell.disable() : cell.enable()
+                cell.textLabel?.textColor = isLoading ? .secondaryLabel : .label
             default:
                 subviews += view.subviews
             }
         }
     }
 
-    // MARK: - Password Prompt
-
-    private func showPasswordAlert() {
-        let passwordAlertController = PasswordAlertController(onSubmit: { [weak self] password in
-            guard let password = password, !password.isEmpty else {
-                self?.cancelPasswordProtectedPost()
-                return
-            }
-
-            self?.post.password = password
-            self?.navigationController?.popViewController(animated: true)
-        }, onCancel: { [weak self] in
-            self?.cancelPasswordProtectedPost()
-        })
-
-        passwordAlertController.show(from: self)
-    }
-
-    private func cancelPasswordProtectedPost() {
-        post.status = .publish
-        post.password = nil
-        reloadData()
-    }
-
     // MARK: - Accessibility
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let textFieldReuseIdentifier = "wpTextFieldCell"
         static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
-    }
-}
-
-extension PrepublishingViewController: WPTextFieldTableViewCellDelegate {
-    func cellWants(toSelectNextField cell: WPTextFieldTableViewCell!) {
-
-    }
-
-    func cellTextDidChange(_ cell: WPTextFieldTableViewCell!) {
-        WPAnalytics.track(.editorPostTitleChanged, properties: Constants.analyticsDefaultProperty)
-        post.postTitle = cell.textField.text
     }
 }
 
 extension PrepublishingViewController: PostCategoriesViewControllerDelegate {
     func postCategoriesViewController(_ controller: PostCategoriesViewController, didUpdateSelectedCategories categories: NSSet) {
         WPAnalytics.track(.editorPostCategoryChanged, properties: ["via": "prepublishing_nudges"])
-
-        // Save changes.
         guard let categories = categories as? Set<PostCategory> else {
-             return
+             return wpAssertionFailure("incorrect categories")
         }
-        post.categories = categories
-        post.save()
+        (post as! Post).categories = categories
     }
 }
 
-private struct PrepublishingOption {
+struct PrepublishingOption {
     let id: PrepublishingIdentifier
     let title: String
     let type: PrepublishingCellType
 }
 
-private enum PrepublishingCellType {
+enum PrepublishingCellType {
     case value
-    case textField
     case customContainer
 }
 
-private extension PrepublishingOption {
+enum PrepublishingIdentifier {
+    case schedule
+    case visibility
+    case tags
+    case categories
+    case autoSharing
+
+    static var defaultIdentifiers: [PrepublishingIdentifier] {
+        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
+            return [.visibility, .schedule, .tags, .categories, .autoSharing]
+        }
+        return [.visibility, .schedule, .tags, .categories]
+    }
+}
+
+extension PrepublishingOption {
     init(identifier: PrepublishingIdentifier) {
         switch identifier {
-        case .title:
-            self.init(id: .title, title: Strings.postTitle, type: .textField)
         case .schedule:
             self.init(id: .schedule, title: Strings.publishDate, type: .value)
         case .categories:
@@ -591,13 +538,66 @@ private extension PrepublishingOption {
     }
 }
 
+private final class PrepublishingViewModel {
+    private let post: AbstractPost
+
+    var visibility: PostVisibilityPicker.Selection
+    var publishDate: Date?
+
+    var publishButtonTitle: String {
+        let isScheduled = publishDate.map { $0 > .now } ?? false
+        return isScheduled ? Strings.schedule : Strings.publish
+    }
+
+    private let coordinator = PostCoordinator.shared
+
+    init(post: AbstractPost) {
+        self.post = post
+
+        self.visibility = .init(post: post)
+        // Ask the user to provide the date every time (ignore the obscure WP dateCreated/dateModified logic)
+        self.publishDate = nil
+    }
+
+    @MainActor
+    func publish() async throws {
+        wpAssert(post.isRevision())
+
+        try await coordinator.publish(post.original(), options: .init(
+            visibility: visibility.type,
+            password: visibility.password,
+            publishDate: publishDate
+        ))
+    }
+}
+
+private struct PrepublishingStackView: UIViewRepresentable {
+    let view: UIStackView
+
+    func makeUIView(context: Context) -> some UIView {
+        view
+    }
+
+    func updateUIView(_ uiView: UIViewType, context: Context) {
+        // Do nothing
+    }
+}
+
 private enum Strings {
     static let publish = NSLocalizedString("prepublishing.publish", value: "Publish", comment: "Primary button label in the pre-publishing sheet")
     static let schedule = NSLocalizedString("prepublishing.schedule", value: "Schedule", comment: "Primary button label in the pre-publishing shee")
     static let publishDate = NSLocalizedString("prepublishing.publishDate", value: "Publish Date", comment: "Label for a cell in the pre-publishing sheet")
-    static let postTitle = NSLocalizedString("prepublishing.postTitle", value: "Title", comment: "Placeholder for a cell in the pre-publishing sheet")
     static let visibility = NSLocalizedString("prepublishing.visibility", value: "Visibility", comment: "Label for a cell in the pre-publishing sheet")
     static let categories = NSLocalizedString("prepublishing.categories", value: "Categories", comment: "Label for a cell in the pre-publishing sheet")
     static let tags = NSLocalizedString("prepublishing.tags", value: "Tags", comment: "Label for a cell in the pre-publishing sheet")
     static let jetpackSocial = NSLocalizedString("prepublishing.jetpackSocial", value: "Jetpack Social", comment: "Label for a cell in the pre-publishing sheet")
+    static let immediately = NSLocalizedString("prepublishing.publishDateImmediately", value: "Immediately", comment: "Placeholder value for a publishing date in the prepublishing sheet when the date is not selected")
+    static let uploadingMedia = NSLocalizedString("prepublishing.uploadingMedia", value: "Uploading media", comment: "Title for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaOneItemRemaining = NSLocalizedString("prepublishing.uploadMediaOneItemRemaining", value: "%@ item remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    private static let uploadMediaManyItemsRemaining = NSLocalizedString("prepublishing.uploadMediaManyItemsRemaining", value: "%@ items remaining", comment: "Details label for a publish button state in the pre-publishing sheet")
+    static func uploadMediaRemaining(count: Int) -> String {
+        String(format: count == 1 ? Strings.uploadMediaOneItemRemaining : Strings.uploadMediaManyItemsRemaining, count.description)
+    }
+    static let mediaUploadFailedTitle = NSLocalizedString("prepublishing.mediaUploadFailedTitle", value: "Failed to upload media", comment: "Title for a publish button state in the pre-publishing sheet")
+    static let mediaUploadFailedDetailsMultipleFailures = NSLocalizedString("prepublishing.mediaUploadFailedDetails", value: "%@ items failed to upload", comment: "Details for a publish button state in the pre-publishing sheet; count as a parameter")
 }

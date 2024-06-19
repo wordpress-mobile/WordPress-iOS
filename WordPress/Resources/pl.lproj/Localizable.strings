@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2023-10-25 07:12:08+0000 */
+/* Translation-Revision-Date: 2024-06-07 13:41:13+0000 */
 /* Plural-Forms: nplurals=3; plural=(n == 1) ? 0 : ((n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? 1 : 2); */
 /* Generator: GlotPress/4.0.1 */
 /* Language: pl */
@@ -389,7 +389,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -428,7 +427,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -577,7 +575,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -731,8 +728,7 @@
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Utwrz stronę";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Utwórz wpis";
 
 /* Button to progress to the next step
@@ -751,9 +747,6 @@
 
 /* Title of the button in the placeholder for an empty list of blog tags. */
 "Create a Tag" = "Utwórz tag";
-
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Stwórz wpis lub stronę";
 
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Utwórz ikonkę witryny";
@@ -791,9 +784,6 @@
 
 /* Action title. Noun. Opens the user's WordPress.com dashboard in an external browser. */
 "Dashboard" = "Kokplt";
-
-/* Date and Time */
-"Date and Time" = "Data i godzina";
 
 /* Title of Days stats filter. */
 "Days" = "Dni";
@@ -860,9 +850,6 @@
 /* The menu item to select during a guided tour. */
 "Discover" = "Odkryj";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Odkryj i śledź blogi, które kochasz";
-
 /* Label for selecting the Blog Discussion Settings section
    Title for the Discussion Settings Screen */
 "Discussion" = "Dyskusja";
@@ -891,9 +878,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -1120,9 +1105,6 @@
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Znajdź adres swojej witryny";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Znajdowanie blogów i stron, które pokochasz...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -1131,24 +1113,14 @@
 /* Fitness & Exercise site intent topic */
 "Fitness & Exercise" = "Fitness i ćwiczenia";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Obserwuj";
 
 /* Verb. Button title. Follow the comments on a post. */
 "Follow conversation" = "Obserwuj konwersację";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Obserwowane witryny";
-
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Obserwujący";
-
-/* User is following the blog. */
-"Following" = "Obserwujesz";
 
 /* No comment provided by engineer. */
 "Font Size" = "Wielkość liter";
@@ -1299,8 +1271,7 @@
 "Hide keyboard" = "Schowaj klawiature";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Historia";
 
 /* Title for setting which shows the current page assigned as a site's homepage
@@ -1512,7 +1483,6 @@
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Polubienia";
@@ -1549,7 +1519,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Wczytywanie…";
 
@@ -2057,8 +2026,7 @@
    Title shown when selecting a post type of Post from the Share Extension. */
 "Post" = "Wpis";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Format treści";
 
 /* Register Domain - Address information field Postal Code */
@@ -2133,8 +2101,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Opublikuj";
 
 /* Label for the publish date button. */
@@ -2147,9 +2114,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Opublikowano";
-
-/* Published on [date] */
-"Published on" = "Opublikowano dnia ";
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikowanie wpisu…";
@@ -2349,9 +2313,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zaplanowano";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Zaplanowano na ";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Planowanie…";
 
@@ -2390,9 +2351,6 @@
 /* No comment provided by engineer. */
 "Select a color" = "Wybierz kolor";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "Wybierz kilka, aby kontynuować";
-
 /* Register domain - Title for the Choose domain button of Suggested domains screen */
 "Select domain" = "Wybierz domenę";
 
@@ -2425,7 +2383,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings" = "Ustawienia";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -2523,10 +2480,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Continue without making a selection. */
 "Skip" = "Pomiń";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Społeczności";
 
 /* Title for a label that appears when the scan failed
@@ -2824,9 +2779,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Notifications Today Section Header */
 "Today" = "Dzisiaj";
 
-/* Insights 'Total Followers' header */
-"Total Followers" = "Całkowita liczba obserwujących";
-
 /* Title for the traffic section in site settings screen */
 "Traffic" = "Ruch";
 
@@ -3021,9 +2973,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobacz";
 
-/* Button label for viewing a post */
-"View Post" = "Zobacz wpis";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Zobacz witrynę";
 
@@ -3046,7 +2995,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -3262,6 +3210,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Age between dates equaling one hour. */
 "an hour" = "godzina";
 
+/* Update button title */
+"appUpdate.action.update" = "Uaktualnij";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Wersja %@";
+
 /* The title of a button to close the classic editor deprecation notice alert dialog. */
 "aztecPost.deprecationNotice.dismiss" = "Odrzuć";
 
@@ -3329,8 +3283,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Odrzuć";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Odkryj blogi do obserwowania";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Odkryj blogi do zasubskrybowania";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Zrób to ponownie";
@@ -3342,7 +3296,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "growAudienceCell.readerDiscover.completed.tip" = "Połączono z innymi blogami";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Połącz się z innymi blogerami, obserwując, polubiając i komentując ich wpisy.";
+"growAudienceCell.readerDiscover.details" = "Nawiązuj kontakty z innymi blogerami poprzez subskrybowanie, polubienie i komentowanie ich wpisów.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Włącz udostępnianie wpisów";
@@ -3371,8 +3325,11 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* User action to dismiss media options. */
 "gutenberg.mediaAttachmentActionSheet.dismiss" = "Odrzuć";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* (placeholder) Help the user enter a URL into the field */
+"http:\/\/my-site-address (URL)" = "http:\/\/my-site-address (adres URL)";
+
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -3429,7 +3386,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Przełącz się na aplikację Jetpack, aby używać Czytnika do znajdowania, obserwowania i polubienia wszystkich swoich ulubionych stron internetowych i postów.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Śledź dowolną witrynę za pomocą aplikacji Jetpack";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Subskrybuj dowolną witrynę za pomocą aplikacji Jetpacka";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack zapewnia statystyki, powiadomienia i więcej, aby pomóc zbudować i rozwijać wymarzoną witrynę opartą o WordPressa.";
@@ -3578,6 +3535,27 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Register Domain - Domain contact information field Phone */
 "phone number" = "numer telefonu";
 
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "Anuluj";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Przywrócić";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "Usunięte %@";
+
+/* Button title */
+"postFromAudio.retry" = "Ponów";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Coś poszło nie tak";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "Przetwarzanie…";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Nagrywanie…";
+
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Odrzuć";
 
@@ -3590,6 +3568,24 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Opcje obrazka wyróżniającego";
 
+/* Button OK */
+"postSettings.ok" = "OK";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Strona nadrzędna";
+
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Obserwuj swoje ulubione witryny i odkrywaj nowe blogi.";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Gotowe";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Udostępnij post";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Wpis został opublikowany.";
+
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Odrzuć";
 
@@ -3598,6 +3594,25 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for the success view when the user has successfully logged in */
 "qrLoginVerifyAuthorization.completedInstructions.title" = "Zalgowano się!";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Gotowe";
+
+/* Button title to filter the Reader stream by blog.
+This is displayed when we don't know the number of blogs yet. */
+"reader.navigation.filter.blog.unspecified" = "Blogi";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Dodaj bloga";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Gotowe";
+
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Lubię to";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Polubione";
 
 /* Spoken accessibility label */
 "readerDetail.backButton.accessibilityLabel" = "Wróć";
@@ -3632,6 +3647,21 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the tooltip anchor. */
 "readerDetail.tooltipAnchorTitle.accessibilityLabel" = "Utwórz";
 
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Inne urządzenie";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Aktualne urządzenie";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "Anuluj";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Zapisz";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Rozwiąż konflikt";
+
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Odrzuć";
 
@@ -3652,6 +3682,15 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Share extension error dialog title. */
 "shareModularViewController.retryAlert.title" = "Błąd udostępniania";
+
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Wszystkie witryny";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Dodaj witrynę";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "Anuluj";
 
 /* Title for Comments count in Latest Post Summary stats card. */
 "stats.insights.latestPostSummary.comments" = "Komentarze";
@@ -3678,7 +3717,10 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "stats.insights.management.savePrompt.saveButton" = "Zapisz zmiany";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%% wyświetleń";
+"stats.insights.mostPopularCard.viewsNumber" = "%1$@ wyświetleń";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Odrzuć";

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-04 09:54:08+0000 */
+/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ を再連携しました。";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@。%2$d件の投稿。";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "この投稿を本当にゴミ箱へ移動してよいですか ?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "ホームページを更新してもよろしいですか ?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "更新してもよいですか ?";
 
@@ -1120,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "ブログ投稿";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "ブログのメールフォロワー";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "ブログのフォロワー";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "ブログのユーザー";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "ブログの読者";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "ブログ";
 
@@ -1229,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1268,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1639,7 +1619,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1804,7 +1783,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1980,8 +1958,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "ページを作成";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "投稿を作成";
 
 /* Button to progress to the next step
@@ -2014,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "ビジネス、マガジン、個人ブログ用の新しいサイトを作成するか、既存の WordPress インストール環境を関連付けてください。";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "投稿またはページを作成";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "投稿、ページ、ストーリーを作成";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "絵文字アイコンを作成";
 
@@ -2037,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "サイトを作成";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "新しい投稿またはページを作成します";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "投稿、ページ、ストーリーを作成";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "新しいメニューを作成すると、現在のメニューで行った変更は破棄されます。本当に実行してもよいですか ?";
@@ -2117,9 +2082,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "共有したいメッセージをカスタマイズできます。\nここに独自のテキストを追加しない場合は、投稿のタイトルをメッセージとして使います。";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "新しい投稿とコメントをフォロー中のサイトの設定をカスタマイズします";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "「いいね」、コメント、フォローなどのサイト設定をカスタマイズ。";
 
@@ -2147,9 +2109,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "日付の範囲";
-
-/* Date and Time */
-"Date and Time" = "日付と時刻";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2299,9 +2258,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Discover";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "お気に入りのブログを探してフォロー";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "参考になるサイトを探してフォローしましょう。";
 
@@ -2354,9 +2310,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2596,9 +2550,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "メールアドレス";
 
-/* Blog Email Followers */
-"Email Followers" = "メールフォロワー";
-
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2795,9 +2746,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "読み込み中にエラーが\n発生しました";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "保存する際に\nエラーが発生しました";
 
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "公開する際にエラーが発生しました";
@@ -3006,9 +2954,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "サイトアドレスを検索";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "お気に入りのブログとストーリーを探しています...";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3032,8 +2977,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "脅威の修正";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "フォロー";
 
 /* Button title. Follow the comments on a post. */
@@ -3048,36 +2992,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "興味のあるテーマをフォローすると、おすすめのブログが表示されます。";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "お気に入りのサイトをフォローして新しいブログを発見しましょう。";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "フォローしたサイト";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "フォロワー";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "フォロワー";
-
-/* User is following the blog. */
-"Following" = "フォロー中";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "新しいトピックをフォローしています...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "この会話をフォロー中";
-
-/* Filters Follows Notifications */
-"Follows" = "フォロー";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "ブログをフォローします。";
 
 /* No comment provided by engineer. */
 "Font Size" = "文字サイズ";
@@ -3190,9 +3115,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "サポートを受ける";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "投稿をシェアして閲覧数を増やしましょう。";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Jetpack アプリについて知る";
@@ -3350,9 +3272,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "ヘルプアイコン";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "投稿のこれまでのパフォーマンスは次のとおりです。";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "非表示";
 
@@ -3373,8 +3292,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "検索見出しを非表示";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "履歴";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3680,9 +3598,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "入力したパスワードが正しくないようです。もう一度試しますか ?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "「%2$@」が公開されてから%1$@が経過しました。";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "%@ のブログに投稿する日です !";
 
@@ -3903,7 +3818,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "いいね";
@@ -3955,7 +3869,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "リンクを挿入しました";
 
 /* No comment provided by engineer. */
-"Link text" = "リンクテキスト";
+"Link label" = "リンクラベル";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "既存のコンテンツへのリンク";
@@ -4007,9 +3921,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "コメントを読み込み中…";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "履歴を読み込み中…";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "メニューの読み込み中...";
 
@@ -4030,7 +3941,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "読み込み中…";
 
@@ -4594,11 +4504,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "修正された脅威はありません";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "フォロワーはまだいません";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "変更履歴がありません";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5051,9 +4957,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "親カテゴリー";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "親ページの更新に成功しました。";
-
 /* Parenting site intent topic */
 "Parenting" = "育児";
 
@@ -5298,8 +5201,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "投稿カテゴリー";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "投稿フォーマット";
 
 /* Name of the button to open the post settings
@@ -5493,8 +5395,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "公開";
 
 /* Label for the publish date button. */
@@ -5516,12 +5417,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "公開済み";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "投稿を公開しました: ";
-
-/* Published on [date] */
-"Published on" = "公開日時:";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "ページを公開しています...";
@@ -5718,8 +5613,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "「次のステップ」を削除すると、このサイトのすべてのツアーが非表示になります。この操作を元に戻すことはできません。";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "フォロワーを削除すると、そのフォロワーにはお客様のサイトの更新情報が送信されなくなります。 そのフォロワーがお客様のサイトを再び訪問し、再度お客様のサイトをフォローすることもできます。";
 
 /* No comment provided by engineer. */
@@ -6001,12 +5895,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "予約済み";
 
-/* Scheduled for [date] */
-"Scheduled for" = "予約済み:";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "%@に投稿予約: ";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "予約中…";
 
@@ -6127,9 +6015,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "上記の色を選択";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "選択して続ける";
-
 /* No comment provided by engineer. */
 "Select a layout" = "レイアウトを選択";
 
@@ -6239,9 +6124,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "サービス";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "親の設定";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "アイキャッチ画像として設定";
 
@@ -6285,7 +6167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "設定更新に失敗";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6295,9 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jetpack を友達とシェア";
-
-/* Label for action to share post. */
-"Share Post" = "投稿をシェア";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "WordPress を友達と共有する";
@@ -6418,9 +6296,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "メールアドレスで登録";
 
-/* Label for time period in list of followers. */
-"Since" = "以降";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "無料プランをご利用のため、アクティビティログで確認できるイベントは限られています。";
 
@@ -6475,9 +6350,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "サイトを削除しました";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "サイトフォロー";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "サイトが見つかりません";
 
@@ -6513,10 +6385,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "これまでのところ、サイトで無視された脅威は見つかりませんでした。";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "ソーシャル";
 
 /* Title of a Quick Start Tour */
@@ -7440,21 +7310,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "総コメント数";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "メールフォロワーの合計数: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "フォロワー総数";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "総いいね数";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "総投稿数";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "WordPress.com フォロワーの合計数: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "総単語数";
@@ -7703,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "会話をフォロー解除";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "ブログをフォロー解除します。";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "グループ解除ブロック";
@@ -7969,9 +7827,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "すべて表示";
 
-/* Button label for viewing a post */
-"View Post" = "投稿を表示";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "サイトを表示";
 
@@ -7984,10 +7839,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "コンパクト表示…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "さらに表示";
@@ -8008,7 +7861,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8425,9 +8277,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "コメントの本文、名前、URL、メール、IP にこれらの語のいずれかが含まれている場合、スパムとしてマークされます。語句の一部を入力できます。例えば、「press」は「WordPress」に一致します。";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "エディター内で変更を加えた際は、ここで履歴を確認できます";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "サイトに変更を加えた後は、ここでそのアクティビティ履歴を確認できます。";
 
@@ -8707,9 +8556,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "まだ公開した投稿がありません";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "公開した投稿はまだありません公開を開始すると、最新の投稿のサマリーがここに表示されます。";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "マイルストーンに到達しました 🚀 ";
 
@@ -8918,8 +8764,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "画質";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "キャンセル";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "最新バージョンを入手";
+
+/* Update button title */
+"appUpdate.action.update" = "更新";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "このアプリを使用するには、最新バージョンをダウンロードしてください。";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "アプリの更新が利用可能です";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "バージョン %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "新機能";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "音声ファイル";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "キャンセル";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "別の端末からこの投稿に加えられた未保存の変更があります。 編集済み: %@。";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "自動保存が利用可能";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "変更を表示";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "画像をアップロードできません。 別の画像を選択するか、後でもう一度お試しください。";
@@ -9119,6 +8998,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "連携";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "音声ファイルから投稿";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "投稿またはページを作成";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "カスタマイズされたダッシュボードを作成して、表示するレポートを選択します。 最も重視するデータに集中できます。";
@@ -9452,9 +9337,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "フォロー";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "初年度は無料でドメインを取得でき、サイト上の広告が削除され、ストレージが増えます。";
 
@@ -9500,8 +9382,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "閉じる";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "フォローするブログを検索";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "購読するブログを見つける";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "再度実行";
@@ -9513,7 +9395,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "他のブログと連携しています";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "投稿をフォロー、「いいね」、コメントして、他のブロガーとつながりましょう。";
+"growAudienceCell.readerDiscover.details" = "投稿を購読、「いいね」、コメントして、他のブロガーとつながりましょう。";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "投稿の共有を有効化";
@@ -9589,9 +9471,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "投稿に写真または動画を追加する。";
-
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -9705,7 +9584,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Jetpack アプリに切り替えると、Reader を使用してお気に入りのサイトや投稿をすべて検索、フォロー、「いいね」できます。";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack アプリで任意のサイトをフォロー";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack アプリで任意のサイトを購読";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack は統計、通知などの機能を提供し、理想の WordPress サイトの構築と成長をサポートします。";
@@ -10217,8 +10096,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "閉じる";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "サイト購読者";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "購読中のサイトの新しい投稿とコメントの設定をカスタマイズします";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "購読済みサイト";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "この非公開ブログの閲覧権限がありません。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "ブログを購読します。";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "ブログからフォロー解除します。";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "購読済み";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "購読";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "改善してほしい";
@@ -10231,6 +10131,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "フィードバックを送る";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "購読";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "購読済み";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "ブログを購読します。";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "購読者";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "購読";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "まだ購読者はいません";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "私の投稿「%@」をぜひお読みください:";
@@ -10298,6 +10216,9 @@ Example: Reply to Pamela Nguyen */
 /* Cancels an Action */
 "pagesList.trash.cancel" = "キャンセル";
 
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "親ページ";
+
 /* No comment provided by engineer. */
 "password" = "パスワード";
 
@@ -10361,26 +10282,107 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "プラン";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "%@に作成済み";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "投稿を削除中...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "%@に編集済み";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "投稿をゴミ箱に移動中...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "%@に公開";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "%@に予約";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "下書きを破棄";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "%@にゴミ箱に移動";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "編集を続行";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "下書きを保存";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "自動保存を作成中...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "コードエディター";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "ブロック数 : %1$li、単語数 : %2$li、文字数 : %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "ヘルプ";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "ヘルプとサポート";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "ページ設定";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "投稿設定";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "プレビュー";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "リビジョン";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "ビジュアルエディター";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "表示";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "いくつかのメディアアイテムのアップロードに失敗しました";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "投稿が下書きとして復元されました";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "キャンセル";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "ゴミ箱に移動済みの %1$@ は編集できません。 この %1$@ を編集するには、下書きに移動し直すことで復元する必要があります。";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "復元";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ をゴミ箱に移動";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "変更履歴の読み取りが完了しました";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "下書きを保存中...";
+
+/* Button title */
+"postFromAudio.buttonUpgrade" = "アップグレードしてリクエストを増やす";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "音声ファイルから投稿を作成するためのリクエストが足りません。";
+
+/* Button title */
+"postFromAudio.ok" = "OK";
+
+/* Button title */
+"postFromAudio.retry" = "再試行";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "エラーが発生しました";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "利用可能なリクエスト:";
+
+/* The screen title */
+"postFromAudio.title" = "音声ファイルから投稿";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "処理しています...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "録音しています...";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作成者: %@。";
@@ -10393,6 +10395,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@、%2$@。";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "レビュー待ち";
+
+/* Cancels an Action */
+"postList.cancel" = "キャンセル";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "完全に削除";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "「%@」を完全に削除してもよいですか ?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "アプリが以前に行われた変更をサーバーにアップロードしています。 後でもう一度お試しください。";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "エラーが発生しました";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "オフラインの変更";
@@ -10408,6 +10428,39 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "表示";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "ゴミ箱に移動";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "「%@」をゴミ箱に移動してもよいですか ? 以前サーバーに送信されなかった変更はすべて失われます。";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "アップロードをキャンセル";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "閉じる";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "保留中のアップロードはありません";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@ \/ %2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "アップロードを再試行";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "アップロードを再試行";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "メディアのアップロード";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "エラーが発生しました";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "アプリが以前に行われた変更をサーバーにアップロードしています。 後でもう一度お試しください。";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "ページの下書きをアップロードしました";
@@ -10439,11 +10492,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "投稿を更新しました";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "アップロードに失敗しました";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "表示";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "コンテンツが別の端末で編集されました";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "「%@」は完全に削除され、更新できなくなりました";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "無題";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "閉じる";
@@ -10457,14 +10516,62 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "アイキャッチ画像のオプション";
 
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "親ページ";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "レビュー待ち";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "Twitter の自動共有機能は利用できなくなりました";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "ページ属性";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "投稿設定を更新できませんでした";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "表示状態を「非公開」に変更すると、投稿はすぐに投稿されます";
+
+/* Localized post type: `Page` */
+"postType.page" = "ページ";
+
+/* Localized post type: `Post` */
+"postType.post" = "投稿";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "サイト管理者と編集者にだけ表示されます";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "非公開";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "誰でも見ることができますが、パスワードが必要です";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "パスワード保護";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "すべての人に表示";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "公開";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "キャンセル";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "表示設定";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "パスワード";
+
+/* Button save */
+"postVisibilityPicker.save" = "保存";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
@@ -10490,14 +10597,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "プレビュー";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "公開";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "再試行";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "ホームページに設定する";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "親の設定";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "投稿ページとして設定";
@@ -10556,8 +10663,8 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack ソーシャル";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "メディアのアップロードに失敗";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@件のアイテムのアップロードに失敗しました";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "タイトル";
@@ -10567,6 +10674,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "公開日";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "すぐに";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "公開先";
@@ -10632,26 +10742,62 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "タグ";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "残り%@件のアイテム";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "残り%@件のアイテム";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "メディアをアップロード中";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "可視性";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "お気に入りのサイトを購読して、新しいブログを発見しましょう。";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "すべての回答を表示";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@ \/ %2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "公開日";
 
-/* Retry button title */
-"publishButton.retry" = "再試行";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "現在お使いのタイムゾーンの日付:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "現在";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "すぐに";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "公開日を削除";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "公開日を選択";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "タイムゾーン";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "公開日";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "完了";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Blaze を使って宣伝する";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "投稿をシェア";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "投稿を公開しました。";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "トラフィックを増やしましょう:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "投稿を表示";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "閉じる";
@@ -10670,6 +10816,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "詳細";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "完了";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "お好みの色とフォントを選択してください。 投稿を読んでいるときに、画面上部の AA アイコンをタップします。";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "閲覧の設定";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "上部のドロップダウンをタップし、「タグ」を選択して、フォロー中のタグからストリームにアクセスします。";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "タグのストリーム";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Reader の新規";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "ブログ %@ がリーダーに表示されなくなります。 タップして元に戻します。";
@@ -10786,6 +10950,9 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "ブログを取得しています…";
 
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "購読済みサイト";
+
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "ブログ";
 
@@ -10802,7 +10969,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "タグ";
+"reader.navigation.filter.blog.unspecified" = "ブログ";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
@@ -10842,11 +11009,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "サブスクリプション";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "あなたのタグ";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "検索";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Reader 設定";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "ブログを追加";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "ブログを検索";
@@ -10873,7 +11046,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "サブスクリプションに移動";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "ブログを追加";
+"reader.no.tags.title" = "タグを追加";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "ブログをブロックできませんでした";
@@ -10987,6 +11160,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "ブログの購読を中止";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "キャンディー";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "デフォルト";
 
@@ -11002,35 +11178,60 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "ソフト";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "色";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "完了";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "フォント";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "サイズ";
 
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "これはまだ開発中の新機能です。 改善にご協力ください (%1$@)。";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "フィードバックを送る";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "閲覧は個人的なものです。ご自身で管理しましょう。 ご自身に合ったスタイルを選択します。";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "この機能についてフィードバックを送信";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "この機能は現在も開発中です。";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "イヌ";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "キツネ";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "デザイン";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "投稿設定";
+"reader.preferences.preview.body.text" = "カラー、フォント、サイズを選択します。 ここで選択内容をプレビューし、完成後にスタイルを適用して投稿を読むことができます。";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "閲覧の設定を選択";
+"reader.preferences.preview.header" = "閲覧の設定";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "色";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "フォント";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "読み込み中";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "タグ例";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "特大";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "極小";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "大";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "通常";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "小";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "ブログ管理";
@@ -11050,11 +11251,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "新しいタグをフォロー中...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "選択して続ける";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "完了";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "お気に入りのブログとストーリーを探しています...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "フォローする新しいタグはありません";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "タグを選択する";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "お気に入りのブログを探してフォロー";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "フォロー";
@@ -11071,6 +11284,19 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "購読するブログ";
 
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "再試行";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "現在、このタグから投稿を読み込むことができません";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "投稿の読み込みに失敗しました";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "タグを追加";
 
@@ -11083,6 +11309,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "タグを追加";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "いいね";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "いいね済み";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "その他のタグを見る";
 
@@ -11091,6 +11323,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "フォロー中";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "%1$@ からの詳細情報";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ のフォローを解除";
@@ -11103,6 +11338,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "閉じる";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "閲覧の設定";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "OK";
@@ -11178,6 +11416,39 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "関連記事";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "別の端末";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "現在の端末";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "投稿が別の端末で編集されました。 保持する投稿のバージョンを選択してください。";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "キャンセル";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "保存";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "競合を解決";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "エディター内で変更を加えると、ここでリビジョン履歴を確認できるようになります";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "まだリビジョンはありません";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "読み込み中...";
+
+/* Post revisions list screen title */
+"revisions.title" = "リビジョン";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "リンクをコピー";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "閉じる";
@@ -11353,6 +11624,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "不明";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "すべてのサイト";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "固定済みサイト";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "最近のサイト";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "サイトを追加";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "キャンセル";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "完了";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "編集";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "サイトを選択";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "リマインダー";
 
@@ -11389,6 +11684,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "Twitter の自動共有機能は Twitter の規約と価格に変更があったため利用できなくなりました。";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "購読者";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "トラフィック";
 
@@ -11399,10 +11697,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "前の7日間";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*増加";
+"stats.insights.label.totalLikes.higherNumber" = "前の7日間と比べて*%1$@%2$@ (%3$@)*増加";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "前の7日間と比べて*%1$@%2$@ (%3$@%%)*減少";
+"stats.insights.label.totalLikes.lowerNumber" = "前の7日間と比べて*%1$@%2$@ (%3$@)*減少";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "前の7日間と同じ";
@@ -11480,10 +11778,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 最も人気のある時間";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "%d%%回の閲覧";
+"stats.insights.mostPopularCard.viewsNumber" = "表示数の %1$@";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "アクティビティが足りません。 サイトの訪問者数が増えたら後でもう一度確認してください。";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "購読者";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
@@ -11491,8 +11792,44 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "最新の投稿 %1$@ が%2$@回「いいね」されました。";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "WordPress.com 購読者総数: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "メール購読者総数: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "購読者総数";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "今日";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "購読者になった日時";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "名前";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "クリック数";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "開いた数";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "最新のメール";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "メール";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "購読者の拡大";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "購読者";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "%1$@、%2$@、%3$@ を示すテーブル";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "選択した期間のコメントを表す棒グラフ。";
@@ -11506,35 +11843,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "選択した期間の訪問者を表す棒グラフ。";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "日別";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "日";
 
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "先月と比べて%@人増加\n";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "月";
 
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "先月と比べて%@人減少\n";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "週";
 
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "前の7日間と比べて%@人増加\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "前の7日間と比べて%@人減少\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "去年と比べて%@人増加\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "去年と比べて%@人減少\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "月別";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "週別";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "年別";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "年";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "削除";
@@ -11545,8 +11864,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "無料の写真を検索して、メディアライブラリに追加してください。";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "お客様の状況をこちらで把握できるよう、メールアドレスとユーザー名を含めていただくことも可能です。";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "入力されたメールアドレスがありません";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "入力されたユーザー名がありません";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "完了";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "フィードバックありがとうございます";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "送信";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "送信中";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "匿名で送信";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "フィードバック";
@@ -11718,6 +12058,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "未読";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "サイトの購読者";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "サイトのユーザー";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "サイトの読者";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "購読者";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "ドキュメントページに移動する";

@@ -22,11 +22,9 @@ class PostTests: XCTestCase {
     func testCreateScheduledPost() throws {
         try BlockEditorScreen()
             .enterTextInTitle(text: postTitle)
-            .openPostSettings()
+            .publish()
             .updatePublishDateToFutureDate()
-            .closePublishDateSelector()
-            .closePostSettings()
-            .post(action: .schedule)
+            .confirm()
 
         try MySiteScreen()
             .goToMoreMenu()

@@ -1,0 +1,2 @@
+Gönderileri kaydederken uzun bir gecikme fark ettiniz mi? Bunun nedeni görsel, galeri veya dosya blokları olabilir ama artık değil. Ne kadar çok fotoğraf veya dosya yüklemiş olursanız olun, kaydetme işlemi hızlı ve kolay olmalıdır.
+Ayrıca "Yazı Yayınlandı" ekranında üst üste binen "Bitti" düğmesini de düzelttik. Çantada keklik.

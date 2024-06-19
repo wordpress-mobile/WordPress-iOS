@@ -1,7 +1,70 @@
+25.2
+-----
+
+
+25.1
+-----
+* [*] [internal] Block editor: Add onContentUpdate bridge functionality [#23234]
+* [*] Fix a rare crash when trashing posts [#23321]
+* [*] Fix an issue with a missing navigation bar background in Post Settings [#23334]
+* [*] Fix an issue where the app will sometimes save empty drafts [#23342]
+* [*] Add `.networkConnectionLost` to the list of "offline" scenarios so that the "offline changes" badge and fast retries work for this use case [#23348]
+
+
+25.0
+-----
+* [*] Fix button overlap in the "Post Published" sheet on small devices [#23210]
+* [*] [internal] Incorporate a parser to handle Gutenberg blocks more efficiently for improved performance [#22886]
+* [**] Improve performance of Image and Gallery block processors to avoid long delay when saving a post [#22896]
+* [*] Improve performance of File block processor [#22897]
+* [*] [internal] Prompt users to keep the app up to date on their devices, so they can try new features, as well as benefit from performance improvements and bug fixes [#23195, #23216, #23218, #23211] 
+* [**] [Jetpack-only] Reader: Add a new feed dedicated to tags [#23242]
+
+24.9.1
+-----
+* [**] Fix bug where the option to switch to the Jetpack app is broken [#23276]
+
+24.9
+-----
+* [*] Add "Parent Page" to "Page Settings" [#23136]
+* [*] Add "Slug" and "Excerpt" fields to "Page Settings" [#23135]
+* [*] Make it easier to "Share" and "Blaze" a published post with an updated success view [##23128]
+* [*] Add support for viewing trashed posts and pages and restoring them from the editor [#23142]
+* [***] [Jetpack-only] Reorganized Stats to include updated Traffic and Insights tabs, along with a newly added Subscribers tab to improve subscriber metrics analysis [#23159]
+* [*] Impove the "Post Settings" screen groups/ordering to better align with Gutenberg [#23164]
+* [*] Update the "More" menu in the Editor to use modern iOS design and update copy to match Gutenberg [#23145]
+* [*] Update the "Revisions" list design and fix an issue with the footer displaying incorrect "Date Created" for drafts [#23145]
+* [***] Fix multiple post sync issues: [#21895], [#22037], [#8111], [#10168], [#17343], [#14221], [#12800], [#12073], [#14572], [#9319], [#21941], [#3070], [#3978], [#9449], [#13023], [#21472]
+* [**] Fix [#4870], [#14798], an issue where the app sometimes overwrites the changes made on the remote. The app will now show a new "Conflict Resolution" screen if there is a conflict. It will also no longer try to auto-upload changes to an existing published post or publish a draft, eliminating multiple possible failure points.
+* [**] Fix [#12121], [#13724], [#14251], [#18517], [#17086], [#15767], [#16514], [#13654] and other untracked issues with the "Publish Date" field in Post Settings. The app now has a new date picker that makes it easier to pick and remove the selected date. It also makes it clear if the blog is in a different time zones from your local timezone. The "Publish Date" field was also removed from the Post Settings screen for draft posts – the date needs to be selected right before publishing.
+* [**] Add a new "Media Uploads" screen to the "Publishing Sheet" where you can see the status of the pending uploads. It also shows error messages for each individual upload (if any) and allows you to cancel the failing uploads.
+* [*] Fix [#21940], [#13432], [#11435], issues where "Discard Changes" would sometimes delete the entire draft or appear when no changes were made
+* [*] Fix [#12099] by removing the "Status" field from Post Settings that was leading to multiple unexpected and confusing scenarios. The app now manages the transitions between state the same way as Gutenberg, so it should feel more familiar to the users.
+* [*] Fix [#10663], an issue with unclear error messages. The messages for "synchronous" operations will not appear as alerts with detailed information about the error. The error for drafts will also appear more clearly.
+* [*] Update the "Autosave Available" dialog to work the same way as in Gutenberg and to better represent what this feature is – it can no longer be confused with a "Data Conflict" dialog (fixes [#13093])
+* [*] Fix [#22107], [#19540], [#13632] by removing the "Draft Uploaded" snackbar
+* [*] Fix editor state restoration in the Jetpack app
+* [*] Update the support for pending posts to have clearer flows for both admins and contributors
+* [*] Fix [#19886], an issue with a missing error message when selecting a page author that's not eligible to be a page author
+* [*] Fix [#22969] an issue where Post List content occasionally stops updating
+* [*] Fix [#3862] by adding a "Password Protected" badge in [#23154]
+* [*] Fix [#21093], a rare crash in "View Stats for Posts" – [#23155]
+* [*] Fix [#22247], a rare crash in Post List
+* [*] Update the app to use `wp.createPost` and `wp.editPost` instead of the respective deprecated `metaWeblog.*` methods (closes [#1385])
+
+24.8
+-----
+* [*] [internal] Update Reachability. [#23030]
+* [*] Move "Settings" context menu action in "Pages" from the submenu to a separate section to make it easily discoverable and make it available for unpublished posts [#23065]
+* [*] [Jetpack-only] Add "Stats" context menu action to "Pages" [#23065]
+
 24.7
 -----
 
 * [*] [Jetpack-only] Stats: Made optimizations to enhance loading and scrolling performance. [#22592, #22847]
+* [**] [Jetpack-only] Reader: Introducing Reading Preferences, an experimental feature that allows users to customize their Reader post content screen with the color, font, and size that they like the most. [#22999]
+* [*] [Jetpack-only] Stats: Optimized the Insights tab to enhance loading and scrolling performance. [#22592]
+
 
 24.6
 -----

@@ -6,7 +6,7 @@ import WordPressShared
 
 // MARK: - PeopleViewController
 
-class PeopleViewController: UITableViewController, UIViewControllerRestoration {
+class PeopleViewController: UITableViewController {
 
     // MARK: Properties
 
@@ -26,6 +26,10 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
             refreshNoResultsView()
         }
     }
+
+    /// Default Filter value when People loads
+    ///
+    fileprivate var defaultFilter = Filter.users
 
     /// NoResults Helper
     ///
@@ -70,7 +74,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         // Followers must be sorted out by creationDate!
         //
         switch filter {
-        case .followers, .email:
+        case .followers:
             return [NSSortDescriptor(key: "creationDate", ascending: true, selector: #selector(NSDate.compare(_:)))]
         default:
             return [NSSortDescriptor(key: "displayName", ascending: true, selector: #selector(NSString.localizedCaseInsensitiveCompare(_:)))]
@@ -146,7 +150,7 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return hasHorizontallyCompactView() ? CGFloat.leastNormalMagnitude : 0
+        return .DS.Padding.single
     }
 
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -157,6 +161,37 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         }
 
         loadMorePeopleIfNeeded()
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        guard let blog = blog, let blogId = blog.dotComID?.intValue else { return }
+
+        switch filter {
+        case .users, .viewers:
+            guard let viewController = PersonViewController.controllerWithBlog(
+                blog,
+                context: viewContext,
+                person: personAtIndexPath(indexPath),
+                screenMode: filter.screenMode
+            ) else {
+                return
+            }
+            navigationController?.pushViewController(viewController, animated: true)
+        case .followers:
+            let url = URL(string: "https://wordpress.com/subscribers/\(blogId)/\(personAtIndexPath(indexPath).ID)")
+            let configuration = WebViewControllerConfiguration(url: url)
+            configuration.authenticateWithDefaultAccount()
+            configuration.secureInteraction = true
+            configuration.onClose = { [weak self] in
+                self?.resetManagedPeople()
+                self?.refreshPeople()
+            }
+            let viewController = WebKitViewController(configuration: configuration)
+            let navWrapper = LightNavigationController(rootViewController: viewController)
+            navigationController?.present(navWrapper, animated: true)
+        }
     }
 
     // MARK: UIViewController
@@ -185,44 +220,11 @@ class PeopleViewController: UITableViewController, UIViewControllerRestoration {
         tableView.reloadData()
     }
 
-    @IBSegueAction func createPersonViewController(_ coder: NSCoder) -> PersonViewController? {
-        guard let selectedIndexPath = tableView.indexPathForSelectedRow, let blog = blog else { return nil }
-
-        return PersonViewController(coder: coder,
-                                    blog: blog,
-                                    context: viewContext,
-                                    person: personAtIndexPath(selectedIndexPath),
-                                    screenMode: filter.screenMode)
-    }
-
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let navController = segue.destination as? UINavigationController,
             let inviteViewController = navController.topViewController as? InvitePersonViewController {
             inviteViewController.blog = blog
         }
-    }
-
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: RestorationKeys.blog) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID),
-            let blog = restoredBlog  as? Blog else {
-                return nil
-        }
-
-        return controllerWithBlog(blog)
-    }
-
-    override func encodeRestorableState(with coder: NSCoder) {
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-        coder.encode(objectString, forKey: RestorationKeys.blog)
-        super.encodeRestorableState(with: coder)
     }
 
     // MARK: Action Handlers
@@ -263,21 +265,17 @@ extension PeopleViewController: NetworkStatusDelegate {
     }
 }
 
-// MARK: - Private behavior
+// MARK: - Enum
 
-private extension PeopleViewController {
-
-    // MARK: Enums
-
+extension PeopleViewController {
     enum Filter: String, CaseIterable, FilterTabBarItem {
 
         case users      = "users"
         case followers  = "followers"
-        case email      = "email"
         case viewers    = "viewers"
 
         static var defaultFilters: [Filter] {
-            return [.users, .followers, .email]
+            return [.users, .followers]
         }
 
         var title: String {
@@ -285,11 +283,9 @@ private extension PeopleViewController {
             case .users:
                 return NSLocalizedString("Users", comment: "Blog Users")
             case .followers:
-                return NSLocalizedString("Followers", comment: "Blog Followers")
+                return NSLocalizedString("users.list.title.subscribers", value: "Subscribers", comment: "Site Subscribers")
             case .viewers:
                 return NSLocalizedString("Viewers", comment: "Blog Viewers")
-            case .email:
-                return NSLocalizedString("Email Followers", comment: "Blog Email Followers")
             }
         }
 
@@ -301,8 +297,6 @@ private extension PeopleViewController {
                 return .follower
             case .viewers:
                 return .viewer
-            case .email:
-                return .emailFollower
             }
         }
 
@@ -314,15 +308,14 @@ private extension PeopleViewController {
                 return .Follower
             case .viewers:
                 return .Viewer
-            case .email:
-                return .Email
             }
         }
     }
+}
 
-    enum RestorationKeys {
-        static let blog = "peopleBlogRestorationKey"
-    }
+// MARK: - Private behavior
+
+private extension PeopleViewController {
 
     enum Storyboard {
         static let inviteSegueIdentifier = "invite"
@@ -348,15 +341,6 @@ private extension PeopleViewController {
 
         do {
             try resultsController.performFetch()
-
-            // Failsafe:
-            // This was causing a glitch after State Restoration. Top Section padding was being initially
-            // set with an incorrect value, and subsequent reloads weren't picking up the right value.
-            //
-            if isHorizontalSizeClassUnspecified() {
-                return
-            }
-
             tableView.reloadData()
         } catch {
             DDLogError("Error fetching People: \(error)")
@@ -366,6 +350,8 @@ private extension PeopleViewController {
     // MARK: Sync Helpers
 
     func refreshPeople() {
+        self.isInitialLoad = true
+        self.refreshNoResultsView()
         loadPeoplePage() { [weak self] (retrieved, shouldLoadMore) in
             self?.isInitialLoad = false
             self?.refreshNoResultsView()
@@ -412,8 +398,6 @@ private extension PeopleViewController {
             loadUsersPage(offset, success: success)
         case .viewers:
             service.loadViewersPage(offset, success: success)
-        case .email:
-            service.loadEmailFollowersPage(offset, success: success)
         }
     }
 
@@ -533,8 +517,9 @@ private extension PeopleViewController {
         filterBar.items = filtersAvailableForBlog(blog)
         filterBar.addTarget(self, action: #selector(selectedFilterDidChange(_:)), for: .valueChanged)
 
-        // By default, let's display the Blog's Users
-        filter = .users
+        let indexToSet = Filter.allCases.firstIndex(where: { $0 == defaultFilter }) ?? 0
+        filterBar.setSelectedIndex(indexToSet)
+        filter = defaultFilter
     }
 
     func setupTableView() {
@@ -560,6 +545,8 @@ private extension PeopleViewController {
 
         WPStyleGuide.configureColors(view: view, tableView: tableView)
         WPStyleGuide.configureAutomaticHeightRows(for: tableView)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .DS.Background.primary
 
         setupFilterBar()
         setupTableView()
@@ -577,7 +564,6 @@ extension PeopleViewController {
         }
 
         viewController.blog = blog
-        viewController.restorationClass = self
 
         return viewController
     }
@@ -590,5 +576,19 @@ extension PeopleViewController {
             return
         }
         WPAnalytics.track(.peopleFilterChanged, properties: [:], blog: blog)
+    }
+}
+
+extension PeopleViewController {
+    class func controllerWithBlog(_ blog: Blog, selectedFilter: Filter) -> PeopleViewController? {
+        let storyboard = UIStoryboard(name: "People", bundle: nil)
+        guard let viewController = storyboard.instantiateInitialViewController() as? PeopleViewController else {
+            return nil
+        }
+
+        viewController.defaultFilter = selectedFilter
+        viewController.blog = blog
+
+        return viewController
     }
 }

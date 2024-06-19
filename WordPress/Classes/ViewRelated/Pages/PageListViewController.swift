@@ -4,14 +4,13 @@ import WordPressShared
 import WordPressFlux
 import UIKit
 
-final class PageListViewController: AbstractPostListViewController, UIViewControllerRestoration {
+final class PageListViewController: AbstractPostListViewController {
     private struct Constant {
         struct Size {
             static let pageCellEstimatedRowHeight = CGFloat(44.0)
         }
 
         struct Identifiers {
-            static let pagesViewControllerRestorationKey = "PagesViewControllerRestorationKey"
             static let pageCellIdentifier = "PageCellIdentifier"
             static let templatePageCellIdentifier = "TemplatePageCellIdentifier"
         }
@@ -58,7 +57,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     @objc class func controllerWithBlog(_ blog: Blog) -> PageListViewController {
         let vc = PageListViewController()
         vc.blog = blog
-        vc.restorationClass = self
         if QuickStartTourGuide.shared.isCurrentElement(.pages) {
             vc.filterSettings.setFilterWithPostStatus(BasePost.Status.publish)
         }
@@ -71,35 +69,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
         sourceController.navigationController?.pushViewController(controller, animated: true)
 
         QuickStartTourGuide.shared.visited(.pages)
-    }
-
-    // MARK: - UIViewControllerRestoration
-
-    class func viewController(withRestorationIdentifierPath identifierComponents: [String],
-                              coder: NSCoder) -> UIViewController? {
-
-        let context = ContextManager.sharedInstance().mainContext
-
-        guard let blogID = coder.decodeObject(forKey: Constant.Identifiers.pagesViewControllerRestorationKey) as? String,
-            let objectURL = URL(string: blogID),
-            let objectID = context.persistentStoreCoordinator?.managedObjectID(forURIRepresentation: objectURL),
-            let restoredBlog = try? context.existingObject(with: objectID) as? Blog else {
-
-                return nil
-        }
-
-        return controllerWithBlog(restoredBlog)
-    }
-
-    // MARK: - UIStateRestoring
-
-    override func encodeRestorableState(with coder: NSCoder) {
-
-        let objectString = blog?.objectID.uriRepresentation().absoluteString
-
-        coder.encode(objectString, forKey: Constant.Identifiers.pagesViewControllerRestorationKey)
-
-        super.encodeRestorableState(with: coder)
     }
 
     // MARK: - UIViewController
@@ -248,7 +217,7 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
             let pageIDs = pages.map { TaggedManagedObjectID($0) }
 
             do {
-                self.pages = try await buildPageTree(pageIDs: pageIDs)
+                self.pages = try await PostRepository().buildPageTree(pageIDs: pageIDs)
                     .map { pageID, hierarchyIndex in
                         let page = try coreDataStack.mainContext.existingObject(with: pageID)
                         page.hierarchyIndex = hierarchyIndex
@@ -263,29 +232,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
 
         tableView.reloadData()
         refreshResults()
-    }
-
-    /// Build page hierachy in background, which should not take long (less than 2 seconds for 6000+ pages).
-    @MainActor
-    func buildPageTree(pageIDs: [TaggedManagedObjectID<Page>]? = nil, request: NSFetchRequest<Page>? = nil) async throws -> [(pageID: TaggedManagedObjectID<Page>, hierarchyIndex: Int)] {
-        assert(pageIDs != nil || request != nil, "`pageIDs` and `request` can not both be nil")
-
-        let coreDataStack = ContextManager.shared
-        return try await coreDataStack.performQuery { context in
-            var pages = [Page]()
-
-            if let pageIDs {
-                pages = try pageIDs.map(context.existingObject(with:))
-            } else if let request {
-                pages = try context.fetch(request)
-            }
-
-            pages = pages.setHomePageFirst()
-
-            // The `hierarchyIndex` is not a managed property, so it needs to be returend along with the page object id.
-            return PageTree.hierarchyList(of: pages)
-                .map { (TaggedManagedObjectID($0), $0.hierarchyIndex) }
-        }
     }
 
     override func syncContentEnded(_ syncHelper: WPContentSyncHelper) {
@@ -459,40 +405,6 @@ final class PageListViewController: AbstractPostListViewController, UIViewContro
     }
 
     // MARK: - Cell Action Handling
-
-    @MainActor
-    func setParentPage(for page: Page) async {
-        let request = NSFetchRequest<Page>(entityName: Page.entityName())
-        let filter = PostListFilter.publishedFilter()
-        request.predicate = filter.predicate(for: blog, author: .everyone)
-        request.sortDescriptors = filter.sortDescriptors
-        do {
-            let context = ContextManager.shared.mainContext
-            var pages = try await buildPageTree(request: request)
-                .map { pageID, hierarchyIndex in
-                    let page = try context.existingObject(with: pageID)
-                    page.hierarchyIndex = hierarchyIndex
-                    return page
-                }
-            if let index = pages.firstIndex(of: page) {
-                pages = pages.remove(from: index)
-            }
-            let viewController = ParentPageSettingsViewController.navigationController(with: pages, selectedPage: page, onClose: { [weak self] in
-                self?.updateAndPerformFetchRequestRefreshingResults()
-            }, onSuccess: { [weak self] in
-                self?.handleSetParentSuccess()
-            } )
-            present(viewController, animated: true)
-        } catch {
-            assertionFailure("Failed to fetch pages: \(error)") // This should never happen
-        }
-    }
-
-    private func handleSetParentSuccess() {
-        let setParentSuccefullyNotice =  NSLocalizedString("Parent page successfully updated.", comment: "Message informing the user that their pages parent has been set successfully")
-        let notice = Notice(title: setParentSuccefullyNotice, feedbackType: .success)
-        ActionDispatcher.global.dispatch(NoticeAction.post(notice))
-    }
 
     func setPageAsHomepage(_ page: Page) {
         guard let homePageID = page.postID?.intValue else { return }

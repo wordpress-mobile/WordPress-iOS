@@ -20,6 +20,8 @@ class ReaderTabView: UIView {
 
     private var filteredTabs: [(index: Int, topic: ReaderAbstractTopic)] = []
     private var previouslySelectedIndex: Int = 0
+    private var currentTabItems: [ReaderTabItem] = []
+    private weak var childController: UIViewController?
 
     private var discoverIndex: Int? {
         return viewModel.tabItems.firstIndex(where: { $0.content.topicType == .discover })
@@ -55,7 +57,11 @@ class ReaderTabView: UIView {
         }
 
         viewModel.onTabBarItemsDidChange { [weak self] tabItems, index in
+            if self?.childController != nil && self?.currentTabItems == tabItems {
+                return
+            }
             self?.addContentToContainerView(index: index)
+            self?.currentTabItems = tabItems
         }
 
         setupViewElements()
@@ -63,6 +69,7 @@ class ReaderTabView: UIView {
 
         NotificationCenter.default.addObserver(self, selector: #selector(topicUnfollowed(_:)), name: .ReaderTopicUnfollowed, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(siteFollowed(_:)), name: .ReaderSiteFollowed, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(filterUpdated(_:)), name: .ReaderFilterUpdated, object: nil)
     }
 
     required init?(coder: NSCoder) {
@@ -118,6 +125,8 @@ extension ReaderTabView {
         }
         controller.add(childController)
         containerView.pinSubviewToAllEdges(childController.view)
+
+        self.childController = childController
 
         if viewModel.shouldShowCommentSpotlight {
             let title = NSLocalizedString("Comment to start making connections.", comment: "Hint for users to grow their audience by commenting on other blogs.")
@@ -205,6 +214,16 @@ private extension ReaderTabView {
         // If a P2 is followed but the P2 tab is not in the Reader tab bar,
         // refresh the Reader menu to display it.
         viewModel.fetchReaderMenu()
+    }
+
+    @objc func filterUpdated(_ notification: Foundation.Notification) {
+        guard let userInfo = notification.userInfo,
+              let topic = userInfo[ReaderNotificationKeys.topic] as? ReaderTagTopic,
+              let filterProvider = viewModel.streamFilters.first(where: { $0.reuseIdentifier == FilterProvider.ReuseIdentifiers.tags }) else {
+            return
+        }
+        viewModel.setFilterContent(topic: topic)
+        viewModel.activeStreamFilter = (filterProvider.id, topic)
     }
 
 }

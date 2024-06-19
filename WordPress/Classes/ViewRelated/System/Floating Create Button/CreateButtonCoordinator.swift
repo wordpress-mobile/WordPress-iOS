@@ -24,9 +24,7 @@ import WordPressUI
     private let noticeAnimator = NoticeAnimator(duration: 0.5, springDampening: 0.7, springVelocity: 0.0)
 
     private func notice(for blog: Blog) -> Notice {
-        let showsStories = blog.supports(.stories)
-        let title = showsStories ? NSLocalizedString("Create a post, page, or story", comment: "The tooltip title for the Floating Create Button") : NSLocalizedString("Creates new post, or page", comment: " Accessibility hint for create floating action button")
-        let notice = Notice(title: title,
+        let notice = Notice(title: Strings.createPostHint,
                             message: "",
                             style: ToolTipNoticeStyle()) { [weak self] _ in
                 self?.didDismissTooltip = true
@@ -87,7 +85,9 @@ import WordPressUI
         listenForQuickStart()
 
         // Only fetch the prompt if it is actually needed, i.e. on the FAB that has multiple actions.
-        if actions.count > 1 {
+        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
+        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
+        if actions.count > 1 || source == Strings.readerSource {
             fetchBloggingPrompt()
         }
     }
@@ -140,7 +140,9 @@ import WordPressUI
             return
         }
 
-        if actions.count == 1 {
+        // Temporarily show the sheet when the FAB is tapped on the Reader tab.
+        // TODO: (dvdchr) clean up once `readerFloatingButton` is removed.
+        if actions.count == 1, source != Strings.readerSource {
             actions.first?.handler()
         } else {
             let actionSheetVC = actionSheetController(with: viewController.traitCollection)
@@ -199,8 +201,7 @@ import WordPressUI
     }
 
     @objc func showCreateButton(for blog: Blog) {
-        let showsStories = blog.supports(.stories)
-        button.accessibilityHint = showsStories ? NSLocalizedString("Creates new post, page, or story", comment: " Accessibility hint for create floating action button") : NSLocalizedString("Create a post or page", comment: " Accessibility hint for create floating action button")
+        button.accessibilityHint = Strings.createPostHint
         showCreateButton(notice: notice(for: blog))
     }
 
@@ -307,7 +308,14 @@ private extension CreateButtonCoordinator {
         let promptsHeaderView = BloggingPromptsHeaderView.view(for: prompt)
 
         promptsHeaderView.answerPromptHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetAnswerPrompt)
+            let answerPromptEvent: WPAnalyticsEvent = {
+                if self?.source == Strings.readerSource {
+                    return .readerCreateSheetAnswerPromptTapped
+                }
+                return .promptsBottomSheetAnswerPrompt
+            }()
+
+            WPAnalytics.track(answerPromptEvent)
             self?.viewController?.dismiss(animated: true) {
                 let editor = EditPostViewController(blog: blog, prompt: prompt)
                 editor.modalPresentationStyle = .fullScreen
@@ -317,7 +325,14 @@ private extension CreateButtonCoordinator {
         }
 
         promptsHeaderView.infoButtonHandler = { [weak self] in
-            WPAnalytics.track(.promptsBottomSheetHelp)
+            let helpEvent: WPAnalyticsEvent = {
+                if self?.source == Strings.readerSource {
+                    return .readerCreateSheetPromptHelpTapped
+                }
+                return .promptsBottomSheetHelp
+            }()
+
+            WPAnalytics.track(helpEvent)
             guard let presentedViewController = self?.viewController?.presentedViewController else {
                 return
             }
@@ -339,4 +354,9 @@ private extension CreateButtonCoordinator {
         return !matchingPrompts.isEmpty
     }
 
+}
+
+private enum Strings {
+    static let readerSource = "reader"
+    static let createPostHint = NSLocalizedString("createPostSheet.createPostHint", value: "Create a post or page", comment: "Accessibility hint for create floating action button")
 }

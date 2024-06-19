@@ -176,7 +176,6 @@
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -215,7 +214,6 @@
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -284,7 +282,6 @@
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -450,9 +447,7 @@
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -520,9 +515,6 @@
 /* Text displayed when load post fails. */
 "Error Loading Post" = "ผิดพลาดในการโหลดเรื่อง";
 
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "ความผิดพลาดเกิดขึ้น\nในขณะกำลังบันทึก";
-
 /* Placeholder text for the tagline of a site */
 "Explain what this site is about." = "อธิบายว่าเว็บนี้เกี่ยวกับอะไร";
 
@@ -554,28 +546,14 @@
    User's First Name */
 "First Name" = "ชื่อ";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "ติดตาม";
 
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "เว็บที่ติดตาม";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "ผู้ติดตาม";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "ผู้ติดตาม";
-
-/* User is following the blog. */
-"Following" = "กำลังติดตาม";
-
-/* Filters Follows Notifications */
-"Follows" = "ติดตาม";
 
 /* Next web page */
 "Forward" = "ฟอร์เวิร์ด";
@@ -716,7 +694,6 @@
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "ชื่นชอบ";
@@ -753,7 +730,6 @@
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "กำลังโหลด...";
 
@@ -1099,8 +1075,7 @@
 /* Title for selecting categories for a post */
 "Post Categories" = "หมวดหมู่เรื่อง";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "รูปแบบเรื่อง";
 
 /* All Time Stats 'Posts' label
@@ -1148,8 +1123,7 @@
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "เผยแพร่";
 
 /* A short phrase indicating a post is due to be immedately published. */
@@ -1159,9 +1133,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "เผยแพร่แล้ว";
-
-/* Published on [date] */
-"Published on" = "เผยแพร่บน";
 
 /* Mobile Push Notifications */
 "Push Notifications" = "ส่งการเตือน";
@@ -1301,9 +1272,6 @@
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "เข้าตารางเวลาแล้ว";
 
-/* Scheduled for [date] */
-"Scheduled for" = "เข้าตารางเวลาสำหรับ";
-
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
    Title of the Reader's search feature */
@@ -1343,7 +1311,6 @@
 "Settings update failed" = "อัปเดตการตั้งค่าล้มเหลว";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -1357,9 +1324,6 @@
 
 /* Alert title picking theme type to browse */
 "Show themes:" = "แสดงธีม:";
-
-/* Label for time period in list of followers. */
-"Since" = "ตั้งแต่";
 
 /* Title for the Language Picker View */
 "Site Language" = "ภาษาของเว็บ";
@@ -1378,9 +1342,6 @@
 
 /* No comment provided by engineer. */
 "Site address must be at least 4 characters." = "ที่อยู่เว็บไซต์ต้องมีอย่างน้อย 4 ตัวอักษร";
-
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "ติดตามเว็บ";
 
 /* Image size option title. */
 "Size" = "ขนาด";
@@ -1616,12 +1577,6 @@
 /* Label for total followers */
 "Total" = "ทั้งหมด";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "อีเมล์ผู้ติดตามทั้งหมด: %@";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "ผู้ติดตาม WordPress.com ทั้งหมด: %@";
-
 /* Accessibility label for trash buttons in nav bars
    Trashes a comment
    Trashes the comment */
@@ -1768,7 +1723,6 @@
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */

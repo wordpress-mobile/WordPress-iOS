@@ -1,1 +1,2 @@
-Wir haben eine Handvoll Probleme mit der Formatierung von hervorgehobenem Text behoben. Ich weiß nicht, wie es dir geht, aber das ist das Highlight unserer Woche.
+Dir ist aufgefallen, dass das Speichern von Beiträgen sehr lange dauert? Das lag möglicherweise an Bild-, Galerie- oder Dateiblöcken. Aber das haben wir behoben! Jetzt sollte das Speichern schnell und reibungslos verlaufen – egal, wie viele Fotos oder Dateien du hochgeladen hast.
+Außerdem haben wir den überlappenden Button „Fertig“ auf dem Bildschirm „Beitrag veröffentlicht“ repariert. Wenn das mal nicht kinderleicht war.

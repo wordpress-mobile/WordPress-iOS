@@ -70,8 +70,10 @@ extension WPStyleGuide {
         }
 
         static func configureLabelAsSubtitle(_ label: UILabel) {
-            label.textColor = secondaryTextColor
-            label.font = subTitleFont
+            label.textColor = .DS.Foreground.secondary
+            label.font = .DS.font(.footnote)
+            label.adjustsFontSizeToFitWidth = true
+            label.maximumContentSizeCategory = .accessibilityLarge
         }
 
         static func configureLabelAsLink(_ label: UILabel) {
@@ -162,21 +164,6 @@ extension WPStyleGuide {
             button.titleLabel?.font = customizeInsightsTryButtonFont
         }
 
-        static func highlightString(_ subString: String, inString: String) -> NSAttributedString {
-            let attributedString = NSMutableAttributedString(string: inString)
-
-            guard let subStringRange = inString.nsRange(of: subString) else {
-                return attributedString
-            }
-
-            attributedString.addAttributes( [
-                .foregroundColor: substringHighlightTextColor,
-                .font: substringHighlightFont
-                ], range: subStringRange)
-
-            return attributedString
-        }
-
         static func imageForGridiconType(_ iconType: GridiconType, withTint tintColor: ImageTintColor = .grey) -> UIImage? {
             return UIImage.gridicon(iconType, size: gridiconSize).imageWithTintColor(tintColor.styleGuideColor)
         }
@@ -227,12 +214,10 @@ extension WPStyleGuide {
         static let itemDetailTextColor = UIColor.textSubtle
         static let actionTextColor = UIColor.primary
         static let summaryTextColor = UIColor.neutral(.shade70)
-        static let substringHighlightTextColor = UIColor.primary
         static let iconLoadingBackgroundColor = UIColor.neutral(.shade10)
 
         static let subTitleFont = WPStyleGuide.fontForTextStyle(.footnote, fontWeight: .medium)
         static let summaryFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .regular)
-        static let substringHighlightFont = WPStyleGuide.fontForTextStyle(.subheadline, fontWeight: .semibold)
         static let insightsCountFont = UIFont.preferredFont(forTextStyle: .title1).bold()
 
         static let tableBackgroundColor = UIColor.listBackground

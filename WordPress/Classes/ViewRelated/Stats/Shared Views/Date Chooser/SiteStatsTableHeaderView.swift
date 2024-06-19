@@ -116,17 +116,6 @@ class SiteStatsTableHeaderView: UIView, NibLoadable, Accessible {
         ].compactMap { $0 }
     }
 
-    func updateDate(with intervalDate: Date) {
-        guard let period = period else {
-            return
-        }
-
-        self.date = StatsPeriodHelper().endDate(from: intervalDate, period: period)
-
-        delegate?.dateChangedTo(self.date)
-        reloadView()
-    }
-
     func animateGhostLayers(_ animate: Bool) {
         if animate {
             isRunningGhostAnimation = true
@@ -307,6 +296,8 @@ private extension SiteStatsTableHeaderView {
 }
 
 extension SiteStatsTableHeaderView: StatsBarChartViewDelegate {
+    func statsBarChartTabSelected(_ tabIndex: Int) {}
+
     func statsBarChartValueSelected(_ statsBarChartView: StatsBarChartView, entryIndex: Int, entryCount: Int) {
         guard let period = period, entryCount > 0, entryCount <= SiteStatsTableHeaderView.defaultPeriodCount else {
             return

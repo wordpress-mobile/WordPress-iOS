@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-04-04 09:54:07+0000 */
+/* Translation-Revision-Date: 2024-06-01 01:29:59+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: tr */
@@ -139,9 +139,6 @@
 
 /* Let's the user know that a third party sharing service was reconnected. The %@ is a placeholder for the service name. */
 "%@ was reconnected." = "%@ yeniden bağlandı.";
-
-/* Difference label for Period Overview stat, indicating change from previous period. Ex: +99.9K (5%) */
-"%@%@ (%@%%)" = "%1$@%2$@ (%3$@%%)";
 
 /* Accessibility value for a Stats' Posting Activity Month if the user selected a day with posts. The first parameter is day (e.g. November 2019). The second parameter is the number of posts. */
 "%@. %d posts." = "%1$@. %2$d yazı.";
@@ -874,9 +871,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message of the trash confirmation alert. */
 "Are you sure you want to trash this post?" = "Bu yazıyı çöpe atmak istediğinize emin misiniz?";
 
-/* Title of message shown when user taps continue during homepage editing in site creation. */
-"Are you sure you want to update your homepage?" = "Giriş sayfası güncellemesini iptal etmek istediğinize emin misiniz?";
-
 /* Title of message shown when user taps update. */
 "Are you sure you want to update?" = "Güncellemek istediğinize emin misiniz?";
 
@@ -1120,18 +1114,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Create new Blog Post button title */
 "Blog post" = "Blog yazısı";
 
-/* Blog's Email Follower Profile. Displayed when the name is empty! */
-"Blog's Email Follower" = "Blogun e-posta takipçileri";
-
-/* Blog's Follower Profile. Displayed when the name is empty! */
-"Blog's Follower" = "Blogun takipçisi";
-
-/* Blog's User Profile. Displayed when the name is empty! */
-"Blog's User" = "Blog kullanıcısı";
-
-/* Blog's Viewer Profile. Displayed when the name is empty! */
-"Blog's Viewer" = "Blogun izleyicisi";
-
 /* Title for the blogging section in site settings screen */
 "Blogging" = "Blog yazma";
 
@@ -1229,7 +1211,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Alert dismissal title
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
-   Button shown when the author is asked for publishing confirmation.
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
    Button title. Cancels automatic uploading of the post when the device is back online.
@@ -1268,7 +1249,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Menus cancel button within text bar while editing items.
    Menus: Cancel button title for canceling an edited menu item.
    Option to cancel the email app selection when logging in with magic links
-   Text displayed by the left navigation button title
    The title of a cancel button.
    Title for cancel action. Dismisses the action sheet.
    Title of a button that dismisses the permissions alert
@@ -1639,7 +1619,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Insights 'Comments' header
    Label for number of comments.
    Label for Period Overview comments
-   Label for post comments count.
    Noun. Title. Links to the blog's Comments screen.
    Settings: Comment Sections
    Text for the 'comment' button when there are multiple comments
@@ -1804,7 +1783,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Apply changes localy to single block edition in the web block editor
    Button to progress to the next step
-   Continue button (used to finish editing the home page during site creation).
    The button title text when there is a next step for logging in or signing up.
    The default Jetpack view button title
    The primary button title in the migration welcome and notifications screens.
@@ -1980,8 +1958,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Title for button to make a page with the contents of the selected layout */
 "Create Page" = "Sayfa oluştur";
 
-/* Button title, encourages users to create post on their blog.
-   Label for action to create a new post. */
+/* Button title, encourages users to create post on their blog. */
 "Create Post" = "Yazı oluştur";
 
 /* Button to progress to the next step
@@ -2014,12 +1991,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Text shown when the account has no sites. */
 "Create a new site for your business, magazine, or personal blog; or connect an existing WordPress installation." = "İşletmeniz, derginiz veya kişisel blogunuz için yeni bir site oluşturun ya da var olan bir WordPress kurulumunu bağlayın.";
 
-/* Accessibility hint for create floating action button */
-"Create a post or page" = "Yazı ya da sayfa oluştur";
-
-/* The tooltip title for the Floating Create Button */
-"Create a post, page, or story" = "Bir yazı, sayfa ya da öykü oluştur";
-
 /* Title for the Site Icon Picker */
 "Create a site icon" = "Bir site simgesi oluştur";
 
@@ -2037,12 +2008,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title of a Quick Start Tour */
 "Create your site" = "Sitenizi oluşturun";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, or page" = "Yeni bir yazı ya da sayfa oluşturur";
-
-/* Accessibility hint for create floating action button */
-"Creates new post, page, or story" = "Bir yazı, sayfa ya da öykü oluşturur";
 
 /* Menus alert message for alerting the user to unsaved changes while trying to create a new menu. */
 "Creating a new menu will discard changes you've made to the current menu. Are you sure you want to continue?" = "Yeni bir menü oluşturursanız var olan menüde yaptığınız değişiklikler yok sayılacak. İlerlemek istediğinize emin misiniz?";
@@ -2117,9 +2082,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Hint displayed when the user is customizing the share message. */
 "Customize the message you want to share.\nIf you don't add your own text here, we'll use the post's title as the message." = "Paylaşmak istediğiniz iletiyi özelleştirin.\nBuraya bir metin yazmazsanız, ileti olarak yazının başlığını kullanacağız.";
 
-/* Notification Settings for your followed sites */
-"Customize your followed site settings for New Posts and Comments" = "Yeni yazılar ve yorumlar için takip ettiğiniz site ayarlarınızı özelleştirin";
-
 /* Notification Settings for your own blogs */
 "Customize your site settings for Likes, Comments, Follows, and more." = "Beğeniler, yorumlar, takipler ve diğerleri için site ayarlarınızı özelleştirin.";
 
@@ -2147,9 +2109,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Label of a button that displays a calendar */
 "Date Range" = "Tarih aralığı";
-
-/* Date and Time */
-"Date and Time" = "Tarih ve saat";
 
 /* Label for selecting the date and time settings section
    Title for the Date and Time Format Settings Screen */
@@ -2299,9 +2258,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The menu item to select during a guided tour. */
 "Discover" = "Keşfedin";
 
-/* Reader select interests title label text */
-"Discover and follow blogs you love" = "Sevdiğiniz blogları keşfedin ve takip edin";
-
 /* Description of a Quick Start Tour */
 "Discover and follow sites that inspire you." = "Size ilham veren siteleri keşfedin ve takip edin.";
 
@@ -2354,9 +2310,7 @@ translators: %s: Block name e.g. \"Image block\" */
    Label for Done button
    Label on button to dismiss revisions view
    Menu button title for finishing editing the Menu name.
-   Reader select interests next button enabled title text
    Tapping a button with this label allows the user to exit the Site Creation flow
-   Text displayed by the right navigation button title
    Title for a Done button.
    Title for button that will dismiss this view
    Title for the button that will dismiss this view.
@@ -2596,9 +2550,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Header for a comment author's email address, shown when editing a comment. */
 "Email Address" = "E-posta adresi";
 
-/* Blog Email Followers */
-"Email Followers" = "E-posta takipçileri";
-
 /* Accessibility label for the email address text field.
    Describes the email address section in the comment detail screen.
    Placeholder for a textfield. The user may enter their email address.
@@ -2795,9 +2746,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Text displayed in HUD while a post revision is being loaded. */
 "Error occurred\nduring loading" = "Yükleme sırasında\nsorun çıktı";
-
-/* Text displayed in HUD after attempting to save a draft post and an error occurred. */
-"Error occurred\nduring saving" = "Kaydedilirken\nsorun çıktı";
 
 /* Text displayed in notice while a post is being published. */
 "Error occurred during publishing" = "Yayınlanırken sorun çıktı";
@@ -3006,9 +2954,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* The hint button's title text to help users find their site address. */
 "Find your site address" = "Site adresinizi bulun";
 
-/* Label displayed to the user while loading their selected interests */
-"Finding blogs and stories you’ll love..." = "Seveceğiniz bloglar ve öyküler bulmak…";
-
 /* My Profile first name label
    Register Domain - Domain contact information field First name
    User's First Name */
@@ -3032,8 +2977,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Subtitle displayed while the server is fixing threats */
 "Fixing Threats" = "Tehditler düzeltiliyor";
 
-/* Button title. Follow the comments on a post.
-   Prompt to follow a blog. */
+/* Button title. Follow the comments on a post. */
 "Follow" = "Takip et";
 
 /* Button title. Follow the comments on a post. */
@@ -3048,36 +2992,17 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Guide for users to follow topics. */
 "Follow topics you're interested in and we'll find some blogs you might like." = "Siz ilgilendiğiniz konuları takip edin, biz de beğenebileceğiniz blogları bulalım.";
 
-/* Caption displayed in promotional screens shown during the login flow. */
-"Follow your favorite sites and discover new blogs." = "Beğendiğiniz siteleri takip edin ve yeni bloglar keşfedin.";
-
-/* Displayed in the Notification Settings View
-   Section title for sites the user has followed. */
-"Followed Sites" = "Takip edilen siteler";
-
-/* Label for list of followers.
-   User role badge */
+/* User role badge */
 "Follower" = "Takipçi";
 
-/* Blog Followers
-   Insights 'Followers' header
-   Label for number of followers. */
+/* Label for number of followers. */
 "Followers" = "Takipçiler";
-
-/* User is following the blog. */
-"Following" = "Takip ediliyor";
 
 /* Label displayed to the user while loading their selected interests */
 "Following new topics..." = "Yeni konular takip ediliyor...";
 
 /* The app successfully subscribed to the comments for the post */
 "Following this conversation" = "Bu yazışmanın ardından";
-
-/* Filters Follows Notifications */
-"Follows" = "Takipler";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to follow a blog. */
-"Follows the blog." = "Bloğu takip eder.";
 
 /* No comment provided by engineer. */
 "Font Size" = "Yazı boyutu";
@@ -3190,9 +3115,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* No comment provided by engineer. */
 "Get support" = "Destek alın";
-
-/* Appended to latest post summary text when the post does not have data. */
-"Get the ball rolling and increase your post views by sharing your post." = "Harekete geçin ve yazınızı paylaşarak yazınızın görüntülenme sayısını artırın.";
 
 /* Name of the Quick Start list that guides users through a few tasks to explore the Jetpack app. */
 "Get to know the Jetpack app" = "Jetpack uygulamasını tanıyın";
@@ -3350,9 +3272,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Help icon" = "Yardım simgesi";
 
-/* Appended to latest post summary text when the post has data. */
-"Here's how the post performed so far." = "Yazının şimdiye kadar ki performansı şöyle.";
-
 /* Accessibility value if login page's password field is hiding the password (i.e. with asterisks). */
 "Hidden" = "Gizli";
 
@@ -3373,8 +3292,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Hide search heading" = "Arama başlığını gizle";
 
 /* Displays the History screen from the editor's alert sheet
-   Title of a navigation button that opens the scan history view
-   Title of the post history screen */
+   Title of a navigation button that opens the scan history view */
 "History" = "Geçmiş";
 
 /* Message title displayed when we fail to fetch the status of the backup in progress. */
@@ -3680,9 +3598,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* An error message shown when a wpcom user provides the wrong password. */
 "It seems like you've entered an incorrect password. Want to give it another try?" = "Yanlış bir parola yazmışsınız gibi görünüyor. Yeniden denemek ister misiniz?";
 
-/* Latest post summary text including placeholder for time and the post title. */
-"It's been %@ since %@ was published. " = "%2$@ yayınlandığından beri %1$@ geçti. ";
-
 /* Title of a notification displayed prompting the user to create a new blog post. The %@ will be replaced with the blog's title. */
 "It's time to blog on %@!" = "%@ için blog yazma zamanı!";
 
@@ -3903,7 +3818,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Filters Likes Notifications
    Label for Period Overview likes
-   Label for post likes count.
    Text for the 'like' button. Tapping removes the 'liked' status from a post.
    Today's Stats 'Likes' label */
 "Likes" = "Beğeniler";
@@ -3955,7 +3869,7 @@ translators: %s: Block name e.g. \"Image block\" */
 "Link inserted" = "Bağlantı eklendi";
 
 /* No comment provided by engineer. */
-"Link text" = "Bağlantı metni";
+"Link label" = "Bağlantı etiketi";
 
 /* Action. Label for navigate and display links to other posts on the site */
 "Link to existing content" = "Var olan içeriğe bağla";
@@ -4007,9 +3921,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Displayed while a comment is being loaded. */
 "Loading comment..." = "Yorum yükleniyor...";
 
-/* Displayed while a call is loading the history. */
-"Loading history..." = "Geçmiş yükleniyor...";
-
 /* Menus label text displayed when a menu is loading. */
 "Loading menu..." = "Menü yükleniyor...";
 
@@ -4030,7 +3941,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Loading. Verb
    Suggestions loading message
    Text displayed in HUD while a media item is being loaded.
-   Text displayed in HUD while a revision post is loading.
    Text displayed while loading time zones */
 "Loading..." = "Yükleniyor...";
 
@@ -4594,11 +4504,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for the view when there aren't any fixed threats to display */
 "No fixed threats" = "Düzeltilmiş bir tehdit yok";
 
-/* Displayed in the Notifications Tab as a title, when the Follow Filter shows no notifications */
-"No followers yet" = "Henüz bir takipçi yok";
-
-/* Displayed when a call is made to load the revisions but there's no result or an error.
-   Title for the view when there aren't any history items to display */
+/* Title for the view when there aren't any history items to display */
 "No history yet" = "Henüz bir geçmiş kaydı yok";
 
 /* Title for the view when there aren't any ignored threats to display */
@@ -5051,9 +4957,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title for selecting parent category of a category */
 "Parent Category" = "Üst kategori";
 
-/* Message informing the user that their pages parent has been set successfully */
-"Parent page successfully updated." = "Üst sayfa güncellendi.";
-
 /* Parenting site intent topic */
 "Parenting" = "Ebeveynlik";
 
@@ -5298,8 +5201,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for selecting categories for a post */
 "Post Categories" = "Yazı kategorileri";
 
-/* For setting the format of a post.
-   The post formats available for the post. Should be the same as in core WP. */
+/* The post formats available for the post. Should be the same as in core WP. */
 "Post Format" = "Yazı biçimi";
 
 /* Name of the button to open the post settings
@@ -5493,8 +5395,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Button title. Publishes a post.
    Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
-   Section title for the publish table section in the blog details screen
-   Title for the publish settings view */
+   Section title for the publish table section in the blog details screen */
 "Publish" = "Yayınla";
 
 /* Label for the publish date button. */
@@ -5516,12 +5417,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Yayınlanmış";
-
-/* Precedes the name of the blog just posted on */
-"Published just now on" = "Az önce yayınlandı";
-
-/* Published on [date] */
-"Published on" = "Yayınlanma tarihi";
 
 /* A short message that informs the user a page is being published to the server from the share extension. */
 "Publishing page..." = "Sayfa yayınlanıyor...";
@@ -5718,8 +5613,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Explanation of what will happen if the user confirms this alert. */
 "Removing Next Steps will hide all tours on this site. This action cannot be undone." = "Sıradaki adımlar kaldırıldığında bu sitedeki tüm turlar gizlenir. Bu işlem geri alınamaz.";
 
-/* First line of remove email follower warning in confirmation dialog.
-   First line of remove follower warning in confirmation dialog. */
+/* First line of remove follower warning in confirmation dialog. */
 "Removing followers makes them stop receiving updates from your site. If they choose to, they can still visit your site, and follow it again." = "Takipçileri takipten çıkarırsanız sitenizden güncelleme alamazlar. İsterlerse sitenizi yine ziyaret edip takip edebilirler.";
 
 /* No comment provided by engineer. */
@@ -6001,12 +5895,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Zamanlandı";
 
-/* Scheduled for [date] */
-"Scheduled for" = "Zamanlama";
-
-/* Precedes the name of the blog a post was just scheduled on. Variable is the date post was scheduled for. */
-"Scheduled for %@ on" = "%@ için zamanlanmış";
-
 /* Text displayed in HUD while a post is being scheduled to be published. */
 "Scheduling..." = "Zamanlanıyor...";
 
@@ -6127,9 +6015,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* No comment provided by engineer. */
 "Select a color above" = "Yukarıdan bir renk seçin";
 
-/* Reader select interests next button disabled title text */
-"Select a few to continue" = "İlerlemek için birkaç tane seçin";
-
 /* No comment provided by engineer. */
 "Select a layout" = "Bir yerleşim seçin";
 
@@ -6239,9 +6124,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Label for connected service in Publicize stat. */
 "Service" = "Hizmet";
 
-/* Navigation title displayed on the navigation bar */
-"Set Parent" = "Üst öge ayarla";
-
 /* No comment provided by engineer. */
 "Set as Featured Image" = "Öne çıkarılmış görsel olarak ayarla";
 
@@ -6285,7 +6167,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "Settings update failed" = "Ayarlar güncellenemedi";
 
 /* Accessibility label for share buttons in nav bars
-   Button label to share a post
    Button label to share a web page
    Shares the comment URL
    Spoken accessibility label
@@ -6295,9 +6176,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for a button that recommends the app to others */
 "Share Jetpack with a friend" = "Jetpack uygulamasını arkadaşınızla paylaşın";
-
-/* Label for action to share post. */
-"Share Post" = "Yazıyı paylaş";
 
 /* Title for a button that recommends the app to others */
 "Share WordPress with a friend" = "WordPress'i bir arkadaşınızla paylaşın";
@@ -6418,9 +6296,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button title. Tapping begins our normal sign up process. */
 "Sign up with Email" = "E-posta ile hesap aç";
 
-/* Label for time period in list of followers. */
-"Since" = "Başlangıç";
-
 /* Text displayed as a footer of a table view with Activities when user is on a free plan */
 "Since you're on a free plan, you'll see limited events in your Activity Log." = "Ücretsiz plan kullandığınız için etkinlik kaydınızda göreceğiniz etkinlikler sınırlı olacak.";
 
@@ -6475,9 +6350,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Overlay message displayed when site successfully deleted */
 "Site deleted" = "Site silindi";
 
-/* Setting: indicates if New Follows will be notified */
-"Site follows" = "Site takipleri";
-
 /* Error notice shown if the app can't find a specific site belonging to the user */
 "Site not found" = "Site bulunamadı";
 
@@ -6513,10 +6385,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text display in the view when there aren't any Activities Types to display in the Activity Log Types picker */
 "So far, there are no ignored threats on your site." = "Şimdiye kadar sitenizde yok sayılmış bir tehdit yok.";
 
-/* Follower Totals label for social media followers
-   Label for social followers
-   The menu item to select during a guided tour.
-   Title of Stats section that shows social followers. */
+/* Label for social followers
+   The menu item to select during a guided tour. */
 "Social" = "Sosyal";
 
 /* Title of a Quick Start Tour */
@@ -7440,21 +7310,12 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Insights 'Total Comments' header */
 "Total Comments" = "Toplam yorum";
 
-/* Label displaying total number of Email followers. %@ is the total. */
-"Total Email Followers: %@" = "Toplam e-posta takipçisi: %@";
-
-/* Insights 'Total Followers' header */
-"Total Followers" = "Toplam e-posta takipçileri";
-
 /* 'This Year' label for total number of likes.
    Insights 'Total Likes' header */
 "Total Likes" = "Toplam beğeni";
 
 /* 'This Year' label for the total number of posts. */
 "Total Posts" = "Toplam yazı sayısı";
-
-/* Label displaying total number of WordPress.com followers. %@ is the total. */
-"Total WordPress.com Followers: %@" = "Toplam WordPress.com takipçisi: %@";
 
 /* 'This Year' label for total number of words. */
 "Total Words" = "Toplam sözcük";
@@ -7703,9 +7564,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Verb. Button title. The user is following the comments on a post. */
 "Unfollow conversation" = "Yazışmayı takibi bırak";
-
-/* VoiceOver accessibility hint, informing the user the button can be used to unfollow a blog. */
-"Unfollows the blog." = "Blogu takip etmeyi bırakır.";
 
 /* No comment provided by engineer. */
 "Ungroup block" = "Blok gruplamasını kaldır";
@@ -7969,9 +7827,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Button in the notification presented in Reader when a post is saved for later */
 "View All" = "Tümünü görüntüle";
 
-/* Button label for viewing a post */
-"View Post" = "Yazıyı görüntüle";
-
 /* Action title. Opens the user's site in an in-app browser */
 "View Site" = "Siteyi görüntüle";
 
@@ -7984,10 +7839,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displays Less Rows */
 "View less…" = "Daha az görüntüle…";
 
-/* Accessibility label for the View more button in Stats' Post Summary.
-   Accessibility label for View more button in Stats.
+/* Accessibility label for View more button in Stats.
    Accessibility label for viewing more posting activity.
-   Label for viewing more post information.
    Label for viewing more posting activity.
    Label for viewing more stats. */
 "View more" = "Diğerlerini görüntüle";
@@ -8008,7 +7861,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    All Time Stats 'Views' label
    Label for number of views.
    Label for Period Overview views
-   Label for post views count.
    Title for chart showing site views from various referrer sources.
    Title for Views count in the legend of the Stats Insights views and visitors line chart
    Today's Stats 'Views' label */
@@ -8428,9 +8280,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text rendered at the bottom of the Discussion Blocklist Keys editor */
 "When a comment contains any of these words in its content, name, URL, e-mail, or IP, it will be marked as spam. You can enter partial words, so \"press\" will match \"WordPress\"." = "Bir yorumun, ad bölümünde, adresinde, e-posta bölümünde ya da IP adresinde bu sözcüklerden biri geçtiğinde, yorum istenmeyen olarak işaretlenir. Sözcük parçaları ekleyerek örneğin \"press\" sözcüğünün \"WordPress\" ile eşleşmesini sağlayabilirsiniz.";
 
-/* Displayed when a call is made to load the history but there's no result or an error. */
-"When you make changes in the editor you'll be able to see the history here" = "Düzenleyici içinde değişiklik yaptığınızda geçmişi burada görebilirsiniz";
-
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Sitenizde değişiklik yaptığınızda etkinlik geçmişinizi burada görebileceksiniz.";
 
@@ -8710,9 +8559,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Displayed when the user views published posts in the posts list and there are no posts */
 "You haven't published any posts yet" = "Henüz herhangi bir yazı yayınlamadınız";
 
-/* Latest post summary text when there are no posts. */
-"You haven't published any posts yet. Once you start publishing, your latest post's summary will appear here." = "Henüz hiçbir yazı yayımlamadınız. Yayımlamaya başladıktan sonra en son yazınızın özeti burada görüntülenir.";
-
 /* Title for a view milestone push notification */
 "You hit a milestone 🚀" = "Bir dönüm noktasına ulaştınız 🚀";
 
@@ -8921,8 +8767,41 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for the image quality settings option. */
 "appSettings.media.imageQualityRow" = "Görsel kalitesi";
 
+/* Cancel button title */
+"appUpdate.action.cancel" = "İptal Et";
+
+/* Get the latest version button title */
+"appUpdate.action.latestVersion" = "En son sürümü indir";
+
+/* Update button title */
+"appUpdate.action.update" = "Güncelle";
+
+/* Message for view displayed when there's a newer version of the app available */
+"appUpdate.message" = "Bu uygulamayı kullanmak için en son sürümü indirin.";
+
+/* Title for view displayed when there's a newer version of the app available */
+"appUpdate.title" = "Uygulama Güncellemesi Mevcut";
+
+/* Format for latest version available */
+"appUpdate.versionFormat" = "Sürüm %@";
+
+/* Section title for what's new in the latest update available */
+"appUpdate.whatsNew" = "Yenilikler";
+
 /* translators: displays audio file extension. e.g. MP3 audio file */
 "audio file" = "ses dosyası";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.cancel" = "İptal Et";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.message" = "Farklı bir cihazdan bu gönderide kaydedilmeyen değişiklikler yaptınız. Düzenlendi: %@.";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.title" = "Otomatik Kaydetme Kullanılabilir";
+
+/* An alert suggesting to load autosaved revision for a published post */
+"autosaveAlert.viewChanges" = "Değişiklikleri Görüntüleyin";
 
 /* Alert message when something goes wrong with the selected image. */
 "avatarMenu.failedToSetAvatarAlertMessage" = "Görsel yüklenemedi. Lütfen başka bir tane seçin ya da daha sonra yeniden deneyin.";
@@ -9128,6 +9007,12 @@ Example: Reply to Pamela Nguyen */
 
 /* The menu item to select during a guided tour. */
 "connections" = "bağlantılar";
+
+/* Create new Blog Post from Audio button title */
+"createFAB.postFromAudio" = "Sesten gönderi oluştur";
+
+/* Accessibility hint for create floating action button */
+"createPostSheet.createPostHint" = "Gönderi veya sayfa oluştur";
 
 /* Customize Insights description */
 "customizeInsightsCell.content" = "Kendi özelleştirilmiş panonuzu oluşturun ve görmek istediğiniz raporları seçin. Sizi en çok ilgilendiren verilere odaklanın.";
@@ -9461,9 +9346,6 @@ Example: Reply to Pamela Nguyen */
 /* Name of a feature that allows the user to promote their posts. */
 "feature.blaze.title" = "Blaze";
 
-/* Displayed in the confirmation alert when marking follow notifications as read. */
-"follow" = "takip et";
-
 /* Description for the Free to Paid plans dashboard card. */
 "freeToPaidPlans.dashboard.card.description" = "İlk yıl için ücretsiz bir etki alanı alın, sitenizdeki reklamları kaldırın ve depolama alanınızı büyütün.";
 
@@ -9509,8 +9391,8 @@ Example: Reply to Pamela Nguyen */
 /* Title for button that will dismiss the Grow Your Audience card. */
 "growAudienceCell.dismiss" = "Kapat";
 
-/* Title for button that will open up the follow topics screen. */
-"growAudienceCell.readerDiscover.actionButton" = "Takip edilecek blogları keşfedin";
+/* Title for button that will open up the subscribe topics screen. */
+"growAudienceCell.readerDiscover.actionButton" = "Abone olunacak bloglar keşfedin";
 
 /* Title for button that will open up the follow topics screen. */
 "growAudienceCell.readerDiscover.completed.action" = "Yeniden yap";
@@ -9522,7 +9404,7 @@ Example: Reply to Pamela Nguyen */
 "growAudienceCell.readerDiscover.completed.tip" = "Diğer bloglarla bağlantı kurdunuz";
 
 /* A detailed message to users about growing the audience for their site through reader discover. */
-"growAudienceCell.readerDiscover.details" = "Yazıları takip ederek, beğenerek ve yorum yaparak diğer blog yazarlarıyla bağlantı kurun.";
+"growAudienceCell.readerDiscover.details" = "Gönderilerine abone olarak, yorum yaparak ve bunları beğenerek diğer blog yazarlarıyla bağlantı kurun.";
 
 /* Title for button that will open up the social media Sharing screen. */
 "growAudienceCell.social.actionButton" = "Yazı paylaşımını etkinleştirin";
@@ -9599,8 +9481,8 @@ Example: Reply to Pamela Nguyen */
 /* Sentence to justify why the app asks permission from the user to access their Media Library. */
 "infoplist.NSPhotoLibraryUsageDescription" = "Yazılarınıza fotoğraf veya video eklemek için.";
 
-/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"insights.visitorsLineChartCell.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* Text for the Insights Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"insights.visitorsLineChartCell.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
 
 /* Text for the Insights Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
 "insights.visitorsLineChartCell.differenceLabelWithoutPercentage" = "%1$@%2$@";
@@ -9714,7 +9596,7 @@ Example: Reply to Pamela Nguyen */
 "jetpack.fullscreen.overlay.phaseOne.reader.subtitle" = "Okuyucu ile tüm beğendiğiniz siteleri ve yazıları bulmak, takip etmek ve beğenmek için Jetpack uygulamasına geçin.";
 
 /* Title of a screen displayed when the user accesses the Reader screen from the WordPress app. The screen showcases the Jetpack app. */
-"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack uygulamasıyla herhangi bir siteyi takip edin";
+"jetpack.fullscreen.overlay.phaseOne.reader.title" = "Jetpack uygulamasıyla istediğiniz siteye abone olun";
 
 /* Subtitle of a screen displayed when the user trys creating a new site from the WordPress app. The screen showcases the Jetpack app. */
 "jetpack.fullscreen.overlay.phaseOne.siteCreation.subtitle" = "Jetpack, hayalinizdeki WordPress sitesini oluşturmanıza ve büyütmenize yardımcı olacak istatistikleri, bildirimleri ve diğer özellikleri sağlar.";
@@ -10226,8 +10108,29 @@ Example: Reply to Pamela Nguyen */
 /* Dismiss button title. */
 "noResultsViewController.dismissButton" = "Kapat";
 
+/* Setting: indicates if New Subscriptions will be notified */
+"notification.settings.description.subscriber" = "Site abonelikleri";
+
+/* Notification Settings for your subscribed sites */
+"notification.settings.footer.subscribedSites" = "Yeni gönderiler ve yorumlar için abone olduğunuz site ayarlarınızı özelleştirin";
+
+/* Displayed in the Notification Settings View */
+"notification.settings.header.subscribedSites" = "Abone Olunan Siteler";
+
 /* Error message that informs comment details from a private blog cannot be fetched. */
 "notificationCommentDetailViewController.commentDetails.privateBlogErrorMessage" = "Bu özel blogu görüntülemek için izniniz yok.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.action.subscribe.hint" = "Blogu takip edin.";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to unsubscribe from a blog. */
+"notifications.action.subscribe.selectedHint" = "Blogu takip etmeyi bırakın.";
+
+/* User is subscribed to the blog. */
+"notifications.action.subscribe.selectedTitle" = "Abone olundu";
+
+/* Prompt to subscribe to a blog. */
+"notifications.action.subscribe.title" = "Abone ol";
 
 /* This is one of the buttons we display inside of the prompt to review the app */
 "notifications.appRatings.prompt.no.buttonTitle" = "İyileştirilebilir";
@@ -10240,6 +10143,24 @@ Example: Reply to Pamela Nguyen */
 
 /* This is one of the buttons we display when prompting the user for a review */
 "notifications.appRatings.sendFeedback.yes.buttonTitle" = "Geri bildirim gönderin";
+
+/* Prompt to subscribe to a blog. */
+"notifications.button.subscribe" = "Abone ol";
+
+/* User is subscribed to the blog. */
+"notifications.button.subscribed" = "Abone olundu";
+
+/* VoiceOver accessibility hint, informing the user the button can be used to subscribe to a blog. */
+"notifications.button.subscribedHint" = "Bloga abone olur.";
+
+/* Filters Subscribers Notifications */
+"notifications.filter.subscribers.title" = "Aboneler";
+
+/* Displayed in the confirmation alert when marking follow notifications as read. */
+"notifications.filter.subscriptions.confirmationMessageTitle" = "abone ol";
+
+/* Displayed in the Notifications Tab as a title, when the Subscriber Filter shows no notifications */
+"notifications.noresults.subscribers" = "Henüz abone yok";
 
 /* Message to use along with the post URL when sharing a post */
 "notifications.share.messageWithPost" = "\"%@\" yazıma bakın:";
@@ -10307,6 +10228,9 @@ Example: Reply to Pamela Nguyen */
 /* Cancels an Action */
 "pagesList.trash.cancel" = "İptal";
 
+/* Navigation title displayed on the navigation bar */
+"parentPageSettings.title" = "Üst Sayfa";
+
 /* No comment provided by engineer. */
 "password" = "parola";
 
@@ -10370,26 +10294,107 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paketler";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.createdTimeAgo" = "Oluşturulma: %@";
-
 /* Status mesasge for post cells */
 "post.deletingPostPermanentlyStatusMessage" = "Yazı siliniyor...";
-
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.editedTimeAgo" = "Düzenlenme: %@";
 
 /* Status mesasge for post cells */
 "post.movingToTrashStatusMessage" = "Yazı çöpe atılıyor...";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.publishedTimeAgo" = "Yayınlanma: %@";
+/* Button in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.discardChanges" = "Değişiklikleri İptal Et";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.scheduledForDate" = "Zamanlanma: %@";
+/* Button in an alert confirming discaring a new draft */
+"postEditor.closeConfirmationAlert.discardDraft" = "Taslaktan Vazgeç";
 
-/* Post status and date for list cells with %@ a placeholder for the date. */
-"post.trashedTimeAgo" = "Çöpe atılma: %@";
+/* Button to keep the changes in an alert confirming discaring changes */
+"postEditor.closeConfirmationAlert.keepEditing" = "Düzenlemeye Devam Et";
+
+/* Button in an alert confirming saving a new draft */
+"postEditor.closeConfirmationAlert.saveDraft" = "Taslağı Kaydet";
+
+/* Creating autosave to generate a preview (status message */
+"postEditor.creatingAutosaveForPreview" = "Otomatik kayıt oluşturuluyor...";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.codeEditor" = "Kod Düzenleyici";
+
+/* Post Editor / 'More' menu details labels with 'Blocks', 'Words' and 'Characters' counts as parameters (in that order) */
+"postEditor.moreMenu.contentStructure" = "Bloklar: %1$li, Kelimeler: %2$li, Karakterler: %3$li";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.help" = "Yardım";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.helpAndSupport" = "Yardım ve Destek";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.pageSettings" = "Sayfa Ayarları";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.postSettings" = "Gönderi Ayarları";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.preview" = "Önizleme";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.revisions" = "Revizyonlar";
+
+/* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.visualEditor" = "Görsel Düzenleyici";
+
+/* A 'View' action for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.actionView" = "Görüntüle";
+
+/* A message for a snackbar informing the user that some media files requires their attention */
+"postEditor.postHasFailingMediaUploadsSnackbar.message" = "Bazı ortam öğeleri karşıya yüklenemedi";
+
+/* Editor, notice for successful recovery a trashed post */
+"postEditor.recoverTrashedPost.postRecoveredNoticeTitle" = "Gönderi, taslak olarak geri yüklendi";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.cancel" = "İptal Et";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.message" = "Çöpe atılan bir %1$@ düzenlenemez. Bu %1$@ gönderisini düzenlemek için bunu bir taslağa geri taşıyarak geri yüklemeniz gerekir.";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.restore" = "Geri Yükle";
+
+/* Editor, alert for recovering a trashed post */
+"postEditor.recoverTrashedPostAlert.title" = "%@ çöpe atıldı";
+
+/* Title for a snackbar */
+"postEditor.revisionLoaded" = "Revizyon yüklendi";
+
+/* Saving draft to generate a preview (status message */
+"postEditor.savingDraftForPreview" = "Taslak kaydediliyor...";
+
+/* Button title */
+"postFromAudio.buttonUpgrade" = "Daha fazla istek için paketinizi yükseltin";
+
+/* Message for 'not eligible' state view */
+"postFromAudio.notEnoughRequestsMessage" = "Sesten gönderi oluşturmak için yeterli isteğiniz yok.";
+
+/* Button title */
+"postFromAudio.ok" = "Tamam";
+
+/* Button title */
+"postFromAudio.retry" = "Tekrar dene";
+
+/* The screen subtitle in the error state */
+"postFromAudio.subtitleError" = "Bir sorun oluştu";
+
+/* The screen subtitle */
+"postFromAudio.subtitleRequestsAvailable" = "Mevcut istekler:";
+
+/* The screen title */
+"postFromAudio.title" = "Sesten gönderi oluştur";
+
+/* The screen title when recording */
+"postFromAudio.titleProcessing" = "İşleniyor...";
+
+/* The screen title when recording */
+"postFromAudio.titleRecoding" = "Kaydediliyor…";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "%@ tarafından.";
@@ -10402,6 +10407,24 @@ Example: Reply to Pamela Nguyen */
 
 /* Accessibility label for a post in the post list. The first placeholder is the post title. The second placeholder is the date. */
 "postList.a11y.titleAndDateChunkFormat" = "%1$@, %2$@.";
+
+/* Badge for post cells */
+"postList.badgePendingReview" = "İnceleme bekliyor";
+
+/* Cancels an Action */
+"postList.cancel" = "İptal Et";
+
+/* Delete option in the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.actionTitle" = "Kalıcı Olarak Sil";
+
+/* Message of the confirmation alert when deleting a page from the trash. */
+"postList.deletePermanently.alertMessage" = "\"%@\" sayfasını kalıcı olarak silmek istediğinizden emin misiniz?";
+
+/* An error message */
+"postList.errorUnsyncedChangesMessage" = "Uygulama, sunucuda önceden yapılan değişiklikleri yüklüyor. Lütfen daha sonra tekrar deneyin.";
+
+/* A generic error message title */
+"postList.genericErrorMessage" = "Bir sorun oluştu";
 
 /* Label for a post in the post list. Indicates that the post has offline changes. */
 "postList.offlineChanges" = "Çevrimdışı değişiklikler";
@@ -10417,6 +10440,42 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the 'View' post list row swipe action */
 "postList.swipeActionView" = "Görüntüle";
+
+/* Trash option in the trash post or page confirmation alert. */
+"postList.trash.actionTitle" = "Çöp Kutusuna Taşı";
+
+/* Message of the trash post or page confirmation alert. */
+"postList.trash.alertMessage" = "\"%@\" öğesini çöp kutusuna atmak istediğinizden emin misiniz? Daha önceden sunucuya gönderilmeyen tüm değişiklikler kaybolur.";
+
+/* Cancel (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.cancelUpload" = "Yüklemeyi İptal Et";
+
+/* Close button in postMediaUploadStatusView */
+"postMediaUploadStatusView.close" = "Kapat";
+
+/* Placeholder text in postMediaUploadStatusView when no uploads remain */
+"postMediaUploadStatusView.noPendingUploads" = "Bekleyen yükleme yok";
+
+/* Shows the upload progress with two preformatted parameters: %1$@ is the placeholder for completed bytes, and %2$@ is the placeholder for total bytes */
+"postMediaUploadStatusView.progress" = "%1$@\/%2$@";
+
+/* Retry (single) upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUpload" = "Yüklemeyi Yeniden Dene";
+
+/* Retry upload button in postMediaUploadStatusView */
+"postMediaUploadStatusView.retryUploads" = "Yüklemeleri Yeniden Dene";
+
+/* Title for post media upload status view */
+"postMediaUploadStatusView.title" = "Ortam Yüklemeleri";
+
+/* A generic error message title */
+"postNotice.errorTitle" = "Bir hata oluştu";
+
+/* An error message */
+"postNotice.errorUnsyncedChangesMessage" = "Uygulama, sunucuda önceden yapılan değişiklikleri yüklüyor. Lütfen daha sonra tekrar deneyin.";
+
+/* Button OK */
+"postNotice.ok" = "Tamam";
 
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "Sayfa taslağı karşıya yüklendi";
@@ -10448,11 +10507,17 @@ Example: Reply to Pamela Nguyen */
 /* Title of notification displayed when a post has been successfully updated. */
 "postNotice.postUpdated" = "Gönderi güncellendi";
 
-/* A post upload failed notification. */
-"postNotice.uploadFailed" = "Yükleme başarısız oldu";
-
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Görüntüle";
+
+/* Error message: content was modified on another device */
+"postSaveErrorMessage.conflict" = "Bu içerik başka bir cihazda değiştirilmiş";
+
+/* Error message: item permanently deleted */
+"postSaveErrorMessage.deleted" = "\"%@\" kalıcı olarak silindi ve artık güncellenemez";
+
+/* A default value for an post without a title */
+"postSaveErrorMessage.postUntitled" = "Başlıksız";
 
 /* User action to dismiss featured media options. */
 "postSettings.featuredImageUploadActionSheet.dismiss" = "Kapat";
@@ -10466,14 +10531,65 @@ Example: Reply to Pamela Nguyen */
 /* Title for action sheet with featured media options. */
 "postSettings.featuredImageUploadActionSheet.title" = "Öne çıkarılmış görsel seçenekleri";
 
+/* Button OK */
+"postSettings.ok" = "Tamam";
+
+/* The 'Parent Page' setting of the post */
+"postSettings.parentPage" = "Üst sayfa";
+
+/* The 'Pending Review' setting of the post */
+"postSettings.pendingReview" = "İnceleme bekliyor";
+
 /* Section title for the disabled Twitter service in the Post Settings screen */
 "postSettings.section.disabledTwitter.header" = "X otomatik paylaşım özelliği artık kullanılamıyor";
+
+/* Section title for Page Attributes */
+"postSettings.section.pageAttributes" = "Sayfa Nitelikleri";
 
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Öne çıkarılmış görseli ayarla";
 
 /* Error message on post/page settings screen */
 "postSettings.updateFailedMessage" = "Yazı ayarları güncellenemedi";
+
+/* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
+"postSettings.warningPostWillBePublishedAlertMessage" = "Görünürlüğü \"Özel\" olarak değiştirdiğinizde gönderi hemen yayımlanır";
+
+/* Localized post type: `Page` */
+"postType.page" = "sayfa";
+
+/* Localized post type: `Post` */
+"postType.post" = "gönderi";
+
+/* Details for a 'Private' privacy setting */
+"postVisibility.private.details" = "Yalnızca site yöneticileri ve düzenleyicileri tarafından görülebilir";
+
+/* Title for a 'Private' privacy setting */
+"postVisibility.private.title" = "Gizli";
+
+/* Details for a 'Password Protected' privacy setting */
+"postVisibility.protected.details" = "Herkes tarafından görülebilir ancak şifre gerektirir";
+
+/* Title for a 'Password Protected' privacy setting */
+"postVisibility.protected.title" = "Şifre korumalı";
+
+/* Details for a 'Public' (default) privacy setting */
+"postVisibility.public.details" = "Herkes tarafından görülebilir";
+
+/* Title for a 'Public' (default) privacy setting */
+"postVisibility.public.title" = "Herkese açık";
+
+/* Button cancel */
+"postVisibilityPicker.cancel" = "İptal Et";
+
+/* Navigation bar title for the Post Visibility picker */
+"postVisibilityPicker.navigationTitle" = "Görünürlük";
+
+/* Password placeholder text */
+"postVisibilityPicker.password" = "Şifre";
+
+/* Button save */
+"postVisibilityPicker.save" = "Kaydet";
 
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze ile tanıt";
@@ -10499,14 +10615,14 @@ Example: Reply to Pamela Nguyen */
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Ön izleme";
 
+/* Label for the publish post button. */
+"posts.publish.actionTitle" = "Yayımla";
+
 /* Retry uploading the post. */
 "posts.retry.actionTitle" = "Yeniden dene";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Giriş sayfası olarak ayarla";
-
-/* Set the parent page for the selected page. */
-"posts.setParent.actionTitle" = "Üst öge ayarla";
 
 /* Set the selected page as a posts page. */
 "posts.setPostsPage.actionTitle" = "Yazılar sayfası olarak ayarla";
@@ -10565,8 +10681,11 @@ Example: Reply to Pamela Nguyen */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.jetpackSocial" = "Jetpack Social";
 
-/* Title for an error messaage in the pre-publishing sheet */
-"prepublishing.mediaUploadFailed" = "Ortam dosyası yüklenemedi";
+/* Details for a publish button state in the pre-publishing sheet; count as a parameter */
+"prepublishing.mediaUploadFailedDetails" = "%@ öğe karşıya yüklenemedi";
+
+/* Title for a publish button state in the pre-publishing sheet */
+"prepublishing.mediaUploadFailedTitle" = "Ortam dosyası yüklenemedi";
 
 /* Placeholder for a cell in the pre-publishing sheet */
 "prepublishing.postTitle" = "Başlık";
@@ -10576,6 +10695,9 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.publishDate" = "Yayınlanma tarihi";
+
+/* Placeholder value for a publishing date in the prepublishing sheet when the date is not selected */
+"prepublishing.publishDateImmediately" = "Hemen";
 
 /* Label in the header in the pre-publishing sheet */
 "prepublishing.publishingTo" = "Şuraya yayınlanıyor";
@@ -10641,26 +10763,62 @@ Tapping on this row allows the user to edit the sharing message. */
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.tags" = "Etiketler";
 
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaManyItemsRemaining" = "%@ öğe kaldı";
+
+/* Details label for a publish button state in the pre-publishing sheet */
+"prepublishing.uploadMediaOneItemRemaining" = "%@ öğe kaldı";
+
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.uploadingMedia" = "Ortam dosyası yükleniyor";
 
 /* Label for a cell in the pre-publishing sheet */
 "prepublishing.visibility" = "Görünürlük";
 
+/* Caption displayed in promotional screens shown during the login flow. */
+"prologue.title.reader" = "Favori sitelerinize abone olun ve yeni bloglar keşfedin.";
+
 /* Title for a tappable string that opens the reader with a prompts tag */
 "prompts.card.viewprompts.title" = "Tüm yanıtları görüntüle";
 
-/* Shows the download or upload progress with two parameters: preformatted completed and total bytes */
-"publishButton.progress" = "%1$@\/%2$@";
+/* Post publish date picker title for date cell */
+"publishDatePicker.date" = "Yayımlama Tarihi";
 
-/* Retry button title */
-"publishButton.retry" = "Yeniden dene";
+/* Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone. */
+"publishDatePicker.footerCurrentTimezone" = "Mevcut saat diliminizdeki tarih:";
 
-/* The Now button that clears the date selection */
-"publishDatePicker.now" = "Şimdi";
+/* Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately */
+"publishDatePicker.immediately" = "Hemen";
+
+/* Title for button in publish date picker */
+"publishDatePicker.removePublishDate" = "Yayımlama Tarihini Kaldır";
+
+/* Title for button in publish date picker */
+"publishDatePicker.selectPublishDate" = "Yayımlama Tarihi Seç";
+
+/* Post publish time zone cell title */
+"publishDatePicker.timeZone" = "Saat Dilimi";
 
 /* Post publish date picker */
 "publishDatePicker.title" = "Yayınlanma tarihi";
+
+/* Post publish success view: button 'Done' */
+"publishSuccessView.done" = "Tamam";
+
+/* Post publish success view: button 'Promote with Blaze' */
+"publishSuccessView.promoteWithBlaze" = "Blaze ile Tanıt";
+
+/* Post publish success view: button 'Share post' */
+"publishSuccessView.share" = "Gönderiyi paylaş";
+
+/* Post publish success view: title */
+"publishSuccessView.title" = "Gönderi yayımlandı!";
+
+/* Post publish success view: section 'Get more traffic:' title */
+"publishSuccessView.trafficSectionTitle" = "Daha çok trafik alın:";
+
+/* Post publish success view: button 'View post' */
+"publishSuccessView.view" = "Gönderiyi görüntüle";
 
 /* Button label that dismisses the qr log in flow and returns the user back to the previous screen */
 "qrLoginVerifyAuthorization.completedInstructions.dismiss" = "Kapat";
@@ -10679,6 +10837,24 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The quick tour actions item to select during a guided tour. */
 "quickStart.moreMenu" = "Diğer";
+
+/* Text for a button that dismisses the announcement card in the Reader. */
+"reader.announcement.button" = "Tamam";
+
+/* The description part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.description" = "Size uygun renkler ve yazı tipleri seçin. Bir gönderiyi okurken ekranın üst kısmındaki AA simgesine dokunun.";
+
+/* The title part of the feature announcement content for Reading Preferences. */
+"reader.announcement.entry.readingPreferences.title" = "Okuma Tercihleri";
+
+/* The description part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.description" = "Üstteki açılır menüye dokunun ve takip ettiğiniz etiketlerin akışına erişmek için Etiketler seçeneğini belirleyin.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Etiket Akışı";
+
+/* Title text for the announcement card component in the Reader. */
+"reader.announcement.title" = "Okuyucuda Yeni";
 
 /* Message expliaining that the specified blog will no longer appear in the user's reader.  The '%@' characters are a placeholder for the title of the blog. */
 "reader.blocked.blog.message" = "%@ bloğu artık okuyucunuzda görüntülenmeyecek. Geri almak için dokunun.";
@@ -10795,6 +10971,9 @@ but tapping on this button will remove their like from the post. */
 /* A short message to inform the user data for their followed sites is being fetched.. */
 "reader.followed.blogs.loading" = "Bloglar alınıyor...";
 
+/* Section title for sites the user has subscribed to. */
+"reader.followedSites.empty" = "Abone Olunan Siteler";
+
 /* Manage blogs tab title */
 "reader.manage.tab.blogs" = "Bloglar";
 
@@ -10811,7 +10990,7 @@ but tapping on this button will remove their like from the post. */
 
 /* Button title to filter the Reader stream by blog.
 This is displayed when we don't know the number of blogs yet. */
-"reader.navigation.filter.blog.unnumbered" = "Etiketler";
+"reader.navigation.filter.blog.unspecified" = "Bloglar";
 
 /* Plural button title to filter the Reader stream by tag.
 %1$d is a placeholder for the number of tags. */
@@ -10851,11 +11030,17 @@ with the filter chip button. */
 /* Reader navigation menu item for the Subscriptions filter */
 "reader.navigation.menu.subscriptions" = "Abonelikler";
 
+/* Reader navigation menu item for the Tags filter */
+"reader.navigation.menu.tags" = "Etiketleriniz";
+
 /* Reader search button accessibility label. */
 "reader.navigation.search.button.label" = "Ara";
 
 /* Reader settings button accessibility label. */
 "reader.navigation.settings.button.label" = "Okuyucu ayarları";
+
+/* No Tags View Button Label */
+"reader.no.blog.title" = "Blog ekle";
 
 /* Title for button on the no followed blogs result screen */
 "reader.no.blogs.button" = "Blogları keşfedin";
@@ -10882,7 +11067,7 @@ with the filter chip button. */
 "reader.no.results.subscriptions.button" = "Aboneliklere git";
 
 /* No Tags View Button Label */
-"reader.no.tags.title" = "Blog ekle";
+"reader.no.tags.title" = "Etiket ekle";
 
 /* Notice title when blocking a blog fails. */
 "reader.notice.blog.blocked.failure" = "Blog engellenemedi";
@@ -10996,11 +11181,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Verb. An option to unsubscribe from a blog. */
 "reader.post.menu.unsubscribe.blog" = "Blog aboneliğinden ayrıl";
 
+/* Name for the Candy color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.candy" = "Şeker";
+
 /* Name for the Default color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.default" = "Varsayılan";
 
 /* Name for the Evening color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.evening" = "Akşam";
+
+/* Name for the h4x0r color theme, used in the Reader's reading preferences. */
+"reader.preferences.color.h4x0r" = "h4x0r";
 
 /* Name for the OLED color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.oled" = "OLED";
@@ -11011,35 +11202,66 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Name for the Soft color theme, used in the Reader's reading preferences. */
 "reader.preferences.color.soft" = "Yumuşak";
 
+/* Accessibility label describing the list of colors to be selected from. */
+"reader.preferences.control.colors.a11y" = "Renkler";
+
 /* Title for a button to save and apply the customized Reader Preferences settings when tapped. */
 "reader.preferences.control.doneButton" = "Tamam";
+
+/* Accessibility label describing the list of fonts to be selected from. */
+"reader.preferences.control.fonts.a11y" = "Yazı Tipleri";
 
 /* Describes that the slider is used to customize the text size in the Reader. */
 "reader.preferences.control.sizeSlider.description" = "Boyut";
 
+/* Text for a small label in the navigation bar that hints that this is an experimental feature.
+
+The enclosing angled brackets ('<' and '>') are decorative and only intended as a flavor.
+Feel free to replace it with other bracket types that you think looks better for the locale. */
+"reader.preferences.navBar.experimental.label" = "<Experimental>";
+
+/* Text format for the feedback line text, to be displayed in the preview section.
+%1$@ is a placeholder for a call-to-action that completes the line, which will be filled programmatically.
+Example: 'This is a new feature still in development. To help us improve it send your feedback.' */
+"reader.preferences.preview.body.feedback.format" = "Bu, hala geliştirme aşamasında olan yeni bir özelliktir. Bunu iyileştirmemize yardımcı olmak için %1$@.";
+
+/* A call-to-action text fragment to ask the user provide feedback for the Reading Preferences feature.
+Note that the lowercase format is intended, as this will be injected to form a full paragraph.
+Refer to: `reader.preferences.preview.body.feedback.format` */
+"reader.preferences.preview.body.feedback.link" = "geri bildiriminizi gönderin";
+
 /* Description text for the preview section of Reader Preferences */
-"reader.preferences.preview.body.description" = "Okuma deneyimi kişiseldir, kontrolün sizde olmasını istiyoruz. Size uygun stilleri seçin";
-
-/* Text for a feedback link for the Reader Preferences feature */
-"reader.preferences.preview.body.feedbackLink" = "Bu özellikle ilgili geri bildirimlerinizi gönderin";
-
-/* Footnote to be displayed in the preview section, noticing that the feature is in development. */
-"reader.preferences.preview.body.notice" = "Bu özellik hala geliştirme aşamasında.";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.1" = "köpekler";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.2" = "tilki";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.3" = "tasarım";
-
-/* Example tag for preview */
-"reader.preferences.preview.tags.4" = "yazma";
+"reader.preferences.preview.body.text" = "Renklerinizi, yazı tiplerinizi ve boyutlarınızı seçin. Seçiminizi buradan önizleyin ve işiniz bittiğinde gönderileri okuyun.";
 
 /* Title text for a preview */
-"reader.preferences.preview.title" = "Okuma Tercihlerinizi seçin";
+"reader.preferences.preview.header" = "Okuma Tercihleri";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.colors" = "renkler";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.fonts" = "yazı tipleri";
+
+/* Example tag for preview */
+"reader.preferences.preview.tags.reading" = "okunuyor";
+
+/* Accessibility label for a list of tags in the preview section. */
+"reader.preferences.preview.tagsList.a11y" = "Örnek etiketler";
+
+/* Accessibility label for the Extra Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraLarge" = "Ekstra Büyük";
+
+/* Accessibility label for the Extra Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.extraSmall" = "Ekstra Küçük";
+
+/* Accessibility label for the Large size option, used in the Reader's reading preferences. */
+"reader.preferences.size.large" = "Büyük";
+
+/* Accessibility label for the Normal size option, used in the Reader's reading preferences. */
+"reader.preferences.size.normal" = "Normal";
+
+/* Accessibility label for the Small size option, used in the Reader's reading preferences. */
+"reader.preferences.size.small" = "Küçük";
 
 /* Button title. Tapping lets the user manage the blogs they follow. */
 "reader.reblog.manage.blogs" = "Blog yönetimi";
@@ -11059,11 +11281,23 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Label displayed to the user while loading their selected interests */
 "reader.select.interests.following" = "Yeni etiketler takip ediliyor...";
 
+/* Reader select interests next button disabled title text */
+"reader.select.tags.continue" = "Devam etmek için birkaç tane seçin";
+
+/* Reader select interests next button enabled title text */
+"reader.select.tags.done" = "Tamam";
+
+/* Label displayed to the user while loading their selected interests */
+"reader.select.tags.loading" = "Seveceğiniz bloglar ve öyküler bulunuyor...";
+
 /* Message shown when there are no new topics to follow. */
 "reader.select.tags.no.results.follow.title" = "Takip edilecek yeni etiket yok";
 
 /* Reader select interests subtitle label text */
 "reader.select.tags.subtitle" = "Etiketlerinizi seçin";
+
+/* Reader select interests title label text */
+"reader.select.tags.title" = "Sevdiğiniz blogları keşfedin ve takip edin";
 
 /* Verb. Button title. Subscribes to a new blog. */
 "reader.subscribe.button.title" = "Abone ol";
@@ -11080,6 +11314,19 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A suggestion of topics the user might want to subscribe to */
 "reader.suggested.blogs.title" = "Abone olunacak bloglar";
 
+/* Verb. The button title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag.
+When tapped, the app will try to reload posts under this tag. */
+"reader.tagStream.cards.emptyView.button" = "Tekrar dene";
+
+/* The body text of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.body" = "Şu anda bu etiketten gönderiler yüklenemiyor";
+
+/* The title of an empty state component for one of the tags in the tag stream.
+This empty state component is displayed only when the app fails to load posts under this tag. */
+"reader.tagStream.cards.emptyView.error.title" = "Gönderiler yüklenemedi";
+
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag" = "Etiket ekle";
 
@@ -11092,6 +11339,12 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title of a feature to add a new tag to the tags subscribed by the user. */
 "reader.tags.add.tag.title" = "Etiket ekle";
 
+/* Text for the 'Like' button on the reader tag cell. */
+"reader.tags.button.like" = "Beğen";
+
+/* Text for the 'Liked' button on the reader tag cell. */
+"reader.tags.button.liked" = "Beğenildi";
+
 /* Button title. Tapping shows the Subscribe to Tags screen. */
 "reader.tags.discover.more.tags" = "Daha fazla etiket keşfet";
 
@@ -11100,6 +11353,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Verb. Button title. The user is following a tag. */
 "reader.tags.following.button.title" = "Takip ediliyor";
+
+/* Label for an action to open more content from a specified Reader tag. %1$@ is the Reader tag. */
+"reader.tags.footer.more" = "%1$@ kaynağından daha fazla";
 
 /* Accessibility label for unsubscribing from a tag */
 "reader.tags.unfollow.accessibility.label" = "%@ takibini bırak";
@@ -11112,6 +11368,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Spoken accessibility label */
 "readerDetail.dismissButton.accessibilityLabel" = "Kapat";
+
+/* Spoken accessibility label for the Reading Preferences menu. */
+"readerDetail.displaySettingButton.accessibilityLabel" = "Okuma Tercihleri";
 
 /* Button title for the follow conversations tooltip. */
 "readerDetail.followConversationTooltipButton.accessibilityLabel" = "Anladım";
@@ -11190,6 +11449,39 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Title for screen that allows configuration of your blog/site related posts settings. */
 "relatedPostsSettings.title" = "İlgili yazılar";
+
+/* A version of the post on another device. */
+"resolveConflict.anotherDevice" = "Başka cihaz";
+
+/* A version of the post on the current device. */
+"resolveConflict.currentDevice" = "Mevcut cihaz";
+
+/* Description for the Resolve Conflict screen. */
+"resolveConflict.description" = "Bu gönderi başka bir cihazda değiştirilmiş. Lütfen gönderinin hangi versiyonunu korumak istediğinizi seçin.";
+
+/* Title for the cancel button on the Resolve Conflict screen. */
+"resolveConflict.navigation.cancel" = "İptal Et";
+
+/* Title for the save button on the Resolve Conflict screen. */
+"resolveConflict.navigation.save" = "Kaydet";
+
+/* Title for the Resolve Conflict screen. */
+"resolveConflict.navigation.title" = "Çakışmayı Çözün";
+
+/* Displayed when a call is made to load the history but there's no result or an error. */
+"revisions.emptyStateSubtitle" = "Düzenleyici içinde değişiklik yaptığınızda revizyon geçmişini burada görebilirsiniz";
+
+/* Displayed when a call is made to load the revisions but there's no result or an error. */
+"revisions.emptyStateTitle" = "Henüz revizyon yok";
+
+/* Post revisions list screen / loading view title */
+"revisions.loadingTitle" = "Yükleniyor…";
+
+/* Post revisions list screen title */
+"revisions.title" = "Revizyonlar";
+
+/* Title for the \"Copy Link\" action in Share Sheet. */
+"share.sheet.copy.link.title" = "Bağlantıyı Kopyala";
 
 /* User action to dismiss media options. */
 "shareExtension.editor.attachmentActions.dismiss" = "Kapat";
@@ -11365,6 +11657,30 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Text for unknown privacy setting */
 "siteVisibility.unknown.title" = "Bilinmiyor";
 
+/* All sites section title for site switcher. */
+"site_switcher.all_sites_section.title" = "Tüm siteler";
+
+/* Pinned section title for site switcher. */
+"site_switcher.pinned_section.title" = "Sabitlenen siteler";
+
+/* Recents section title for site switcher. */
+"site_switcher.recents_section.title" = "Son siteler";
+
+/* CTA title for the site switcher screen. */
+"site_switcher_cta_title" = "Site ekleyin";
+
+/* Dismiss button title above the search. */
+"site_switcher_dismiss_button_title" = "İptal Et";
+
+/* Done button title above the search. */
+"site_switcher_done_button_title" = "Tamam";
+
+/* Edit button title above the search. */
+"site_switcher_edit_button_title" = "Düzenle";
+
+/* Title for site switcher screen. */
+"site_switcher_title" = "Bir site seçin";
+
 /* Label for the blogging reminders setting */
 "sitesettings.reminders.title" = "Hatırlatıcılar";
 
@@ -11401,6 +11717,9 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A smallprint that hints the reason behind why Twitter is deprecated. */
 "social.twitterDeprecation.text" = "X otomatik paylaşım özelliği, X koşullarındaki ve fiyatlarındaki değişiklikler nedeniyle artık kullanılmıyor.";
 
+/* Title of Subscribers stats tab. */
+"stats.dashboard.tab.subscribers" = "Aboneler";
+
 /* Title of Traffic stats tab. */
 "stats.dashboard.tab.traffic" = "Trafik";
 
@@ -11411,10 +11730,10 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.accessibility.label.viewsVisitorsPreviousDays" = "Önceki 7 gün";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '+17 (40%) higher than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.higher" = "*%1$@%2$@ (%%%3$@)* önceki 7 günden daha yüksek";
+"stats.insights.label.totalLikes.higherNumber" = "Önceki 7 güne göre *%1$@%2$@ (%3$@)** daha yüksek";
 
 /* Label shown on some metrics in the Stats Insights section, such as Comments count. The placeholders will be populated with a change and a percentage – e.g. '-17 (40%) lower than the previous 7-days'. The *s mark the numerical values, which will be highlighted differently from the rest of the text. */
-"stats.insights.label.totalLikes.lower" = "*%1$@%2$@ (%3$@%%)* önceki 7 günden daha düşük";
+"stats.insights.label.totalLikes.lowerNumber" = "Önceki 7 güne göre *%1$@%2$@ (%3$@)* daha düşük";
 
 /* Label shown in Stats Insights when a metric is showing the same level as the previous 7 days */
 "stats.insights.label.totalLikes.same" = "Önceki 7 günle aynı";
@@ -11492,10 +11811,13 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 "stats.insights.mostPopularCard.title" = "🔥 En yoğun zaman";
 
 /* Label showing the percentage of views to a user's site which fall on a particular day. */
-"stats.insights.mostPopularCard.viewPercentage" = "Görüntüleme oranı: %% %d";
+"stats.insights.mostPopularCard.viewsNumber" = "Görüntülenme oranı: %1$@";
 
 /* Hint displayed on the 'Most Popular Time' stats card when a user's site hasn't yet received enough traffic. */
 "stats.insights.mostPopularTime.noData" = "Yeterli etkinlik yok. Bir süre sonra sitenizin daha fazla ziyaretçisi olduğunda yeniden bakın!";
+
+/* Insights 'Subscribers' header */
+"stats.insights.subscribers.title" = "Aboneler";
 
 /* A hint shown to the user in stats informing the user how many likes one of their posts has received. The %1$@ placeholder will be replaced with the title of a post, the %2$@ with the number of likes. */
 "stats.insights.totalLikes.guideText.plural" = "Son yazınız %1$@ %2$@ beğeni aldı.";
@@ -11503,8 +11825,50 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* A hint shown to the user in stats informing the user that one of their posts has received a like. The %1$@ placeholder will be replaced with the title of a post, and the %2$@ will be replaced by the numeral one. */
 "stats.insights.totalLikes.guideText.singular" = "Son yazınız %1$@ %2$@ beğeni aldı.";
 
+/* Label displaying total number of WordPress.com subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.dotcomCount" = "Toplam WordPress.com Abonesi: %@";
+
+/* Label displaying total number of email subscribers. %@ is the total. */
+"stats.insights.totalSubscribers.emailCount" = "Toplam E-posta Abonesi: %@";
+
+/* Insights 'Total Subscribers' header */
+"stats.insights.totalSubscribers.title" = "Toplam Abone";
+
+/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value. */
+"stats.overview.differenceLabelWithNumber" = "%1$@%2$@ (%3$@)";
+
 /* Stats 'Today' header */
 "stats.period.todayCard.title" = "Bugün";
+
+/* Table column title that shows the date since the user became a subscriber. */
+"stats.section.dataSubtitles.subscriberSince" = "Şu tarihten beri abone";
+
+/* Table column title that shows the names of subscribers. */
+"stats.section.itemSubtitles.subscriber" = "Ad";
+
+/* Title for the legend of the Stats Subscribers line chart. */
+"stats.subscribers.chart.legend" = "Aboneler";
+
+/* A title for table's column that shows a number of times a post was opened from an email */
+"stats.subscribers.emailsSummary.column.clicks" = "Tıklamalar";
+
+/* A title for table's column that shows a number of email openings */
+"stats.subscribers.emailsSummary.column.opens" = "Açmalar";
+
+/* A title for table's column that shows a name of an email */
+"stats.subscribers.emailsSummary.column.title" = "En son e-postalar";
+
+/* Stats 'Emails' card header */
+"stats.subscribers.emailsSummaryCard.title" = "E-postalar";
+
+/* Stats 'Subscriber Growth' card header, contains a chart showing the progression in the number of subscribers */
+"stats.subscribers.growthChart.title" = "Abone Büyümesi";
+
+/* Stats 'Subscribers' card header */
+"stats.subscribers.subscribersListCard.title" = "Aboneler";
+
+/* Accessibility of stats table. Placeholders will be populated with names of data shown in table. */
+"stats.topTotalsCell.voiceOverDescription" = "%1$@, %2$@ ve %3$@ gösteren tablo";
 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Comments selected. */
 "stats.traffic.accessibilityLabel.comments" = "Seçilmiş dönemdeki yorumları gösteren çubuk grafik.";
@@ -11518,41 +11882,17 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* This description is used to set the accessibility label for the Stats Traffic chart, with Visitors selected. */
 "stats.traffic.accessibilityLabel.visitors" = "Seçilmiş dönemdeki ziyaretçileri gösteren çubuk grafik.";
 
-/* The label for the option to show Stats Traffic by day. */
-"stats.traffic.day" = "Güne göre";
+/* The label for the option to show Stats Traffic chart for Days. */
+"stats.traffic.days" = "Gün";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period, including the percentage value. E.g.: +12.3K (5%). %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. %3$@ is the placeholder for the change percentage value, excluding the % sign. */
-"stats.traffic.differenceLabelWithPercentage" = "%1$@%2$@ (%3$@%%)";
+/* The label for the option to show Stats Traffic chart for Months. */
+"stats.traffic.months" = "Ay";
 
-/* Text for the Stats Traffic Overview stat difference label. Shows the change from the previous period. E.g.: +12.3K. %1$@ is the placeholder for the change sign ('-', '+', or none). %2$@ is the placeholder for the change numerical value. */
-"stats.traffic.differenceLabelWithoutPercentage" = "%1$@%2$@";
+/* The label for the option to show Stats Traffic chart for Weeks. */
+"stats.traffic.weeks" = "Hafta";
 
-/* Stats views higher than previous month */
-"stats.traffic.label.monthDifference.higher" = "Önceki aydan %@ daha yüksek\n";
-
-/* Stats views lower than previous month */
-"stats.traffic.label.monthDifference.lower" = "Önceki aydan %@ daha düşük\n";
-
-/* Stats views higher than previous 7 days */
-"stats.traffic.label.weekDifference.higher" = "Önceki 7 günden %@ daha yüksek\n";
-
-/* Stats views lower than previous 7 days */
-"stats.traffic.label.weekDifference.lower" = "Önceki 7 günden %@ daha düşük\n";
-
-/* Stats views higher than previous year */
-"stats.traffic.label.yearDifference.higher" = "Önceki yıldan %@ daha yüksek\n";
-
-/* Stats views lower than previous year */
-"stats.traffic.label.yearDifference.lower" = "Önceki yıldan %@ daha düşük\n";
-
-/* The label for the option to show Stats Traffic by month. */
-"stats.traffic.month" = "Aya göre";
-
-/* The label for the option to show Stats Traffic by week. */
-"stats.traffic.week" = "Haftaya göre";
-
-/* The label for the option to show Stats Traffic by year. */
-"stats.traffic.year" = "Yıla göre";
+/* The label for the option to show Stats Traffic chart for Years. */
+"stats.traffic.years" = "Yıl";
 
 /* Dismiss the AlertView */
 "stockPhotos.strings.dismiss" = "Kapat";
@@ -11563,8 +11903,29 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 /* Title for placeholder in Free Photos */
 "stockPhotos.title" = "Ortam kitaplığınıza eklemek için ücretsiz fotoğraflar arayın!";
 
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.description" = "Deneyiminizi anlamamıza yardımcı olmak için isteğe bağlı olarak e-posta adresinizi veya kullanıcı adınızı ekleyebilirsiniz.";
+
+/* Label we show on an email input field */
+"submit.feedback.alert.empty.email" = "e-posta adresi girilmedi";
+
+/* Label we show on an name input field */
+"submit.feedback.alert.empty.username" = "kullanıcı adı girilmedi";
+
+/* Alert submit option for users to accept sharing their email and name when submitting feedback. */
+"submit.feedback.alert.submit" = "Tamam";
+
+/* Alert users are shown when submtiting their feedback. */
+"submit.feedback.alert.title" = "Geri bildiriminiz için teşekkürler";
+
 /* The button title for the Submit button in the In-App Feedback screen */
 "submit.feedback.submit.button" = "Gönder";
+
+/* Notice informing user that their feedback is being submitted. */
+"submit.feedback.submit.loading" = "Gönderiliyor";
+
+/* Notice informing user that their feedback is being submitted anonymously. */
+"submit.feedback.submitAnonymously.loading" = "Anonim olarak gönderiliyor";
 
 /* The title for the the In-App Feedback screen */
 "submit.feedback.title" = "Geri bildirim";
@@ -11736,6 +12097,18 @@ Example: given a notice format "Following %@" and empty site name, this will be 
 
 /* Displayed in the confirmation alert when marking unread notifications as read. */
 "unread" = "okunmamış";
+
+/* Site's Subscriber Profile. Displayed when the name is empty! */
+"user.details.title.subscriber" = "Sitenin Abonesi";
+
+/* Sites's User Profile. Displayed when the name is empty! */
+"user.details.title.user" = "Sitenin Kullanıcısı";
+
+/* Site's Viewers Profile. Displayed when the name is empty! */
+"user.details.title.viewer" = "Sitenin Görüntüleyicileri";
+
+/* Site Subscribers */
+"users.list.title.subscribers" = "Aboneler";
 
 /* Portion of a message for Jetpack users that have multisite WP installation, thus Restore is not available. This part is a link, colored with a different color. */
 "visit our documentation page" = "belgeler sayfamıza bakın";

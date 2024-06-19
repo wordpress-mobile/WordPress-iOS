@@ -60,7 +60,7 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
     <ul class="blocks-gallery-grid">
         <li class="blocks-gallery-item">
             <figure>
-                <a href="https://files.wordpress.com/708.jpg" >
+                <a href="https://files.wordpress.com/708.jpg">
                     <img src="https://files.wordpress.com/708.jpg" data-id="708" class="wp-image-708" data-full-url="https://files.wordpress.com/708.jpg" data-link="https://files.wordpress.com/?p=708" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">
@@ -70,22 +70,22 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
         </li>
         <li class="blocks-gallery-item">
             <figure>
-                <a href="https://files.wordpress.com/415.jpg" >
+                <a href="https://files.wordpress.com/415.jpg">
                     <img src="https://files.wordpress.com/415.jpg" data-id="415" class="wp-image-415" data-full-url="https://files.wordpress.com/415.jpg" data-link="https://files.wordpress.com/?p=415" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">Alşksdf şlkas dolaş dfasd şad fsa
-                    <br>Asf fasd fas
-                    <br>A sdfasdf sadf
-                    <br> Asdf</figcaption>
+                    <br />Asf fasd fas
+                    <br />A sdfasdf sadf
+                    <br /> Asdf</figcaption>
             </figure>
         </li>
         <li class="blocks-gallery-item">
             <figure>
-                <a href="https://files.wordpress.com/701.jpg" >
+                <a href="https://files.wordpress.com/701.jpg">
                     <img src="https://files.wordpress.com/701.jpg" data-id="701" class="wp-image-701" data-full-url="https://files.wordpress.com/701.jpg" data-link="https://files.wordpress.com/?p=701" />
                 </a>
                 <figcaption class="blocks-gallery-item__caption">Hello
-                    <br>World
+                    <br />World
                 </figcaption>
             </figure>
         </li>
@@ -108,14 +108,14 @@ class GutenbergGalleryUploadProcessorTests: XCTestCase {
             ImageUploadJob(uploadID: -701, serverID: 701, serverURL: "https://files.wordpress.com/701.jpg", mediaLink: "https://files.wordpress.com/?p=701"),
         ]
         for blockStart in idVariations {
-            var resultContent = blockStart + "\n" + postContent
+            let parser = GutenbergContentParser(for: blockStart + "\n" + postContent)
 
-            resultContent = mediaJobs.reduce(into: resultContent) { (content, mediaJob) in
+            mediaJobs.forEach { mediaJob in
                 let processor = GutenbergGalleryUploadProcessor(mediaUploadID: mediaJob.uploadID, serverMediaID: mediaJob.serverID, remoteURLString: mediaJob.serverURL, mediaLink: mediaJob.mediaLink)
-                content = processor.process(content)
+                processor.process(parser.blocks)
             }
 
-            XCTAssertEqual(resultContent, postResultContent, "Post content should be updated correctly")
+            XCTAssertEqual(parser.html(), postResultContent, "Post content should be updated correctly")
         }
     }
 

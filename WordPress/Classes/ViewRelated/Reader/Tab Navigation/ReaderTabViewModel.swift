@@ -102,8 +102,10 @@ import Combine
             guard let self else {
                 return
             }
-            self.tabItems = self.tabItemsStore.items
-            self.reloadStreamFilters()
+            if self.tabItems != self.tabItemsStore.items {
+                self.tabItems = self.tabItemsStore.items
+                self.reloadStreamFilters()
+            }
 
             // reset if the selectedIndex is out of bounds to avoid showing a blank screen.
             if self.selectedIndex >= self.tabItems.count {
@@ -203,10 +205,14 @@ extension ReaderTabViewModel {
             return .none
         }()
 
-        var filters = [ReaderSiteTopic.filterProvider(for: siteType)]
+        var filters = [FilterProvider]()
 
         if !selectedStream.shouldHideTagFilter {
-            filters.insert(ReaderTagTopic.filterProvider(), at: 0)
+            filters.append(ReaderTagTopic.filterProvider())
+        }
+
+        if !selectedStream.shouldHideBlogFilter {
+            filters.append(ReaderSiteTopic.filterProvider(for: siteType))
         }
 
         streamFilters = filters
@@ -250,7 +256,8 @@ extension ReaderTabViewModel {
             return
         }
 
-        WPAnalytics.track(.readerFilterSheetCleared)
+        let type = activeStreamFilter?.topic is ReaderSiteTopic ? "site" : "topic"
+        WPAnalytics.track(.readerFilterSheetCleared, properties: ["type": type])
         activeStreamFilter = nil
         setContent?(currentTab.content)
     }

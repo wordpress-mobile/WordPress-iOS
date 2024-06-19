@@ -62,11 +62,6 @@ class PostBuilder {
         return self
     }
 
-    func revision() -> PostBuilder {
-        post.setPrimitiveValue(post, forKey: "original")
-        return self
-    }
-
     func autosaved() -> PostBuilder {
         post.autosaveTitle = "a"
         post.autosaveExcerpt = "b"
@@ -131,11 +126,6 @@ class PostBuilder {
         return self
     }
 
-    func with(statusAfterSync: BasePost.Status?) -> PostBuilder {
-        post.statusAfterSync = statusAfterSync
-        return self
-    }
-
     func with(image: String, status: MediaRemoteStatus? = nil, autoUploadFailureCount: Int = 0) -> PostBuilder {
         guard let context = post.managedObjectContext else {
             return self
@@ -168,12 +158,6 @@ class PostBuilder {
         return self
     }
 
-    func with(autoUploadAttemptsCount: Int) -> PostBuilder {
-        post.autoUploadAttemptsCount = NSNumber(value: autoUploadAttemptsCount)
-
-        return self
-    }
-
     func with(disabledConnections: [NSNumber: [String: String]]) -> PostBuilder {
         post.disabledPublicizeConnections = disabledConnections
         return self
@@ -189,19 +173,9 @@ class PostBuilder {
         return self
     }
 
-    func confirmedAutoUpload() -> PostBuilder {
-        post.shouldAttemptAutoUpload = true
-        return self
-    }
-
     /// Sets a random postID to emulate that self exists in the server.
     func withRemote() -> PostBuilder {
         post.postID = NSNumber(value: arc4random_uniform(UINT32_MAX))
-        return self
-    }
-
-    func cancelledAutoUpload() -> PostBuilder {
-        post.shouldAttemptAutoUpload = false
         return self
     }
 

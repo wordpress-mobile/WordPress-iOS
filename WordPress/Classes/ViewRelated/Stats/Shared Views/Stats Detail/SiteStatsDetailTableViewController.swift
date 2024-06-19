@@ -20,7 +20,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private var statType: StatType = .period
     private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
@@ -31,8 +30,8 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
     private let insightsStore = StatsInsightsStore()
     private let periodStore = StatsPeriodStore()
 
-    private lazy var tableHandler: ImmuTableViewHandler = {
-        return ImmuTableViewHandler(takeOver: self)
+    private lazy var tableHandler: ImmuTableDiffableViewHandler = {
+        return ImmuTableDiffableViewHandler(takeOver: self, with: nil)
     }()
 
     private var postID: Int?
@@ -69,7 +68,6 @@ class SiteStatsDetailTableViewController: UITableViewController, StoryboardLoada
         self.selectedDate = selectedDate ?? StatsDataHelper.currentDateForSite()
         self.selectedPeriod = selectedPeriod
         self.postID = postID
-        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
     }
@@ -138,7 +136,9 @@ private extension SiteStatsDetailTableViewController {
 
     func initViewModel() {
         viewModel = SiteStatsDetailsViewModel(detailsDelegate: self,
-                                              referrerDelegate: self)
+                                              referrerDelegate: self,
+                                              insightsStore: insightsStore,
+                                              periodStore: periodStore)
 
         guard let statSection = statSection else {
             return
@@ -174,7 +174,7 @@ private extension SiteStatsDetailTableViewController {
             return
         }
 
-        tableHandler.viewModel = viewModel.tableViewModel()
+        tableHandler.diffableDataSource.apply(viewModel.tableViewSnapshot(), animatingDifferences: false)
         refreshControl?.endRefreshing()
 
         if viewModel.fetchDataHasFailed() {
