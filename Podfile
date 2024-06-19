@@ -83,6 +83,8 @@ end
 def shared_test_pods
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
+  pod 'Expecta', '1.0.6'
+  pod 'Specta', '1.0.7'
   gutenberg_pod
 end
 
@@ -304,25 +306,32 @@ end
 # Make all pods that are not shared across multiple targets into static frameworks by overriding the static_framework? function to return true
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
-shared_targets = ['WordPressFlux']
+shared_targets = %w[WordPressFlux]
+dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressKit WordPressUI SVProgressHUD Gridicons NSURL+IDN wpxmlrpc NSObject-SafeExpectations UIDeviceIdentifier]
+# Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
+# linking it resolves this.
+dyanmic_framework_pods += %w[Sentry SentryPrivate]
 pre_install do |installer|
   static = []
   dynamic = []
   installer.pod_targets.each do |pod|
-    # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
-    # linking it resolves this.
-    if %w[Sentry SentryPrivate].include? pod.name
-      dynamic << pod
-      next
+    use_dynamic_frameworks = false
+    if dyanmic_framework_pods.include? pod.name
+      use_dynamic_frameworks = true
     end
 
     # If this pod is a dependency of one of our shared targets, it must be linked dynamically
     if pod.target_definitions.any? { |t| shared_targets.include? t.name }
-      dynamic << pod
-      next
+      use_dynamic_frameworks = true
     end
-    static << pod
-    pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
+
+    if use_dynamic_frameworks
+      dynamic << pod
+      pod.instance_variable_set(:@build_type, Pod::BuildType.dynamic_framework)
+    else
+      static << pod
+      pod.instance_variable_set(:@build_type, Pod::BuildType.static_framework)
+    end
   end
   puts "Installing #{static.count} pods as static frameworks"
   puts "Installing #{dynamic.count} pods as dynamic frameworks"

@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
-#import <WordPressShared/WPAnalytics.h>
+
+@import WordPressShared;
 
 
 NS_ASSUME_NONNULL_BEGIN
