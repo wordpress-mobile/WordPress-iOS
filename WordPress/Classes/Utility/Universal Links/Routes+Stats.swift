@@ -17,13 +17,13 @@ enum StatsRoute {
     var tab: StatsTabType? {
         switch self {
         case .daySite:
-            return .days
+            return .traffic
         case .weekSite:
-            return .weeks
+            return .traffic
         case .monthSite:
-            return .months
+            return .traffic
         case .yearSite:
-            return .years
+            return .traffic
         case .insights:
             return .insights
         case .subscribers:
@@ -95,19 +95,19 @@ extension StatsRoute: NavigationAction {
                 showStatsForDefaultBlog(from: values, with: coordinator)
             }
         case .daySite:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: coordinator)
         case .weekSite:
-            showStatsForBlog(from: values, tab: .weeks, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .week, using: coordinator)
         case .monthSite:
-            showStatsForBlog(from: values, tab: .months, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .month, using: coordinator)
         case .yearSite:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: coordinator)
         case .insights:
             showStatsForBlog(from: values, tab: .insights, using: coordinator)
         case .dayCategory:
-            showStatsForBlog(from: values, tab: .days, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .day, using: coordinator)
         case .annualStats:
-            showStatsForBlog(from: values, tab: .years, using: coordinator)
+            showStatsForBlog(from: values, tab: .traffic, unit: .year, using: coordinator)
         case .activityLog:
             if let blog = blog(from: values) {
                 coordinator.showActivityLog(for: blog)
@@ -122,11 +122,13 @@ extension StatsRoute: NavigationAction {
 
     private func showStatsForBlog(from values: [String: String],
                                   tab: StatsTabType,
+                                  unit: StatsPeriodUnit? = nil,
                                   using coordinator: MySitesCoordinator) {
         if let blog = blog(from: values) {
             coordinator.showStats(for: blog,
                                   source: source(from: values),
-                                  tab: tab)
+                                  tab: tab,
+                                  unit: unit)
         } else {
             showMySitesAndFailureNotice(using: coordinator,
                                         values: values)

@@ -27,7 +27,6 @@ final class StatsPediodCache {
 
     enum Record: Hashable {
         case timeIntervalsSummary
-        case totalsSummary
         case topPostsAndPages
         case topReferrers
         case topClicks

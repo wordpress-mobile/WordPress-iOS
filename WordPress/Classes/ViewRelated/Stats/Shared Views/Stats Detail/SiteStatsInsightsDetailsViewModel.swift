@@ -278,7 +278,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
                                                                                              selectedSegment: selectedViewsVisitorsSegment,
                                                                                              periodDate: selectedDate!,
                                                                                              periodEndDate: weekEnd,
-                                                                                             statsLineChartViewDelegate: nil,
                                                                                              siteStatsInsightsDelegate: nil,
                                                                                              viewsAndVisitorsDelegate: viewsAndVisitorsDelegate))
 
@@ -539,12 +538,6 @@ class SiteStatsInsightsDetailsViewModel: Observable {
     }
 
     // MARK: - Refresh Data
-
-    func refreshPeriodOverviewData(date: Date, period: StatsPeriodUnit = .week, forceRefresh: Bool = false) {
-        ActionDispatcher.dispatch(PeriodAction.refreshPeriodOverviewData(date: date,
-                period: period,
-                forceRefresh: forceRefresh))
-    }
 
     func refreshFollowers(forceRefresh: Bool = true) {
         ActionDispatcher.dispatch(InsightAction.refreshInsights(forceRefresh: forceRefresh))

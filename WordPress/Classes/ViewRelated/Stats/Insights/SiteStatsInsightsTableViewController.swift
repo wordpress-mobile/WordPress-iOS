@@ -43,10 +43,6 @@ class SiteStatsInsightsTableViewController: SiteStatsBaseTableViewController, St
         return ContextManager.sharedInstance().mainContext
     }()
 
-    private lazy var postService: PostService = {
-        return PostService(managedObjectContext: mainContext)
-    }()
-
     private var viewModel: SiteStatsInsightsViewModel?
 
     private let analyticsTracker = BottomScrollAnalyticsTracker()

@@ -46,8 +46,6 @@ class SiteStatsInsightsViewModel: Observable {
 
     private typealias Style = WPStyleGuide.Stats
 
-    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
-
     private var mostRecentChartData: StatsSummaryTimeIntervalData? {
         periodStore.getSummary()
     }
@@ -527,12 +525,6 @@ private extension SiteStatsInsightsViewModel {
         )
     }
 
-    struct FollowerTotals {
-        static let total = NSLocalizedString("Total", comment: "Label for total followers")
-        static let wordPress = NSLocalizedString("WordPress.com", comment: "Label for WordPress.com followers")
-        static let email = NSLocalizedString("Email", comment: "Label for email followers")
-    }
-
     struct TodaysStats {
         static let viewsTitle = NSLocalizedString("Views", comment: "Today's Stats 'Views' label")
         static let visitorsTitle = NSLocalizedString("Visitors", comment: "Today's Stats 'Visitors' label")
@@ -548,7 +540,6 @@ private extension SiteStatsInsightsViewModel {
         return SiteStatsImmuTableRows.viewVisitorsImmuTableRows(mostRecentChartData,
                                                                 selectedSegment: selectedViewsVisitorsSegment,
                                                                 periodDate: periodDate,
-                                                                statsLineChartViewDelegate: statsLineChartViewDelegate,
                                                                 siteStatsInsightsDelegate: siteStatsInsightsDelegate,
                                                                 viewsAndVisitorsDelegate: viewsAndVisitorsDelegate)
     }
@@ -595,22 +586,6 @@ private extension SiteStatsInsightsViewModel {
         let hourPercentage = String(format: MostPopularStats.viewPercentage, mostPopularStats.mostPopularHourPercentage.percentageString())
 
         return StatsMostPopularTimeData(mostPopularDayTitle: MostPopularStats.bestDay, mostPopularTimeTitle: MostPopularStats.bestHour, mostPopularDay: dayString, mostPopularTime: timeString.uppercased(), dayPercentage: dayPercentage, timePercentage: hourPercentage)
-    }
-
-    func createMostPopularStatsRows() -> [StatsTwoColumnRowData] {
-        guard let mostPopularStats = insightsStore.getAnnualAndMostPopularTime(),
-              let dayString = mostPopularStats.formattedMostPopularDay(),
-              let timeString = mostPopularStats.formattedMostPopularTime(),
-              mostPopularStats.mostPopularDayOfWeekPercentage > 0
-        else {
-            return []
-        }
-
-        return [StatsTwoColumnRowData.init(leftColumnName: MostPopularStats.bestDay,
-                                           leftColumnData: dayString,
-                                           rightColumnName: MostPopularStats.bestHour,
-                                           rightColumnData: timeString)]
-
     }
 
     func createLikesTotalInsightsRow() -> StatsTotalInsightsData {
