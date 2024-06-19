@@ -1381,6 +1381,9 @@
 		4A0274C42C226A4D00290D8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A0274BD2C226A4D00290D8B /* Assets.xcassets */; };
 		4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
 		4A072CD329093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
+		4A0CB2812C2388CF00A006B0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A0CB2802C2388CF00A006B0 /* CocoaLumberjackSwift */; };
+		4A0CB2832C2388DC00A006B0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A0CB2822C2388DC00A006B0 /* CocoaLumberjackSwift */; };
+		4A0CB2852C238B7800A006B0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */; };
 		4A1261E22C22FF690002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */; };
 		4A1261E42C22FFAB0002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */; };
 		4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */; };
@@ -11892,6 +11895,7 @@
 				0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */,
 				E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */,
 				4A3E8C4B2C23845B003628B3 /* JTAppleCalendar in Frameworks */,
+				4A0CB2852C238B7800A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */,
 				4A3E8C4D2C238471003628B3 /* Gifu in Frameworks */,
 				4AEB35C22C22E90300D5AE8C /* AutomatticEncryptedLogs in Frameworks */,
@@ -11997,6 +12001,7 @@
 			files = (
 				4A2A35942C23623D00F47E9C /* Gridicons in Frameworks */,
 				4A2A35982C23629000F47E9C /* Reachability in Frameworks */,
+				4A0CB2832C2388DC00A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */,
 				4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */,
 				4A3E8C462C238396003628B3 /* Down in Frameworks */,
@@ -12045,6 +12050,7 @@
 			files = (
 				4A2A35922C23622F00F47E9C /* Gridicons in Frameworks */,
 				4A2A35962C23627B00F47E9C /* Reachability in Frameworks */,
+				4A0CB2812C2388CF00A006B0 /* CocoaLumberjackSwift in Frameworks */,
 				4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */,
 				4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
@@ -23074,6 +23080,7 @@
 				4A3E8C4A2C23845B003628B3 /* JTAppleCalendar */,
 				4A3E8C4C2C238471003628B3 /* Gifu */,
 				4AE417E32C23870400B383AF /* ZendeskSupportSDK */,
+				4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -23264,6 +23271,7 @@
 				4A2A35972C23629000F47E9C /* Reachability */,
 				4A3E8C412C238365003628B3 /* ZIPFoundation */,
 				4A3E8C452C238396003628B3 /* Down */,
+				4A0CB2822C2388DC00A006B0 /* CocoaLumberjackSwift */,
 			);
 			productName = WordPressDraftActionExtension;
 			productReference = 74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */;
@@ -23368,6 +23376,7 @@
 				4A2A35952C23627B00F47E9C /* Reachability */,
 				4A3E8C432C238378003628B3 /* Down */,
 				4A3E8C472C2383FD003628B3 /* ZIPFoundation */,
+				4A0CB2802C2388CF00A006B0 /* CocoaLumberjackSwift */,
 			);
 			productName = WordPressShare;
 			productReference = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */;
@@ -23712,6 +23721,7 @@
 				4AFAB06E2C2382B7003D74A5 /* XCRemoteSwiftPackageReference "Gifu" */,
 				4A3E8C492C23844E003628B3 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
 				4AE417E22C23866900B383AF /* XCRemoteSwiftPackageReference "support_sdk_ios" */,
+				4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -36743,6 +36753,14 @@
 				minimumVersion = 0.2.3;
 			};
 		};
+		4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CocoaLumberjack/CocoaLumberjack";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.8.5;
+			};
+		};
 		4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/wordpress-mobile/NSObject-SafeExpectations";
@@ -37014,6 +37032,21 @@
 		3FFB3F232AFC730C00A742B0 /* JetpackStatsWidgetsCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = JetpackStatsWidgetsCore;
+		};
+		4A0CB2802C2388CF00A006B0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A0CB2822C2388DC00A006B0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
 		};
 		4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */ = {
 			isa = XCSwiftPackageProductDependency;

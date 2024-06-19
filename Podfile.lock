@@ -9,9 +9,6 @@ PODS:
     - AppCenter/Core
   - AppCenter/Distribute (5.0.4):
     - AppCenter/Core
-  - CocoaLumberjack/Core (3.8.0)
-  - CocoaLumberjack/Swift (3.8.0):
-    - CocoaLumberjack/Core
   - CropViewController (2.5.3)
   - Expecta (1.0.6)
   - FSInteractiveMap (0.1.0)
@@ -34,7 +31,6 @@ PODS:
 DEPENDENCIES:
   - AppCenter (~> 5.0)
   - AppCenter/Distribute (~> 5.0)
-  - CocoaLumberjack/Swift (~> 3.0)
   - CropViewController (= 2.5.3)
   - Expecta (= 1.0.6)
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
@@ -57,7 +53,6 @@ SPEC REPOS:
     - WordPressUI
   trunk:
     - AppCenter
-    - CocoaLumberjack
     - CropViewController
     - Expecta
     - Gravatar
@@ -81,7 +76,6 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   AppCenter: 85c92db0759d2792a65eb61d6842d2e86611a49a
-  CocoaLumberjack: 78abfb691154e2a9df8ded4350d504ee19d90732
   CropViewController: a5c143548a0fabcd6cc25f2d26e40460cfb8c78c
   Expecta: 3b6bd90a64b9a1dcb0b70aa0e10a7f8f631667d5
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
@@ -97,6 +91,6 @@ SPEC CHECKSUMS:
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: f883fdd2508a0bc525c19805b2bbae980b581271
 
-PODFILE CHECKSUM: dc06e35cea39ab61db24dbfdc2c9d4b121efb2dc
+PODFILE CHECKSUM: d2ff4d7da5927ecb241f378e8b927e78bdcb9b49
 
 COCOAPODS: 1.15.2

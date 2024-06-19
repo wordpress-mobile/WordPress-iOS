@@ -65,7 +65,6 @@ end
 
 def shared_with_all_pods
   wordpress_shared
-  pod 'CocoaLumberjack/Swift', '~> 3.0'
 end
 
 def shared_test_pods

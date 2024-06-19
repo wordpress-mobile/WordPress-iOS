@@ -1,5 +1,5 @@
 import UIKit
-import CocoaLumberjack
+import CocoaLumberjackSwift
 import Reachability
 import AutomatticTracks
 import AutomatticEncryptedLogs
@@ -710,7 +710,7 @@ extension WordPressAppDelegate {
 
     @objc class func setLogLevel(_ level: DDLogLevel) {
         SetCocoaLumberjackObjCLogLevel(level.rawValue)
-        CocoaLumberjack.dynamicLogLevel = level
+        CocoaLumberjackSwift.dynamicLogLevel = level
     }
 
     /// Logs the error in Sentry.
