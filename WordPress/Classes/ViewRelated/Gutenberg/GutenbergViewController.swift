@@ -100,10 +100,6 @@ class GutenbergViewController: UIViewController, PostEditor, FeaturedImageDelega
         return mediaInserterHelper.isUploadingMedia()
     }
 
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-        return mediaInserterHelper.cancelUploadOfAllMedia()
-    }
-
     var mediaToInsertOnPost = [Media]()
 
     func prepopulateMediaItems(_ media: [Media]) {

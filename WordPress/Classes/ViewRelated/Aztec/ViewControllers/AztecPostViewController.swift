@@ -61,10 +61,6 @@ class AztecPostViewController: UIViewController, PostEditor {
 
     let mediaUtility = EditorMediaUtility()
 
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-        mediaCoordinator.cancelUploadOfAllMedia(for: post)
-    }
-
     var entryPoint: PostEditorEntryPoint = .unknown {
         didSet {
             editorSession.entryPoint = entryPoint

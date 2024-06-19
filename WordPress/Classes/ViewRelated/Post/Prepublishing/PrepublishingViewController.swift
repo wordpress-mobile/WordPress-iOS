@@ -23,8 +23,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
         post.blog.dotComID?.intValue
     }
 
-    private lazy var publishSettingsViewModel = PublishSettingsViewModel(post: post)
-
     private var completion: ((PrepublishingSheetResult) -> ())?
 
     /// The data source for the table rows, based on the filtered `identifiers`.

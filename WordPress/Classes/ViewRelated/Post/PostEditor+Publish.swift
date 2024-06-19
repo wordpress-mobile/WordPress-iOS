@@ -30,9 +30,6 @@ protocol PublishingEditor where Self: UIViewController {
     /// Return the current html in the editor
     func getHTML() -> String
 
-    /// Cancels all ongoing uploads
-    func cancelUploadOfAllMedia(for post: AbstractPost)
-
     /// When the Prepublishing sheet or Prepublishing alert is dismissed, this is called.
     func publishingDismissed()
 

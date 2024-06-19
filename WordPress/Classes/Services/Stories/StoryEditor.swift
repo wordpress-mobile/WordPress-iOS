@@ -232,10 +232,6 @@ extension StoryEditor: PublishingEditor {
         return post.content ?? ""
     }
 
-    func cancelUploadOfAllMedia(for post: AbstractPost) {
-
-    }
-
     func publishingDismissed() {
         hideLoading()
     }
