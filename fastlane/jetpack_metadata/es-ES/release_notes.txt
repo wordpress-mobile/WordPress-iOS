@@ -1,3 +1,2 @@
-¿Has notado un gran retraso al guardar las entradas? Esto se podía deber a los bloques de imagen, galería o archivo, pero ya no ocurre. Guardar debería ser rápido y sencillo, independientemente de cuántas fotos o archivos hayas subido.
-¡El feed de etiquetas ya está disponible! Ahora puedes ver el contenido con etiquetas específicas, todo en un solo lugar. Las etiquetas lo son todo.
-Por último, hemos corregido el problema de superposición del botón «Hecho» en la pantalla «Publicar». Pan comido.
+Hemos solucionado un error poco común que hacía que la aplicación se bloqueara al eliminar entradas. Creemos que la basura de una persona sigue siendo basura para otra.
+También hemos solucionado un problema con la barra de navegación en el selector de visibilidad de entradas. Y además, hemos actualizado la pantalla de configuración de entradas del editor para que utilice el nuevo estilo de barra de navegación. Perfecto.
