@@ -79,8 +79,6 @@ def shared_with_extension_pods
   # That conflicts with the our own app's PrivacyInfo. We can update this library once the
   # issue is resolved.
   # See https://github.com/weichsel/ZIPFoundation/pull/314
-  pod 'ZIPFoundation', '0.9.16'
-  pod 'Down', '~> 0.6.6'
 end
 
 abstract_target 'Apps' do
@@ -97,7 +95,6 @@ abstract_target 'Apps' do
   ## Third party libraries
   ## =====================
   ##
-  pod 'Gifu', '3.3.1'
 
   app_center_version = '~> 5.0'
   app_center_configurations = %w[Release-Internal Release-Alpha]
@@ -106,7 +103,6 @@ abstract_target 'Apps' do
 
   pod 'ZendeskSupportSDK', '5.3.0'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
-  pod 'JTAppleCalendar', '~> 8.0.5'
   pod 'CropViewController', '2.5.3'
 
   ## Automattic libraries

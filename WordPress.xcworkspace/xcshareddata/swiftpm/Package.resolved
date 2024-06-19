@@ -92,12 +92,39 @@
         }
       },
       {
+        "package": "Down",
+        "repositoryURL": "https://github.com/johnxnguyen/Down",
+        "state": {
+          "branch": "master",
+          "revision": "e754ab1c80920dd51a8e08290c912ac1c2ac8b58",
+          "version": null
+        }
+      },
+      {
+        "package": "Gifu",
+        "repositoryURL": "https://github.com/kaishin/Gifu",
+        "state": {
+          "branch": null,
+          "revision": "82da0086dea14ca9afc9801234ad8dc4cd9e2738",
+          "version": "3.4.1"
+        }
+      },
+      {
         "package": "Gridicons",
         "repositoryURL": "https://github.com/Automattic/Gridicons-iOS",
         "state": {
           "branch": "develop",
           "revision": "79c7e58c81ea5cfad954974b1982b9ed9a0a48ad",
           "version": null
+        }
+      },
+      {
+        "package": "JTAppleCalendar",
+        "repositoryURL": "https://github.com/patchthecode/JTAppleCalendar",
+        "state": {
+          "branch": null,
+          "revision": "718f0ab68ba0fcd2bc134f6e9d30edc1b9b038e1",
+          "version": "8.0.5"
         }
       },
       {
@@ -314,6 +341,15 @@
           "branch": null,
           "revision": "9234124cff5e22e178988c18d8b95a8ae8007f76",
           "version": "5.1.2"
+        }
+      },
+      {
+        "package": "ZIPFoundation",
+        "repositoryURL": "https://github.com/weichsel/ZIPFoundation",
+        "state": {
+          "branch": null,
+          "revision": "02b6abe5f6eef7e3cbd5f247c5cc24e246efcfe0",
+          "version": "0.9.19"
         }
       }
     ]

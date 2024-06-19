@@ -1419,6 +1419,12 @@
 		4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
 		4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3AB6502C22F6E8006E0FA8 /* SVProgressHUD */; };
 		4A3AB6532C22F702006E0FA8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3AB6522C22F702006E0FA8 /* SVProgressHUD */; };
+		4A3E8C422C238365003628B3 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C412C238365003628B3 /* ZIPFoundation */; };
+		4A3E8C442C238378003628B3 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C432C238378003628B3 /* Down */; };
+		4A3E8C462C238396003628B3 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C452C238396003628B3 /* Down */; };
+		4A3E8C482C2383FD003628B3 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C472C2383FD003628B3 /* ZIPFoundation */; };
+		4A3E8C4B2C23845B003628B3 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C4A2C23845B003628B3 /* JTAppleCalendar */; };
+		4A3E8C4D2C238471003628B3 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3E8C4C2C238471003628B3 /* Gifu */; };
 		4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A535E142AF3368B008B87B9 /* MenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A535E132AF3368B008B87B9 /* MenusViewController.swift */; };
@@ -11884,7 +11890,9 @@
 				E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */,
 				0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */,
 				E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */,
+				4A3E8C4B2C23845B003628B3 /* JTAppleCalendar in Frameworks */,
 				4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */,
+				4A3E8C4D2C238471003628B3 /* Gifu in Frameworks */,
 				4AEB35C22C22E90300D5AE8C /* AutomatticEncryptedLogs in Frameworks */,
 				E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */,
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
@@ -11989,8 +11997,10 @@
 				4A2A35982C23629000F47E9C /* Reachability in Frameworks */,
 				4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */,
 				4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */,
+				4A3E8C462C238396003628B3 /* Down in Frameworks */,
 				A2C95CCF203760D9372C5857 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
 				4AD0285F2C22EE46004FBDD0 /* UIDeviceIdentifier in Frameworks */,
+				4A3E8C422C238365003628B3 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12037,6 +12047,8 @@
 				4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
 				4AD0285D2C22EE35004FBDD0 /* UIDeviceIdentifier in Frameworks */,
+				4A3E8C442C238378003628B3 /* Down in Frameworks */,
+				4A3E8C482C2383FD003628B3 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13276,7 +13288,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA = {
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -23057,6 +23069,8 @@
 				4A2A35992C2362D700F47E9C /* Reachability */,
 				4A2A359B2C23630D00F47E9C /* Starscream */,
 				4A2A359D2C23635D00F47E9C /* Gridicons */,
+				4A3E8C4A2C23845B003628B3 /* JTAppleCalendar */,
+				4A3E8C4C2C238471003628B3 /* Gifu */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -23245,6 +23259,8 @@
 				4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */,
 				4A2A35932C23623D00F47E9C /* Gridicons */,
 				4A2A35972C23629000F47E9C /* Reachability */,
+				4A3E8C412C238365003628B3 /* ZIPFoundation */,
+				4A3E8C452C238396003628B3 /* Down */,
 			);
 			productName = WordPressDraftActionExtension;
 			productReference = 74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */;
@@ -23347,6 +23363,8 @@
 				4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */,
 				4A2A35912C23622F00F47E9C /* Gridicons */,
 				4A2A35952C23627B00F47E9C /* Reachability */,
+				4A3E8C432C238378003628B3 /* Down */,
+				4A3E8C472C2383FD003628B3 /* ZIPFoundation */,
 			);
 			productName = WordPressShare;
 			productReference = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */;
@@ -23661,7 +23679,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -23686,6 +23704,10 @@
 				4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */,
 				4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */,
 				4A65FC4B2C23663B006ED20C /* XCRemoteSwiftPackageReference "NSURL-IDN" */,
+				4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */,
+				4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */,
+				4AFAB06E2C2382B7003D74A5 /* XCRemoteSwiftPackageReference "Gifu" */,
+				4A3E8C492C23844E003628B3 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -25314,13 +25336,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25426,13 +25446,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25449,7 +25467,6 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Kanvas/Kanvas.bundle",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorDrawing.storyboardc",
@@ -25463,7 +25480,6 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Kanvas.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
@@ -25486,13 +25502,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25540,13 +25554,11 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension-resources.sh",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25597,11 +25609,11 @@
 			files = (
 			);
 			inputPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 				"",
@@ -25744,7 +25756,6 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-resources.sh",
 				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
-				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/Kanvas/Kanvas.bundle",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorDrawing.storyboardc",
@@ -25758,7 +25769,6 @@
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Kanvas.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorDrawing.storyboardc",
@@ -25780,13 +25790,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
+				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
 			);
 			outputPaths = (
 			);
@@ -36805,6 +36815,14 @@
 				version = 0.54.0;
 			};
 		};
+		4A3E8C492C23844E003628B3 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/patchthecode/JTAppleCalendar";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.5;
+			};
+		};
 		4A65FC4B2C23663B006ED20C /* XCRemoteSwiftPackageReference "NSURL-IDN" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/wordpress-mobile/NSURL-IDN";
@@ -36875,6 +36893,30 @@
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 3.4.2;
+			};
+		};
+		4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/weichsel/ZIPFoundation";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.9.19;
+			};
+		};
+		4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnxnguyen/Down";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		4AFAB06E2C2382B7003D74A5 /* XCRemoteSwiftPackageReference "Gifu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kaishin/Gifu";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.1;
 			};
 		};
 		EA14532629AD874C001F3143 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
@@ -37053,6 +37095,36 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
 			productName = SVProgressHUD;
+		};
+		4A3E8C412C238365003628B3 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		4A3E8C432C238378003628B3 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		4A3E8C452C238396003628B3 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		4A3E8C472C2383FD003628B3 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		4A3E8C4A2C23845B003628B3 /* JTAppleCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A3E8C492C23844E003628B3 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
+			productName = JTAppleCalendar;
+		};
+		4A3E8C4C2C238471003628B3 /* Gifu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06E2C2382B7003D74A5 /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
 		};
 		4A65FC492C23659F006ED20C /* wpxmlrpc */ = {
 			isa = XCSwiftPackageProductDependency;
