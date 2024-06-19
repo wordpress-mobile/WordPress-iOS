@@ -6,7 +6,6 @@ final class PageListItemViewModel {
     let badgeIcon: UIImage?
     let badges: NSAttributedString
     let imageURL: URL?
-    let accessibilityIdentifier: String?
     let syncStateViewModel: PostSyncStateViewModel
 
     init(page: Page) {
@@ -15,7 +14,6 @@ final class PageListItemViewModel {
         self.badgeIcon = makeBadgeIcon(for: page)
         self.badges = makeBadgesString(for: page)
         self.imageURL = page.featuredImageURL
-        self.accessibilityIdentifier = page.slugForDisplay()
         self.syncStateViewModel = PostSyncStateViewModel(post: page)
     }
 }
@@ -69,5 +67,4 @@ private enum Strings {
     static let badgePosts = NSLocalizedString("pageList.badgePosts", value: "Posts page", comment: "Badge for page cells")
     static let badgePrivatePage = NSLocalizedString("pageList.badgePrivate", value: "Private", comment: "Badge for page cells")
     static let badgePendingReview = NSLocalizedString("pageList.badgePendingReview", value: "Pending review", comment: "Badge for page cells")
-    static let badgeLocalChanges = NSLocalizedString("pageList.badgeLocalChanges", value: "Local changes", comment: "Badge for page cells")
 }
