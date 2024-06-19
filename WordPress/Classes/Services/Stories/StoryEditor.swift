@@ -211,10 +211,6 @@ class StoryEditor: CameraController {
 }
 
 extension StoryEditor: PublishingEditor {
-    var prepublishingSourceView: UIView? {
-        return nil
-    }
-
     var alertBarButtonItem: UIBarButtonItem? {
         return nil
     }

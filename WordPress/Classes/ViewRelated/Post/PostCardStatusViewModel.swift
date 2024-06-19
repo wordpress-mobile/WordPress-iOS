@@ -7,16 +7,13 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
 
     let post: Post
 
-    private let isInternetReachable: Bool
     private let isJetpackFeaturesEnabled: Bool
     private let isBlazeFlagEnabled: Bool
 
     init(post: Post,
-         isInternetReachable: Bool = ReachabilityUtils.isInternetReachable(),
          isJetpackFeaturesEnabled: Bool = JetpackFeaturesRemovalCoordinator.jetpackFeaturesEnabled(),
          isBlazeFlagEnabled: Bool = BlazeHelper.isBlazeFlagEnabled()) {
         self.post = post
-        self.isInternetReachable = isInternetReachable
         self.isJetpackFeaturesEnabled = isJetpackFeaturesEnabled
         self.isBlazeFlagEnabled = isBlazeFlagEnabled
         super.init()

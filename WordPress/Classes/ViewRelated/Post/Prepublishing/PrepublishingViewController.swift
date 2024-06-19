@@ -43,6 +43,10 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     private var cancellables: [AnyCancellable] = []
 
+    deinit {
+        mediaPollingTimer?.invalidate()
+    }
+
     init(post: AbstractPost,
          isStandalone: Bool,
          completion: @escaping (PrepublishingSheetResult) -> (),
@@ -480,7 +484,6 @@ final class PrepublishingViewController: UIViewController, UITableViewDataSource
 
     fileprivate enum Constants {
         static let reuseIdentifier = "wpTableViewCell"
-        static let nuxButtonInsets = UIEdgeInsets(top: 16, left: 20, bottom: 16, right: 20)
         static let analyticsDefaultProperty = ["via": "prepublishing_nudges"]
     }
 }
@@ -512,13 +515,6 @@ enum PrepublishingIdentifier {
     case tags
     case categories
     case autoSharing
-
-    static var defaultIdentifiers: [PrepublishingIdentifier] {
-        if RemoteFeatureFlag.jetpackSocialImprovements.enabled() {
-            return [.visibility, .schedule, .tags, .categories, .autoSharing]
-        }
-        return [.visibility, .schedule, .tags, .categories]
-    }
 }
 
 extension PrepublishingOption {
