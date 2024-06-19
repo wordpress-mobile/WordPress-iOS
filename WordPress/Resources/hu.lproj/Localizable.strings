@@ -43,7 +43,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -238,8 +237,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Adj meg egy jelszót";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Jelszó megadása";
 
 /* (placeholder) Help enter WordPress username */
@@ -317,7 +315,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Szerkesztés folytatása";
 
@@ -499,9 +496,6 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "Jelszó";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Jelszóval védett";
-
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
    Title of pending Comments filter. */
@@ -556,15 +550,10 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Adatvédelmi irányelvek";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Magánjellegű";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Nyilvános";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Közzététel";
@@ -621,10 +610,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -646,15 +633,8 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Ment";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Vázlat mentése";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Mentés...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Ütemezés";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -756,9 +736,6 @@
    The item to select during a guided tour. */
 "Stats" = "Statisztika";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Állapot";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Áthúzva";
 
@@ -844,11 +821,7 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Frissítés";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Vázlat frissítése";
-
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Sikertelen feltöltés";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -879,8 +852,7 @@
 /* Description for the version label in the What's new page. */
 "Version " = "Verzió";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Megtekintés";
@@ -897,8 +869,7 @@
    Today's Stats 'Views' label */
 "Views" = "Megtekintések";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Nyilvánosság";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.

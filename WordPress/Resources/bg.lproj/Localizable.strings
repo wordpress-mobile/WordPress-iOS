@@ -328,7 +328,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -670,8 +669,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Изтриване на менюто";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Изтриване завинаги";
 
 /* Button label for deleting the current site
@@ -833,8 +831,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Парола";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Въвеждане на парола";
 
 /* (placeholder) Help enter WordPress username */
@@ -1131,7 +1128,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Ще редактирам още";
 
@@ -1363,7 +1359,6 @@
 "More" = "Още";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Преместване в кошчето";
 
@@ -1643,9 +1638,6 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "Парола";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Защитена с парола";
-
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
    Title of pending Comments filter. */
@@ -1767,8 +1759,7 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Поверителност";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Лична";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1777,11 +1768,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Проекти";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Публична";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Публикуване";
@@ -1793,9 +1780,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Публикувано";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Публикуване...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Покупки";
@@ -1926,10 +1910,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1968,25 +1950,12 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Запазване";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Запазване на чернова";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Запазване като чернова";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Запазване...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Планиране";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Насрочена";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Насрочване...";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
@@ -2186,9 +2155,6 @@
    Stats window title
    The item to select during a guided tour. */
 "Stats" = "Статистика";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Статус";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Зачеркнат";
@@ -2542,14 +2508,10 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Обновяване";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Обновяване";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Обновяване на връзката";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Неуспешно качване";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -2601,8 +2563,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Видео клипове";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Преглед";
@@ -2634,8 +2595,7 @@
    Today's Stats 'Views' label */
 "Views" = "Преглеждания";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Достъпност";
 
 /* An option to visit the site to which a specific post belongs */

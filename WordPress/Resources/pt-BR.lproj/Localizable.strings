@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Tem certeza de que deseja excluir permanentemente este item?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Tem certeza de que deseja excluir permanentemente esse post?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Tem certeza de que deseja publicar?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Tem certeza de que deseja remover %1$@ de %2$@?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Tem certeza de que deseja retroceder seu site para %1$@? Isto removerá todo o conteúdo e opções criadas ou alteradas desde então.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Tem certeza de que deseja salvar como rascunho?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Tem certeza de que deseja salvar?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Tem certeza de que deseja agendar?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Tem certeza de que deseja enviar para revisão?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Você tem certeza de que deseja enviar este post para a lixeira?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Tem certeza de que deseja atualizar?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Você está tentando fazer login em %1$@ perto de %2$@?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Melhores visualizações";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "Página vazia criada";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "Copiar o texto do post";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Copiar a versão deste aplicativo";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Não foi possível seguir o tópico";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Excluir menu";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Excluir permanentemente";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Excluir permanentemente?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Editar botões de compartilhamento";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Editar o post primeiro";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Editar usando o editor web";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Digite uma senha";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Digite uma senha para proteger esse post";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Digite a senha";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Erro ao mover o comentário para a lixeira.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Um erro ocorreu\ndurante o carregamento";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Ocorreu um erro durante a publicação";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Ocorreu um erro durante o salvamento";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Ocorreu um erro durante o agendamento";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Houve um erro ao carregar as informações de contato do domínio";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "De %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "De outro dispositivo";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Da área de transferência";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Deste dispositivo";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Tamanho completo";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Gerar novo link";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Gerando visualização...";
 
 /* View title for initial auth views. */
 "Get Started" = "Comece agora";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Continuar editando";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Mover o item de menu";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Mover para a lixeira";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bloco de quebra de página. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Página criada";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Rascunho de página enviado";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Falha ao enviar página";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Página pendente de revisão";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Página publicada";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Página agendada";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Título da página. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Título da página. Vazio";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Página atualizada";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Senha alterada com sucesso";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Protegido por senha";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Colar URL";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Post criado em %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Rascunho de post enviado";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Falha ao enviar post";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Post pendente de revisão";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Post publicado";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Post removido.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Post salvo.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Post agendado";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Conflito na sincronização do post";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Título do post. %s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Publicar no WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Post atualizado";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "CEP";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Aviso de privacidade para usuários na Califórnia";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privado";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Sugestões";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Público";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publicar";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publicando post...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Publicando...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Compras";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Salvar 1 foto como um rascunho de post em:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Salvar rascunho";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Salvar posts para depois";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Salvar como rascunho";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Salvar rascunho de página em:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Salvando o post...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Salvando...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Examinando arquivos";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Agendar";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Agendado";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Agendando...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Menu de blocos fechado.";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Estatísticas não carregadas";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Aguarde um momento";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Enviar para revisão";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Enviando para avaliação...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Índice do spotlight liberado";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "O número de posts a serem mostrados por página.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "O post que você está tentando copiar possui duas versões em conflito ou você fez alterações recentemente que não foram salvas.\nPrimeiro edite o post para corrigir qualquer conflito e depois copie a versão no aplicativo.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Falha na serialização da solicitação.";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Este item da biblioteca foi removido.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Atualmente esta página está sendo enviada. Não vai demorar, tente novamente mais tarde e será possível editá-lo.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Atualmente este post está sendo enviado. Não vai demorar, tente novamente mais tarde e será possível editá-lo.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Este post está nas Minhas curtidas";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Lixeira";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Colocar este post na lixeira?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Atualizar";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Atualizar rascunho";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Atualizar link";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Atualizar página";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Atualizar post";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Atualizar foto do perfil";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Se você atualizar seu avatar, nome e informações pessoais aqui, eles também serão atualizados em todos os sites que usam perfis no Gravatar.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Atualizando...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Faça upgrade do seu plano para fazer upload de áudios";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Fazer upload de mídia";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Falha ao carregar";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Carregando a mídia";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Enviando a mídia...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Enviando post";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Enviando post...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "O envio de vídeos com mais de cinco minutos de duração requer um plano pago.";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Vídeos";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Visualizar";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Visualizações e visitantes";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Visibilidade";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7956,97 +7781,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "Estamos trabalhando arduamente para adicionar mais blocos a cada lançamento.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "Não foi possível concluir essa ação e a página não foi publicada.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "Não foi possível concluir essa ação e o post não foi publicado.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "Não foi possível concluir essa ação e essa página privada não foi publicada.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "Não foi possível concluir essa ação e o post privado não foi publicado.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "Não foi possível concluir essa ação e a página não foi agendada.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "Não foi possível concluir essa ação e o post não foi agendado.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "Não foi possível concluir essa ação e a página não foi para revisão.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "Não foi possível concluir essa ação e o post não foi enviado para revisão.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "Não foi possível concluir essa ação mas tentaremos novamente mais tarde.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "Não foi possível concluir essa ação.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Não foi possível criar seu backup. Tente novamente.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "Não foi possível publicar essa página mas tentaremos novamente mais tarde.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "Não foi possível publicar esse post mas tentaremos novamente mais tarde.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "Não foi possível publicar essa página privada mas tentaremos novamente mais tarde.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "Não foi possível publicar esse post privado mas tentaremos novamente mais tarde.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "Não foi possível restaurar seu site. Tente novamente.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Não foi possível recuperar essa mídia.\nToque para tentar novamente.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "Não foi possível agendar essa página mas tentaremos novamente mais tarde.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "Não foi possível agendar esse post mas tentaremos novamente mais tarde.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "Não foi possível enviar esta página para revisão mas tentaremos novamente mais tarde.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "Não foi possível enviar este post para revisão mas tentaremos novamente mais tarde.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "Não foi possível enviar essa mídia e publicar a página.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "Não foi possível enviar essa mídia e publicar esse post.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "Não foi possível enviar essa mídia e publicar essa página privada.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "Não foi possível enviar essa mídia e publicar esse post privado.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "Não foi possível enviar essa mídia e agendar essa página.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "Não foi possível enviar essa mídia e agendar esse post.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "Não foi possível enviar essa mídia e a página não foi enviada para revisão.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "Não foi possível enviar essa mídia e o post não foi enviado para revisão.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Não foi possível enviar essa mídia.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "Não conseguimos encontrar o status para informar quanto tempo a criação do backup levará.";
@@ -8081,22 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Enviaremos um e-mail se forem encontradas ameaças à segurança. Enquanto isso, fique à vontade para continuar a usar seu site normalmente. Você pode verificar o progresso a qualquer momento.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "Não publicaremos essas alterações.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "Não salvaremos as últimas alterações em seu rascunho.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "Não agendaremos essas alterações.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "Não enviaremos essas alterações para revisão.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Vamos enviar para você um link mágico que fará seu login na hora, sem precisar de senha. Chega de catar milho no teclado!";
 
@@ -8108,33 +7834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Nós te avisaremos quando você tiver novos seguidores, comentários e curtidas. Gostaria de permitir as notificações?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Publicaremos a página quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Publicaremos o post quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Publicaremos sua página privada quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Publicaremos seu post privado quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Salvaremos seu rascunho quando o dispositivo se conectar novamente.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Agendaremos sua página quando o dispositivo se conectar novamente.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Agendaremos seu post quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Enviaremos sua página para revisão quando o dispositivo se conectar novamente.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Enviaremos seu post para revisão quando o dispositivo se conectar novamente.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Usaremos este endereço de e-mail para criar sua nova conta no WordPress.com.";
@@ -8282,9 +7981,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Assim que você fizer alterações no site, você poderá ver o histórico de atividades aqui.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Qual versão você gostaria de editar?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Oops, não conseguimos realizar seu login. Tente novamente!";
@@ -8580,10 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Você recebeu *50 curtidas* em seu site hoje";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Alterações foram feitas recentemente no post mas não foram salvas. Escolha a versão para carregar:\n\nDeste dispositivo\nSalva em %1$@\n\nDe outro dispositivo\nSalva em %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8613,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Sem autorização para encerrar a conta.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Há alterações não salvas neste post";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ícone do seu site";
@@ -8652,9 +8341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Sua senha deve ter no mínimo seis caracteres. Para torná-la mais forte, use letras maiúsculas e minúsculas, números e símbolos como ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Seu post está sendo enviado no momento. Aguarde até que o processo seja concluído.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Seu post está sendo publicado. Enquanto isso, você pode configurar lembretes para os dias em que deseja publicar.";
@@ -10201,32 +9887,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Página atualizada com sucesso";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "Excluir permanentemente";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "Tem certeza de que deseja excluir esta página permanentemente?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Excluir permanentemente?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Páginas de todo mundo";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Minhas páginas";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "Mover para a lixeira";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "Tem certeza de que deseja mover esta página para a lixeira?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Colocar este post na lixeira?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "Cancelar";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Página principal";
@@ -10293,12 +9958,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the plan selection view */
 "planSelection.title" = "Planos";
-
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "Excluindo post...";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "Movendo post para a lixeira...";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Descartar alterações";
@@ -10380,9 +10039,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "Tentar novamente";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Ocorreu um erro";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "Solicitações disponíveis:";
@@ -10471,9 +10127,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "Ocorreu um erro";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "O aplicativo está fazendo upload de alterações antigas no servidor. Tente novamente mais tarde.";
-
 /* Button OK */
 "postNotice.ok" = "OK";
 
@@ -10549,9 +10202,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Definir imagem destacada";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "Falha ao atualizar as configurações do post";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Ao mudar a visibilidade para \"Privado\", o post será publicado imediatamente";
 
@@ -10594,9 +10244,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promova com Blaze";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "Cancelar upload";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "Comentários";
 
@@ -10617,9 +10264,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "Publicar";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "Tentar novamente";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Definir como página inicial";
@@ -10644,18 +10288,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Visualizar";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Página excluída de forma permanente";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Post excluído de forma permanente";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "Página movida para a lixeira";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "Post movido para a lixeira";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Posts de todo mundo";
@@ -10686,9 +10318,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Falha no upload da mídia";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "Título";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Publicar";

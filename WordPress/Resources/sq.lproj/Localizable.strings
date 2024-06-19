@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Jeni i sigurt që doni të fshihet përgjithmonë ky objekt?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Jeni i sigurt se doni të fshihet përgjithmonë ky postim?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Jeni i sigurt se doni të botohet?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Jeni i sigurt se doni të hiqet %1$@ nga %2$@?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Jeni i sigurt se doni të rikthehet sajti juaj në gjendjen më %1$@? Kjo të sjellë heqjen e krejt lëndës së krijuar apo ndryshuar dhe mundësive të ndryshuara që nga ajo datë.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Jeni i sigurt se doni të ruhet si skicë?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Jeni i sigurt se doni të ruhet?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Jeni i sigurt se doni të planifikohet?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Jeni i sigurt se doni ta parashtroni për shqyrtim?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Jeni i sigurt se doni të shpihet ky postim te hedhurinat?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Jeni i sigurt se doni të përditësohet?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "A po provoni të hyni te %1$@ pranë %2$@?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Parjet më të mira ndonjëherë";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "U krijua faqe e zbrazët";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Bllok Citimi";
@@ -1210,7 +1183,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1832,9 +1804,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "Kopjo tekst postimi";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Kopjo versionin prej këtij aplikacioni";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "S’u Ndoq Dot Tema";
 
@@ -2148,12 +2117,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Fshije Menunë";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Fshije Përgjithmonë";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Të Fshihet Përgjithmonë?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2502,9 +2467,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Përpunoni butona ndarjesh me të tjerë";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Përpunoni postimin së pari";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Përpunojeni duke përdorur përpunuesin web";
 
@@ -2640,11 +2602,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Jepni një fjalëkalim";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Jepni një fjalëkalim për mbrojtjen e këtij postimi";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Jepni fjalëkalim";
 
 /* Instruction text on the login's site addresss screen.
@@ -2737,18 +2695,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Gabim gjatë kalimit të komentit te hedhurinat.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Ndodhi një gabim\ngjatë ngarkimit";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Ndodhi një gabim gjatë botimit";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Ndodhi një gabim gjatë ruajtjes";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Ndodhi një gabim gjatë vënies në plan";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Ndodhi një gabim gjatë sjelljes së hollësive të kontaktit për përkatësinë";
@@ -3040,14 +2986,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "Nga %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Prej një tjetër pajisje";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Prej së papastre";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Prej kësaj pajisje";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Madhësi e Plotë";
@@ -3079,9 +3019,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Prodho lidhje të re";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Po prodhohet Paraparja";
 
 /* View title for initial auth views. */
 "Get Started" = "Fillojani";
@@ -3692,7 +3629,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Vazhdoni Përpunimin";
 
@@ -4256,7 +4192,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Lëvizni element menuje";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Shpjere te Hedhurinat";
 
@@ -4906,32 +4841,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Bllok ndërprerjeje faqeje. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Faqja u krijua";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Skica e faqes u ngarkua";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Ngarkimi i faqes dështoi";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Faqe në pritje të shqyrtimit";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Faqja u botua";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Faqe e planifikuar për botim";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Titull faqeje. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Titull faqeje. I zbrazët";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Faqja u përditësua";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4962,9 +4876,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Fjalëkalimi u ndryshua me sukses";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Mbrojtur me fjalëkalim";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Ngjitni URL";
@@ -5205,29 +5116,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Postim i krijuar më %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Skica e postimit u ngarkua";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Ngarkimi i postimit dështoi";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Postim në pritje të shqyrtimit";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Postimi u botua";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Postimi u hoq.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Postimi u ruajt.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Postim i planifikuar për botim";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Përplasje pas njëkohësimi";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Titull postimi. %s";
@@ -5237,9 +5130,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Të postojë në WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Postimi u përditësua";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Kod Postar";
@@ -5344,8 +5234,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Shënim mbi privatësinë për përdorues në Kalifornia";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
@@ -5377,11 +5266,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Cytje";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Publik";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Botoje";
@@ -5411,9 +5296,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Po botohet postimi…";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Po botohet…";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Blerje";
@@ -5724,10 +5606,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5811,14 +5691,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Ruani 1 foto si një skicë postimi në:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Ruaje Skicën";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Ruani Postime për Më vonë";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Ruaje si Skicë";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Ruaje faqen skicë te:";
@@ -5848,8 +5722,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Po ruhet postimi…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Po ruhet…";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5876,15 +5749,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Po skanohen kartelat";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Vëreni në plan";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Vënë në plan";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Po vihet në plan…";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Menuja e blloqeve u mbyll.";
@@ -6516,9 +6383,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistikat s’u ngarkuan";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Gjendje";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Jini brenda gjërave";
 
@@ -6560,9 +6424,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Parashtrojeni për Shqyrtim";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Po parashtrohet për Shqyrtim…";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Treguesi i projektorit u hoq me sukses";
@@ -6910,9 +6771,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Numër postimesh për t’u shfaqur për faqe.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Postimi që po rrekeni të kopjoni, ka dy versione që kanë përplasje, ose keni bërë ndryshime tani afër, por nuk i ruajtët ato.\nSë pari përpunoni postimin, që të zgjidhet çfarëdo përplasje ose që të vazhdohet kopjimi i versionit prej këtij aplikacioni.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serializimi i kërkesës dështoi.";
 
@@ -7132,12 +6990,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Ky objekt media është fshirë.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Kjo faqe po ngarkohet. S’do të zgjasë shumë -- riprovoni së shpejti dhe do të jeni në gjendje ta përpunoni.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Ky postim po ngarkohet. S’do të zgjasë shumë -- riprovoni së shpejti dhe do të jeni në gjendje ta përpunoni.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Ky postim gjendet te Pëlqimet e Mia";
 
@@ -7321,9 +7173,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Në hedhurina";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Të shpihet ky postim te hedhurinat?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7611,17 +7460,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Përditësoje";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Përditësoje Skicën";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Përditësoni Lidhjen";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Përditësoni Faqen";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Përditësoni Postimin";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Përditësoni Foto Profili";
@@ -7653,9 +7493,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Përditësimi i gravatarit, emrit dhe hollësive tuaja këtu, do t’i përditësojë ato nëpër krejt sajtet që përdorin profile Gravatar.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Po përditësohet…";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Që të ngarkoni audio, përmirësoni planin tuaj";
 
@@ -7665,8 +7502,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Ngarkoni Media";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Ngarkimi dështoi";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7700,15 +7536,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Po ngarkohet media";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Po ngarkohet media…";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Po ngarkohet postimi";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Po ngarkohet postimi…";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Ngarkimi i videove më të gjata se 5 minuta lyp një plan me pagesë.";
@@ -7803,8 +7630,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Video";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Shiheni";
@@ -7854,8 +7680,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Parje & Vizitorë";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Dukshmëri";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7941,97 +7766,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "Po punojmë fort për të shtuar më tepër blloqe me çdo hedhje në qarkullim.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "S’e plotësuam dot këtë veprim dhe s’e botuam këtë faqe.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "S’e plotësuam dot këtë veprim, dhe s’e botuam këtë postim.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "S’e plotësuam dot këtë veprim dhe s’e botuam këtë faqe private.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "S’e plotësuam dot këtë veprim, dhe s’e botuam këtë postim privat.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "S’e plotësuam dot këtë veprim dhe s’e vumë dot në plan këtë faqe.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "S’e plotësuam dot këtë veprim, dhe s’e vumë në plan këtë postim.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "S’e plotësuam dot këtë veprim dhe s’e parashtruam për shqyrtim këtë faqe.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "S’e plotësuam dot këtë veprim, dhe s’e parashtruam për shqyrtim këtë postim.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "S’e plotësuam dot këtë veprim, por do të riprovojmë më vonë.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "S’e plotësuam dot këtë veprim.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "S’e krijuam dot kopjeruajtjen tuaj. Ju lutemi, riprovoni më vonë.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "S’e botuam dot këtë faqe, por do të riprovojmë më vonë.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "S’e botuam dot këtë postim, por do të riprovojmë më vonë.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "S’e botuam dot këtë faqe private, por do të riprovojmë më vonë.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "S’e botuam dot këtë postim privat, por do të riprovojmë më vonë.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "S’e rikthyem dot sajtin tuaj. Ju lutemi, riprovoni më vonë.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "S’e morëm dot këtë media.\nJu lutemi, prekeni që të riprovohet.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "S’e vumë dot në plan këtë faqe, por do të riprovojmë më vonë.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "S’e vumë dot në plan këtë postim, por do të riprovojmë më vonë.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "S’e parashtruam dot për shqyrtim këtë faqe, por do të riprovojmë më vonë.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "S’e parashtruam dot për shqyrtim këtë postim, por do të riprovojmë më vonë.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "S’e ngarkuam dot këtë media dhe s’e botuam faqen.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "S’e ngarkuam dot këtë media, dhe s’e botuam postimin.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "S’e ngarkuam dot këtë media dhe s’e botuam këtë faqe private.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "S’e ngarkuam dot këtë media, dhe s’e botuam këtë postim privat.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "S’e ngarkuam dot këtë media dhe s’e vumë në plan këtë faqe.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "S’e ngarkuam dot këtë media, dhe s’e vumë në plan këtë postim.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "S’e ngarkuam dot këtë media dhe s’e parashtruam për shqyrtim këtë faqe.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "S’e ngarkuam dot këtë media, dhe s’e parashtruam për shqyrtim këtë postim.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "S’e ngarkuam dot këtë media.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "S’gjetëm dot gjendjen, që të themi se sa do të zgjasë krijimi i kopjeruajtjes tuaj.";
@@ -8066,22 +7808,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Do t’ju dërgojmë një email, nëse gjenden kërcënime sigurie. Ndërkohë, mos ngurroni të përdorni sajtin tuaj si normalisht, ecurinë mund ta rikontrolloni kur të doni.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "S’do t’i publikojmë këto ndryshime.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "S’do t’i ruajmë ndryshimet e fundit te skica juaj.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "S’do t’i vëmë në plan këto ndryshime.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "S’do t’i parashtrojmë për shqyrtim këto ndryshime.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Do t’ju dërgojmë me email një lidhje magjike që do t’ju fusë menjëherë, pa qenë nevoja për fjalëkalim. Mjaft më me shtypje me dy gishta!";
 
@@ -8093,33 +7819,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Do t’ju njoftojmë për ndjekës të rinj, komente dhe pëlqime. Do të donit të lejohen njoftime <em>push<\/em>?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Do ta botojmë faqen kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Do ta botojmë postimin kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Do ta botojmë faqen tuaj private kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Do ta botojmë postimin tuaj privat kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Do ta ruajmë skicën tuaj kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Do ta vëmë në plan faqen tuaj kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Do ta vëmë në plan postimin tuaj kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Do ta parashtrojmë për shqyrtim faqen tuaj kur pajisja juaj të jetë sërish në linjë.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Do ta parashtrojmë për shqyrtim postimin tuaj kur pajisja juaj të jetë sërish në linjë.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Këtë adresë email do ta përdorim për të krijuar llogarinë tuaj të re WordPress.com.";
@@ -8267,9 +7966,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Kur bëni ndryshime te sajti juaj, këtu do të jeni në gjendje të shihni historikun e veprimtarisë tuaj.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Cilin version do të donit të përpunonit?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Hëm, diç shkoi ters dhe s’bëmë dot futjen tuaj. Ju lutemi, riprovoni!";
@@ -8565,10 +8261,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Sot në sajtin tuaj patët *50 pëlqime*";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Keni bërë së fundi ndryshime te ky postim, por s’i ruajtët. Zgjidhni një version për ngarkim:\n\nPrej kësaj pajisje\nRuajtur më %1$@\n\nNga pajisje tjetër\nRuajtur më %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8598,9 +8290,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "S’jeni i autorizuar të mbyllni llogarinë.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Keni bërë ndryshime të paruajtura në këtë postim";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikona e Sajtit Tuaj";
@@ -8637,9 +8326,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Fjalëkalimi juaj duhet të jetë të paktën gjashtë shenja i gjatë. Për ta bërë më të fortë, përdorni shkronja me të mëdha dhe me të vogla, numra, dhe simbole të tillë si ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Postimi juaj po ngarkohet. Ju lutemi, prisni deri sa të plotësohet kjo.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Postimi juaj po botohet… ndërkohë, mund të ujdisni kujtues blogimi për ditë kur doni të postoni.";
@@ -10180,32 +9866,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Faqja u përditësua me sukses";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "Fshije Përgjithmonë";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "Jeni i sigurt se doni të fshihet përgjithmonë kjo faqe?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Të Fshihet Përgjithmonë?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Faqe nga cilido";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Faqe nga unë";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "Shpjere te Hedhurinat";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "Jeni i sigurt se doni të shpihet në hedhurina kjo faqe?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Të shpihet në hedhurina kjo faqe?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "Anuloje";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Faqe Mëmë";
@@ -10269,12 +9934,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for the plan selection view */
 "planSelection.title" = "Plane";
-
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "Po fshihet postim…";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "Po shpihet postim në hedhurina…";
 
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Hidhi Tej Ndryshimet";
@@ -10356,9 +10015,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "Riprovoni";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Diç shkoi ters";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "Kërkesa të përdorshme:";
@@ -10447,9 +10103,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "Ndodhi një gabim";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "Aplikacioni po ngarkon në shërbyes ndryshime të bëra më herët. Ju lutemi, riprovoni më vonë.";
-
 /* Button OK */
 "postNotice.ok" = "OK";
 
@@ -10525,9 +10178,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Caktoni Figurë të Zgjedhur";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "S’u arrit të përditësohen rregullime postimi";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Duke ndryshuar dukshmërinë në “Private”, postimi do të botohet menjëherë";
 
@@ -10570,9 +10220,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promovojeni me Blaze";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "Anuloje ngarkimin";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "Komente";
 
@@ -10593,9 +10240,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "Publikoje";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "Riprovoni";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Caktojeni si faqen hyrëse";
@@ -10620,18 +10264,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Shiheni";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Faqja u fshi përgjithmonë";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Postimi u fshi përgjithmonë";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "Faqja u shpu te hedhurinat";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "Postimi u shpu te hedhurinat";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Postime nga kushdo";
@@ -10662,9 +10294,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "S’u arrit të ngarkohej te media";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "Titull";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Publikoje";

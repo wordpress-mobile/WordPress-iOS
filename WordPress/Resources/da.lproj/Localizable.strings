@@ -67,9 +67,6 @@
 /* Message asking for confirmation on tag deletion */
 "Are you sure you want to delete this tag?" = "Er du sikker på, at du vil slette dette nøgleord?";
 
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Er du sikker på, du vil slette dette indlæg?";
-
 /* An example tag used in the login prologue screens.
    Art site intent topic */
 "Art" = "Kunst";
@@ -104,7 +101,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -301,8 +297,7 @@
    Title of the trash confirmation alert. */
 "Delete" = "Slet";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Slet permanent";
 
 /* Text displayed in HUD after successfully deleting a media item */
@@ -414,8 +409,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Indtast et kodeord";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Indtast adgangskode";
 
 /* (placeholder) Help enter WordPress username */
@@ -550,7 +544,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Fortsæt redigering";
 
@@ -840,9 +833,6 @@
    Other Sites Notification Settings Title */
 "Other Sites" = "Andre websteder";
 
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Side opdateret";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -861,9 +851,6 @@
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Kodeord";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Kodeordsbeskyttet";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -915,9 +902,6 @@
 /* Title of camera permissions screen */
 "Post to WordPress" = "Udgiv på WordPress";
 
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Indlæg opdateret";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
@@ -944,15 +928,10 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Privatlivspolitik";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privat";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Offentlig";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Udgiv";
@@ -1044,10 +1023,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1075,15 +1052,8 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Gem";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Gem kladde";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Gemmer...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Planlæg";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -1206,14 +1176,8 @@
    The item to select during a guided tour. */
 "Stats" = "Statistik";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Gennemstreg";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Sender til godkendelse...";
 
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
@@ -1352,14 +1316,7 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Opdater";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Opdater kladde";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Opdaterer...";
-
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Upload fejlede";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -1369,9 +1326,6 @@
 /* \"Uploading\" Status text
    Status for Media object that is being uploaded. */
 "Uploading" = "Uploader";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Uploader medie...";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Uploader...";
@@ -1399,8 +1353,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Videoer";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Vis";
@@ -1426,8 +1379,7 @@
    Today's Stats 'Views' label */
 "Views" = "Visninger";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Synlighed";
 
 /* An option to visit the site to which a specific post belongs */

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-28 06:50:21+0000 */
+/* Translation-Revision-Date: 2024-06-17 18:43:30+0000 */
 /* Plural-Forms: nplurals=2; plural=n != 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: nl */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Weet je zeker dat je dit item permanent wilt verwijderen?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Weet je zeker dat je dit bericht permanent wilt verwijderen?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Weet je zeker dat je wilt publiceren?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Weet je zeker dat je %1$@ uit %2$@ wilt verwijderen?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Weet je zeker dat je je site wil terugzetten naar %1$@? Dit zal alle inhoud en opties verwijderen die sindsdien gemaakt of gewijzigd zijn.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Weet je zeker dat je wilt opslaan als concept?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Weet je zeker dat je wilt opslaan?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Weet je zeker dat je deze wilt inplannen?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Weet je zeker dat deze wilt verzenden voor controle?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Weet je zeker dat je dit bericht naar de prullenbak wilt verplaatsen?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Weet je zeker dat je wilt updaten?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Probeer je in te loggen bij %1$@ in de buurt van %2$@?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Best bekeken ooit";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "Lege pagina gemaakt";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "Berichttekst kopiëren";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Kopieer de versie van deze app";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Kon onderwerp niet volgen";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Menu verwijderen";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Permanent verwijderen";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Permanent verwijderen?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Wijzig deel knoppen";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Bewerk eerst het bericht";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Bewerk met gebruik van de webeditor";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Voer een wachtwoord in";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Vul een wachtwoord in om dit bericht te beveiligen";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Voer wachtwoord in";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Fout bij het verplaatsen van reactie naar de prullenbak.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Fout kwam voor\ntijdens laden";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Fout opgetreden tijdens publiceren";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Fout opgetreden tijdens opslaan";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Fout opgetreden tijdens inplannen";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Fout opgetreden tijdens ophalen contactinformatie domein";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "Van %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Van ander apparaat";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Van klembord";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Van dit apparaat";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Volledige grootte";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Genereer een nieuwe link";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Voorbeeld genereren";
 
 /* View title for initial auth views. */
 "Get Started" = "Hoe te starten";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Blijf bewerken";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Verplaats menu-item";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Verplaatsen naar prullenbak";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok Pagina-einde. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Pagina aangemaakt";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Paginaconcept geüpload";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Uploaden van pagina mislukt";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Pagina wacht op beoordeling";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Pagina gepubliceerd";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Pagina gepland";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Paginatitel. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Paginatitel. Leeg";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Pagina bijgewerkt";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Wachtwoord succesvol gewijzigd";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Met wachtwoord beschermen";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Plak URL";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Bericht gemaakt op %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Berichtconcept geüpload";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Uploaden van bericht mislukt";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Bericht wacht op beoordeling";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Bericht gepubliceerd";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Bericht verwijderd.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Bericht opgeslagen.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Bericht gepland";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Bericht synchronisatie conflict";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Bericht titel. %s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Plaatsen op WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Bericht bijgewerkt";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Postcode";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Privacybericht voor gebruikers in Californie";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Prive";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Opdrachten";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Openbaar";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publiceren";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Bericht publiceren...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Publiceren...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Aankopen";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Bewaar 1 foto als conceptbericht op:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Concept opslaan";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Sla berichten op voor later";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Opslaan als concept";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Bewaar conceptpagina op:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Bericht bewaren…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Opslaan...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Bestanden scannen";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Planning";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Gepland";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Inplannen...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Scrolbaar blokmenu gesloten.";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistieken niet geladen";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Blijf op de hoogte";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Inzenden voor beoordeling";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Inzenden voor beoordeling...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Spotlight-index succesvol gewist";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Het aantal te tonen berichten per pagina.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Het bericht dat je probeert te kopiëren heeft twee versies die verschillend zijn of je hebt recentelijk wijzigingen aangebracht maar niet opgeslagen.\nBewerk het bericht eerst om een eventueel conflict op te lossen of ga verder met het kopiëren van de versie van deze app.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "De serialisatie van het verzoek is mislukt.";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Dit media-item is verwijderd.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Deze pagina wordt momenteel geüpload. Dit duurt niet lang. Probeer het zo opnieuw en je kan het bewerken.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Dit bericht wordt momenteel geüpload. Dit duurt niet lang. Probeer het zo opnieuw en je kan het bewerken.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Dit bericht staat in 'Mijn vind-ik-leuks'";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Prullenmand";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Bericht naar prullenbak verplaatsen?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Bijwerken";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Update Concept";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Werk link bij";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Pagina bijwerken";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Bericht bijwerken";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Werk profielfoto bij";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Als je je avatar, naam en beschrijving hier aanpast, worden deze ook bijgewerkt op alle sites waarop het Gravatar-profiel wordt gebruikt.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Bijwerken...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade je abonnement om audio te uploaden";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Media uploaden";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Uploaden mislukt";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Media uploaden";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Media uploaden...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Uploaden bericht";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Bericht uploaden...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Uploaden van videos langer dan 5 minuten vereisen een betaald abonnement.";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Video's";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Bekijk";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Weergaven en bezoekers";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Zichtbaarheid";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7956,97 +7781,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "We werken hard om meer blokken toe te voegen met elke release.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "We konden deze handeling niet voltooien en hebben deze pagina niet gepubliceerd.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "We konden deze handeling niet voltooien en hebben het bericht niet gepubliceerd.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "We konden deze handeling niet voltooien en hebben deze privé pagina niet gepubliceerd.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "We konden deze handeling niet voltooien en hebben dit privébericht niet gepubliceerd.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "We konden deze handeling niet voltooien en hebben deze pagina niet ingepland.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "We konden deze handeling niet voltooien en hebben dit bericht niet ingepland.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "We konden deze handeling niet voltooien en hebben de pagina niet verzonden voor beoordeling.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "We konden deze handeling niet voltooien en hebben het bericht niet verzonden voor beoordeling.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "We konden deze handeling niet voltooien, maar we proberen het later nog eens.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "We konden deze handeling niet voltooien.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "We konden je back-up niet maken. Probeer het later nog een keer.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "We konden deze pagina niet publiceren, maar we proberen het later nog eens.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "We konden dit bericht niet publiceren, maar we proberen het later nog eens.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "We konden deze privé pagina niet publiceren, maar we proberen het later nog eens.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "We konden dit privébericht niet publiceren, maar we proberen het later nog eens.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "We konden je site niet terugzetten. Probeer het later nog eens.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "We konden deze media niet ophalen.\nTik om opnieuw te proberen.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "We konden deze pagina niet inplannen, maar we proberen het later nog eens.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "We konden dit bericht niet inplannen, maar we proberen het later nog eens.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "We konden deze pagina niet inzenden voor beoordeling, maar we proberen het later nog eens.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "We konden dit bericht niet inzenden voor beoordeling, maar we proberen het later nog eens.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "We konden deze media niet uploaden en hebben deze pagina niet gepubliceerd.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "We konden deze media niet uploaden en hebben dit bericht niet gepubliceerd.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "We konden deze media niet uploaden en hebben deze privé pagina niet gepubliceerd.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "We konden deze media niet uploaden en hebben dit privébericht niet gepubliceerd.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "We konden deze media niet uploaden en hebben deze pagina niet ingepland.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "We konden deze media niet uploaden en hebben dit bericht niet ingepland.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "We konden deze media niet uploaden en hebben deze pagina niet verzonden voor beoordeling.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "We konden deze media niet uploaden en hebben het bericht niet verzonden voor beoordeling.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "We konden deze media niet uploaden.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "We konden de status niet vinden om te zeggen hoe lang het maken van je back-up zal duren.";
@@ -8081,22 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Wij sturen een e-mail als er bedreigingen gevonden zijn. In de tussentijd kan je je site gewoon blijven gebruiken, je kan ook terugkomen om de voortgang controleren.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "We zullen deze wijzigingen niet publiceren.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "We slaan recente wijzigingen van je concept niet op.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "We zullen deze wijzigingen niet inplannen.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "We zullen deze wijzigingen niet verzenden voor beoordeling.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "We sturen je een e-mail met een magische link waarmee je onmiddellijk kunt inloggen, zonder wachtwoord. Nooit meer moeite doen!";
 
@@ -8108,33 +7834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "We brengen je op de hoogte als je nieuwe volgers, reacties en vind-ik-leuks krijgt. Wil je pushberichten toestaan?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "We publiceren de pagina wanneer je apparaat weer online is.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "We publiceren het bericht wanneer het apparaat weer online is.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "We publiceren je privé pagina wanneer je apparaat weer online is.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "We publiceren je privéberichten wanneer het apparaat weer online is.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "We slaan je concept op wanneer het apparaat weer online is.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "We plannen je pagina in wanneer je apparaat weer online is.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "We plannen je bericht in wanneer het apparaat weer online is.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "We sturen je pagina voor beoordeling wanneer je apparaat weer online is.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "We sturen je bericht voor beoordeling wanneer het apparaat weer online is.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "We zullen dit e-mailadres gebruiken om je nieuwe WordPress account aan te maken.";
@@ -8282,9 +7981,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Wanneer je wijzigingen aan je site aanbrengt, kun je hier je activiteitengeschiedenis bekijken.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Welke versie wil je bewerken?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Er ging iets mis en we konden je niet inloggen. Probeer nogmaals!";
@@ -8480,7 +8176,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 "You can control Blogging Prompts and Reminders at any time in My Site, Settings, Blogging" = "Je kunt blog meldingen en herinneringen te allen tijde beheren via Mijn site, Instellingen, Bloggen";
 
 /* No comment provided by engineer. */
-"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Je kan je berichttekst kopiëren als de fout betrekking heeft op je content. Kopieer de foutdetails om te debuggen en te delen met de ondersteuning.";
+"You can copy your post text in case your content is impacted. Copy error details to debug and share with support." = "Je kunt je berichttekst kopiëren als de fout betrekking heeft op je inhoud. Kopieer de foutdetails om te debuggen en te delen met ondersteuning.";
 
 /* No comment provided by engineer. */
 "You can edit this block using the web version of the editor." = "Je kunt dit blok bewerken met behulp van de web versie van de editor.";
@@ -8580,10 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Je ontving *50 vind-ik-leukss* op je site vandaag";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Je hebt recent wijzigingen gemaakt in dit bericht, maar nog niet opgeslagen. Kies een versie om te laden:\n\nVan dit apparaat\nOpgeslagen op %1$@\n\nVan een ander apparaat\nOpgeslagen op %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8613,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Je bent niet geautoriseerd om het account te sluiten.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Je hebt niet-opgeslagen wijzigingen in dit bericht";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Je site pictogram";
@@ -8652,9 +8341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Je wachtwoord moet minstens zes karakters lang zijn. Om het sterker te maken, gebruik hoofd- en kleine letters, getallen en symbolen zoals ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Je bericht wordt momenteel geüpload. Wacht tot dit is voltooid.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Je bericht wordt gepubliceerd... in de tussentijd kun je blog herinneringen instellen op dagen waarop je wil publiceren.";
@@ -8963,6 +8649,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 /* Title for the checkout view */
 "checkout.title" = "Afrekenen";
 
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "Concept opslaan";
+
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "reactie";
 
@@ -9129,7 +8818,7 @@ Example: Reply to Pamela Nguyen */
 "debugMenu.booleanUserDefaults.title" = "Standaardwaarden gebruiker boolean";
 
 /* Feature flags menu item */
-"debugMenu.featureFlags" = "Functievlaggen";
+"debugMenu.featureFlags" = "Functie vlaggen";
 
 /* Title of the screen that allows the user to change the Reader CSS URL for debug builds */
 "debugMenu.readerCellTitle" = "Reader CSS URL";
@@ -9208,7 +8897,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.default.empty.state.title" = "Je hebt nog geen domeinen";
 
 /* The empty state description in All Domains screen when an error occurs */
-"domain.management.error.empty.state.description" = "We encountered an error while loading your domains. Neem contact op met het ondersteunend personeel als het probleem nog niet is opgelost.";
+"domain.management.error.empty.state.description" = "We hebben een fout ondervonden bij het laden van je domeinen. Neem contact op met ondersteuning als het probleem aanhoudt.";
 
 /* The empty state title in All Domains screen when an error occurs */
 "domain.management.error.empty.state.title" = "Er is iets fout gegaan";
@@ -9235,7 +8924,7 @@ Example: Reply to Pamela Nguyen */
 "domain.management.search-bar.title" = "Domeinen zoeken";
 
 /* The empty state description in All Domains screen when the are no domains matching the search criteria */
-"domain.management.search.empty.state.description" = "We couldn't find any domains that match your search for '%@'";
+"domain.management.search.empty.state.description" = "We konden geen domeinen vinden die overeenkomen met je zoekopdracht voor '%@'";
 
 /* The empty state title in All Domains screen when the are no domains matching the search criteria */
 "domain.management.search.empty.state.title" = "Geen overeenkomstige domeinen.";
@@ -9782,7 +9471,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.addButtonAccessibilityHint" = "Nieuwe media toevoegen";
 
 /* Accessibility label for add button to add items to the user's media library */
-"mediaLibrary.addButtonAccessibilityLabel" = "Voeg toe";
+"mediaLibrary.addButtonAccessibilityLabel" = "Toevoegen";
 
 /* Button name in the more menu */
 "mediaLibrary.aspectRatioGrid" = "Aspect ratio:";
@@ -9845,7 +9534,7 @@ Example: Reply to Pamela Nguyen */
 "mediaLibrary.searchResultsEmptyTitle" = "Er komt geen media overeen met je zoekopdracht";
 
 /* Text displayed in HUD if there was an error attempting to share a group of media items. */
-"mediaLibrary.sharingFailureMessage" = "Unable to share the selected items.";
+"mediaLibrary.sharingFailureMessage" = "Kan de geselecteerde items niet delen.";
 
 /* Button name in the more menu */
 "mediaLibrary.squareGrid" = "Square Grid";
@@ -10199,34 +9888,13 @@ Example: Reply to Pamela Nguyen */
 "pages.template.title" = "Startpagina";
 
 /* Message informing the user that their static homepage page was set successfully */
-"pages.updatePage.successTitle" = "Pagina is bijgewerkt.";
-
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "Permanent verwijderen";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "Weet je zeker dat je deze pagina permanent wil verwijderen?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Permanent verwijderen?";
+"pages.updatePage.successTitle" = "Pagina is met succes geüpdatet";
 
 /* Menu option for filtering posts by everyone */
-"pagesList.pagesByEveryone" = "Pages by everyone";
+"pagesList.pagesByEveryone" = "Pagina's door iedereen";
 
 /* Menu option for filtering posts by me */
-"pagesList.pagesByMe" = "Pages by me";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "Verplaatsen naar prullenbak";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "Weet je zeker dat je deze pagina naar de prullenbak wilt verplaatsen?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Deze pagina naar prullenbak verplaatsen?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "Annuleren";
+"pagesList.pagesByMe" = "Pagina's gemaakt door mij";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Hoofdpagina";
@@ -10294,12 +9962,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Abonnementen";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "Bericht verwijderen";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "Bezig met verplaatsen naar de prullenbak …";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Wijzigingen negeren";
 
@@ -10340,6 +10002,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "Revisies";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "Concept opslaan";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Visuele editor";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10370,7 +10035,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "Concept aan het opslaan...";
 
 /* Button title */
+"postFromAudio.beginRecording" = "Begin met opnemen";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "Upgrade voor meer aanvragen";
+
+/* Button title */
+"postFromAudio.done" = "Klaar";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "Er waren enkele problemen bij het verwerken van de aanvraag. Probeer het later opnieuw.";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "Er ging iets mis";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "Je hebt niet genoeg aanvragen beschikbaar om een bericht van audio te maken.";
@@ -10380,9 +10057,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "Probeer opnieuw";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Er ging iets mis";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "Aanvragen beschikbaar:";
@@ -10395,6 +10069,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "Aan het opnemen…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "Onbeperkt";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Door %@.";
@@ -10471,9 +10148,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "Er is een fout opgetreden";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "De app is bezig met het uploaden van eerder gemaakte wijzigingen naar de server. Probeer het later opnieuw.";
-
 /* Button OK */
 "postNotice.ok" = "OK";
 
@@ -10490,7 +10164,7 @@ Example: Reply to Pamela Nguyen */
 "postNotice.pageScheduled" = "Pagina gepland";
 
 /* Title of notification displayed when a page has been successfully updated. */
-"postNotice.pageUpdated" = "Pagina bijgewerkt";
+"postNotice.pageUpdated" = "Pagina geüpdatet";
 
 /* Title of notification displayed when a post has been successfully saved as a draft. */
 "postNotice.postDraftCreated" = "Berichtconcept geüpload";
@@ -10505,7 +10179,7 @@ Example: Reply to Pamela Nguyen */
 "postNotice.postScheduled" = "Bericht gepland";
 
 /* Title of notification displayed when a post has been successfully updated. */
-"postNotice.postUpdated" = "Bericht bijgewerkt";
+"postNotice.postUpdated" = "Bericht geüpdatet";
 
 /* Button title. Displays a summary / sharing screen for a specific post. */
 "postNotice.view" = "Weergeven";
@@ -10549,9 +10223,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Stel uitgelichte afbeelding in";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "Kan de meldingsinstellingen niet bijwerken.";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Door de zichtbaarheid te wijzigen naar 'Privé', wordt het bericht onmiddellijk gepubliceerd.";
 
@@ -10594,9 +10265,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promoten met Blaze";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "Uploaden annuleren";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "Reacties";
 
@@ -10610,16 +10278,13 @@ Example: Reply to Pamela Nguyen */
 "posts.duplicate.actionTitle" = "Dupliceren";
 
 /* Opens a submenu for page attributes. */
-"posts.pageAttributes.actionTitle" = "Pagina-eigenschappen";
+"posts.pageAttributes.actionTitle" = "Pagina attributen";
 
 /* Label for the preview post button. Tapping displays the post as it appears on the web. */
 "posts.preview.actionTitle" = "Voorbeeld";
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "Publiceren";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "Opnieuw proberen";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Instellen als homepage";
@@ -10645,23 +10310,11 @@ Example: Reply to Pamela Nguyen */
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Weergave";
 
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Beoordeling permanent verwijderd.";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Beoordeling permanent verwijderd.";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "Pagina verplaatst naar prullenbak";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "Bericht verplaatst naar prullenbak";
-
 /* Menu option for filtering posts by everyone */
-"postsList.postsByEveryone" = "Posts by everyone";
+"postsList.postsByEveryone" = "Berichten van iedereen";
 
 /* Menu option for filtering posts by me */
-"postsList.postsByMe" = "Posts by me";
+"postsList.postsByMe" = "Berichten van mij";
 
 /* Title for the button to subscribe to Jetpack Social on the remaining shares view */
 "postsettings.social.remainingshares.subscribe" = "Neem nu een abonnement om meer te delen";
@@ -10686,9 +10339,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Uploaden van media mislukt";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "Titel";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Publiceren";
@@ -10927,7 +10577,7 @@ but tapping on this button will remove their like from the post. */
 "reader.detail.toolbar.saved.button.a11y.label" = "Opgeslagen bericht";
 
 /* Error message informing the user that they are already following a blog in their reader. */
-"reader.error.already.subscribed.message" = "U bent al geabonneerd op deze blog";
+"reader.error.already.subscribed.message" = "Je bent al geabonneerd op deze blog";
 
 /* Title for a button that allows user to manage their subscribed list from the filter sheet */
 "reader.filterSheet.button.manage" = "Beheren";
@@ -11439,10 +11089,10 @@ This empty state component is displayed only when the app fails to load posts un
 "relatedPostsSettings.settingsUpdateFailed" = "Bijwerken van instellingen mislukt";
 
 /* Label for configuration switch to show/hide the header for the related posts section */
-"relatedPostsSettings.showHeader" = "Koptekst weergeven";
+"relatedPostsSettings.showHeader" = "Toon header";
 
 /* Label for configuration switch to enable/disable related posts */
-"relatedPostsSettings.showRelatedPosts" = "Gerelateerde berichten weergeven";
+"relatedPostsSettings.showRelatedPosts" = "Toon gerelateerde berichten";
 
 /* Label for configuration switch to show/hide images thumbnail for the related posts */
 "relatedPostsSettings.showThumbnail" = "Afbeeldingen weergeven";
@@ -11691,7 +11341,7 @@ This empty state component is displayed only when the app fails to load posts un
 "social.noconnection.connectAccounts" = "Accounts koppelen";
 
 /* Accessibility label for the social media icons in the Jetpack Social no connection view */
-"social.noconnection.icons.accessibility.label" = "Social media-pictogrammen";
+"social.noconnection.icons.accessibility.label" = "Sociale media iconen";
 
 /* Title for the not now button to hide the Jetpack Social no connection view */
 "social.noconnection.notnow" = "Niet nu";
