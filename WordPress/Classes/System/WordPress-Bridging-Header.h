@@ -109,7 +109,6 @@
 #import "WPAddPostCategoryViewController.h"
 
 // Pods
-#import <SVProgressHUD/SVProgressHUD.h>
 
 #import <WordPressShared/WPDeviceIdentification.h>
 #import <WordPressShared/WPFontManager.h>

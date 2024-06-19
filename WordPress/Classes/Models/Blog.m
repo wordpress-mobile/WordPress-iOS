@@ -1,13 +1,13 @@
 #import "Blog.h"
 #import "WPAccount.h"
 #import "AccountService.h"
-#import "NSURL+IDN.h"
 #import "CoreDataStack.h"
 #import "Constants.h"
 #import "WPUserAgent.h"
 #import "WordPress-Swift.h"
 
 @import NSObject_SafeExpectations;
+@import NSURL_IDN;
 
 @class Comment;
 

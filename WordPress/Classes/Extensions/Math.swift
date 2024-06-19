@@ -1,3 +1,5 @@
+import Foundation
+
 extension Int {
     /// Rounds self to the nearest multiple of the given argument
     ///

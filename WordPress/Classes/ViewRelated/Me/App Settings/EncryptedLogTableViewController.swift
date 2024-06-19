@@ -1,5 +1,6 @@
 import UIKit
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 class EncryptedLogTableViewController: UITableViewController {
 

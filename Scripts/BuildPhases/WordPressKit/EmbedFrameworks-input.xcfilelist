@@ -1,5 +1,1 @@
 ${SRCROOT}/../Scripts/BuildPhases/WordPressKit/EmbedFrameworks.sh
-${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework
-${BUILT_PRODUCTS_DIR}/NSURL+IDN/NSURL_IDN.framework
-${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework
-${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework

@@ -1,7 +1,4 @@
 ${SRCROOT}/../Scripts/BuildPhases/Authenticator/CopyResources.sh
-${PODS_ROOT}/Target Support Files/WordPressAuthenticator/WordPressAuthenticator-Unit-Tests-resources.sh
 ${SRCROOT}/../WordPressAuthenticator/Sources/Resources/WordPressAuthenticatorResources.bundle
-${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle
-${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/GridiconsAssets.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle
 ${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle

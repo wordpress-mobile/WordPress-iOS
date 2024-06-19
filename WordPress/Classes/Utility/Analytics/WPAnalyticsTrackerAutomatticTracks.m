@@ -6,6 +6,7 @@
 #import "Blog.h"
 #import "WordPress-Swift.h"
 @import AutomatticTracks;
+@import AutomatticTracksEvents;
 
 @interface  TracksEventPair : NSObject
 @property (nonatomic, copy) NSString *eventName;

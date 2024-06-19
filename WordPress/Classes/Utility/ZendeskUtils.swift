@@ -7,6 +7,7 @@ import DesignSystem
 import SupportSDK
 import ZendeskCoreSDK
 import AutomatticTracks
+import AutomatticEncryptedLogs
 
 extension NSNotification.Name {
     static let ZendeskPushNotificationReceivedNotification = NSNotification.Name(rawValue: "ZendeskPushNotificationReceivedNotification")

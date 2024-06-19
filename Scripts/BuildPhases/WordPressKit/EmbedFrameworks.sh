@@ -176,9 +176,6 @@ code_sign_if_enabled() {
 }
 
 install_framework "${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework"
-install_framework "${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework"
-install_framework "${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework"
-install_framework "${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework"
 
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then
   wait

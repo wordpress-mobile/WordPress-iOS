@@ -3,7 +3,6 @@
 #import "Blog.h"
 #import "BlogService.h"
 #import "CoreDataStack.h"
-#import "NSURL+IDN.h"
 #import "PostCategory.h"
 #import "PostCategoryService.h"
 #import "SettingsSelectionViewController.h"
@@ -13,9 +12,10 @@
 #import "SVProgressHUD+Dismiss.h"
 #import "WordPress-Swift.h"
 #import "WPWebViewController.h"
-#import <wpxmlrpc/WPXMLRPC.h>
 #import "AccountService.h"
 @import WordPressKit;
+@import wpxmlrpc;
+@import NSURL_IDN;
 
 NS_ENUM(NSInteger, SiteSettingsAccount) {
     SiteSettingsAccountUsername = 0,

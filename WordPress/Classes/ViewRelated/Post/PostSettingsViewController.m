@@ -11,7 +11,6 @@
 #import "WPProgressTableViewCell.h"
 #import <Photos/Photos.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
-#import <Reachability/Reachability.h>
 #import "WPGUIConstants.h"
 #import <WordPressShared/NSString+XMLExtensions.h>
 #import <WordPressShared/WPTextFieldTableViewCell.h>
@@ -21,6 +20,7 @@
 @import WordPressShared;
 @import WordPressKit;
 @import WordPressUI;
+@import Reachability;
 
 typedef NS_ENUM(NSInteger, PostSettingsRow) {
     PostSettingsRowCategories = 0,

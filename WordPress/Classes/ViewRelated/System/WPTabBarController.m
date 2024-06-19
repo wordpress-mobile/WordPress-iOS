@@ -1,5 +1,4 @@
 #import "WPTabBarController.h"
-#import <WordPressUI/UIImage+Util.h>
 
 #import "AccountService.h"
 #import "CoreDataStack.h"
@@ -15,6 +14,7 @@
 
 @import Gridicons;
 @import WordPressShared;
+@import WordPressUI;
 
 static NSString * const WPTabBarButtonClassname = @"UITabBarButton";
 static NSString * const WPApplicationIconBadgeNumberKeyPath = @"applicationIconBadgeNumber";

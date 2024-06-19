@@ -2,6 +2,7 @@ import UIKit
 import CocoaLumberjack
 import Reachability
 import AutomatticTracks
+import AutomatticEncryptedLogs
 import WordPressAuthenticator
 import WordPressShared
 import AlamofireNetworkActivityIndicator

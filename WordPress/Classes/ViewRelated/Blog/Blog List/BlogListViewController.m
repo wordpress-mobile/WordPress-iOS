@@ -2,6 +2,7 @@
 #import "WordPress-Swift.h"
 #import "SVProgressHUD+Dismiss.h"
 
+
 static CGFloat const BLVCHeaderViewLabelPadding = 10.0;
 
 static NSInteger HideAllMinSites = 10;

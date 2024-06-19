@@ -1381,6 +1381,10 @@
 		4A0274C42C226A4D00290D8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4A0274BD2C226A4D00290D8B /* Assets.xcassets */; };
 		4A072CD229093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
 		4A072CD329093704006235BE /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A072CD129093704006235BE /* AsyncBlockOperation.swift */; };
+		4A1261E22C22FF690002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */; };
+		4A1261E42C22FFAB0002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */; };
+		4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */; };
+		4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */; };
 		4A17C1A4281A823E0001FFE5 /* NSManagedObject+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */; };
 		4A1B4FE82A95A89F00EF6B1D /* MediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B4FE72A95A89F00EF6B1D /* MediaRepository.swift */; };
 		4A1B4FE92A95A89F00EF6B1D /* MediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B4FE72A95A89F00EF6B1D /* MediaRepository.swift */; };
@@ -1394,6 +1398,13 @@
 		4A2172F928EAACFF0006F4F1 /* BlogQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2172F728EAACFF0006F4F1 /* BlogQuery.swift */; };
 		4A266B8F282B05210089CF3D /* JSONObjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B8E282B05210089CF3D /* JSONObjectTests.swift */; };
 		4A266B91282B13A70089CF3D /* CoreDataTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A266B90282B13A70089CF3D /* CoreDataTestCase.swift */; };
+		4A2A35922C23622F00F47E9C /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A35912C23622F00F47E9C /* Gridicons */; };
+		4A2A35942C23623D00F47E9C /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A35932C23623D00F47E9C /* Gridicons */; };
+		4A2A35962C23627B00F47E9C /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A35952C23627B00F47E9C /* Reachability */; };
+		4A2A35982C23629000F47E9C /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A35972C23629000F47E9C /* Reachability */; };
+		4A2A359A2C2362D700F47E9C /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A35992C2362D700F47E9C /* Reachability */; };
+		4A2A359C2C23630D00F47E9C /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A359B2C23630D00F47E9C /* Starscream */; };
+		4A2A359E2C23635D00F47E9C /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A2A359D2C23635D00F47E9C /* Gridicons */; };
 		4A2C73E12A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
 		4A2C73E22A943D9000ACE79E /* TaggedManagedObjectID.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E02A943D8F00ACE79E /* TaggedManagedObjectID.swift */; };
 		4A2C73E42A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A2C73E32A943DEA00ACE79E /* TaggedManagedObjectIDTests.swift */; };
@@ -1406,6 +1417,8 @@
 		4A358DE729B5EB8D00BFCEBE /* PublicizeService+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE529B5EB8D00BFCEBE /* PublicizeService+Lookup.swift */; };
 		4A358DE929B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
 		4A358DEA29B5F14C00BFCEBE /* SharingButton+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A358DE829B5F14C00BFCEBE /* SharingButton+Lookup.swift */; };
+		4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3AB6502C22F6E8006E0FA8 /* SVProgressHUD */; };
+		4A3AB6532C22F702006E0FA8 /* SVProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 4A3AB6522C22F702006E0FA8 /* SVProgressHUD */; };
 		4A526BDF296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A526BE0296BE9A50007B5BA /* CoreDataService.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A526BDD296BE9A50007B5BA /* CoreDataService.m */; };
 		4A535E142AF3368B008B87B9 /* MenusViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A535E132AF3368B008B87B9 /* MenusViewController.swift */; };
@@ -1414,6 +1427,14 @@
 		4A5DE7382B0D511900363171 /* PageTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5DE7372B0D511900363171 /* PageTree.swift */; };
 		4A5DE7392B0D511900363171 /* PageTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5DE7372B0D511900363171 /* PageTree.swift */; };
 		4A5FC0462B97BB4B0067F525 /* UIElementNotFoundError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A5FC0452B97BB4B0067F525 /* UIElementNotFoundError.swift */; };
+		4A65FC4A2C23659F006ED20C /* wpxmlrpc in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC492C23659F006ED20C /* wpxmlrpc */; };
+		4A65FC4D2C236649006ED20C /* NSURL+IDN in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC4C2C236649006ED20C /* NSURL+IDN */; };
+		4A65FC4F2C23666B006ED20C /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC4E2C23666B006ED20C /* Gridicons */; };
+		4A65FC512C2366FD006ED20C /* wpxmlrpc in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC502C2366FD006ED20C /* wpxmlrpc */; };
+		4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A65FC532C236746006ED20C /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A65FC582C23677D006ED20C /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A690C122BA3F4AD00A8E0C5 /* WPUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A690C112BA3F4AD00A8E0C5 /* WPUserAgent.swift */; };
 		4A690C132BA3F4AD00A8E0C5 /* WPUserAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A690C112BA3F4AD00A8E0C5 /* WPUserAgent.swift */; };
 		4A690C152BA791B100A8E0C5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4A690C142BA790BC00A8E0C5 /* PrivacyInfo.xcprivacy */; };
@@ -1433,6 +1454,9 @@
 		4A82C43228D321A300486CFF /* Blog+Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A82C43028D321A300486CFF /* Blog+Post.swift */; };
 		4A878550290F2C7D0083AB78 /* Media+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A87854F290F2C7D0083AB78 /* Media+Sync.swift */; };
 		4A878551290F2C7D0083AB78 /* Media+Sync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A87854F290F2C7D0083AB78 /* Media+Sync.swift */; };
+		4A91C6C92C22F45200AD6324 /* AlamofireNetworkActivityIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = 4A91C6C82C22F45200AD6324 /* AlamofireNetworkActivityIndicator */; };
+		4A91C6CB2C22F45200AD6324 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4A91C6CA2C22F45200AD6324 /* AlamofireImage */; };
+		4A91C6CD2C22F45E00AD6324 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 4A91C6CC2C22F45E00AD6324 /* Alamofire */; };
 		4A9314DC297790C300360232 /* PeopleServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314DB297790C300360232 /* PeopleServiceTests.swift */; };
 		4A9314E42979FA4700360232 /* PostCategory+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E32979FA4700360232 /* PostCategory+Creation.swift */; };
 		4A9314E52979FA4700360232 /* PostCategory+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E32979FA4700360232 /* PostCategory+Creation.swift */; };
@@ -2190,6 +2214,13 @@
 		4AA7EE0F2ADF7367007D261D /* PostRepositoryPostsListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AA7EE0E2ADF7367007D261D /* PostRepositoryPostsListTests.swift */; };
 		4AAD69082A6F68A5007FE77E /* MediaRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */; };
 		4AB6A3602B7C3EB500769115 /* PinghubWebSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB6A35F2B7C3EB500769115 /* PinghubWebSocketTests.swift */; };
+		4AD028572C22ED98004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028562C22ED98004FBDD0 /* UIDeviceIdentifier */; };
+		4AD028592C22EDE3004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */; };
+		4AD0285B2C22EE00004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285A2C22EE00004FBDD0 /* UIDeviceIdentifier */; };
+		4AD0285D2C22EE35004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */; };
+		4AD0285F2C22EE46004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */; };
+		4AD028612C22EEAB004FBDD0 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028602C22EEAB004FBDD0 /* OCMock */; };
+		4AD028632C22EEBB004FBDD0 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028622C22EEBB004FBDD0 /* OCMock */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656D28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
 		4AD5656F28E413160054C676 /* Blog+History.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656E28E413160054C676 /* Blog+History.swift */; };
@@ -2419,6 +2450,9 @@
 		4AEB35B42C22B91600D5AE8C /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4AEB35B82C22D25B00D5AE8C /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */; };
 		4AEB35BA2C22D43200D5AE8C /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */; };
+		4AEB35BD2C22E59C00D5AE8C /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35BC2C22E59C00D5AE8C /* OCMock */; };
+		4AEB35C02C22E76F00D5AE8C /* AutomatticTracks in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35BF2C22E76F00D5AE8C /* AutomatticTracks */; };
+		4AEB35C22C22E90300D5AE8C /* AutomatticEncryptedLogs in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35C12C22E90300D5AE8C /* AutomatticEncryptedLogs */; };
 		4AEF2DD929A84B2C00345734 /* ReaderSiteServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */; };
 		4AFB1A812A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
 		4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
@@ -6833,6 +6867,20 @@
 			remoteGlobalIDString = FFA8E22A1F94E3DE0002170F;
 			remoteInfo = SwiftLint;
 		};
+		4A65FC542C236746006ED20C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
+		4A65FC592C23677D006ED20C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
 		4A98A2FD2C22736F00A2CE58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -6969,6 +7017,28 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4A0274872C224FB000290D8B /* WordPressAuthenticator.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A65FC562C236746006ED20C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A65FC532C236746006ED20C /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A65FC5B2C23677D006ED20C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A65FC582C23677D006ED20C /* WordPressKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11792,8 +11862,11 @@
 				F111B88D2658103C00057942 /* Combine.framework in Frameworks */,
 				7E21C761202BBC8E00837CF5 /* iAd.framework in Frameworks */,
 				8298F3921EEF3BA7008EB7F0 /* StoreKit.framework in Frameworks */,
+				4A2A359A2C2362D700F47E9C /* Reachability in Frameworks */,
+				4AEB35C02C22E76F00D5AE8C /* AutomatticTracks in Frameworks */,
 				93F2E5441E9E5A570050D489 /* CoreSpotlight.framework in Frameworks */,
 				4A98A3072C22737000A2CE58 /* WordPressKit.framework in Frameworks */,
+				4A91C6CB2C22F45200AD6324 /* AlamofireImage in Frameworks */,
 				93F2E5421E9E5A350050D489 /* QuickLook.framework in Frameworks */,
 				08E63FCF2B28E53400747E21 /* DesignSystem in Frameworks */,
 				93F2E53E1E9E5A010050D489 /* CoreText.framework in Frameworks */,
@@ -11803,6 +11876,7 @@
 				93A3F7DE1843F6F00082FEEA /* CoreTelephony.framework in Frameworks */,
 				A01C542E0E24E88400D411F2 /* SystemConfiguration.framework in Frameworks */,
 				4AD953C72C21451700D0EEFA /* WordPressAuthenticator.framework in Frameworks */,
+				4A91C6C92C22F45200AD6324 /* AlamofireNetworkActivityIndicator in Frameworks */,
 				3F411B6F28987E3F002513AE /* Lottie in Frameworks */,
 				374CB16215B93C0800DD0EBC /* AudioToolbox.framework in Frameworks */,
 				E10B3655158F2D7800419A93 /* CoreGraphics.framework in Frameworks */,
@@ -11810,6 +11884,8 @@
 				E10B3652158F2D3F00419A93 /* QuartzCore.framework in Frameworks */,
 				0CD9FB892AFA71C2009D9C7A /* DGCharts in Frameworks */,
 				E1A386CB14DB063800954CF8 /* MediaPlayer.framework in Frameworks */,
+				4A3AB6512C22F6E8006E0FA8 /* SVProgressHUD in Frameworks */,
+				4AEB35C22C22E90300D5AE8C /* AutomatticEncryptedLogs in Frameworks */,
 				E1A386CA14DB05F700954CF8 /* CoreMedia.framework in Frameworks */,
 				E1A386C814DB05C300954CF8 /* AVFoundation.framework in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -11819,11 +11895,13 @@
 				24CE2EB1258D687A0000C297 /* WordPressFlux in Frameworks */,
 				8355D7D911D260AA00A61362 /* CoreData.framework in Frameworks */,
 				834CE7341256D0DE0046A4A3 /* CFNetwork.framework in Frameworks */,
+				4A2A359C2C23630D00F47E9C /* Starscream in Frameworks */,
 				3F9F232B2B0B27DD00B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				83043E55126FA31400EC9953 /* MessageUI.framework in Frameworks */,
 				FD3D6D2C1349F5D30061136A /* ImageIO.framework in Frameworks */,
 				B5AA54D51A8E7510003BDD12 /* WebKit.framework in Frameworks */,
 				93F2E5401E9E5A180050D489 /* libsqlite3.tbd in Frameworks */,
+				4A2A359E2C23635D00F47E9C /* Gridicons in Frameworks */,
 				1DF7A0CD2B9F66970003CBA3 /* SwiftSoup in Frameworks */,
 				17A8858D2757B97F0071FCA3 /* AutomatticAbout in Frameworks */,
 				FF4DEAD8244B56E300ACA032 /* CoreServices.framework in Frameworks */,
@@ -11846,6 +11924,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A1261E22C22FF690002B427 /* NSObject-SafeExpectations in Frameworks */,
+				4AD028572C22ED98004FBDD0 /* UIDeviceIdentifier in Frameworks */,
+				4A65FC4A2C23659F006ED20C /* wpxmlrpc in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11853,6 +11934,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AD028612C22EEAB004FBDD0 /* OCMock in Frameworks */,
+				4A91C6CD2C22F45E00AD6324 /* Alamofire in Frameworks */,
 				4AEB35B32C22B91600D5AE8C /* WordPressKit.framework in Frameworks */,
 				4AEB35BA2C22D43200D5AE8C /* OHHTTPStubsSwift in Frameworks */,
 			);
@@ -11862,6 +11945,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A65FC4F2C23666B006ED20C /* Gridicons in Frameworks */,
+				4A3AB6532C22F702006E0FA8 /* SVProgressHUD in Frameworks */,
+				4AD0285B2C22EE00004FBDD0 /* UIDeviceIdentifier in Frameworks */,
+				4A65FC4D2C236649006ED20C /* NSURL+IDN in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11869,6 +11956,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AD028632C22EEBB004FBDD0 /* OCMock in Frameworks */,
 				4A0274862C224FB000290D8B /* WordPressAuthenticator.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11886,7 +11974,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A1261E42C22FFAB0002B427 /* NSObject-SafeExpectations in Frameworks */,
 				DF6D9E10C4CEE05331B4DAE5 /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */,
+				4AD028592C22EDE3004FBDD0 /* UIDeviceIdentifier in Frameworks */,
+				4A65FC512C2366FD006ED20C /* wpxmlrpc in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11894,7 +11985,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A2A35942C23623D00F47E9C /* Gridicons in Frameworks */,
+				4A2A35982C23629000F47E9C /* Reachability in Frameworks */,
+				4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */,
+				4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */,
 				A2C95CCF203760D9372C5857 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
+				4AD0285F2C22EE46004FBDD0 /* UIDeviceIdentifier in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11935,7 +12031,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A2A35922C23622F00F47E9C /* Gridicons in Frameworks */,
+				4A2A35962C23627B00F47E9C /* Reachability in Frameworks */,
+				4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */,
+				4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
+				4AD0285D2C22EE35004FBDD0 /* UIDeviceIdentifier in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11943,6 +12044,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4AEB35BD2C22E59C00D5AE8C /* OCMock in Frameworks */,
 				3FFB3F242AFC730C00A742B0 /* JetpackStatsWidgetsCore in Frameworks */,
 				3F338B71289BD3040014ADC5 /* Nimble in Frameworks */,
 				3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */,
@@ -13174,7 +13276,7 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+		29B97314FDCFA39411CA2CEA = {
 			isa = PBXGroup;
 			children = (
 				3F20FDF3276BF21000DA3CAD /* Packages */,
@@ -22876,7 +22978,6 @@
 				0107E0B328F97D5000DE87DB /* Sources */,
 				0107E0DD28F97D5000DE87DB /* Frameworks */,
 				0107E0E128F97D5000DE87DB /* Resources */,
-				0107E0E428F97D5000DE87DB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -22898,7 +22999,6 @@
 				0107E13A28FE9DB200DE87DB /* Sources */,
 				0107E14A28FE9DB200DE87DB /* Frameworks */,
 				0107E14C28FE9DB200DE87DB /* Resources */,
-				0107E14E28FE9DB200DE87DB /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -22949,6 +23049,14 @@
 				3F9F232A2B0B27DD00B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCE2B28E53400747E21 /* DesignSystem */,
 				1DF7A0CC2B9F66970003CBA3 /* SwiftSoup */,
+				4AEB35BF2C22E76F00D5AE8C /* AutomatticTracks */,
+				4AEB35C12C22E90300D5AE8C /* AutomatticEncryptedLogs */,
+				4A91C6C82C22F45200AD6324 /* AlamofireNetworkActivityIndicator */,
+				4A91C6CA2C22F45200AD6324 /* AlamofireImage */,
+				4A3AB6502C22F6E8006E0FA8 /* SVProgressHUD */,
+				4A2A35992C2362D700F47E9C /* Reachability */,
+				4A2A359B2C23630D00F47E9C /* Starscream */,
+				4A2A359D2C23635D00F47E9C /* Gridicons */,
 			);
 			productName = WordPress;
 			productReference = 1D6058910D05DD3D006BFB54 /* WordPress.app */;
@@ -22991,6 +23099,11 @@
 			dependencies = (
 			);
 			name = WordPressKit;
+			packageProductDependencies = (
+				4AD028562C22ED98004FBDD0 /* UIDeviceIdentifier */,
+				4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */,
+				4A65FC492C23659F006ED20C /* wpxmlrpc */,
+			);
 			productName = WordPressKit;
 			productReference = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */;
 			productType = "com.apple.product-type.framework";
@@ -23014,6 +23127,8 @@
 			name = WordPressKitTests;
 			packageProductDependencies = (
 				4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */,
+				4AD028602C22EEAB004FBDD0 /* OCMock */,
+				4A91C6CC2C22F45E00AD6324 /* Alamofire */,
 			);
 			productName = WordPressKitTests;
 			productReference = 4A98A2FB2C22736F00A2CE58 /* WordPressKitTests.xctest */;
@@ -23033,6 +23148,12 @@
 			dependencies = (
 			);
 			name = WordPressAuthenticator;
+			packageProductDependencies = (
+				4AD0285A2C22EE00004FBDD0 /* UIDeviceIdentifier */,
+				4A3AB6522C22F702006E0FA8 /* SVProgressHUD */,
+				4A65FC4C2C236649006ED20C /* NSURL+IDN */,
+				4A65FC4E2C23666B006ED20C /* Gridicons */,
+			);
 			productName = WordPressAuthenticator;
 			productReference = 4AD953B42C21451700D0EEFA /* WordPressAuthenticator.framework */;
 			productType = "com.apple.product-type.framework";
@@ -23055,6 +23176,9 @@
 				4AD953C02C21451700D0EEFA /* PBXTargetDependency */,
 			);
 			name = WordPressAuthenticatorTests;
+			packageProductDependencies = (
+				4AD028622C22EEBB004FBDD0 /* OCMock */,
+			);
 			productName = WordPressAuthenticatorTests;
 			productReference = 4AD953BB2C21451700D0EEFA /* WordPressAuthenticatorTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -23090,6 +23214,11 @@
 			dependencies = (
 			);
 			name = WordPressNotificationServiceExtension;
+			packageProductDependencies = (
+				4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */,
+				4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */,
+				4A65FC502C2366FD006ED20C /* wpxmlrpc */,
+			);
 			productName = WordPressNotificationServiceExtension;
 			productReference = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23103,12 +23232,20 @@
 				7457666F202B558C00F42E40 /* Frameworks */,
 				74576670202B558C00F42E40 /* Resources */,
 				9D186898B0632AA1273C9DE2 /* [CP] Copy Pods Resources */,
+				4A65FC5B2C23677D006ED20C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A65FC5A2C23677D006ED20C /* PBXTargetDependency */,
 			);
 			name = WordPressDraftActionExtension;
+			packageProductDependencies = (
+				4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */,
+				4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */,
+				4A2A35932C23623D00F47E9C /* Gridicons */,
+				4A2A35972C23629000F47E9C /* Reachability */,
+			);
 			productName = WordPressDraftActionExtension;
 			productReference = 74576672202B558C00F42E40 /* WordPressDraftActionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23197,12 +23334,20 @@
 				932225A41C7CE50300443B02 /* Frameworks */,
 				932225A51C7CE50300443B02 /* Resources */,
 				83D79708413A3DA10638659F /* [CP] Copy Pods Resources */,
+				4A65FC562C236746006ED20C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A65FC552C236746006ED20C /* PBXTargetDependency */,
 			);
 			name = WordPressShareExtension;
+			packageProductDependencies = (
+				4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */,
+				4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */,
+				4A2A35912C23622F00F47E9C /* Gridicons */,
+				4A2A35952C23627B00F47E9C /* Reachability */,
+			);
 			productName = WordPressShare;
 			productReference = 932225A71C7CE50300443B02 /* WordPressShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23228,6 +23373,7 @@
 				3F338B70289BD3040014ADC5 /* Nimble */,
 				3FFB3F232AFC730C00A742B0 /* JetpackStatsWidgetsCore */,
 				4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */,
+				4AEB35BC2C22E59C00D5AE8C /* OCMock */,
 			);
 			productName = WordPressTest;
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
@@ -23515,7 +23661,7 @@
 				bg,
 				sk,
 			);
-			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			mainGroup = 29B97314FDCFA39411CA2CEA;
 			packageReferences = (
 				3FF1442E266F3C2400138163 /* XCRemoteSwiftPackageReference "ScreenObject" */,
 				3FC2C33B26C4CF0A00C6D98F /* XCRemoteSwiftPackageReference "XCUITestHelpers" */,
@@ -23526,6 +23672,20 @@
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 				1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 				4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
+				4AEB35BB2C22E56500D5AE8C /* XCRemoteSwiftPackageReference "ocmock" */,
+				4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */,
+				4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */,
+				4AD028642C22F265004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityIndicator" */,
+				4AD028652C22F276004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireImage" */,
+				4A91C6C72C22F43500AD6324 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */,
+				4A3AB6542C22FA13006E0FA8 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */,
+				4A2A358E2C23614A00F47E9C /* XCRemoteSwiftPackageReference "Starscream" */,
+				4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */,
+				4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */,
+				4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */,
+				4A65FC4B2C23663B006ED20C /* XCRemoteSwiftPackageReference "NSURL-IDN" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -24859,24 +25019,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		0107E0E428F97D5000DE87DB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JetpackStatsWidgets/Pods-JetpackStatsWidgets-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackStatsWidgets/Pods-JetpackStatsWidgets-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		0107E13928FE9DB200DE87DB /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -24897,24 +25039,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		0107E14E28FE9DB200DE87DB /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-JetpackIntents/Pods-JetpackIntents-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-JetpackIntents/Pods-JetpackIntents-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		09607CE7281C9CA6002D2E5A /* [Lint] Check AppLocalizedString usage */ = {
@@ -25030,16 +25154,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Gridicons/Gridicons.framework",
-				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
-				"${BUILT_PRODUCTS_DIR}/NSURL+IDN/NSURL_IDN.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework",
-				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework",
-				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ZendeskCommonUISDK/CommonUISDK.framework/CommonUISDK",
@@ -25052,16 +25168,8 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gridicons.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSURL_IDN.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SentryPrivate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressUI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
@@ -25207,14 +25315,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JetpackShareExtension/Pods-JetpackShareExtension-resources.sh",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25321,14 +25427,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPressShareExtension/Pods-WordPressShareExtension-resources.sh",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25344,8 +25448,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-WordPress/Pods-Apps-WordPress-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Automattic-Tracks-iOS/DataModel.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
@@ -25354,16 +25456,12 @@
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorFilters.storyboardc",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorHub.storyboardc",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Starscream/Starscream_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Alamofire.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DataModel.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
@@ -25372,8 +25470,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Starscream_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
@@ -25391,14 +25487,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-WordPressDraftActionExtension/Pods-WordPressDraftActionExtension-resources.sh",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25447,14 +25541,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-JetpackDraftActionExtension/Pods-JetpackDraftActionExtension-resources.sh",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 			);
@@ -25505,11 +25597,11 @@
 			files = (
 			);
 			inputPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
 			);
 			outputPaths = (
 				"",
@@ -25613,16 +25705,8 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Gridicons/Gridicons.framework",
-				"${BUILT_PRODUCTS_DIR}/NSObject-SafeExpectations/NSObject_SafeExpectations.framework",
-				"${BUILT_PRODUCTS_DIR}/NSURL+IDN/NSURL_IDN.framework",
-				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/Sentry/Sentry.framework",
-				"${BUILT_PRODUCTS_DIR}/SentryPrivate/SentryPrivate.framework",
-				"${BUILT_PRODUCTS_DIR}/UIDeviceIdentifier/UIDeviceIdentifier.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework",
 				"${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework",
-				"${BUILT_PRODUCTS_DIR}/wpxmlrpc/wpxmlrpc.framework",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/Gutenberg.framework/Gutenberg",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/Gutenberg/hermes.framework/hermes",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/ZendeskCommonUISDK/CommonUISDK.framework/CommonUISDK",
@@ -25635,16 +25719,8 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gridicons.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSObject_SafeExpectations.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NSURL_IDN.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Sentry.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SentryPrivate.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIDeviceIdentifier.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressShared.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/WordPressUI.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/wpxmlrpc.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gutenberg.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/hermes.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CommonUISDK.framework",
@@ -25667,8 +25743,6 @@
 			);
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Apps-Jetpack/Pods-Apps-Jetpack-resources.sh",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Alamofire/Alamofire.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Automattic-Tracks-iOS/DataModel.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/CropViewController/TOCropViewControllerBundle.bundle",
 				"${PODS_ROOT}/Down/Resources/DownView.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/GravatarUI/GravatarUI.bundle",
@@ -25677,16 +25751,12 @@
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorFilters.storyboardc",
 				"${BUILT_PRODUCTS_DIR}/MediaEditor/MediaEditor.framework/MediaEditorHub.storyboardc",
 				"${PODS_CONFIGURATION_BUILD_DIR}/MediaEditor/MediaEditor.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Reachability/Reachability_Privacy.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/Starscream/Starscream_Privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/WordPress-Aztec-iOS/WordPress-Aztec-iOS.bundle",
 				"${PODS_ROOT}/WordPress-Editor-iOS/WordPressEditor/WordPressEditor/Assets/aztec.png",
 				"${PODS_CONFIGURATION_BUILD_DIR}/AppCenter/AppCenterDistributeResources.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Alamofire.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DataModel.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/TOCropViewControllerBundle.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/DownView.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GravatarUI.bundle",
@@ -25695,8 +25765,6 @@
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorFilters.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditorHub.storyboardc",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MediaEditor.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Reachability_Privacy.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/Starscream_Privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/WordPress-Aztec-iOS.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/aztec.png",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/AppCenterDistributeResources.bundle",
@@ -25712,13 +25780,13 @@
 			files = (
 			);
 			inputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.inputs.xcfilelist",
 			);
 			inputPaths = (
 			);
 			name = "Copy Gutenberg JS";
 			outputFileListPaths = (
-				$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist,
+				"$SRCROOT/../Scripts/BuildPhases/CopyGutenbergJS.outputs.xcfilelist",
 			);
 			outputPaths = (
 			);
@@ -31348,6 +31416,16 @@
 			target = FFA8E22A1F94E3DE0002170F /* SwiftLint */;
 			targetProxy = 3FCFFAFF2994AB25002840C9 /* PBXContainerItemProxy */;
 		};
+		4A65FC552C236746006ED20C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A65FC542C236746006ED20C /* PBXContainerItemProxy */;
+		};
+		4A65FC5A2C23677D006ED20C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A65FC592C23677D006ED20C /* PBXContainerItemProxy */;
+		};
 		4A98A2FE2C22736F00A2CE58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
@@ -36679,12 +36757,124 @@
 				minimumVersion = 0.2.3;
 			};
 		};
+		4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wordpress-mobile/NSObject-SafeExpectations";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.6;
+			};
+		};
+		4A2A358E2C23614A00F47E9C /* XCRemoteSwiftPackageReference "Starscream" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/daltoniam/Starscream";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.8;
+			};
+		};
+		4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Automattic/Gridicons-iOS";
+			requirement = {
+				branch = develop;
+				kind = branch;
+			};
+		};
+		4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tonymillion/Reachability";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.7.5;
+			};
+		};
+		4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wordpress-mobile/wpxmlrpc";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.10.0;
+			};
+		};
+		4A3AB6542C22FA13006E0FA8 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = exactVersion;
+				version = 0.54.0;
+			};
+		};
+		4A65FC4B2C23663B006ED20C /* XCRemoteSwiftPackageReference "NSURL-IDN" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/wordpress-mobile/NSURL-IDN";
+			requirement = {
+				branch = trunk;
+				kind = branch;
+			};
+		};
+		4A91C6C72C22F43500AD6324 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SVProgressHUD/SVProgressHUD";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.1;
+			};
+		};
+		4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/squarefrog/UIDeviceIdentifier";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
+		4AD028642C22F265004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityIndicator" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireNetworkActivityIndicator";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.0;
+			};
+		};
+		4AD028652C22F276004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/AlamofireImage";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.3.0;
+			};
+		};
 		4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs";
 			requirement = {
 				kind = upToNextMajorVersion;
 				minimumVersion = 9.1.0;
+			};
+		};
+		4AEB35BB2C22E56500D5AE8C /* XCRemoteSwiftPackageReference "ocmock" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/erikdoe/ocmock";
+			requirement = {
+				kind = revision;
+				revision = 2c0bfd373289f4a7716db5d6db471640f91a6507;
+			};
+		};
+		4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Automattic/Automattic-Tracks-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.4.2;
 			};
 		};
 		EA14532629AD874C001F3143 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
@@ -36799,6 +36989,141 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = JetpackStatsWidgetsCore;
 		};
+		4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
+			productName = "NSObject-SafeExpectations";
+		};
+		4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
+			productName = "NSObject-SafeExpectations";
+		};
+		4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
+			productName = "NSObject-SafeExpectations";
+		};
+		4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
+			productName = "NSObject-SafeExpectations";
+		};
+		4A2A35912C23622F00F47E9C /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A2A35932C23623D00F47E9C /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A2A35952C23627B00F47E9C /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A2A35972C23629000F47E9C /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A2A35992C2362D700F47E9C /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A2A359B2C23630D00F47E9C /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358E2C23614A00F47E9C /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
+		4A2A359D2C23635D00F47E9C /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A3AB6502C22F6E8006E0FA8 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		4A3AB6522C22F702006E0FA8 /* SVProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A91C6CE2C22F64700AD6324 /* XCRemoteSwiftPackageReference "SVProgressHUD" */;
+			productName = SVProgressHUD;
+		};
+		4A65FC492C23659F006ED20C /* wpxmlrpc */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */;
+			productName = wpxmlrpc;
+		};
+		4A65FC4C2C236649006ED20C /* NSURL+IDN */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A65FC4B2C23663B006ED20C /* XCRemoteSwiftPackageReference "NSURL-IDN" */;
+			productName = "NSURL+IDN";
+		};
+		4A65FC4E2C23666B006ED20C /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A65FC502C2366FD006ED20C /* wpxmlrpc */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */;
+			productName = wpxmlrpc;
+		};
+		4A91C6C82C22F45200AD6324 /* AlamofireNetworkActivityIndicator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028642C22F265004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityIndicator" */;
+			productName = AlamofireNetworkActivityIndicator;
+		};
+		4A91C6CA2C22F45200AD6324 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028652C22F276004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+		4A91C6CC2C22F45E00AD6324 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A91C6C72C22F43500AD6324 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		4AD028562C22ED98004FBDD0 /* UIDeviceIdentifier */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
+			productName = UIDeviceIdentifier;
+		};
+		4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
+			productName = UIDeviceIdentifier;
+		};
+		4AD0285A2C22EE00004FBDD0 /* UIDeviceIdentifier */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
+			productName = UIDeviceIdentifier;
+		};
+		4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
+			productName = UIDeviceIdentifier;
+		};
+		4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
+			productName = UIDeviceIdentifier;
+		};
+		4AD028602C22EEAB004FBDD0 /* OCMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BB2C22E56500D5AE8C /* XCRemoteSwiftPackageReference "ocmock" */;
+			productName = OCMock;
+		};
+		4AD028622C22EEBB004FBDD0 /* OCMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BB2C22E56500D5AE8C /* XCRemoteSwiftPackageReference "ocmock" */;
+			productName = OCMock;
+		};
 		4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
@@ -36808,6 +37133,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
 			productName = OHHTTPStubsSwift;
+		};
+		4AEB35BC2C22E59C00D5AE8C /* OCMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BB2C22E56500D5AE8C /* XCRemoteSwiftPackageReference "ocmock" */;
+			productName = OCMock;
+		};
+		4AEB35BF2C22E76F00D5AE8C /* AutomatticTracks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */;
+			productName = AutomatticTracks;
+		};
+		4AEB35C12C22E90300D5AE8C /* AutomatticEncryptedLogs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */;
+			productName = AutomatticEncryptedLogs;
 		};
 		EA14532529AD874C001F3143 /* BuildkiteTestCollector */ = {
 			isa = XCSwiftPackageProductDependency;

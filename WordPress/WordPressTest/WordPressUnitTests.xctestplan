@@ -51,6 +51,20 @@
         "identifier" : "E16AB92914D978240047A2E5",
         "name" : "WordPressTest"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4AD953BA2C21451700D0EEFA",
+        "name" : "WordPressAuthenticatorTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:WordPress.xcodeproj",
+        "identifier" : "4A98A2FA2C22736F00A2CE58",
+        "name" : "WordPressKitTests"
+      }
     }
   ],
   "version" : 1

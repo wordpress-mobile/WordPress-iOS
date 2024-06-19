@@ -96,30 +96,9 @@ EOM
       ;;
   esac
 }
-if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/GridiconsAssets.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle"
-fi
-if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/GridiconsAssets.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle"
-fi
-if [[ "$CONFIGURATION" == "Release-Internal" ]]; then
-  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/GridiconsAssets.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle"
-fi
-if [[ "$CONFIGURATION" == "Release-Alpha" ]]; then
-  install_resource "${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/Gridicons/GridiconsAssets.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle"
-  install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle"
-fi
+
+install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressUI/WordPressUIResources.bundle"
+install_resource "${PODS_CONFIGURATION_BUILD_DIR}/WordPressShared/WordPressShared.bundle"
 
 mkdir -p "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
 rsync -avr --copy-links --no-relative --exclude '*/.svn/*' --files-from="$RESOURCES_TO_COPY" / "${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
