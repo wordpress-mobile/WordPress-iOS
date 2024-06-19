@@ -2,6 +2,7 @@ import Foundation
 import wpxmlrpc
 
 /// Class to connect to the XMLRPC API on self hosted sites.
+@objc
 open class WordPressOrgXMLRPCApi: NSObject {
     public typealias SuccessResponseBlock = (AnyObject, HTTPURLResponse?) -> Void
     public typealias FailureReponseBlock = (_ error: NSError, _ httpResponse: HTTPURLResponse?) -> Void

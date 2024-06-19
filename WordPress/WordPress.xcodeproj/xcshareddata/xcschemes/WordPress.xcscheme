@@ -67,6 +67,17 @@
                ReferencedContainer = "container:WordPress.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "4A98A2FA2C22736F00A2CE58"
+               BuildableName = "WordPressKitTests.xctest"
+               BlueprintName = "WordPressKitTests"
+               ReferencedContainer = "container:WordPress.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

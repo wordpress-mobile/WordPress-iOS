@@ -39,6 +39,8 @@ PODS:
   - NSObject-SafeExpectations (0.0.6)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
+  - OHHTTPStubs (9.1.0):
+    - OHHTTPStubs/Default (= 9.1.0)
   - OHHTTPStubs/Core (9.1.0)
   - OHHTTPStubs/Default (9.1.0):
     - OHHTTPStubs/Core
@@ -70,6 +72,7 @@ PODS:
     - WordPress-Aztec-iOS (= 1.19.11)
   - WordPressShared (2.4.0)
   - WordPressUI (1.16.0)
+  - wpxmlrpc (0.10.0)
   - ZendeskCommonUISDK (6.1.4)
   - ZendeskCoreSDK (2.5.1)
   - ZendeskMessagingAPISDK (3.8.5):
@@ -107,6 +110,7 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
+  - OHHTTPStubs (~> 9.1.0)
   - OHHTTPStubs/Swift (~> 9.1.0)
   - Reachability (~> 3.7)
   - Specta (= 1.0.7)
@@ -116,6 +120,7 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.11)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.16)
+  - wpxmlrpc
   - ZendeskSupportSDK (= 5.3.0)
   - ZIPFoundation (= 0.9.16)
 
@@ -155,6 +160,7 @@ SPEC REPOS:
     - SwiftLint
     - UIDeviceIdentifier
     - WordPressUI
+    - wpxmlrpc
     - ZendeskCommonUISDK
     - ZendeskCoreSDK
     - ZendeskMessagingAPISDK
@@ -212,6 +218,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: ec5ebcf7e63e797ba51d07513e340c1b14cf45a4
+  wpxmlrpc: 68db063041e85d186db21f674adf08d9c70627fd
   ZendeskCommonUISDK: ba160fe413b491af9e7bfcb9808afcd494dc83a5
   ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
   ZendeskMessagingAPISDK: 410f9bcf07c79fe98d6f251da102368d6b356c54
@@ -221,6 +228,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: e3765e4c13655235959ca970c541c87fb631f59c
+PODFILE CHECKSUM: 938793c64c496d8094f6dea47b957d45540f5a9f
 
 COCOAPODS: 1.15.2

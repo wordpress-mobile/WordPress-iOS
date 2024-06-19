@@ -76,6 +76,7 @@ def shared_with_networking_pods
 end
 
 def shared_test_pods
+  pod 'OHHTTPStubs', '~> 9.1.0'
   pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
   pod 'Expecta', '1.0.6'
@@ -144,6 +145,7 @@ abstract_target 'Apps' do
   # pod 'Automattic-Tracks-iOS', path: '~/Projects/Automattic-Tracks-iOS'
 
   pod 'NSURL+IDN', '~> 0.4'
+  pod 'wpxmlrpc'
 
   pod 'MediaEditor', '~> 1.2', '>= 1.2.2'
   # pod 'MediaEditor', git: 'https://github.com/wordpress-mobile/MediaEditor-iOS.git', commit: ''
@@ -299,7 +301,7 @@ end
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = %w[WordPressFlux]
-dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressKit WordPressUI SVProgressHUD Gridicons NSURL+IDN wpxmlrpc NSObject-SafeExpectations UIDeviceIdentifier]
+dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressUI SVProgressHUD Gridicons NSURL+IDN wpxmlrpc NSObject-SafeExpectations UIDeviceIdentifier]
 # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
 # linking it resolves this.
 dyanmic_framework_pods += %w[Sentry SentryPrivate]

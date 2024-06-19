@@ -176,7 +176,7 @@ open class WordPressComRestApi: NSObject {
         }
     }
 
-    @objc func setInvalidTokenHandler(_ handler: @escaping () -> Void) {
+    @objc public func setInvalidTokenHandler(_ handler: @escaping () -> Void) {
         invalidTokenHandler = handler
     }
 

@@ -1,3 +1,5 @@
+import Foundation
+
 extension ReaderPostServiceRemote {
     /// Returns a collection of RemoteReaderPost
     /// This method returns the best available content for the given topics.
