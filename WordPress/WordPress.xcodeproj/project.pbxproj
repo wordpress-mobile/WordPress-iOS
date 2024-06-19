@@ -1385,9 +1385,6 @@
 		4A0CB2832C2388DC00A006B0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A0CB2822C2388DC00A006B0 /* CocoaLumberjackSwift */; };
 		4A0CB2852C238B7800A006B0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A0CB2842C238B7800A006B0 /* CocoaLumberjackSwift */; };
 		4A1261E22C22FF690002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E12C22FF690002B427 /* NSObject-SafeExpectations */; };
-		4A1261E42C22FFAB0002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */; };
-		4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */; };
-		4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */ = {isa = PBXBuildFile; productRef = 4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */; };
 		4A17C1A4281A823E0001FFE5 /* NSManagedObject+Fixture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A17C1A3281A823E0001FFE5 /* NSManagedObject+Fixture.swift */; };
 		4A1B4FE82A95A89F00EF6B1D /* MediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B4FE72A95A89F00EF6B1D /* MediaRepository.swift */; };
 		4A1B4FE92A95A89F00EF6B1D /* MediaRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A1B4FE72A95A89F00EF6B1D /* MediaRepository.swift */; };
@@ -1439,7 +1436,6 @@
 		4A65FC4A2C23659F006ED20C /* wpxmlrpc in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC492C23659F006ED20C /* wpxmlrpc */; };
 		4A65FC4D2C236649006ED20C /* NSURL+IDN in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC4C2C236649006ED20C /* NSURL+IDN */; };
 		4A65FC4F2C23666B006ED20C /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC4E2C23666B006ED20C /* Gridicons */; };
-		4A65FC512C2366FD006ED20C /* wpxmlrpc in Frameworks */ = {isa = PBXBuildFile; productRef = 4A65FC502C2366FD006ED20C /* wpxmlrpc */; };
 		4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		4A65FC532C236746006ED20C /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
@@ -1471,6 +1467,39 @@
 		4A9314E52979FA4700360232 /* PostCategory+Creation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E32979FA4700360232 /* PostCategory+Creation.swift */; };
 		4A9314E7297A0C5000360232 /* PostCategory+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E6297A0C5000360232 /* PostCategory+Lookup.swift */; };
 		4A9314E8297A0C5000360232 /* PostCategory+Lookup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9314E6297A0C5000360232 /* PostCategory+Lookup.swift */; };
+		4A972CFE2C239C50006AE0F0 /* AlamofireNetworkActivityIndicator in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972CFD2C239C50006AE0F0 /* AlamofireNetworkActivityIndicator */; };
+		4A972D002C239C50006AE0F0 /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972CFF2C239C50006AE0F0 /* AlamofireImage */; };
+		4A972D022C239C5B006AE0F0 /* AutomatticEncryptedLogs in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D012C239C5B006AE0F0 /* AutomatticEncryptedLogs */; };
+		4A972D042C239C65006AE0F0 /* AutomatticTracks in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D032C239C65006AE0F0 /* AutomatticTracks */; };
+		4A972D062C239C70006AE0F0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D052C239C70006AE0F0 /* CocoaLumberjackSwift */; };
+		4A972D082C239C79006AE0F0 /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D072C239C79006AE0F0 /* Gifu */; };
+		4A972D0A2C239C95006AE0F0 /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D092C239C95006AE0F0 /* Gridicons */; };
+		4A972D0C2C239C9E006AE0F0 /* JTAppleCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D0B2C239C9E006AE0F0 /* JTAppleCalendar */; };
+		4A972D0E2C239EBA006AE0F0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D0D2C239EBA006AE0F0 /* CocoaLumberjackSwift */; };
+		4A972D0F2C239EED006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D102C239EED006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A972D152C239F0D006AE0F0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D142C239F0D006AE0F0 /* CocoaLumberjackSwift */; };
+		4A972D162C239F23006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D172C239F23006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A972D1B2C239F3C006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D1C2C239F3C006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A972D212C239F54006AE0F0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D202C239F54006AE0F0 /* CocoaLumberjackSwift */; };
+		4A972D222C239F7C006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D232C239F7C006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A972D282C239FA7006AE0F0 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D272C239FA7006AE0F0 /* ZIPFoundation */; };
+		4A972D2A2C239FF0006AE0F0 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D292C239FF0006AE0F0 /* Reachability */; };
+		4A972D2C2C23A00B006AE0F0 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D2B2C23A00B006AE0F0 /* Down */; };
+		4A972D2E2C23A03A006AE0F0 /* Down in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D2D2C23A03A006AE0F0 /* Down */; };
+		4A972D302C23A2AF006AE0F0 /* CocoaLumberjackSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D2F2C23A2AF006AE0F0 /* CocoaLumberjackSwift */; };
+		4A972D322C23A2CD006AE0F0 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D312C23A2CD006AE0F0 /* Reachability */; };
+		4A972D342C23A30C006AE0F0 /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D332C23A30C006AE0F0 /* Gridicons */; };
+		4A972D362C23A325006AE0F0 /* ZIPFoundation in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D352C23A325006AE0F0 /* ZIPFoundation */; };
+		4A972D382C23A377006AE0F0 /* Gridicons in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D372C23A377006AE0F0 /* Gridicons */; };
+		4A972D3A2C23A3B0006AE0F0 /* ZendeskSupportSDK in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D392C23A3B0006AE0F0 /* ZendeskSupportSDK */; };
+		4A972D3C2C23A3D2006AE0F0 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D3B2C23A3D2006AE0F0 /* Reachability */; };
+		4A972D3E2C23A3ED006AE0F0 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D3D2C23A3ED006AE0F0 /* Starscream */; };
+		4A972D3F2C23A4C8006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D402C23A4C8006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A98A3072C22737000A2CE58 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		4A98A3082C22737000A2CE58 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A98A44D2C22741500A2CE58 /* FilePart.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A98A3132C22741500A2CE58 /* FilePart.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -2224,10 +2253,7 @@
 		4AAD69082A6F68A5007FE77E /* MediaRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AAD69072A6F68A5007FE77E /* MediaRepositoryTests.swift */; };
 		4AB6A3602B7C3EB500769115 /* PinghubWebSocketTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AB6A35F2B7C3EB500769115 /* PinghubWebSocketTests.swift */; };
 		4AD028572C22ED98004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028562C22ED98004FBDD0 /* UIDeviceIdentifier */; };
-		4AD028592C22EDE3004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */; };
 		4AD0285B2C22EE00004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285A2C22EE00004FBDD0 /* UIDeviceIdentifier */; };
-		4AD0285D2C22EE35004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */; };
-		4AD0285F2C22EE46004FBDD0 /* UIDeviceIdentifier in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */; };
 		4AD028612C22EEAB004FBDD0 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028602C22EEAB004FBDD0 /* OCMock */; };
 		4AD028632C22EEBB004FBDD0 /* OCMock in Frameworks */ = {isa = PBXBuildFile; productRef = 4AD028622C22EEBB004FBDD0 /* OCMock */; };
 		4AD5656C28E3D0670054C676 /* ReaderPost+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD5656B28E3D0670054C676 /* ReaderPost+Helper.swift */; };
@@ -6891,6 +6917,41 @@
 			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
 			remoteInfo = WordPressKit;
 		};
+		4A972D112C239EED006AE0F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
+		4A972D182C239F23006AE0F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
+		4A972D1D2C239F3C006AE0F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
+		4A972D242C239F7C006AE0F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
+		4A972D412C23A4C8006AE0F0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
+		};
 		4A98A2FD2C22736F00A2CE58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
@@ -7049,6 +7110,61 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4A65FC582C23677D006ED20C /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D132C239EED006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D102C239EED006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D1A2C239F23006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D172C239F23006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D1F2C239F3C006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D1C2C239F3C006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D262C239F7D006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D232C239F7C006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D432C23A4C8006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D402C23A4C8006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -11850,9 +11966,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				3FFB3F202AFC70B400A742B0 /* JetpackStatsWidgetsCore in Frameworks */,
+				4A972D162C239F23006AE0F0 /* WordPressKit.framework in Frameworks */,
 				0107E0DE28F97D5000DE87DB /* SwiftUI.framework in Frameworks */,
 				0107E0DF28F97D5000DE87DB /* WidgetKit.framework in Frameworks */,
 				35BBACD2917117A95B6F3046 /* Pods_JetpackStatsWidgets.framework in Frameworks */,
+				4A972D152C239F0D006AE0F0 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11862,6 +11980,7 @@
 			files = (
 				3F9F23252B0AE1AC00B56061 /* JetpackStatsWidgetsCore in Frameworks */,
 				C649C66318E8B5EF92B8F196 /* Pods_JetpackIntents.framework in Frameworks */,
+				4A972D0E2C239EBA006AE0F0 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11988,10 +12107,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A1261E42C22FFAB0002B427 /* NSObject-SafeExpectations in Frameworks */,
 				DF6D9E10C4CEE05331B4DAE5 /* Pods_WordPressNotificationServiceExtension.framework in Frameworks */,
-				4AD028592C22EDE3004FBDD0 /* UIDeviceIdentifier in Frameworks */,
-				4A65FC512C2366FD006ED20C /* wpxmlrpc in Frameworks */,
+				4A972D3F2C23A4C8006AE0F0 /* WordPressKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12002,11 +12119,9 @@
 				4A2A35942C23623D00F47E9C /* Gridicons in Frameworks */,
 				4A2A35982C23629000F47E9C /* Reachability in Frameworks */,
 				4A0CB2832C2388DC00A006B0 /* CocoaLumberjackSwift in Frameworks */,
-				4A1261E82C22FFE30002B427 /* NSObject-SafeExpectations in Frameworks */,
 				4A65FC572C23677D006ED20C /* WordPressKit.framework in Frameworks */,
 				4A3E8C462C238396003628B3 /* Down in Frameworks */,
 				A2C95CCF203760D9372C5857 /* Pods_WordPressDraftActionExtension.framework in Frameworks */,
-				4AD0285F2C22EE46004FBDD0 /* UIDeviceIdentifier in Frameworks */,
 				4A3E8C422C238365003628B3 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12015,7 +12130,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A972D2C2C23A00B006AE0F0 /* Down in Frameworks */,
+				4A972D322C23A2CD006AE0F0 /* Reachability in Frameworks */,
 				4BB2296498BE66D515E3D610 /* Pods_JetpackShareExtension.framework in Frameworks */,
+				4A972D342C23A30C006AE0F0 /* Gridicons in Frameworks */,
+				4A972D1B2C239F3C006AE0F0 /* WordPressKit.framework in Frameworks */,
+				4A972D282C239FA7006AE0F0 /* ZIPFoundation in Frameworks */,
+				4A972D302C23A2AF006AE0F0 /* CocoaLumberjackSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12023,7 +12144,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A972D212C239F54006AE0F0 /* CocoaLumberjackSwift in Frameworks */,
+				4A972D2A2C239FF0006AE0F0 /* Reachability in Frameworks */,
+				4A972D2E2C23A03A006AE0F0 /* Down in Frameworks */,
+				4A972D382C23A377006AE0F0 /* Gridicons in Frameworks */,
+				4A972D222C239F7C006AE0F0 /* WordPressKit.framework in Frameworks */,
 				223EA61E212A7C26A456C32C /* Pods_JetpackDraftActionExtension.framework in Frameworks */,
+				4A972D362C23A325006AE0F0 /* ZIPFoundation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12032,6 +12159,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCAD9FCC94B311DCE8988D91 /* Pods_JetpackNotificationServiceExtension.framework in Frameworks */,
+				4A972D0F2C239EED006AE0F0 /* WordPressKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -12051,10 +12179,8 @@
 				4A2A35922C23622F00F47E9C /* Gridicons in Frameworks */,
 				4A2A35962C23627B00F47E9C /* Reachability in Frameworks */,
 				4A0CB2812C2388CF00A006B0 /* CocoaLumberjackSwift in Frameworks */,
-				4A1261E62C22FFB20002B427 /* NSObject-SafeExpectations in Frameworks */,
 				4A65FC522C236746006ED20C /* WordPressKit.framework in Frameworks */,
 				D0E2AA7C4D4CB1679173958E /* Pods_WordPressShareExtension.framework in Frameworks */,
-				4AD0285D2C22EE35004FBDD0 /* UIDeviceIdentifier in Frameworks */,
 				4A3E8C442C238378003628B3 /* Down in Frameworks */,
 				4A3E8C482C2383FD003628B3 /* ZIPFoundation in Frameworks */,
 			);
@@ -12102,6 +12228,8 @@
 				FABB262B2602FC2C00C8785C /* CoreGraphics.framework in Frameworks */,
 				0CD9FB872AFA71B9009D9C7A /* DGCharts in Frameworks */,
 				FABB262C2602FC2C00C8785C /* UIKit.framework in Frameworks */,
+				4A972D3A2C23A3B0006AE0F0 /* ZendeskSupportSDK in Frameworks */,
+				4A972D3C2C23A3D2006AE0F0 /* Reachability in Frameworks */,
 				FABB262D2602FC2C00C8785C /* QuartzCore.framework in Frameworks */,
 				1DF7A0CB2B9F66810003CBA3 /* SwiftSoup in Frameworks */,
 				FABB262E2602FC2C00C8785C /* MediaPlayer.framework in Frameworks */,
@@ -12110,19 +12238,28 @@
 				FABB26302602FC2C00C8785C /* AVFoundation.framework in Frameworks */,
 				FABB26312602FC2C00C8785C /* Foundation.framework in Frameworks */,
 				4AD9555A2C21716A00D0EEFA /* WordPressAuthenticator.framework in Frameworks */,
+				4A972D042C239C65006AE0F0 /* AutomatticTracks in Frameworks */,
 				FABB26322602FC2C00C8785C /* Security.framework in Frameworks */,
 				FABB26332602FC2C00C8785C /* MapKit.framework in Frameworks */,
+				4A972D002C239C50006AE0F0 /* AlamofireImage in Frameworks */,
+				4A972D082C239C79006AE0F0 /* Gifu in Frameworks */,
 				FABB26342602FC2C00C8785C /* CoreLocation.framework in Frameworks */,
 				FABB26352602FC2C00C8785C /* WordPressFlux in Frameworks */,
+				4A972D0C2C239C9E006AE0F0 /* JTAppleCalendar in Frameworks */,
 				FABB26362602FC2C00C8785C /* CoreData.framework in Frameworks */,
 				FABB26372602FC2C00C8785C /* CFNetwork.framework in Frameworks */,
+				4A972D062C239C70006AE0F0 /* CocoaLumberjackSwift in Frameworks */,
 				FABB26382602FC2C00C8785C /* MessageUI.framework in Frameworks */,
 				FABB26392602FC2C00C8785C /* ImageIO.framework in Frameworks */,
 				17A8858F2757BEC00071FCA3 /* AutomatticAbout in Frameworks */,
 				FABB263A2602FC2C00C8785C /* WebKit.framework in Frameworks */,
 				FABB263B2602FC2C00C8785C /* libsqlite3.tbd in Frameworks */,
+				4A972D0A2C239C95006AE0F0 /* Gridicons in Frameworks */,
+				4A972CFE2C239C50006AE0F0 /* AlamofireNetworkActivityIndicator in Frameworks */,
+				4A972D022C239C5B006AE0F0 /* AutomatticEncryptedLogs in Frameworks */,
 				FABB263F2602FC2C00C8785C /* CoreServices.framework in Frameworks */,
 				9C86CF3E1EAC13181A593D00 /* Pods_Apps_Jetpack.framework in Frameworks */,
+				4A972D3E2C23A3ED006AE0F0 /* Starscream in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -22998,14 +23135,17 @@
 				0107E0B328F97D5000DE87DB /* Sources */,
 				0107E0DD28F97D5000DE87DB /* Frameworks */,
 				0107E0E128F97D5000DE87DB /* Resources */,
+				4A972D1A2C239F23006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D192C239F23006AE0F0 /* PBXTargetDependency */,
 			);
 			name = JetpackStatsWidgets;
 			packageProductDependencies = (
 				3FFB3F1F2AFC70B400A742B0 /* JetpackStatsWidgetsCore */,
+				4A972D142C239F0D006AE0F0 /* CocoaLumberjackSwift */,
 			);
 			productName = WordPressHomeWidgetTodayExtension;
 			productReference = 0107E0EA28F97D5000DE87DB /* JetpackStatsWidgets.appex */;
@@ -23027,6 +23167,7 @@
 			name = JetpackIntents;
 			packageProductDependencies = (
 				3F9F23242B0AE1AC00B56061 /* JetpackStatsWidgetsCore */,
+				4A972D0D2C239EBA006AE0F0 /* CocoaLumberjackSwift */,
 			);
 			productName = JetpackIntents;
 			productReference = 0107E15428FE9DB200DE87DB /* JetpackIntents.appex */;
@@ -23232,16 +23373,15 @@
 				7358E6B4210BD318002323EB /* Sources */,
 				7358E6B5210BD318002323EB /* Frameworks */,
 				7358E6B6210BD318002323EB /* Resources */,
+				4A972D432C23A4C8006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D422C23A4C8006AE0F0 /* PBXTargetDependency */,
 			);
 			name = WordPressNotificationServiceExtension;
 			packageProductDependencies = (
-				4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */,
-				4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */,
-				4A65FC502C2366FD006ED20C /* wpxmlrpc */,
 			);
 			productName = WordPressNotificationServiceExtension;
 			productReference = 7358E6B8210BD318002323EB /* WordPressNotificationServiceExtension.appex */;
@@ -23265,8 +23405,6 @@
 			);
 			name = WordPressDraftActionExtension;
 			packageProductDependencies = (
-				4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */,
-				4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */,
 				4A2A35932C23623D00F47E9C /* Gridicons */,
 				4A2A35972C23629000F47E9C /* Reachability */,
 				4A3E8C412C238365003628B3 /* ZIPFoundation */,
@@ -23286,12 +23424,21 @@
 				8096211428E540D700940A5D /* Frameworks */,
 				8096211628E540D700940A5D /* Resources */,
 				4C304224F0F810A17D96A402 /* [CP] Copy Pods Resources */,
+				4A972D1F2C239F3C006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D1E2C239F3C006AE0F0 /* PBXTargetDependency */,
 			);
 			name = JetpackShareExtension;
+			packageProductDependencies = (
+				4A972D272C239FA7006AE0F0 /* ZIPFoundation */,
+				4A972D2B2C23A00B006AE0F0 /* Down */,
+				4A972D2F2C23A2AF006AE0F0 /* CocoaLumberjackSwift */,
+				4A972D312C23A2CD006AE0F0 /* Reachability */,
+				4A972D332C23A30C006AE0F0 /* Gridicons */,
+			);
 			productName = WordPressShare;
 			productReference = 8096212328E540D700940A5D /* JetpackShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23305,12 +23452,21 @@
 				8096217528E55C9400940A5D /* Frameworks */,
 				8096217728E55C9400940A5D /* Resources */,
 				D880C306E1943EA76DA53078 /* [CP] Copy Pods Resources */,
+				4A972D262C239F7D006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D252C239F7C006AE0F0 /* PBXTargetDependency */,
 			);
 			name = JetpackDraftActionExtension;
+			packageProductDependencies = (
+				4A972D202C239F54006AE0F0 /* CocoaLumberjackSwift */,
+				4A972D292C239FF0006AE0F0 /* Reachability */,
+				4A972D2D2C23A03A006AE0F0 /* Down */,
+				4A972D352C23A325006AE0F0 /* ZIPFoundation */,
+				4A972D372C23A377006AE0F0 /* Gridicons */,
+			);
 			productName = WordPressDraftActionExtension;
 			productReference = 8096218528E55C9400940A5D /* JetpackDraftActionExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
@@ -23323,10 +23479,12 @@
 				80F6D02128EE866A00953C1A /* Sources */,
 				80F6D04A28EE866A00953C1A /* Frameworks */,
 				80F6D04C28EE866A00953C1A /* Resources */,
+				4A972D132C239EED006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D122C239EED006AE0F0 /* PBXTargetDependency */,
 			);
 			name = JetpackNotificationServiceExtension;
 			productName = WordPressNotificationServiceExtension;
@@ -23370,8 +23528,6 @@
 			);
 			name = WordPressShareExtension;
 			packageProductDependencies = (
-				4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */,
-				4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */,
 				4A2A35912C23622F00F47E9C /* Gridicons */,
 				4A2A35952C23627B00F47E9C /* Reachability */,
 				4A3E8C432C238378003628B3 /* Down */,
@@ -23469,6 +23625,17 @@
 				3F9F232C2B0B281400B56061 /* JetpackStatsWidgetsCore */,
 				08E63FCC2B28E52B00747E21 /* DesignSystem */,
 				1DF7A0CA2B9F66810003CBA3 /* SwiftSoup */,
+				4A972CFD2C239C50006AE0F0 /* AlamofireNetworkActivityIndicator */,
+				4A972CFF2C239C50006AE0F0 /* AlamofireImage */,
+				4A972D012C239C5B006AE0F0 /* AutomatticEncryptedLogs */,
+				4A972D032C239C65006AE0F0 /* AutomatticTracks */,
+				4A972D052C239C70006AE0F0 /* CocoaLumberjackSwift */,
+				4A972D072C239C79006AE0F0 /* Gifu */,
+				4A972D092C239C95006AE0F0 /* Gridicons */,
+				4A972D0B2C239C9E006AE0F0 /* JTAppleCalendar */,
+				4A972D392C23A3B0006AE0F0 /* ZendeskSupportSDK */,
+				4A972D3B2C23A3D2006AE0F0 /* Reachability */,
+				4A972D3D2C23A3ED006AE0F0 /* Starscream */,
 			);
 			productName = WordPress;
 			productReference = FABB26522602FC2C00C8785C /* Jetpack.app */;
@@ -31422,6 +31589,31 @@
 			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
 			targetProxy = 4A65FC592C23677D006ED20C /* PBXContainerItemProxy */;
 		};
+		4A972D122C239EED006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D112C239EED006AE0F0 /* PBXContainerItemProxy */;
+		};
+		4A972D192C239F23006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D182C239F23006AE0F0 /* PBXContainerItemProxy */;
+		};
+		4A972D1E2C239F3C006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D1D2C239F3C006AE0F0 /* PBXContainerItemProxy */;
+		};
+		4A972D252C239F7C006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D242C239F7C006AE0F0 /* PBXContainerItemProxy */;
+		};
+		4A972D422C23A4C8006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D412C23A4C8006AE0F0 /* PBXContainerItemProxy */;
+		};
 		4A98A2FE2C22736F00A2CE58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
@@ -37053,21 +37245,6 @@
 			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
 			productName = "NSObject-SafeExpectations";
 		};
-		4A1261E32C22FFAB0002B427 /* NSObject-SafeExpectations */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
-			productName = "NSObject-SafeExpectations";
-		};
-		4A1261E52C22FFB20002B427 /* NSObject-SafeExpectations */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
-			productName = "NSObject-SafeExpectations";
-		};
-		4A1261E72C22FFE30002B427 /* NSObject-SafeExpectations */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A1261DE2C22FF4D0002B427 /* XCRemoteSwiftPackageReference "NSObject-SafeExpectations" */;
-			productName = "NSObject-SafeExpectations";
-		};
 		4A2A35912C23622F00F47E9C /* Gridicons */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
@@ -37158,11 +37335,6 @@
 			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
 			productName = Gridicons;
 		};
-		4A65FC502C2366FD006ED20C /* wpxmlrpc */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4A2A359F2C23646B00F47E9C /* XCRemoteSwiftPackageReference "wpxmlrpc" */;
-			productName = wpxmlrpc;
-		};
 		4A91C6C82C22F45200AD6324 /* AlamofireNetworkActivityIndicator */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4AD028642C22F265004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityIndicator" */;
@@ -37178,27 +37350,127 @@
 			package = 4A91C6C72C22F43500AD6324 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
+		4A972CFD2C239C50006AE0F0 /* AlamofireNetworkActivityIndicator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028642C22F265004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireNetworkActivityIndicator" */;
+			productName = AlamofireNetworkActivityIndicator;
+		};
+		4A972CFF2C239C50006AE0F0 /* AlamofireImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AD028652C22F276004FBDD0 /* XCRemoteSwiftPackageReference "AlamofireImage" */;
+			productName = AlamofireImage;
+		};
+		4A972D012C239C5B006AE0F0 /* AutomatticEncryptedLogs */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */;
+			productName = AutomatticEncryptedLogs;
+		};
+		4A972D032C239C65006AE0F0 /* AutomatticTracks */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35BE2C22E72C00D5AE8C /* XCRemoteSwiftPackageReference "Automattic-Tracks-iOS" */;
+			productName = AutomatticTracks;
+		};
+		4A972D052C239C70006AE0F0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A972D072C239C79006AE0F0 /* Gifu */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06E2C2382B7003D74A5 /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
+		};
+		4A972D092C239C95006AE0F0 /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A972D0B2C239C9E006AE0F0 /* JTAppleCalendar */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A3E8C492C23844E003628B3 /* XCRemoteSwiftPackageReference "JTAppleCalendar" */;
+			productName = JTAppleCalendar;
+		};
+		4A972D0D2C239EBA006AE0F0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A972D142C239F0D006AE0F0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A972D202C239F54006AE0F0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A972D272C239FA7006AE0F0 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		4A972D292C239FF0006AE0F0 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A972D2B2C23A00B006AE0F0 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		4A972D2D2C23A03A006AE0F0 /* Down */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06D2C23820B003D74A5 /* XCRemoteSwiftPackageReference "Down" */;
+			productName = Down;
+		};
+		4A972D2F2C23A2AF006AE0F0 /* CocoaLumberjackSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A0CB27B2C23883B00A006B0 /* XCRemoteSwiftPackageReference "CocoaLumberjack" */;
+			productName = CocoaLumberjackSwift;
+		};
+		4A972D312C23A2CD006AE0F0 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A972D332C23A30C006AE0F0 /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A972D352C23A325006AE0F0 /* ZIPFoundation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AFAB06C2C2381ED003D74A5 /* XCRemoteSwiftPackageReference "ZIPFoundation" */;
+			productName = ZIPFoundation;
+		};
+		4A972D372C23A377006AE0F0 /* Gridicons */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358F2C2361AF00F47E9C /* XCRemoteSwiftPackageReference "Gridicons-iOS" */;
+			productName = Gridicons;
+		};
+		4A972D392C23A3B0006AE0F0 /* ZendeskSupportSDK */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AE417E22C23866900B383AF /* XCRemoteSwiftPackageReference "support_sdk_ios" */;
+			productName = ZendeskSupportSDK;
+		};
+		4A972D3B2C23A3D2006AE0F0 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A35902C2361CF00F47E9C /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		4A972D3D2C23A3ED006AE0F0 /* Starscream */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A2A358E2C23614A00F47E9C /* XCRemoteSwiftPackageReference "Starscream" */;
+			productName = Starscream;
+		};
 		4AD028562C22ED98004FBDD0 /* UIDeviceIdentifier */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
 			productName = UIDeviceIdentifier;
 		};
-		4AD028582C22EDE3004FBDD0 /* UIDeviceIdentifier */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
-			productName = UIDeviceIdentifier;
-		};
 		4AD0285A2C22EE00004FBDD0 /* UIDeviceIdentifier */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
-			productName = UIDeviceIdentifier;
-		};
-		4AD0285C2C22EE35004FBDD0 /* UIDeviceIdentifier */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
-			productName = UIDeviceIdentifier;
-		};
-		4AD0285E2C22EE46004FBDD0 /* UIDeviceIdentifier */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4AD028552C22ED8E004FBDD0 /* XCRemoteSwiftPackageReference "UIDeviceIdentifier" */;
 			productName = UIDeviceIdentifier;
