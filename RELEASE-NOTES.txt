@@ -1,5 +1,6 @@
 25.2
 -----
+* [*] Simplify post list context menu sections [#23356]
 
 
 25.1

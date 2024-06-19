@@ -11,8 +11,6 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
     var buttonSections: [AbstractPostButtonSection] {
         [
             createPrimarySection(),
-            createSecondarySection(),
-            createBlazeSection(),
             createSetPageAttributesSection(),
             createNavigationSection(),
             createTrashSection(),
@@ -40,14 +38,10 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
 
     private func createPrimarySection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
+
         if page.status != .trash {
             buttons.append(.view)
         }
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createSecondarySection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
 
         if canPublish {
             buttons.append(.publish)
@@ -73,19 +67,13 @@ final class PageMenuViewModel: AbstractPostMenuViewModel {
         return page.isStatus(in: [.draft, .pending]) && userCanPublish
     }
 
-    private func createBlazeSection() -> AbstractPostButtonSection {
+    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
         var buttons = [AbstractPostButton]()
 
         if isBlazeFlagEnabled && page.canBlaze {
             BlazeEventsTracker.trackEntryPointDisplayed(for: .pagesList)
             buttons.append(.blaze)
         }
-
-        return AbstractPostButtonSection(buttons: buttons)
-    }
-
-    private func createSetPageAttributesSection() -> AbstractPostButtonSection {
-        var buttons = [AbstractPostButton]()
 
         guard page.status != .trash else {
             return AbstractPostButtonSection(buttons: buttons)
