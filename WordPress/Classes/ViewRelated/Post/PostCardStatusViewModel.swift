@@ -34,10 +34,6 @@ class PostCardStatusViewModel: NSObject, AbstractPostMenuViewModel {
         return author
     }
 
-    private var postStatus: BasePost.Status? {
-        return post.status
-    }
-
     var statusColor: UIColor {
         if post.isLegacyUnsavedRevision {
             return .warning
