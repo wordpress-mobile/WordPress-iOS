@@ -101,7 +101,6 @@ abstract_target 'Apps' do
   pod 'AppCenter', app_center_version, configurations: app_center_configurations
   pod 'AppCenter/Distribute', app_center_version, configurations: app_center_configurations
 
-  pod 'ZendeskSupportSDK', '5.3.0'
   pod 'FSInteractiveMap', git: 'https://github.com/wordpress-mobile/FSInteractiveMap.git', tag: '0.2.0'
   pod 'CropViewController', '2.5.3'
 

@@ -30,19 +30,6 @@ PODS:
     - WordPress-Aztec-iOS (= 1.19.11)
   - WordPressShared (2.4.0)
   - WordPressUI (1.16.0)
-  - ZendeskCommonUISDK (6.1.4)
-  - ZendeskCoreSDK (2.5.1)
-  - ZendeskMessagingAPISDK (3.8.5):
-    - ZendeskSDKConfigurationsSDK (= 1.1.11)
-  - ZendeskMessagingSDK (3.8.5):
-    - ZendeskCommonUISDK (= 6.1.4)
-    - ZendeskMessagingAPISDK (= 3.8.5)
-  - ZendeskSDKConfigurationsSDK (1.1.11)
-  - ZendeskSupportProvidersSDK (5.3.0):
-    - ZendeskCoreSDK (~> 2.5.1)
-  - ZendeskSupportSDK (5.3.0):
-    - ZendeskMessagingSDK (~> 3.8.2)
-    - ZendeskSupportProvidersSDK (~> 5.3.0)
 
 DEPENDENCIES:
   - AppCenter (~> 5.0)
@@ -61,7 +48,6 @@ DEPENDENCIES:
   - WordPress-Editor-iOS (~> 1.19.11)
   - WordPressShared (>= 2.3.1, ~> 2.3)
   - WordPressUI (~> 1.16)
-  - ZendeskSupportSDK (= 5.3.0)
 
 SPEC REPOS:
   https://github.com/wordpress-mobile/cocoapods-specs.git:
@@ -80,13 +66,6 @@ SPEC REPOS:
     - MediaEditor
     - Specta
     - SwiftLint
-    - ZendeskCommonUISDK
-    - ZendeskCoreSDK
-    - ZendeskMessagingAPISDK
-    - ZendeskMessagingSDK
-    - ZendeskSDKConfigurationsSDK
-    - ZendeskSupportProvidersSDK
-    - ZendeskSupportSDK
 
 EXTERNAL SOURCES:
   FSInteractiveMap:
@@ -117,14 +96,7 @@ SPEC CHECKSUMS:
   WordPress-Editor-iOS: 453345420ced3d3ef20f0051b3df46ff10281e0c
   WordPressShared: 0160364ed24f4d67fed4e85003fefa837faad84f
   WordPressUI: f883fdd2508a0bc525c19805b2bbae980b581271
-  ZendeskCommonUISDK: ba160fe413b491af9e7bfcb9808afcd494dc83a5
-  ZendeskCoreSDK: 19a18e5ef2edcb18f4dbc0ea0d12bd31f515712a
-  ZendeskMessagingAPISDK: 410f9bcf07c79fe98d6f251da102368d6b356c54
-  ZendeskMessagingSDK: 95d396c981dacfab83cc7b9736e8561d51a3052b
-  ZendeskSDKConfigurationsSDK: ebced171fd1f4eb57760e8537d8cfa6a450122be
-  ZendeskSupportProvidersSDK: 2bdf8544f7cd0fd4c002546f5704b813845beb2a
-  ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
 
-PODFILE CHECKSUM: b825509e0def097870e7764f229049ca6537899a
+PODFILE CHECKSUM: dc06e35cea39ab61db24dbfdc2c9d4b121efb2dc
 
 COCOAPODS: 1.15.2
