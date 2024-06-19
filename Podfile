@@ -57,10 +57,6 @@ def gravatar
   pod 'GravatarUI', '2.0.0'
 end
 
-def wordpress_kit
-  pod 'WordPressKit', path: './WordPressKit', testspecs: ['Tests']
-end
-
 def kanvas
   pod 'Kanvas', '~> 1.4.4'
   # pod 'Kanvas', git: 'https://github.com/tumblr/Kanvas-iOS.git', tag: ''
@@ -77,7 +73,6 @@ end
 def shared_with_networking_pods
   pod 'Reachability', '~> 3.7'
 
-  wordpress_kit
 end
 
 def shared_test_pods
@@ -136,7 +131,6 @@ abstract_target 'Apps' do
   ## Automattic libraries
   ## ====================
   ##
-  wordpress_kit
   wordpress_shared
   kanvas
   gravatar
@@ -259,7 +253,6 @@ end
 target 'WordPressNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  wordpress_kit
   wordpress_shared
   wordpress_ui
 end
@@ -267,7 +260,6 @@ end
 target 'JetpackNotificationServiceExtension' do
   project 'WordPress/WordPress.xcodeproj'
 
-  wordpress_kit
   wordpress_shared
   wordpress_ui
 end
