@@ -1,6 +1,7 @@
 import XCTest
 import Nimble
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
 @testable import WordPress
 

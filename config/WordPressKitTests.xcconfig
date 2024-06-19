@@ -12,8 +12,8 @@ GCC_TREAT_WARNINGS_AS_ERRORS = NO
 ENABLE_USER_SCRIPT_SANDBOXING = NO
 
 WP_EFFECTIVE_BUILD_DIR = ${BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
-FRAMEWORK_SEARCH_PATHS = ${WP_EFFECTIVE_BUILD_DIR}/WordPressShared ${WP_EFFECTIVE_BUILD_DIR}/wpxmlrpc ${WP_EFFECTIVE_BUILD_DIR}/NSObject-SafeExpectations ${WP_EFFECTIVE_BUILD_DIR}/UIDeviceIdentifier ${WP_EFFECTIVE_BUILD_DIR}/WordPressKit ${WP_EFFECTIVE_BUILD_DIR}/OHHTTPStubs ${WP_EFFECTIVE_BUILD_DIR}/Alamofire ${WP_EFFECTIVE_BUILD_DIR}/OCMock
-OTHER_LDFLAGS = $(inherited) -liconv -framework WordPressShared -framework wpxmlrpc -framework NSObject_SafeExpectations -framework UIDeviceIdentifier -framework OHHTTPStubs -framework OCMock -framework Alamofire -framework WordPressKit
+FRAMEWORK_SEARCH_PATHS = ${WP_EFFECTIVE_BUILD_DIR}/WordPressShared ${WP_EFFECTIVE_BUILD_DIR}/wpxmlrpc ${WP_EFFECTIVE_BUILD_DIR}/NSObject-SafeExpectations ${WP_EFFECTIVE_BUILD_DIR}/UIDeviceIdentifier ${WP_EFFECTIVE_BUILD_DIR}/WordPressKit ${WP_EFFECTIVE_BUILD_DIR}/Alamofire ${WP_EFFECTIVE_BUILD_DIR}/OCMock
+OTHER_LDFLAGS = $(inherited) -liconv -framework WordPressShared -framework wpxmlrpc -framework NSObject_SafeExpectations -framework UIDeviceIdentifier -framework OCMock -framework Alamofire -framework WordPressKit
 
 PODS_ROOT = ${SRCROOT}/../Pods
 PODS_CONFIGURATION_BUILD_DIR = ${BUILD_DIR}/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)

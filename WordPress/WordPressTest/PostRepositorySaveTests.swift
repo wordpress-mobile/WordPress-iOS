@@ -1,5 +1,6 @@
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 
 @testable import WordPress
 
@@ -1498,7 +1499,7 @@ private extension PostRepositorySaveTests {
 }
 
 private func stub(condition: @escaping (URLRequest) -> Bool, _ response: @escaping (URLRequest) throws -> HTTPStubsResponse) {
-    OHHTTPStubs.stub(condition: condition) { request in
+    OHHTTPStubsSwift.stub(condition: condition) { request in
         do {
             return try response(request)
         } catch {

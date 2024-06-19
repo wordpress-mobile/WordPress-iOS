@@ -39,21 +39,6 @@ PODS:
   - NSObject-SafeExpectations (0.0.6)
   - "NSURL+IDN (0.4)"
   - OCMock (3.4.3)
-  - OHHTTPStubs (9.1.0):
-    - OHHTTPStubs/Default (= 9.1.0)
-  - OHHTTPStubs/Core (9.1.0)
-  - OHHTTPStubs/Default (9.1.0):
-    - OHHTTPStubs/Core
-    - OHHTTPStubs/JSON
-    - OHHTTPStubs/NSURLSession
-    - OHHTTPStubs/OHPathHelpers
-  - OHHTTPStubs/JSON (9.1.0):
-    - OHHTTPStubs/Core
-  - OHHTTPStubs/NSURLSession (9.1.0):
-    - OHHTTPStubs/Core
-  - OHHTTPStubs/OHPathHelpers (9.1.0)
-  - OHHTTPStubs/Swift (9.1.0):
-    - OHHTTPStubs/Default
   - Reachability (3.7.6)
   - Sentry (8.21.0):
     - Sentry/Core (= 8.21.0)
@@ -110,8 +95,6 @@ DEPENDENCIES:
   - NSObject-SafeExpectations (~> 0.0.4)
   - "NSURL+IDN (~> 0.4)"
   - OCMock (~> 3.4.3)
-  - OHHTTPStubs (~> 9.1.0)
-  - OHHTTPStubs/Swift (~> 9.1.0)
   - Reachability (~> 3.7)
   - Specta (= 1.0.7)
   - Starscream (~> 4.0)
@@ -149,7 +132,6 @@ SPEC REPOS:
     - NSObject-SafeExpectations
     - "NSURL+IDN"
     - OCMock
-    - OHHTTPStubs
     - Reachability
     - Sentry
     - SentryPrivate
@@ -204,7 +186,6 @@ SPEC CHECKSUMS:
   NSObject-SafeExpectations: c01c8881cbd97efad6f668286b913cd0b7d62ab5
   "NSURL+IDN": afc873e639c18138a1589697c3add197fe8679ca
   OCMock: 43565190abc78977ad44a61c0d20d7f0784d35ab
-  OHHTTPStubs: 90eac6d8f2c18317baeca36698523dc67c513831
   Reachability: fd0ecd23705e2599e4cceeb943222ae02296cbc6
   Sentry: ebc12276bd17613a114ab359074096b6b3725203
   SentryPrivate: d651efb234cf385ec9a1cdd3eff94b5e78a0e0fe
@@ -228,6 +209,6 @@ SPEC CHECKSUMS:
   ZendeskSupportSDK: 3a8e508ab1d9dd22dc038df6c694466414e037ba
   ZIPFoundation: d170fa8e270b2a32bef9dcdcabff5b8f1a5deced
 
-PODFILE CHECKSUM: 938793c64c496d8094f6dea47b957d45540f5a9f
+PODFILE CHECKSUM: 3de71ec94cbbac6dd4abacc57aa62952fe68be5f
 
 COCOAPODS: 1.15.2

@@ -76,8 +76,6 @@ def shared_with_networking_pods
 end
 
 def shared_test_pods
-  pod 'OHHTTPStubs', '~> 9.1.0'
-  pod 'OHHTTPStubs/Swift', '~> 9.1.0'
   pod 'OCMock', '~> 3.4.3'
   pod 'Expecta', '1.0.6'
   pod 'Specta', '1.0.7'

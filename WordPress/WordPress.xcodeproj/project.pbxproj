@@ -2417,6 +2417,8 @@
 		4AD955C82C2171F000D0EEFA /* MemoryManagementTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AD955982C2171F000D0EEFA /* MemoryManagementTests.swift */; };
 		4AEB35B32C22B91600D5AE8C /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		4AEB35B42C22B91600D5AE8C /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4AEB35B82C22D25B00D5AE8C /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */; };
+		4AEB35BA2C22D43200D5AE8C /* OHHTTPStubsSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */; };
 		4AEF2DD929A84B2C00345734 /* ReaderSiteServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AEF2DD829A84B2C00345734 /* ReaderSiteServiceTests.swift */; };
 		4AFB1A812A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
 		4AFB1A822A9C08CE007CE165 /* StoppableProgressIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4AFB1A802A9C08CE007CE165 /* StoppableProgressIndicatorView.swift */; };
@@ -11852,6 +11854,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4AEB35B32C22B91600D5AE8C /* WordPressKit.framework in Frameworks */,
+				4AEB35BA2C22D43200D5AE8C /* OHHTTPStubsSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -11943,6 +11946,7 @@
 				3FFB3F242AFC730C00A742B0 /* JetpackStatsWidgetsCore in Frameworks */,
 				3F338B71289BD3040014ADC5 /* Nimble in Frameworks */,
 				3F3B23C22858A1B300CACE60 /* BuildkiteTestCollector in Frameworks */,
+				4AEB35B82C22D25B00D5AE8C /* OHHTTPStubsSwift in Frameworks */,
 				E8DEE110E4BC3FA1974AB1BB /* Pods_WordPressTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -23008,6 +23012,9 @@
 				4A98A3002C22737000A2CE58 /* PBXTargetDependency */,
 			);
 			name = WordPressKitTests;
+			packageProductDependencies = (
+				4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */,
+			);
 			productName = WordPressKitTests;
 			productReference = 4A98A2FB2C22736F00A2CE58 /* WordPressKitTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -23220,6 +23227,7 @@
 				3F3B23C12858A1B300CACE60 /* BuildkiteTestCollector */,
 				3F338B70289BD3040014ADC5 /* Nimble */,
 				3FFB3F232AFC730C00A742B0 /* JetpackStatsWidgetsCore */,
+				4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */,
 			);
 			productName = WordPressTest;
 			productReference = E16AB92A14D978240047A2E5 /* WordPressTest.xctest */;
@@ -23517,6 +23525,7 @@
 				3F338B6F289BD3040014ADC5 /* XCRemoteSwiftPackageReference "Nimble" */,
 				0CD9FB852AFA71B9009D9C7A /* XCRemoteSwiftPackageReference "Charts" */,
 				1DF7A0C92B9F61CC0003CBA3 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
+				4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */,
 			);
 			productRefGroup = 19C28FACFE9D520D11CA2CBB /* Products */;
 			projectDirPath = "";
@@ -36670,6 +36679,14 @@
 				minimumVersion = 0.2.3;
 			};
 		};
+		4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AliSoftware/OHHTTPStubs";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.0;
+			};
+		};
 		EA14532629AD874C001F3143 /* XCRemoteSwiftPackageReference "test-collector-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/buildkite/test-collector-swift";
@@ -36781,6 +36798,16 @@
 		3FFB3F232AFC730C00A742B0 /* JetpackStatsWidgetsCore */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = JetpackStatsWidgetsCore;
+		};
+		4AEB35B72C22D25B00D5AE8C /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
+		};
+		4AEB35B92C22D43200D5AE8C /* OHHTTPStubsSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4AEB35B62C22D24500D5AE8C /* XCRemoteSwiftPackageReference "OHHTTPStubs" */;
+			productName = OHHTTPStubsSwift;
 		};
 		EA14532529AD874C001F3143 /* BuildkiteTestCollector */ = {
 			isa = XCSwiftPackageProductDependency;

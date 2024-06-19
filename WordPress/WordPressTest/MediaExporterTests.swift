@@ -2,6 +2,7 @@ import XCTest
 import MobileCoreServices
 import UniformTypeIdentifiers
 import OHHTTPStubs
+import OHHTTPStubsSwift
 @testable import WordPress
 
 class MockMediaExporter: MediaExporter {

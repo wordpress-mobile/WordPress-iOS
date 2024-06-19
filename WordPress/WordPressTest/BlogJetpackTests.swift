@@ -1,6 +1,7 @@
 import XCTest
 import CoreData
 import OHHTTPStubs
+import OHHTTPStubsSwift
 @testable import WordPress
 
 class BlogJetpackTests: CoreDataTestCase {

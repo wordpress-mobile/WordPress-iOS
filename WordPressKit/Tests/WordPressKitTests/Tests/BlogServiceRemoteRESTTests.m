@@ -3,6 +3,7 @@
 #import <XCTest/XCTest.h>
 #import "BlogServiceRemoteREST.h"
 @import OHHTTPStubs;
+@import OHHTTPStubsSwift;
 @import WordPressKit;
 
 static NSTimeInterval const TestExpectationTimeout = 5;

@@ -1,5 +1,6 @@
 import Foundation
 import OHHTTPStubs
+import OHHTTPStubsSwift
 import XCTest
 @testable import WordPressKit
 

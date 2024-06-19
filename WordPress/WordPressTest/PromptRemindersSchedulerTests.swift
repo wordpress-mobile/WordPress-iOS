@@ -1,5 +1,6 @@
 import XCTest
 import OHHTTPStubs
+import OHHTTPStubsSwift
 import CoreData
 
 @testable import WordPress
