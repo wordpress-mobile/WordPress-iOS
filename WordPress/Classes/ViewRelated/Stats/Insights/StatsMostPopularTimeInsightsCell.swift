@@ -1,8 +1,6 @@
 import UIKit
 
 class StatsMostPopularTimeInsightsCell: StatsBaseCell {
-    private var data: StatsMostPopularTimeData? = nil
-    private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
 
     // MARK: - Subviews
 
@@ -161,10 +159,8 @@ class StatsMostPopularTimeInsightsCell: StatsBaseCell {
 
     // MARK: Public configuration
 
-    func configure(data: StatsMostPopularTimeData?, siteStatsInsightsDelegate: SiteStatsInsightsDelegate?) {
-        self.data = data
+    func configure(data: StatsMostPopularTimeData?) {
         self.statSection = .insightsMostPopularTime
-        self.siteStatsInsightsDelegate = siteStatsInsightsDelegate
 
         guard let data = data else {
             displayNoData(show: true)

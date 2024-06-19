@@ -152,7 +152,6 @@ private struct ViewsInsightsLineChartStyling: LineChartStyling {
     let secondaryLineColor: UIColor?
     let primaryHighlightColor: UIColor?
     let labelColor: UIColor                         = UIColor(light: .secondaryLabel, dark: .tertiaryLabel)
-    let legendColor: UIColor?                       = .primary(.shade60)
     let legendTitle: String?                        = NSLocalizedString("Views", comment: "Title for Views count in the legend of the Stats Insights views and visitors line chart")
     let lineColor: UIColor                          = .neutral(.shade5)
     let yAxisValueFormatter: AxisValueFormatter    = VerticalAxisFormatter()

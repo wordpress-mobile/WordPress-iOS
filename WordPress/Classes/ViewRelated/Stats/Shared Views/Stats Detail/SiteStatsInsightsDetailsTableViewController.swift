@@ -7,12 +7,10 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
 
     private typealias Style = WPStyleGuide.Stats
     private var statSection: StatSection?
-    private var statType: StatType = .period
     private var selectedDate = StatsDataHelper.currentDateForSite()
     private var selectedPeriod: StatsPeriodUnit?
 
     private var viewModel: SiteStatsInsightsDetailsViewModel?
-    private var tableHeaderView: SiteStatsTableHeaderView?
 
     private var receipt: Receipt?
 
@@ -55,7 +53,6 @@ class SiteStatsInsightsDetailsTableViewController: SiteStatsBaseTableViewControl
         self.selectedPeriod = selectedPeriod
         self.postID = postID
         tableStyle = .insetGrouped
-        statType = StatSection.allInsights.contains(statSection) ? .insights : .period
         title = statSection.detailsTitle
         initViewModel()
         updateHeader()

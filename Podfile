@@ -50,13 +50,15 @@ end
 
 def gravatar
   # pod 'Gravatar', path: '../Gravatar-SDK-iOS'
+  # pod 'GravatarUI', path: '../Gravatar-SDK-iOS'
   # pod 'Gravatar', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
-  pod 'Gravatar', '1.0.1'
+  # pod 'GravatarUI', git: 'https://github.com/Automattic/Gravatar-SDK-iOS', commit: ''
+  pod 'Gravatar', '2.0.0'
+  pod 'GravatarUI', '2.0.0'
 end
 
 def wordpress_kit
-  pod 'WordPressKit', '~> 17.2.0'
-  # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: ''
+  pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', commit: 'c334dad3c0e8fced5a61c5bf1d745d23d1924a9c'
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', branch: ''
   # pod 'WordPressKit', git: 'https://github.com/wordpress-mobile/WordPressKit-iOS.git', tag: ''
   # pod 'WordPressKit', path: '../WordPressKit-iOS'

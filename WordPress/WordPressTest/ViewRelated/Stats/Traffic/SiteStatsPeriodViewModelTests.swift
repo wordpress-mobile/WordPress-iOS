@@ -110,7 +110,6 @@ private class StatsPeriodStoreMock: StatsPeriodStoreProtocol {
     var isFetchingSummary: Bool = false
     var fetchingOverviewHasFailed: Bool = false
     var timeIntervalsSummaryStatus: WordPress.StoreFetchingStatus = .idle
-    var totalsSummaryStatus: WordPress.StoreFetchingStatus = .idle
     var topPostsAndPagesStatus: WordPress.StoreFetchingStatus = .idle
     var topReferrersStatus: WordPress.StoreFetchingStatus = .idle
     var topPublishedStatus: WordPress.StoreFetchingStatus = .idle
@@ -121,7 +120,6 @@ private class StatsPeriodStoreMock: StatsPeriodStoreProtocol {
     var topVideosStatus: WordPress.StoreFetchingStatus = .idle
     var topFileDownloadsStatus: WordPress.StoreFetchingStatus = .idle
     var containsCachedData: Bool = false
-    var totalsSummary: StatsSummaryTimeIntervalData? = nil
     var timeIntervalsSummary: StatsSummaryTimeIntervalData? = nil
     var queries: [PeriodQuery] = []
 
@@ -131,10 +129,6 @@ private class StatsPeriodStoreMock: StatsPeriodStoreProtocol {
 
     func getSummary() -> StatsSummaryTimeIntervalData? {
         return timeIntervalsSummary
-    }
-
-    func getTotalsSummary() -> StatsSummaryTimeIntervalData? {
-        return totalsSummary
     }
 
     func getTopReferrers() -> StatsTopReferrersTimeIntervalData? {

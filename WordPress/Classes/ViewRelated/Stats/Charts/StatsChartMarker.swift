@@ -15,14 +15,14 @@ class StatsChartMarker: MarkerView {
         return paragraphStyle
     }()
 
-    public init(dotColor: UIColor, name: String) {
+    init(dotColor: UIColor, name: String) {
         self.dotColor = dotColor
         self.name = name
 
         super.init(frame: CGRect.zero)
     }
 
-    public required init?(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 

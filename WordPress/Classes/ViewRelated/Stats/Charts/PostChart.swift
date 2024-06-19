@@ -35,14 +35,12 @@ extension PostChartType {
 final class PostChart {
 
     private let chartType: PostChartType
-    private let rawPostViews: [StatsPostViews]
     private let transformedPostData: BarChartData
 
     let barChartStyling: BarChartStyling
 
     init(type: PostChartType = .selected, postViews: [StatsPostViews]) {
         chartType = type
-        rawPostViews = postViews
 
         let (data, styling) = PostChartDataTransformer.transform(type: type, postViews: postViews)
 

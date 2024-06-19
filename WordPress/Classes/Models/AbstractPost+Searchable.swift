@@ -76,9 +76,9 @@ fileprivate extension AbstractPost {
             title = postTitle
         }
 
-        guard status != .publish, let statusTitle = statusTitle else {
+        guard status != .publish, let status else {
             return title
         }
-        return "[\(statusTitle)] \(title)"
+        return "[\(AbstractPost.title(for: status))] \(title)"
     }
 }

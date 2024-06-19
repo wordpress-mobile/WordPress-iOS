@@ -1,5 +1,5 @@
 import Foundation
-import Gravatar
+import GravatarUI
 import WordPressUI
 
 /// Convenience intermediate enum for Objc compatibility.
@@ -58,26 +58,26 @@ extension UIImageView {
     }
 
     private func downloadGravatar(fullURL: URL?, placeholder: UIImage, animate: Bool, failure: ((Error?) -> ())? = nil) {
-        self.gravatar.cancelImageDownload()
-        var options: [ImageSettingOption]?
-        if let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching {
-            options = [.imageCache(cache)]
-        }
-        else {
-            // If we don't pass any cache to `gravatar.setImage(...)` it will use its internal in-memory cache.
-            // But in order to make things work consistently with the rest of the app, we should use `WordPressUI.ImageCache.shared` here.
-            // It needs to be fixed if we fail to do that. That's why we put an assertionFailure here.
-            assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
-        }
-        self.gravatar.setImage(with: fullURL,
-                               placeholder: placeholder,
-                               options: options) { [weak self] result in
-            switch result {
-            case .success:
+        Task {
+            await gravatar.cancelImageDownload()
+            var options: [ImageSettingOption]?
+            if let cache = WordPressUI.ImageCache.shared as? GravatarImageCaching {
+                options = [.imageCache(cache)]
+            }
+            else {
+                // If we don't pass any cache to `gravatar.setImage(...)` it will use its internal in-memory cache.
+                // But in order to make things work consistently with the rest of the app, we should use `WordPressUI.ImageCache.shared` here.
+                // It needs to be fixed if we fail to do that. That's why we put an assertionFailure here.
+                assertionFailure("WordPressUI.ImageCache.shared should conform to GravatarImageCaching.")
+            }
+            do {
+                try await gravatar.setImage(with: fullURL,
+                                            placeholder: placeholder,
+                                            options: options)
                 if animate {
-                    self?.fadeInAnimation()
+                    fadeInAnimation()
                 }
-            case .failure(let error):
+            } catch {
                 failure?(error)
             }
         }
