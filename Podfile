@@ -265,14 +265,10 @@ pre_install do |installer|
   dynamic = []
   installer.pod_targets.each do |pod|
     use_dynamic_frameworks = false
-    if dyanmic_framework_pods.include? pod.name
-      use_dynamic_frameworks = true
-    end
+    use_dynamic_frameworks = true if dyanmic_framework_pods.include? pod.name
 
     # If this pod is a dependency of one of our shared targets, it must be linked dynamically
-    if pod.target_definitions.any? { |t| shared_targets.include? t.name }
-      use_dynamic_frameworks = true
-    end
+    use_dynamic_frameworks = true if pod.target_definitions.any? { |t| shared_targets.include? t.name }
 
     if use_dynamic_frameworks
       dynamic << pod
