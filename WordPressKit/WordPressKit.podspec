@@ -30,4 +30,25 @@ Pod::Spec.new do |s|
   # Use a loose restriction that allows both production and beta versions, up to the next major version.
   # If you want to update which of these is used, specify it in the host app.
   s.dependency 'WordPressShared', '~> 2.0-beta'
+
+  s.test_spec 'Tests' do |test_spec|
+    test_spec.dependency 'OHHTTPStubs', '~> 9.0'
+    test_spec.dependency 'OHHTTPStubs/Swift', '~> 9.0'
+    test_spec.dependency 'OCMock', '~> 3.4'
+    test_spec.dependency 'Alamofire', '~> 5.0'
+
+    test_spec.source_files = 'Tests/**/*.{h,m,swift}'
+    test_spec.resource_bundles = {
+      # The files in this bundle are duplicated at the root of the test bundle,
+      # because some tests are still looking for them at the root directory,
+      # instead of the `CoreAPITests` bundle.
+      'CoreAPITests' => 'Tests/CoreAPITests/Stubs/**/*'
+    }
+    test_spec.resources = [
+      'Tests/WordPressKitTests/Mock Data/**/*',
+      'WordPressKitTests/**/*',
+      'Tests/CoreAPITests/Stubs/**/*',
+      'Tests/**/*.{json,html,xml}'
+    ]
+  end
 end

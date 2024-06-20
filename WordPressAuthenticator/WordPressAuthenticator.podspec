@@ -42,4 +42,12 @@ Pod::Spec.new do |s|
   s.dependency 'WordPressUI', '~> 1.7-beta'
   s.dependency 'WordPressKit', '~> 17.0'
   s.dependency 'WordPressShared', '~> 2.1-beta'
+
+  s.test_spec 'Tests' do |test_spec|
+    test_spec.dependency 'OCMock', '~> 3.4'
+    test_spec.dependency 'Expecta', '1.0.6'
+    test_spec.dependency 'Specta', '1.0.7'
+
+    test_spec.source_files = 'Tests/**/*.{h,m,swift}'
+  end
 end

@@ -1,4 +1,3 @@
-import BuildkiteTestCollector
 import Foundation
 import XCTest
 import OHHTTPStubs
@@ -174,7 +173,7 @@ extension RemoteTestCase {
     func stubAllNetworkRequestsWithNotConnectedError() {
         // Stub all requests other than those to the Buildkite Test Analytics API,
         // which we need them to go through for Test Analytics reporting.
-        stub(condition: !isHost(TestCollector.apiHost)) { response in
+        stub(condition: { _ in true }) { response in
             XCTFail("Unexpected network request was made to: \(response.url!.absoluteString)")
             let notConnectedError = NSError(domain: NSURLErrorDomain, code: Int(CFNetworkErrors.cfurlErrorNotConnectedToInternet.rawValue), userInfo: nil)
             return HTTPStubsResponse(error: notConnectedError)

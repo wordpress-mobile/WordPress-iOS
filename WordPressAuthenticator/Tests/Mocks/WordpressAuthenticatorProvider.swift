@@ -78,8 +78,8 @@ public class WordpressAuthenticatorProvider: NSObject {
             displayStrings: WordPressAuthenticatorDisplayStrings.defaultStrings)
     }
 
-    @objc
-    static func initializeWordPressAuthenticator() {
+    @objc(initializeWordPressAuthenticator)
+    public static func initializeWordPressAuthenticator() {
         WordPressAuthenticator.initialize(
             configuration: wordPressAuthenticatorConfiguration(),
             style: wordPressAuthenticatorStyle(.random),
