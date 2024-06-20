@@ -23,7 +23,14 @@ struct ResolveConflictView: View {
     var body: some View {
         Form {
             Section {
-                Text(Strings.description)
+                VStack(alignment: .leading, spacing: 12) {
+                    if let title = post.latest().titleForDisplay() {
+                        Text("\"\(title)\"")
+                            .font(.headline)
+                            .lineLimit(2)
+                    }
+                    Text(Strings.description)
+                }
                 ForEach(versions) { version in
                     PostVersionView(version: version, selectedVersion: $selectedVersion)
                 }

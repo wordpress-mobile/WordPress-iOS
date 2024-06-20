@@ -3,13 +3,12 @@ import Gridicons
 import DesignSystem
 
 protocol LatestPostSummaryConfigurable {
-    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?)
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?)
 }
 
 class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfigurable {
     private weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     private typealias Style = WPStyleGuide.Stats
-    private var lastPostInsight: StatsLastPostInsight?
 
     private let outerStackView = UIStackView()
     private let postStackView = UIStackView()
@@ -191,7 +190,7 @@ class StatsLatestPostSummaryInsightsCell: StatsBaseCell, LatestPostSummaryConfig
 
     // MARK: - Public Configuration
 
-    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, chartData: StatsPostDetails?, andDelegate delegate: SiteStatsInsightsDelegate?) {
+    func configure(withInsightData lastPostInsight: StatsLastPostInsight?, andDelegate delegate: SiteStatsInsightsDelegate?) {
         siteStatsInsightsDelegate = delegate
         statSection = .insightsLatestPostSummary
 

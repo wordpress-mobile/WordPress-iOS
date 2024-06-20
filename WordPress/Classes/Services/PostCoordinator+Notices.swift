@@ -48,14 +48,15 @@ private enum Strings {
     static let view = NSLocalizedString("postNotice.view", value: "View", comment: "Button title. Displays a summary / sharing screen for a specific post.")
 
     static func publishSuccessTitle(for post: AbstractPost, isUpdated: Bool = false) -> String {
+        if post.status == .draft {
+            return NSLocalizedString("postNotice.draftSaved", value: "Draft Saved", comment: "Title of notification displayed when either a new or an existing draft is saved")
+        }
         switch post {
         case let post as Post:
             guard !isUpdated else {
                 return NSLocalizedString("postNotice.postUpdated", value: "Post updated", comment: "Title of notification displayed when a post has been successfully updated.")
             }
             switch post.status {
-            case .draft:
-                return NSLocalizedString("postNotice.postDraftCreated", value: "Post draft uploaded", comment: "Title of notification displayed when a post has been successfully saved as a draft.")
             case .scheduled:
                 return NSLocalizedString("postNotice.postScheduled", value: "Post scheduled", comment: "Title of notification displayed when a post has been successfully scheduled.")
             case .pending:
@@ -68,8 +69,6 @@ private enum Strings {
                 return NSLocalizedString("postNotice.pageUpdated", value: "Page updated", comment: "Title of notification displayed when a page has been successfully updated.")
             }
             switch page.status {
-            case .draft:
-                return NSLocalizedString("postNotice.pageDraftCreated", value: "Page draft uploaded", comment: "Title of notification displayed when a page has been successfully saved as a draft.")
             case .scheduled:
                 return NSLocalizedString("postNotice.pageScheduled", value: "Page scheduled", comment: "Title of notification displayed when a page has been successfully scheduled.")
             case .pending:
@@ -78,7 +77,7 @@ private enum Strings {
                 return NSLocalizedString("postNotice.pagePublished", value: "Page published", comment: "Title of notification displayed when a page has been successfully published.")
             }
         default:
-            assertionFailure("Unexpected post type: \(post)")
+            wpAssertionFailure("unexpected post type", userInfo: ["post_type": String(describing: type(of: post))])
             return ""
         }
     }

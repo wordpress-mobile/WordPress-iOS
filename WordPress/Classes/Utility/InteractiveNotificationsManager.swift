@@ -226,7 +226,8 @@ final class InteractiveNotificationsManager: NSObject {
                     RootViewCoordinator.sharedPresenter.mySitesCoordinator.showStats(
                         for: targetBlog,
                         source: .notification,
-                        tab: .weeks,
+                        tab: .traffic,
+                        unit: .week,
                         date: targetDate)
                 }
 

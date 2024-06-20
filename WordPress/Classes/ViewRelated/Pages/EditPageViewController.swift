@@ -10,14 +10,14 @@ class EditPageViewController: UIViewController {
     var onClose: (() -> Void)?
 
     convenience init(page: Page) {
-        self.init(page: page, blog: page.blog, postTitle: nil, content: nil, appliedTemplate: nil)
+        self.init(page: page, blog: page.blog, postTitle: nil, content: nil)
     }
 
-    convenience init(blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
-        self.init(page: nil, blog: blog, postTitle: postTitle, content: content, appliedTemplate: appliedTemplate)
+    convenience init(blog: Blog, postTitle: String?, content: String?) {
+        self.init(page: nil, blog: blog, postTitle: postTitle, content: content)
     }
 
-    fileprivate init(page: Page?, blog: Blog, postTitle: String?, content: String?, appliedTemplate: String?) {
+    fileprivate init(page: Page?, blog: Blog, postTitle: String?, content: String?) {
         self.page = page
         self.blog = blog
         self.postTitle = postTitle

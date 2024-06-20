@@ -129,7 +129,7 @@ class MySitesCoordinator: NSObject {
         showBlogDetails(for: blog, then: .stats)
     }
 
-    func showStats(for blog: Blog, source: BlogDetailsNavigationSource, tab: StatsTabType? = nil, date: Date? = nil) {
+    func showStats(for blog: Blog, source: BlogDetailsNavigationSource, tab: StatsTabType? = nil, unit: StatsPeriodUnit? = nil, date: Date? = nil) {
         guard JetpackFeaturesRemovalCoordinator.shouldShowJetpackFeatures() else {
             unsupportedFeatureFallback()
             return
@@ -143,6 +143,10 @@ class MySitesCoordinator: NSObject {
 
         if let siteID = blog.dotComID?.intValue, let tab = tab {
             SiteStatsDashboardPreferences.setSelected(tabType: tab, siteID: siteID)
+        }
+
+        if let unit = unit {
+            SiteStatsDashboardPreferences.setSelected(periodUnit: unit)
         }
 
         let userInfo: [AnyHashable: Any] = [BlogDetailsViewController.userInfoSourceKey(): NSNumber(value: source.rawValue)]

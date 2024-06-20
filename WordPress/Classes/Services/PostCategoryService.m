@@ -165,15 +165,19 @@ NS_ASSUME_NONNULL_BEGIN
     NSMutableArray *categories = [NSMutableArray arrayWithCapacity:remoteCategories.count];
 
     for (RemotePostCategory *remoteCategory in remoteCategories) {
-        PostCategory *category = [PostCategory lookupWithBlogObjectID:blog.objectID categoryID:remoteCategory.categoryID inContext:context];
-        if (!category) {
-            category = [PostCategory createWithBlogObjectID:blog.objectID inContext:context];
-            category.categoryID = remoteCategory.categoryID;
-        }
-        category.categoryName = remoteCategory.name;
-        category.parentID = remoteCategory.parentID;
+        if (remoteCategory.categoryID) {
+            PostCategory *category = [PostCategory lookupWithBlogObjectID:blog.objectID categoryID:remoteCategory.categoryID inContext:context];
+            if (!category) {
+                category = [PostCategory createWithBlogObjectID:blog.objectID inContext:context];
+                category.categoryID = remoteCategory.categoryID;
+            }
+            category.categoryName = remoteCategory.name;
+            if (remoteCategory.parentID) {
+                category.parentID = remoteCategory.parentID;
+            }
 
-        [categories addObject:category];
+            [categories addObject:category];
+        }
     }
 }
 

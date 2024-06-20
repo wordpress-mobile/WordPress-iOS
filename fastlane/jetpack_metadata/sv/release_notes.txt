@@ -1,3 +1,2 @@
-Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks—but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.
-The Tags feed is live! You can now see content with specific tags, all in one place. Tag, you’re it.
-Finally, we fixed the overlapping “Done” button on the “Post Published” screen. Lätt som en plätt.
+Vi har åtgärdat en sällsynt bugg som gjorde att appen kraschade när inlägg togs bort. Skräp är... alltid skräp, antar vi.
+Vi har också åtgärdat ett problem med navigeringsfältet i Synlighet för inlägg-väljaren. Och när vi ändå höll på passade vi dessutom på att uppdatera redigerarskärmen Inläggsinställningar, så att den nya navigeringsfältsstilen används. Skönt.

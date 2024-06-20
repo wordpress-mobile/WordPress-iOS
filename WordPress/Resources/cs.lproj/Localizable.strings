@@ -811,12 +811,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Opravdu chcete tuto položku trvale smazat?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Opravdu chcete trvale smazat tento příspěvek?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Opravdu chcete publikovat?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Opravdu chcete odebrat %1$@ z %2$@?";
 
@@ -825,24 +819,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Opravdu chcete obnovit stav stránky z %1$@? Akce nenávratně odstraní obsah, včetně obsahu a změn nastavení, co jste od té doby udělali.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Opravdu chcete uložit jako koncept?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Opravdu chcete uložit?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Opravdu chcete naplánovat?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Opravdu chcete odeslat ke kontrole?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Opravdu chcete odstranit tento příspěvek?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Opravdu chcete provést aktualizaci?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Pokoušíte se přihlásit do %1$@ poblíž %2$@?";
@@ -1016,9 +992,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Nejlepší pohledy ze všech";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "Prázdná stránka vytvořena";
-
 /* Accessibility label for block quote button on formatting toolbar.
    Discoverability title for block quote keyboard shortcut. */
 "Block Quote" = "Citace";
@@ -1153,7 +1126,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1766,9 +1738,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy file URL" = "Zkopírujte adresu URL souboru";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Zkopírujte verzi z této aplikace";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Téma se nepodařilo přidat mezi sledované";
 
@@ -2079,12 +2048,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Smazat menu";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Smazat trvale";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Trvale smazat?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2424,9 +2389,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Upravit tlačítka pro sdílení";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Nejprve upravte příspěvek";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Upravit pomocí webového editoru";
 
@@ -2556,11 +2518,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Zadejte heslo";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Chcete-li tento příspěvek chránit, zadejte heslo";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Zadejte heslo";
 
 /* Instruction text on the login's site addresss screen.
@@ -2650,18 +2608,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Při přesouvání komentáře do koše došlo k chybě.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Vyskytla se chyba\nběhem aktualizace";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Nastala chyba během publikování";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Během ukládání došlo k chybě";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Vyskytla se chyba během plánování";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Při načítání kontaktních informací o doméně došlo k chybě";
@@ -2944,14 +2890,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "Od %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Z jiného zařízení";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Ze schránky";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Z tohoto zařízení";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Původní velikost";
@@ -2983,9 +2923,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Generovat nový odkaz";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Generování náhledu";
 
 /* View title for initial auth views. */
 "Get Started" = "Začínáme";
@@ -3578,7 +3515,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Pokračovat v úpravách";
 
@@ -4139,7 +4075,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Přesunout položku menu";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Přesunout do koše";
 
@@ -4774,32 +4709,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok zalomení stránky. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Stránka vytvořena";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Koncept stránky nahrán";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Stránku se nepodařilo nahrát";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Stránka čekající na schválení";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Stránka byla publikována";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Stránka naplánována";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Název stránky. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Název stránky. Prázdný";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Stránka aktualizována";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4833,9 +4747,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Heslo bylo úspěšně změněno";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Chráněno heslem";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Vložit URL";
@@ -5067,29 +4978,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Příspěvek vytvořen dne %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Koncept příspěvku byl nahrán";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Nahrávání příspěvku se nezdařilo";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Příspěvek čeká na schválení";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Příspěvek byl publikován";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Příspěvek odstraněn.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Příspěvek uložen.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Příspěvek naplánován";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Konflikt synchronizace článku";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Název příspěvku. %s";
@@ -5099,9 +4992,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Příspěvek na WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Příspěvek aktualizován";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "PSČ";
@@ -5203,8 +5093,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Oznámení o ochraně osobních údajů pro uživatele Kalifornie";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Soukromé";
 
 /* No comment provided by engineer. */
@@ -5236,11 +5125,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Výzvy";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Publikovat";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Publikováno";
@@ -5270,9 +5155,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Publikovat příspěvek...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Publikování...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Nákupy";
@@ -5577,10 +5459,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5661,14 +5541,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Uložit 1 fotografii jako koncept příspěvku na:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Uložit koncept";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Uložit příspěvky pro pozdější úpravu";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Uložit jako koncept";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Uložit stránku konceptu na:";
@@ -5698,8 +5572,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Ukládání příspěvku...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Ukládání...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5726,15 +5599,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Skenování souborů";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Naplánovat";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Načasováno";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Plánování...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Nabídka rolovatelného bloku uzavřena.";
@@ -6366,9 +6233,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistiky nebyly načteny";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Stav";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Zůstaňte v obraze";
 
@@ -6410,9 +6274,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Odeslat ke kontrole";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Odesláním ke kontrole...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Index reflektoru byl úspěšně vymazán";
@@ -6739,9 +6600,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Počet příspěvků, které se mají zobrazit na stránce.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Příspěvek, který se pokoušíte zkopírovat, má dvě verze, které jsou v konfliktu, nebo jste nedávno provedli změny, ale neuložili jste je.\nNejprve upravte příspěvek, abyste vyřešili jakýkoli konflikt, nebo pokračujte v kopírování verze z této aplikace.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Série požadavků se nezdařila.";
 
@@ -6961,12 +6819,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Tato mediální položka byla smazána.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Tato stránka se aktuálně nahrává. Nebude to trvat dlouho - zkuste to znovu brzy a budete moci upravit.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Tento příspěvek se aktuálně nahrává. Nebude to trvat dlouho - zkuste to znovu brzy a budete moci upravit.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Tento příspěvek je v sekci moje lajky";
 
@@ -7144,9 +6996,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Odstranit";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Smazat tento příspěvek?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7425,17 +7274,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Aktualizovat";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Aktualizovat koncept";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Aktualizovat odkaz";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Aktualizace stránky";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Aktualizace příspěvku";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Aktualizace profilového obrázku";
@@ -7461,9 +7301,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Describes a status of a plugin */
 "Updating" = "Aktualizace";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Aktualizování...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgradujte svůj plán na nahrávání zvuku";
 
@@ -7473,8 +7310,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Nahrát média";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nahrávání selhalo";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7508,15 +7344,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Nahrávám média";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Nahrávání médií...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Nahrávání příspěvku";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Nahrávání příspěvku...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Nahrávání videí delších než 5 minut vyžaduje placený tarif.";
@@ -7608,8 +7435,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Videa";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobrazit";
@@ -7659,8 +7485,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Zobrazení a návštěvníci";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Viditelnost";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7739,97 +7564,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "Usilovně pracujeme na přidání dalších bloků s každým vydáním.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "Tuto akci jsme nemohli dokončit a tuto stránku jsme nezveřejnili.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "Tuto akci jsme nemohli dokončit a tento příspěvek jsme nezveřejnili.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "Tuto akci jsme nemohli dokončit a tuto soukromou stránku jsme nezveřejnili.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "Tuto akci jsme nemohli dokončit a tento soukromý příspěvek jsme nezveřejnili.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "Tuto akci jsme nemohli dokončit a tuto stránku jsme nenaplánovali.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "Tuto akci jsme nemohli dokončit a tento příspěvek jsme nenaplánovali.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "Tuto akci jsme nemohli dokončit a tuto stránku jsme neposlali ke kontrole.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "Tuto akci jsme nemohli dokončit a tento příspěvek jsme neposlali ke kontrole.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "Tuto akci jsme nemohli dokončit, ale zkusíme to znovu později.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "Tuto akci jsme nemohli dokončit.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Vaši zálohu jsme nemohli vytvořit. Prosím zkuste to znovu později.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "Tuto stránku jsme nemohli zveřejnit, ale zkusíme to znovu později.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "We couldn't publish this post, but we'll try again later.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "Tuto soukromou stránku jsme nemohli zveřejnit, ale zkusíme to znovu později.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "Tento příspěvek jsme nemohli zveřejnit, ale zkusíme to znovu později.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "Váš web jsme nemohli obnovit. Prosím zkuste to znovu později.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Toto médium se nepodařilo načíst.\nZkuste to prosím klepnutím.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "Tuto stránku jsme nemohli naplánovat, ale zkusíme to znovu později.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "Tento příspěvek jsme nemohli naplánovat, ale zkusíme to znovu později.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "Tuto stránku jsme nemohli odeslat ke kontrole, ale zkusíme to znovu později.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "We couldn't submit this post for review, but we'll try again later.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "Toto médium jsme nemohli nahrát a stránku jsme nezveřejnili.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "Toto médium jsme nemohli nahrát a příspěvek jsme nezveřejnili.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "Toto médium jsme nemohli nahrát a tuto soukromou stránku jsme nezveřejnili.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "Toto médium jsme nemohli nahrát a tento soukromý příspěvek jsme nezveřejnili.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "Toto médium jsme nemohli nahrát a tuto stránku jsme nenaplánovali.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "Toto médium jsme nemohli nahrát a tento příspěvek jsme nenaplánovali.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "Toto médium jsme nemohli nahrát a tuto stránku jsme neposlali ke kontrole.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "Toto médium jsme nemohli nahrát a tento příspěvek jsme neposlali ke kontrole.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Toto médium se nám nepodařilo nahrát.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "Nepodařilo se najít stav, který by říkal, jak dlouho bude trvat zálohování.";
@@ -7864,22 +7606,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Pokud budou nalezeny bezpečnostní hrozby, zašleme vám e-mail. Mezitím můžete svůj web nadále používat jako obvykle, pokrok můžete kdykoli zkontrolovat.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "Tyto změny nebudeme publikovat.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "Nebudeme ukládat nejnovější změny vašeho konceptu.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "Tyto změny nebudeme plánovat.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "Tyto změny nebudeme odesílat ke kontrole.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Zašleme vám email, který vás okamžitě přihlásí, bez hesla.";
 
@@ -7891,33 +7617,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Budeme vás informovat, když získáte nové sledující, komentáře a lajky. Chcete povolit push oznámení?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Stránku zveřejníme, až bude zařízení zpět online.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Příspěvek zveřejníme, až bude zařízení zpět online.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Až bude zařízení zpět online, zveřejníme vaši soukromou stránku.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Až bude zařízení zpět online, zveřejníme váš soukromý příspěvek.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Váš koncept uložíme, až bude zařízení zpět online.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Naplánujeme vaši stránku, až bude zařízení zpět online.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Naplánujeme váš příspěvek, až bude zařízení zpět online.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Až bude zařízení znovu online, odešleme vaši stránku ke kontrole.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Až bude zařízení zpět online, odešleme váš příspěvek ke kontrole.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Tuto e-mailovou adresu použijeme k vytvoření vašeho nového účtu WordPress.com.";
@@ -8062,9 +7761,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Když na svém webu provedete změny, uvidíte zde svoji historii aktivit.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Kterou verzi chcete upravit?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Jejda, něco se pokazilo a nemohli jsme vás přihlásit. Zkuste to prosím znovu!";
@@ -8339,10 +8035,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Dnes jste na svém webu obdrželi *50 lajků*";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "V tomto příspěvku jste nedávno provedli změny, ale neuložili jste je. Vyberte verzi, kterou chcete načíst:\n\nZ tohoto zařízení\nUšetřeno na %1$@\n\nZ jiného zařízení\nUšetřeno na %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8372,9 +8064,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Nemáte oprávnění k uzavření účtu.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "V tomto příspěvku jste provedli neuložené změny";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikona vašeho webu";
@@ -8408,9 +8097,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Vaše heslo by mělo mít délku alespoň šesti znaků. Aby bylo silnější, použijte malé a velké písmena, čísla a symboly! \"? $% ^ &).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Váš příspěvek se aktuálně nahrává. Počkejte, dokud se to nedokončí.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Váš příspěvek se publikuje... mezitím si nastavte připomenutí blogů na dny, kdy chcete přidávat příspěvky.";

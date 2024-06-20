@@ -173,8 +173,6 @@ private enum Strings {
     static let date = NSLocalizedString("publishDatePicker.date", value: "Publish Date", comment: "Post publish date picker title for date cell")
     static let immediately = NSLocalizedString("publishDatePicker.immediately", value: "Immediately", comment: "Post publish date picker: selected value placeholder when no date is selected and the post will be published immediately")
     static let timeZone = NSLocalizedString("publishDatePicker.timeZone", value: "Time Zone", comment: "Post publish time zone cell title")
-    static let removePublishDate = NSLocalizedString("publishDatePicker.removePublishDate", value: "Remove Publish Date", comment: "Title for button in publish date picker")
-    static let selectPublishDate = NSLocalizedString("publishDatePicker.selectPublishDate", value: "Select Publish Date", comment: "Title for button in publish date picker")
     static let footerCurrentTimezone = NSLocalizedString("publishDatePicker.footerCurrentTimezone", value: "The date in your current time zone:", comment: "Post publish date picker footer view when the selected date time zone is different from your current time zone; followed by the time in the current time zone.")
 }
 

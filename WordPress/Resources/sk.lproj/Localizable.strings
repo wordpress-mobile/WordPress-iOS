@@ -384,35 +384,11 @@
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Naozaj chcete túto položku natrvalo odstrániť?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Naozaj chcete natrvalo odtrániť článok?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Naozaj chcete zverejniť?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Určite chcete odstrániť %1$@ z %2$@?";
 
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name. */
 "Are you sure you want to remove %1$@?" = "Určite chcete odstrániť %1$@?";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Naozaj chcete uložiť ako koncept?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Naozaj chcete uložiť?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Naozaj chcete naplánovať?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Naozaj chcete odoslať na recenziu?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Ste si istý, že chcete vyhodiť článok?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Naozaj chcete aktualizovať?";
 
 /* Message shown to users who have an old publicize connection to a facebook profile. */
 "As of August 1, 2018, Facebook no longer allows direct sharing of posts to Facebook Profiles. Connections to Facebook Pages remain unchanged." = "Od 1. augusta 2018 spoločnosť Facebook už neumožňuje priame zdieľanie príspevkov na profily služby Facebook. Pripojenia na stránky Facebooku zostávajú nezmenené.";
@@ -528,7 +504,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -989,12 +964,8 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Zmazať menu";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Zmazať natrvalo";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Vymazať na trvalo?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -1200,8 +1171,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Zadajte heslo";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Vložte heslo";
 
 /* Instructional text shown when requesting the user's password for login. */
@@ -1251,15 +1221,6 @@
 
 /* Messaged displayed when fetching plugins failed. */
 "Error loading plugins" = "Došlo k chybe pri načítavaní pluginov.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Počas aktualizácie\nsa vyskytla chyba";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Poča publikovania sa vyskytla chyba";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Poča plánovania sa vyskytla chyba";
 
 /* Title of error dialog when removing a site owner fails. */
 "Error removing %@" = "Chyba pri odstraňovaní %@";
@@ -1669,7 +1630,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Pokračovanie v úpravách";
 
@@ -1993,7 +1953,6 @@
 "More Posts" = "Viac článkov";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Presunúť do koša";
 
@@ -2348,21 +2307,6 @@
    Title shown when selecting a post type of Page from the Share Extension. */
 "Page" = "Stránka";
 
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Koncept stránky sa nahral";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Zlyhalo nahranie stránky";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Stránka čaká na kontrolu";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Zverejnená stránka";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Naplánovaná stránka";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -2386,9 +2330,6 @@
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Heslo";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Chránené heslom";
 
 /* Paste without Formatting Menu Item */
 "Paste without Formatting" = "Prilepiť bez formátovania";
@@ -2517,26 +2458,11 @@
 /* Spoken accessibility label for blog author and name in Reader cell. */
 "Post by %@, from %@" = "Článok %1$@, z %2$@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Koncept článku sa nahral";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Zlyhalo nahranie článku";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Článok čaká na kontrolu";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Článok zverejnený";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Príspevok bol odstránený.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Príspevok bol uložený.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Článok naplánovaný";
 
 /* Insights 'Posting Activity' header
    Title for stats Posting Activity view. */
@@ -2602,8 +2528,7 @@
    Privacy Settings Title */
 "Privacy Settings" = "Nastavenia súkromia";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Súkromné";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -2612,11 +2537,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Projekty";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Verejné";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Zverejniť";
@@ -2637,9 +2558,6 @@
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Zverejňovanie článku...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Zverejňovanie...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Nákupy";
@@ -2818,10 +2736,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -2872,14 +2788,8 @@
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Uložiť 1 fotografiu ako koncept článku na:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Uložiť koncept";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Uložiť príspevky na neskôr";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Uložiť ako koncept";
 
 /* Text displayed in the share extension's summary view that describes the save draft post action. */
 "Save draft post on:" = "Uložiť koncept článku na:";
@@ -2903,19 +2813,12 @@
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Článok sa ukladá...";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Ukladá sa...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Naplánovať";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Naplánované";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Plánovanie...";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
@@ -3250,9 +3153,6 @@
    The item to select during a guided tour. */
 "Stats" = "Štatistika";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Stav";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Zostraňte v cykle";
 
@@ -3276,9 +3176,6 @@
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Odoslať ku kontrole";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Odoslanie na kontrolu...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Úspešne vyčistený spotlight index";
@@ -3569,12 +3466,6 @@
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Táto mediálna položka bola odstránená.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Stránka sa momentálne načítáva. Nebude to dlho trvať - pokus zopakujte neskôr a budete ju môcť upraviť.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Článok sa momentálne načítáva. Nebude to dlho trvať - pokus zopakujte neskôr a budete ho môcť upraviť.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Článok sa nachádza medzi \"Páči sa mi to\" ";
 
@@ -3672,9 +3563,6 @@
    Trashes a comment
    Trashes the comment */
 "Trash" = "Kôš";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Vyhodiť tento článok?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -3839,17 +3727,8 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Aktualizovať";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Aktualizovať koncept";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Aktualizovať odkaz";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Aktualizovať stránku";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Aktualizovať článok";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Aktualizovať Profilovú fotografiu";
@@ -3857,14 +3736,10 @@
 /* Describes a status of a plugin */
 "Updating" = "Aktualizovanie";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Aktualizuje sa...";
-
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Nahrať súbor";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Nahrávanie zlyhalo";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -3895,12 +3770,6 @@
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Nahrávanie súborov";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Načítavajú sa média...";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Článok sa nahráva...";
 
 /* Label to show while uploading media to server */
 "Uploading..." = "Nahráva sa...";
@@ -3956,8 +3825,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Videá";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Zobraziť";
@@ -3998,8 +3866,7 @@
    Today's Stats 'Views' label */
 "Views" = "Zobrazenia";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Viditeľnosť";
 
 /* An option to visit the site to which a specific post belongs */

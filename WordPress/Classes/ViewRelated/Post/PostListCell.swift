@@ -7,8 +7,6 @@ protocol AbstractPostListCell {
 }
 
 final class PostListCell: UITableViewCell, AbstractPostListCell, PostSearchResultCell, Reusable {
-    var isEnabled = true
-
     // MARK: - Views
 
     private lazy var mainStackView: UIStackView = {
