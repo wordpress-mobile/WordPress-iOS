@@ -61,8 +61,6 @@ extension QueryStore where State == PeriodStoreState {
         switch type {
         case .timeIntervalsSummary:
             return state.timeIntervalsSummary != nil
-        case .totalsSummary:
-            return state.totalsSummary != nil
         case .topPostsAndPages:
             return state.topPostsAndPages != nil
         case .topReferrers:

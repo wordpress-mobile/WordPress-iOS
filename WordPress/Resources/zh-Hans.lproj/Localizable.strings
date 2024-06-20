@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-06-07 13:14:44+0000 */
+/* Translation-Revision-Date: 2024-06-13 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: zh_CN */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "是否确定要永久删除此项目？";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "确定要永久删除此文章吗？";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "确定要发布吗？";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "是否确定要从 %2$@ 中删除 %1$@？";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "是否确定要将站点恢复到 %1$@ 时的样子？ 此操作将删除在此时间之后创建或更改的所有内容和选项。";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "是否确定要保存为草稿？";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "是否确定要保存？";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "是否确定要加入计划？";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "是否确定要提供以供审核？";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "是否确定要删除此文章？";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "是否确定要更新？";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "您是否正在尝试登录到%2$@附近的 %1$@？";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "最受欢迎的文章";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "已创建空白页";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "复制文章文本";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "从此应用程序复制版本";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "无法关注主题";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "删除菜单";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "永久删除";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "是否永久删除？";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "编辑共享按钮";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "先编辑文章";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "使用 Web 编辑器进行编辑";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "输入密码";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "输入密码以保护这篇文章";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "输入密码";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "将评论移至回收站时出错。";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "发生错误\n在加载中";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "在发布期间发生错误";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "保存过程中出现错误";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "在预发布期间发生错误";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "抓取域联系信息时出现错误";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "来自 %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "来自其他设备";
-
 /* No comment provided by engineer. */
 "From clipboard" = "从剪贴板";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "从此设备中";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "完整尺寸";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "生成新链接";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "正在生成预览";
 
 /* View title for initial auth views. */
 "Get Started" = "开始";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "保存编辑";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "移动菜单项";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "移动到回收站";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "分页符区块。%s";
 
-/* Notice that a page with content has been created */
-"Page created" = "页面已创建";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "页面草稿已上传";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "页面上传失败";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "页面待审核";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "页面已发布";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "页面已预发布";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "“页面”标题。 %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "“页面”标题。 清空";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "页面已更新";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "密码修改成功";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "密码保护";
 
 /* No comment provided by engineer. */
 "Paste URL" = "粘贴 URL";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "文章创建日期：%@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "文章草稿已上传";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "文章上传失败";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "文章待审核";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "文章已发布";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "文章已删除。";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "文章已保存。";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "文章已预发布";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "文章同步冲突";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "文章标题。%s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "发布至 WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "文章已更新";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "邮政编码";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "面向加州用户的隐私声明";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "私密";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "提示";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "公开";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "发布";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "正在发布文章…";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "正在发布...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "购买";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "在以下网站上将 1 张照片保存为草稿文章：";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "保存草稿";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "保存文章供稍后查看";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "保存为草稿";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "在以下网站上保存草稿页面：";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "正在保存文章…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "正在保存...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "正在扫描文件";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "定时";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "已定时";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "正在预发布...";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "滚动区块菜单关闭。";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "未加载统计信息";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "状态";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "保持关注";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "提交以待审核";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "正在提交以供审核…";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "已成功清除聚焦索引";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "每页显示的文章数。";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "您尝试复制的文章存在两个相互冲突的版本，或者您最近进行了更改但并未将其保存。\n请先编辑文章来解决任何冲突问题，或继续从此应用程序中复制版本。";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "请求序列化失败。";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "此媒体项目已被删除。";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "正在上传此页面。请稍候 - 很快就可以对其进行编辑了。";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "正在上传此文章。请稍候 - 很快就可以对其进行编辑了。";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "此文章在“我的赞”中";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "移到回收站";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "是否将此文章放入回收站？";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "更新";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "更新草稿";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "更新链接";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "更新页面";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "更新文章";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "上传个人资料照片";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "您在此对头像、名称和简介信息做出的更新也将更新到所有使用 Gravatar 个人资料的站点。";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "正在更新…";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "升级您的套餐即可上传音频";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "上传媒体文件";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "上传失败";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "正在上传媒体";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "正在上传媒体...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "正在上传文章";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "正在上传文章...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "上传超过 5 分钟的视频需要使用付费套餐。";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "视频";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "视图";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "浏览次数和访客人数";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "可见性";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7956,97 +7781,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "我们正在努力在每个版本中添加更多区块。";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "我们无法完成此操作，因而未发布此页面。";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "我们无法完成此操作，因而未发布此文章。";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "我们无法完成此操作，因而未发布此私密页面。";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "我们无法完成此操作，因而未发布此私密文章。";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "我们无法完成此操作，因而未安排此页面的发布时间。";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "我们无法完成此操作，因而未安排此文章的发布时间。";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "我们无法完成此操作，因而未提交此页面以进行审核。";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "我们无法完成此操作，因而未提交此文章以进行审核。";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "我们无法完成此操作，但我们会稍后重试。";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "我们无法完成此操作。";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "我们无法创建备份，请稍后重试。";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "我们无法发布此页面，但我们稍后会重试。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "我们无法发布此文章，但我们会稍后重试。";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "我们无法发布此私密页面，但我们稍后会重试。";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "我们无法发布此私密文章，但我们会稍后重试。";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "我们无法恢复您的网站，请稍后重试。";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "我们无法获取此媒体。\n请轻触以重试。";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "我们无法安排此页面的发布时间，但我们稍后会重试。";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "我们无法安排此文章的发布时间，但我们会稍后重试。";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "我们无法提交此页面以进行审核，但我们稍后会重试。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "我们无法提交这篇文章以进行审核，但我们会稍后重试。";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "我们无法上传此媒体，因而未发布此页面。";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "我们无法上传此媒体，因而未发布此文章。";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "我们无法上传此媒体，因而未发布此私密页面。";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "我们无法上传此媒体，因而未发布此私密文章。";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "我们无法上传此媒体，因而未安排此页面的发布时间。";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "我们无法上传此媒体，因而未安排此文章的计划发布时间。";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "我们无法上传此媒体，因而未提交此页面以进行审核。";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "我们无法上传此媒体，因而未提交此文章以进行审核。";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "我们无法上传此媒体。";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "我们找不到可说明您的备份所需时长的状态。";
@@ -8081,22 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "如果发现安全威胁，我们会给您发送电子邮件。 在此期间，您可以继续正常使用您的站点，您可以随时查看进度。";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "我们不会发布这些更改。";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "我们不会将最新更改保存到您的草稿中。";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "我们不会安排这些更改的发布时间。";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "我们不会将这些更改提交审核。";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "我们将通过电子邮件向您发送一个神奇链接，利用它您无需密码即可立即登录。无需再输入密码了！";
 
@@ -8108,33 +7834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "当您获得新的粉丝、评论和赞时，我们将通知您。 是否希望接收推送通知？";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "当您的设备重新联网后，我们将发布此页面。";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "当您的设备重新联网后，我们将发布此文章。";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "当您的设备重新联网后，我们将发布您的私密页面。";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "当您的设备重新联网后，我们将发布您的私密文章。";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "设备恢复在线状态后，我们会保存您的草稿。";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "当您的设备重新联网后，我们将安排您的页面的发布时间。";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "当您的设备重新联网后，我们将安排您的文章的发布时间。";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "当您的设备重新联网后，我们将提交您的页面以进行审核。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "设备恢复在线状态后，我们将提交您的文章以供审核。";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "我们将使用此电子邮件地址创建您的新 WordPress.com 账户。";
@@ -8282,9 +7981,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "在对站点进行更改时，您可在此处查看您的活动历史记录。";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "您想要编辑哪个版本？";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "糟糕，出问题了，您无法登录。请重试！";
@@ -8580,10 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "您的站点今天收到了*50个喜欢*";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "您最近对这篇文章进行了更改，但没有保存。 选择要加载的版本：\n\n从这个装置\n保存于 %1$@\n\n从另一台设备\n保存于 %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8613,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "您不具备关闭此账户的权限";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "您对此文章所做的更改未保存";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "您的站点图标";
@@ -8652,9 +8341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "密码不得少于 6 个字符。要提高密码强度，请使用大小写字母、数字和 ! \" ? $ % ^ & ) 等符号。";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "您的文章当前正在上传。 请等待，直到此任务完成。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "您的文章正在发布...同时，在您希望发布文章的日期设置博客发布提醒。";
@@ -8956,6 +8642,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "结账";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "保存草稿";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "评论";
@@ -10192,32 +9881,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "页面更新成功";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "永久删除";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "确定要永久删除此页面吗？";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "是否永久删除？";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "所有人的页面";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "我的页面";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "移至回收站";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "确定要将此页面放入回收站吗？";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "是否将此页面放入回收站？";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "取消";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "父页面";
@@ -10285,12 +9953,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "套餐";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "正在删除文章…";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "正在将文章移至回收站...";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "放弃更改";
 
@@ -10331,6 +9993,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "修订版本";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "保存草稿";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "可视化编辑器";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10361,7 +10026,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "正在保存草稿……";
 
 /* Button title */
+"postFromAudio.beginRecording" = "开始录制";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "升级以获得更多请求次数";
+
+/* Button title */
+"postFromAudio.done" = "完成";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "处理请求时遇到一些问题。 请稍后重试。";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "出错了";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "您的可用请求次数不足，无法从音频创建文章。";
@@ -10371,9 +10048,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "重试";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "出错了";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "可用的请求次数：";
@@ -10386,6 +10060,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "正在录音…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "无限制";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作者是 %@。";
@@ -10462,9 +10139,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "出错了";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "该应用程序正在将此前所做的更改上传至服务器。 请稍后重试。";
-
 /* Button OK */
 "postNotice.ok" = "确定";
 
@@ -10540,9 +10214,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "设置特色图片";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "更新文章设置失败";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "将可见性更改为“私人”即会立即发布此文章";
 
@@ -10585,9 +10256,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "大力宣传并推广";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "取消上传";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "评论";
 
@@ -10608,9 +10276,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "发布";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "重试";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "设为主页";
@@ -10635,18 +10300,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "查看";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "页面已永久删除";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "文章已永久删除";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "页面已移至回收站";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "文章已移至回收站";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "所有人的文章";
@@ -10677,9 +10330,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "上传媒体失败";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "标题";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "发布";

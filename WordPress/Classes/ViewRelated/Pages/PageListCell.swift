@@ -113,6 +113,7 @@ final class PageListCell: UITableViewCell, AbstractPostListCell, PostSearchResul
         setupLabels()
         setupFeaturedImageView()
         setupEllipsisButton()
+        setupIcon()
 
         indentationIconView.tintColor = .secondaryLabel
         indentationIconView.image = UIImage(named: "subdirectory")

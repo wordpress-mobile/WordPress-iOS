@@ -2,10 +2,6 @@ import UIKit
 
 enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     case insights = 0
-    case days
-    case weeks
-    case months
-    case years
     case traffic
     case subscribers
 
@@ -13,10 +9,6 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
     var title: String {
         switch self {
         case .insights: return NSLocalizedString("Insights", comment: "Title of Insights stats filter.")
-        case .days: return NSLocalizedString("Days", comment: "Title of Days stats filter.")
-        case .weeks: return NSLocalizedString("Weeks", comment: "Title of Weeks stats filter.")
-        case .months: return NSLocalizedString("Months", comment: "Title of Months stats filter.")
-        case .years: return NSLocalizedString("Years", comment: "Title of Years stats filter.")
         case .traffic: return NSLocalizedString("stats.dashboard.tab.traffic", value: "Traffic", comment: "Title of Traffic stats tab.")
         case .subscribers: return NSLocalizedString("stats.dashboard.tab.subscribers", value: "Subscribers", comment: "Title of Subscribers stats tab.")
         }
@@ -24,14 +16,6 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
 
     init?(from string: String) {
         switch string {
-        case "day":
-            self = .days
-        case "week":
-            self = .weeks
-        case "month":
-            self = .months
-        case "year":
-            self = .years
         case "insights":
             self = .insights
         case "traffic":
@@ -42,39 +26,16 @@ enum StatsTabType: Int, FilterTabBarItem, CaseIterable {
             return nil
         }
     }
-
-    var unit: StatsPeriodUnit? {
-        switch self {
-        case .days:
-            return .day
-        case .weeks:
-            return .week
-        case .months:
-            return .month
-        case .years:
-            return .year
-        default:
-            return nil
-        }
-    }
 }
 
 fileprivate extension StatsTabType {
     static var displayedTabs: [StatsTabType] {
-        if RemoteFeatureFlag.statsTrafficSubscribersTabs.enabled() {
-            return [.traffic, .insights, .subscribers]
-        } else {
-            return [.insights, .days, .weeks, .months, .years]
-        }
+        return [.traffic, .insights, .subscribers]
     }
 
     var analyticsAccessEvent: WPAnalyticsStat? {
         switch self {
         case .insights: return .statsInsightsAccessed
-        case .days:     return .statsPeriodDaysAccessed
-        case .weeks:    return .statsPeriodWeeksAccessed
-        case .months:   return .statsPeriodMonthsAccessed
-        case .years:    return .statsPeriodYearsAccessed
         case .traffic:  return nil
         case .subscribers: return .statsSubscribersAccessed
         }
@@ -107,12 +68,6 @@ class SiteStatsDashboardViewController: UIViewController {
     private lazy var insightsTableViewController = {
         let viewController = SiteStatsInsightsTableViewController.loadFromStoryboard()
         viewController.tableStyle = .insetGrouped
-        viewController.bannerView = jetpackBannerView
-        return viewController
-    }()
-
-    private lazy var periodTableViewControllerDeprecated = {
-        let viewController = SiteStatsPeriodTableViewControllerDeprecated.loadFromStoryboard()
         viewController.bannerView = jetpackBannerView
         return viewController
     }()
@@ -266,7 +221,6 @@ private extension SiteStatsDashboardViewController {
     }
 
     func restoreSelectedDateFromUserDefaults() {
-        periodTableViewControllerDeprecated.selectedDate = SiteStatsDashboardPreferences.getLastSelectedDateFromUserDefaults()
         SiteStatsDashboardPreferences.removeLastSelectedDateFromUserDefaults()
     }
 
@@ -299,21 +253,6 @@ private extension SiteStatsDashboardViewController {
                                                        direction: .forward,
                                                        animated: false)
             }
-        case .days, .weeks, .months, .years:
-            if previousSelectedPeriodWasInsights || pageViewControllerIsEmpty {
-                pageViewController?.setViewControllers([periodTableViewControllerDeprecated],
-                                                       direction: .forward,
-                                                       animated: false)
-            }
-
-            if periodTableViewControllerDeprecated.selectedDate == nil
-                || selectedPeriodChanged {
-
-                periodTableViewControllerDeprecated.selectedDate = StatsDataHelper.currentDateForSite()
-            }
-
-            let selectedPeriod = StatsPeriodUnit(rawValue: currentSelectedTab.rawValue - 1) ?? .day
-            periodTableViewControllerDeprecated.selectedPeriod = selectedPeriod
         }
     }
 
@@ -348,9 +287,6 @@ struct SiteStatsDashboardPreferences {
         UserPersistentStoreFactory.instance().set(tabType.rawValue, forKey: periodKey)
 
         let unitKey = lastSelectedStatsUnitTypeKey(forSiteID: siteID)
-        if let unit = tabType.unit {
-            UserPersistentStoreFactory.instance().set(unit.rawValue, forKey: unitKey)
-        }
     }
 
     static func setSelected(periodUnit: StatsPeriodUnit) {

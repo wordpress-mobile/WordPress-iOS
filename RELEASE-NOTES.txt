@@ -1,6 +1,7 @@
 25.2
 -----
-
+* [*] Simplify post list context menu sections [#23356]
+* [*] Fix an issue with incorrect snackbar shown when saving drafts manually [#23358]
 
 25.1
 -----
@@ -9,7 +10,12 @@
 * [*] Fix an issue with a missing navigation bar background in Post Settings [#23334]
 * [*] Fix an issue where the app will sometimes save empty drafts [#23342]
 * [*] Add `.networkConnectionLost` to the list of "offline" scenarios so that the "offline changes" badge and fast retries work for this use case [#23348]
-
+* [*] If draft sync fails, the app will now show the "Retry" button in the context menu along with the error message [#23355]
+* [*] Fix an issue with post content structure not loading in some scenarios [#23347]
+* [*] Fix a rare crash when updating posts with categories [#23354]
+* [*] Fix an issue where a Page editor will not close automatically after trying to update a permanently deleted post [#23363]
+* [*] Fix an issue where you could remove the scheduled date on a scheduled post [#23360]
+* [*] The Post List screen now fetches updates faster and shows a spinner when refreshing stale data [#23362]
 
 25.0
 -----

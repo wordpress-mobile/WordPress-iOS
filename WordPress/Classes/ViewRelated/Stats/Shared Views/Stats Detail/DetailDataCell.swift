@@ -19,7 +19,6 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
     private weak var detailsDelegate: SiteStatsDetailsDelegate?
     private weak var referrerDelegate: SiteStatsReferrerDelegate?
-    private var rowData: StatsTotalRowData?
     private typealias Style = WPStyleGuide.Stats
     private var row: StatsTotalRow?
 
@@ -36,7 +35,6 @@ class DetailDataCell: UITableViewCell, NibLoadable {
 
         Style.configureViewAsSeparator(bottomExpandedSeparatorLine)
 
-        self.rowData = rowData
         self.detailsDelegate = detailsDelegate
         self.referrerDelegate = referrerDelegate
 

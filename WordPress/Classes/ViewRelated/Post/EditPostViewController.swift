@@ -25,8 +25,6 @@ class EditPostViewController: UIViewController {
     @objc var onClose: ((_ changesSaved: Bool) -> ())?
     @objc var afterDismiss: (() -> Void)?
 
-    private var originalPostID: NSManagedObjectID?
-
     override var modalPresentationStyle: UIModalPresentationStyle {
         didSet(newValue) {
             // make sure this view is transparent with the previous VC visible
@@ -69,7 +67,6 @@ class EditPostViewController: UIViewController {
     /// - Note: it's preferable to use one of the convenience initializers
     fileprivate init(post: Post?, blog: Blog, prompt: BloggingPrompt? = nil) {
         self.post = post
-        self.originalPostID = post?.original().objectID
         if let post = post {
             if !post.originalIsDraft() {
                 editingExistingPost = true
@@ -82,8 +79,6 @@ class EditPostViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
         modalPresentationStyle = .fullScreen
         modalTransitionStyle = .coverVertical
-
-        NotificationCenter.default.addObserver(self, selector: #selector(didChangeObjects), name: NSManagedObjectContext.didChangeObjectsNotification, object: blog.managedObjectContext)
     }
 
     required init?(coder: NSCoder) {
@@ -118,15 +113,6 @@ class EditPostViewController: UIViewController {
             newPost.prepareForPrompt(prompt)
             post = newPost
             return newPost
-        }
-    }
-
-    @objc private func didChangeObjects(_ notification: Foundation.Notification) {
-        guard let userInfo = notification.userInfo else { return }
-
-        let deletedObjects = ((userInfo[NSDeletedObjectsKey] as? Set<NSManagedObject>) ?? [])
-        if deletedObjects.contains(where: { $0.objectID == originalPostID }) {
-            closeEditor()
         }
     }
 

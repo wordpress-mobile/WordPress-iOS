@@ -25,17 +25,10 @@ extension StatsPeriodFilterDimension {
 // MARK: - PeriodChart
 
 final class PeriodChart {
-
-    private let rawChartData: StatsSummaryTimeIntervalData
-    private var filterDimension: StatsPeriodFilterDimension
-
     private(set) var barChartData: [BarChartDataConvertible]
     private(set) var barChartStyling: [BarChartStyling]
 
-    init(data: StatsSummaryTimeIntervalData, filterDimension: StatsPeriodFilterDimension = .views) {
-        rawChartData = data
-        self.filterDimension = filterDimension
-
+    init(data: StatsSummaryTimeIntervalData) {
         let (data, styling) = PeriodChartDataTransformer.transform(data: data)
 
         barChartData = data

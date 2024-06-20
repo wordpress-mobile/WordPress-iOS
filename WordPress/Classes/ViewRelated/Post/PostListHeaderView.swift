@@ -9,11 +9,6 @@ final class PostListHeaderView: UIView {
     private let indicator = UIActivityIndicatorView(style: .medium)
     private let ellipsisButton = UIButton(type: .custom)
 
-    // MARK: - Properties
-
-    private var post: Post?
-    private var viewModel: PostListItemViewModel?
-
     // MARK: - Initializer
 
     override init(frame: CGRect) {

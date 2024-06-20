@@ -34,7 +34,6 @@ private extension StatsSubscribersChartCell {
                                                         data: chartData,
                                                         styling: chartStyling,
                                                         analyticsGranularity: .days,
-                                                        indexToHighlight: 0,
                                                         xAxisDates: xAxisDates)
         let lineChartView = StatsLineChartView(configuration: configuration)
 

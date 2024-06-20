@@ -15,7 +15,7 @@ PODS:
   - Gravatar (2.0.0)
   - GravatarUI (2.0.0):
     - Gravatar (= 2.0.0)
-  - Gutenberg (1.120.0)
+  - Gutenberg (1.120.1)
   - Kanvas (1.4.9):
     - CropViewController
   - MediaEditor (1.2.2):
@@ -36,7 +36,7 @@ DEPENDENCIES:
   - FSInteractiveMap (from `https://github.com/wordpress-mobile/FSInteractiveMap.git`, tag `0.2.0`)
   - Gravatar (= 2.0.0)
   - GravatarUI (= 2.0.0)
-  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0.podspec`)
+  - Gutenberg (from `https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.1.podspec`)
   - Kanvas (~> 1.4.4)
   - MediaEditor (>= 1.2.2, ~> 1.2)
   - Specta (= 1.0.7)
@@ -67,7 +67,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/wordpress-mobile/FSInteractiveMap.git
     :tag: 0.2.0
   Gutenberg:
-    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.0.podspec
+    :podspec: https://cdn.a8c-ci.services/gutenberg-mobile/Gutenberg-v1.120.1.podspec
 
 CHECKOUT OPTIONS:
   FSInteractiveMap:
@@ -81,7 +81,7 @@ SPEC CHECKSUMS:
   FSInteractiveMap: a396f610f48b76cb540baa87139d056429abda86
   Gravatar: 54fc63ea6298e9afca7329007815be25868f1dfe
   GravatarUI: bb5e03cda2da61e54aa1c20d4dde32b7153fa8b4
-  Gutenberg: a0cc56d764e14caf66c8a057255106a62808dd98
+  Gutenberg: 0699e7dd207afb591ccd5e81252a92e6e7781391
   Kanvas: cc027f8058de881a4ae2b5aa5f05037b6d054d08
   MediaEditor: d08314cfcbfac74361071a306b4bc3a39b3356ae
   Specta: 3e1bd89c3517421982dc4d1c992503e48bd5fe66

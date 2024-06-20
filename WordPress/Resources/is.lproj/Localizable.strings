@@ -303,7 +303,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -638,8 +637,7 @@
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Eyða valmynd";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Eyða varanlega";
 
 /* Button label for deleting the current site
@@ -799,8 +797,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Sláðu inn lykilorð";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Sláðu inn lykilorð";
 
 /* (placeholder) Help enter WordPress username */
@@ -1073,7 +1070,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Halda áfram að breyta";
 
@@ -1305,7 +1301,6 @@
 "More Options" = "Fleiri stillingar";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Flytja í rusl";
 
@@ -1576,9 +1571,6 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "Lykilorð";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Læst með Lykilorði";
-
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
    Title of pending Comments filter. */
@@ -1690,8 +1682,7 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Persónuverndarstefna";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Einkamál";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
@@ -1700,11 +1691,7 @@
 /* Menu item label for linking a project page. */
 "Projects" = "Verkefni";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Birt";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Birta";
@@ -1716,9 +1703,6 @@
    Period Stats 'Published' header
    Title of the published filter. This filter shows a list of posts that the user has published. */
 "Published" = "Birt";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Birti...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Kaup";
@@ -1843,10 +1827,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1885,25 +1867,12 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Vista";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Vista drög";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Vista sem drög";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Vista...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Tímaáætla";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Tímaáætlað";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Set á áætlun...";
 
 /* Placeholder text for the search bar
    Title of Stats section that shows search engine referrer traffic.
@@ -2121,9 +2090,6 @@
    The item to select during a guided tour. */
 "Stats" = "Tölfræði";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Staða";
-
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "Yfirstrikað";
 
@@ -2132,9 +2098,6 @@
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Senda í yfirlestur";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Sendi til yfirlestrar...";
 
 /* Setting: WordPress.com Suggestions
    Suggested domains */
@@ -2476,14 +2439,8 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Uppfæra";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Uppfæra drög";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Uppfæra tengil";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Uppfæri...";
 
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Halaðu upp skrá";
@@ -2534,8 +2491,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "Myndbönd";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Skoðun";
@@ -2567,8 +2523,7 @@
    Today's Stats 'Views' label */
 "Views" = "Flettingar";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Sýnileiki";
 
 /* An option to visit the site to which a specific post belongs */

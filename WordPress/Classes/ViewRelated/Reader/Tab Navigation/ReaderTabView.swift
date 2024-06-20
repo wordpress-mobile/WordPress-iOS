@@ -109,7 +109,7 @@ extension ReaderTabView {
 
     private func addContentToContainerView(index: Int) {
         guard let controller = self.next as? UIViewController,
-            let childController = viewModel.makeChildContentViewController(at: index) else {
+              let childController = viewModel.makeChildContentViewController(at: index) else {
                 return
         }
 

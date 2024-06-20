@@ -1,3 +1,2 @@
-Noticed a long delay when saving posts? That might have been because of image, gallery, or file blocks—but not anymore. Saving should be quick and easy, no matter how many photos or files you’ve uploaded.
-The Tags feed is live! You can now see content with specific tags, all in one place. Tag, you’re it.
-Finally, we fixed the overlapping “Done” button on the “Post Published” screen. Fluitje van een cent.
+We hebben een zeldzame bug opgelost die de app liet crashen bij het verwijderen van berichten. Opgeruimd staat netjes.
+We hebben ook een probleem opgelost met de navigatiebalk in de zichtbaarheidskiezer voor berichten. Omdat we toch bezig waren, hebben we ook de navigatiebalk van het scherm Berichtinstellingen in de editor een nieuwe look gegeven. Leuk toch?

@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-13 09:54:07+0000 */
 /* Plural-Forms: nplurals=1; plural=0; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: ja_JP */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "この項目を完全に削除してもよいですか ?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "この投稿を完全に削除してもよいですか ?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "公開してもよいですか ?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "%2$@ から %1$@ を削除してもよいですか ?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "%1$@ にサイトを復元しますか ? この操作により、作成したコンテンツとオプション、および作成後に行ったすべての変更が削除されます。";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "下書きとして保存してもよいですか ?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "保存してもよいですか ?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "スケジュールを設定してもよいですか ?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "レビュー待ちとして送信してもよいですか ?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "この投稿を本当にゴミ箱へ移動してよいですか ?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "更新してもよいですか ?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "%2$@ 近くの %1$@ にログインしてみますか ?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "過去最高の表示数";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "空白ページが作成されました";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "投稿内容をコピー";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "このアプリからバージョンをコピー";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "トピックをフォローできませんでした";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "メニューを削除";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "完全に削除する";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "完全に削除しますか ?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "共有ボタンを編集";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "最初に投稿を編集する";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Web エディターを使って編集";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "パスワードを入力";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "この投稿を保護するためのパスワードを入力してください";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "パスワードを入力";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "コメントのゴミ箱への移動中にエラーが発生しました。";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "読み込み中にエラーが\n発生しました";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "公開する際にエラーが発生しました";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "保存する際にエラーが発生しました";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "投稿を予約する際にエラーが発生しました";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "ドメイン連絡先情報の取得中にエラーが発生しました";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "%1$@ から";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "ほかのデバイスから";
-
 /* No comment provided by engineer. */
 "From clipboard" = "クリップボードから";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "この端末から";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "フルサイズ";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "新規リンクを作成";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "プレビューを生成中";
 
 /* View title for initial auth views. */
 "Get Started" = "今すぐ始める";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "編集を継続";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "メニュー項目を移動";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "ゴミ箱へ移動";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "改ページブロック。%s";
 
-/* Notice that a page with content has been created */
-"Page created" = "ページが作成されました";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "ページの下書きをアップロードしました";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "ページはアップロードに失敗しました";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "ページはレビュー待ちです";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "ページを公開しました";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "ページの公開を予約しました";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "ページタイトル。%s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "ページタイトル。空";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "ページを更新しました";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "パスワードを変更しました";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "パスワード保護";
 
 /* No comment provided by engineer. */
 "Paste URL" = "URL を貼り付け";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "%@に作成された投稿";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "投稿の下書きをアップロードしました";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "投稿はアップロードに失敗しました";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "投稿はレビュー待ちです";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "投稿を公開しました";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "投稿を削除しました。";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "投稿をブックマークしました。";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "投稿を予約しました";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "同期後の競合";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "投稿タイトル。%s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "WordPress に投稿";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "投稿を更新しました";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "郵便番号";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "カリフォルニア州のユーザーへのプライバシー通知";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "プライベート";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "プロンプト";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "公開";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "公開";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "投稿を公開しています...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "公開中…";
 
 /* Title of screen showing site purchases */
 "Purchases" = "購入";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "1つの写真を下書き投稿として以下に保存:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "下書きを保存";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "投稿をブックマークする";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "下書きとして保存";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "下書きページを次に保存:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "投稿を保存中…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "保存中...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "ファイルをスキャンしています";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "投稿予約";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "予約済み";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "予約中…";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "スクロール可能なブロックメニューが閉じられました。";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "統計情報は読み込まれていません";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "状態";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "常に最新情報を入手";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "提出してレビューを要求";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "レビューをリクエスト中…";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "スポットライトインデックスのクリア成功";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "1ページに表示する投稿の数。";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "コピーしようとしている投稿に競合する2つのバージョンが存在するか、最近行った変更が保存されていません。\n競合を解消するには投稿を編集するか、このアプリからバージョンをコピーしてください。";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "リクエストのシリアル化に失敗しました。";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "このメディアファイルは削除されています。";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "このページは現在アップロード中です。時間はかかりません。しばらくしたら編集可能になりますので、もう一度お試しください。";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "この投稿は現在アップロード中です。時間はかかりません。しばらくしたら編集可能になりますので、もう一度お試しください。";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "この投稿は「お気に入り」にあります";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "ゴミ箱";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "ゴミ箱に移動しますか ?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "更新";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "下書きを更新";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "リンクを更新";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "ページを更新";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "投稿を更新";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "プロフィール写真を更新";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "自分のアバター、名前、概要情報をこちらで更新すると、Gravatar プロフィールを使用するすべてのサイトにも更新が反映されます。";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "更新中...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "プランをアップグレードして音声をアップロードする";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "メディアをアップロード";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "アップロードに失敗しました";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "メディアをアップロード中";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "メディアをアップロード中…";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "投稿をアップロード中";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "投稿をアップロード中…";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "5分以上の動画ファイルのアップロードには、有料プランのご利用が必要です。";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "動画";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "表示";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "表示数と訪問者数";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "表示状態";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7953,97 +7778,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "リリースごとにブロックを追加できるよう努めています。";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "この操作を完了できなかったため、このページは公開されていません。";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "この操作を完了できなかったため、この投稿を公開できていません。";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "この操作を完了できなかったため、この非公開ページは公開されていません。";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "この操作を完了できなかったため、この非公開の投稿を公開できていません。";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "この操作を完了できなかったため、このページのスケジュールは設定されていません。";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "この操作を完了できなかったため、この投稿を予約投稿にできていません。";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "この操作を完了できなかったため、この確認用のページは送信されていません。";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "この操作を完了できなかったため、このレビュー投稿を送信できていません。";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "この操作を完了できませんでした。後ほど再度実行します。";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "この操作を完了できませんでした。";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "バックアップを作成できませんでした。 後ほど、もう一度お試しください。";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "このページを公開できませんでした。後ほど再実行します。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "この投稿を公開できませんでした。後ほど再度実行します。";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "この非公開ページを公開できませんでした。後ほど再実行します。";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "この非公開の投稿を公開できませんでした。後ほど再度実行します。";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "サイトを復元できませんでした。 後ほど、もう一度お試しください。";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "このメディアを取得できませんでした。\nタップして再試行してください。";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "このページのスケジュールを設定できませんでした。後ほど再実行します。";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "この投稿を予約投稿にできませんでした。後ほど再度実行します。";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "確認用にこのページを送信できませんでした。後ほど再実行します。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "このレビュー投稿を送信できませんでした。後ほど再度実行します。";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "このメディアをアップロードできなかったため、ページは公開されていません。";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "このメディアをアップロードできなかったため、この投稿を公開できていません。";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "このメディアをアップロードできなかったため、この非公開ページは公開されていません。";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "このメディアをアップロードできなかったため、この非公開の投稿を公開できていません。";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "このメディアをアップロードできなかったため、このページのスケジュールは設定されていません。";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "このメディアをアップロードできなかったため、この投稿を予約投稿にできていません。";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "このメディアをアップロードできなかったため、この確認用のページは送信されていません。";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "このメディアをアップロードできなかったため、このレビュー投稿を送信できていません。";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "このメディアをアップロードできませんでした。";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "バックアップにかかる時間を示すステータスが見つかりませんでした。";
@@ -8078,22 +7820,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "セキュリティの脅威が検出されたらメールをお送りいたします。 その間、通常通りサイトを使用でき、いつでも進行状況を確認できます。";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "これらの変更を公開しません。";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "下書きに加えた最新の変更を保存しません。";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "これらの変更を予約しません。";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "レビューに対するこれらの変更を送信しません。";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "パスワードなしですぐにログインできるマジックリンクのメールをお送りします。面倒なタイピングとはさよならです。";
 
@@ -8105,33 +7831,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "新しくフォロワー、コメント、いいねが追加されたときに通知します。プッシュ通知を許可しますか ?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "デバイスが再びオンラインになると、ページが公開されます。";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "デバイスが再びオンラインになると、投稿が公開されます。";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "デバイスが再びオンラインになると、非公開のページが公開されます。";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "デバイスが再びオンラインになると、非公開の投稿が公開されます。";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "デバイスが再びオンラインになると、下書きが保存されます。";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "デバイスが再びオンラインになると、ページのスケジュールが設定されます。";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "デバイスが再びオンラインになると、投稿の予約投稿が行われます。";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "デバイスが再びオンラインになると、確認用のページが送信されます。";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "デバイスが再びオンラインになると、レビュー投稿が送信されます。";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "このメールアドレスを新しい WordPress.com アカウントの作成に使用します。";
@@ -8279,9 +7978,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "サイトに変更を加えた後は、ここでそのアクティビティ履歴を確認できます。";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "どのバージョンを編集しますか ?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "エラーが発生し、ログインできませんでした。もう一度お試しください。";
@@ -8577,10 +8273,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "今日サイトで50回「いいね」されました";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "最近この投稿に変更を加えましたが、それを保存していません。読み込むバージョンを選択してください。\n\nこの端末から\n%1$@に保存\n\n別の端末から\n%2$@に保存\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8610,9 +8302,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "アカウントを閉鎖する権限がありません。";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "この投稿に保存されていない変更が加えられました";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "サイトアイコン";
@@ -8649,9 +8338,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "パスワードは6文字以上にする必要があります。さらに強力なパスワードを作成するには、大文字小文字、数字、! \" ? $ % ^ & ) などの記号を使用してください。";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "現在投稿をアップロードしています。 完了するまで、しばらくお待ちください。";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "投稿を掲載しています...その間に、投稿する予定の日にブログ投稿のリマインダーを設定しましょう。";
@@ -8953,6 +8639,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "購入手続き";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "下書きを保存";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "コメント";
@@ -10189,32 +9878,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "ページの更新に成功しました";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "完全に削除";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "このページを完全に削除しますか ?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "完全に削除しますか ?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "全員のページ";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "自分のページ";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "ゴミ箱に移動";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "本当にこのページをゴミ箱に移動しますか ?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "このページをゴミ箱に移動しますか ?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "キャンセル";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "親ページ";
@@ -10282,12 +9950,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "プラン";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "投稿を削除中...";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "投稿をゴミ箱に移動中...";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "変更を破棄";
 
@@ -10328,6 +9990,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "リビジョン";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "下書きを保存";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "ビジュアルエディター";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10358,7 +10023,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "下書きを保存中...";
 
 /* Button title */
+"postFromAudio.beginRecording" = "録音を開始";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "アップグレードしてリクエストを増やす";
+
+/* Button title */
+"postFromAudio.done" = "完了";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "リクエストの処理中に問題が発生しました。 後ほど、もう一度お試しください。";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "エラーが発生しました";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "音声ファイルから投稿を作成するためのリクエストが足りません。";
@@ -10368,9 +10045,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "再試行";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "エラーが発生しました";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "利用可能なリクエスト:";
@@ -10383,6 +10057,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "録音しています...";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "無制限";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "作成者: %@。";
@@ -10459,9 +10136,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "エラーが発生しました";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "アプリが以前に行われた変更をサーバーにアップロードしています。 後でもう一度お試しください。";
-
 /* Title of notification displayed when a page has been successfully saved as a draft. */
 "postNotice.pageDraftCreated" = "ページの下書きをアップロードしました";
 
@@ -10531,9 +10205,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "アイキャッチ画像を設定";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "投稿設定を更新できませんでした";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "表示状態を「非公開」に変更すると、投稿はすぐに投稿されます";
 
@@ -10576,9 +10247,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Blaze を使って宣伝";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "アップロードのキャンセル";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "コメント";
 
@@ -10599,9 +10267,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "公開";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "再試行";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "ホームページに設定する";
@@ -10626,18 +10291,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "表示";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "ページが完全に削除されました";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "投稿が完全に削除されました";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "ページをゴミ箱へ移動しました";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "投稿をゴミ箱へ移動しました";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "全員の投稿";
@@ -10665,9 +10318,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Details for a publish button state in the pre-publishing sheet; count as a parameter */
 "prepublishing.mediaUploadFailedDetails" = "%@件のアイテムのアップロードに失敗しました";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "タイトル";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "公開";

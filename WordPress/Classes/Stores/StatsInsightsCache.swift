@@ -47,7 +47,7 @@ final class StatsInsightsCache {
     }
 
     func setLastRefreshDate(_ date: Date, forSiteID siteID: NSNumber) {
-        lastRefreshDates[siteID] = Date()
+        lastRefreshDates[siteID] = date
     }
 
     // MARK: - Helpers

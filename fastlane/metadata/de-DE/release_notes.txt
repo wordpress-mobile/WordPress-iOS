@@ -1,2 +1,2 @@
-Dir ist aufgefallen, dass das Speichern von Beiträgen sehr lange dauert? Das lag möglicherweise an Bild-, Galerie- oder Dateiblöcken. Aber das haben wir behoben! Jetzt sollte das Speichern schnell und reibungslos verlaufen – egal, wie viele Fotos oder Dateien du hochgeladen hast.
-Außerdem haben wir den überlappenden Button „Fertig“ auf dem Bildschirm „Beitrag veröffentlicht“ repariert. Wenn das mal nicht kinderleicht war.
+Wir haben einen seltenen Fehler behoben, durch den die App beim in den Papierkorb legen von Beiträgen abstürzte. Was für den einen Müll ist, ist für den anderen... immer noch Müll, nehmen wir an.
+Außerdem haben wir ein Problem mit der Navigationsleiste in der Beitrags-Sichtbarkeits-Auswahl behoben. Außerdem haben wir die Ansicht der Beitragseinstellungen des Editors aktualisiert, damit die neue Navigationsleiste verwendet wird. Schön.

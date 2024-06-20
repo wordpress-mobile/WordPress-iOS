@@ -1,12 +1,6 @@
 import UIKit
 import DGCharts
 
-// MARK: - StatsLineChartViewDelegate
-
-protocol StatsLineChartViewDelegate: AnyObject {
-    func statsLineChartValueSelected(_ statsLineChartView: StatsLineChartView, entryIndex: Int, entryCount: Int)
-}
-
 // MARK: - StatsLineChartView
 
 private let LineChartAnalyticsPropertyKey = "property"
@@ -51,14 +45,6 @@ class StatsLineChartView: LineChartView {
     ///
     private var xAxisDates: [Date]
 
-    /// When set, the delegate is advised of user-initiated line selections
-    ///
-    private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
-
-    private var primaryDataSet: ChartDataSetProtocol? {
-        return data?.dataSets.first
-    }
-
     // MARK: StatsLineChartView
 
     override var bounds: CGRect {
@@ -73,12 +59,11 @@ class StatsLineChartView: LineChartView {
         updateXAxisTicks()
     }
 
-    init(configuration: StatsLineChartConfiguration, delegate: StatsLineChartViewDelegate? = nil) {
+    init(configuration: StatsLineChartConfiguration) {
         self.statType = configuration.type
         self.lineChartData = configuration.data
         self.styling = configuration.styling
         self.analyticsGranularity = configuration.analyticsGranularity
-        self.statsLineChartViewDelegate = delegate
         self.xAxisDates = configuration.xAxisDates
 
         super.init(frame: .zero)
@@ -301,7 +286,7 @@ private extension StatsLineChartView {
         }
     }
 
-    func highlightBar(for entry: ChartDataEntry, with highlight: Highlight) {
+    func highlightBar(for entry: ChartDataEntry) {
         drawChartMarker(for: entry)
     }
 
@@ -324,7 +309,7 @@ private extension StatsLineChartView {
 
         let postRotationDelay = DispatchTime.now() + Constants.rotationDelay
         DispatchQueue.main.asyncAfter(deadline: postRotationDelay) {
-            self.highlightBar(for: entry, with: highlight)
+            self.highlightBar(for: entry)
         }
     }
 }
@@ -334,7 +319,7 @@ private extension StatsLineChartView {
 extension StatsLineChartView: ChartViewDelegate {
     func chartValueSelected(_ chartView: ChartViewBase, entry: ChartDataEntry, highlight: Highlight) {
         captureAnalyticsEvent()
-        highlightBar(for: entry, with: highlight)
+        highlightBar(for: entry)
     }
 }
 

@@ -71,37 +71,6 @@ class PublishSettingsViewControllerTests: CoreDataTestCase {
             XCTFail("View model should be published instead of \(viewModel.state)")
         }
     }
-
-    /// Tests that our display date is properly formatted and converted
-    func testDisplayDate() {
-
-        let timeZoneOffset = -1
-
-        let testDate = Date(timeIntervalSinceReferenceDate: 0)
-
-        let post = PostBuilder(mainContext).with(dateCreated: testDate).drafted().withRemote().build()
-
-        // Set our blog's time zone slightly offset from UTC
-        let newValue = OffsetTimeZone(offset: Float(timeZoneOffset))
-
-        // Need to use options here instead of blog.settings because BlogService uses those instead of the properties. No idea why.
-        post.blog.options = ["timezone": ["value": newValue.timezoneString], "gmt_offset": ["value": newValue.gmtOffset as NSNumber? ]]
-
-        let viewModel = PublishSettingsViewModel(post: post, context: self.mainContext)
-
-        // Create a date formatter that converts to the original UTC date
-        let adjustedFormatter = viewModel.dateTimeFormatter.copy() as! DateFormatter
-        adjustedFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-
-        // Generate formatted string and check that converting straight from that string is NOT the same as original date (should be earlier)
-        let formattedString = viewModel.dateTimeFormatter.string(from: post.dateCreated!)
-        let date = adjustedFormatter.date(from: formattedString)
-        XCTAssertNotEqual(date, testDate, "Dates should not be equal")
-
-        // Adjust the original date and check that it matches, thus verifying that our formatter is properly formatting
-        let timeZoneAdjustedDate = testDate.addingTimeInterval(TimeInterval(timeZoneOffset * 60 * 60))
-        XCTAssertEqual(timeZoneAdjustedDate, date, "Formatted date string should equal the adjusted date object")
-    }
 }
 
 extension PublishSettingsViewControllerTests {

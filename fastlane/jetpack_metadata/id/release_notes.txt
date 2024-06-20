@@ -1,3 +1,2 @@
-Mengalami jeda lama saat menyimpan pos? Masalah itu mungkin terjadi akibat blok gambar, galeri, atau file—tapi semuanya sudah diatasi. Proses menyimpan harus tetap cepat dan mudah, meski Anda mengunggah ribuan bahkan jutaan foto dan file.
-Feed Tag sudah aktif! Konten dengan tag tertentu sekarang terkumpul rapi di satu lokasi. Tag, giliran kamu sekarang.
-Kami juga telah mengatasi masalah tombol “Selesai” yang tumpang tindih di layar “Pos Diterbitkan”. Sangat mudah, tanpa susah.
+Kami memperbaiki bug langka yang menyebabkan crash aplikasi saat membuang pos. Bagaimanapun, sampah tetaplah sampah.
+Kami juga menyelesaikan masalah bilah navigasi di pemilih Visibilitas Pos. Selain itu, kami memperbarui layar Pengaturan Pos editor untuk menggunakan gaya bilah navigasi baru. Bagus!

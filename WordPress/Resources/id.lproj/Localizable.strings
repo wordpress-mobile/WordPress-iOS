@@ -1,4 +1,4 @@
-/* Translation-Revision-Date: 2024-05-30 12:54:08+0000 */
+/* Translation-Revision-Date: 2024-06-17 12:18:57+0000 */
 /* Plural-Forms: nplurals=2; plural=n > 1; */
 /* Generator: GlotPress/4.0.1 */
 /* Language: id */
@@ -841,12 +841,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Message prompting the user to confirm that they want to permanently delete a media item. Should match Calypso. */
 "Are you sure you want to permanently delete this item?" = "Anda yakin ingin menghapus item ini secara permanen?";
 
-/* Message of the confirmation alert when deleting a post from the trash. */
-"Are you sure you want to permanently delete this post?" = "Anda yakin ingin menghapus pos ini secara permanen?";
-
-/* Title of the message shown when the user taps Publish while editing a post.  Options will be Publish and Keep Editing. */
-"Are you sure you want to publish?" = "Anda yakin ingin memublikasikan?";
-
 /* Text for the alert to confirm a plugin removal. %1$@ is the plugin name, %2$@ is the site title. */
 "Are you sure you want to remove %1$@ from %2$@?" = "Anda yakin ingin menghapus %1$@ dari %2$@?";
 
@@ -855,24 +849,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Description for the confirm restore action. %1$@ is a placeholder for the selected date. */
 "Are you sure you want to restore your site back to %1$@? This will remove content and options created or changed since then." = "Anda yakin ingin memulihkan situs kembali ke %1$@? Tindakan ini akan menghapus konten dan opsi yang dibuat atau diubah sejak saat itu.";
-
-/* Title of the message shown when the user taps Save as Draft while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save as draft?" = "Anda yakin ingin menyimpan sebagai konsep?";
-
-/* Title of the message shown when the user taps Save while editing a post.  Options will be Save Now and Keep Editing. */
-"Are you sure you want to save?" = "Anda yakin ingin menyimpan?";
-
-/* Title of message shown when the user taps Schedule while editing a post. Options will be Schedule and Keep Editing */
-"Are you sure you want to schedule?" = "Anda yakin ingin menjadwalkan?";
-
-/* Title of message shown when user taps submit for review. */
-"Are you sure you want to submit for review?" = "Anda yakin ingin mengirimnya untuk diulas?";
-
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Anda yakin ingin membuang pos ini?";
-
-/* Title of message shown when user taps update. */
-"Are you sure you want to update?" = "Anda yakin ingin memperbarui?";
 
 /* Title that asks the user if they are the trying to login.  %1$@ is a placeholder for the browser name (Chrome/Firefox), %2$@ is a placeholder for the users location */
 "Are you trying to log in to %1$@ near %2$@?" = "Apakah Anda mencoba login ke %1$@ di sekitar %2$@?";
@@ -1049,9 +1025,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* All Time Stats 'Best views ever' label */
 "Best views ever" = "Terbanyak dilihat";
 
-/* Notice that a page without content has been created */
-"Blank page created" = "Halaman kosong dibuat";
-
 /* Noun. Links to a blog's Blaze screen. */
 "Blaze" = "Blaze";
 
@@ -1213,7 +1186,6 @@ translators: %s: Block name e.g. \"Image block\" */
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -1835,9 +1807,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Copy post text" = "Salin teks pos";
 
-/* Button title displayed in popup indicating the user copied the local copy */
-"Copy the version from this app" = "Salin versi dari aplikasi ini";
-
 /* Title of a prompt informing the user there was a probem unsubscribing from a topic in the reader. */
 "Could Not Follow Topic" = "Tidak Dapat Mengikuti Topik";
 
@@ -2154,12 +2123,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Menus confirmation button for deleting a menu. */
 "Delete Menu" = "Hapus Menu";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "Hapus Permanen";
-
-/* Title of the confirmation alert when deleting a post from the trash. */
-"Delete Permanently?" = "Hapus Permanen?";
 
 /* Button label for deleting the current site
    Label for selecting the Delete Site Settings item
@@ -2508,9 +2473,6 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Title for the edit sharing buttons section */
 "Edit sharing buttons" = "Sunting tombol berbagi";
 
-/* Button title displayed in popup indicating that the user edits the post first */
-"Edit the post first" = "Sunting pos terlebih dahulu";
-
 /* No comment provided by engineer. */
 "Edit using web editor" = "Edit menggunakan editor web";
 
@@ -2646,11 +2608,7 @@ translators: %s: Block name e.g. \"Image block\" */
 /* No comment provided by engineer. */
 "Enter a password" = "Masukkan sebuah kata sandi";
 
-/* Message explaining why the user might enter a password. */
-"Enter a password to protect this post" = "Masukkan kata sandi untuk melindungi pos ini";
-
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Masukkan kata sandi";
 
 /* Instruction text on the login's site addresss screen.
@@ -2743,18 +2701,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Message displayed when trashing a comment fails. */
 "Error moving comment to trash." = "Error memindahkan komentar ke tong sampah.";
-
-/* Text displayed in HUD while a post revision is being loaded. */
-"Error occurred\nduring loading" = "Terjadi eror\nsaat memuat";
-
-/* Text displayed in notice while a post is being published. */
-"Error occurred during publishing" = "Terjadi error selama proses publikasi";
-
-/* Text displayed in notice after attempting to save a draft post and an error occurred. */
-"Error occurred during saving" = "Terjadi error saat menyimpan";
-
-/* Text displayed in notice while a post is being scheduled to be published. */
-"Error occurred during scheduling" = "Terjadi error selama proses penjadwalan";
 
 /* Register Domain - Domain contact information error message shown to indicate an error during fetching domain contact information */
 "Error occurred fetching domain contact information" = "Terjadi error saat mengambil informasi kontak domain";
@@ -3049,14 +2995,8 @@ translators: %s: Block name e.g. \"Image block\" */
 /* Format for blogging prompts attribution. %1$@ is the attribution source. */
 "From %1$@" = "Dari %1$@";
 
-/* Button title displayed in popup indicating date of change on another device */
-"From another device" = "Dari perangkat lain";
-
 /* No comment provided by engineer. */
 "From clipboard" = "Dari papan klip";
-
-/* Button title displayed in popup indicating date of change on device */
-"From this device" = "Dari perangkat ini";
 
 /* Full size image. (default). Should be the same as in core WP. */
 "Full Size" = "Ukuran Penuh";
@@ -3088,9 +3028,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Title. A call to action to generate a new invite link. */
 "Generate new link" = "Hasilkan tautan baru";
-
-/* Message to indicate progress of generating preview */
-"Generating Preview" = "Membuat Pratinjau";
 
 /* View title for initial auth views. */
 "Get Started" = "Memulai";
@@ -3701,7 +3638,6 @@ translators: %s: Block name e.g. \"Image block\" */
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "Lanjutkan Menyunting";
 
@@ -4265,7 +4201,6 @@ translators: %s: Block name e.g. \"Image block\" */
 "Move menu item" = "Pindahkan item menu";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "Pindahkan ke Sampah";
 
@@ -4915,32 +4850,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* translators: accessibility text. %s: Page break text. */
 "Page break block. %s" = "Blok pemisah halaman. %s";
 
-/* Notice that a page with content has been created */
-"Page created" = "Halaman dibuat";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page draft uploaded" = "Konsep halaman diunggah";
-
-/* Title of notification displayed when a page has failed to upload. */
-"Page failed to upload" = "Halaman gagal diunggah";
-
-/* Title of notification displayed when a page has been successfully saved as a draft. */
-"Page pending review" = "Halaman menunggu peninjauan";
-
-/* Title of notification displayed when a page has been successfully published. */
-"Page published" = "Laman dipublikasikan";
-
-/* Title of notification displayed when a page has been successfully scheduled. */
-"Page scheduled" = "Halaman yang dijadwalkan";
-
 /* translators: accessibility text. %s: text content of the page title. */
 "Page title. %s" = "Judul halaman. %s";
 
 /* translators: accessibility text. empty page title. */
 "Page title. Empty" = "Judul halaman. Kosong";
-
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Halaman diperbarui";
 
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
@@ -4974,9 +4888,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Loader title displayed by the loading view while the password is changed successfully */
 "Password changed successfully" = "Kata sandi berhasil diganti";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Dilindungi Kata sandi";
 
 /* No comment provided by engineer. */
 "Paste URL" = "Tempel URL";
@@ -5217,29 +5128,11 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* The footer text appears within the footer displaying when the post has been created. */
 "Post created on %@" = "Pos dibuat pada %@";
 
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post draft uploaded" = "Konsep pos diunggah";
-
-/* Title of notification displayed when a post has failed to upload. */
-"Post failed to upload" = "Pos gagal diunggah";
-
-/* Title of notification displayed when a post has been successfully saved as a draft. */
-"Post pending review" = "Pos menunggu peninjauan";
-
-/* Title of notification displayed when a post has been successfully published. */
-"Post published" = "Pos dipublikasikan";
-
 /* Title of the notification presented in Reader when a post is removed from save for later */
 "Post removed." = "Pos dihapus.";
 
 /* Title of the notification presented in Reader when a post is saved for later */
 "Post saved." = "Pos disimpan.";
-
-/* Title of notification displayed when a post has been successfully scheduled. */
-"Post scheduled" = "Pos dijadwalkan";
-
-/* Title displayed in popup when user tries to copy a post with unsaved changes */
-"Post sync conflict" = "Konflik sinkronisasi pos";
 
 /* translators: accessibility text. %s: text content of the post title. */
 "Post title. %s" = "Judul pos. %s";
@@ -5249,9 +5142,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* Title of camera permissions screen */
 "Post to WordPress" = "Buat pos ke WordPress";
-
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Pos diperbarui";
 
 /* Register Domain - Address information field Postal Code */
 "Postal Code" = "Kode Pos";
@@ -5356,8 +5246,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Link to the CCPA privacy notice for residents of California. */
 "Privacy notice for California users" = "Pemberitahuan privasi untuk pengguna di California";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privat";
 
 /* No comment provided by engineer. */
@@ -5389,11 +5278,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
    View title for Blogging Prompts list. */
 "Prompts" = "Prompt";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Publik";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Terbitkan";
@@ -5423,9 +5308,6 @@ translators: %s: Select control button label e.g. \"Button width\" */
 
 /* A short message that informs the user a post is being published to the server from the share extension. */
 "Publishing post..." = "Menerbitkan pos...";
-
-/* Text displayed in HUD while a post is being published. */
-"Publishing..." = "Mempublikasikan...";
 
 /* Title of screen showing site purchases */
 "Purchases" = "Pembelian";
@@ -5736,10 +5618,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -5823,14 +5703,8 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Text displayed in the share extension's summary view that describes the action of saving a single photo in a draft post. */
 "Save 1 photo as a draft post on:" = "Simpan 1 foto sebagai konsep pos pada:";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Simpan Naskah";
-
 /* Title of alert informing users about the Reader Save for Later feature. */
 "Save Posts for Later" = "Simpan Pos untuk Nanti";
-
-/* Title of button allowing users to change the status of the post they are currently editing to Draft. */
-"Save as Draft" = "Simpan sebagai Konsep";
 
 /* Text displayed in the share extension's summary view that describes the save draft page action. */
 "Save draft page on:" = "Simpan halaman konsep pada:";
@@ -5860,8 +5734,7 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* A short message that informs the user a draft post is being saved to the server from the share extension. */
 "Saving post…" = "Menyimpan pos…";
 
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Menyimpan...";
 
 /* Noun. Links to a blog's Jetpack Scan screen.
@@ -5888,15 +5761,9 @@ translators: %s: Select control button label e.g. \"Button width\" */
 /* Title for label when the actively scanning the users site */
 "Scanning files" = "Memindai berkas";
 
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Jadwal";
-
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
 "Scheduled" = "Terjadwal";
-
-/* Text displayed in HUD while a post is being scheduled to be published. */
-"Scheduling..." = "Menjadwalkan";
 
 /* No comment provided by engineer. */
 "Scrollable block menu closed." = "Menu blok yang dapat digulir tertutup.";
@@ -6531,9 +6398,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* The loading view title displayed when an error occurred */
 "Stats not loaded" = "Statistik tidak dimuat";
 
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
-
 /* Title of the first alert preparing users to grant permission for us to send them push notifications. */
 "Stay in the loop" = "Tetap dalam pengawasan";
 
@@ -6575,9 +6439,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Submit for review button label (saving content, ex: Post, Page, Comment). */
 "Submit for Review" = "Kirim untuk Ditinjau";
-
-/* Text displayed in HUD while a post is being submitted for review. */
-"Submitting for Review..." = "Mengirim untuk Ditinjau...";
 
 /* Notice displayed to the user after clearing the spotlight index in app settings. */
 "Successfully cleared spotlight index" = "Berhasil menghapus indeks spotlight";
@@ -6925,9 +6786,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text above the selection of the number of posts to show per blog page */
 "The number of posts to show per page." = "Jumlah pos yang akan ditampilkan per halaman.";
 
-/* Message displayed in popup when user tries to copy a post with conflicts */
-"The post you are trying to copy has two versions that are in conflict or you recently made changes but didn't save them.\nEdit the post first to resolve any conflict or proceed with copying the version from this app." = "Pos yang ingin Anda salin mempunyai dua versi yang saling konflik atau baru-baru ini ada perubahan yang tidak disimpan.\nSunting pos terlebih dahulu untuk menyelesaikan konflik atau lanjutkan dengan menyalin versi dari aplikasi ini.";
-
 /* A failure reason for when the request couldn't be serialized. */
 "The serialization of the request failed." = "Serialisasi permintaan gagal.";
 
@@ -7147,12 +7005,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Message displayed in Media Library if the user attempts to edit a media asset (image / video) after it has been deleted. */
 "This media item has been deleted." = "Item media ini sudah dihapus.";
 
-/* Prompts the user that the page is being uploaded and cannot be edited while that process is ongoing. */
-"This page is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Halaman ini sedang diunggah. Tidak butuh waktu lama – cobalah kembali sesaat lagi dan Anda akan dapat menyuntingnya.";
-
-/* Prompts the user that the post is being uploaded and cannot be edited while that process is ongoing. */
-"This post is currently uploading. It won't take long – try again soon and you'll be able to edit it." = "Pos ini sedang diunggah. Tidak butuh waktu lama – cobalah kembali sesaat lagi dan Anda akan dapat menyuntingnya.";
-
 /* Post is in my likes. Accessibility label */
 "This post is in My Likes" = "Pos ini ada dalam Kesukaan Saya";
 
@@ -7336,9 +7188,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Trashes a comment
    Trashes the comment */
 "Trash" = "Buang";
-
-/* Title of the trash confirmation alert. */
-"Trash this post?" = "Buang pos ini?";
 
 /* Name for the status of a trashed post
    Title of the trashed filter. This filter shows posts that have been moved to the trash bin.
@@ -7626,17 +7475,8 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Perbarui";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Perbarui Naskah";
-
 /* Label action for updating a link on the editor */
 "Update Link" = "Perbarui Tautan";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published page. */
-"Update Page" = "Perbarui Halaman";
-
-/* Button shown if there are unsaved changes and the author is trying to move away from an already published post. */
-"Update Post" = "Perbarui Pos";
 
 /* Update profile photo in Me > My Profile */
 "Update Profile Photo" = "Perbarui Foto Profil";
@@ -7668,9 +7508,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Text in the profile editing page. Lets the user know about the consequences of their profile editing actions and how this relates to Gravatar. */
 "Updating your avatar, name and about info here will also update it across all sites that use Gravatar profiles." = "Jika avatar, nama, dan deskripsi tentang Anda di sini diubah, perubahan tersebut juga akan muncul di semua situs yang menggunakan profil Gravatar.";
 
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Memperbarui...";
-
 /* No comment provided by engineer. */
 "Upgrade your plan to upload audio" = "Upgrade paket Anda untuk mengunggah audio";
 
@@ -7680,8 +7517,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Title for button displayed when the user has an empty media library */
 "Upload Media" = "Unggah Media";
 
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "Unggah gagal";
 
 /* Description to show on post setting for a featured image that failed to upload. */
@@ -7715,15 +7551,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Title for alert when trying to save/exit a post before media upload process is complete. */
 "Uploading media" = "Mengunggah media";
-
-/* Message displayed on a post's card while the post is uploading media */
-"Uploading media..." = "Mengunggah media...";
-
-/* Title for alert when trying to preview a post before the uploading process is complete. */
-"Uploading post" = "Mengunggah pos";
-
-/* Message displayed on a post's card when the post has failed to upload */
-"Uploading post..." = "Mengunggah pos...";
 
 /* Message of an alert informing users that the video they are trying to select is not allowed. */
 "Uploading videos longer than 5 minutes requires a paid plan." = "Diperlukan paket berbayar untuk mengunggah video berdurasi lebih dari 5 menit.";
@@ -7818,8 +7645,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Period Stats 'Videos' header */
 "Videos" = "Video";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Lihat";
@@ -7869,8 +7695,7 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Insights views and visitors header */
 "Views & Visitors" = "Tayangan & Pengunjung";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Penampakan";
 
 /* An option to visit the site to which a specific post belongs */
@@ -7956,97 +7781,14 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* No comment provided by engineer. */
 "We are working hard to add more blocks with each release." = "Kami berusaha keras untuk menambahkan banyak blok setiap rilis.";
 
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this page." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak memublikasikan halaman ini.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't publish this post." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak memublikasikan pos ini.";
-
-/* Text displayed after the app fails to upload a private page, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private page." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak memublikasikan halaman pribadi ini.";
-
-/* Text displayed after the app fails to upload a private post, no new attempt will be made. */
-"We couldn't complete this action, and didn't publish this private post." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak memublikasikan pos pribadi ini.";
-
-/* Text displayed after the app fails to upload a scheduled page, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this page." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak menjadwalkan halaman ini.";
-
-/* Text displayed after the app fails to upload a scheduled post, no new attempt will be made. */
-"We couldn't complete this action, and didn't schedule this post." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak menjadwalkan pos ini.";
-
-/* Text displayed in notice after the app fails to upload a page, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this page for review." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak mengirim halaman ini untuk ditinjau.";
-
-/* Text displayed in notice after the app fails to upload a post, not new attempt will be made. */
-"We couldn't complete this action, and didn't submit this post for review." = "Kami tidak dapat menyelesaikan tindakan ini, dan tidak mengirim pos ini untuk ditinjau.";
-
-/* Text displayed after the app fails to upload a page, it will attempt to upload it later.
-   Text displayed after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't complete this action, but we'll try again later." = "Kami tidak dapat menyelesaikan tindakan ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed after the app fails to upload a page, no new attempt will be made.
-   Text displayed after the app fails to upload a post, no new attempt will be made. */
-"We couldn't complete this action." = "Kami tidak dapat menyelesaikan tindakan ini.";
-
 /* Message for error displayed when preparing a backup fails. */
 "We couldn't create your backup. Please try again later." = "Kami tidak dapat membuat cadangan Anda. Silakan coba lagi nanti.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't publish this page, but we'll try again later." = "Kami tidak dapat memublikasikan halaman ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't publish this post, but we'll try again later." = "Kami tidak dapat memublikasikan pos ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed after the app fails to upload a private page, it will attempt to upload it later. */
-"We couldn't publish this private page, but we'll try again later." = "Kami tidak dapat memublikasikan halaman pribadi ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed after the app fails to upload a private post, it will attempt to upload it later. */
-"We couldn't publish this private post, but we'll try again later." = "Kami tidak dapat memublikasikan pos pribadi ini, namun kami akan mencoba lagi nanti.";
 
 /* Message for error displayed when restoring a site fails. */
 "We couldn't restore your site. Please try again later." = "Kami tidak dapat memulihkan situs Anda. Silakan coba lagi nanti.";
 
 /* Description that appears when a media fails to load in the Media Editor. */
 "We couldn't retrieve this media.\nPlease tap to retry." = "Kami tidak dapat mengambil media ini.\nHarap ketuk untuk mencoba lagi.";
-
-/* Text displayed after the app fails to upload a scheduled page, it will attempt to upload it later. */
-"We couldn't schedule this page, but we'll try again later." = "Kami tidak dapat menjadwalkan halaman ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed after the app fails to upload a scheduled post, it will attempt to upload it later. */
-"We couldn't schedule this post, but we'll try again later." = "Kami tidak dapat menjadwalkan pos ini, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed in notice after the app fails to upload a page, it will attempt to upload it later. */
-"We couldn't submit this page for review, but we'll try again later." = "Kami tidak dapat mengirim halaman ini untuk ditinjau, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We couldn't submit this post for review, but we'll try again later." = "Kami tidak dapat mengirim pos ini untuk ditinjau, namun kami akan mencoba lagi nanti.";
-
-/* Text displayed if a media couldn't be uploaded for a published page. */
-"We couldn't upload this media, and didn't publish the page." = "Kami tidak dapat mengunggah media ini, dan tidak memublikasikan halamannya.";
-
-/* Text displayed if a media couldn't be uploaded for a published post. */
-"We couldn't upload this media, and didn't publish the post." = "Kami tidak dapat mengunggah media ini, dan tidak memublikasikan pos ini.";
-
-/* Text displayed if a media couldn't be uploaded for a private page. */
-"We couldn't upload this media, and didn't publish this private page." = "Kami tidak dapat mengunggah media ini, dan tidak memublikasikan halaman pribadi ini.";
-
-/* Text displayed if a media couldn't be uploaded for a private post. */
-"We couldn't upload this media, and didn't publish this private post." = "Kami tidak dapat mengunggah media ini, dan tidak memublikasikan pos pribadi ini.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled page. */
-"We couldn't upload this media, and didn't schedule this page." = "Kami tidak dapat mengunggah media ini, dan tidak menjadwalkan halaman ini.";
-
-/* Text displayed if a media couldn't be uploaded for a scheduled post. */
-"We couldn't upload this media, and didn't schedule this post." = "Kami tidak dapat mengunggah media ini, dan tidak menjadwalkan pos ini.";
-
-/* Text displayed if a media couldn't be uploaded for a pending page. */
-"We couldn't upload this media, and didn't submit this page for review." = "Kami tidak dapat mengunggah media ini, dan tidak mengirim halaman ini untuk ditinjau.";
-
-/* Text displayed if a media couldn't be uploaded for a pending post. */
-"We couldn't upload this media, and didn't submit this post for review." = "Kami tidak dapat mengunggah media ini, dan tidak mengirim pos ini untuk ditinjau.";
-
-/* Text displayed if a media couldnt be uploaded. */
-"We couldn't upload this media." = "Kami tidak dapat mengunggah media ini.";
 
 /* Hint displayed when we fail to fetch the status of the backup in progress. */
 "We couldn’t find the status to say how long your backup will take." = "Kami tidak dapat menemukan status untuk memberitahukan kapan pencadangan ini selesai.";
@@ -8081,22 +7823,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Description for label when the actively scanning the users site */
 "We will send you an email if security threats are found. In the meantime feel free to continue to use your site as normal, you can check back on progress at any time." = "Kami akan mengirimkan email pada Anda jika ditemukan ancaman keamanan. Sementara itu Anda dapat terus menggunakan situs seperti biasa, Anda dapat memeriksa kembali progresnya kapan saja.";
 
-/* Title for notice displayed on canceling auto-upload published page
-   Title for notice displayed on canceling auto-upload published post */
-"We won't publish these changes." = "Kami tidak akan memublikasikan perubahan ini.";
-
-/* Title for notice displayed on canceling auto-upload of a draft page
-   Title for notice displayed on canceling auto-upload of a draft post */
-"We won't save the latest changes to your draft." = "Kami tidak akan menyimpan perubahan terakhir ke konsep Anda.";
-
-/* Title for notice displayed on canceling auto-upload of a scheduled page
-   Title for notice displayed on canceling auto-upload of a scheduled post */
-"We won't schedule these changes." = "Kami tidak akan menjadwalkan perubahan ini.";
-
-/* Title for notice displayed on canceling auto-upload pending page
-   Title for notice displayed on canceling auto-upload pending post */
-"We won't submit these changes for review." = "Kami tidak akan mengirim perubahan ini untuk ditinjau.";
-
 /* Instructional text for the magic link login flow. */
 "We'll email you a magic link that'll log you in instantly, no password needed. Hunt and peck no more!" = "Kami akan mengirimkan email berisi link ajaib yang bisa Anda gunakan untuk login dalam sekejap, tanpa kata sandi. Tak perlu lagi repot mengetik!";
 
@@ -8108,33 +7834,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Body text of the first alert preparing users to grant permission for us to send them push notifications. */
 "We'll notify you when you get new followers, comments, and likes. Would you like to allow push notifications?" = "Kami akan mengirim notifikasi saat Anda mendapatkan pengikut, komentar, dan suka. Apakah Anda ingin mengizinkan pemberitahuan push?";
-
-/* Text displayed in notice after a page if published while offline. */
-"We'll publish the page when your device is back online." = "Kami akan memublikasikan halaman ketika perangkat kembali online.";
-
-/* Text displayed in notice after a post if published while offline. */
-"We'll publish the post when your device is back online." = "Kami akan memublikasikan pos tersebut ketika perangkat kembali online.";
-
-/* Text displayed in notice after the app fails to upload a private page. */
-"We'll publish your private page when your device is back online." = "Kami akan memublikasikan halaman pribadi Anda ketika perangkat kembali online.";
-
-/* Text displayed in notice after the app fails to upload a private post. */
-"We'll publish your private post when your device is back online." = "Kami akan memublikasikan pos pribadi Anda ketika perangkat kembali online.";
-
-/* Text displayed in notice after the app fails to upload a draft. */
-"We'll save your draft when your device is back online." = "Kami akan menyimpan konsep Anda ketika perangkat kembali online.";
-
-/* Text displayed after the app fails to upload a scheduled page. */
-"We'll schedule your page when your device is back online." = "Kami akan menjadwalkan halaman Anda ketika perangkat kembali online.";
-
-/* Text displayed after the app fails to upload a scheduled post. */
-"We'll schedule your post when your device is back online." = "Kami akan menjadwalkan pos Anda ketika perangkat kembali online.";
-
-/* Text displayed in notice after the app fails to upload a page], it will attempt to upload it later. */
-"We'll submit your page for review when your device is back online." = "Kami akan mengirim halaman Anda untuk ditinjau ketika perangkat kembali online.";
-
-/* Text displayed in notice after the app fails to upload a post, it will attempt to upload it later. */
-"We'll submit your post for review when your device is back online." = "Kami akan mengirim pos Anda untuk ditinjau ketika perangkat kembali online.";
 
 /* Text confirming email address to be used for new account. */
 "We'll use this email address to create your new WordPress.com account." = "Kami akan menggunakan alamat email ini untuk membuat akun WordPress.com baru Anda.";
@@ -8282,9 +7981,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Text display when the view when there aren't any Activities to display in the Activity Log */
 "When you make changes to your site you'll be able to see your activity history here." = "Saat membuat perubahan pada situs, Anda akan dapat melihat riwayat aktivitas di sini.";
-
-/* Title displayed in popup when user has the option to load unsaved changes */
-"Which version would you like to edit?" = "Versi apa yang ingin Anda edit?";
 
 /* An error message shown when a wpcom user provides the wrong password. */
 "Whoops, something went wrong and we couldn't log you in. Please try again!" = "Ups, terjadi kesalahan dan Anda tidak dapat login. Coba lagi!";
@@ -8580,10 +8276,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 /* Example Likes notification displayed in the prologue carousel of the app. Number of likes should marked with * characters and will be displayed as bold text. */
 "You received *50 likes* on your site today" = "Anda menerima *50 likes* on your site today";
 
-/* Message displayed in popup when user has the option to load unsaved changes. 
- is a placeholder for a new line, and the two %@ are placeholders for the date of last save on this device, and date of last autosave on another device, respectively. */
-"You recently made changes to this post but didn't save them. Choose a version to load:\n\nFrom this device\nSaved on %@\n\nFrom another device\nSaved on %@\n" = "Anda baru-baru ini melakukan perubahan pada postingan ini tetapi tidak menyimpannya. Pilih versi untuk dimuat:\n\nDari perangkat ini\nDisimpan pada %1$@\n\nDari perangkat lain\nDisimpan pada %2$@\n";
-
 /* Informs that the user has replied to this comment.
    Notification text - below a comment notification detail
    Text to look for */
@@ -8613,9 +8305,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Error message displayed when unable to close user account due to being unauthorized. */
 "You're not authorized to close the account." = "Anda tidak berwenang untuk menutup akun.";
-
-/* Message displayed on a post's card when the post has unsaved changes */
-"You've made unsaved changes to this post" = "Anda telah membuat perubahan yang tidak tersimpan di pos ini";
 
 /* The item to select during a guided tour. */
 "Your Site Icon" = "Ikon Situs Anda";
@@ -8652,9 +8341,6 @@ translators: %s: Select control option value e.g: \"Auto, 25%\". */
 
 /* Help text that describes how the password should be. It appears while editing the password */
 "Your password should be at least six characters long. To make it stronger, use upper and lower case letters, numbers, and symbols like ! \" ? $ % ^ & )." = "Kata sandi Anda setidaknya harus berisi enam karakter. Agar lebih kuat, gunakan huruf besar dan kecil, angka, dan simbol seperti ! \" ? $ % ^ & ).";
-
-/* This is a notification the user receives if they are trying to preview a post before the upload process is complete. */
-"Your post is currently being uploaded. Please wait until this completes." = "Pos Anda sedang diunggah. Harap tunggu hingga selesai.";
 
 /* Description on the first screen of the Blogging Reminders Settings flow called aftet post publishing. */
 "Your post is publishing... in the meantime, set up your blogging reminders on days you want to post." = "Pos Anda sedang diterbitkan... Sementara itu, siapkan pengingat blogging pada hari Anda ingin menerbitkan pos.";
@@ -8962,6 +8648,9 @@ Note that the word 'go' here should have a closer meaning to 'start' rather than
 
 /* Title for the checkout view */
 "checkout.title" = "Checkout";
+
+/* Post Editor / Button in the 'More' menu */
+"classicEditor.moreMenu.saveDraft" = "Simpan Konsep";
 
 /* Displayed in the confirmation alert when marking comment notifications as read. */
 "comment" = "komentar";
@@ -10201,32 +9890,11 @@ Example: Reply to Pamela Nguyen */
 /* Message informing the user that their static homepage page was set successfully */
 "pages.updatePage.successTitle" = "Halaman berhasil diperbarui.";
 
-/* Delete option in the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.actionTitle" = "Hapus Secara Permanen";
-
-/* Message of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertMessage" = "Anda yakin ingin menghapus halaman ini secara permanen?";
-
-/* Title of the confirmation alert when deleting a page from the trash. */
-"pagesList.deletePermanently.alertTitle" = "Hapus Permanen?";
-
 /* Menu option for filtering posts by everyone */
 "pagesList.pagesByEveryone" = "Halaman oleh setiap orang";
 
 /* Menu option for filtering posts by me */
 "pagesList.pagesByMe" = "Halaman oleh saya";
-
-/* Trash option in the trash page confirmation alert. */
-"pagesList.trash.actionTitle" = "Pindahkan ke Tempat Sampah";
-
-/* Message of the trash page confirmation alert. */
-"pagesList.trash.alertMessage" = "Apakah Anda ingin membuang halaman ini?";
-
-/* Title of the trash page confirmation alert. */
-"pagesList.trash.alertTitle" = "Hapus halaman ini?";
-
-/* Cancels an Action */
-"pagesList.trash.cancel" = "Batal";
 
 /* Navigation title displayed on the navigation bar */
 "parentPageSettings.title" = "Halaman Induk";
@@ -10294,12 +9962,6 @@ Example: Reply to Pamela Nguyen */
 /* Title for the plan selection view */
 "planSelection.title" = "Paket";
 
-/* Status mesasge for post cells */
-"post.deletingPostPermanentlyStatusMessage" = "Menghapus pos...";
-
-/* Status mesasge for post cells */
-"post.movingToTrashStatusMessage" = "Memindahkan ke tempat sampah...";
-
 /* Button in an alert confirming discaring changes */
 "postEditor.closeConfirmationAlert.discardChanges" = "Buang Perubahan";
 
@@ -10340,6 +10002,9 @@ Example: Reply to Pamela Nguyen */
 "postEditor.moreMenu.revisions" = "Revisi";
 
 /* Post Editor / Button in the 'More' menu */
+"postEditor.moreMenu.saveDraft" = "Simpan Konsep";
+
+/* Post Editor / Button in the 'More' menu */
 "postEditor.moreMenu.visualEditor" = "Editor Visual";
 
 /* A 'View' action for a snackbar informing the user that some media files requires their attention */
@@ -10370,7 +10035,19 @@ Example: Reply to Pamela Nguyen */
 "postEditor.savingDraftForPreview" = "Menyimpan draf...";
 
 /* Button title */
+"postFromAudio.beginRecording" = "Mulai merekam";
+
+/* Button title */
 "postFromAudio.buttonUpgrade" = "Upgrade untuk mendapat lebih banyak kuota permintaan";
+
+/* Button title */
+"postFromAudio.done" = "Selesai";
+
+/* The AI failed to understand the request for any reasons */
+"postFromAudio.errorMessage.cantUnderstandRequest" = "Terjadi masalah saat memproses permintaan. Coba lagi nanti.";
+
+/* The screen subtitle in the error state */
+"postFromAudio.errorMessage.generic" = "Terjadi kesalahan";
 
 /* Message for 'not eligible' state view */
 "postFromAudio.notEnoughRequestsMessage" = "Kuota permintaan Anda tidak cukup untuk membuat pos dari audio.";
@@ -10380,9 +10057,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Button title */
 "postFromAudio.retry" = "Coba lagi";
-
-/* The screen subtitle in the error state */
-"postFromAudio.subtitleError" = "Terjadi kesalahan";
 
 /* The screen subtitle */
 "postFromAudio.subtitleRequestsAvailable" = "Permintaan tersedia:";
@@ -10395,6 +10069,9 @@ Example: Reply to Pamela Nguyen */
 
 /* The screen title when recording */
 "postFromAudio.titleRecoding" = "Merekam…";
+
+/* The value for the `requests available:` field for an unlimited plan */
+"postFromAudio.unlimited" = "Tidak terbatas";
 
 /* Accessibility label for the post author in the post list. The parameter is the author name. For example, \"By Elsa.\" */
 "postList.a11y.authorChunkFormat" = "Oleh %@";
@@ -10471,9 +10148,6 @@ Example: Reply to Pamela Nguyen */
 /* A generic error message title */
 "postNotice.errorTitle" = "Terjadi error";
 
-/* An error message */
-"postNotice.errorUnsyncedChangesMessage" = "Aplikasi sedang mengunggah perubahan yang dibuat sebelumnya ke server. Silakan coba lagi nanti.";
-
 /* Button OK */
 "postNotice.ok" = "OKE";
 
@@ -10549,9 +10223,6 @@ Example: Reply to Pamela Nguyen */
 /* Button in Post Settings */
 "postSettings.setFeaturedImageButton" = "Atur sebagai Gambar Andalan";
 
-/* Error message on post/page settings screen */
-"postSettings.updateFailedMessage" = "Gagal memperbarui pengaturan pos";
-
 /* An alert message explaning that by changing the visibility to private, the post will be published immediately to your site */
 "postSettings.warningPostWillBePublishedAlertMessage" = "Dengan mengubah visibilitas ke \"Pribadi\", pos Anda akan segera diterbitkan.";
 
@@ -10594,9 +10265,6 @@ Example: Reply to Pamela Nguyen */
 /* Promote the post with Blaze. */
 "posts.blaze.actionTitle" = "Promosikan dengan Blaze";
 
-/* Label for the Post List option that cancels automatic uploading of a post. */
-"posts.cancelUpload.actionTitle" = "Batalkan unggahan";
-
 /* Label for post comments option. Tapping displays comments for a post. */
 "posts.comments.actionTitle" = "Komentar";
 
@@ -10617,9 +10285,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the publish post button. */
 "posts.publish.actionTitle" = "Publikasikan";
-
-/* Retry uploading the post. */
-"posts.retry.actionTitle" = "Coba ulang";
 
 /* Set the selected page as the homepage. */
 "posts.setHomepage.actionTitle" = "Atur sebagai beranda";
@@ -10644,18 +10309,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Label for the view post button. Tapping displays the post as it appears on the web. */
 "posts.view.actionTitle" = "Lihat";
-
-/* A short message explaining that a page was deleted permanently. */
-"postsList.deletePage.message" = "Halaman yang dihapus permanen";
-
-/* A short message explaining that a post was deleted permanently. */
-"postsList.deletePost.message" = "Pos yang dihapus permanen";
-
-/* A short message explaining that a page was moved to the trash bin. */
-"postsList.movePageToTrash.message" = "Halaman dipindahkan ke tempat sampah";
-
-/* A short message explaining that a post was moved to the trash bin. */
-"postsList.movePostToTrash.message" = "Pos dipindahkan ke tempat sampah";
 
 /* Menu option for filtering posts by everyone */
 "postsList.postsByEveryone" = "Pos oleh setiap orang";
@@ -10686,9 +10339,6 @@ Example: Reply to Pamela Nguyen */
 
 /* Title for a publish button state in the pre-publishing sheet */
 "prepublishing.mediaUploadFailedTitle" = "Gagal mengunggah media";
-
-/* Placeholder for a cell in the pre-publishing sheet */
-"prepublishing.postTitle" = "Judul";
 
 /* Primary button label in the pre-publishing sheet */
 "prepublishing.publish" = "Terbitkan";
@@ -10849,6 +10499,9 @@ Tapping on this row allows the user to edit the sharing message. */
 
 /* The description part of the feature announcement content for Tags Stream. */
 "reader.announcement.entry.tagsStream.description" = "Ketuk menu tarik-turun di bagian atas dan pilih Tag untuk mengakses stream dari tag yang Anda ikuti.";
+
+/* The title part of the feature announcement content for Tags Stream. */
+"reader.announcement.entry.tagsStream.title" = "Tags Stream";
 
 /* Title text for the announcement card component in the Reader. */
 "reader.announcement.title" = "Baru di Reader";
