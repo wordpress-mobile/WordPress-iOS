@@ -27,27 +27,11 @@ protocol PostEditor: PublishingEditor, UIViewControllerTransitioningDelegate {
     ///
     var post: AbstractPost { get set }
 
-    /// Initializer
-    ///
-    /// - Parameters:
-    ///     - post: the post to edit. Must be already assigned to a `ManagedObjectContext` since
-    ///     that's necessary for the edits to be saved.
-    ///     - replaceEditor: a closure that handles switching from one editor to another
-    ///     - editorSession: post editor analytics session
-    init(
-        post: AbstractPost,
-        replaceEditor: @escaping ReplaceEditorCallback,
-        editorSession: PostEditorAnalyticsSession?)
-
     /// Media items to be inserted on the post after creation
     ///
     /// - Parameter media: the media items to add
     ///
     func prepopulateMediaItems(_ media: [Media])
-
-    /// Cancels all ongoing uploads
-    ///
-    func cancelUploadOfAllMedia(for post: AbstractPost)
 
     var isUploadingMedia: Bool { get }
 

@@ -81,7 +81,7 @@ extension RootViewPresenter {
         }
         guard let blog = inBlog ?? self.currentOrLastBlog() else { return }
         guard content == nil else {
-            showEditor(blog: blog, title: title, content: content, templateKey: nil)
+            showEditor(blog: blog, title: title, content: content)
             return
         }
 
@@ -89,12 +89,12 @@ extension RootViewPresenter {
                           properties: [WPAppAnalyticsKeyTapSource: source],
                           blog: blog)
         PageCoordinator.showLayoutPickerIfNeeded(from: rootViewController, forBlog: blog) { [weak self] (selectedLayout) in
-            self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content, templateKey: selectedLayout?.slug)
+            self?.showEditor(blog: blog, title: selectedLayout?.title, content: selectedLayout?.content)
         }
     }
 
-    private func showEditor(blog: Blog, title: String?, content: String?, templateKey: String?) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: content, appliedTemplate: templateKey)
+    private func showEditor(blog: Blog, title: String?, content: String?) {
+        let editorViewController = EditPageViewController(blog: blog, postTitle: title, content: content)
         rootViewController.present(editorViewController, animated: false)
     }
 

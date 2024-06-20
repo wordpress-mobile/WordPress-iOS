@@ -109,7 +109,7 @@ class PagesCardViewModel: NSObject {
             guard let blog = self?.blog else {
                 return
             }
-            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content, appliedTemplate: selectedLayout?.slug)
+            let editorViewController = EditPageViewController(blog: blog, postTitle: selectedLayout?.title, content: selectedLayout?.content)
             viewController.present(editorViewController, animated: false)
         }
         trackCreateSectionTapped()
