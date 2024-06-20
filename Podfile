@@ -256,7 +256,7 @@ end
 # Linking the shared frameworks statically would lead to duplicate symbols
 # A future version of CocoaPods may make this easier to do. See https://github.com/CocoaPods/CocoaPods/issues/7428
 shared_targets = %w[WordPressFlux]
-dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressUI SVProgressHUD Gridicons NSURL+IDN wpxmlrpc NSObject-SafeExpectations]
+dyanmic_framework_pods = %w[WordPressFlux WordPressShared WordPressUI]
 # Statically linking Sentry results in a conflict with `NSDictionary.objectAtKeyPath`, but dynamically
 # linking it resolves this.
 dyanmic_framework_pods += %w[Sentry SentryPrivate]
