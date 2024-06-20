@@ -1500,6 +1500,8 @@
 		4A972D3E2C23A3ED006AE0F0 /* Starscream in Frameworks */ = {isa = PBXBuildFile; productRef = 4A972D3D2C23A3ED006AE0F0 /* Starscream */; };
 		4A972D3F2C23A4C8006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		4A972D402C23A4C8006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4A972D442C23B6D5006AE0F0 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
+		4A972D452C23B6D5006AE0F0 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A98A3072C22737000A2CE58 /* WordPressKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; };
 		4A98A3082C22737000A2CE58 /* WordPressKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 4A98A2F42C22736F00A2CE58 /* WordPressKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		4A98A44D2C22741500A2CE58 /* FilePart.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A98A3132C22741500A2CE58 /* FilePart.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -6952,19 +6954,19 @@
 			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
 			remoteInfo = WordPressKit;
 		};
-		4A98A2FD2C22736F00A2CE58 /* PBXContainerItemProxy */ = {
+		4A972D462C23B6D5006AE0F0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
 			remoteInfo = WordPressKit;
 		};
-		4A98A2FF2C22737000A2CE58 /* PBXContainerItemProxy */ = {
+		4A98A2FD2C22736F00A2CE58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
-			remoteInfo = WordPress;
+			remoteGlobalIDString = 4A98A2F32C22736F00A2CE58;
+			remoteInfo = WordPressKit;
 		};
 		4A98A3052C22737000A2CE58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -6979,13 +6981,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 4AD953B32C21451700D0EEFA;
 			remoteInfo = WordPressAuthenticator;
-		};
-		4AD953BF2C21451700D0EEFA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 29B97313FDCFA39411CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 1D6058900D05DD3D006BFB54;
-			remoteInfo = WordPress;
 		};
 		4AD953C52C21451700D0EEFA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -7165,6 +7160,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				4A972D402C23A4C8006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4A972D482C23B6D5006AE0F0 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				4A972D452C23B6D5006AE0F0 /* WordPressKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12079,6 +12085,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A65FC4F2C23666B006ED20C /* Gridicons in Frameworks */,
+				4A972D442C23B6D5006AE0F0 /* WordPressKit.framework in Frameworks */,
 				4A3AB6532C22F702006E0FA8 /* SVProgressHUD in Frameworks */,
 				4AD0285B2C22EE00004FBDD0 /* UIDeviceIdentifier in Frameworks */,
 				4A65FC4D2C236649006ED20C /* NSURL+IDN in Frameworks */,
@@ -23287,7 +23294,6 @@
 			);
 			dependencies = (
 				4A98A2FE2C22736F00A2CE58 /* PBXTargetDependency */,
-				4A98A3002C22737000A2CE58 /* PBXTargetDependency */,
 			);
 			name = WordPressKitTests;
 			packageProductDependencies = (
@@ -23307,10 +23313,12 @@
 				4AD953B02C21451700D0EEFA /* Sources */,
 				4AD953B12C21451700D0EEFA /* Frameworks */,
 				4AD953B22C21451700D0EEFA /* Resources */,
+				4A972D482C23B6D5006AE0F0 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				4A972D472C23B6D5006AE0F0 /* PBXTargetDependency */,
 			);
 			name = WordPressAuthenticator;
 			packageProductDependencies = (
@@ -23338,7 +23346,6 @@
 			);
 			dependencies = (
 				4AD953BE2C21451700D0EEFA /* PBXTargetDependency */,
-				4AD953C02C21451700D0EEFA /* PBXTargetDependency */,
 			);
 			name = WordPressAuthenticatorTests;
 			packageProductDependencies = (
@@ -31614,15 +31621,15 @@
 			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
 			targetProxy = 4A972D412C23A4C8006AE0F0 /* PBXContainerItemProxy */;
 		};
+		4A972D472C23B6D5006AE0F0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
+			targetProxy = 4A972D462C23B6D5006AE0F0 /* PBXContainerItemProxy */;
+		};
 		4A98A2FE2C22736F00A2CE58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 4A98A2F32C22736F00A2CE58 /* WordPressKit */;
 			targetProxy = 4A98A2FD2C22736F00A2CE58 /* PBXContainerItemProxy */;
-		};
-		4A98A3002C22737000A2CE58 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = 4A98A2FF2C22737000A2CE58 /* PBXContainerItemProxy */;
 		};
 		4A98A3062C22737000A2CE58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -31633,11 +31640,6 @@
 			isa = PBXTargetDependency;
 			target = 4AD953B32C21451700D0EEFA /* WordPressAuthenticator */;
 			targetProxy = 4AD953BD2C21451700D0EEFA /* PBXContainerItemProxy */;
-		};
-		4AD953C02C21451700D0EEFA /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 1D6058900D05DD3D006BFB54 /* WordPress */;
-			targetProxy = 4AD953BF2C21451700D0EEFA /* PBXContainerItemProxy */;
 		};
 		4AD953C62C21451700D0EEFA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;

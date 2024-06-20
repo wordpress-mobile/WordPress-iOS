@@ -1,4 +1,3 @@
 ${SRCROOT}/../Scripts/BuildPhases/Authenticator/EmbedFrameworks.sh
-${BUILT_PRODUCTS_DIR}/WordPressKit/WordPressKit.framework
 ${BUILT_PRODUCTS_DIR}/WordPressShared/WordPressShared.framework
 ${BUILT_PRODUCTS_DIR}/WordPressUI/WordPressUI.framework
