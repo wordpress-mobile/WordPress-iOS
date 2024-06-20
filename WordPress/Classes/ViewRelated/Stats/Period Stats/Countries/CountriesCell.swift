@@ -44,9 +44,6 @@ class CountriesCell: StatsBaseCell, NibLoadable {
         bottomSeparatorLine.isHidden = forDetails
 
         if !forDetails {
-            if rowsStackView.arrangedSubviews.isEmpty {
-                addDefaultTotalRows(toStackView: rowsStackView)
-            }
             configureTotalRows(
                 dataRows,
                 inStackView: rowsStackView,

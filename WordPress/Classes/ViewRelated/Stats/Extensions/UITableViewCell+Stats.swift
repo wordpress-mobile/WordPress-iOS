@@ -98,6 +98,9 @@ extension UITableViewCell {
                              inStackView rowsStackView: UIStackView,
                              forType statType: StatType,
                              configuration: StatsTotalRowConfiguration) {
+         if rowsStackView.arrangedSubviews.isEmpty {
+             addDefaultTotalRows(toStackView: rowsStackView)
+         }
 
         guard !dataRows.isEmpty else {
             configureForNoData(inStackView: rowsStackView, forType: statType)

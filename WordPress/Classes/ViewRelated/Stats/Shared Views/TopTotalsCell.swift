@@ -83,9 +83,6 @@ class TopTotalsCell: StatsBaseCell, NibLoadable {
         self.forDetails = forDetails
 
         if !forDetails {
-            if rowsStackView.arrangedSubviews.isEmpty {
-                addDefaultTotalRows(toStackView: rowsStackView)
-            }
             configureTotalRows(
                 dataRows,
                 inStackView: rowsStackView,
