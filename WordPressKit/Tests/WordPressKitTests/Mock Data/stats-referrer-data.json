@@ -1,0 +1,313 @@
+{
+    "date": "2019-01-31",
+    "days": {
+        "2019-01-01": {
+            "groups": [
+                {
+                    "group": "linkedin.com",
+                    "name": "linkedin.com",
+                    "icon": "https://secure.gravatar.com/blavatar/f54db463750940e0e7f7630fe327845e?s=48",
+                    "total": 126,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "linkedin.com",
+                            "url": "https://www.linkedin.com/",
+                            "views": 72
+                        },
+                        {
+                            "name": "linkedin.com/feed/",
+                            "url": "https://www.linkedin.com/feed/",
+                            "views": 47
+                        },
+                        {
+                            "name": "linkedin.com/company/automattic/",
+                            "url": "https://www.linkedin.com/company/automattic/",
+                            "views": 5
+                        },
+                        {
+                            "name": "linkedin.com/in/uruinusa/detail/recent-activity/",
+                            "url": "https://www.linkedin.com/in/uruinusa/detail/recent-activity/",
+                            "views": 1
+                        },
+                        {
+                            "name": "linkedin.com/feed/?trk=hb-0-h-logo",
+                            "url": "https://www.linkedin.com/feed/?trk=hb-0-h-logo",
+                            "views": 1
+                        }
+                    ]
+                },
+                {
+                    "group": "twitter.com",
+                    "name": "Twitter",
+                    "url": "http://twitter.com/",
+                    "icon": "https://secure.gravatar.com/blavatar/7905d1c4e12c54933a44d19fcd5f9356?s=48",
+                    "total": 124,
+                    "follow_data": null,
+                    "results": {
+                        "views": 124
+                    }
+                },
+                {
+                    "group": "WordPress.com Reader",
+                    "name": "WordPress.com Reader",
+                    "url": "https://wordpress.com/",
+                    "icon": "https://secure.gravatar.com/blavatar/236c008da9dc0edb4b3464ecebb3fc1d?s=48",
+                    "total": 103,
+                    "follow_data": null,
+                    "results": {
+                        "views": 103
+                    }
+                },
+                {
+                    "group": "Search Engines",
+                    "name": "Search Engines",
+                    "icon": "https://wordpress.com/i/stats/search-engine.png",
+                    "total": 55,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "Google Search",
+                            "icon": "https://secure.gravatar.com/blavatar/6741a05f4bc6e5b65f504c4f3df388a1?s=48",
+                            "views": 55,
+                            "children": [
+                                {
+                                    "name": "google.com",
+                                    "url": "http://www.google.com/",
+                                    "icon": null,
+                                    "views": 47
+                                },
+                                {
+                                    "name": "google.hu",
+                                    "url": "http://www.google.hu",
+                                    "icon": "https://secure.gravatar.com/blavatar/734e0c8cb739a8577f6c5adca0675ac9?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.ro",
+                                    "url": "http://www.google.ro",
+                                    "icon": "https://secure.gravatar.com/blavatar/4cf9c503ae564c0c56e96c6ac5b0850a?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.de",
+                                    "url": "http://www.google.de",
+                                    "icon": "https://secure.gravatar.com/blavatar/108eca7b644e2c5e09853619bc416ed0?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.com.br",
+                                    "url": "http://www.google.com.br",
+                                    "icon": "https://secure.gravatar.com/blavatar/529a6e3ab932e602843d1e6f5fc384c6?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.es",
+                                    "url": "http://www.google.es",
+                                    "icon": "https://secure.gravatar.com/blavatar/7ec3dec14a88a3b50bab9a2b2d8e9e83?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.ca",
+                                    "url": "http://www.google.ca",
+                                    "icon": "https://secure.gravatar.com/blavatar/3eac48a51cb5302e35fe68a819220647?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.co.uk",
+                                    "url": "http://www.google.co.uk",
+                                    "icon": "https://secure.gravatar.com/blavatar/d5d4cf8ec8dc8fddc90b7024afa3ddb3?s=48",
+                                    "views": 1
+                                },
+                                {
+                                    "name": "google.co.za",
+                                    "url": "http://www.google.co.za",
+                                    "icon": "https://secure.gravatar.com/blavatar/260289fb0e63d27a83fb63a1f5449806?s=48",
+                                    "views": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "group": "facebook.com",
+                    "name": "Facebook",
+                    "url": "http://facebook.com/",
+                    "icon": "https://secure.gravatar.com/blavatar/2343ec78a04c6ea9d80806345d31fd78?s=48",
+                    "total": 49,
+                    "follow_data": null,
+                    "results": {
+                        "views": 49
+                    }
+                },
+                {
+                    "group": "android-app",
+                    "name": "WordPress Android App",
+                    "icon": null,
+                    "total": 43,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "com.linkedin.android",
+                            "url": "http://android-app://com.linkedin.android",
+                            "views": 24
+                        },
+                        {
+                            "name": "com.google.android.gm",
+                            "url": "http://android-app://com.google.android.gm",
+                            "views": 15
+                        },
+                        {
+                            "name": "com.slack",
+                            "url": "http://android-app://com.slack",
+                            "views": 2
+                        },
+                        {
+                            "name": "com.google.android.googlequicksearchbox",
+                            "url": "http://android-app://com.google.android.googlequicksearchbox",
+                            "views": 1
+                        },
+                        {
+                            "name": "m.facebook.com",
+                            "url": "http://android-app://m.facebook.com",
+                            "views": 1
+                        }
+                    ]
+                },
+                {
+                    "group": "happinessengineer.blog",
+                    "name": "happinessengineer.blog",
+                    "icon": null,
+                    "total": 19,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "happinessengineer.blog/2018/12/18/engineering-happiness-as-a-parent/",
+                            "url": "https://happinessengineer.blog/2018/12/18/engineering-happiness-as-a-parent/",
+                            "views": 5
+                        },
+                        {
+                            "name": "happinessengineer.blog",
+                            "url": "https://happinessengineer.blog/",
+                            "views": 4
+                        },
+                        {
+                            "name": "happinessengineer.blog/2018/05/17/happiness-around-the-world/",
+                            "url": "https://happinessengineer.blog/2018/05/17/happiness-around-the-world/",
+                            "views": 3
+                        },
+                        {
+                            "name": "happinessengineer.blog/our-jobs/",
+                            "url": "https://happinessengineer.blog/our-jobs/",
+                            "views": 2
+                        },
+                        {
+                            "name": "happinessengineer.blog/2018/11/27/meet-an-enterprise-happiness-engineer-shannon-smith/",
+                            "url": "https://happinessengineer.blog/2018/11/27/meet-an-enterprise-happiness-engineer-shannon-smith/",
+                            "views": 2
+                        },
+                        {
+                            "name": "happinessengineer.blog/2018/05/14/so-you-want-to-be-a-happiness-engineer-huh/",
+                            "url": "https://happinessengineer.blog/2018/05/14/so-you-want-to-be-a-happiness-engineer-huh/",
+                            "views": 1
+                        },
+                        {
+                            "name": "happinessengineer.blog/2018/12/04/unusual-schedules-as-a-happiness-engineer/",
+                            "url": "https://happinessengineer.blog/2018/12/04/unusual-schedules-as-a-happiness-engineer/",
+                            "views": 1
+                        },
+                        {
+                            "name": "happinessengineer.blog/2018/05/15/diversematticians/",
+                            "url": "https://happinessengineer.blog/2018/05/15/diversematticians/",
+                            "views": 1
+                        }
+                    ]
+                },
+                {
+                    "group": "piszek.com",
+                    "name": "piszek.com",
+                    "icon": null,
+                    "total": 9,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "piszek.com/2016/04/05/automattic/",
+                            "url": "https://piszek.com/2016/04/05/automattic/",
+                            "views": 7
+                        },
+                        {
+                            "name": "piszek.com/2016/04/05/automattic/amp/",
+                            "url": "https://piszek.com/2016/04/05/automattic/amp/",
+                            "views": 2
+                        }
+                    ]
+                },
+                {
+                    "group": "vip.wordpress.com",
+                    "name": "vip.wordpress.com",
+                    "icon": "https://secure.gravatar.com/blavatar/c0a70310ea07fb03e415f74916b37b35?s=48",
+                    "total": 8,
+                    "follow_data": {
+                        "params": {
+                            "stat-source": "stats_referrer",
+                            "follow-text": "Follow",
+                            "following-text": "Following",
+                            "following-hover-text": "Unfollow",
+                            "blog_domain": "vip.wordpress.com",
+                            "blog_url": "http://vip.wordpress.com",
+                            "blog_id": 2235322,
+                            "site_id": 2235322,
+                            "blog_title": "Enterprise WordPress hosting, support, and consulting - WordPress VIP",
+                            "is_following": false
+                        },
+                        "type": "follow"
+                    },
+                    "results": [
+                        {
+                            "name": "vip.wordpress.com/2018/11/",
+                            "url": "https://vip.wordpress.com/2018/11/",
+                            "views": 3
+                        },
+                        {
+                            "name": "vip.wordpress.com/2017/10/06/the-dream-internship-work-at-automattic-winter-2018-and-beyond/",
+                            "url": "https://vip.wordpress.com/2017/10/06/the-dream-internship-work-at-automattic-winter-2018-and-beyond/",
+                            "views": 3
+                        },
+                        {
+                            "name": "vip.wordpress.com/mentorship/",
+                            "url": "https://vip.wordpress.com/mentorship/",
+                            "views": 1
+                        },
+                        {
+                            "name": "vip.wordpress.com/news/",
+                            "url": "https://vip.wordpress.com/news/",
+                            "views": 1
+                        }
+                    ]
+                },
+                {
+                    "group": "mail.google.com",
+                    "name": "mail.google.com",
+                    "icon": null,
+                    "total": 6,
+                    "follow_data": null,
+                    "results": [
+                        {
+                            "name": "mail.google.com/mail/u/0/",
+                            "url": "https://mail.google.com/mail/u/0/",
+                            "views": 5
+                        },
+                        {
+                            "name": "mail.google.com/mail/mu/mp/43/",
+                            "url": "https://mail.google.com/mail/mu/mp/43/",
+                            "views": 1
+                        }
+                    ]
+                }
+            ],
+            "other_views": 18,
+            "total_views": 560
+        }
+    },
+    "period": "month"
+}

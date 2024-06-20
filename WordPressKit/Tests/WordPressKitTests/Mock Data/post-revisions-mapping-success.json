@@ -1,0 +1,57 @@
+{
+    "diffs": [
+        {
+            "from": 0,
+            "to": 93,
+            "diff": {
+                "post_title": [
+                    {
+                        "op": "copy",
+                        "value": "Lorem ipsum dolor sit amet"
+                    }
+                ],
+                "post_content": [
+                    {
+                        "op": "del",
+                        "value": "Lorem ipsum d"
+                    },
+                    {
+                        "op": "add",
+                        "value": "Etiam in convallis orci. D"
+                    },
+                    {
+                        "op": "copy",
+                        "value": "olor sit amet, consectetur adipiscing elit. "
+                    },
+                    {
+                        "op": "del",
+                        "value": "Aenean et urna libero."
+                    },
+                    {
+                        "op": "add",
+                        "value": "Cras eget consequat magna, quis gravida sapien."
+                    },
+                    {
+                        "op": "copy",
+                        "value": "\n"
+                    }
+                ],
+                "totals": {
+                    "del": 2,
+                    "add": 2
+                }
+            }
+        }
+    ],
+    "revisions": {
+        "93": {
+            "post_date_gmt": "2018-10-24 15:38:28Z",
+            "post_modified_gmt": "2018-10-24 15:38:28Z",
+            "post_author": "136610416",
+            "id": 93,
+            "post_content": "Etiam in convallis orci. Dolor sit amet, consectetur adipiscing elit. Cras eget consequat magna, quis gravida sapien.",
+            "post_excerpt": "",
+            "post_title": "Lorem ipsum dolor sit amet"
+        }
+    }
+}

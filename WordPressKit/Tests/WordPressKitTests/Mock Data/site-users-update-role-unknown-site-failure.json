@@ -1,0 +1,4 @@
+{
+    "error": "unauthorized",
+    "message": "User cannot view users for specified site"
+}

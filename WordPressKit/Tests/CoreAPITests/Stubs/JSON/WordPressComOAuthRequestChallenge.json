@@ -1,0 +1,33 @@
+{
+    "success": true,
+    "data": {
+        "challenge": "challenge",
+        "rpId": "wordpress.com",
+        "allowCredentials": [
+            {
+                "type": "public-key",
+                "id": "credential-id",
+                "transports": [
+                    "usb",
+                    "nfc",
+                    "ble",
+                    "hybrid",
+                    "internal"
+                ]
+            },
+            {
+                "type": "public-key",
+                "id": "credential-id-2",
+                "transports": [
+                    "usb",
+                    "nfc",
+                    "ble",
+                    "hybrid",
+                    "internal"
+                ]
+            }
+        ],
+        "timeout": 60000,
+        "two_step_nonce": "two_step_nonce"
+    }
+}

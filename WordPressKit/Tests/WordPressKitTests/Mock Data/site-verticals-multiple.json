@@ -1,0 +1,51 @@
+[
+	{
+		"vertical_id": "p25v48",
+		"parent": "p25",
+		"vertical_slug": "Landscaping",
+		"vertical_name": "Landscaping",
+		"preview": [
+
+		],
+		"is_user_input_vertical": false
+	},
+	{
+		"vertical_id": "p25v54",
+		"parent": "p25",
+		"vertical_slug": "Landscapers",
+		"vertical_name": "Landscapers",
+		"preview": [
+
+		],
+		"is_user_input_vertical": false
+	},
+	{
+		"vertical_id": "p25v32",
+		"parent": "p25",
+		"vertical_slug": "Landscape Designers",
+		"vertical_name": "Landscape Designers",
+		"preview": [
+
+		],
+		"is_user_input_vertical": false
+	},
+	{
+		"vertical_id": "p25v44",
+		"parent": "p25",
+		"vertical_slug": "Landscape Architect",
+		"vertical_name": "Landscape Architect",
+		"preview": [
+
+		],
+		"is_user_input_vertical": false
+	},
+	{
+		"vertical_id": "",
+		"vertical_slug": "landscap",
+		"vertical_name": "landscap",
+		"preview": [
+
+		],
+		"is_user_input_vertical": true
+	}
+]

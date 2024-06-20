@@ -1,0 +1,32 @@
+[
+	{
+		"invite_key": "a2f81a37e785b1ee2983d9e4b49d272d",
+		"link": "https://wordpress.com/accept-invite/01234/abcda",
+		"role": "administrator",
+		"is_group_invite": true
+	},
+	{
+		"invite_key": "91eb1463d088c280769620255f7adea0",
+		"link": "https://wordpress.com/accept-invite/01234/asfasdf",
+		"role": "editor",
+		"is_group_invite": true
+	},
+	{
+		"invite_key": "549a9338268d59c340d2be3848f2e1f0",
+		"link": "https://wordpress.com/accept-invite/01234/dfsdfdsfs",
+		"role": "author",
+		"is_group_invite": true
+	},
+	{
+		"invite_key": "7feec5f2707601deaf15b6b2abb9f6ca",
+		"link": "https://wordpress.com/accept-invite/01234/wfasdfa",
+		"role": "contributor",
+		"is_group_invite": true
+	},
+	{
+		"invite_key": "5c21559e4065727c52a2405d40257a56",
+		"link": "https://wordpress.com/accept-invite/01234/dddassdd",
+		"role": "follower",
+		"is_group_invite": true
+	}
+]

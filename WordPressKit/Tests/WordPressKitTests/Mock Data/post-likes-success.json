@@ -1,0 +1,82 @@
+{
+    "found": 3,
+    "i_like": true,
+    "likes": [
+        {
+            "ID": 12345,
+            "login": "johndoe",
+            "email": false,
+            "name": "John Doe",
+            "first_name": "John",
+            "last_name": "Doe",
+            "nice_name": "johndoe",
+            "URL": "home URL",
+            "avatar_URL": "avatar URL",
+            "profile_URL": "profile URL",
+            "ip_address": false,
+            "site_ID": 54321,
+            "site_visible": true,
+            "default_avatar": false,
+            "date_liked": "2021-04-16 17:12:08",
+            "bio": "user bio",
+            "primary_blog": "primary blog URL",
+            "preferred_blog": {
+                "id": 12345,
+                "name": "Blog",
+                "url": "blog URL",
+                "icon": {
+                    "img": "img URL",
+                    "ico": "ico URL"
+                }
+            }
+        },
+        {
+            "ID": 12346,
+            "login": "marysue",
+            "email": false,
+            "name": "Mary Sue",
+            "first_name": "Mary",
+            "last_name": "Sue",
+            "nice_name": "marysue",
+            "URL": "home URL",
+            "avatar_URL": "avatar URL",
+            "profile_URL": "profile URL",
+            "ip_address": false,
+            "site_ID": 54321,
+            "site_visible": false,
+            "default_avatar": false,
+            "date_liked": "2021-04-16 17:12:08",
+            "bio": "",
+            "primary_blog": "primary blog URL",
+            "preferred_blog": {
+                "id": 12345,
+                "name": "Blog",
+                "url": "blog URL",
+                "icon": {
+                    "img": "img URL",
+                    "ico": "ico URL"
+                }
+            }
+        },
+        {
+            "ID": 12347,
+            "login": "janedoe",
+            "email": false,
+            "name": "Jane Doe",
+            "first_name": "Jane",
+            "last_name": "Doe",
+            "nice_name": "janedoe",
+            "URL": "",
+            "avatar_URL": "avatar URL",
+            "profile_URL": "profile URL",
+            "ip_address": false,
+            "site_ID": 54321,
+            "site_visible": true,
+            "default_avatar": false,
+            "date_liked": "2021-04-16 17:12:08",
+            "bio": "user bio",
+            "primary_blog": "primary blog URL",
+            "preferred_blog": null
+        }
+    ]
+}

@@ -1,0 +1,63 @@
+{
+  "configurations" : [
+    {
+      "id" : "D97A5016-3F23-4D19-9CEB-C10A9AC3591F",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "environmentVariableEntries" : [
+      {
+        "key" : "BUILDKITE_ANALYTICS_TOKEN",
+        "value" : "$(BUILDKITE_ANALYTICS_TOKEN)"
+      },
+      {
+        "key" : "BUILDKITE_BRANCH",
+        "value" : "$(BUILDKITE_BRANCH)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_ID",
+        "value" : "$(BUILDKITE_BUILD_ID)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_NUMBER",
+        "value" : "$(BUILDKITE_BUILD_NUMBER)"
+      },
+      {
+        "key" : "BUILDKITE_BUILD_URL",
+        "value" : "$(BUILDKITE_BUILD_URL)"
+      },
+      {
+        "key" : "BUILDKITE_COMMIT",
+        "value" : "$(BUILDKITE_COMMIT)"
+      },
+      {
+        "key" : "BUILDKITE_JOB_ID",
+        "value" : "$(BUILDKITE_JOB_ID)"
+      },
+      {
+        "key" : "BUILDKITE_MESSAGE",
+        "value" : "$(BUILDKITE_MESSAGE)"
+      }
+    ],
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:WordPressAuthenticator.xcodeproj",
+      "identifier" : "B5ED78F3207E976500A8FD8C",
+      "name" : "WordPressAuthenticator"
+    },
+    "testTimeoutsEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:WordPressAuthenticator.xcodeproj",
+        "identifier" : "B5ED78FC207E976500A8FD8C",
+        "name" : "WordPressAuthenticatorTests"
+      }
+    }
+  ],
+  "version" : 1
+}

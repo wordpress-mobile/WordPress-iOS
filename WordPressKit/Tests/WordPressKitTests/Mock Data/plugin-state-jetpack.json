@@ -1,0 +1,20 @@
+{
+    "id" : "123",
+    "slug": "jetpack",
+    "active": true,
+    "name": "jetpack/jetpack",
+    "display_name": "Jetpack by WordPress.com",
+    "plugin_url": "https://jetpack.com",
+    "version": "8.6.1",
+    "description": "Bring the power of the WordPress.com cloud to your self-hosted WordPress. Jetpack enables you to connect your blog to a WordPress.com account to use the powerful features normally only available to WordPress.com users.",
+    "author": "Automattic",
+    "author_url": "https://jetpack.com",
+    "network": false,
+    "autoupdate": false,
+    "uninstallable": false,
+    "updateState" : {
+        "updated" : true
+    },
+    "automanaged": true
+    
+}

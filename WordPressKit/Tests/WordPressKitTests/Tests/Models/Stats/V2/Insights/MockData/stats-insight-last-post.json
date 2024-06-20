@@ -1,0 +1,203 @@
+{
+    "ID": 24601,
+    "site_ID": 987654,
+    "author": {
+        "ID": 654321,
+        "login": "janedoe",
+        "email": false,
+        "name": "Jane Doe",
+        "first_name": "Jane",
+        "last_name": "Doe",
+        "nice_name": "janedoeblog",
+        "URL": "",
+        "avatar_URL": "https://example.com/avatar/12345abcdef?s=96&d=identicon",
+        "profile_URL": "https://example.com/janedoe",
+        "site_ID": 123456
+    },
+    "date": "2024-07-04T12:00:00+00:00",
+    "modified": "2024-07-05T12:00:00+00:00",
+    "title": "Exploring the New Web in 60 Minutes",
+    "URL": "http://exampleblog.com/2024/07/04/exploring-the-new-web/",
+    "short_URL": "https://exmpl.co/abc123",
+    "content": "<p>Discover the latest web technologies and how they can enhance your online presence. Join us as we dive deep into the future of the web.</p>",
+    "excerpt": "<p>An insightful look into the future of web technologies.</p>",
+    "slug": "new-web-exploration",
+    "guid": "http://exampleblog.com/?p=24601",
+    "status": "publish",
+    "sticky": false,
+    "password": "",
+    "parent": false,
+    "type": "post",
+    "discussion": {
+        "comments_open": true,
+        "comment_status": "open",
+        "pings_open": true,
+        "ping_status": "open",
+        "comment_count": 42
+    },
+    "likes_enabled": true,
+    "sharing_enabled": true,
+    "like_count": 128,
+    "i_like": false,
+    "is_reblogged": false,
+    "is_following": false,
+    "global_ID": "def123456abc7890ghijkl",
+    "featured_image": "https://exampleblog.com/files/2024/07/new-web.jpg",
+    "post_thumbnail": {
+        "ID": 78910,
+        "URL": "https://exampleblog.com/files/2024/07/new-web-thumbnail.jpg",
+        "guid": "http://exampleblog.com/files/2024/07/new-web-thumbnail.jpg",
+        "mime_type": "image/jpeg",
+        "width": 1200,
+        "height": 628
+    },
+    "format": "standard",
+    "geo": false,
+    "menu_order": 0,
+    "page_template": "",
+    "publicize_URLs": [],
+    "terms": {
+        "category": {
+            "technology": {
+                "ID": 101,
+                "name": "Technology",
+                "slug": "technology",
+                "description": "",
+                "post_count": 10,
+                "parent": 0,
+                "meta": {
+                    "links": {
+                        "self": "https://api.example.com/sites/987654/categories/slug:technology",
+                        "help": "https://api.example.com/sites/987654/categories/slug:technology/help",
+                        "site": "https://api.example.com/sites/987654"
+                    }
+                }
+            },
+            "tutorials": {
+                "ID": 102,
+                "name": "Tutorials",
+                "slug": "tutorials",
+                "description": "",
+                "post_count": 5,
+                "parent": 0,
+                "meta": {
+                    "links": {
+                        "self": "https://api.example.com/sites/987654/categories/slug:tutorials",
+                        "help": "https://api.example.com/sites/987654/categories/slug:tutorials/help",
+                        "site": "https://api.example.com/sites/987654"
+                    }
+                }
+            }
+        },
+        "post_tag": {
+            "Web Development": {
+                "ID": 201,
+                "name": "Web Development",
+                "slug": "web-development",
+                "description": "",
+                "post_count": 15,
+                "meta": {
+                    "links": {
+                        "self": "https://api.example.com/sites/987654/tags/slug:web-development",
+                        "help": "https://api.example.com/sites/987654/tags/slug:web-development/help",
+                        "site": "https://api.example.com/sites/987654"
+                    }
+                }
+            }
+        },
+        "post_format": {},
+        "mentions": {}
+    },
+    "tags": {
+        "Web Development": {
+            "ID": 201,
+            "name": "Web Development",
+            "slug": "web-development",
+            "description": "",
+            "post_count": 15,
+            "meta": {
+                "links": {
+                    "self": "https://api.example.com/sites/987654/tags/slug:web-development",
+                    "help": "https://api.example.com/sites/987654/tags/slug:web-development/help",
+                    "site": "https://api.example.com/sites/987654"
+                }
+            }
+        }
+    },
+    "categories": {
+        "Tech News": {
+            "ID": 303,
+            "name": "Tech News",
+            "slug": "tech-news",
+            "description": "",
+            "post_count": 8,
+            "parent": 0,
+            "meta": {
+                "links": {
+                    "self": "https://api.example.com/sites/987654/categories/slug:tech-news",
+                    "help": "https://api.example.com/sites/987654/categories/slug:tech-news/help",
+                    "site": "https://api.example.com/sites/987654"
+                }
+            }
+        }
+    },
+    "attachments": {
+        "78910": {
+            "ID": 78910,
+            "URL": "https://exampleblog.com/files/2024/07/new-web-thumbnail.jpg",
+            "guid": "http://exampleblog.com/files/2024/07/new-web-thumbnail.jpg",
+            "date": "2024-07-04T10:30:00+00:00",
+            "post_ID": 24601,
+            "author_ID": 654321,
+            "file": "new-web-thumbnail.jpg",
+            "mime_type": "image/jpeg",
+            "title": "new-web-exploration-thumbnail",
+            "caption": "",
+            "description": "",
+            "alt": "Exploring the new web",
+            "thumbnails": {},
+            "height": 628,
+            "width": 1200,
+            "exif": {
+                "aperture": "2.8",
+                "credit": "Jane Doe",
+                "camera": "ExampleCam 2000",
+                "caption": "",
+                "created_timestamp": "1593628800",
+                "copyright": "Jane Doe",
+                "focal_length": "35mm",
+                "iso": "100",
+                "shutter_speed": "1/500",
+                "title": "Exploring The New Web",
+                "orientation": "1",
+                "keywords": []
+            },
+            "meta": {
+                "links": {
+                    "self": "https://api.example.com/sites/987654/media/78910",
+                    "help": "https://api.example.com/sites/987654/media/78910/help",
+                    "site": "https://api.example.com/sites/987654",
+                    "parent": "https://api.example.com/sites/987654/posts/24601"
+                }
+            }
+        }
+    },
+    "attachment_count": 1,
+    "metadata": [],
+    "meta": {
+        "links": {
+            "self": "https://api.example.com/sites/987654/posts/24601",
+            "help": "https://api.example.com/sites/987654/posts/24601/help",
+            "site": "https://api.example.com/sites/987654",
+            "replies": "https://api.example.com/sites/987654/posts/24601/replies/",
+            "likes": "https://api.example.com/sites/987654/posts/24601/likes/"
+        }
+    },
+    "capabilities": {
+        "publish_post": true,
+        "delete_post": true,
+        "edit_post": true
+    },
+    "other_URLs": {}
+}
+
