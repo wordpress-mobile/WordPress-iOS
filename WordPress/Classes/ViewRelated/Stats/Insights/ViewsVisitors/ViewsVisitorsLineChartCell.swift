@@ -8,9 +8,6 @@ struct StatsSegmentedControlData: Equatable {
     var difference: Int
     var differenceText: String
     var differencePercent: Int
-    var date: Date?
-    var period: StatsPeriodUnit?
-    var analyticsStat: WPAnalyticsStat?
 
     enum Segment: Int {
         case views
@@ -19,7 +16,7 @@ struct StatsSegmentedControlData: Equatable {
 
     private(set) var accessibilityHint: String?
 
-    init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, date: Date? = nil, period: StatsPeriodUnit? = nil, analyticsStat: WPAnalyticsStat? = nil, accessibilityHint: String? = nil, differencePercent: Int) {
+    init(segmentTitle: String, segmentData: Int, segmentPrevData: Int, difference: Int, differenceText: String, segmentDataStub: String? = nil, differencePercent: Int) {
         self.segmentTitle = segmentTitle
         self.segmentData = segmentData
         self.segmentPrevData = segmentPrevData
@@ -27,10 +24,6 @@ struct StatsSegmentedControlData: Equatable {
         self.difference = difference
         self.differenceText = differenceText
         self.differencePercent = differencePercent
-        self.date = date
-        self.period = period
-        self.analyticsStat = analyticsStat
-        self.accessibilityHint = accessibilityHint
     }
 
     var attributedDifferenceText: NSAttributedString? {
@@ -97,10 +90,6 @@ struct StatsSegmentedControlData: Equatable {
         return difference < 0 ? WPStyleGuide.Stats.negativeColor : WPStyleGuide.Stats.positiveColor
     }
 
-    var title: String {
-        return self.segmentTitle
-    }
-
     var accessibilityIdentifier: String {
         return self.segmentTitle.localizedLowercase
     }
@@ -142,8 +131,6 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
 
     private var chartData: [LineChartDataConvertible] = []
     private var chartStyling: [LineChartStyling] = []
-    private weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
-    private var chartHighlightIndex: Int?
 
     private var period: StatsPeriodUnit?
     private var xAxisDates: [Date] = []
@@ -173,7 +160,6 @@ class ViewsVisitorsLineChartCell: StatsBaseCell, NibLoadable {
         self.segmentsData = row.segmentsData
         self.chartData = row.chartData
         self.chartStyling = row.chartStyling
-        self.statsLineChartViewDelegate = row.statsLineChartViewDelegate
         self.viewsAndVisitorsDelegate = row.viewsAndVisitorsDelegate
         self.period = row.period
         self.xAxisDates = row.xAxisDates
@@ -272,10 +258,9 @@ private extension ViewsVisitorsLineChartCell {
                                                         data: chartData[selectedSegmentIndex],
                                                         styling: chartStyling[selectedSegmentIndex],
                                                         analyticsGranularity: period?.analyticsGranularityLine,
-                                                        indexToHighlight: 0,
                                                         xAxisDates: xAxisDates)
 
-        let chartView = StatsLineChartView(configuration: configuration, delegate: statsLineChartViewDelegate)
+        let chartView = StatsLineChartView(configuration: configuration)
 
         resetChartContainerView()
         chartContainerView.addSubview(chartView)

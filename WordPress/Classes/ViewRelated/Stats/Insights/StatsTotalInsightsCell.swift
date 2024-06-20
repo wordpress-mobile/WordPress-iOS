@@ -14,11 +14,11 @@ struct StatsTotalInsightsData: Equatable {
     var lastPostInsight: StatsLastPostInsight? = nil
     var statsSummaryType: StatsSummaryType? = nil
 
-    public static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
+    static func followersCount(insightsStore: StatsInsightsStore) -> StatsTotalInsightsData {
         return StatsTotalInsightsData(count: insightsStore.getTotalFollowerCount())
     }
 
-    public static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?,
+    static func createTotalInsightsData(periodSummary: StatsSummaryTimeIntervalData?,
                                                insightsStore: StatsInsightsStore,
                                                statsSummaryType: StatsSummaryType,
                                                periodEndDate: Date? = nil) -> StatsTotalInsightsData {

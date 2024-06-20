@@ -30,8 +30,6 @@ class InsightsManagementViewController: UITableViewController {
         return insightsShown != originalInsightsShown
     }
 
-    private var selectedStat: StatSection?
-
     private lazy var saveButton = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveTapped))
 
     private lazy var tableHandler: ImmuTableViewHandler = {
@@ -245,20 +243,6 @@ private extension InsightsManagementViewController {
         )
     }
 
-    func sectionForCategory(_ category: InsightsCategories) -> ImmuTableSection? {
-        let rows = category.insights.filter({ !self.insightsShown.contains($0) })
-        guard rows.count > 0 else {
-            return nil
-        }
-
-        return ImmuTableSection(headerText: category.title,
-                                rows: rows.map {
-                                    return AddInsightStatRow(title: $0.insightManagementTitle,
-                                                             enabled: false,
-                                                             action: rowActionFor($0)) }
-        )
-    }
-
     func rowActionFor(_ statSection: StatSection) -> ImmuTableAction {
         return { [unowned self] row in
             toggleRow(for: statSection)
@@ -351,35 +335,4 @@ private extension InsightsManagementViewController {
         .insightsFollowersWordPress,
         .insightsCommentsAuthors
     ]
-
-    // MARK: - Insights Categories
-
-    enum InsightsCategories {
-        case general
-        case postsAndPages
-        case activity
-
-        var title: String {
-            switch self {
-            case .general:
-                return NSLocalizedString("General", comment: "Add New Stats Card category title")
-            case .postsAndPages:
-                return NSLocalizedString("Posts and Pages", comment: "Add New Stats Card category title")
-            case .activity:
-                return NSLocalizedString("Activity", comment: "Add New Stats Card category title")
-            }
-        }
-
-        var insights: [StatSection] {
-            switch self {
-            case .general:
-                return [.insightsViewsVisitors, .insightsAllTime, .insightsMostPopularTime, .insightsAnnualSiteStats, .insightsTodaysStats]
-            case .postsAndPages:
-                return [.insightsLatestPostSummary, .insightsPostingActivity, .insightsTagsAndCategories]
-            case .activity:
-                return [.insightsCommentsPosts, .insightsFollowersEmail, .insightsFollowerTotals, .insightsPublicize]
-            }
-        }
-    }
-
 }

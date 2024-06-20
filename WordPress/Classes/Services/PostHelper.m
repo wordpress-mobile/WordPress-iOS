@@ -102,18 +102,13 @@
 }
 
 + (void)updatePost:(Post *)post withRemoteCategories:(NSArray *)remoteCategories inContext:(NSManagedObjectContext *)managedObjectContext {
-    NSManagedObjectID *blogObjectID = post.blog.objectID;
     NSMutableSet *categories = [post mutableSetValueForKey:@"categories"];
     [categories removeAllObjects];
     for (RemotePostCategory *remoteCategory in remoteCategories) {
-        PostCategory *category = [PostCategory lookupWithBlogObjectID:blogObjectID categoryID:remoteCategory.categoryID inContext:managedObjectContext];
-        if (!category) {
-            category = [PostCategory createWithBlogObjectID:blogObjectID inContext:managedObjectContext];
-            category.categoryID = remoteCategory.categoryID;
-            category.categoryName = remoteCategory.name;
-            category.parentID = remoteCategory.parentID;
+        PostCategory *category = [PostHelper createOrUpdateCategoryForRemoteCategory:remoteCategory blog:post.blog context:managedObjectContext];
+        if (category) {
+            [categories addObject:category];
         }
-        [categories addObject:category];
     }
 }
 

@@ -178,7 +178,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -390,8 +389,7 @@
    Title of the trash confirmation alert. */
 "Delete" = "ลบ";
 
-/* Delete option in the confirmation alert when deleting a post from the trash.
-   Title for button on the comment details page that deletes the comment when tapped. */
+/* Title for button on the comment details page that deletes the comment when tapped. */
 "Delete Permanently" = "ลบอย่างถาวร";
 
 /* Label for the description for a media asset (image / video)
@@ -500,8 +498,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "กรุณาใส่รหัสผ่าน";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "ใส่รหัสผ่าน";
 
 /* (placeholder) Help enter WordPress username */
@@ -652,7 +649,6 @@
 
 /* Button shown if there are unsaved changes and the author cancelled editing a Comment.
    Button shown if there are unsaved changes and the author is trying to move away from the post.
-   Button shown when the author is asked for publishing confirmation.
    Goes back to editing the post. */
 "Keep Editing" = "คงการแก้ไขไว้";
 
@@ -813,7 +809,6 @@
 "More" = "เพิ่มเติม";
 
 /* Title for button on the comment details page that moves the comment to trash when tapped.
-   Trash option in the trash confirmation alert.
    Trashes the comment */
 "Move to Trash" = "ย้ายไปถังขยะ";
 
@@ -1017,9 +1012,6 @@
    Title for screen that shows self hosted password editor. */
 "Password" = "รหัสผ่าน";
 
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "ใส่รหัสผ่านป้องกันแล้ว";
-
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
    Title of pending Comments filter. */
@@ -1110,18 +1102,13 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "นโยบายความเป็นส่วนตัว";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "ส่วนตัว";
 
 /* Message for the warning shown to the user when he refuses to re-login when the authToken is missing. */
 "Proceeding will remove all WordPress.com data from this device, and delete any locally saved drafts. You will not lose anything already saved to your WordPress.com blog(s)." = "การทำต่อจะลบข้อมูล WordPress.com ทั้งหมดออกจาอุปกรณ์  และลบฉบับร่างที่บันทึกในอุปกรณ์ด้วย  แต่คุณไม่ได้เสียอะไรเพราะว่าทั้งหมดถูกบันทึกไปที่บล็อก WordPress.com ของคุณแล้ว";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "สาธารณะ";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "เผยแพร่";
@@ -1227,10 +1214,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -1258,15 +1243,8 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "บันทึก";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "บันทึกโครงร่าง";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "กำลังบันทึก...";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "ตารางเวลา";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -1420,9 +1398,6 @@
    Stats window title
    The item to select during a guided tour. */
 "Stats" = "สถิติ";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "สถานะ";
 
 /* Accessibility label for strikethrough button on formatting toolbar. */
 "Strike Through" = "ขีดกลางตัวอักษร";
@@ -1660,11 +1635,7 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "อัปเดต";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "อัปเดตฉบับร่าง";
-
-/* Message displayed on a post's card when the post has failed to upload
-   System notification displayed to the user when media files have failed to upload. */
+/* System notification displayed to the user when media files have failed to upload. */
 "Upload failed" = "การอัปโหลดล้มเหลว";
 
 /* Label for the date a media asset (image / video) was uploaded
@@ -1701,8 +1672,7 @@
 /* Period Stats 'Videos' header */
 "Videos" = "วีดีโอ";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "ดู";
@@ -1728,8 +1698,7 @@
    Today's Stats 'Views' label */
 "Views" = "การดู";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "การมองเห็นได้";
 
 /* A call to action to visit the specified blog.  The '%@' characters are a placholder for the blog name. */

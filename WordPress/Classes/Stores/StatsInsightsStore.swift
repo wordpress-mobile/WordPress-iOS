@@ -452,22 +452,6 @@ private extension StatsInsightsStore {
         fetchInsights(forceRefresh: forceRefresh)
     }
 
-    func fetchLastPostSummary() {
-        guard let api = statsRemote() else {
-            setAllFetchingStatus(.idle)
-            state.lastPostSummaryStatus = .idle
-            return
-        }
-
-        api.getInsight { (lastPost: StatsLastPostInsight?, error) in
-            if error != nil {
-                DDLogInfo("Error fetching last posts insights: \(String(describing: error?.localizedDescription))")
-            }
-            self.actionDispatcher.dispatch(InsightAction.receivedLastPostInsight(lastPost, error))
-            DDLogInfo("Stats: Insights - successfully fetched latest post summary.")
-        }
-    }
-
     func fetchStatsForInsightsLatestPost() {
         guard let postID = getLastPostInsight()?.postID,
             let api = statsRemote() else {
@@ -845,15 +829,6 @@ extension StatsInsightsStore {
 
     func getTopTagsAndCategories() -> StatsTagsAndCategoriesInsight? {
         return state.topTagsAndCategories
-    }
-
-    /// Summarizes the daily posting count for the month in the given date.
-    /// Returns an array containing every day of the month and associated post count.
-    ///
-    func getMonthlyPostingActivity(for date: Date) -> [PostingStreakEvent] {
-        let postingEventDates = getPostingEventsDates()
-
-        return getMonthlyPostingActivityFor(date: date, postingEventsDates: postingEventDates)
     }
 
     func getQuarterlyPostingActivity(from date: Date) -> [[PostingStreakEvent]] {

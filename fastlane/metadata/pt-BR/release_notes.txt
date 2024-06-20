@@ -1,2 +1,0 @@
-Reparou na demora para salvar os posts? Ela pode ter sido causada pelos blocos de imagem, galeria ou arquivo. Agora, isso mudou. Salvar deve ser rápido e fácil, não importa quantas fotos ou arquivos você enviou.
-Além disso, corrigimos a sobreposição do botão "Concluído" na tela "Post publicado". Bem fácil!

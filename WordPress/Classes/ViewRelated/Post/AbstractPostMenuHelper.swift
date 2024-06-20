@@ -47,7 +47,7 @@ struct AbstractPostMenuHelper {
             .filter { !$0.buttons.isEmpty }
             .map { section in
                 let actions = makeActions(for: section.buttons, presentingView: presentingView, delegate: delegate)
-                let menu = UIMenu(title: "", options: .displayInline, children: actions)
+                let menu = UIMenu(title: section.title ?? "", subtitle: "", options: .displayInline, children: actions)
 
                 if let submenuButton = section.submenuButton {
                     return UIMenu(
@@ -99,6 +99,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .moveToDraft: return UIImage(systemName: "pencil.line")
         case .trash: return UIImage(systemName: "trash")
         case .delete: return UIImage(systemName: "trash")
+        case .retry: return UIImage(systemName: "arrow.triangle.2.circlepath")
         case .share: return UIImage(systemName: "square.and.arrow.up")
         case .blaze: return UIImage(systemName: "flame")
         case .comments: return UIImage(systemName: "bubble.right")
@@ -128,6 +129,7 @@ extension AbstractPostButton: AbstractPostMenuAction {
         case .moveToDraft: return Strings.draft
         case .trash: return Strings.trash
         case .delete: return Strings.delete
+        case .retry: return Strings.retry
         case .share: return Strings.share
         case .blaze: return Strings.blaze
         case .comments: return Strings.comments
@@ -155,6 +157,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
             delegate.trash(post)
         case .delete:
             delegate.delete(post)
+        case .retry:
+            delegate.retry(post)
         case .share:
             delegate.share(post, fromView: view)
         case .blaze:
@@ -182,6 +186,8 @@ extension AbstractPostButton: AbstractPostMenuAction {
         static let draft = NSLocalizedString("posts.draft.actionTitle", value: "Move to draft", comment: "Label for an option that moves a post to the draft folder")
         static let delete = NSLocalizedString("posts.delete.actionTitle", value: "Delete permanently", comment: "Label for the delete post option. Tapping permanently deletes a post.")
         static let trash = NSLocalizedString("posts.trash.actionTitle", value: "Move to trash", comment: "Label for a option that moves a post to the trash folder")
+        // TODO: Replace with a namespaced string
+        static let retry = NSLocalizedString("Retry", comment: "User action to retry media upload.")
         static let view = NSLocalizedString("posts.view.actionTitle", value: "View", comment: "Label for the view post button. Tapping displays the post as it appears on the web.")
         static let preview = NSLocalizedString("posts.preview.actionTitle", value: "Preview", comment: "Label for the preview post button. Tapping displays the post as it appears on the web.")
         static let publish = NSLocalizedString("posts.publish.actionTitle", value: "Publish", comment: "Label for the publish post button.")

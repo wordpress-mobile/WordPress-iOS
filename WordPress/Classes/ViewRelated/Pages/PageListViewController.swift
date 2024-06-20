@@ -398,7 +398,7 @@ final class PageListViewController: AbstractPostListViewController {
     }
 
     private func createPage(_ starterLayout: PageTemplateLayout?) {
-        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content, appliedTemplate: starterLayout?.slug)
+        let editorViewController = EditPageViewController(blog: blog, postTitle: starterLayout?.title, content: starterLayout?.content)
         present(editorViewController, animated: false)
 
         QuickStartTourGuide.shared.visited(.newPage)

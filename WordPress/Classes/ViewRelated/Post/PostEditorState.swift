@@ -68,10 +68,6 @@ public class PostEditorStateContext {
         }
     }
 
-    fileprivate var originalPostStatus: BasePost.Status?
-    fileprivate var currentPostStatus: BasePost.Status?
-    fileprivate var currentPublishDate: Date?
-    fileprivate var userCanPublish: Bool
     private weak var delegate: PostEditorStateContextDelegate?
 
     fileprivate var hasContent = false {
@@ -115,7 +111,6 @@ public class PostEditorStateContext {
 
         self.init(originalPostStatus: originalPostStatus,
                   userCanPublish: userCanPublish,
-                  publishDate: post.dateCreated,
                   delegate: delegate)
 
         if let action = action {
@@ -126,16 +121,9 @@ public class PostEditorStateContext {
     /// The default initializer
     ///
     /// - Parameters:
-    ///   - originalPostStatus: If the post was already published (saved to the server) what is the status
-    ///   - userCanPublish: Does the user have permission to publish posts or merely create drafts
-    ///   - publishDate: The post publish date
     ///   - delegate: Delegate for listening to change in state for the editor
     ///
-    required init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, publishDate: Date? = nil, delegate: PostEditorStateContextDelegate) {
-        self.originalPostStatus = originalPostStatus
-        self.currentPostStatus = originalPostStatus
-        self.userCanPublish = userCanPublish
-        self.currentPublishDate = publishDate
+    required init(originalPostStatus: BasePost.Status? = nil, userCanPublish: Bool = true, delegate: PostEditorStateContextDelegate) {
         self.delegate = delegate
         self.action = PostEditorStateContext.initialAction(for: originalPostStatus, userCanPublish: userCanPublish)
     }
@@ -155,18 +143,6 @@ public class PostEditorStateContext {
         case .trash, .deleted:
             return .update // Should never happen (trashed posts are not be editable)
         }
-    }
-
-    /// Call when the post status has changed due to a remote operation
-    ///
-    func updated(postStatus: BasePost.Status) {
-        currentPostStatus = postStatus
-    }
-
-    /// Call when the publish date has changed (picked a future date) or nil if publish immediately selected
-    ///
-    func updated(publishDate: Date?) {
-        currentPublishDate = publishDate
     }
 
     /// Call whenever the post content is not empty - title or content body

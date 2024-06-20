@@ -54,7 +54,6 @@ struct ViewsVisitorsRow: StatsHashableImmuTableRow {
     let chartData: [LineChartDataConvertible]
     let chartStyling: [LineChartStyling]
     let period: StatsPeriodUnit?
-    weak var statsLineChartViewDelegate: StatsLineChartViewDelegate?
     weak var siteStatsInsightsDelegate: SiteStatsInsightsDelegate?
     weak var viewsAndVisitorsDelegate: StatsInsightsViewsAndVisitorsDelegate?
     let xAxisDates: [Date]
@@ -226,7 +225,7 @@ struct LatestPostSummaryRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(withInsightData: summaryData, chartData: chartData, andDelegate: siteStatsInsightsDelegate)
+        cell.configure(withInsightData: summaryData, andDelegate: siteStatsInsightsDelegate)
     }
 
     static func == (lhs: LatestPostSummaryRow, rhs: LatestPostSummaryRow) -> Bool {
@@ -375,7 +374,7 @@ struct MostPopularTimeInsightStatsRow: StatsHashableImmuTableRow {
             return
         }
 
-        cell.configure(data: data, siteStatsInsightsDelegate: siteStatsInsightsDelegate)
+        cell.configure(data: data)
     }
 
     static func == (lhs: MostPopularTimeInsightStatsRow, rhs: MostPopularTimeInsightStatsRow) -> Bool {

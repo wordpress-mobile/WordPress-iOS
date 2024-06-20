@@ -16,18 +16,12 @@ class StatsChartLegendView: UIView {
         static let spacing              = CGFloat(8)
     }
 
-    private let color: UIColor
-    private let title: String
-
     private let capsule: UIView
     private let label: UILabel
 
     // MARK: StatsLegendView
 
     init(color: UIColor, title: String) {
-        self.color = color
-        self.title = title
-
         self.capsule = {
             let view = UIView()
 

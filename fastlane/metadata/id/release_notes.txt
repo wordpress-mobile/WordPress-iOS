@@ -1,2 +1,2 @@
-Mengalami jeda lama saat menyimpan pos? Masalah itu mungkin terjadi akibat blok gambar, galeri, atau file—tapi semuanya sudah diatasi. Proses menyimpan harus tetap cepat dan mudah, meski Anda mengunggah ribuan bahkan jutaan foto dan file.
-Kami juga telah mengatasi masalah tombol “Selesai” yang tumpang tindih di layar “Pos Diterbitkan”. Sangat mudah, tanpa susah.
+Kami memperbaiki bug langka yang menyebabkan aplikasi berhenti bekerja saat menghapus artikel. Sampah seseorang... tetaplah sampah bagi orang lain, kami kira.
+Kami juga memperbaiki kendala pada bar navigasi dalam pemilih Visibilitas Artikel. Selain itu, kami juga memperbarui layar Pengaturan Artikel editor untuk menggunakan style bar navigasi yang baru. Keren.

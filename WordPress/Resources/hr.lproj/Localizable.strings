@@ -54,9 +54,6 @@
 /* Approves a Comment */
 "Approve Comment" = "Odobri Komentar";
 
-/* Message of the trash confirmation alert. */
-"Are you sure you want to trash this post?" = "Jeste li sigurni da želite izbrisati ovaj post? ";
-
 /* Author label.
    Label for list of stats by content author.
    The author of the post or page.
@@ -86,7 +83,6 @@
    Button label that dismisses the qr log in flow and returns the user back to the previous screen
    Button title, cancel fixing all threats
    Button title. Cancels a pending action.
-   Button title. Cancels automatic uploading of the post when the device is back online.
    Button title. Tapping it cancels the login flow.
    Cancel
    Cancel a prompt
@@ -295,8 +291,7 @@
 /* No comment provided by engineer. */
 "Enter a password" = "Unesite lozinku";
 
-/* (placeholder) Help enter WordPress password
-   Placeholder of a field to type a password to protect the post. */
+/* (placeholder) Help enter WordPress password */
 "Enter password" = "Unesite lozinku";
 
 /* Generic error alert title
@@ -525,9 +520,6 @@
 /* No comment provided by engineer. */
 "Outside" = "Izvana";
 
-/* Title of notification displayed when a page has been successfully updated. */
-"Page updated" = "Stranica ažurirana";
-
 /* Noun. Title. Links to the blog's Pages screen.
    The item to select during a guided tour.
    This is the section title
@@ -546,9 +538,6 @@
    Placeholder for the password textfield.
    Title for screen that shows self hosted password editor. */
 "Password" = "Lozinka";
-
-/* Privacy setting for posts set to 'Password protected'. Should be the same as in core WP. */
-"Password protected" = "Zaštićeno lozinkom";
 
 /* Button title for Pending comment state.
    Status for Media object that is being processed locally.
@@ -577,9 +566,6 @@
 /* Title of camera permissions screen */
 "Post to WordPress" = "Objavi na wordPress";
 
-/* Title of notification displayed when a post has been successfully updated. */
-"Post updated" = "Objava je ažurirana";
-
 /* All Time Stats 'Posts' label
    Insights 'Posts' header
    Noun. Title. Links to the blog's Posts screen.
@@ -599,15 +585,10 @@
 /* Title of button that displays the App's privacy policy */
 "Privacy Policy" = "Pravila privatnosti";
 
-/* Name for the status of a post that is marked private.
-   Privacy setting for posts set to 'Private'. Should be the same as in core WP. */
+/* Name for the status of a post that is marked private. */
 "Private" = "Privatno";
 
-/* Privacy setting for posts set to 'Public' (default). Should be the same as in core WP. */
-"Public" = "Javno";
-
-/* Button title. Publishes a post.
-   Label for the publish (verb) button. Tapping publishes a draft post.
+/* Label for the publish (verb) button. Tapping publishes a draft post.
    Publish post action on share extension site picker screen.
    Section title for the publish table section in the blog details screen */
 "Publish" = "Objavi";
@@ -656,10 +637,8 @@
 /* A prompt to attempt the failed network request again
    A prompt to attempt the failed network request again.
    Button title, displayed when media has failed to upload. Allows the user to try the upload again.
-   Button title. Retries uploading a post.
    If a user taps the button with this label, the action that evinced this error view will be retried.
    Opens the media library .
-   Retries the upload of a user's post.
    Retry updating User's Role
    Retry. Action
    Retry. Verb – retry a failed media upload.
@@ -684,18 +663,11 @@
    Title of action button to save a Reader post to read later. */
 "Save" = "Snimi";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from the post. */
-"Save Draft" = "Snimi Skicu";
-
-/* Menus save button title while it is saving a Menu.
-   Text displayed in HUD while a post is being saved as a draft. */
+/* Menus save button title while it is saving a Menu. */
 "Saving..." = "Snimam...";
 
 /* Title for a notice informing the user their scan has completed */
 "Scan Finished" = "Skeniranje završeno";
-
-/* Schedule button, this is what the Publish button changes to in the Post Editor if the post has been scheduled for posting later. */
-"Schedule" = "Tempiranje";
 
 /* Name for the status of a scheduled post
    Title of the scheduled filter. This filter shows a list of posts that are scheduled to be published at a future date. */
@@ -757,9 +729,6 @@
    Stats window title
    The item to select during a guided tour. */
 "Stats" = "Statistika";
-
-/* The status of the post. Should be the same as in core WP. */
-"Status" = "Status";
 
 /* Support button that appears in the Theme Browser Header
    Theme Support action title */
@@ -866,17 +835,11 @@
    Update button label (saving content, ex: Post, Page, Comment). */
 "Update" = "Ažuriraj";
 
-/* Button shown if there are unsaved changes and the author is trying to move away from an already saved draft. */
-"Update Draft" = "Ažuriraj Skicu";
-
 /* Title for sheet displayed allowing user to update their site icon */
 "Update Site Icon" = "Ažurirajte ikonu web mjesta";
 
 /* Describes a status of a plugin */
 "Updating" = "Ažuriranje ";
-
-/* Text displayed in HUD while a draft or scheduled post is being updated. */
-"Updating..." = "Ažuriram...";
 
 /* Label for the date a media asset (image / video) was uploaded
    Status for Media object that is uploaded and sync with server. */
@@ -903,8 +866,7 @@
 /* Description for the version label in the What's new page. */
 "Version " = "Inačica:";
 
-/* Button title. Displays a summary / sharing screen for a specific post.
-   Opens the post epilogue screen to allow sharing / viewing of a post.
+/* Opens the post epilogue screen to allow sharing / viewing of a post.
    Theme View action title
    Verb. The screen title shown when viewing a post inside the app. */
 "View" = "Pregled";
@@ -921,8 +883,7 @@
    Today's Stats 'Views' label */
 "Views" = "Pregledi";
 
-/* The visibility settings of the post. Should be the same as in core WP.
-   Visibility label */
+/* The visibility settings of the post. Should be the same as in core WP. */
 "Visibility" = "Vidljivost";
 
 /* Accessibility label used for distinguishing Views and Visitors in the Stats → Views bar chart.

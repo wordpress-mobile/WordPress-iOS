@@ -223,10 +223,7 @@ extension PostSettingsViewController {
             if let index = pages.firstIndex(of: page) {
                 pages = pages.remove(from: index)
             }
-            let viewController = ParentPageSettingsViewController.make(with: pages, selectedPage: page) { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-                self?.tableView.reloadData()
-            }
+            let viewController = ParentPageSettingsViewController.make(with: pages, selectedPage: page)
             viewController.isModalInPresentation = true
             navigationController?.pushViewController(viewController, animated: true)
         } catch {

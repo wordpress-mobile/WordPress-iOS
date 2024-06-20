@@ -1,2 +1,2 @@
-L’enregistrement de vos articles prenait du temps ? Cela pouvait être provoqué par les blocs Image, Galerie ou Fichier – mais ça, c’était avant. L’enregistrement devrait rester rapide et simple, qu’importe le nombre de photos ou de fichiers mis en ligne.
-Nous avons également corrigé le chevauchement du bouton « Terminé » sur l’écran « Article publié ». Les doigts dans le nez.
+Nous avons corrigé un bug rare qui faisait planter l’application lors du déplacement d’articles vers la corbeille. Les déchets des uns font… les déchets des autres, on imagine.
+Nous avons également corrigé un problème avec la barre de navigation dans le sélecteur Visibilité de l’article. Nous en avons profité pour mettre à jour l’écran Réglages de l’article de l’éditeur en appliquant le nouveau style de barre de navigation. Sympa, non ?

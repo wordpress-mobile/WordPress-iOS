@@ -345,9 +345,6 @@ private extension PrepublishingSocialAccountsViewController {
         static let cellImageSize = CGSize(width: 28.0, height: 28.0)
 
         static let tableTopPadding: CGFloat = 16.0
-        static let minContentHeight: CGFloat = 300.0
-        static let defaultBottomInset: CGFloat = 34.0
-        static let additionalBottomInset: CGFloat = 16.0
 
         static let accountCellIdentifier = "AccountCell"
         static let messageCellIdentifier = "MessageCell"

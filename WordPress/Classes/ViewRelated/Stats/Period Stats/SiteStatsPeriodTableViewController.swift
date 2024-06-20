@@ -328,13 +328,3 @@ private extension SiteStatsPeriodTableViewController {
         }
     }
 }
-
-// MARK: - Tracking
-
-private extension SiteStatsPeriodTableViewController {
-    func trackBarChartTabSelectionEvent(tab: StatsTrafficBarChartTabs, period: StatsPeriodUnit) {
-        let properties: [AnyHashable: Any] = [StatsPeriodUnit.analyticsPeriodKey: period.description as Any]
-        WPAppAnalytics.track(tab.analyticsEvent, withProperties: properties)
-
-    }
-}
